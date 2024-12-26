@@ -1,0 +1,45 @@
+.hidden {
+  display: none;
+}
+.card-overview {
+  width: 100%; /* 自適應內容寬度 */
+}
+.card-overview .data {
+  overflow: hidden; /* 隱藏超出父層的內容 */
+  text-overflow: ellipsis; /* 用省略號表示超出的內容 */
+  max-width: 100%; /* 確保內容不會超出父層寬度 */
+}
+.card-overview .data {
+  text-overflow: ellipsis; /* 過長的文字以省略號表示（適用於文字內容） */
+}
+.card-overview [slot="footer"] {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden; /* 隱藏超出內容 */
+  text-overflow: ellipsis; /* 過長的文字以省略號表示（適用於文字內容） */
+  white-space: nowrap; /* 防止文字換行 */
+  width: auto; /* 讓 footer 的寬度根據內容調整 */
+  padding: 0; /* 移除預設的 padding */
+  gap: 0.5rem; /* 控制內部內容之間的間距 */
+}
+.card-overview .delete-button, .card-overview .fetch-button {
+  margin-left: 0.5rem; /* 如果需要按鈕之間有間距 */
+}
+.vertical {
+  min-height: 50%;
+}
+.vertical::part(base) {
+  grid-template-areas: 'slides slides pagination';
+}
+.vertical::part(pagination) {
+  flex-direction: column;
+}
+.vertical::part(navigation) {
+  transform: rotate(90deg);
+  display: flex;
+}
+sl-details.custom-icons::part(summary-icon) {
+  /* Disable the expand/collapse animation */
+  rotate: none;
+}

@@ -1,0 +1,101 @@
+---
+---
+  
+<div class="w-full">
+	<div id="timezone-grid" class="flex overflow-x-auto space-x-4 p-4 bg-gray-100 rounded-lg"></div>
+	</div>
+</div>
+
+<script>
+	async function fetchTimezones() {
+		try {
+			const response = await axios.get(`https://strapi.yao.care/api/timezone?lang=${navigator.languages.join('|')}`);
+			return response.data;
+		} catch (ex) {
+			console.error("Failed to fetch timezones:", ex);
+			return getDefaultTimezones();
+		}
+	}
+
+	function getDefaultTimezones() {
+		return [
+			{ offset: "−12:00", city: "beq'er Hovtay'", flag: "us" },
+			{ offset: "−11:00", city: "'apya", flag: "ws" },
+			{ offset: "−10:00", city: "Honolulu", flag: "us" },
+			{ offset: "−9:00", city: "Anchorage", flag: "us" },
+			{ offset: "−8:00", city: "Los Angeles", flag: "us" },
+			{ offset: "−7:00", city: "Denver", flag: "us" },
+			{ offset: "−6:00", city: "Chicago", flag: "us" },
+			{ offset: "−5:00", city: "New York", flag: "us" },
+			{ offset: "−4:00", city: "Santiago", flag: "cl" },
+			{ offset: "−3:00", city: "Buenos Aires", flag: "ar" },
+			{ offset: "−2:00", city: "tlhop tay' qoj", flag: "" },
+			{ offset: "−1:00", city: "'aSor Sep", flag: "pt" },
+			{ offset: "±0:00", city: "London", flag: "gb" },
+			{ offset: "+1:00", city: "Berlin", flag: "de" },
+			{ offset: "+2:00", city: "Cairo", flag: "eg" },
+			{ offset: "+3:00", city: "Moscow", flag: "ru" },
+			{ offset: "+4:00", city: "Dubai", flag: "ae" },
+			{ offset: "+5:00", city: "Kabul", flag: "af" },
+			{ offset: "+6:00", city: "Dhaka", flag: "bd" },
+			{ offset: "+7:00", city: "Bangkok", flag: "th" },
+			{ offset: "+8:00", city: "Taipei", flag: "tw" },
+			{ offset: "+9:00", city: "Tokyo", flag: "jp" },
+			{ offset: "+10:00", city: "Sydney", flag: "au" },
+			{ offset: "+11:00", city: "Nouméa", flag: "nc" },
+			{ offset: "+12:00", city: "Wellington", flag: "nz" },
+		];
+	}
+
+	function parseOffset(offset) {
+		return parseInt(offset.replace("±", "").replace(":", ""));
+	}
+
+	function createCard({ offset, city, flag }, userOffset) {
+		const card = document.createElement('div');
+		card.className = 'text-center';
+
+		if (parseOffset(offset) === userOffset * 100) {
+			card.classList.add("bg-blue-200", "rounded-lg");
+		}
+
+		const flagHTML = flag
+			? `<sl-animated-image src="https://flagcdn.com/48x36/${flag}.webp" alt="${flag}" play=true></sl-animated-image>`
+			: `<sl-icon style="font-size: 36px;" name="ban"></sl-icon>`;
+
+		card.innerHTML = `
+			${flagHTML}
+			<p class="font-bold">${offset}</p>
+			<p class="text-sm text-gray-600">${city}</p>
+		`;
+
+		return card;
+	}
+
+	async function showTimezones() {
+		const timezones = await fetchTimezones();
+		const grid = document.getElementById('timezone-grid');
+		const userOffset = -new Date().getTimezoneOffset() / 60;
+
+		const fragment = document.createDocumentFragment();
+		let targetCard = null;
+
+		timezones.forEach(timezone => {
+			const card = createCard(timezone, userOffset);
+			if (card.classList.contains("bg-blue-200")) {
+				targetCard = card;
+			}
+			fragment.appendChild(card);
+		});
+
+		grid.appendChild(fragment);
+
+		if (targetCard) {
+			setTimeout(() => {
+				targetCard.scrollIntoView({ behavior: "smooth", inline: "center" });
+			}, 500);
+		}
+	}
+
+	showTimezones();
+</script>

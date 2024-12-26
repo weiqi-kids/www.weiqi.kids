@@ -1,0 +1,80 @@
+---
+const { metadata } = Astro.props;
+const author = {
+	name: "Lightman Chang",
+	email: "lightman.chang@gmail.com"
+}
+const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "WebSite",
+	"name": metadata.title,
+	"url": metadata.url,
+	"headline": metadata.description,
+	"author": {
+		"@type": "Person",
+		"name": author.name
+	},
+	"datePublished": metadata.datePublished,
+	"mainEntityOfPage": {
+		"@type": "WebPage",
+		"@id": metadata.url
+	}
+}
+---
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="author" content={author.name}/>
+		<link rel="icon" href={metadata.image} id="favicon"/>
+		<title>{metadata.title}</title>
+
+		<meta name="keywords" content={metadata.keywords} />
+		<meta name="description" content={metadata.description} />
+		<meta name="author" content={author.name} />
+		
+		<!-- Open Graph（OG 標籤）-->
+		<meta property="og:title" content={metadata.title} >
+		<meta property="og:description" content={metadata.description}>
+		<meta property="og:url" content={metadata.url}>
+		<meta property="og:type" content="website">
+		<meta property="og:image" content={metadata.image}>
+
+		<!-- Twitter Card 標籤 -->
+		<meta name="twitter:title" content={metadata.title}>
+		<meta name="twitter:description" content={metadata.description}>
+		<meta name="twitter:card" content={metadata.image}>
+		<meta name="twitter:image" content={metadata.image}>
+
+		<!-- 確保搜尋引擎將此 URL 視為主要版本。 -->
+		<link rel="canonical" href={metadata.url} />
+
+		<!-- 結構化數據（JSON-LD，JavaScript Object Notation for Linked Data）-->
+		<script type="application/ld+json">
+			{JSON.stringify(structuredData)}
+		</script>
+
+		<!-- shoelace.style -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/themes/light.css" />
+		<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/shoelace-autoloader.js"></script>
+		<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/components/progress-bar/progress-bar.js"></script>
+
+		<!-- pretty-print-json -->
+		<script src="https://cdn.jsdelivr.net/npm/pretty-print-json@3.0.3/dist/pretty-print-json.min.js" integrity="sha256-urY8XWgRVQWTceuugYbedV0e2VOUPYTiyXTuG6DVdsA=" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-print-json@3.0.3/dist/css/pretty-print-json.min.css" integrity="sha256-mrFZOJCcv6gj0AmmYIqZKJd5ZtR7oATQJSGH1PDmAks=" crossorigin="anonymous">
+
+		<!-- axios -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.8/axios.min.js" referrerpolicy="no-referrer"></script>
+
+	</head>
+	<body>
+		<sl-breadcrumb>
+			<sl-breadcrumb-item>
+				<sl-icon slot="prefix" name="house"></sl-icon>
+				<h1>好棋寶寶改版中...</h1>
+			</sl-breadcrumb-item>
+		</sl-breadcrumb>
+		<slot />
+	</body>
+</html>
