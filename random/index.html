@@ -10,94 +10,106 @@
 					<sl-menu-item>天健</sl-menu-item>
 					<sl-menu-item>博陽</sl-menu-item>
 					<sl-divider></sl-divider--> <sl-menu-label data-astro-cid-sckkx6r4="true">過去式</sl-menu-label> <sl-menu-item data-astro-cid-sckkx6r4="true">WordPress時期</sl-menu-item> </sl-menu> </div> <div class="p-4" data-astro-cid-sckkx6r4> <sl-breadcrumb><sl-breadcrumb-item><sl-icon slot="prefix" name="house"></sl-icon><h1>好棋寶寶</h1></sl-breadcrumb-item></sl-breadcrumb><div id="board" style="height: 90%;"></div><script type="text/javascript">
-
-    const GAME_ID_ASK = new URLSearchParams(window.location.search).get("id"); console.log("🎯 棋局 ID:", GAME_ID_ASK);
-    let GAME_ID;  
-    let socket;
-    const board = document.getElementById("board");
-    const player = new WGo.BasicPlayer(board, {
+    /*
+    var elem = document.getElementById("board");
+    var player = new WGo.BasicPlayer(elem, {
       board: {
         size: 9,
         background: "wgo/wood_1024.jpg"
       },
       layout: {
-          bottom: ['Control'],
-      }
+        bottom: ['Control'],
+      },
+      sgf: "(;GM[1]SZ[9]KM[7]RU[Chinese]RE[W+R]PB[xris (1733)]PW[ZappanViikset (2112)];B[gd];W[ec];B[fe];W[de];B[cg];W[dg];B[cf];W[df];B[bd];W[cd];B[bc];W[gg];B[fc];W[ch];B[bh];W[dh];B[ce];W[ed];B[gf];W[hg];B[eb];W[db];B[fb];W[he];B[hf];W[if];B[hd];W[id];B[fg];W[fh];B[ic];W[ie];B[ig];W[ih];B[ge];W[ig];B[gh];W[eg];B[ef];W[hc];B[hb];W[ib];B[cc];W[dc];B[dd];W[ee];B[ff];W[gc];B[fd];W[gb])"
     });
-    async function connectWebSocket() {
-      const response = await fetch(`http://questgames.net:3002/socket.io/1/?t=${Date.now()}`);
-      const text = await response.text();
-      const SESSION_ID = text.split(":")[0];
-      socket = new WebSocket(`ws://questgames.net:3002/socket.io/1/websocket/${SESSION_ID}`);
-      socket.onopen = function () {// console.log("✅ WebSocket 連線成功");
-         setInterval(() => {
-          if (socket.readyState === WebSocket.OPEN) { socket.send("2::");}
-        }, 25000);
+    */
+    const GAME_ID = "xzj9vnsf503n";  // 棋局 ID
+    const USER_ID = "xris";          // 玩家 ID
+    let TOKEN = "";
+    
+    let socket = null;
 
-        // 正式完成連線，取得伺服器資訊
+    async function connectWebSocket() {
+      // 棋局清單：5:::{"name":"c794948e","args":[{"gtype":"go9","page":"0"}]}
+      
+      // 1️⃣ 取得 SESSION_ID
+      let response = await fetch(`http://questgames.net:3002/socket.io/1/?t=${Date.now()}`);
+      let text = await response.text();
+      let SESSION_ID = text.split(":")[0];
+
+      // 2️⃣ 建立 WebSocket 連線
+      const socket = new WebSocket(`ws://questgames.net:3002/socket.io/1/websocket/${SESSION_ID}`);
+      
+      socket.onopen = function () {// console.log("✅ WebSocket 連線成功");
+         // 3️⃣ 啟動 Ping-Pong 心跳機制
+         setInterval(() => {
+          if (socket.readyState === WebSocket.OPEN) {
+            console.log("🔄 發送 Ping (2::)");
+            socket.send("2::"); // 發送 Ping
+          }
+        }, 25000); // Socket.IO 1.x 預設 25 秒 Ping
+
+        // 4️⃣ 正式完成連線，取得伺服器資訊
         socket.send(`5:::{"name":"efa2bd1b","args":[{"env":"WEB","handicapV":"1","gtype":"go9"}]}`);
       };
 
+      let lastServerStatus;
+      let info;
       socket.onmessage = function (event) {
-        if (event.data === "2::") { socket.send("3::"); return; }
-        if (!event.data.startsWith('5:::')) { return ; }
+        let data = event.data;
 
-        const jsonData = JSON.parse(event.data.slice(4));
-        if (jsonData.name === "f19683a8") {
-          // 伺服器發送 f19683a8 指令
-          // {connected: 1394, games: 283, solving: 4, run: 0, down: {}}
-
-          // 已有成功的棋譜資料時，則不需要重新發送取得棋譜資料指令。
-          if (GAME_ID) { return; }
-          console.log("📩 伺服器資訊接收成功", jsonData.args[0])
-
-          // 有指定棋局，則載入指定棋局；無則從正在對局的清單中找棋局輪播。
-          if (GAME_ID_ASK) {
-            socket.send(`5:::{"name":"ba276087","args":[{"id":"${GAME_ID_ASK}"}]}`);
-          }
-          else {
-            socket.send(`5:::{"name":"c794948e","args":[{"gtype":"go9","page":"0"}]}`);
-          }
+        // 5️⃣ 伺服器發送 Ping (2::)，回應 Pong (3::)
+        if (data === "2::") {
+          console.log("📡 伺服器 Ping 來了，回應 Pong (3::)");
+          socket.send("3::");
+          return;
         }
-        else if (jsonData.name === "c794948e") {
-          // 已有成功的棋譜資料時，則不需要重新發送取得棋譜資料指令。
-          if (GAME_ID) { return; }
-          console.log("📩 取得正在進行的棋局列表"); // console.table(jsonData.args[0].games);
 
-          GAME_ID = jsonData.args[0].games[0].id;
-          socket.send(`5:::{"name":"ba276087","args":[{"id":"${GAME_ID}"}]}`);
-        }
-        else if (jsonData.name === "ba276087") { console.log("📩 成功載入 GAME_ID 棋局", jsonData.args[0]);
-          // {id: "rsxz8hmxa20f", gtype: "go9", started: "2025-03-12T10:21:01.684Z",…}
+        // 6️⃣ 處理棋局回應
+        if (data.startsWith('5:::')) {
+          try {
+            let jsonData = JSON.parse(data.slice(4)); // 跳過 "5:::"
+            if (jsonData.name === "ba276087") {
+              console.log("📩 棋局數據接收成功", jsonData.args[0]);
 
-          GAME_ID = jsonData.args[0].id;
-          loadSGF(jsonData.args[0]);
-          
-          console.log("📩 是否已經結束對局", !GAME_ID_ASK, jsonData.args[0].finished);
-          if (!GAME_ID_ASK && jsonData.args[0].finished) {
-            setTimeout(() => {
+              // 解析 `moves` 並轉換為 SGF 格式
+              let sgf = convertToSGF(jsonData.args[0]);
+              console.log("🎯 轉換後的 SGF:", sgf);
+
+              // 顯示棋盤
+              loadSGF(sgf);
+            }
+            else if (jsonData.name === "f19683a8") {// console.log("📩 伺服器資訊接收成功", jsonData.args[0]);
+              if (!info) {
+                socket.send(`5:::{"name":"d4b6e7ef","args":[{"id":"xris","gtype":"go9","token":"77n146dk"}]}`);
+              }
+              lastServerStatus = jsonData.args[0];
+            }
+            else if (jsonData.name === "d4b6e7ef") {// console.log("📩 帳號接收成功", jsonData.args[0]);
+              info = jsonData.args[0];
+              TOKEN = info.token;
+              // 7️⃣ 發送請求載入歷史棋局
               socket.send(`5:::{"name":"c794948e","args":[{"gtype":"go9","page":"0"}]}`);
-            }, 5000);
+            }
+            else if (jsonData.name === "c794948e") { console.log("📩 正在進行的棋局資訊接收成功"); console.table(jsonData.args[0].games);
+              socket.send(`5:::{"name":"ba276087","args":[{"id":"xzj9vnsf503n","user_id":"xris","token":"77n146dk"}]}`);
+            }
+            else {
+              console.log("📩 未知的伺服器回應:", jsonData);
+            }
+          } catch (error) {
+            console.error("❌ 解析 WebSocket 訊息時發生錯誤:", error);
           }
-        }
-        else if (jsonData.name === "8d7a2124") { console.log("📩 成功接收正在進行的對局資料", jsonData.args[0]);
-          loadSGF(jsonData.args[0]);
-        }
-        else if (jsonData.name === "1f566a1a") { console.log("📩 收到對局結束指令", jsonData.args[0]);
-          GAME_ID = null;
-          socket.send(`5:::{"name":"c794948e","args":[{"gtype":"go9","page":"0"}]}`);
-        }
-        else if (jsonData.name === "d40a7297") { // console.log("📩 收到指令", jsonData.args[0]);
-        }
-        else {
-          console.log("📩 未知的伺服器回應:", jsonData);
         }
       };
 
-      // 異常時，如果是沒有指定棋局 ID，則重新連線。
-      const reconnect = () => { if (!GAME_ID) { connectWebSocket(); } }
-      socket.addEventListener("error", reconnect);
-      socket.addEventListener("close", reconnect);
+      socket.addEventListener("error", (err) => {
+        console.error("❌ 連線錯誤", err);
+      });
+
+      socket.addEventListener("close", () => {
+        console.log("🔴 WebSocket 連線關閉，嘗試重新連線...");
+      });
     }
 
     function convertToSGF(gameData) {
@@ -109,10 +121,18 @@
       return sgf;
     }
 
-    function loadSGF(data) {
-      player.loadSgf(convertToSGF(data));
-      player.last();
+    function loadSGF(sgf) {
+      var elem = document.getElementById("board");
+      new WGo.BasicPlayer(elem, {
+        board: {
+          size: 9,
+          background: "https://wgo.waltheri.net/wgo/wood_1024.jpg"
+        },
+        layout: {
+            bottom: ['Control'],
+        },
+        sgf: sgf
+      });
     }
-    
     connectWebSocket();
     </script> </div> </div> </body></html>
