@@ -1,0 +1,152 @@
+---
+import "tailwindcss/tailwind.css";
+import "../styles/global.css";
+import Layout from "../layouts/Layout.astro";
+export const metadata = {
+  title: "台灣好棋寶寶協會｜圍棋協會推薦｜兒童圍棋與親子圍棋的文化與生活美學",
+  description: "台灣好棋寶寶協會｜圍棋協會推薦｜兒童圍棋與親子圍棋的文化與生活美學",
+  keywords: "圍棋",
+  url: "https://www.weiqi.kids/",
+  image: "favicon.png",
+  datePublished: "2024-12-26",
+};
+---
+<script type="text/javascript" src="wgo/wgo.min.js"></script>
+<script type="text/javascript" src="wgo/wgo.player.min.js"></script>
+<link type="text/css" href="wgo/wgo.player.css" rel="stylesheet" />
+<Layout metadata={metadata}>
+  <sl-breadcrumb>
+    <sl-breadcrumb-item>
+      <sl-icon slot="prefix" name="house"></sl-icon>
+      <h1>好棋寶寶</h1>
+    </sl-breadcrumb-item>
+  </sl-breadcrumb>
+  <div id="board" style="height: 90%;"/>
+  <script type="text/javascript">
+    /*
+    var elem = document.getElementById("board");
+    var player = new WGo.BasicPlayer(elem, {
+      board: {
+        size: 9,
+        background: "wgo/wood_1024.jpg"
+      },
+      layout: {
+        bottom: ['Control'],
+      },
+      sgf: "(;GM[1]SZ[9]KM[7]RU[Chinese]RE[W+R]PB[xris (1733)]PW[ZappanViikset (2112)];B[gd];W[ec];B[fe];W[de];B[cg];W[dg];B[cf];W[df];B[bd];W[cd];B[bc];W[gg];B[fc];W[ch];B[bh];W[dh];B[ce];W[ed];B[gf];W[hg];B[eb];W[db];B[fb];W[he];B[hf];W[if];B[hd];W[id];B[fg];W[fh];B[ic];W[ie];B[ig];W[ih];B[ge];W[ig];B[gh];W[eg];B[ef];W[hc];B[hb];W[ib];B[cc];W[dc];B[dd];W[ee];B[ff];W[gc];B[fd];W[gb])"
+    });
+    */
+    const GAME_ID = "xzj9vnsf503n";  // 棋局 ID
+    const USER_ID = "xris";          // 玩家 ID
+    let TOKEN = "";
+    
+    let socket = null;
+
+    async function connectWebSocket() {
+      // 棋局清單：5:::{"name":"c794948e","args":[{"gtype":"go9","page":"0"}]}
+      
+      // 1️⃣ 取得 SESSION_ID
+      let response = await fetch(`http://questgames.net:3002/socket.io/1/?t=${Date.now()}`);
+      let text = await response.text();
+      let SESSION_ID = text.split(":")[0];
+
+      // 2️⃣ 建立 WebSocket 連線
+      const socket = new WebSocket(`ws://questgames.net:3002/socket.io/1/websocket/${SESSION_ID}`);
+      
+      socket.onopen = function () {// console.log("✅ WebSocket 連線成功");
+         // 3️⃣ 啟動 Ping-Pong 心跳機制
+         setInterval(() => {
+          if (socket.readyState === WebSocket.OPEN) {
+            console.log("🔄 發送 Ping (2::)");
+            socket.send("2::"); // 發送 Ping
+          }
+        }, 25000); // Socket.IO 1.x 預設 25 秒 Ping
+
+        // 4️⃣ 正式完成連線，取得伺服器資訊
+        socket.send(`5:::{"name":"efa2bd1b","args":[{"env":"WEB","handicapV":"1","gtype":"go9"}]}`);
+      };
+
+      let lastServerStatus;
+      let info;
+      socket.onmessage = function (event) {
+        let data = event.data;
+
+        // 5️⃣ 伺服器發送 Ping (2::)，回應 Pong (3::)
+        if (data === "2::") {
+          console.log("📡 伺服器 Ping 來了，回應 Pong (3::)");
+          socket.send("3::");
+          return;
+        }
+
+        // 6️⃣ 處理棋局回應
+        if (data.startsWith('5:::')) {
+          try {
+            let jsonData = JSON.parse(data.slice(4)); // 跳過 "5:::"
+            if (jsonData.name === "ba276087") {
+              console.log("📩 棋局數據接收成功", jsonData.args[0]);
+
+              // 解析 `moves` 並轉換為 SGF 格式
+              let sgf = convertToSGF(jsonData.args[0]);
+              console.log("🎯 轉換後的 SGF:", sgf);
+
+              // 顯示棋盤
+              loadSGF(sgf);
+            }
+            else if (jsonData.name === "f19683a8") {// console.log("📩 伺服器資訊接收成功", jsonData.args[0]);
+              if (!info) {
+                socket.send(`5:::{"name":"d4b6e7ef","args":[{"id":"xris","gtype":"go9","token":"77n146dk"}]}`);
+              }
+              lastServerStatus = jsonData.args[0];
+            }
+            else if (jsonData.name === "d4b6e7ef") {// console.log("📩 帳號接收成功", jsonData.args[0]);
+              info = jsonData.args[0];
+              TOKEN = info.token;
+              // 7️⃣ 發送請求載入歷史棋局
+              socket.send(`5:::{"name":"c794948e","args":[{"gtype":"go9","page":"0"}]}`);
+            }
+            else if (jsonData.name === "c794948e") { console.log("📩 正在進行的棋局資訊接收成功"); console.table(jsonData.args[0].games);
+              socket.send(`5:::{"name":"ba276087","args":[{"id":"xzj9vnsf503n","user_id":"xris","token":"77n146dk"}]}`);
+            }
+            else {
+              console.log("📩 未知的伺服器回應:", jsonData);
+            }
+          } catch (error) {
+            console.error("❌ 解析 WebSocket 訊息時發生錯誤:", error);
+          }
+        }
+      };
+
+      socket.addEventListener("error", (err) => {
+        console.error("❌ 連線錯誤", err);
+      });
+
+      socket.addEventListener("close", () => {
+        console.log("🔴 WebSocket 連線關閉，嘗試重新連線...");
+      });
+    }
+
+    function convertToSGF(gameData) {
+      let sgf = `(;SZ[${gameData.position.size}];PB[${gameData.players[0].name}]PW[${gameData.players[1].name}]`;
+      gameData.position.moves.forEach(move => {
+          sgf += `;${move.m}`;
+      });
+      sgf += ")";
+      return sgf;
+    }
+
+    function loadSGF(sgf) {
+      var elem = document.getElementById("board");
+      new WGo.BasicPlayer(elem, {
+        board: {
+          size: 9,
+          background: "https://wgo.waltheri.net/wgo/wood_1024.jpg"
+        },
+        layout: {
+            bottom: ['Control'],
+        },
+        sgf: sgf
+      });
+    }
+    connectWebSocket();
+    </script>
+</Layout>

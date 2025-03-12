@@ -22,7 +22,7 @@ const structuredData = {
 }
 ---
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -67,14 +67,50 @@ const structuredData = {
 		<!-- axios -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.8/axios.min.js" referrerpolicy="no-referrer"></script>
 
+		<style>
+			body {
+				letter-spacing: 0.03em;
+				background-color: #fff;
+				line-height: 1.231;
+				color: #444;
+				font-family: font-face-apple-system,BlinkMacSystemFont,Hiragino Sans,Hiragino Kaku Gothic ProN,Helvetica Neue,Helvetica,sans-serif;
+				font-size: 13px;
+				word-break: break-all;
+				-webkit-box-flex: 1;
+				flex: 1 0 auto;
+				box-sizing: border-box;
+				-webkit-box-align: center;
+				align-items: center;
+				margin: 10px auto;
+				width: 100%;
+				max-width: 95%;
+			}
+		</style>
 	</head>
 	<body>
-		<sl-breadcrumb>
-			<sl-breadcrumb-item>
-				<sl-icon slot="prefix" name="house"></sl-icon>
-				<h1>好棋寶寶改版中...</h1>
-			</sl-breadcrumb-item>
-		</sl-breadcrumb>
-		<slot />
+		<div id="app" class="grid grid-cols-[200px_1fr]">
+			<div class="w-[200px] h-screen bg-gray-100 p-4">
+				<sl-menu class="w-full">
+					<!--sl-menu-label>最新消息</sl-menu-label>
+					<sl-menu-item>九路對局播放</sl-menu-item>
+					<sl-divider></sl-divider-->
+					<sl-menu-label>會員介紹</sl-menu-label>
+					<sl-menu-item>(資料整理中...)</sl-menu-item>
+					<!--sl-menu-item>尚偉</sl-menu-item>
+					<sl-menu-item>郁萱</sl-menu-item>
+					<sl-menu-item>郭尚諺</sl-menu-item>
+					<sl-menu-item>周思傑律師</sl-menu-item>
+					<sl-menu-item>周敬彥經理</sl-menu-item>
+					<sl-menu-item>天健</sl-menu-item>
+					<sl-menu-item>博陽</sl-menu-item>
+					<sl-divider></sl-divider-->
+					<sl-menu-label>過去式</sl-menu-label>
+					<sl-menu-item>WordPress時期</sl-menu-item>
+				</sl-menu>
+			</div>
+			<div class="p-4">
+				<slot />
+			</div>
+		</div>
 	</body>
 </html>

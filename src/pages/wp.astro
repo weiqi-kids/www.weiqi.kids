@@ -1,0 +1,38 @@
+---
+import "tailwindcss/tailwind.css";
+import "../styles/global.css";
+import Layout from "../layouts/Layout.astro";
+export const metadata = {
+  title: "台灣好棋寶寶協會｜圍棋協會推薦｜兒童圍棋與親子圍棋的文化與生活美學",
+  description: "台灣好棋寶寶協會｜圍棋協會推薦｜兒童圍棋與親子圍棋的文化與生活美學",
+  keywords: "圍棋",
+  url: "https://www.weiqi.kids/",
+  image: "favicon.png",
+  datePublished: "2024-12-26",
+};
+---
+<Layout metadata={metadata}>
+  <sl-breadcrumb>
+    <sl-breadcrumb-item>
+      <sl-icon slot="prefix" name="house"></sl-icon>
+      <h1>好棋寶寶</h1>
+    </sl-breadcrumb-item>
+    <sl-breadcrumb-item>
+      <sl-icon slot="prefix" name="emoji-sunglasses"></sl-icon>
+      <h2>WordPress時期</h2>
+    </sl-breadcrumb-item>	
+  </sl-breadcrumb>
+  <sl-card class="card-overview">
+    <img
+      slot="image"
+      src="./wordpress/screenshot.png"
+      alt="舊版 WordPress 網站截圖"
+    />
+    <strong>震驚</strong><br />
+    WordPress 網站突然無預警被取消綁定了。<br />
+    <small><sl-relative-time date="2024-12-26T00:30:00"></sl-relative-time></small>
+    <div slot="footer">
+      <sl-button variant="primary" pill href="https://weiqikids.wpcomstaging.com/" target="_blank">看舊版網站</sl-button>
+    </div>
+  </sl-card>
+</Layout>
