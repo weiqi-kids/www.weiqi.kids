@@ -24,7 +24,7 @@ export const metadata = {
   <div id="board" style="height: 90%;"/>
   <script type="text/javascript">
 
-    const GAME_ID_ASK = new URLSearchParams(window.location.search).get("id"); console.log("🎯 棋局 ID:", GAME_ID_ASK);
+    const GAME_ID_ASK = new URLSearchParams(window.location.search).get("id");  // console.log("🎯 棋局 ID:", GAME_ID_ASK);
     let GAME_ID;  
     let socket;
     const board = document.getElementById("board");
@@ -35,7 +35,8 @@ export const metadata = {
       },
       layout: {
           bottom: ['Control'],
-      }
+      },
+      sgf: "(;SZ[9])"
     });
     async function connectWebSocket() {
       const response = await fetch(`http://questgames.net:3002/socket.io/1/?t=${Date.now()}`);
@@ -127,6 +128,6 @@ export const metadata = {
       player.last();
     }
     
-    connectWebSocket();
+    // connectWebSocket();
     </script>
 </Layout>
