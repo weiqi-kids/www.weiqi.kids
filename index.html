@@ -11,7 +11,7 @@
 					<sl-menu-item>博陽</sl-menu-item>
 					<sl-divider></sl-divider--> <sl-menu-label data-astro-cid-sckkx6r4="true">過去式</sl-menu-label> <sl-menu-item data-astro-cid-sckkx6r4="true">WordPress時期</sl-menu-item> </sl-menu> </div> <div class="p-4" data-astro-cid-sckkx6r4> <sl-breadcrumb><sl-breadcrumb-item><sl-icon slot="prefix" name="house"></sl-icon><h1>好棋寶寶</h1></sl-breadcrumb-item></sl-breadcrumb><div id="board" style="height: 90%;"></div><script type="text/javascript">
 
-    const GAME_ID_ASK = new URLSearchParams(window.location.search).get("id"); console.log("🎯 棋局 ID:", GAME_ID_ASK);
+    const GAME_ID_ASK = new URLSearchParams(window.location.search).get("id");  // console.log("🎯 棋局 ID:", GAME_ID_ASK);
     let GAME_ID;  
     let socket;
     const board = document.getElementById("board");
@@ -22,7 +22,8 @@
       },
       layout: {
           bottom: ['Control'],
-      }
+      },
+      sgf: "(;SZ[9])"
     });
     async function connectWebSocket() {
       const response = await fetch(`http://questgames.net:3002/socket.io/1/?t=${Date.now()}`);
@@ -114,5 +115,5 @@
       player.last();
     }
     
-    connectWebSocket();
+    // connectWebSocket();
     </script> </div> </div> </body></html>
