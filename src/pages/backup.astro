@@ -1,0 +1,133 @@
+---
+import "tailwindcss/tailwind.css";
+import "../styles/global.css";
+import Layout from "../layouts/Layout.astro";
+export const metadata = {
+  title: "台灣好棋寶寶協會｜圍棋協會推薦｜兒童圍棋與親子圍棋的文化與生活美學",
+  description: "台灣好棋寶寶協會｜圍棋協會推薦｜兒童圍棋與親子圍棋的文化與生活美學",
+  keywords: "圍棋",
+  url: "https://www.weiqi.kids/",
+  image: "favicon.png",
+  datePublished: "2024-12-26",
+};
+---
+<script type="text/javascript" src="wgo/wgo.min.js"></script>
+<script type="text/javascript" src="wgo/wgo.player.min.js"></script>
+<link type="text/css" href="wgo/wgo.player.css" rel="stylesheet" />
+<Layout metadata={metadata}>
+  <sl-breadcrumb>
+    <sl-breadcrumb-item>
+      <sl-icon slot="prefix" name="house"></sl-icon>
+      <h1>好棋寶寶</h1>
+    </sl-breadcrumb-item>
+  </sl-breadcrumb>
+  <div id="board" style="height: 90%;"/>
+  <script type="text/javascript">
+
+    const GAME_ID_ASK = new URLSearchParams(window.location.search).get("id");  // console.log("🎯 棋局 ID:", GAME_ID_ASK);
+    let GAME_ID;  
+    let socket;
+    const board = document.getElementById("board");
+    const player = new WGo.BasicPlayer(board, {
+      board: {
+        size: 9,
+        background: "wgo/wood_1024.jpg"
+      },
+      layout: {
+          bottom: ['Control'],
+      },
+      sgf: "(;SZ[9])"
+    });
+    async function connectWebSocket() {
+      const response = await fetch(`http://questgames.net:3002/socket.io/1/?t=${Date.now()}`);
+      const text = await response.text();
+      const SESSION_ID = text.split(":")[0];
+      socket = new WebSocket(`ws://questgames.net:3002/socket.io/1/websocket/${SESSION_ID}`);
+      socket.onopen = function () {// console.log("✅ WebSocket 連線成功");
+         setInterval(() => {
+          if (socket.readyState === WebSocket.OPEN) { socket.send("2::");}
+        }, 25000);
+
+        // 正式完成連線，取得伺服器資訊
+        socket.send(`5:::{"name":"efa2bd1b","args":[{"env":"WEB","handicapV":"1","gtype":"go9"}]}`);
+      };
+
+      socket.onmessage = function (event) {
+        if (event.data === "2::") { socket.send("3::"); return; }
+        if (!event.data.startsWith('5:::')) { return ; }
+
+        const jsonData = JSON.parse(event.data.slice(4));
+        if (jsonData.name === "f19683a8") {
+          // 伺服器發送 f19683a8 指令
+          // {connected: 1394, games: 283, solving: 4, run: 0, down: {}}
+
+          // 已有成功的棋譜資料時，則不需要重新發送取得棋譜資料指令。
+          if (GAME_ID) { return; }
+          console.log("📩 伺服器資訊接收成功", jsonData.args[0])
+
+          // 有指定棋局，則載入指定棋局；無則從正在對局的清單中找棋局輪播。
+          if (GAME_ID_ASK) {
+            socket.send(`5:::{"name":"ba276087","args":[{"id":"${GAME_ID_ASK}"}]}`);
+          }
+          else {
+            socket.send(`5:::{"name":"c794948e","args":[{"gtype":"go9","page":"0"}]}`);
+          }
+        }
+        else if (jsonData.name === "c794948e") {
+          // 已有成功的棋譜資料時，則不需要重新發送取得棋譜資料指令。
+          if (GAME_ID) { return; }
+          console.log("📩 取得正在進行的棋局列表"); // console.table(jsonData.args[0].games);
+
+          GAME_ID = jsonData.args[0].games[0].id;
+          socket.send(`5:::{"name":"ba276087","args":[{"id":"${GAME_ID}"}]}`);
+        }
+        else if (jsonData.name === "ba276087") { console.log("📩 成功載入 GAME_ID 棋局", jsonData.args[0]);
+          // {id: "rsxz8hmxa20f", gtype: "go9", started: "2025-03-12T10:21:01.684Z",…}
+
+          GAME_ID = jsonData.args[0].id;
+          loadSGF(jsonData.args[0]);
+          
+          console.log("📩 是否已經結束對局", !GAME_ID_ASK, jsonData.args[0].finished);
+          if (!GAME_ID_ASK && jsonData.args[0].finished) {
+            setTimeout(() => {
+              socket.send(`5:::{"name":"c794948e","args":[{"gtype":"go9","page":"0"}]}`);
+            }, 5000);
+          }
+        }
+        else if (jsonData.name === "8d7a2124") { console.log("📩 成功接收正在進行的對局資料", jsonData.args[0]);
+          loadSGF(jsonData.args[0]);
+        }
+        else if (jsonData.name === "1f566a1a") { console.log("📩 收到對局結束指令", jsonData.args[0]);
+          GAME_ID = null;
+          socket.send(`5:::{"name":"c794948e","args":[{"gtype":"go9","page":"0"}]}`);
+        }
+        else if (jsonData.name === "d40a7297") { // console.log("📩 收到指令", jsonData.args[0]);
+        }
+        else {
+          console.log("📩 未知的伺服器回應:", jsonData);
+        }
+      };
+
+      // 異常時，如果是沒有指定棋局 ID，則重新連線。
+      const reconnect = () => { if (!GAME_ID) { connectWebSocket(); } }
+      socket.addEventListener("error", reconnect);
+      socket.addEventListener("close", reconnect);
+    }
+
+    function convertToSGF(gameData) {
+      let sgf = `(;SZ[${gameData.position.size}];PB[${gameData.players[0].name}]PW[${gameData.players[1].name}]`;
+      gameData.position.moves.forEach(move => {
+          sgf += `;${move.m}`;
+      });
+      sgf += ")";
+      return sgf;
+    }
+
+    function loadSGF(data) {
+      player.loadSgf(convertToSGF(data));
+      player.last();
+    }
+    
+    // connectWebSocket();
+    </script>
+</Layout>
