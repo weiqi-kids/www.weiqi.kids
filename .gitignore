@@ -1,0 +1,31 @@
+# 👉 Node.js 相依套件
+/node_modules
+pnpm-debug.log
+
+
+# 👉 Docusaurus build 輸出
+## Production
+/build
+## Generated files
+.docusaurus
+.cache-loader
+
+# 👉 本地開發用環境變數
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env
+
+# 👉 macOS 或其他系統隱藏檔
+.DS_Store
+
+# 👉 IDE & 編譯暫存
+.vscode/
+*.tsbuildinfo
+.history/
+
+# 👉 偵錯用 log 檔
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
