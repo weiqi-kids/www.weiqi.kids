@@ -108,6 +108,10 @@ const config = {
           { to: '/docs/evolution', label: '圍棋 AI 演進整理', position: 'left' },
           { to: '/docs/aboutus', label: '協會介紹', position: 'right' },
           {
+            type: 'localeDropdown',
+            position: 'right',
+          },
+          {
             href: 'https://github.com/weiqi-kids/www.weiqi.kids',
             label: 'GitHub',
             position: 'right',
