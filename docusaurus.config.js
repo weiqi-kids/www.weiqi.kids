@@ -22,6 +22,7 @@ const config = {
   // Set the production url of your site here
   url: 'https://www.weiqi.kids',
   baseUrl: '/',
+  trailingSlash: true,
 
   // GitHub pages deployment config.
   organizationName: 'weiqi.kids', // Usually your GitHub org/user name.
