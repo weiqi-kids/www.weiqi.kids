@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- 十字架 -->
+  <rect x="90" y="30" width="20" height="140" fill="#8B4513"/>
+  <rect x="55" y="60" width="90" height="20" fill="#8B4513"/>
+  <!-- 銅蛇纏繞 -->
+  <path d="M100 170 Q85 150 90 130 Q95 110 85 95 Q75 80 90 70 Q100 63 110 70 Q125 80 115 95 Q105 110 110 130 Q115 150 100 170"
+        fill="none" stroke="#CD853F" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="100" cy="55" r="8" fill="#CD853F"/>
+  <circle cx="96" cy="52" r="2" fill="#1a1a1a"/>
+  <circle cx="104" cy="52" r="2" fill="#1a1a1a"/>
+  <path d="M95 58 Q100 62 105 58" fill="none" stroke="#8B4513" stroke-width="1.5"/>
+  <!-- 光芒 -->
+  <line x1="100" y1="20" x2="100" y2="10" stroke="#FFD700" stroke-width="2"/>
+  <line x1="130" y1="50" x2="140" y2="40" stroke="#FFD700" stroke-width="2"/>
+  <line x1="70" y1="50" x2="60" y2="40" stroke="#FFD700" stroke-width="2"/>
+</svg>
