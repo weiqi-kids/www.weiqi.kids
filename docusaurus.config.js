@@ -135,41 +135,7 @@ const config = {
       },
       footer: {
         style: 'dark',
-        links: [
-          {
-            title: '關於協會',
-            items: [
-              {
-                label: '快速了解',
-                to: '/docs/intro',
-              },
-            ],
-          },
-          {
-            title: '圍棋資源',
-            items: [
-            ],
-          },
-          {
-            title: '友商介紹',
-            items: [
-              {
-                label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
-              },
-            ],
-          },
-          {
-            title: '特別感謝',
-            items: [
-              {
-                label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
-              },
-            ],
-          }
-        ],
-        copyright: `Copyright © ${new Date().getFullYear()} Weiqi.Kids. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} 台灣好棋寶寶協會. Built with Docusaurus.`,
       },
       prism: {
         theme: prismThemes.github,
