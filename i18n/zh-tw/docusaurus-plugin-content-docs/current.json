@@ -1,0 +1,34 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.evolution": {
+    "message": "evolution",
+    "description": "The label for category evolution in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.index": {
+    "message": "index",
+    "description": "The label for category index in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.for-engineers": {
+    "message": "for-engineers",
+    "description": "The label for category for-engineers in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.for-players": {
+    "message": "for-players",
+    "description": "The label for category for-players in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.圍棋 AI 演進整理": {
+    "message": "圍棋 AI 演進整理",
+    "description": "The label for category 圍棋 AI 演進整理 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.AI 工程師": {
+    "message": "AI 工程師",
+    "description": "The label for category AI 工程師 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.給圍棋棋友": {
+    "message": "給圍棋棋友",
+    "description": "The label for category 給圍棋棋友 in sidebar tutorialSidebar"
+  }
+}

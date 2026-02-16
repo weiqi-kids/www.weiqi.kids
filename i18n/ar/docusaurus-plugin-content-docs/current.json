@@ -1,0 +1,22 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.evolution": {
+    "message": "evolution",
+    "description": "The label for category evolution in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.index": {
+    "message": "index",
+    "description": "The label for category index in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.for-engineers": {
+    "message": "for-engineers",
+    "description": "The label for category for-engineers in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.for-players": {
+    "message": "for-players",
+    "description": "The label for category for-players in sidebar tutorialSidebar"
+  }
+}

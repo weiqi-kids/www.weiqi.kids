@@ -22,6 +22,7 @@ const config = {
   // Set the production url of your site here
   url: 'https://www.weiqi.kids',
   baseUrl: '/',
+  trailingSlash: true,
 
   // GitHub pages deployment config.
   organizationName: 'weiqi.kids', // Usually your GitHub org/user name.
@@ -34,6 +35,20 @@ const config = {
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
   i18n: {
+    defaultLocale: 'zh-tw',
+    locales: [
+      'zh-tw',
+      'zh-cn',
+      'zh-hk',
+      'en',
+      'ja',
+      'ko',
+      'es',
+      'pt',
+      'hi',
+      'id',
+      'ar',
+    ],
     localeConfigs: {
       "zh-tw": {
         label: '繁體中文',
@@ -108,6 +123,10 @@ const config = {
           { to: '/docs/evolution', label: '圍棋 AI 演進整理', position: 'left' },
           { to: '/docs/aboutus', label: '協會介紹', position: 'right' },
           {
+            type: 'localeDropdown',
+            position: 'right',
+          },
+          {
             href: 'https://github.com/weiqi-kids/www.weiqi.kids',
             label: 'GitHub',
             position: 'right',
@@ -135,10 +154,6 @@ const config = {
             title: '友商介紹',
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
-              },
-              {
                 label: 'GitHub',
                 href: 'https://github.com/facebook/docusaurus',
               },
@@ -162,9 +177,5 @@ const config = {
       },
     }),
 };
-// @ts-ignore
-config.i18n.locales = Object.keys(config.i18n.localeConfigs);
-// @ts-ignore
-config.i18n.defaultLocale = config.i18n.locales[0];
 
 export default config;
