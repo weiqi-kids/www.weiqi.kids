@@ -4,23 +4,23 @@
     "description": "The title in the navbar"
   },
   "logo.alt": {
-    "message": "My Site Logo",
+    "message": "好棋ベビー協会 Logo",
     "description": "The alt text of navbar logo"
   },
   "item.label.圍棋棋友": {
-    "message": "圍棋棋友",
+    "message": "囲碁プレイヤー向け",
     "description": "Navbar item with label 圍棋棋友"
   },
   "item.label.AI工程師": {
-    "message": "AI工程師",
+    "message": "AIエンジニア向け",
     "description": "Navbar item with label AI工程師"
   },
   "item.label.圍棋 AI 演進整理": {
-    "message": "圍棋 AI 演進整理",
+    "message": "囲碁AI進化史",
     "description": "Navbar item with label 圍棋 AI 演進整理"
   },
   "item.label.協會介紹": {
-    "message": "協會介紹",
+    "message": "協会について",
     "description": "Navbar item with label 協會介紹"
   },
   "item.label.GitHub": {

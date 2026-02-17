@@ -4,15 +4,15 @@
     "description": "The title in the navbar"
   },
   "logo.alt": {
-    "message": "My Site Logo",
+    "message": "好棋寶寶協會 Logo",
     "description": "The alt text of navbar logo"
   },
   "item.label.圍棋棋友": {
-    "message": "圍棋棋友",
+    "message": "俾圍棋棋友",
     "description": "Navbar item with label 圍棋棋友"
   },
   "item.label.AI工程師": {
-    "message": "AI工程師",
+    "message": "俾AI工程師",
     "description": "Navbar item with label AI工程師"
   },
   "item.label.圍棋 AI 演進整理": {

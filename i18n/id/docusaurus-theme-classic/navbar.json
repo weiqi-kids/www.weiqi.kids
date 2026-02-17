@@ -4,23 +4,23 @@
     "description": "The title in the navbar"
   },
   "logo.alt": {
-    "message": "My Site Logo",
+    "message": "Logo Asosiasi Good Go Baby",
     "description": "The alt text of navbar logo"
   },
   "item.label.圍棋棋友": {
-    "message": "圍棋棋友",
+    "message": "Untuk Pemain Go",
     "description": "Navbar item with label 圍棋棋友"
   },
   "item.label.AI工程師": {
-    "message": "AI工程師",
+    "message": "Untuk Insinyur AI",
     "description": "Navbar item with label AI工程師"
   },
   "item.label.圍棋 AI 演進整理": {
-    "message": "圍棋 AI 演進整理",
+    "message": "Evolusi AI Go",
     "description": "Navbar item with label 圍棋 AI 演進整理"
   },
   "item.label.協會介紹": {
-    "message": "協會介紹",
+    "message": "Tentang Kami",
     "description": "Navbar item with label 協會介紹"
   },
   "item.label.GitHub": {
