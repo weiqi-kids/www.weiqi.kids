@@ -326,10 +326,10 @@
     "message": "1分鐘快速了解 ⏱️"
   },
   "homepage.meta.title": {
-    "message": "Hello from {title}"
+    "message": "首頁"
   },
   "homepage.meta.description": {
-    "message": "Description will go into a meta tag in <head />"
+    "message": "台灣好棋寶寶協會官網 - 提供圍棋教學、AI 研究資源，推動圍棋文化發展"
   },
   "homepage.tagline": {
     "message": "台灣好棋寶寶協會｜致力於圍棋文化前進的推手",

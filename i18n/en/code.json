@@ -7,10 +7,10 @@
     "message": "Quick start in 1 minute ⏱️"
   },
   "homepage.meta.title": {
-    "message": "Hello from {title}"
+    "message": "Home"
   },
   "homepage.meta.description": {
-    "message": "Description will go into a meta tag in <head />"
+    "message": "Taiwan Good Go Baby Association - Providing Go education and AI research resources, promoting Go culture development"
   },
   "theme.ErrorPageContent.title": {
     "message": "This page crashed.",
@@ -334,5 +334,149 @@
   "theme.tags.tagsPageTitle": {
     "message": "Tags",
     "description": "The title of the tag list page"
+  },
+  "homepage.links.official.section.title": {
+    "message": "Official"
+  },
+  "homepage.links.official.section.desc": {
+    "message": "Official platforms of Good Go Baby Association, providing service status monitoring, community interaction, and video content."
+  },
+  "homepage.links.ai.section.title": {
+    "message": "AI Research"
+  },
+  "homepage.links.ai.section.desc": {
+    "message": "Leveraging AI technology for in-depth analysis across various fields, providing real-time insights and decision support."
+  },
+  "homepage.links.appi.section.title": {
+    "message": "Partner - Asia Pacific Pharma Insight"
+  },
+  "homepage.links.appi.section.desc": {
+    "message": "Professional media partner in the Asia-Pacific healthcare sector."
+  },
+  "homepage.links.tlsr.section.title": {
+    "message": "Partner - The Lancet Snake Report"
+  },
+  "homepage.links.tlsr.section.desc": {
+    "message": "Collaborative media focused on healthcare information."
+  },
+  "homepage.links.official.status.title": {
+    "message": "Status Page"
+  },
+  "homepage.links.official.status.desc": {
+    "message": "Real-time monitoring of all Good Go Baby services to ensure quality and stability."
+  },
+  "homepage.links.official.social.title": {
+    "message": "Social"
+  },
+  "homepage.links.official.social.desc": {
+    "message": "Join the Good Go Baby Mastodon community to interact with Go enthusiasts."
+  },
+  "homepage.links.official.video.title": {
+    "message": "Video"
+  },
+  "homepage.links.official.video.desc": {
+    "message": "Watch Good Go Baby PeerTube channel to learn Go knowledge and techniques."
+  },
+  "homepage.links.ai.ecommerce.title": {
+    "message": "E-commerce Product Research"
+  },
+  "homepage.links.ai.ecommerce.desc": {
+    "message": "Must-read before buying! AI-powered in-depth e-commerce product research and analysis."
+  },
+  "homepage.links.ai.security.title": {
+    "message": "Cybersecurity Threat Intelligence Center"
+  },
+  "homepage.links.ai.security.desc": {
+    "message": "Stay updated on global cybersecurity threats to protect your digital assets."
+  },
+  "homepage.links.ai.health.title": {
+    "message": "EpiAlert Epidemic Updates"
+  },
+  "homepage.links.ai.health.desc": {
+    "message": "Global epidemic real-time monitoring and early warning for public health safety."
+  },
+  "homepage.links.ai.supplement.title": {
+    "message": "Health Supplement Intelligence"
+  },
+  "homepage.links.ai.supplement.desc": {
+    "message": "In-depth analysis of health supplements with scientific product evaluations."
+  },
+  "homepage.links.ai.law.title": {
+    "message": "Global Framework Regulatory Changes"
+  },
+  "homepage.links.ai.law.desc": {
+    "message": "Track the latest changes in global frameworks, regulations, and industry rules."
+  },
+  "homepage.links.ai.trade.title": {
+    "message": "Global Trade Intelligence Analysis"
+  },
+  "homepage.links.ai.trade.desc": {
+    "message": "In-depth analysis of global trade dynamics to understand international market trends."
+  },
+  "homepage.links.ai.job.title": {
+    "message": "Job Skills Demand Observatory"
+  },
+  "homepage.links.ai.job.desc": {
+    "message": "Monitor job market skill demand changes to plan your career development."
+  },
+  "homepage.links.ai.education.title": {
+    "message": "Student Learning Map"
+  },
+  "homepage.links.ai.education.desc": {
+    "message": "Plan the most suitable learning path for students to improve learning efficiency."
+  },
+  "homepage.links.ai.policy.title": {
+    "message": "Policy Promise Tracker"
+  },
+  "homepage.links.ai.policy.desc": {
+    "message": "Track government and politicians' policy promises to promote political transparency and accountability."
+  },
+  "homepage.links.appi.news.title": {
+    "message": "Asia Pacific Pharma Insight Website"
+  },
+  "homepage.links.appi.news.desc": {
+    "message": "Professional media platform for healthcare news in the Asia-Pacific region."
+  },
+  "homepage.links.appi.social.title": {
+    "message": "Asia Pacific Pharma Insight Social"
+  },
+  "homepage.links.appi.social.desc": {
+    "message": "Join Asia Pacific Pharma Insight Mastodon community to discuss healthcare topics."
+  },
+  "homepage.links.appi.video.title": {
+    "message": "Asia Pacific Pharma Insight Video"
+  },
+  "homepage.links.appi.video.desc": {
+    "message": "Watch Asia Pacific Pharma Insight video content for healthcare information."
+  },
+  "homepage.links.tlsr.news.title": {
+    "message": "The Lancet Snake Report Website"
+  },
+  "homepage.links.tlsr.news.desc": {
+    "message": "Official website of The Lancet Snake Report, providing professional medical information and reports."
+  },
+  "homepage.links.tlsr.social.title": {
+    "message": "The Lancet Snake Report Social"
+  },
+  "homepage.links.tlsr.social.desc": {
+    "message": "Join The Lancet Snake Report Mastodon community to exchange medical insights."
+  },
+  "homepage.links.tlsr.video.title": {
+    "message": "The Lancet Snake Report Video"
+  },
+  "homepage.links.tlsr.video.desc": {
+    "message": "Watch The Lancet Snake Report video channel to learn healthcare knowledge."
+  },
+  "item.label.圍棋棋友": {
+    "message": "For Go Players"
+  },
+  "item.label.AI工程師": {
+    "message": "For AI Engineers"
+  },
+  "item.label.圍棋 AI 演進整理": {
+    "message": "Go AI Evolution"
+  },
+  "item.label.協會介紹": {
+    "message": "About Us"
   }
 }

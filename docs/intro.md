@@ -1,6 +1,7 @@
 ---
 sidebar_position: 0
 title: 使用指南
+slug: /intro
 ---
 
 # 如何使用 Weiqi.Kids 網站

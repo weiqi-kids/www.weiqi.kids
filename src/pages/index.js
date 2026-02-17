@@ -38,8 +38,8 @@ export default function Home() {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={translate({id: 'homepage.meta.title', message: 'Hello from {title}'}, {title: siteConfig.title})}
-      description={translate({id: 'homepage.meta.description', message: 'Description will go into a meta tag in <head />'})}>
+      title={translate({id: 'homepage.meta.title', message: '首頁'})}
+      description={translate({id: 'homepage.meta.description', message: '台灣好棋寶寶協會官網 - 提供圍棋教學、AI 研究資源，推動圍棋文化發展'})}>
       <HomepageHeader />
       <main>
         <HomepageFeatures />

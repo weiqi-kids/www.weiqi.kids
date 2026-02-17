@@ -7,10 +7,10 @@
     "message": "1 मिनट में त्वरित शुरुआत ⏱️"
   },
   "homepage.meta.title": {
-    "message": "Hello from {title}"
+    "message": "होम"
   },
   "homepage.meta.description": {
-    "message": "Description will go into a meta tag in <head />"
+    "message": "ताइवान गुड गो बेबी एसोसिएशन की आधिकारिक वेबसाइट - गो शिक्षा और AI अनुसंधान संसाधन प्रदान करना, गो संस्कृति के विकास को बढ़ावा देना"
   },
   "theme.ErrorPageContent.title": {
     "message": "This page crashed.",
@@ -334,5 +334,149 @@
   "theme.tags.tagsPageTitle": {
     "message": "टैग",
     "description": "The title of the tag list page"
+  },
+  "homepage.links.official.section.title": {
+    "message": "आधिकारिक"
+  },
+  "homepage.links.official.section.desc": {
+    "message": "गुड गो बेबी एसोसिएशन का आधिकारिक प्लेटफॉर्म, सेवा स्थिति निगरानी, समुदाय संवाद और वीडियो सामग्री प्रदान करता है।"
+  },
+  "homepage.links.ai.section.title": {
+    "message": "AI अनुसंधान"
+  },
+  "homepage.links.ai.section.desc": {
+    "message": "AI तकनीक का उपयोग करके विभिन्न क्षेत्रों में गहन विश्लेषण, रीयल-टाइम अंतर्दृष्टि और निर्णय समर्थन प्रदान करता है।"
+  },
+  "homepage.links.appi.section.title": {
+    "message": "पार्टनर - एशिया पैसिफिक फार्मा इनसाइट"
+  },
+  "homepage.links.appi.section.desc": {
+    "message": "एशिया-प्रशांत स्वास्थ्य सेवा क्षेत्र में पेशेवर मीडिया पार्टनर।"
+  },
+  "homepage.links.tlsr.section.title": {
+    "message": "पार्टनर - द लांसेट स्नेक रिपोर्ट"
+  },
+  "homepage.links.tlsr.section.desc": {
+    "message": "स्वास्थ्य सेवा जानकारी पर केंद्रित सहयोगी मीडिया।"
+  },
+  "homepage.links.official.status.title": {
+    "message": "स्टेटस पेज"
+  },
+  "homepage.links.official.status.desc": {
+    "message": "गुणवत्ता और स्थिरता सुनिश्चित करने के लिए सभी गुड गो बेबी सेवाओं की रीयल-टाइम निगरानी।"
+  },
+  "homepage.links.official.social.title": {
+    "message": "सोशल"
+  },
+  "homepage.links.official.social.desc": {
+    "message": "गो के शौकीनों के साथ बातचीत करने के लिए गुड गो बेबी Mastodon समुदाय से जुड़ें।"
+  },
+  "homepage.links.official.video.title": {
+    "message": "वीडियो"
+  },
+  "homepage.links.official.video.desc": {
+    "message": "गो ज्ञान और तकनीक सीखने के लिए गुड गो बेबी PeerTube चैनल देखें।"
+  },
+  "homepage.links.ai.ecommerce.title": {
+    "message": "ई-कॉमर्स उत्पाद अनुसंधान"
+  },
+  "homepage.links.ai.ecommerce.desc": {
+    "message": "खरीदने से पहले जरूर पढ़ें! AI-संचालित ई-कॉमर्स उत्पाद गहन अनुसंधान और विश्लेषण।"
+  },
+  "homepage.links.ai.security.title": {
+    "message": "साइबर सुरक्षा खतरा खुफिया केंद्र"
+  },
+  "homepage.links.ai.security.desc": {
+    "message": "अपनी डिजिटल संपत्ति की सुरक्षा के लिए वैश्विक साइबर सुरक्षा खतरों पर अपडेट रहें।"
+  },
+  "homepage.links.ai.health.title": {
+    "message": "EpiAlert महामारी अपडेट"
+  },
+  "homepage.links.ai.health.desc": {
+    "message": "सार्वजनिक स्वास्थ्य सुरक्षा के लिए वैश्विक महामारी रीयल-टाइम निगरानी और प्रारंभिक चेतावनी।"
+  },
+  "homepage.links.ai.supplement.title": {
+    "message": "स्वास्थ्य पूरक खुफिया"
+  },
+  "homepage.links.ai.supplement.desc": {
+    "message": "वैज्ञानिक उत्पाद मूल्यांकन के साथ स्वास्थ्य पूरक का गहन विश्लेषण।"
+  },
+  "homepage.links.ai.law.title": {
+    "message": "वैश्विक फ्रेमवर्क नियामक परिवर्तन"
+  },
+  "homepage.links.ai.law.desc": {
+    "message": "वैश्विक फ्रेमवर्क, विनियमों और उद्योग नियमों में नवीनतम परिवर्तनों को ट्रैक करें।"
+  },
+  "homepage.links.ai.trade.title": {
+    "message": "वैश्विक व्यापार खुफिया विश्लेषण"
+  },
+  "homepage.links.ai.trade.desc": {
+    "message": "अंतरराष्ट्रीय बाजार के रुझानों को समझने के लिए वैश्विक व्यापार गतिशीलता का गहन विश्लेषण।"
+  },
+  "homepage.links.ai.job.title": {
+    "message": "नौकरी कौशल मांग वेधशाला"
+  },
+  "homepage.links.ai.job.desc": {
+    "message": "अपने करियर विकास की योजना बनाने के लिए नौकरी बाजार कौशल मांग परिवर्तनों की निगरानी करें।"
+  },
+  "homepage.links.ai.education.title": {
+    "message": "छात्र शिक्षण मानचित्र"
+  },
+  "homepage.links.ai.education.desc": {
+    "message": "सीखने की दक्षता में सुधार के लिए छात्रों के लिए सबसे उपयुक्त शिक्षण पथ की योजना बनाएं।"
+  },
+  "homepage.links.ai.policy.title": {
+    "message": "नीति वादा ट्रैकर"
+  },
+  "homepage.links.ai.policy.desc": {
+    "message": "राजनीतिक पारदर्शिता और जवाबदेही को बढ़ावा देने के लिए सरकार और राजनेताओं के नीति वादों को ट्रैक करें।"
+  },
+  "homepage.links.appi.news.title": {
+    "message": "एशिया पैसिफिक फार्मा इनसाइट वेबसाइट"
+  },
+  "homepage.links.appi.news.desc": {
+    "message": "एशिया-प्रशांत क्षेत्र में स्वास्थ्य समाचारों के लिए पेशेवर मीडिया प्लेटफॉर्म।"
+  },
+  "homepage.links.appi.social.title": {
+    "message": "एशिया पैसिफिक फार्मा इनसाइट सोशल"
+  },
+  "homepage.links.appi.social.desc": {
+    "message": "स्वास्थ्य विषयों पर चर्चा करने के लिए एशिया पैसिफिक फार्मा इनसाइट Mastodon समुदाय से जुड़ें।"
+  },
+  "homepage.links.appi.video.title": {
+    "message": "एशिया पैसिफिक फार्मा इनसाइट वीडियो"
+  },
+  "homepage.links.appi.video.desc": {
+    "message": "स्वास्थ्य जानकारी के लिए एशिया पैसिफिक फार्मा इनसाइट वीडियो सामग्री देखें।"
+  },
+  "homepage.links.tlsr.news.title": {
+    "message": "द लांसेट स्नेक रिपोर्ट वेबसाइट"
+  },
+  "homepage.links.tlsr.news.desc": {
+    "message": "द लांसेट स्नेक रिपोर्ट की आधिकारिक वेबसाइट, पेशेवर चिकित्सा जानकारी और रिपोर्ट प्रदान करती है।"
+  },
+  "homepage.links.tlsr.social.title": {
+    "message": "द लांसेट स्नेक रिपोर्ट सोशल"
+  },
+  "homepage.links.tlsr.social.desc": {
+    "message": "चिकित्सा अंतर्दृष्टि का आदान-प्रदान करने के लिए द लांसेट स्नेक रिपोर्ट Mastodon समुदाय से जुड़ें।"
+  },
+  "homepage.links.tlsr.video.title": {
+    "message": "द लांसेट स्नेक रिपोर्ट वीडियो"
+  },
+  "homepage.links.tlsr.video.desc": {
+    "message": "स्वास्थ्य ज्ञान सीखने के लिए द लांसेट स्नेक रिपोर्ट वीडियो चैनल देखें।"
+  },
+  "item.label.圍棋棋友": {
+    "message": "खिलाड़ियों के लिए"
+  },
+  "item.label.AI工程師": {
+    "message": "इंजीनियरों के लिए"
+  },
+  "item.label.圍棋 AI 演進整理": {
+    "message": "गो AI विकास"
+  },
+  "item.label.協會介紹": {
+    "message": "हमारे बारे में"
   }
 }

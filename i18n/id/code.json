@@ -7,10 +7,10 @@
     "message": "Mulai cepat dalam 1 menit ⏱️"
   },
   "homepage.meta.title": {
-    "message": "Hello from {title}"
+    "message": "Beranda"
   },
   "homepage.meta.description": {
-    "message": "Description will go into a meta tag in <head />"
+    "message": "Situs resmi Asosiasi Taiwan Good Go Baby - Menyediakan sumber daya pendidikan Go dan penelitian AI, mempromosikan perkembangan budaya Go"
   },
   "theme.ErrorPageContent.title": {
     "message": "Terjadi kesalahan.",
@@ -334,5 +334,149 @@
   "theme.tags.tagsPageTitle": {
     "message": "Tag",
     "description": "The title of the tag list page"
+  },
+  "homepage.links.official.section.title": {
+    "message": "Resmi"
+  },
+  "homepage.links.official.section.desc": {
+    "message": "Platform resmi Asosiasi Good Go Baby, menyediakan pemantauan status layanan, interaksi komunitas, dan konten video."
+  },
+  "homepage.links.ai.section.title": {
+    "message": "Riset AI"
+  },
+  "homepage.links.ai.section.desc": {
+    "message": "Memanfaatkan teknologi AI untuk analisis mendalam di berbagai bidang, memberikan wawasan real-time dan dukungan keputusan."
+  },
+  "homepage.links.appi.section.title": {
+    "message": "Mitra - Asia Pacific Pharma Insight"
+  },
+  "homepage.links.appi.section.desc": {
+    "message": "Mitra media profesional di sektor kesehatan Asia-Pasifik."
+  },
+  "homepage.links.tlsr.section.title": {
+    "message": "Mitra - The Lancet Snake Report"
+  },
+  "homepage.links.tlsr.section.desc": {
+    "message": "Media kolaboratif yang berfokus pada informasi kesehatan."
+  },
+  "homepage.links.official.status.title": {
+    "message": "Halaman Status"
+  },
+  "homepage.links.official.status.desc": {
+    "message": "Pemantauan real-time semua layanan Good Go Baby untuk memastikan kualitas dan stabilitas."
+  },
+  "homepage.links.official.social.title": {
+    "message": "Sosial"
+  },
+  "homepage.links.official.social.desc": {
+    "message": "Bergabunglah dengan komunitas Mastodon Good Go Baby untuk berinteraksi dengan penggemar Go."
+  },
+  "homepage.links.official.video.title": {
+    "message": "Video"
+  },
+  "homepage.links.official.video.desc": {
+    "message": "Tonton saluran PeerTube Good Go Baby untuk mempelajari pengetahuan dan teknik Go."
+  },
+  "homepage.links.ai.ecommerce.title": {
+    "message": "Riset Produk E-commerce"
+  },
+  "homepage.links.ai.ecommerce.desc": {
+    "message": "Wajib baca sebelum membeli! Riset dan analisis mendalam produk e-commerce berbasis AI."
+  },
+  "homepage.links.ai.security.title": {
+    "message": "Pusat Intelijen Ancaman Keamanan Siber"
+  },
+  "homepage.links.ai.security.desc": {
+    "message": "Tetap update tentang ancaman keamanan siber global untuk melindungi aset digital Anda."
+  },
+  "homepage.links.ai.health.title": {
+    "message": "EpiAlert Pembaruan Epidemi"
+  },
+  "homepage.links.ai.health.desc": {
+    "message": "Pemantauan dan peringatan dini epidemi global secara real-time untuk keamanan kesehatan masyarakat."
+  },
+  "homepage.links.ai.supplement.title": {
+    "message": "Intelijen Suplemen Kesehatan"
+  },
+  "homepage.links.ai.supplement.desc": {
+    "message": "Analisis mendalam suplemen kesehatan dengan evaluasi produk ilmiah."
+  },
+  "homepage.links.ai.law.title": {
+    "message": "Perubahan Regulasi Kerangka Global"
+  },
+  "homepage.links.ai.law.desc": {
+    "message": "Lacak perubahan terbaru dalam kerangka kerja global, regulasi, dan aturan industri."
+  },
+  "homepage.links.ai.trade.title": {
+    "message": "Analisis Intelijen Perdagangan Global"
+  },
+  "homepage.links.ai.trade.desc": {
+    "message": "Analisis mendalam dinamika perdagangan global untuk memahami tren pasar internasional."
+  },
+  "homepage.links.ai.job.title": {
+    "message": "Observatorium Permintaan Keterampilan Kerja"
+  },
+  "homepage.links.ai.job.desc": {
+    "message": "Pantau perubahan permintaan keterampilan pasar kerja untuk merencanakan pengembangan karier Anda."
+  },
+  "homepage.links.ai.education.title": {
+    "message": "Peta Pembelajaran Siswa"
+  },
+  "homepage.links.ai.education.desc": {
+    "message": "Rencanakan jalur pembelajaran yang paling cocok untuk siswa guna meningkatkan efisiensi belajar."
+  },
+  "homepage.links.ai.policy.title": {
+    "message": "Pelacak Janji Kebijakan"
+  },
+  "homepage.links.ai.policy.desc": {
+    "message": "Lacak janji kebijakan pemerintah dan politisi untuk mempromosikan transparansi dan akuntabilitas politik."
+  },
+  "homepage.links.appi.news.title": {
+    "message": "Situs Web Asia Pacific Pharma Insight"
+  },
+  "homepage.links.appi.news.desc": {
+    "message": "Platform media profesional untuk berita kesehatan di wilayah Asia-Pasifik."
+  },
+  "homepage.links.appi.social.title": {
+    "message": "Sosial Asia Pacific Pharma Insight"
+  },
+  "homepage.links.appi.social.desc": {
+    "message": "Bergabunglah dengan komunitas Mastodon Asia Pacific Pharma Insight untuk mendiskusikan topik kesehatan."
+  },
+  "homepage.links.appi.video.title": {
+    "message": "Video Asia Pacific Pharma Insight"
+  },
+  "homepage.links.appi.video.desc": {
+    "message": "Tonton konten video Asia Pacific Pharma Insight untuk informasi kesehatan."
+  },
+  "homepage.links.tlsr.news.title": {
+    "message": "Situs Web The Lancet Snake Report"
+  },
+  "homepage.links.tlsr.news.desc": {
+    "message": "Situs web resmi The Lancet Snake Report, menyediakan informasi dan laporan medis profesional."
+  },
+  "homepage.links.tlsr.social.title": {
+    "message": "Sosial The Lancet Snake Report"
+  },
+  "homepage.links.tlsr.social.desc": {
+    "message": "Bergabunglah dengan komunitas Mastodon The Lancet Snake Report untuk bertukar wawasan medis."
+  },
+  "homepage.links.tlsr.video.title": {
+    "message": "Video The Lancet Snake Report"
+  },
+  "homepage.links.tlsr.video.desc": {
+    "message": "Tonton saluran video The Lancet Snake Report untuk mempelajari pengetahuan kesehatan."
+  },
+  "item.label.圍棋棋友": {
+    "message": "Untuk Pemain"
+  },
+  "item.label.AI工程師": {
+    "message": "Untuk Insinyur"
+  },
+  "item.label.圍棋 AI 演進整理": {
+    "message": "Evolusi AI Go"
+  },
+  "item.label.協會介紹": {
+    "message": "Tentang Kami"
   }
 }

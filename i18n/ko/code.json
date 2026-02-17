@@ -7,10 +7,10 @@
     "message": "1분 만에 빠른 시작 ⏱️"
   },
   "homepage.meta.title": {
-    "message": "Hello from {title}"
+    "message": "홈"
   },
   "homepage.meta.description": {
-    "message": "Description will go into a meta tag in <head />"
+    "message": "대만 호치베이비협회 공식 웹사이트 - 바둑 교육 및 AI 연구 자료 제공, 바둑 문화 발전 추진"
   },
   "theme.ErrorPageContent.title": {
     "message": "페이지에 오류가 발생하였습니다.",
@@ -334,5 +334,149 @@
   "theme.tags.tagsPageTitle": {
     "message": "태그",
     "description": "The title of the tag list page"
+  },
+  "homepage.links.official.section.title": {
+    "message": "공식"
+  },
+  "homepage.links.official.section.desc": {
+    "message": "바둑 베이비 협회 공식 플랫폼으로, 서비스 상태 모니터링, 커뮤니티 상호작용 및 영상 콘텐츠를 제공합니다."
+  },
+  "homepage.links.ai.section.title": {
+    "message": "AI 연구"
+  },
+  "homepage.links.ai.section.desc": {
+    "message": "AI 기술을 활용하여 다양한 분야의 정보를 심층 분석하고, 실시간 인사이트 및 의사결정 지원을 제공합니다."
+  },
+  "homepage.links.appi.section.title": {
+    "message": "파트너 - 아시아태평양 의료 헤드라인"
+  },
+  "homepage.links.appi.section.desc": {
+    "message": "아시아태평양 지역 의료 건강 분야의 전문 미디어 파트너입니다."
+  },
+  "homepage.links.tlsr.section.title": {
+    "message": "파트너 - 동사의보"
+  },
+  "homepage.links.tlsr.section.desc": {
+    "message": "의료 건강 정보에 특화된 협력 미디어입니다."
+  },
+  "homepage.links.official.status.title": {
+    "message": "상태 페이지"
+  },
+  "homepage.links.official.status.desc": {
+    "message": "모든 바둑 베이비 서비스의 운영 상태를 실시간 모니터링하여 서비스 품질과 안정성을 보장합니다."
+  },
+  "homepage.links.official.social.title": {
+    "message": "소셜"
+  },
+  "homepage.links.official.social.desc": {
+    "message": "바둑 베이비 Mastodon 커뮤니티에 참여하여 바둑 애호가들과 교류하세요."
+  },
+  "homepage.links.official.video.title": {
+    "message": "동영상"
+  },
+  "homepage.links.official.video.desc": {
+    "message": "바둑 베이비 PeerTube 채널에서 바둑 지식과 기술을 학습하세요."
+  },
+  "homepage.links.ai.ecommerce.title": {
+    "message": "이커머스 제품 연구"
+  },
+  "homepage.links.ai.ecommerce.desc": {
+    "message": "구매 전 필독! AI 기반 이커머스 제품 심층 연구 및 분석."
+  },
+  "homepage.links.ai.security.title": {
+    "message": "사이버 보안 위협 정보 센터"
+  },
+  "homepage.links.ai.security.desc": {
+    "message": "글로벌 사이버 보안 위협 동향을 실시간으로 파악하여 디지털 자산을 보호합니다."
+  },
+  "homepage.links.ai.health.title": {
+    "message": "EpiAlert 전염병 속보"
+  },
+  "homepage.links.ai.health.desc": {
+    "message": "글로벌 전염병 실시간 모니터링 및 조기 경보로 공중 보건 안전을 지킵니다."
+  },
+  "homepage.links.ai.supplement.title": {
+    "message": "건강식품 제품 정보"
+  },
+  "homepage.links.ai.supplement.desc": {
+    "message": "건강식품 심층 분석 및 과학적인 제품 평가 정보를 제공합니다."
+  },
+  "homepage.links.ai.law.title": {
+    "message": "글로벌 프레임워크 규제 변경"
+  },
+  "homepage.links.ai.law.desc": {
+    "message": "글로벌 프레임워크, 규제 및 산업 규칙의 최신 변경 사항을 추적합니다."
+  },
+  "homepage.links.ai.trade.title": {
+    "message": "글로벌 무역 정보 분석"
+  },
+  "homepage.links.ai.trade.desc": {
+    "message": "글로벌 무역 동향을 심층 분석하여 국제 시장의 흐름을 파악합니다."
+  },
+  "homepage.links.ai.job.title": {
+    "message": "취업 기술 수요 관측소"
+  },
+  "homepage.links.ai.job.desc": {
+    "message": "취업 시장의 기술 수요 변화를 관측하여 경력 개발 방향을 계획합니다."
+  },
+  "homepage.links.ai.education.title": {
+    "message": "학생 학습 로드맵"
+  },
+  "homepage.links.ai.education.desc": {
+    "message": "학생에게 가장 적합한 학습 경로를 계획하여 학습 효율을 높입니다."
+  },
+  "homepage.links.ai.policy.title": {
+    "message": "정책 공약 추적기"
+  },
+  "homepage.links.ai.policy.desc": {
+    "message": "정부 및 정치인의 정책 공약을 추적하여 정치적 투명성과 책임을 촉진합니다."
+  },
+  "homepage.links.appi.news.title": {
+    "message": "아시아태평양 의료 헤드라인 공식 사이트"
+  },
+  "homepage.links.appi.news.desc": {
+    "message": "아시아태평양 지역 의료 건강 뉴스 전문 미디어 플랫폼입니다."
+  },
+  "homepage.links.appi.social.title": {
+    "message": "아시아태평양 의료 헤드라인 소셜"
+  },
+  "homepage.links.appi.social.desc": {
+    "message": "아시아태평양 의료 헤드라인 Mastodon 커뮤니티에 참여하여 의료 건강 주제를 논의하세요."
+  },
+  "homepage.links.appi.video.title": {
+    "message": "아시아태평양 의료 헤드라인 동영상"
+  },
+  "homepage.links.appi.video.desc": {
+    "message": "아시아태평양 의료 헤드라인 영상 콘텐츠로 의료 건강 정보를 파악하세요."
+  },
+  "homepage.links.tlsr.news.title": {
+    "message": "동사의보 공식 사이트"
+  },
+  "homepage.links.tlsr.news.desc": {
+    "message": "동사의보 공식 웹사이트로, 전문 의료 정보 및 보도를 제공합니다."
+  },
+  "homepage.links.tlsr.social.title": {
+    "message": "동사의보 소셜"
+  },
+  "homepage.links.tlsr.social.desc": {
+    "message": "동사의보 Mastodon 커뮤니티에 참여하여 의료 견해를 교환하세요."
+  },
+  "homepage.links.tlsr.video.title": {
+    "message": "동사의보 동영상"
+  },
+  "homepage.links.tlsr.video.desc": {
+    "message": "동사의보 동영상 채널에서 의료 건강 지식을 학습하세요."
+  },
+  "item.label.圍棋棋友": {
+    "message": "바둑 기사 가이드"
+  },
+  "item.label.AI工程師": {
+    "message": "AI 엔지니어 가이드"
+  },
+  "item.label.圍棋 AI 演進整理": {
+    "message": "바둑 AI 발전사"
+  },
+  "item.label.協會介紹": {
+    "message": "협회 소개"
   }
 }

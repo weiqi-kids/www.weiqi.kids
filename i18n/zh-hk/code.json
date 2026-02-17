@@ -7,10 +7,10 @@
     "message": "1分鐘快速了解 ⏱️"
   },
   "homepage.meta.title": {
-    "message": "Hello from {title}"
+    "message": "首頁"
   },
   "homepage.meta.description": {
-    "message": "Description will go into a meta tag in <head />"
+    "message": "台灣好棋寶寶協會官網 - 提供圍棋教學、AI 研究資源，推動圍棋文化發展"
   },
   "theme.ErrorPageContent.title": {
     "message": "此頁已當機。",
@@ -334,5 +334,149 @@
   "theme.tags.tagsPageTitle": {
     "message": "標籤",
     "description": "The title of the tag list page"
+  },
+  "homepage.links.official.section.title": {
+    "message": "官方"
+  },
+  "homepage.links.official.section.desc": {
+    "message": "好棋寶寶協會官方平台，提供服務狀態監控、社群互動與影音內容。"
+  },
+  "homepage.links.ai.section.title": {
+    "message": "AI 研究"
+  },
+  "homepage.links.ai.section.desc": {
+    "message": "運用人工智慧技術，深入分析各領域情報，提供即時洞察與決策支援。"
+  },
+  "homepage.links.appi.section.title": {
+    "message": "友站 - 亞太醫頭條"
+  },
+  "homepage.links.appi.section.desc": {
+    "message": "亞太地區醫療健康領域的專業媒體夥伴。"
+  },
+  "homepage.links.tlsr.section.title": {
+    "message": "友站 - 銅蛇醫報"
+  },
+  "homepage.links.tlsr.section.desc": {
+    "message": "專注於醫療保健資訊的合作媒體。"
+  },
+  "homepage.links.official.status.title": {
+    "message": "網站狀態列"
+  },
+  "homepage.links.official.status.desc": {
+    "message": "即時監控所有好棋寶寶服務的運作狀態，確保服務品質與穩定性。"
+  },
+  "homepage.links.official.social.title": {
+    "message": "社群"
+  },
+  "homepage.links.official.social.desc": {
+    "message": "加入好棋寶寶 Mastodon 社群，與圍棋愛好者交流互動。"
+  },
+  "homepage.links.official.video.title": {
+    "message": "影音"
+  },
+  "homepage.links.official.video.desc": {
+    "message": "觀看好棋寶寶 PeerTube 影音頻道，學習圍棋知識與技巧。"
+  },
+  "homepage.links.ai.ecommerce.title": {
+    "message": "電商產品研究"
+  },
+  "homepage.links.ai.ecommerce.desc": {
+    "message": "買前必看！AI 驅動的電商產品深度研究與分析。"
+  },
+  "homepage.links.ai.security.title": {
+    "message": "資安威脅情報中心"
+  },
+  "homepage.links.ai.security.desc": {
+    "message": "即時掌握全球資安威脅動態，保護數位資產安全。"
+  },
+  "homepage.links.ai.health.title": {
+    "message": "EpiAlert 疫情快訊"
+  },
+  "homepage.links.ai.health.desc": {
+    "message": "全球疫情即時監測與預警，守護公共衛生安全。"
+  },
+  "homepage.links.ai.supplement.title": {
+    "message": "保健食品產品情報"
+  },
+  "homepage.links.ai.supplement.desc": {
+    "message": "保健食品深度分析，提供科學化的產品評估資訊。"
+  },
+  "homepage.links.ai.law.title": {
+    "message": "全球框架法規變動"
+  },
+  "homepage.links.ai.law.desc": {
+    "message": "追蹤全球框架、法規與產業規則的最新變動。"
+  },
+  "homepage.links.ai.trade.title": {
+    "message": "全球貿易情報分析"
+  },
+  "homepage.links.ai.trade.desc": {
+    "message": "深入分析全球貿易動態，掌握國際市場脈動。"
+  },
+  "homepage.links.ai.job.title": {
+    "message": "求職技能需求觀測站"
+  },
+  "homepage.links.ai.job.desc": {
+    "message": "觀測就業市場技能需求變化，規劃職涯發展方向。"
+  },
+  "homepage.links.ai.education.title": {
+    "message": "學生學習地圖"
+  },
+  "homepage.links.ai.education.desc": {
+    "message": "為學生規劃最適合的學習路徑，提升學習效率。"
+  },
+  "homepage.links.ai.policy.title": {
+    "message": "政策承諾追蹤"
+  },
+  "homepage.links.ai.policy.desc": {
+    "message": "追蹤政府與政治人物的政策承諾，促進政治透明與責任。"
+  },
+  "homepage.links.appi.news.title": {
+    "message": "亞太醫頭條官網"
+  },
+  "homepage.links.appi.news.desc": {
+    "message": "亞太地區醫療健康新聞的專業媒體平台。"
+  },
+  "homepage.links.appi.social.title": {
+    "message": "亞太醫頭條社群"
+  },
+  "homepage.links.appi.social.desc": {
+    "message": "加入亞太醫頭條 Mastodon 社群，討論醫療健康議題。"
+  },
+  "homepage.links.appi.video.title": {
+    "message": "亞太醫頭條影音"
+  },
+  "homepage.links.appi.video.desc": {
+    "message": "觀看亞太醫頭條影音內容，掌握醫療健康資訊。"
+  },
+  "homepage.links.tlsr.news.title": {
+    "message": "銅蛇醫報官網"
+  },
+  "homepage.links.tlsr.news.desc": {
+    "message": "銅蛇醫報官方網站，提供專業醫療資訊與報導。"
+  },
+  "homepage.links.tlsr.social.title": {
+    "message": "銅蛇醫報社群"
+  },
+  "homepage.links.tlsr.social.desc": {
+    "message": "加入銅蛇醫報 Mastodon 社群，交流醫療見解。"
+  },
+  "homepage.links.tlsr.video.title": {
+    "message": "銅蛇醫報影音"
+  },
+  "homepage.links.tlsr.video.desc": {
+    "message": "觀看銅蛇醫報影音頻道，學習醫療保健知識。"
+  },
+  "item.label.圍棋棋友": {
+    "message": "俾圍棋棋友"
+  },
+  "item.label.AI工程師": {
+    "message": "俾AI工程師"
+  },
+  "item.label.圍棋 AI 演進整理": {
+    "message": "圍棋 AI 演進整理"
+  },
+  "item.label.協會介紹": {
+    "message": "協會介紹"
   }
 }

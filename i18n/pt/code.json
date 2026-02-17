@@ -7,10 +7,10 @@
     "message": "Conheça rapidamente em 1 minuto ⏱️"
   },
   "homepage.meta.title": {
-    "message": "Hello from {title}"
+    "message": "Início"
   },
   "homepage.meta.description": {
-    "message": "Description will go into a meta tag in <head />"
+    "message": "Site oficial da Associação Taiwan Good Go Baby - Recursos de educação de Go e pesquisa de IA, promovendo o desenvolvimento da cultura do Go"
   },
   "theme.ErrorPageContent.title": {
     "message": "Esta página deu erro.",
@@ -334,5 +334,149 @@
   "theme.tags.tagsPageTitle": {
     "message": "Marcadores",
     "description": "The title of the tag list page"
+  },
+  "homepage.links.official.section.title": {
+    "message": "Oficial"
+  },
+  "homepage.links.official.section.desc": {
+    "message": "Plataformas oficiais da Associação Good Go Baby, oferecendo monitoramento de status, interação comunitária e conteúdo de vídeo."
+  },
+  "homepage.links.ai.section.title": {
+    "message": "Pesquisa de IA"
+  },
+  "homepage.links.ai.section.desc": {
+    "message": "Utilizando tecnologia de IA para análise aprofundada em diversos campos, fornecendo insights em tempo real e suporte à decisão."
+  },
+  "homepage.links.appi.section.title": {
+    "message": "Parceiro - Asia Pacific Pharma Insight"
+  },
+  "homepage.links.appi.section.desc": {
+    "message": "Parceiro de mídia profissional no setor de saúde da Ásia-Pacífico."
+  },
+  "homepage.links.tlsr.section.title": {
+    "message": "Parceiro - The Lancet Snake Report"
+  },
+  "homepage.links.tlsr.section.desc": {
+    "message": "Mídia colaboradora focada em informações de saúde."
+  },
+  "homepage.links.official.status.title": {
+    "message": "Página de Status"
+  },
+  "homepage.links.official.status.desc": {
+    "message": "Monitoramento em tempo real de todos os serviços Good Go Baby para garantir qualidade e estabilidade."
+  },
+  "homepage.links.official.social.title": {
+    "message": "Social"
+  },
+  "homepage.links.official.social.desc": {
+    "message": "Junte-se à comunidade Mastodon do Good Go Baby para interagir com entusiastas de Go."
+  },
+  "homepage.links.official.video.title": {
+    "message": "Vídeo"
+  },
+  "homepage.links.official.video.desc": {
+    "message": "Assista ao canal PeerTube do Good Go Baby para aprender conhecimentos e técnicas de Go."
+  },
+  "homepage.links.ai.ecommerce.title": {
+    "message": "Pesquisa de Produtos E-commerce"
+  },
+  "homepage.links.ai.ecommerce.desc": {
+    "message": "Leitura obrigatória antes de comprar! Pesquisa e análise aprofundada de produtos e-commerce com IA."
+  },
+  "homepage.links.ai.security.title": {
+    "message": "Centro de Inteligência de Ameaças de Cibersegurança"
+  },
+  "homepage.links.ai.security.desc": {
+    "message": "Fique atualizado sobre ameaças globais de cibersegurança para proteger seus ativos digitais."
+  },
+  "homepage.links.ai.health.title": {
+    "message": "EpiAlert Atualizações de Epidemias"
+  },
+  "homepage.links.ai.health.desc": {
+    "message": "Monitoramento e alerta precoce de epidemias globais em tempo real para segurança da saúde pública."
+  },
+  "homepage.links.ai.supplement.title": {
+    "message": "Inteligência de Suplementos de Saúde"
+  },
+  "homepage.links.ai.supplement.desc": {
+    "message": "Análise aprofundada de suplementos de saúde com avaliações científicas de produtos."
+  },
+  "homepage.links.ai.law.title": {
+    "message": "Mudanças Regulatórias de Estrutura Global"
+  },
+  "homepage.links.ai.law.desc": {
+    "message": "Acompanhe as últimas mudanças em estruturas globais, regulamentos e regras da indústria."
+  },
+  "homepage.links.ai.trade.title": {
+    "message": "Análise de Inteligência Comercial Global"
+  },
+  "homepage.links.ai.trade.desc": {
+    "message": "Análise aprofundada da dinâmica do comércio global para entender as tendências do mercado internacional."
+  },
+  "homepage.links.ai.job.title": {
+    "message": "Observatório de Demanda de Habilidades Profissionais"
+  },
+  "homepage.links.ai.job.desc": {
+    "message": "Monitore as mudanças na demanda de habilidades do mercado de trabalho para planejar seu desenvolvimento de carreira."
+  },
+  "homepage.links.ai.education.title": {
+    "message": "Mapa de Aprendizagem do Estudante"
+  },
+  "homepage.links.ai.education.desc": {
+    "message": "Planeje o caminho de aprendizagem mais adequado para os alunos para melhorar a eficiência do aprendizado."
+  },
+  "homepage.links.ai.policy.title": {
+    "message": "Rastreador de Promessas Políticas"
+  },
+  "homepage.links.ai.policy.desc": {
+    "message": "Acompanhe as promessas políticas do governo e políticos para promover transparência e responsabilidade política."
+  },
+  "homepage.links.appi.news.title": {
+    "message": "Site do Asia Pacific Pharma Insight"
+  },
+  "homepage.links.appi.news.desc": {
+    "message": "Plataforma de mídia profissional para notícias de saúde na região Ásia-Pacífico."
+  },
+  "homepage.links.appi.social.title": {
+    "message": "Asia Pacific Pharma Insight Social"
+  },
+  "homepage.links.appi.social.desc": {
+    "message": "Junte-se à comunidade Mastodon do Asia Pacific Pharma Insight para discutir tópicos de saúde."
+  },
+  "homepage.links.appi.video.title": {
+    "message": "Vídeo do Asia Pacific Pharma Insight"
+  },
+  "homepage.links.appi.video.desc": {
+    "message": "Assista ao conteúdo de vídeo do Asia Pacific Pharma Insight para informações de saúde."
+  },
+  "homepage.links.tlsr.news.title": {
+    "message": "Site do The Lancet Snake Report"
+  },
+  "homepage.links.tlsr.news.desc": {
+    "message": "Site oficial do The Lancet Snake Report, fornecendo informações e reportagens médicas profissionais."
+  },
+  "homepage.links.tlsr.social.title": {
+    "message": "The Lancet Snake Report Social"
+  },
+  "homepage.links.tlsr.social.desc": {
+    "message": "Junte-se à comunidade Mastodon do The Lancet Snake Report para trocar insights médicos."
+  },
+  "homepage.links.tlsr.video.title": {
+    "message": "Vídeo do The Lancet Snake Report"
+  },
+  "homepage.links.tlsr.video.desc": {
+    "message": "Assista ao canal de vídeo do The Lancet Snake Report para aprender conhecimentos de saúde."
+  },
+  "item.label.圍棋棋友": {
+    "message": "Para Jogadores"
+  },
+  "item.label.AI工程師": {
+    "message": "Para Engenheiros"
+  },
+  "item.label.圍棋 AI 演進整理": {
+    "message": "Evolução da IA do Go"
+  },
+  "item.label.協會介紹": {
+    "message": "Sobre Nós"
   }
 }
