@@ -6,6 +6,12 @@
   "homepage.quickStart": {
     "message": "1 मिनट में त्वरित शुरुआत ⏱️"
   },
+  "homepage.forPlayers": {
+    "message": "मैं खिलाड़ी हूँ"
+  },
+  "homepage.forEngineers": {
+    "message": "मैं इंजीनियर हूँ"
+  },
   "homepage.meta.title": {
     "message": "होम"
   },

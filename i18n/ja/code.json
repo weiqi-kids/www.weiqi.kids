@@ -6,6 +6,12 @@
   "homepage.quickStart": {
     "message": "1分でクイックスタート ⏱️"
   },
+  "homepage.forPlayers": {
+    "message": "棋友の方はこちら"
+  },
+  "homepage.forEngineers": {
+    "message": "エンジニアの方はこちら"
+  },
   "homepage.meta.title": {
     "message": "ホーム"
   },

@@ -6,6 +6,12 @@
   "homepage.quickStart": {
     "message": "Mulai cepat dalam 1 menit ⏱️"
   },
+  "homepage.forPlayers": {
+    "message": "Saya pemain Go"
+  },
+  "homepage.forEngineers": {
+    "message": "Saya insinyur"
+  },
   "homepage.meta.title": {
     "message": "Beranda"
   },

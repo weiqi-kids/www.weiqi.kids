@@ -325,6 +325,12 @@
   "homepage.quickStart": {
     "message": "1分鐘快速了解 ⏱️"
   },
+  "homepage.forPlayers": {
+    "message": "我是棋友"
+  },
+  "homepage.forEngineers": {
+    "message": "我是工程師"
+  },
   "homepage.meta.title": {
     "message": "首頁"
   },

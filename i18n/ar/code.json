@@ -6,6 +6,12 @@
   "homepage.quickStart": {
     "message": "تعرف بسرعة في دقيقة واحدة ⏱️"
   },
+  "homepage.forPlayers": {
+    "message": "أنا لاعب جو"
+  },
+  "homepage.forEngineers": {
+    "message": "أنا مهندس"
+  },
   "homepage.meta.title": {
     "message": "الرئيسية"
   },

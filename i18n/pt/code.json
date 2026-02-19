@@ -6,6 +6,12 @@
   "homepage.quickStart": {
     "message": "Conheça rapidamente em 1 minuto ⏱️"
   },
+  "homepage.forPlayers": {
+    "message": "Sou jogador de Go"
+  },
+  "homepage.forEngineers": {
+    "message": "Sou engenheiro"
+  },
   "homepage.meta.title": {
     "message": "Início"
   },

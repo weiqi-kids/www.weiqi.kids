@@ -4,7 +4,13 @@
     "description": "Site subtitle"
   },
   "homepage.quickStart": {
-    "message": "Quick start in 1 minute ⏱️"
+    "message": "Quick start in 1 minute"
+  },
+  "homepage.forPlayers": {
+    "message": "I'm a Go player"
+  },
+  "homepage.forEngineers": {
+    "message": "I'm an engineer"
   },
   "homepage.meta.title": {
     "message": "Home"

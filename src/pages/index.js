@@ -25,8 +25,20 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
+            to="/docs/for-players/">
+            <Translate id="homepage.forPlayers">我是棋友</Translate>
+          </Link>
+          <Link
+            className="button button--secondary button--lg"
+            to="/docs/for-engineers/">
+            <Translate id="homepage.forEngineers">我是工程師</Translate>
+          </Link>
+        </div>
+        <div className={styles.buttons} style={{marginTop: '1rem'}}>
+          <Link
+            className="button button--outline button--secondary"
             to="/docs/intro">
-            <Translate id="homepage.quickStart">1分鐘快速了解 ⏱️</Translate>
+            <Translate id="homepage.quickStart">1分鐘快速了解</Translate>
           </Link>
         </div>
       </div>

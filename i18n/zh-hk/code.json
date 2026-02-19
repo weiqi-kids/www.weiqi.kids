@@ -6,6 +6,12 @@
   "homepage.quickStart": {
     "message": "1分鐘快速了解 ⏱️"
   },
+  "homepage.forPlayers": {
+    "message": "我係棋友"
+  },
+  "homepage.forEngineers": {
+    "message": "我係工程師"
+  },
   "homepage.meta.title": {
     "message": "首頁"
   },

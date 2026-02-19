@@ -6,6 +6,12 @@
   "homepage.quickStart": {
     "message": "1분 만에 빠른 시작 ⏱️"
   },
+  "homepage.forPlayers": {
+    "message": "바둑 기사입니다"
+  },
+  "homepage.forEngineers": {
+    "message": "엔지니어입니다"
+  },
   "homepage.meta.title": {
     "message": "홈"
   },
