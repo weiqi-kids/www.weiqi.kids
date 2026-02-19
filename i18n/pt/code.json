@@ -12,6 +12,24 @@
   "homepage.forEngineers": {
     "message": "Sou engenheiro"
   },
+  "homepage.feature.multilingual.title": {
+    "message": "11 Idiomas"
+  },
+  "homepage.feature.multilingual.desc": {
+    "message": "A única plataforma de aprendizado de Go do mundo que suporta 11 idiomas, incluindo chinês tradicional, chinês simplificado, cantonês, inglês, japonês, coreano, espanhol, português, hindi, indonésio e árabe."
+  },
+  "homepage.feature.katago.title": {
+    "message": "Documentação KataGo em Chinês"
+  },
+  "homepage.feature.katago.desc": {
+    "message": "A única documentação técnica do KataGo em chinês tradicional, fornecendo aos engenheiros taiwaneses recursos abrangentes de desenvolvimento de IA de Go."
+  },
+  "homepage.feature.free.title": {
+    "message": "Gratuito e Aberto"
+  },
+  "homepage.feature.free.desc": {
+    "message": "Todo o conteúdo é gratuito e aberto. Não é necessário registro. Acreditamos que o conhecimento deve ser compartilhado sem barreiras."
+  },
   "homepage.meta.title": {
     "message": "Início"
   },

@@ -12,6 +12,24 @@
   "homepage.forEngineers": {
     "message": "我係工程師"
   },
+  "homepage.feature.multilingual.title": {
+    "message": "11 種語言"
+  },
+  "homepage.feature.multilingual.desc": {
+    "message": "全球唯一支援 11 種語言嘅圍棋學習平台，包含繁中、簡中、粵語、英、日、韓、西、葡、印地、印尼、阿拉伯語，令圍棋文化無國界傳播。"
+  },
+  "homepage.feature.katago.title": {
+    "message": "繁中 KataGo 文件"
+  },
+  "homepage.feature.katago.desc": {
+    "message": "全網唯一繁體中文 KataGo 技術文件，為台灣工程師提供完整嘅圍棋 AI 開發資源，降低入門門檻。"
+  },
+  "homepage.feature.free.title": {
+    "message": "免費公開"
+  },
+  "homepage.feature.free.desc": {
+    "message": "所有內容免費公開，唔使註冊就可以睇。我哋相信知識應該無障礙分享，令每個人都可以享受圍棋帶嚟嘅智慧同樂趣。"
+  },
   "homepage.meta.title": {
     "message": "首頁"
   },

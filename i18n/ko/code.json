@@ -12,6 +12,24 @@
   "homepage.forEngineers": {
     "message": "엔지니어입니다"
   },
+  "homepage.feature.multilingual.title": {
+    "message": "11개 언어"
+  },
+  "homepage.feature.multilingual.desc": {
+    "message": "세계 유일의 11개 언어를 지원하는 바둑 학습 플랫폼. 번체 중국어, 간체 중국어, 광동어, 영어, 일본어, 한국어, 스페인어, 포르투갈어, 힌디어, 인도네시아어, 아랍어를 지원합니다."
+  },
+  "homepage.feature.katago.title": {
+    "message": "중국어 KataGo 문서"
+  },
+  "homepage.feature.katago.desc": {
+    "message": "유일한 번체 중국어 KataGo 기술 문서로, 대만 엔지니어에게 포괄적인 바둑 AI 개발 리소스를 제공합니다."
+  },
+  "homepage.feature.free.title": {
+    "message": "무료 & 오픈"
+  },
+  "homepage.feature.free.desc": {
+    "message": "모든 콘텐츠는 무료이며 공개되어 있습니다. 가입 없이 이용 가능. 지식은 장벽 없이 공유되어야 한다고 믿습니다."
+  },
   "homepage.meta.title": {
     "message": "홈"
   },

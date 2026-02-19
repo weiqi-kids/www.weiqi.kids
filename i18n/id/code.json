@@ -12,6 +12,24 @@
   "homepage.forEngineers": {
     "message": "Saya insinyur"
   },
+  "homepage.feature.multilingual.title": {
+    "message": "11 Bahasa"
+  },
+  "homepage.feature.multilingual.desc": {
+    "message": "Satu-satunya platform pembelajaran Go di dunia yang mendukung 11 bahasa, termasuk Tionghoa Tradisional, Tionghoa Sederhana, Kanton, Inggris, Jepang, Korea, Spanyol, Portugis, Hindi, Indonesia, dan Arab."
+  },
+  "homepage.feature.katago.title": {
+    "message": "Dokumentasi KataGo Bahasa Mandarin"
+  },
+  "homepage.feature.katago.desc": {
+    "message": "Satu-satunya dokumentasi teknis KataGo dalam bahasa Tionghoa Tradisional, menyediakan sumber daya pengembangan AI Go yang komprehensif bagi insinyur Taiwan."
+  },
+  "homepage.feature.free.title": {
+    "message": "Gratis & Terbuka"
+  },
+  "homepage.feature.free.desc": {
+    "message": "Semua konten gratis dan terbuka. Tidak perlu registrasi. Kami percaya pengetahuan harus dibagikan tanpa hambatan."
+  },
   "homepage.meta.title": {
     "message": "Beranda"
   },

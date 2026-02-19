@@ -12,6 +12,24 @@
   "homepage.forEngineers": {
     "message": "我是工程师"
   },
+  "homepage.feature.multilingual.title": {
+    "message": "11 种语言"
+  },
+  "homepage.feature.multilingual.desc": {
+    "message": "全球唯一支援 11 种语言的围棋学习平台，包含繁中、简中、粤语、英、日、韩、西、葡、印地、印尼、阿拉伯语，让围棋文化无国界传播。"
+  },
+  "homepage.feature.katago.title": {
+    "message": "繁中 KataGo 文档"
+  },
+  "homepage.feature.katago.desc": {
+    "message": "全网唯一繁体中文 KataGo 技术文档，为台湾工程师提供完整的围棋 AI 开发资源，降低入门门槛。"
+  },
+  "homepage.feature.free.title": {
+    "message": "免费公开"
+  },
+  "homepage.feature.free.desc": {
+    "message": "所有内容免费公开，无需注册即可阅读。我们相信知识应该无障碍分享，让每个人都能享受围棋带来的智慧与乐趣。"
+  },
   "homepage.meta.title": {
     "message": "首页"
   },

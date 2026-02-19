@@ -12,6 +12,24 @@
   "homepage.forEngineers": {
     "message": "أنا مهندس"
   },
+  "homepage.feature.multilingual.title": {
+    "message": "11 لغة"
+  },
+  "homepage.feature.multilingual.desc": {
+    "message": "منصة تعلم الجو الوحيدة في العالم التي تدعم 11 لغة، بما في ذلك الصينية التقليدية والصينية المبسطة والكانتونية والإنجليزية واليابانية والكورية والإسبانية والبرتغالية والهندية والإندونيسية والعربية."
+  },
+  "homepage.feature.katago.title": {
+    "message": "وثائق KataGo بالصينية"
+  },
+  "homepage.feature.katago.desc": {
+    "message": "الوثائق التقنية الوحيدة لـ KataGo بالصينية التقليدية، توفر لمهندسي تايوان موارد شاملة لتطوير الذكاء الاصطناعي للعبة الجو."
+  },
+  "homepage.feature.free.title": {
+    "message": "مجاني ومفتوح"
+  },
+  "homepage.feature.free.desc": {
+    "message": "جميع المحتويات مجانية ومفتوحة. لا يلزم التسجيل. نؤمن بأن المعرفة يجب أن تُشارك بلا حواجز."
+  },
   "homepage.meta.title": {
     "message": "الرئيسية"
   },

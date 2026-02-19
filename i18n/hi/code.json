@@ -12,6 +12,24 @@
   "homepage.forEngineers": {
     "message": "मैं इंजीनियर हूँ"
   },
+  "homepage.feature.multilingual.title": {
+    "message": "11 भाषाएं"
+  },
+  "homepage.feature.multilingual.desc": {
+    "message": "11 भाषाओं का समर्थन करने वाला दुनिया का एकमात्र गो लर्निंग प्लेटफॉर्म, जिसमें पारंपरिक चीनी, सरलीकृत चीनी, कैंटोनीज, अंग्रेजी, जापानी, कोरियाई, स्पेनिश, पुर्तगाली, हिंदी, इंडोनेशियाई और अरबी शामिल हैं।"
+  },
+  "homepage.feature.katago.title": {
+    "message": "चीनी KataGo दस्तावेज"
+  },
+  "homepage.feature.katago.desc": {
+    "message": "पारंपरिक चीनी में एकमात्र KataGo तकनीकी दस्तावेज, ताइवानी इंजीनियरों को व्यापक गो AI विकास संसाधन प्रदान करता है।"
+  },
+  "homepage.feature.free.title": {
+    "message": "मुफ्त और खुला"
+  },
+  "homepage.feature.free.desc": {
+    "message": "सभी सामग्री मुफ्त और खुली है। पंजीकरण की आवश्यकता नहीं। हमारा मानना है कि ज्ञान बिना बाधाओं के साझा किया जाना चाहिए।"
+  },
   "homepage.meta.title": {
     "message": "होम"
   },

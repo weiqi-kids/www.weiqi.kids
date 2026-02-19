@@ -12,6 +12,24 @@
   "homepage.forEngineers": {
     "message": "エンジニアの方はこちら"
   },
+  "homepage.feature.multilingual.title": {
+    "message": "11言語対応"
+  },
+  "homepage.feature.multilingual.desc": {
+    "message": "世界唯一の11言語対応の囲碁学習プラットフォーム。繁体字中国語、簡体字中国語、広東語、英語、日本語、韓国語、スペイン語、ポルトガル語、ヒンディー語、インドネシア語、アラビア語に対応。"
+  },
+  "homepage.feature.katago.title": {
+    "message": "中国語KataGoドキュメント"
+  },
+  "homepage.feature.katago.desc": {
+    "message": "唯一の繁体字中国語KataGo技術ドキュメント。台湾のエンジニアに包括的な囲碁AI開発リソースを提供。"
+  },
+  "homepage.feature.free.title": {
+    "message": "無料＆オープン"
+  },
+  "homepage.feature.free.desc": {
+    "message": "すべてのコンテンツは無料でオープン。登録不要。知識は障壁なく共有されるべきだと信じています。"
+  },
   "homepage.meta.title": {
     "message": "ホーム"
   },
