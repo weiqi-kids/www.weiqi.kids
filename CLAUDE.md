@@ -34,6 +34,15 @@ www.weiqi.kids/
 │   └── theme/               # 主題覆寫
 ├── static/                  # 靜態資源
 ├── seo/                     # SEO/AEO 規則文件
+├── revamp/                  # 網站改版流程
+│   ├── 0-positioning/       # 品牌定位
+│   ├── 1-discovery/         # 網站健檢
+│   ├── 2-competitive/       # 競品分析
+│   ├── 3-analysis/          # 受眾與差距分析
+│   ├── 4-strategy/          # 改版策略
+│   ├── 5-content-spec/      # 內容規格
+│   ├── final-review/        # 最終驗收
+│   └── tools/               # 自動化工具
 └── docusaurus.config.js     # 網站設定
 ```
 
@@ -65,6 +74,54 @@ pnpm write-translations       # 產生翻譯骨架
 3. **Navbar 翻譯**：修改 `i18n/{locale}/docusaurus-theme-classic/navbar.json`
 4. **UI 字串**：修改 `i18n/{locale}/code.json`
 5. **sidebar_position**：每個語系的對應文件需要相同的 frontmatter
+
+---
+
+## 改版流程（Revamp Workflow）
+
+當需要進行網站改版時，請依照 `revamp/` 目錄的結構化流程執行。
+
+### 流程總覽
+
+```
+0-Positioning → 1-Discovery → 2-Competitive → 3-Analysis → 4-Strategy → 5-Content-Spec → 執行 → Final-Review
+     ↓              ↓             ↓              ↓            ↓              ↓                       ↓
+  Review ✓      Review ✓      Review ✓      Review ✓     Review ✓       Review ✓                Review ✓
+```
+
+### 階段說明
+
+| 階段 | 目的 | 輸出 |
+|------|------|------|
+| **0-positioning** | 釐清品牌定位、核心價值 | 定位文件 |
+| **1-discovery** | 盤點現有內容 + 技術健檢 | 健檢報告 + KPI |
+| **2-competitive** | 分析競爭對手 | 競品分析報告 |
+| **3-analysis** | 受眾分析 + 內容差距 | 差距分析報告 |
+| **4-strategy** | 改版計劃 + 優先級排序 | 改版計劃書 |
+| **5-content-spec** | 每頁內容規格 | 內容規格書 |
+| **final-review** | 驗收執行結果 | 驗收報告 |
+
+### 使用方式
+
+```bash
+# 依序執行各階段
+請以 Writer 角色，參照 revamp/0-positioning/CLAUDE.md 執行品牌定位分析
+請以 Reviewer 角色，參照 revamp/0-positioning/review/CLAUDE.md 檢查上述輸出
+
+# 繼續下一階段...
+
+# 最後驗收
+請以 Reviewer 角色，參照 revamp/final-review/CLAUDE.md 驗收執行結果
+```
+
+### 自動化工具
+
+| 工具 | 用途 | 指令 |
+|------|------|------|
+| `site-audit.sh` | 網站健檢（效能、安全、SEO） | `./revamp/tools/site-audit.sh https://example.com` |
+| `competitive-audit.sh` | 競品分析比較 | `./revamp/tools/competitive-audit.sh <our-url> <competitor1> <competitor2>` |
+
+詳細流程說明請參照 `revamp/CLAUDE.md`。
 
 ---
 
@@ -229,7 +286,19 @@ pnpm write-translations       # 產生翻譯骨架
 
 ## 參考文件
 
-完整 SEO/AEO 規則請參照：
+完整規則請參照：
+
+### SEO/AEO
 - `seo/CLAUDE.md` - SEO + AEO 規則庫
 - `seo/writer/CLAUDE.md` - Writer 執行流程
 - `seo/review/CLAUDE.md` - Reviewer 檢查清單
+
+### 改版流程
+- `revamp/CLAUDE.md` - 改版流程總覽
+- `revamp/0-positioning/CLAUDE.md` - 品牌定位
+- `revamp/1-discovery/CLAUDE.md` - 網站健檢
+- `revamp/2-competitive/CLAUDE.md` - 競品分析
+- `revamp/3-analysis/CLAUDE.md` - 受眾與差距分析
+- `revamp/4-strategy/CLAUDE.md` - 改版策略
+- `revamp/5-content-spec/CLAUDE.md` - 內容規格
+- `revamp/final-review/CLAUDE.md` - 最終驗收
