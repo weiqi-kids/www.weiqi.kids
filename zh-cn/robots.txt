@@ -4,5 +4,5 @@
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://www.weiqi.kids/sitemap.xml
+# Sitemap Index (includes all 11 locales)
+Sitemap: https://www.weiqi.kids/sitemap-index.xml
