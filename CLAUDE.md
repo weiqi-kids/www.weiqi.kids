@@ -34,6 +34,11 @@ www.weiqi.kids/
 │   └── theme/               # 主題覆寫
 ├── static/                  # 靜態資源
 ├── seo/                     # SEO/AEO 規則文件
+├── analytics/               # 流量數據收集
+│   ├── raw/                 # 原始 API 回應（按日期）
+│   ├── history/             # 歷史數據（累積）
+│   ├── current/             # 最新快照
+│   └── scripts/             # 數據處理腳本
 ├── revamp/                  # 網站改版流程
 │   ├── 0-positioning/       # 品牌定位
 │   ├── 1-discovery/         # 網站健檢
@@ -63,6 +68,46 @@ GIT_USER=weiqi-kids USE_SSH=true pnpm run deploy
 
 # 翻譯
 pnpm write-translations       # 產生翻譯骨架
+
+# 流量分析
+./revamp/tools/analyze-traffic.sh  # 產生流量分析報告
+```
+
+---
+
+## 流量監控
+
+網站使用三種數據來源監控流量：
+
+### 數據來源
+
+| 來源 | 用途 | 數據位置 |
+|------|------|----------|
+| **GitHub Traffic API** | 頁面瀏覽、流量來源 | `analytics/` |
+| **Plausible Analytics** | 即時訪客、行為分析 | Plausible Dashboard |
+| **Google Search Console** | 搜尋關鍵字、排名 | GSC Dashboard |
+
+### GitHub Traffic 數據收集
+
+- 由 GitHub Actions 每日自動執行（`.github/workflows/collect-traffic.yml`）
+- 原始數據：`analytics/raw/` （保留 30 天）
+- 歷史數據：`analytics/history/daily-views.json`、`daily-clones.json`
+- 當前快照：`analytics/current/popular-paths.json`、`referrers.json`
+
+### 流量分析指令
+
+```bash
+# 產生流量分析報告
+./revamp/tools/analyze-traffic.sh
+
+# 查看熱門頁面
+cat analytics/current/popular-paths.json | jq '.'
+
+# 查看流量來源
+cat analytics/current/referrers.json | jq '.'
+
+# 查看歷史瀏覽趨勢
+cat analytics/history/daily-views.json | jq '.views[-7:]'
 ```
 
 ---
@@ -120,6 +165,7 @@ pnpm write-translations       # 產生翻譯骨架
 |------|------|------|
 | `site-audit.sh` | 網站健檢（效能、安全、SEO） | `./revamp/tools/site-audit.sh https://example.com` |
 | `competitive-audit.sh` | 競品分析比較 | `./revamp/tools/competitive-audit.sh <our-url> <competitor1> <competitor2>` |
+| `analyze-traffic.sh` | 流量數據分析 | `./revamp/tools/analyze-traffic.sh` |
 
 詳細流程說明請參照 `revamp/CLAUDE.md`。
 

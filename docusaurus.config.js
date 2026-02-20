@@ -14,6 +14,18 @@ const config = {
   tagline: '台灣好棋寶寶協會｜致力於圍棋文化前進的推手',
   favicon: 'img/favicon.ico',
 
+  // Plausible Analytics (隱私友好的流量分析)
+  // 取消註解以下區塊啟用 Plausible Analytics
+  // 選項 A: Plausible Cloud (https://plausible.io/)
+  // 選項 B: Self-hosted Plausible
+  scripts: [
+    // {
+    //   src: 'https://plausible.io/js/script.js',
+    //   defer: true,
+    //   'data-domain': 'www.weiqi.kids',
+    // },
+  ],
+
   // SEO 全域設定
   headTags: [
     // Open Graph 基本標籤
@@ -185,18 +197,22 @@ const config = {
           src: 'img/logo.svg',
         },
         items: [
-          { to: '/docs/for-players', label: '圍棋棋友', position: 'left' },
-          { to: '/docs/for-engineers', label: 'AI工程師', position: 'left' },
-          { to: '/docs/evolution', label: '圍棋 AI 演進整理', position: 'left' },
-          { to: '/docs/aboutus', label: '協會介紹', position: 'right' },
+          { to: '/docs/for-players', label: '給棋友', position: 'left' },
+          { to: '/docs/for-engineers', label: '給工程師', position: 'left' },
+          { to: '/docs/about', label: '關於協會', position: 'left' },
+          { to: '/docs/activities', label: '活動實績', position: 'left' },
+          { to: '/docs/references', label: '參考資料', position: 'left' },
+          { to: '/docs/sop', label: '標準作業流程', position: 'left' },
           {
             type: 'localeDropdown',
             position: 'right',
+            className: 'navbar__item--compact',
           },
           {
             href: 'https://github.com/weiqi-kids/www.weiqi.kids',
-            label: 'GitHub',
+            'aria-label': 'GitHub',
             position: 'right',
+            className: 'header-github-link navbar__item--compact',
           },
         ],
       },
@@ -207,6 +223,11 @@ const config = {
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
+      },
+      colorMode: {
+        defaultMode: 'light',
+        disableSwitch: true,
+        respectPrefersColorScheme: false,
       },
     }),
 };

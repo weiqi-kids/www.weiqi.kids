@@ -1,0 +1,74 @@
+# GitHub Actions Workflow: Collect Traffic Data
+# Collects GitHub Traffic API data daily and stores in analytics/
+# Requires TRAFFIC_TOKEN secret with repo read permissions
+
+name: Collect Traffic Data
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Daily at UTC 00:00
+  workflow_dispatch:      # Manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch GitHub Traffic Data
+        env:
+          GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+        run: |
+          mkdir -p analytics/raw
+          DATE=$(date +%Y-%m-%d)
+
+          echo "Fetching traffic data for $DATE..."
+
+          # Fetch views (14-day rolling window)
+          gh api /repos/${{ github.repository }}/traffic/views \
+            > analytics/raw/views-${DATE}.json || echo '{"views":[],"count":0,"uniques":0}' > analytics/raw/views-${DATE}.json
+
+          # Fetch clones (14-day rolling window)
+          gh api /repos/${{ github.repository }}/traffic/clones \
+            > analytics/raw/clones-${DATE}.json || echo '{"clones":[],"count":0,"uniques":0}' > analytics/raw/clones-${DATE}.json
+
+          # Fetch popular paths (top 10 in last 14 days)
+          gh api /repos/${{ github.repository }}/traffic/popular/paths \
+            > analytics/raw/paths-${DATE}.json || echo '[]' > analytics/raw/paths-${DATE}.json
+
+          # Fetch referrers (top 10 in last 14 days)
+          gh api /repos/${{ github.repository }}/traffic/popular/referrers \
+            > analytics/raw/referrers-${DATE}.json || echo '[]' > analytics/raw/referrers-${DATE}.json
+
+          echo "Traffic data saved to analytics/raw/*-${DATE}.json"
+
+      - name: Merge Historical Data
+        run: node analytics/scripts/merge-traffic-data.js
+
+      - name: Update Current Snapshots
+        run: |
+          DATE=$(date +%Y-%m-%d)
+
+          # Copy latest paths and referrers to current/
+          cp analytics/raw/paths-${DATE}.json analytics/current/popular-paths.json
+          cp analytics/raw/referrers-${DATE}.json analytics/current/referrers.json
+
+      - name: Commit Data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add analytics/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update traffic data $(date +%Y-%m-%d)"
+            git push
+          fi

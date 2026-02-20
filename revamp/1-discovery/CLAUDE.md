@@ -144,6 +144,56 @@ npx broken-link-checker "${URL}" --ordered --recursive 2>/dev/null | head -100
 
 ---
 
+### 步驟 5：流量數據分析（GitHub Traffic + Plausible）
+
+如果網站已設定流量監控，執行以下分析：
+
+#### 5.1 使用流量分析腳本
+
+```bash
+# 執行流量分析報告
+./revamp/tools/analyze-traffic.sh
+```
+
+腳本會輸出：
+- 熱門頁面（過去 14 天）
+- 流量來源
+- 瀏覽趨勢
+- Clone 統計（開發者關注度）
+
+#### 5.2 分析 GitHub Traffic 數據
+
+```bash
+# 查看最新熱門頁面
+cat analytics/current/popular-paths.json | jq '.'
+
+# 查看流量來源
+cat analytics/current/referrers.json | jq '.'
+
+# 查看歷史瀏覽趨勢
+cat analytics/history/daily-views.json | jq '.views[-14:]'
+```
+
+#### 5.3 分析 Plausible 數據（如已設定）
+
+登入 Plausible Dashboard 查看：
+- 即時訪客數
+- 頁面停留時間
+- 跳出率
+- 地理位置分布
+- 裝置/瀏覽器分布
+
+#### 5.4 分析 Google Search Console 數據（如已設定）
+
+登入 GSC 查看：
+- 搜尋查詢關鍵字
+- 點擊率（CTR）
+- 平均排名
+- 索引狀態
+- Core Web Vitals 報告
+
+---
+
 ## 輸出格式
 
 ```markdown
@@ -244,6 +294,34 @@ npx broken-link-checker "${URL}" --ordered --recursive 2>/dev/null | head -100
 | 導航結構 | | |
 | CTA 明確度 | | |
 | 內容完整度 | | |
+
+### GitHub Traffic 數據（如有）：
+
+| 指標 | 數值 | 說明 |
+|------|------|------|
+| 熱門頁面 #1 | | |
+| 熱門頁面 #2 | | |
+| 主要流量來源 | | |
+| 累計瀏覽數 | | |
+| 累計獨立訪客 | | |
+
+### Plausible 數據（如有）：
+
+| 指標 | 數值 | 說明 |
+|------|------|------|
+| 頁面停留時間 | | |
+| 跳出率 | | |
+| 地理分布 Top 3 | | |
+
+### Google Search Console 數據（如有）：
+
+| 指標 | 數值 | 說明 |
+|------|------|------|
+| 總點擊數（過去 28 天） | | |
+| 總曝光數 | | |
+| 平均 CTR | | |
+| 平均排名 | | |
+| 主要搜尋關鍵字 | | |
 
 ---
 
