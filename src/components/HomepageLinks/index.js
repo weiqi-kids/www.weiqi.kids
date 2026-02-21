@@ -196,11 +196,9 @@ function LinkSection({ title, description, links }) {
   );
 }
 
-// 檢查是否已到顯示日期 (2026/3/1)
+// 友站區塊已開放顯示
 function shouldShowFriendSites() {
-  const now = new Date();
-  const showDate = new Date(2026, 2, 1); // 2026年3月1日 (月份從0開始)
-  return now >= showDate;
+  return true;
 }
 
 export default function HomepageLinks() {
