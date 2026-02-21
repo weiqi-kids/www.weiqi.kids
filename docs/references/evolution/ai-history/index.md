@@ -29,7 +29,7 @@ title: AI 圍棋發展史
 
 ## AI 圍棋的兩個時代
 
-### [AlphaGo 時代（2015-2017）](/docs/evolution/ai-history/alphago-era)
+### [AlphaGo 時代（2015-2017）](/docs/references/evolution/ai-history/alphago-era)
 
 這個時代始於 AlphaGo 擊敗樊麾，終於 AlphaZero 論文的發表。DeepMind 在短短兩年內，實現了從擊敗職業棋手到超越人類極限的飛躍。
 
@@ -40,7 +40,7 @@ title: AI 圍棋發展史
 - 2017.05：擊敗柯潔（3:0）
 - 2017.10：AlphaZero 發表
 
-### [KataGo 時代（2019-現在）](/docs/evolution/ai-history/katago-era)
+### [KataGo 時代（2019-現在）](/docs/references/evolution/ai-history/katago-era)
 
 AlphaGo 退役後，開源社群接過了火炬。KataGo、Leela Zero 等開源 AI 讓每個人都能使用頂級圍棋引擎，徹底改變了圍棋的學習和訓練方式。
 
@@ -76,5 +76,5 @@ AI 的出現讓人類認識到自己的局限性，但同時也展現了人類�
 
 接下來，讓我們詳細了解這兩個時代的具體發展。
 
-- **[AlphaGo 時代](/docs/evolution/ai-history/alphago-era)** - 從擊敗職業棋手到超越人類極限
-- **[KataGo 時代](/docs/evolution/ai-history/katago-era)** - 開源 AI 與圍棋的新生態
+- **[AlphaGo 時代](/docs/references/evolution/ai-history/alphago-era)** - 從擊敗職業棋手到超越人類極限
+- **[KataGo 時代](/docs/references/evolution/ai-history/katago-era)** - 開源 AI 與圍棋的新生態

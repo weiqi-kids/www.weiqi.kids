@@ -174,4 +174,4 @@ AlphaGo 的創新在於用神經網路取代了隨機模擬，大大提高了搜
 
 AlphaGo 的時代在 2017 年結束，但它開創的技術和理念繼續影響著圍棋和人工智慧領域。接下來的 KataGo 時代，讓這些技術走進了每一個圍棋愛好者的電腦和手機。
 
-下一篇：[KataGo 時代](/docs/evolution/ai-history/katago-era)
+下一篇：[KataGo 時代](/docs/references/evolution/ai-history/katago-era)

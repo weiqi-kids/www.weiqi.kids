@@ -113,4 +113,4 @@ title: 古代圍棋
 
 古代圍棋為這項遊戲奠定了深厚的文化基礎。然而，圍棋技術的系統化發展和職業化，要等到日本四大棋家時代才真正開始。
 
-下一篇：[近現代圍棋](/docs/evolution/human-history/japan-china-korea)
+下一篇：[近現代圍棋](/docs/references/evolution/human-history/japan-china-korea)

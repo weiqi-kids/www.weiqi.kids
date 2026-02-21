@@ -41,11 +41,11 @@ AI 讓人類看到了圍棋的更高境界：
 
 這個章節將帶你回顧圍棋從古至今的發展歷程，以及 AI 如何在短短幾年內改變了這項歷史悠久的遊戲。
 
-#### [人類圍棋發展史](/docs/evolution/human-history)
+#### [人類圍棋發展史](/docs/references/evolution/human-history)
 
 從中國古代的起源傳說，到日本四大棋家的黃金時代，再到韓國和中國的崛起，了解人類如何在數千年間發展這項智慧遊戲。
 
-#### [AI 圍棋發展史](/docs/evolution/ai-history)
+#### [AI 圍棋發展史](/docs/references/evolution/ai-history)
 
 從 2015 年 AlphaGo 首次擊敗職業棋士，到今天 KataGo 等開源 AI 的普及，見證人工智慧如何在短短幾年內超越人類數千年的智慧積累。
 

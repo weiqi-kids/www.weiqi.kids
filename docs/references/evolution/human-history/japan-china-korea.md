@@ -132,4 +132,4 @@ title: 近現代圍棋
 
 人類圍棋的發展，從古代的文化傳承，到近代的職業化競爭，經歷了漫長而精彩的演變。然而，2016 年 AlphaGo 的出現，為這段歷史畫下了一個重要的分隔線。
 
-下一章：[AI 圍棋發展史](/docs/evolution/ai-history)
+下一章：[AI 圍棋發展史](/docs/references/evolution/ai-history)

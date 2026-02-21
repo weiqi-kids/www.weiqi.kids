@@ -1,27 +1,35 @@
 {
   "title": {
-    "message": "Weiqi.Kids",
+    "message": "囲碁キッズ",
     "description": "The title in the navbar"
   },
   "logo.alt": {
-    "message": "好棋ベビー協会 Logo",
+    "message": "好棋宝宝協会ロゴ",
     "description": "The alt text of navbar logo"
   },
-  "item.label.圍棋棋友": {
+  "item.label.給棋友": {
     "message": "囲碁プレイヤー向け",
-    "description": "Navbar item with label 圍棋棋友"
+    "description": "Navbar item with label 給棋友"
   },
-  "item.label.AI工程師": {
-    "message": "AIエンジニア向け",
-    "description": "Navbar item with label AI工程師"
+  "item.label.給工程師": {
+    "message": "エンジニア向け",
+    "description": "Navbar item with label 給工程師"
   },
-  "item.label.圍棋 AI 演進整理": {
-    "message": "囲碁AI進化史",
-    "description": "Navbar item with label 圍棋 AI 演進整理"
-  },
-  "item.label.協會介紹": {
+  "item.label.關於協會": {
     "message": "協会について",
-    "description": "Navbar item with label 協會介紹"
+    "description": "Navbar item with label 關於協會"
+  },
+  "item.label.活動實績": {
+    "message": "活動実績",
+    "description": "Navbar item with label 活動實績"
+  },
+  "item.label.參考資料": {
+    "message": "参考資料",
+    "description": "Navbar item with label 參考資料"
+  },
+  "item.label.標準作業流程": {
+    "message": "標準作業手順",
+    "description": "Navbar item with label 標準作業流程"
   },
   "item.label.GitHub": {
     "message": "GitHub",

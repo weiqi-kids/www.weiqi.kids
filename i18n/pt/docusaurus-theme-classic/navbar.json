@@ -4,24 +4,32 @@
     "description": "The title in the navbar"
   },
   "logo.alt": {
-    "message": "Logo da Associação Good Go Baby",
+    "message": "Logo da Associação Weiqi Kids",
     "description": "The alt text of navbar logo"
   },
-  "item.label.圍棋棋友": {
-    "message": "Para Jogadores de Go",
-    "description": "Navbar item with label 圍棋棋友"
+  "item.label.給棋友": {
+    "message": "Para Jogadores",
+    "description": "Navbar item with label 給棋友"
   },
-  "item.label.AI工程師": {
-    "message": "Para Engenheiros de IA",
-    "description": "Navbar item with label AI工程師"
+  "item.label.給工程師": {
+    "message": "Para Engenheiros",
+    "description": "Navbar item with label 給工程師"
   },
-  "item.label.圍棋 AI 演進整理": {
-    "message": "Evolução da IA no Go",
-    "description": "Navbar item with label 圍棋 AI 演進整理"
-  },
-  "item.label.協會介紹": {
+  "item.label.關於協會": {
     "message": "Sobre Nós",
-    "description": "Navbar item with label 協會介紹"
+    "description": "Navbar item with label 關於協會"
+  },
+  "item.label.活動實績": {
+    "message": "Atividades",
+    "description": "Navbar item with label 活動實績"
+  },
+  "item.label.參考資料": {
+    "message": "Referências",
+    "description": "Navbar item with label 參考資料"
+  },
+  "item.label.標準作業流程": {
+    "message": "Procedimentos",
+    "description": "Navbar item with label 標準作業流程"
   },
   "item.label.GitHub": {
     "message": "GitHub",

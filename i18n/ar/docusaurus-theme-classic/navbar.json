@@ -1,27 +1,35 @@
 {
   "title": {
-    "message": "Weiqi.Kids",
+    "message": "ويكي كيدز",
     "description": "The title in the navbar"
   },
   "logo.alt": {
-    "message": "شعار جمعية Good Go Baby",
+    "message": "شعار جمعية ويكي كيدز",
     "description": "The alt text of navbar logo"
   },
-  "item.label.圍棋棋友": {
-    "message": "للاعبي غو",
-    "description": "Navbar item with label 圍棋棋友"
+  "item.label.給棋友": {
+    "message": "للاعبين",
+    "description": "Navbar item with label 給棋友"
   },
-  "item.label.AI工程師": {
-    "message": "لمهندسي الذكاء الاصطناعي",
-    "description": "Navbar item with label AI工程師"
+  "item.label.給工程師": {
+    "message": "للمهندسين",
+    "description": "Navbar item with label 給工程師"
   },
-  "item.label.圍棋 AI 演進整理": {
-    "message": "تطور الذكاء الاصطناعي في غو",
-    "description": "Navbar item with label 圍棋 AI 演進整理"
+  "item.label.關於協會": {
+    "message": "من نحن",
+    "description": "Navbar item with label 關於協會"
   },
-  "item.label.協會介紹": {
-    "message": "عن الجمعية",
-    "description": "Navbar item with label 協會介紹"
+  "item.label.活動實績": {
+    "message": "الأنشطة",
+    "description": "Navbar item with label 活動實績"
+  },
+  "item.label.參考資料": {
+    "message": "المراجع",
+    "description": "Navbar item with label 參考資料"
+  },
+  "item.label.標準作業流程": {
+    "message": "الإجراءات القياسية",
+    "description": "Navbar item with label 標準作業流程"
   },
   "item.label.GitHub": {
     "message": "GitHub",

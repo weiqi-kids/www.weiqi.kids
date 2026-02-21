@@ -29,8 +29,8 @@ title: 人類圍棋發展史
 
 ## 本章節內容
 
-- **[古代圍棋](/docs/evolution/human-history/ancient)** - 從中國起源到傳入日本、韓國的歷程
-- **[近現代圍棋](/docs/evolution/human-history/japan-china-korea)** - 日本棋院時代、韓國崛起與中國復興
+- **[古代圍棋](/docs/references/evolution/human-history/ancient)** - 從中國起源到傳入日本、韓國的歷程
+- **[近現代圍棋](/docs/references/evolution/human-history/japan-china-korea)** - 日本棋院時代、韓國崛起與中國復興
 
 ---
 
