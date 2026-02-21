@@ -170,10 +170,13 @@ function useLocaleSaveOnChange() {
         for (const locale of SUPPORTED_LOCALES) {
           if (href === `/${locale}/` || href === `/${locale}` ||
               (locale === DEFAULT_LOCALE && href === '/')) {
-            setTimeout(() => {
-              const newLocale = getCurrentLocaleFromURL();
-              localStorage.setItem(LOCALE_STORAGE_KEY, newLocale);
-            }, 100);
+            // 立即儲存目標語系，避免跳轉後被 useLocaleRedirect 覆蓋
+            localStorage.setItem(LOCALE_STORAGE_KEY, locale);
+            break;
+          }
+          // 檢查路徑是否包含語系前綴
+          if (href.startsWith(`/${locale}/`)) {
+            localStorage.setItem(LOCALE_STORAGE_KEY, locale);
             break;
           }
         }
