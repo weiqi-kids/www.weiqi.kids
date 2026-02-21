@@ -16,6 +16,7 @@ import TradeSvg from '@site/static/img/links/trade.svg';
 import JobSvg from '@site/static/img/links/job.svg';
 import EducationSvg from '@site/static/img/links/education.svg';
 import PolicySvg from '@site/static/img/links/policy.svg';
+import ListeningSvg from '@site/static/img/links/listening.svg';
 import NewsSvg from '@site/static/img/links/news.svg';
 import TlsrNewsSvg from '@site/static/img/links/tlsr-news.svg';
 import TlsrSocialSvg from '@site/static/img/links/tlsr-social.svg';
@@ -101,6 +102,12 @@ function getAIResearchLinks() {
       href: 'https://lightchang.github.io/brighterarc/',
       Svg: PolicySvg,
       description: translate({id: 'homepage.links.ai.policy.desc', message: '追蹤政府與政治人物的政策承諾，促進政治透明與責任。'}),
+    },
+    {
+      title: translate({id: 'homepage.links.ai.listening.title', message: '聲量監測'}),
+      href: 'https://listening.weiqi.kids/',
+      Svg: ListeningSvg,
+      description: translate({id: 'homepage.links.ai.listening.desc', message: '即時監測網路輿情與聲量變化，掌握社群討論趨勢與品牌口碑。'}),
     },
   ];
 }
