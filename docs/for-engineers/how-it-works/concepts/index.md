@@ -254,4 +254,4 @@ AlphaGo 及其後續版本的核心設計。
 - [一篇文章搞懂圍棋 AI](../) — 從 AlphaGo 到 KataGo 的完整原理
 - [AlphaGo 完整解析](../alphago-explained) — 深入技術細節
 - [KataGo 的關鍵創新](../katago-innovations) — 50 倍效率提升
-- [訓練自己的模型](../../deep-dive/training) — 進階應用
+- [KataGo 訓練機制解析](../../deep-dive/training) — 進階應用

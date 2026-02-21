@@ -419,6 +419,6 @@ if(node->visits > 1000) {
 
 ## 延伸閱讀
 
-- [訓練自己的模型](../training) — 完整訓練流程
+- [KataGo 訓練機制解析](../training) — 完整訓練流程
 - [參與開源社群](../contributing) — 貢獻指南
 - [概念速查表](../../how-it-works/concepts/) — 109 個概念對照

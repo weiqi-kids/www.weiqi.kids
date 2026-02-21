@@ -1,12 +1,12 @@
 ---
 sidebar_position: 3
-title: 訓練自己的模型
-description: 從零開始訓練圍棋 AI 模型的完整指南
+title: KataGo 訓練機制解析
+description: 深入理解 KataGo 的自我對弈訓練流程與核心技術
 ---
 
-# 訓練自己的模型
+# KataGo 訓練機制解析
 
-本文介紹如何從零開始訓練自己的圍棋 AI 模型。
+本文深入解析 KataGo 的訓練機制，幫助你理解自我對弈訓練的運作原理。
 
 ---
 

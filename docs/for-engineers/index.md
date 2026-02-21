@@ -41,7 +41,7 @@ description: 從 AlphaGo 到 KataGo，完整學習圍棋 AI 的技術原理與�
 ### 我想深入研究
 
 - [KataGo 原始碼導讀](./deep-dive/source-code) — 目錄結構與核心模組
-- [訓練自己的模型](./deep-dive/training) — 從資料準備到訓練流程
+- [KataGo 訓練機制解析](./deep-dive/training) — 從資料準備到訓練流程
 
 ### 我想了解產業
 
@@ -71,7 +71,7 @@ description: 從 AlphaGo 到 KataGo，完整學習圍棋 AI 的技術原理與�
 │
 ├── 深入/                    ← 進階研究（可選）
 │   ├── 原始碼導讀
-│   ├── 訓練自己的模型
+│   ├── KataGo 訓練機制解析
 │   └── 參與開源社群
 │
 └── 產業/                    ← 應用與趨勢
