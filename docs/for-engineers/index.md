@@ -111,6 +111,12 @@ description: 從 AlphaGo 到 KataGo，完整學習圍棋 AI 的技術原理與�
 
 完整清單請見 [概念速查表](./how-it-works/concepts/)。
 
+## 延伸資源
+
+📥 **[下載簡報 PDF：從 KataGo 看圍棋 AI 的產業升級啟示](/pdf/從%20KataGo%20看圍棋%20AI%20的產業升級啟示.pdf)**
+
+本區塊內容整合自上述演講簡報，涵蓋 AlphaGo/KataGo 技術解析、產業應用案例、以及 AI 轉型啟示。
+
 ## 開始學習
 
 準備好了嗎？選擇你的入口：
