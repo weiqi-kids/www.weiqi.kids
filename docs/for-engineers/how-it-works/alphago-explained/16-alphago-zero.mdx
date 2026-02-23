@@ -5,6 +5,19 @@ description: 從零開始、完全自學，AlphaGo Zero 如何在沒有人類棋
 keywords: [AlphaGo Zero, 自我對弈, 強化學習, 深度學習, 圍棋 AI, 無監督學習]
 ---
 
+import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<ArticleSchema
+  title="AlphaGo Zero 概述"
+  description="從零開始、完全自學，AlphaGo Zero 如何在沒有人類棋譜的情況下超越所有前代版本"
+  slug="for-engineers/how-it-works/alphago-explained/alphago-zero"
+  datePublished="2024-01-15"
+  dateModified="2024-02-22"
+  section="AlphaGo 完整解析"
+  keywords={["AlphaGo Zero", "自我對弈", "強化學習", "深度學習", "圍棋 AI", "從零開始學習", "AlphaZero", "神經網路"]}
+  wordCount={4800}
+/>
+
 # AlphaGo Zero 概述
 
 2017 年 10 月，DeepMind 發表了一個震驚 AI 界的成果：**AlphaGo Zero** 在沒有使用任何人類棋譜的情況下，從完全隨機的狀態開始訓練，僅僅三天就超越了擊敗李世乭的原版 AlphaGo，並以 **100:0** 的比分完勝。
@@ -449,3 +462,18 @@ AlphaGo Zero 的成功證明了「簡化」的重要性：
 2. Silver, D., et al. (2018). "A general reinforcement learning algorithm that masters chess, shogi, and Go through self-play." *Science*, 362(6419), 1140-1144.
 3. DeepMind. (2017). "AlphaGo Zero: Starting from scratch." *DeepMind Blog*.
 4. Schrittwieser, J., et al. (2020). "Mastering Atari, Go, Chess and Shogi by Planning with a Learned Model." *Nature*, 588, 604-609.
+
+---
+
+<KeyTakeaway>
+本文重點：
+- AlphaGo Zero 不需要人類棋譜，從隨機初始化開始純自我對弈，3 天就超越原版 AlphaGo，以 100:0 完勝
+- 關鍵簡化：輸入特徵從 48 減到 17 個平面，使用單一雙頭網路取代分離的 Policy/Value 網路，TPU 從 50+ 減到 4 個
+- 同一套演算法推廣到 AlphaZero，在圍棋、西洋棋、將棋三種棋類都達到超人水平
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "AlphaGo Zero 為什麼不需要人類棋譜也能學會圍棋？", answer: "AlphaGo Zero 透過純強化學習，只用勝負結果作為訓練訊號。它從隨機落子開始自我對弈，逐漸發現什麼是好棋。這種方法的優勢是不受人類偏見限制，能發現人類未知的下法，最終超越人類知識的上限。" },
+  { question: "AlphaGo Zero 的訓練效率為何比原版高這麼多？", answer: "三個主要原因：1）使用單一雙頭網路共享特徵學習，參數效率更高；2）純神經網路評估取代 rollout，搜索更準確；3）只有一個目標（勝率最大化），不像原版需要先模仿人類再強化學習。這讓 AlphaGo Zero 用更少資源達到更強棋力。" },
+  { question: "AlphaGo Zero 發現了哪些人類沒想過的下法？", answer: "AlphaGo Zero 發現許多顛覆傳統的下法，如：開局直接點三三、主動偏離傳統定式、使用看似「愚形」但實際更有效率的形狀、比人類更激進的棄子換取全局優勢等。這些發現正在改變現代職業圍棋的下法。" }
+]} />

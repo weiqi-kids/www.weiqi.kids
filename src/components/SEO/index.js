@@ -4,3 +4,4 @@ export { default as KeyTakeaway } from './KeyTakeaway';
 export { default as ExpertQuote } from './ExpertQuote';
 export { default as FAQ } from './FAQ';
 export { default as ActionableSteps } from './ActionableSteps';
+export { default as ArticleSchema } from './ArticleSchema';

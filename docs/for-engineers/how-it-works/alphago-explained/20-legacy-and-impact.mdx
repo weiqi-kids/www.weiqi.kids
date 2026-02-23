@@ -5,6 +5,19 @@ description: 從圍棋到蛋白質結構，AlphaGo 的技術遺產如何改變 A
 keywords: [AlphaGo, AlphaZero, MuZero, AlphaFold, 深度強化學習, AI 影響, 圍棋 AI]
 ---
 
+import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<ArticleSchema
+  title="AlphaGo 的遺產"
+  description="從圍棋到蛋白質結構，AlphaGo 的技術遺產如何改變 AI 研究與整個科學界"
+  slug="for-engineers/how-it-works/alphago-explained/legacy-and-impact"
+  datePublished="2024-01-15"
+  dateModified="2024-02-22"
+  section="AlphaGo 完整解析"
+  keywords={["AlphaGo", "AlphaZero", "MuZero", "AlphaFold", "深度強化學習", "AI 影響", "圍棋 AI", "諾貝爾獎"]}
+  wordCount={4400}
+/>
+
 # AlphaGo 的遺產
 
 2016 年 3 月，AlphaGo 擊敗李世乭的那一刻，不只是圍棋歷史的轉折點，更是人工智慧發展的里程碑。從那時起，AlphaGo 的技術核心被應用到越來越多的領域，從遊戲到科學發現，從基礎研究到實際應用。
@@ -412,3 +425,18 @@ AlphaGo 證明了：**正確的方法 + 足夠的計算，可以解決曾被認�
 6. 《AlphaGo》紀錄片（2017），導演 Greg Kohs。
 7. Hassabis, D. (2017). "Artificial Intelligence: Chess match of the century." *Nature*, 544, 413-414.
 8. Kasparov, G. (2018). "Chess, a Drosophila of reasoning." *Science*, 362(6419), 1087.
+
+---
+
+<KeyTakeaway>
+本文重點：
+- AlphaGo 對圍棋界的影響：改變棋理認知（如開局直接點三三）、AI 訓練成為職業棋手標配、激發新一代棋手
+- 技術演進路線：AlphaGo → AlphaZero（通用棋類）→ MuZero（無需規則學習）→ AlphaFold（蛋白質結構，2024 諾貝爾獎）
+- 方法論轉變：從「專家知識編碼」轉向「從第一性原理學習」，讓機器自己發現知識比教它知識更有效
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "AlphaGo 如何改變了職業圍棋界？", answer: "AlphaGo 帶來多項棋理革新：開局直接點三三可行、可主動偏離定式、某些「愚形」其實是好棋等。現在 AI 訓練是職業棋手標配，用於覆盤分析、開局準備、戰術訓練。新一代棋手從小接受 AI 指導，整體水平可能比前一代更高。" },
+  { question: "AlphaFold 和 AlphaGo 有什麼技術關聯？", answer: "AlphaFold 繼承了 AlphaGo 的核心理念：深度神經網路、端到端學習、迭代優化。雖然 AlphaFold 使用 Transformer + Attention 而非 CNN，但「讓機器自己學習而非編碼專家知識」的哲學一脈相承。AlphaFold 解決了蛋白質結構預測這個 50 年難題，其創造者在 2024 年獲得諾貝爾化學獎。" },
+  { question: "MuZero 和 AlphaZero 有什麼不同？", answer: "AlphaZero 需要知道遊戲規則才能進行 MCTS 搜索；MuZero 更進一步，連規則都不需要，它自己學習環境的動態模型。MuZero 學習三個函數：表示函數（觀察→隱狀態）、動態函數（預測下一狀態）、預測函數（策略和價值）。這讓它能應用於更多領域，如 Atari 遊戲、視訊壓縮、資料中心冷卻等。" }
+]} />

@@ -5,6 +5,18 @@ description: 從棋理、專家反應到 AI 視角，完整解讀 AlphaGo 對李
 ---
 
 import { PolicyHeatmap } from '@site/src/components/D3Charts';
+import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<ArticleSchema
+  title="「神之一手」深度分析"
+  description="從棋理、專家反應到 AI 視角，完整解讀 AlphaGo 對李世乭第二盤的第 37 手"
+  slug="for-engineers/how-it-works/alphago-explained/03-move-37"
+  datePublished="2024-01-15"
+  dateModified="2024-02-22"
+  section="AlphaGo 完整解析"
+  keywords={["神之一手", "第37手", "AlphaGo", "李世乭", "五路肩衝", "圍棋AI", "MCTS", "Policy Network"]}
+  wordCount={4800}
+/>
 
 # 「神之一手」深度分析
 
@@ -545,3 +557,18 @@ AlphaGo 有「直覺」嗎？
 4. 李世乭 vs AlphaGo 第二盤官方棋譜
 5. Go4Go.net 專業棋譜分析
 6. 韓國棋院賽後技術報告
+
+---
+
+<KeyTakeaway>
+本文重點：
+- 第 37 手「五路肩衝」是人類棋手幾乎不會考慮的位置（萬分之一機率），卻被 MCTS 深度搜索證明是最佳選擇
+- Policy Network 給第 37 手的機率較低，但 MCTS 通過數千次模擬發現它的長期價值更高，體現了「直覺 + 推理」的結合
+- 這步棋改變了圍棋理論，讓人類棋手認識到經驗可能成為認知的限制
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "為什麼職業棋手一開始認為第 37 手是失誤？", answer: "傳統圍棋理論認為五路太高、效率低、容易被攻擊。人類的經驗和直覺讓他們「看不見」這個選項。但 AlphaGo 通過深度搜索發現，在這個特定局面下，破壞白棋外勢比佔實地更有價值。" },
+  { question: "MCTS 如何發現 Policy Network 忽略的好棋？", answer: "MCTS 使用 PUCT 公式平衡探索與利用。即使 Policy Network 給某位置的初始機率較低，只要深度模擬顯示它的預期勝率高，MCTS 就會逐漸增加對該位置的探索，最終可能選擇它。" },
+  { question: "第 37 手對圍棋理論有什麼長遠影響？", answer: "這步棋讓圍棋界重新思考「厚勢」的價值和「位置高低」的判斷標準。很多職業棋手開始使用 AI 訓練，學習突破傳統定式的新下法。" }
+]} />

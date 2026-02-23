@@ -5,6 +5,18 @@ description: 深入理解 AlphaGo 的核心選擇機制：PUCT 公式的數學�
 ---
 
 import { MCTSTree } from '@site/src/components/D3Charts';
+import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<ArticleSchema
+  title="PUCT 公式詳解"
+  description="深入理解 AlphaGo 的核心選擇機制：PUCT 公式的數學原理與調參經驗"
+  slug="for-engineers/how-it-works/alphago-explained/puct-formula"
+  datePublished="2024-01-15"
+  dateModified="2024-02-22"
+  section="AlphaGo 完整解析"
+  keywords={["PUCT 公式", "AlphaGo", "蒙地卡羅樹搜索", "MCTS", "探索與利用", "UCB1", "多臂賭博機", "強化學習"]}
+  wordCount={5200}
+/>
 
 # PUCT 公式詳解
 
@@ -725,3 +737,18 @@ def play_game():
 - 樹的重用
 - 狄利克雷噪音
 - 溫度控制等功能
+
+---
+
+<KeyTakeaway>
+本文重點：
+- PUCT 公式 = Q(s,a) + U(s,a)，平衡「利用已知好走法」和「探索未知可能性」
+- 探索常數 c_puct 控制探索與利用的權衡，AlphaGo 使用 1.5，最佳值通常在 1.0-2.0 之間
+- PUCT 相比傳統 UCB1 的優勢：利用 Policy Network 的先驗機率引導搜索，收斂更快
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "PUCT 公式中的 Q 值和 U 值分別代表什麼？", answer: "Q(s,a) 是利用項，代表動作的平均價值，反映「這步棋過去的表現」；U(s,a) 是探索項，代表動作的探索價值，反映「這步棋還有多少探索空間」。兩者相加決定最終選擇哪個動作。" },
+  { question: "為什麼 AlphaGo 使用 PUCT 而非傳統的 UCB1？", answer: "PUCT 能夠利用 Policy Network 提供的先驗機率，讓搜索從一開始就聚焦在合理的走法上。此外，PUCT 的線性探索衰減比 UCB1 的對數衰減更快收斂，更適合有強先驗的場景。" },
+  { question: "c_puct 參數該如何調整？", answer: "c_puct 值較小（如 0.5）更偏向利用已知好棋；較大（如 5）更偏向探索新可能。最佳值取決於網路品質和搜索預算：網路很強時可用較小值，搜索次數多時可用較大值。典型值在 1.0-2.0 之間。" }
+]} />

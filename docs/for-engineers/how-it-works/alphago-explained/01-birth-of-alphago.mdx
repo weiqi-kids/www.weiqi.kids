@@ -4,6 +4,19 @@ title: AlphaGo 的誕生
 description: 從 DeepMind 創立到 Google 收購，AlphaGo 如何從一個瘋狂的想法變成改變世界的 AI
 ---
 
+import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<ArticleSchema
+  title="AlphaGo 的誕生"
+  description="從 DeepMind 創立到 Google 收購，AlphaGo 如何從一個瘋狂的想法變成改變世界的 AI"
+  slug="for-engineers/how-it-works/alphago-explained/01-birth-of-alphago"
+  datePublished="2024-01-15"
+  dateModified="2024-02-22"
+  section="AlphaGo 完整解析"
+  keywords={["AlphaGo", "DeepMind", "Demis Hassabis", "Google AI", "圍棋AI", "李世乭", "人工智慧歷史", "深度學習"]}
+  wordCount={3200}
+/>
+
 # AlphaGo 的誕生
 
 2016 年 3 月，當 AlphaGo 以 4:1 擊敗李世乭時，全世界都在問：這個改變人工智慧歷史的程式，究竟是怎麼誕生的？
@@ -430,3 +443,18 @@ AlphaGo 證明了幾件事：
 2. Mnih, V., et al. (2015). "Human-level control through deep reinforcement learning." *Nature*, 518, 529-533.
 3. Hassabis, D. (2017). "Artificial Intelligence: Chess match of the century." *Nature*, 544, 413-414.
 4. 《AlphaGo》紀錄片 (2017)，導演 Greg Kohs。
+
+---
+
+<KeyTakeaway>
+本文重點：
+- DeepMind 由 Demis Hassabis 創立，結合神經科學、遊戲設計與機器學習背景，目標是創造通用人工智慧（AGI）
+- AlphaGo 的成功來自跨領域團隊合作：圍棋專家（黃士傑）、強化學習專家（David Silver）與工程師的結合
+- 2016 年 AlphaGo 以 4:1 擊敗李世乭，證明深度學習與強化學習能解決傳統 AI 無法攻克的複雜問題
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "DeepMind 為什麼選擇圍棋作為 AI 研究目標？", answer: "圍棋被稱為「AI 的聖杯」，因為它的搜索空間（10^170）遠超宇宙原子數，且需要直覺判斷而非暴力計算。攻克圍棋代表 AI 在複雜決策問題上的重大突破。" },
+  { question: "AlphaGo 的核心創新是什麼？", answer: "AlphaGo 結合了三大創新：Policy Network（策略網路）預測下一步、Value Network（價值網路）評估局面勝率、以及將這兩個神經網路整合進蒙地卡羅樹搜索（MCTS）框架。" },
+  { question: "李世乭為什麼能在第四盤贏 AlphaGo？", answer: "李世乭下出了精妙的第 78 手「神之一手」，這步棋暴露了 AlphaGo 在特定複雜局面下的評估錯誤，導致它在後續幾步下出明顯的壞棋而認輸。" }
+]} />

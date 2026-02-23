@@ -5,6 +5,18 @@ description: 深入理解 AlphaGo 的策略網路架構、訓練方法與實際�
 ---
 
 import { PolicyHeatmap } from '@site/src/components/D3Charts';
+import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<ArticleSchema
+  title="Policy Network 詳解"
+  description="深入理解 AlphaGo 的策略網路架構、訓練方法與實際應用，從 13 層卷積到 Softmax 輸出"
+  slug="for-engineers/how-it-works/alphago-explained/07-policy-network"
+  datePublished="2024-01-15"
+  dateModified="2024-02-22"
+  section="AlphaGo 完整解析"
+  keywords={["Policy Network", "策略網路", "卷積神經網路", "CNN", "AlphaGo", "Softmax", "監督學習", "強化學習"]}
+  wordCount={4600}
+/>
 
 # Policy Network 詳解
 
@@ -608,3 +620,18 @@ Policy Network 是 AlphaGo 的「直覺」——它讓 AI 能夠像人類一樣�
 2. Maddison, C. J., et al. (2014). "Move Evaluation in Go Using Deep Convolutional Neural Networks." *arXiv:1412.6564*.
 3. Sutton, R. S., & Barto, A. G. (2018). *Reinforcement Learning: An Introduction*. MIT Press.
 4. LeCun, Y., Bengio, Y., & Hinton, G. (2015). "Deep learning." *Nature*, 521, 436-444.
+
+---
+
+<KeyTakeaway>
+本文重點：
+- Policy Network 是 13 層 CNN，輸入 19x19x48 的特徵張量，輸出 362 個位置的機率分布（含 pass）
+- 訓練達到 57% 的 top-1 準確率（預測人類下一步），將 MCTS 搜索空間縮小約一萬億倍
+- 強化學習微調讓 Policy Network 從「模仿人類」進化到「追求勝利」，能下出人類未曾想過的創新著法
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "為什麼 Policy Network 使用 CNN 而不是其他架構？", answer: "圍棋棋盤是二維網格，局部模式（如眼位、斷點）非常重要。CNN 的卷積核可以有效捕捉這些局部模式，且透過多層堆疊可以獲得大的感受野來理解全局。這與圍棋「局部到全局」的思考方式非常吻合。" },
+  { question: "為什麼只有 57% 準確率但棋力很強？", answer: "57% 準確率已經遠超之前的程式（44%），且很多局面有多步好棋，模型選了另一步好棋也會被算「錯」。更重要的是，Policy Network 與 MCTS 結合後，可以透過深度搜索發現更好的選擇。" },
+  { question: "輕量版 Policy Network 有什麼用？", answer: "輕量版使用線性模型，速度比完整版快 1500 倍（2 微秒 vs 3 毫秒）。它用於 MCTS 的隨機模擬（rollout）階段，需要從當前節點下到終局，可能需要 100+ 步，速度比精度更重要。" }
+]} />

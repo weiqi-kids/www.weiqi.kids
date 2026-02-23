@@ -4,6 +4,19 @@ title: 關鍵對局回顧
 description: 從樊麾的秘密對局到柯潔的三番勝負，完整回顧 AlphaGo 的每一場重要對局
 ---
 
+import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<ArticleSchema
+  title="關鍵對局回顧"
+  description="從樊麾的秘密對局到柯潔的三番勝負，完整回顧 AlphaGo 的每一場重要對局"
+  slug="for-engineers/how-it-works/alphago-explained/02-key-matches"
+  datePublished="2024-01-15"
+  dateModified="2024-02-22"
+  section="AlphaGo 完整解析"
+  keywords={["AlphaGo對局", "李世乭", "柯潔", "樊麾", "Master", "圍棋AI比賽", "人機大戰", "烏鎮圍棋峰會"]}
+  wordCount={4500}
+/>
+
 # 關鍵對局回顧
 
 AlphaGo 的歷史，是由一場場震撼世界的對局寫成的。從 2015 年 10 月在倫敦的秘密對局，到 2017 年 5 月在烏鎮的告別演出，每一盤棋都在改寫人類對圍棋與人工智慧的認知。
@@ -506,3 +519,18 @@ DeepMind 團隊進行了大量內部測試：
 4. DeepMind 官方 Blog：AlphaGo 系列文章
 5. 李世乭對局官方棋譜與評論（韓國棋院）
 6. 烏鎮圍棋峰會官方紀錄
+
+---
+
+<KeyTakeaway>
+本文重點：
+- AlphaGo 經歷四個階段：2015 年秘密擊敗樊麾 5:0、2016 年擊敗李世乭 4:1、2017 年 Master 線上 60 連勝、2017 年擊敗柯潔 3:0
+- 每個版本的 AlphaGo 都比前一版強大許多：AlphaGo Master 對 Lee 版本勝率超過 99%
+- 這些對局不只改變了圍棋界，更引發了全球對 AI 能力與倫理的深度討論
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "為什麼 DeepMind 先與樊麾對局而不是直接挑戰世界冠軍？", answer: "DeepMind 需要驗證 AlphaGo 的實力，同時保持學術論文發表前的保密。樊麾是歐洲最強的職業棋手，地理位置方便且願意保密，是理想的測試對象。" },
+  { question: "Master 在線上 60 連勝的意義是什麼？", answer: "Master 擊敗了超過 50 位職業九段，包括柯潔、朴廷桓等世界頂尖棋手，證明 AlphaGo 已經遠超人類最高水平，且快棋能力極強。這讓圍棋界意識到人機差距比想像中更大。" },
+  { question: "AlphaGo 為什麼在烏鎮峰會後宣布退役？", answer: "DeepMind 認為 AlphaGo 已完成使命——證明 AI 可以在圍棋這個人類智慧巔峰領域超越人類。接下來團隊要將技術應用到醫療、能源、科學研究等更重要的問題上。" }
+]} />

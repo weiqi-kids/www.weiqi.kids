@@ -5,6 +5,19 @@ description: 深入解析 AlphaGo 的分散式訓練架構、TPU 加速與大規
 keywords: [分散式系統, TPU, 並行計算, MCTS, 虛擬損失, 深度學習, 硬體加速]
 ---
 
+import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<ArticleSchema
+  title="分散式系統與 TPU"
+  description="深入解析 AlphaGo 的分散式訓練架構、TPU 加速與大規模並行 MCTS"
+  slug="for-engineers/how-it-works/alphago-explained/distributed-systems"
+  datePublished="2024-01-15"
+  dateModified="2024-02-22"
+  section="AlphaGo 完整解析"
+  keywords={["分散式系統", "TPU", "並行計算", "MCTS", "虛擬損失", "深度學習", "硬體加速", "批次推理"]}
+  wordCount={4600}
+/>
+
 # 分散式系統與 TPU
 
 AlphaGo 的成功不僅是演算法的勝利，也是工程的勝利。要在合理時間內訓練出超越人類的圍棋 AI，需要精心設計的分散式系統和專用硬體的支援。
@@ -557,3 +570,18 @@ AlphaGo 的架構啟發了多個開源項目：
 3. Dean, J., et al. (2012). "Large Scale Distributed Deep Networks." *NeurIPS 2012*.
 4. Chaslot, G., et al. (2008). "Parallel Monte-Carlo Tree Search." *CIG 2008*.
 5. Segal, R. (2010). "On the Scalability of Parallel UCT." *CIG 2010*.
+
+---
+
+<KeyTakeaway>
+本文重點：
+- AlphaGo Zero 的訓練架構：Self-play Workers 持續產生資料、Training Workers 同步訓練、Replay Buffer 儲存最近 50 萬局
+- TPU 的關鍵作用：神經網路推理佔計算量 95%，TPU 的 MXU 單元每週期執行 16K 次乘加運算，是高效搜索的基礎
+- 虛擬損失技術：讓多執行緒同時探索不同路徑，透過批次神經網路評估大幅提升並行 MCTS 效率
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "什麼是虛擬損失（Virtual Loss），它如何讓 MCTS 並行化？", answer: "虛擬損失是一種技術，當一個執行緒正在探索某個節點時，臨時降低該節點的價值，讓其他執行緒選擇不同路徑。這樣可以同時收集多個待評估的葉節點，進行批次神經網路推理，大幅提升效率。探索完成後虛擬損失會被真實值覆蓋，不影響最終結果。" },
+  { question: "為什麼 AlphaGo 需要 TPU 而不是 GPU？", answer: "圍棋 AI 的計算瓶頸是神經網路推理（佔 95%），每步 MCTS 需要執行 1600 次推理。TPU 是 Google 專為矩陣運算設計的加速器，其 MXU 單元特別擅長這類計算，功耗更低、延遲更少。從 AlphaGo Lee 的 48 TPU 到 AlphaGo Zero 的 4 TPU，效率提升超過 10 倍。" },
+  { question: "AlphaGo Zero 的完整訓練成本大約是多少？", answer: "以 Google Cloud 定價估算，每天約 $3,700（4 TPU v2 Pod + 高記憶體 VM + 儲存空間），完整 40 天訓練約 $150,000。但這只是雲端租用成本，DeepMind 作為 Google 子公司可能有內部折扣。對比之下，培養一位職業棋手需要 10-15 年和數百萬的總成本。" }
+]} />

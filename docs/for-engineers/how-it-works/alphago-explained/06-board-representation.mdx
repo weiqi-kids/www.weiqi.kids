@@ -6,6 +6,18 @@ keywords: [棋盤表示, Zobrist Hashing, Union-Find, 特徵編碼, AlphaGo特�
 ---
 
 import { GoBoard } from '@site/src/components/D3Charts';
+import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<ArticleSchema
+  title="棋盤狀態表示"
+  description="從二維陣列到神經網路特徵平面，深入理解圍棋 AI 如何「看」棋盤"
+  slug="for-engineers/how-it-works/alphago-explained/06-board-representation"
+  datePublished="2024-01-15"
+  dateModified="2024-02-22"
+  section="AlphaGo 完整解析"
+  keywords={["棋盤表示", "Zobrist Hashing", "Union-Find", "特徵編碼", "AlphaGo特徵平面", "神經網路輸入", "對稱性處理"]}
+  wordCount={6000}
+/>
 
 # 棋盤狀態表示
 
@@ -864,3 +876,18 @@ def predict_with_symmetry(model, board):
 2. Tarjan, R. E. (1975). "Efficiency of a Good But Not Linear Set Union Algorithm." Journal of the ACM, 22(2), 215-225.
 3. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." Nature, 529, 484-489. — AlphaGo 48 個特徵平面
 4. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." Nature, 550, 354-359. — AlphaGo Zero 17 個特徵平面
+
+---
+
+<KeyTakeaway>
+本文重點：
+- Zobrist Hashing 使用 XOR 運算，可以在 O(1) 時間內判斷兩個局面是否相同，是處理打劫和 transposition table 的關鍵技術
+- AlphaGo 使用 48 個特徵平面編碼棋盤，包含棋子位置、氣數、歷史著法等資訊；AlphaGo Zero 簡化為 17 個平面，讓網路自己學習特徵
+- 圍棋棋盤具有 8 種對稱性（二面體群 D4），可用於資料增強，讓訓練資料免費增加 8 倍
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "為什麼 Zobrist Hashing 可以用 O(1) 時間更新雜湊值？", answer: "Zobrist Hashing 利用 XOR 的自反性（A XOR A = 0）和可逆性。落子只需 XOR 一個預先生成的隨機數，提子也是同樣操作。這比逐格比較（O(361)）快得多，在 MCTS 大量模擬中非常重要。" },
+  { question: "AlphaGo Zero 為什麼可以只用 17 個特徵平面？", answer: "AlphaGo 原版用 48 個平面包含氣數、征子分析等手工計算的特徵。但 AlphaGo Zero 證明：讓神經網路自己從棋子位置歷史中學習這些特徵更有效。這體現了深度學習「端到端」的優勢。" },
+  { question: "Union-Find 在圍棋 AI 中有什麼用途？", answer: "Union-Find 用於高效管理棋串（連通的同色棋子）。每次落子可能創建、合併棋串或減少敵方氣數。使用 Union-Find，這些操作都是接近 O(1) 的時間複雜度，對 MCTS 的大量模擬至關重要。" }
+]} />

@@ -6,6 +6,18 @@ keywords: [圍棋複雜度, 狀態空間, 分支因子, AI聖杯, 圍棋AI難度
 ---
 
 import { GoBoard, PolicyHeatmap } from '@site/src/components/D3Charts';
+import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<ArticleSchema
+  title="圍棋為什麼難？"
+  description="從狀態空間爆炸到長期規劃，深入解析圍棋被稱為「AI 聖杯」的原因"
+  slug="for-engineers/how-it-works/alphago-explained/04-why-go-is-hard"
+  datePublished="2024-01-15"
+  dateModified="2024-02-22"
+  section="AlphaGo 完整解析"
+  keywords={["圍棋複雜度", "狀態空間", "分支因子", "AI聖杯", "圍棋AI難度", "搜索空間", "評估函數"]}
+  wordCount={3800}
+/>
 
 # 圍棋為什麼難？
 
@@ -471,3 +483,18 @@ $$
 2. Allis, L.V. (1994). "Searching for Solutions in Games and Artificial Intelligence." PhD thesis, University of Limburg. — 遊戲複雜度的理論分析
 3. Müller, M. (2002). "Computer Go." Artificial Intelligence, 134(1-2), 145-179. — 電腦圍棋的早期研究綜述
 4. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." Nature, 529, 484-489. — AlphaGo 原始論文
+
+---
+
+<KeyTakeaway>
+本文重點：
+- 圍棋的狀態空間達 10^170，是宇宙原子數（10^80）的 10^90 倍，暴力搜索在物理上不可能
+- 圍棋每步平均有 250 種選擇（分支因子），遠高於西洋棋的 35，導致搜索樹爆炸性增長
+- 圍棋沒有簡單的棋子價值，「厚勢」「外勢」等抽象概念難以量化，傳統評估函數無法處理
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "為什麼圍棋的狀態空間比西洋棋大這麼多？", answer: "圍棋棋盤有 361 個點（19x19），每個點可以是空、黑或白三種狀態。而且圍棋棋子落下後不會移動（除非被提），導致可能的局面組合遠超西洋棋（64 格，棋子會移動）。" },
+  { question: "為什麼深藍的暴力搜索方法在圍棋上失敗？", answer: "深藍靠每秒評估 2 億個局面來下西洋棋。但圍棋的分支因子（250）遠高於西洋棋（35），同樣深度的搜索需要評估的節點數相差數億倍，沒有任何硬體能彌補這個差距。" },
+  { question: "為什麼圍棋被稱為「AI 的聖杯」？", answer: "圍棋結合了所有困難特性：極大的狀態空間、高分支因子、難以量化的評估、需要長期規劃。能解決圍棋意味著 AI 具備處理極複雜問題、學會抽象評估、形成「直覺」的能力，這些是通用智能的核心特徵。" }
+]} />
