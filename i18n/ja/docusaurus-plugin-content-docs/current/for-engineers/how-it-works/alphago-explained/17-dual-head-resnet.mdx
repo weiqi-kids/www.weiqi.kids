@@ -19,21 +19,20 @@ AlphaGo Zero の最も重要なアーキテクチャ革新の1つは、元祖 Al
 
 AlphaGo Zero のニューラルネットワークは3つの部分に分けられます：
 
-```
-入力（17 × 19 × 19）
-       ↓
-┌─────────────────────────────────────────┐
-│            共有バックボーン（ResNet）      │
-│        40個の残差ブロック、256チャネル     │
-└─────────────────────────────────────────┘
-       ↓                    ↓
-┌─────────────┐      ┌─────────────┐
-│  Policy Head │      │  Value Head  │
-│  (戦略ヘッド) │      │  (価値ヘッド) │
-└─────────────┘      └─────────────┘
-       ↓                    ↓
-  19×19 確率分布          勝率 [-1, 1]
-  + 1 Pass 確率
+```mermaid
+flowchart TB
+    Input["入力（17 × 19 × 19）"]
+    Backbone["共有バックボーン（ResNet）<br/>40個の残差ブロック、256チャネル"]
+    Policy["Policy Head<br/>(戦略ヘッド)"]
+    Value["Value Head<br/>(価値ヘッド)"]
+    POut["19×19 確率分布<br/>+ 1 Pass 確率"]
+    VOut["勝率 [-1, 1]"]
+
+    Input --> Backbone
+    Backbone --> Policy
+    Backbone --> Value
+    Policy --> POut
+    Value --> VOut
 ```
 
 各部分を順に解説します。
@@ -209,22 +208,19 @@ ResNet が発明される前、深層ニューラルネットワークはパラ�
 
 何愷明らは2015年に、シンプルでエレガントな解決策を提案しました：**残差接続（Skip Connection）**。
 
-```
-入力 x
-   ↓
-┌─────────────┐
-│  畳み込み層   │
-│  BN + ReLU  │
-│  畳み込み層   │
-│  BN        │
-└─────────────┘
-   ↓ F(x)
-   ↓←────────────── x（スキップ接続）
-   +
-   ↓
- ReLU
-   ↓
-出力 x + F(x)
+```mermaid
+flowchart TB
+    X["入力 x"]
+    Conv["畳み込み層<br/>BN + ReLU<br/>畳み込み層<br/>BN"]
+    Add(("+"))
+    ReLU["ReLU"]
+    Out["出力 x + F(x)"]
+
+    X --> Conv
+    Conv -->|"F(x)"| Add
+    X -->|"x（スキップ接続）"| Add
+    Add --> ReLU
+    ReLU --> Out
 ```
 
 #### 数学的表現
@@ -308,17 +304,16 @@ DeepMind は異なる深さの ResNet をテストしました：
 
 AlphaGo Zero の ResNet 構成は以下の通りです：
 
-```
-入力：17 × 19 × 19
-↓
-畳み込み層：3×3, 256チャネル, BN, ReLU
-↓
-残差ブロック ×40：
-  ├─ 畳み込み層：3×3, 256チャネル, BN, ReLU
-  ├─ 畳み込み層：3×3, 256チャネル, BN
-  └─ スキップ接続 + ReLU
-↓
-Policy Head / Value Head
+```mermaid
+flowchart TB
+    Input["入力：17 × 19 × 19"]
+    Conv1["畳み込み層：3×3, 256チャネル, BN, ReLU"]
+    ResBlock["残差ブロック ×40<br/>・畳み込み層：3×3, 256チャネル, BN, ReLU<br/>・畳み込み層：3×3, 256チャネル, BN<br/>・スキップ接続 + ReLU"]
+    Output["Policy Head / Value Head"]
+
+    Input --> Conv1
+    Conv1 --> ResBlock
+    ResBlock --> Output
 ```
 
 #### パラメータ数の推定

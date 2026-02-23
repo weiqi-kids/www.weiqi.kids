@@ -14,32 +14,19 @@ Este artigo analisa em profundidade a arquitetura completa da rede neural do Kat
 
 O KataGo utiliza um design de **rede neural única com múltiplas saídas**:
 
-```
-Recursos de Entrada (19×19×22)
-        │
-        ▼
-┌───────────────────┐
-│  Camada Convolucional│
-│  Inicial 256 filtros │
-└─────────┬─────────┘
-          │
-          ▼
-┌───────────────────┐
-│   Torre Residual    │
-│  20-60 blocos residuais│
-│  + Camadas de Pooling Global│
-└─────────┬─────────┘
-          │
-    ┌─────┴─────┬─────────┬─────────┐
-    │           │         │         │
-    ▼           ▼         ▼         ▼
- Policy      Value     Score   Ownership
-  Head       Head      Head      Head
-    │           │         │         │
-    ▼           ▼         ▼         ▼
-362 prob.   Taxa de   Diferença  361 territ.
-(incl. pass)  vitória   de pontos  (-1~+1)
-            (-1~+1)    (pontos)
+```mermaid
+flowchart TB
+    Input["Recursos de Entrada (19×19×22)"]
+    Input --> InitConv["Camada Convolucional Inicial<br/>256 filtros"]
+    InitConv --> ResNet["Torre Residual<br/>20-60 blocos residuais<br/>+ Camadas de Pooling Global"]
+    ResNet --> Policy["Policy Head"]
+    ResNet --> Value["Value Head"]
+    ResNet --> Score["Score Head"]
+    ResNet --> Ownership["Ownership Head"]
+    Policy --> PolicyOut["362 prob.<br/>(incl. pass)"]
+    Value --> ValueOut["Taxa de vitoria<br/>(-1~+1)"]
+    Score --> ScoreOut["Diferenca de pontos<br/>(pontos)"]
+    Ownership --> OwnerOut["361 territ.<br/>(-1~+1)"]
 ```
 
 ---
@@ -114,34 +101,18 @@ def encode_rules(rules, komi):
 
 O KataGo usa a estrutura **Pre-activation ResNet**:
 
-```
-Entrada x
-    │
-    ├────────────────────┐
-    │                    │
-    ▼                    │
-BatchNorm                │
-    │                    │
-    ▼                    │
-ReLU                     │
-    │                    │
-    ▼                    │
-Conv 3×3                 │
-    │                    │
-    ▼                    │
-BatchNorm                │
-    │                    │
-    ▼                    │
-ReLU                     │
-    │                    │
-    ▼                    │
-Conv 3×3                 │
-    │                    │
-    ▼                    │
-    +  ←─────────────────┘ (conexão residual)
-    │
-    ▼
-Saída
+```mermaid
+flowchart TB
+    X["Entrada x"] --> BN1["BatchNorm"]
+    X --> Skip["conexao residual"]
+    BN1 --> ReLU1["ReLU"]
+    ReLU1 --> Conv1["Conv 3×3"]
+    Conv1 --> BN2["BatchNorm"]
+    BN2 --> ReLU2["ReLU"]
+    ReLU2 --> Conv2["Conv 3×3"]
+    Conv2 --> Add(("+"))
+    Skip --> Add
+    Add --> Out["Saida"]
 ```
 
 ### Exemplo de Código

@@ -170,16 +170,12 @@ def extract_features(board, history, current_player):
 
 Papan Go memiliki **8-fold symmetry** (4 rotasi x 2 refleksi). Setiap sampel asli dapat menjadi 8:
 
+```mermaid
+flowchart LR
+    A["Asli"] --> B["Rotasi 90°"] --> C["Rotasi 180°"] --> D["Rotasi 270°"]
 ```
-Asli:      Rotasi 90°:   Rotasi 180°:  Rotasi 270°:
-┌───┐      ┌───┐         ┌───┐         ┌───┐
-│ ● │      │   │         │   │         │   │
-│   │  →   │   │    →    │   │    →    │   │
-│   │      │ ● │         │ ● │         │ ● │
-└───┘      └───┘         └───┘         └───┘
 
-Masing-masing di-flip horizontal lagi, mendapatkan 8 sampel pelatihan yang setara
-```
+*Masing-masing di-flip horizontal lagi, mendapatkan 8 sampel pelatihan yang setara*
 
 Ini meningkatkan data pelatihan efektif 8 kali lipat, sekaligus memastikan model mempelajari pola yang tidak bergantung pada arah tertentu.
 

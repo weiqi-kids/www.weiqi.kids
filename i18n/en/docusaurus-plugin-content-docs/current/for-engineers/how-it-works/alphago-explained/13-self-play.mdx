@@ -359,22 +359,20 @@ These observations show that while we lack theoretical guarantees, self-play is 
 
 To accelerate training, AlphaGo uses large-scale parallel self-play:
 
-```
-Architecture:
+```mermaid
+flowchart TB
+    PS["Parameter Server<br/>(Stores latest θ, receives gradient updates)"]
 
-    ┌────────────────────────────────────────────┐
-    │           Parameter Server                  │
-    │    (Stores latest θ, receives gradient updates) │
-    └────────────────────────────────────────────┘
-         ▲                              │
-         │ Gradient updates             │ Latest parameters
-         │                              ▼
-    ┌─────────┐  ┌─────────┐  ┌─────────┐
-    │ Worker 1 │  │ Worker 2 │  │ Worker N │
-    │ Self-play │  │ Self-play │  │ Self-play │
-    │ Collect   │  │ Collect   │  │ Collect   │
-    │ trajectories│  │ trajectories│  │ trajectories│
-    └─────────┘  └─────────┘  └─────────┘
+    W1["Worker 1<br/>Self-play<br/>Collect trajectories"]
+    W2["Worker 2<br/>Self-play<br/>Collect trajectories"]
+    WN["Worker N<br/>Self-play<br/>Collect trajectories"]
+
+    PS -->|"Latest parameters"| W1
+    PS -->|"Latest parameters"| W2
+    PS -->|"Latest parameters"| WN
+    W1 -->|"Gradient updates"| PS
+    W2 -->|"Gradient updates"| PS
+    WN -->|"Gradient updates"| PS
 ```
 
 **Key design decisions**:

@@ -31,12 +31,13 @@ description: 各平台詳細安裝步驟、模型選擇與設定檔說明
 
 ### 後端選擇
 
-```
-你有 NVIDIA GPU？
-├─ 是 → 使用 CUDA 後端（最佳效能）
-└─ 否 → 你有其他 GPU（AMD/Intel/Apple）？
-         ├─ 是 → 使用 OpenCL 後端
-         └─ 否 → 使用 Eigen 後端（純 CPU）
+```mermaid
+flowchart TD
+    Q1{"你有 NVIDIA GPU？"}
+    Q1 -->|是| CUDA["使用 CUDA 後端<br/>（最佳效能）"]
+    Q1 -->|否| Q2{"你有其他 GPU？<br/>（AMD/Intel/Apple）"}
+    Q2 -->|是| OpenCL["使用 OpenCL 後端"]
+    Q2 -->|否| Eigen["使用 Eigen 後端<br/>（純 CPU）"]
 ```
 
 ---

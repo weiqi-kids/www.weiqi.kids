@@ -35,20 +35,20 @@ CNN memiliki tiga karakteristik yang membuatnya sangat cocok untuk data tipe pap
 
 Kernel konvolusi CNN hanya melihat area lokal, yang cocok sempurna dengan karakteristik Go:
 
-```
-Pengenalan gambar:         Go:
-Telinga kucing adalah      "Mata" adalah bentuk lokal
-fitur lokal
-Tidak perlu melihat        Tidak perlu melihat
-seluruh gambar             seluruh papan
+**Pengenalan gambar vs Go:**
 
-    Area 3x3                   Area 3x3
-   ┌───────┐                  ┌───────┐
-   │ ○ ● ○ │                  │ ○ ● ○ │
-   │ ● ○ ● │  ←  Posisi mata  │ ● · ● │
-   │ ○ ● ○ │                  │ ○ ● ○ │
-   └───────┘                  └───────┘
-```
+| Pengenalan gambar | Go |
+|-------------------|-----|
+| Telinga kucing adalah fitur lokal | "Mata" adalah bentuk lokal |
+| Tidak perlu melihat seluruh gambar | Tidak perlu melihat seluruh papan |
+
+**Contoh area 3x3 (pola mata):**
+
+|   |   |   |
+|:-:|:-:|:-:|
+| ○ | ● | ○ |
+| ● | ○ | ● |
+| ○ | ● | ○ |
 
 Banyak konsep Go yang bersifat "lokal":
 - **Mata**: Area 2x2 atau 3x3
@@ -74,19 +74,21 @@ Berbagi bobot juga sangat mengurangi jumlah parameter:
 
 Jika input ditranslasikan, output CNN juga akan ditranslasikan secara sesuai:
 
-```
-Input:                    Output (area probabilitas tinggi):
-  A B C D E                 A B C D E
-1 . . . . .              1  . . . . .
-2 . ● . . .   →          2  . * . . .
-3 . . . . .              3  . . . . .
+**Input dan Output (area probabilitas tinggi):**
 
-Input setelah translasi:  Output juga ditranslasikan:
-  A B C D E                 A B C D E
-1 . . . . .              1  . . . . .
-2 . . . . .   →          2  . . . . .
-3 . . ● . .              3  . . * . .
-```
+|   | A | B | C | D | E |   |   | A | B | C | D | E |
+|---|:-:|:-:|:-:|:-:|:-:|---|---|:-:|:-:|:-:|:-:|:-:|
+| 1 | · | · | · | · | · | → | 1 | · | · | · | · | · |
+| 2 | · | ● | · | · | · |   | 2 | · | * | · | · | · |
+| 3 | · | · | · | · | · |   | 3 | · | · | · | · | · |
+
+**Input setelah translasi → Output juga ditranslasikan:**
+
+|   | A | B | C | D | E |   |   | A | B | C | D | E |
+|---|:-:|:-:|:-:|:-:|:-:|---|---|:-:|:-:|:-:|:-:|:-:|
+| 1 | · | · | · | · | · | → | 1 | · | · | · | · | · |
+| 2 | · | · | · | · | · |   | 2 | · | · | · | · | · |
+| 3 | · | · | ● | · | · |   | 3 | · | · | * | · | · |
 
 Ini penting untuk Go: bentuk batu lokal yang sama, di mana pun muncul di papan, harus memiliki evaluasi yang serupa.
 
@@ -98,16 +100,33 @@ Ini penting untuk Go: bentuk batu lokal yang sama, di mana pun muncul di papan, 
 
 Operasi konvolusi adalah inti dari CNN. Ini adalah operasi "jendela geser":
 
-```
-Input (5x5):              Kernel (3x3):           Output (5x5, padding=same):
-┌───────────────┐       ┌─────────┐             ┌───────────────┐
-│ 1 0 1 0 0     │       │ 1 0 1   │             │ 2 1 3 1 2     │
-│ 0 1 1 1 0     │   *   │ 0 1 0   │    =        │ 1 4 3 3 1     │
-│ 1 1 1 1 1     │       │ 1 0 1   │             │ 3 3 5 3 3     │
-│ 0 0 1 1 0     │       └─────────┘             │ 1 3 3 4 1     │
-│ 0 1 0 0 1     │                               │ 2 1 3 1 2     │
-└───────────────┘                               └───────────────┘
-```
+**Input (5x5):**
+
+|   |   |   |   |   |
+|:-:|:-:|:-:|:-:|:-:|
+| 1 | 0 | 1 | 0 | 0 |
+| 0 | 1 | 1 | 1 | 0 |
+| 1 | 1 | 1 | 1 | 1 |
+| 0 | 0 | 1 | 1 | 0 |
+| 0 | 1 | 0 | 0 | 1 |
+
+**Kernel (3x3):**
+
+|   |   |   |
+|:-:|:-:|:-:|
+| 1 | 0 | 1 |
+| 0 | 1 | 0 |
+| 1 | 0 | 1 |
+
+**Output (5x5, padding=same):**
+
+|   |   |   |   |   |
+|:-:|:-:|:-:|:-:|:-:|
+| 2 | 1 | 3 | 1 | 2 |
+| 1 | 4 | 3 | 3 | 1 |
+| 3 | 3 | 5 | 3 | 3 |
+| 1 | 3 | 3 | 4 | 1 |
+| 2 | 1 | 3 | 1 | 2 |
 
 Proses perhitungan (menggunakan titik tengah sebagai contoh):
 
@@ -123,18 +142,11 @@ Output[2,2] = 1×1 + 1×0 + 1×1 +
 
 Ketika input memiliki beberapa saluran (seperti 48 bidang fitur), kernel konvolusi juga menjadi 3D:
 
-```
-Input: 19×19×48          Kernel: 3×3×48            Output: 19×19×1
-    ┌─────┐               ┌───┐                    ┌─────┐
-   ╱     ╱│              ╱   ╱│                   │     │
-  ╱     ╱ │   konvolusi ╱   ╱ │                   │     │
- ╱     ╱  │   →        ╱   ╱  │    →              │     │
-┌─────┐   │           ┌───┐   │                   └─────┘
-│     │  ╱            │   │  ╱
-│     │ ╱             │   │╱
-└─────┘╱              └───┘
-48 lapisan            48 lapisan                  1 lapisan
-```
+| Komponen | Dimensi | Deskripsi |
+|----------|---------|-----------|
+| **Input** | 19×19×48 | 48 lapisan bidang fitur |
+| **Kernel** | 3×3×48 | 48 lapisan kernel konvolusi |
+| **Output** | 19×19×1 | 1 lapisan hasil |
 
 Setiap kernel konvolusi menghitung di semua saluran input, menghasilkan satu saluran output.
 
@@ -142,29 +154,11 @@ Setiap kernel konvolusi menghitung di semua saluran input, menghasilkan satu sal
 
 AlphaGo menggunakan 192 filter, setiap filter mempelajari fitur yang berbeda:
 
-```
-Input: 19×19×48
-
-      ┌─────┐
-     ╱     ╱│
-    ╱     ╱ │     192 kernel 3×3×48
-   ╱     ╱  │     ────────────────────►
-  ┌─────┐   │
-  │     │  ╱
-  │     │ ╱
-  └─────┘╱
-
-Output: 19×19×192
-
-      ┌─────┐
-     ╱     ╱│
-    ╱     ╱ │
-   ╱     ╱  │
-  ┌─────┐   │
-  │     │  ╱
-  │     │ ╱
-  └─────┘╱
-```
+| Tahap | Dimensi | Deskripsi |
+|-------|---------|-----------|
+| **Input** | 19×19×48 | Bidang fitur input |
+| **Kernel** | 192 × (3×3×48) | 192 kernel konvolusi |
+| **Output** | 19×19×192 | 192 saluran output |
 
 Setiap filter mungkin mempelajari bentuk batu yang berbeda:
 - Filter 1: Deteksi mata
@@ -185,17 +179,24 @@ Setiap filter mungkin mempelajari bentuk batu yang berbeda:
 
 Dengan kernel 3x3, setiap posisi output hanya dipengaruhi oleh area 3x3 di input:
 
-```
-Input:                   Output:
-  ┌─────────────┐         ┌───────────┐
-  │ . . . . .   │         │ . . . .   │
-  │ . ● ● ● .   │  →      │ . ● . .   │
-  │ . ● ● ● .   │         │ . . . .   │
-  │ . ● ● ● .   │         │ . . . .   │
-  │ . . . . .   │         └───────────┘
-  └─────────────┘
-     Receptive field 3×3
-```
+**Input (receptive field 3×3 disorot):**
+
+|   |   |   |   |   |
+|:-:|:-:|:-:|:-:|:-:|
+| · | · | · | · | · |
+| · | **●** | **●** | **●** | · |
+| · | **●** | **●** | **●** | · |
+| · | **●** | **●** | **●** | · |
+| · | · | · | · | · |
+
+**Output:**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| · | · | · | · |
+| · | ● | · | · |
+| · | · | · | · |
+| · | · | · | · |
 
 #### Konvolusi Multi-lapisan
 
@@ -220,12 +221,11 @@ Ini berarti:
 
 Konsep receptive field menjelaskan mengapa AlphaGo dapat menangani masalah "global":
 
-```
-Masalah lokal (receptive field 3×3):     Masalah global (receptive field 25×25):
-- Apakah ada mata di sini?                - Apakah kelompok ini memiliki ruang mata?
-- Bisakah saya atari?                     - Apakah tangkapan tangga menguntungkan?
-- Bisakah saya menghubungkan?             - Bagaimana situasi keseluruhan?
-```
+| Masalah lokal (receptive field 3×3) | Masalah global (receptive field 25×25) |
+|------------------------------------|----------------------------------------|
+| Apakah ada mata di sini? | Apakah kelompok ini memiliki ruang mata? |
+| Bisakah saya atari? | Apakah tangkapan tangga menguntungkan? |
+| Bisakah saya menghubungkan? | Bagaimana situasi keseluruhan? |
 
 Lapisan dangkal memproses fitur lokal, lapisan dalam memproses fitur global.
 
@@ -237,17 +237,17 @@ Lapisan dangkal memproses fitur lokal, lapisan dalam memproses fitur global.
 
 CNN secara alami membentuk struktur hierarki:
 
-```
-Lapisan input:      Batu hitam, batu putih, titik kosong
-   ↓
-Dangkal (1-3):      Mata, koneksi, pemutusan, atari
-   ↓
-Tengah (4-8):       Bentuk, batu hidup, batu mati
-   ↓
-Dalam (9-12):       Pengaruh, ketebalan, titik besar
-   ↓
-Lapisan output:     Probabilitas langkah / tingkat kemenangan
-```
+| Lapisan | Fitur yang Dipelajari |
+|---------|-----------------------|
+| **Lapisan input** | Batu hitam, batu putih, titik kosong |
+| ↓ | |
+| **Dangkal (1-3)** | Mata, koneksi, pemutusan, atari |
+| ↓ | |
+| **Tengah (4-8)** | Bentuk, batu hidup, batu mati |
+| ↓ | |
+| **Dalam (9-12)** | Pengaruh, ketebalan, titik besar |
+| ↓ | |
+| **Lapisan output** | Probabilitas langkah / tingkat kemenangan |
 
 Ini sangat mirip dengan proses manusia belajar Go:
 1. Pertama pelajari aturan (di mana ada batu)
@@ -261,14 +261,21 @@ Peneliti menemukan bahwa lapisan tersembunyi CNN memang mempelajari fitur yang b
 
 #### Filter Lapisan Dangkal
 
-```
-Filter A (Deteksi mata):     Filter B (Deteksi atari):
-┌───────┐                    ┌───────┐
-│ + - + │                    │ + + + │
-│ - + - │                    │ + - - │
-│ + - + │                    │ + + + │
-└───────┘                    └───────┘
-```
+**Filter A (Deteksi mata):**
+
+|   |   |   |
+|:-:|:-:|:-:|
+| + | - | + |
+| - | + | - |
+| + | - | + |
+
+**Filter B (Deteksi atari):**
+
+|   |   |   |
+|:-:|:-:|:-:|
+| + | + | + |
+| + | - | - |
+| + | + | + |
 
 #### Filter Lapisan Dalam
 
@@ -287,18 +294,11 @@ def relu(x):
     return max(0, x)
 ```
 
-Ilustrasi:
+**Perilaku ReLU:**
+- Ketika input < 0: output = 0 (mengubah nilai negatif menjadi nol)
+- Ketika input >= 0: output = input (menjaga nilai positif tetap sama)
 
-```
-Output
-  │
-  │    /
-  │   /
-  │  /
-  │ /
-──┼────── Input
-  │
-```
+Ini adalah garis lurus yang melewati titik asal, bernilai nol di sisi negatif dan membentuk sudut 45° di sisi positif.
 
 ### Mengapa Tidak Menggunakan Fungsi Lain?
 
@@ -353,13 +353,13 @@ def batch_norm(x, gamma, beta):
 
 Ketika jaringan dilatih, distribusi input setiap lapisan berubah seiring dengan perubahan bobot lapisan sebelumnya. Ini disebut "internal covariate shift":
 
-```
-Bobot lapisan pertama diperbarui → Distribusi output lapisan pertama berubah
-                    ↓
-               Distribusi input lapisan kedua berubah → Lapisan kedua perlu beradaptasi kembali
-                                        ↓
-                                   ... (menyebar ke bawah)
-```
+| Langkah | Efek |
+|---------|------|
+| Bobot lapisan pertama diperbarui | Distribusi output lapisan pertama berubah |
+| ↓ | |
+| Distribusi input lapisan kedua berubah | Lapisan kedua perlu beradaptasi kembali |
+| ↓ | |
+| ... | Menyebar ke lapisan berikutnya |
 
 Batch normalization menstabilkan pelatihan dengan memaksa input setiap lapisan memiliki distribusi tetap (mean 0, standar deviasi 1).
 
@@ -528,18 +528,17 @@ AlphaGo memilih CNN + bidang riwayat, bukan CNN + RNN.
 
 AlphaGo Zero diupgrade ke ResNet:
 
-```
-CNN biasa:               ResNet:
-  x                        x
-  ↓                        ↓
- Conv                     Conv
-  ↓                        ↓
- ReLU                    ReLU
-  ↓                        ↓
- Conv                     Conv
-  ↓                        ↓
-  y                      y + x  ← Koneksi residual
-```
+| CNN biasa | ResNet |
+|-----------|--------|
+| x (input) | x (input) |
+| ↓ | ↓ |
+| Conv | Conv |
+| ↓ | ↓ |
+| ReLU | ReLU |
+| ↓ | ↓ |
+| Conv | Conv |
+| ↓ | ↓ |
+| y (output) | y + x (output dengan koneksi residual) |
 
 Koneksi residual membuat gradien lebih mudah mengalir, memungkinkan pelatihan jaringan yang lebih dalam (40 lapisan vs 12 lapisan).
 
@@ -551,47 +550,75 @@ Lihat detail di [Dual-Head Network dan Residual Network](../dual-head-resnet).
 
 ### Proses Konvolusi
 
-```
-Papan input (disederhanakan menjadi 5×5):
+**Papan input (disederhanakan menjadi 5×5):**
 
-   A B C D E
-1  . . . . .
-2  . ● . . .
-3  . . ○ . .
-4  . . . ● .
-5  . . . . .
+|   | A | B | C | D | E |
+|---|:-:|:-:|:-:|:-:|:-:|
+| 1 | · | · | · | · | · |
+| 2 | · | ● | · | · | · |
+| 3 | · | · | ○ | · | · |
+| 4 | · | · | · | ● | · |
+| 5 | · | · | · | · | · |
 
-Filter tertentu (3×3, mendeteksi "bentuk silang"):
-┌───────┐
-│ 0 1 0 │
-│ 1 1 1 │
-│ 0 1 0 │
-└───────┘
+**Filter 3×3 (mendeteksi "bentuk silang"):**
 
-Output konvolusi:
-   A B C D E
-1  0 0 0 0 0
-2  0 0 0 0 0
-3  0 0 1 0 0   ← Respons kuat di tengah (bentuk silang cocok)
-4  0 0 0 0 0
-5  0 0 0 0 0
-```
+|   |   |   |
+|:-:|:-:|:-:|
+| 0 | 1 | 0 |
+| 1 | 1 | 1 |
+| 0 | 1 | 0 |
+
+**Output konvolusi (respons kuat di tengah = bentuk silang cocok):**
+
+|   | A | B | C | D | E |
+|---|:-:|:-:|:-:|:-:|:-:|
+| 1 | 0 | 0 | 0 | 0 | 0 |
+| 2 | 0 | 0 | 0 | 0 | 0 |
+| 3 | 0 | 0 | **1** | 0 | 0 |
+| 4 | 0 | 0 | 0 | 0 | 0 |
+| 5 | 0 | 0 | 0 | 0 | 0 |
 
 ### Fitur Multi-lapisan
 
-```
-Output lapisan 1 (4 dari 192 saluran):
+**Output lapisan 1 (4 dari 192 saluran):**
 
-Saluran 1 (mata):    Saluran 2 (garis tepi):    Saluran 3 (titik putus):    Saluran 4 (koneksi):
-┌─────────┐          ┌─────────┐                ┌─────────┐                 ┌─────────┐
-│ 0 0 0 0 │          │ 0.8 0 0 │                │ 0 0 0 0 │                 │ 0 0 0 0 │
-│ 0 0.9 0 │          │ 0.8 0 0 │                │ 0 0 0.7 │                 │ 0 0.5 0 │
-│ 0 0 0 0 │          │ 0.8 0 0 │                │ 0 0 0 0 │                 │ 0 0.8 0 │
-│ 0 0 0 0 │          │ 0.8 0 0 │                │ 0 0 0 0 │                 │ 0 0.5 0 │
-└─────────┘          └─────────┘                └─────────┘                 └─────────┘
+**Saluran 1 (mata):**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| 0 | 0 | 0 | 0 |
+| 0 | 0.9 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+
+**Saluran 2 (garis tepi):**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| 0.8 | 0 | 0 | 0 |
+| 0.8 | 0 | 0 | 0 |
+| 0.8 | 0 | 0 | 0 |
+| 0.8 | 0 | 0 | 0 |
+
+**Saluran 3 (titik putus):**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0.7 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+
+**Saluran 4 (koneksi):**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| 0 | 0 | 0 | 0 |
+| 0 | 0.5 | 0 | 0 |
+| 0 | 0.8 | 0 | 0 |
+| 0 | 0.5 | 0 | 0 |
 
 Fitur-fitur ini akan digabungkan menjadi konsep yang lebih kompleks di lapisan yang lebih dalam...
-```
 
 ---
 

@@ -12,28 +12,16 @@ Este artigo analisa em profundidade os detalhes de implementação da Busca em �
 
 ## Revisão das Quatro Etapas do MCTS
 
-```
-┌─────────────────────────────────────────────────────┐
-│                  Ciclo de Busca MCTS                │
-├─────────────────────────────────────────────────────┤
-│                                                     │
-│   1. Selection      Seleção: Desce pela árvore      │
-│         │           usando PUCT para selecionar nós │
-│         ▼                                           │
-│   2. Expansion      Expansão: Ao chegar em nó folha │
-│         │           cria nós filhos                 │
-│         ▼                                           │
-│   3. Evaluation     Avaliação: Avalia o nó folha    │
-│         │           usando a rede neural            │
-│         ▼                                           │
-│   4. Backprop       Retropropagação: Atualiza       │
-│                     estatísticas de todos os nós    │
-│                     no caminho                      │
-│                                                     │
-│   Repete milhares de vezes, seleciona a jogada     │
-│   com mais visitas                                  │
-│                                                     │
-└─────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph MCTS["Ciclo de Busca MCTS"]
+        S["1. Selection<br/>Selecao: Desce pela arvore usando PUCT"]
+        S --> E["2. Expansion<br/>Expansao: Ao chegar em no folha, cria nos filhos"]
+        E --> V["3. Evaluation<br/>Avaliacao: Avalia o no folha usando rede neural"]
+        V --> B["4. Backprop<br/>Retropropagacao: Atualiza estatisticas de todos os nos"]
+        B -.->|"Repete milhares de vezes"| S
+    end
+    MCTS --> Result["Seleciona a jogada com mais visitas"]
 ```
 
 ---

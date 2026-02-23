@@ -19,22 +19,20 @@ This article will deeply analyze the design principles, mathematical foundations
 
 AlphaGo Zero's neural network can be divided into three parts:
 
-```
-Input (17 × 19 × 19)
-       ↓
-┌─────────────────────────────────────────┐
-│         Shared Backbone (ResNet)         │
-│      40 residual blocks, 256 channels    │
-└─────────────────────────────────────────┘
-       ↓                    ↓
-┌─────────────┐      ┌─────────────┐
-│  Policy Head │      │  Value Head  │
-│              │      │              │
-└─────────────┘      └─────────────┘
-       ↓                    ↓
-  19×19 probability      Win rate [-1, 1]
-  distribution
-  + 1 Pass probability
+```mermaid
+flowchart TB
+    Input["Input (17 x 19 x 19)"]
+    Backbone["Shared Backbone (ResNet)<br/>40 residual blocks, 256 channels"]
+    PolicyHead["Policy Head"]
+    ValueHead["Value Head"]
+    PolicyOut["19x19 probability distribution<br/>+ 1 Pass probability"]
+    ValueOut["Win rate [-1, 1]"]
+
+    Input --> Backbone
+    Backbone --> PolicyHead
+    Backbone --> ValueHead
+    PolicyHead --> PolicyOut
+    ValueHead --> ValueOut
 ```
 
 Let's analyze each part in detail.
@@ -210,22 +208,18 @@ This is the **Degradation Problem**:
 
 In 2015, Kaiming He and colleagues proposed a simple and elegant solution: **Skip Connection**.
 
-```
-Input x
-   ↓
-┌─────────────┐
-│  Conv layer │
-│  BN + ReLU  │
-│  Conv layer │
-│  BN         │
-└─────────────┘
-   ↓ F(x)
-   ↓←────────────── x (skip connection)
-   +
-   ↓
- ReLU
-   ↓
-Output x + F(x)
+```mermaid
+flowchart TB
+    X["Input x"]
+    Conv["Conv layer<br/>BN + ReLU<br/>Conv layer<br/>BN"]
+    Add["+"]
+    ReLU["ReLU"]
+    Out["Output x + F(x)"]
+
+    X --> Conv
+    Conv -->|"F(x)"| Add
+    X -->|"skip connection"| Add
+    Add --> ReLU --> Out
 ```
 
 #### Mathematical Representation
@@ -309,17 +303,14 @@ The 40-layer configuration achieves a good balance between playing strength and 
 
 AlphaGo Zero's ResNet configuration:
 
-```
-Input: 17 × 19 × 19
-↓
-Conv layer: 3×3, 256 channels, BN, ReLU
-↓
-Residual block ×40:
-  ├─ Conv layer: 3×3, 256 channels, BN, ReLU
-  ├─ Conv layer: 3×3, 256 channels, BN
-  └─ Skip connection + ReLU
-↓
-Policy Head / Value Head
+```mermaid
+flowchart TB
+    Input["Input: 17 x 19 x 19"]
+    Conv1["Conv layer: 3x3, 256 channels, BN, ReLU"]
+    ResBlock["Residual block x40:<br/>Conv 3x3, 256 ch, BN, ReLU<br/>Conv 3x3, 256 ch, BN<br/>Skip connection + ReLU"]
+    Heads["Policy Head / Value Head"]
+
+    Input --> Conv1 --> ResBlock --> Heads
 ```
 
 #### Parameter Count Estimate

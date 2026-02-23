@@ -359,23 +359,21 @@ Estas observaciones indican que, aunque no tenemos garantías teóricas, el auto
 
 Para acelerar el entrenamiento, AlphaGo usa auto-juego paralelo a gran escala:
 
-```
-Arquitectura:
+```mermaid
+flowchart TB
+    PS["Parameter Server<br/>(almacena el θ mas reciente,<br/>recibe actualizaciones de gradiente)"]
 
-    ┌────────────────────────────────────────────┐
-    │           Parameter Server                  │
-    │    (almacena el θ más reciente, recibe     │
-    │     actualizaciones de gradiente)          │
-    └────────────────────────────────────────────┘
-         ▲                              │
-         │ actualización de gradiente   │ parámetros más recientes
-         │                              ▼
-    ┌─────────┐  ┌─────────┐  ┌─────────┐
-    │ Worker 1 │  │ Worker 2 │  │ Worker N │
-    │ auto-juego│  │ auto-juego│  │ auto-juego│
-    │ recopilar │  │ recopilar │  │ recopilar │
-    │ trayectorias│ │ trayectorias│ │ trayectorias│
-    └─────────┘  └─────────┘  └─────────┘
+    W1["Worker 1<br/>auto-juego<br/>recopilar trayectorias"]
+    W2["Worker 2<br/>auto-juego<br/>recopilar trayectorias"]
+    WN["Worker N<br/>auto-juego<br/>recopilar trayectorias"]
+
+    W1 -->|"actualizacion de gradiente"| PS
+    W2 -->|"actualizacion de gradiente"| PS
+    WN -->|"actualizacion de gradiente"| PS
+
+    PS -->|"parametros mas recientes"| W1
+    PS -->|"parametros mas recientes"| W2
+    PS -->|"parametros mas recientes"| WN
 ```
 
 **Decisiones de diseño clave**:

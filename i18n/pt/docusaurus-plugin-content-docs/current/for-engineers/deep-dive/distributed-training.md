@@ -12,37 +12,23 @@ Este artigo apresenta a arquitetura do sistema de treinamento distribuído do Ka
 
 ## Visão Geral da Arquitetura do Sistema
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│              Sistema de Treinamento Distribuído KataGo       │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│   ┌─────────────┐    ┌─────────────┐    ┌─────────────┐   │
-│   │  Worker 1   │    │  Worker 2   │    │  Worker N   │   │
-│   │  (Self-play)│    │  (Self-play)│    │  (Self-play)│   │
-│   └──────┬──────┘    └──────┬──────┘    └──────┬──────┘   │
-│          │                  │                  │           │
-│          └────────────┬─────┴──────────────────┘           │
-│                       │                                     │
-│                       ▼                                     │
-│            ┌─────────────────────┐                         │
-│            │  Servidor de Treino │                         │
-│            │  (Coleta de Dados)  │                         │
-│            └──────────┬──────────┘                         │
-│                       │                                     │
-│                       ▼                                     │
-│            ┌─────────────────────┐                         │
-│            │  Fluxo de Treino    │                         │
-│            │  (Model Training)   │                         │
-│            └──────────┬──────────┘                         │
-│                       │                                     │
-│                       ▼                                     │
-│            ┌─────────────────────┐                         │
-│            │  Publicação do Novo │                         │
-│            │  Modelo             │                         │
-│            └─────────────────────┘                         │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph System["Sistema de Treinamento Distribuido KataGo"]
+        subgraph Workers["Self-play Workers"]
+            W1["Worker 1<br/>(Self-play)"]
+            W2["Worker 2<br/>(Self-play)"]
+            WN["Worker N<br/>(Self-play)"]
+        end
+
+        W1 --> Server
+        W2 --> Server
+        WN --> Server
+
+        Server["Servidor de Treino<br/>(Coleta de Dados)"]
+        Server --> Training["Fluxo de Treino<br/>(Model Training)"]
+        Training --> Release["Publicacao do Novo Modelo"]
+    end
 ```
 
 ---

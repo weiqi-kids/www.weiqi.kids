@@ -45,17 +45,41 @@ Onde:
 
 ### Diagrama da Arvore de Busca
 
-```
-                Camada Max (eu)
-                    │
-        ┌───────────┼───────────┐
-        │           │           │
-       -3          +5          +2
-        │           │           │
-    ─────────   ─────────   ─────────
-    Camada Min (oponente)
-    │   │   │   │   │   │   │   │   │
-   -3  +7  +5 +5  -2  +9 +2  +1  +4
+```mermaid
+flowchart TB
+    subgraph Max["Camada Max (eu)"]
+        A["-3"]
+        B["+5"]
+        C["+2"]
+    end
+
+    subgraph MinA["Camada Min"]
+        A1["-3"]
+        A2["+7"]
+        A3["+5"]
+    end
+
+    subgraph MinB["Camada Min"]
+        B1["+5"]
+        B2["-2"]
+        B3["+9"]
+    end
+
+    subgraph MinC["Camada Min"]
+        C1["+2"]
+        C2["+1"]
+        C3["+4"]
+    end
+
+    A --> A1
+    A --> A2
+    A --> A3
+    B --> B1
+    B --> B2
+    B --> B3
+    C --> C1
+    C --> C2
+    C --> C3
 ```
 
 Neste exemplo:
@@ -140,16 +164,18 @@ Se ja sabemos que um ramo "certamente e ruim", podemos pula-lo diretamente.
 
 ### Principio da Poda
 
-```
-No Max A (melhor atual α = +5)
-    │
-    ├── Ramo 1: ja avaliado, valor = +5
-    │
-    └── Ramo 2: No Min B
-            │
-            ├── Sub-ramo B1: valor = +3
-            │
-            └── Sub-ramo B2: ??? (pode pular!)
+```mermaid
+flowchart TB
+    A["No Max A<br/>(melhor atual α = +5)"]
+    B1["Ramo 1<br/>ja avaliado, valor = +5"]
+    B["Ramo 2: No Min B"]
+    C1["Sub-ramo B1: valor = +3"]
+    C2["Sub-ramo B2: ???<br/>(pode pular!)"]
+
+    A --> B1
+    A --> B
+    B --> C1
+    B --> C2
 ```
 
 Neste exemplo:

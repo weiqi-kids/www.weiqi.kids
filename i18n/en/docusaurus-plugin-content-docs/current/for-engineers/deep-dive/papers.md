@@ -100,31 +100,32 @@ DOI: 10.1038/nature16961
 
 ### System Architecture
 
-```
-┌─────────────────────────────────────────────┐
-│              AlphaGo Architecture            │
-├─────────────────────────────────────────────┤
-│                                             │
-│   Policy Network (SL)                       │
-│   ├── Input: Board state (48 feature planes)│
-│   ├── Architecture: 13-layer CNN            │
-│   ├── Output: 361 position probabilities    │
-│   └── Training: 30 million human games      │
-│                                             │
-│   Policy Network (RL)                       │
-│   ├── Initialized from SL Policy            │
-│   └── Self-play reinforcement learning      │
-│                                             │
-│   Value Network                             │
-│   ├── Input: Board state                    │
-│   ├── Output: Single win rate value         │
-│   └── Training: Self-play generated positions│
-│                                             │
-│   MCTS                                      │
-│   ├── Use Policy Network to guide search    │
-│   └── Evaluate with Value Network + Rollout │
-│                                             │
-└─────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph AlphaGo["AlphaGo Architecture"]
+        subgraph SL["Policy Network (SL)"]
+            SL1["Input: Board state (48 feature planes)"]
+            SL2["Architecture: 13-layer CNN"]
+            SL3["Output: 361 position probabilities"]
+            SL4["Training: 30 million human games"]
+        end
+
+        subgraph RL["Policy Network (RL)"]
+            RL1["Initialized from SL Policy"]
+            RL2["Self-play reinforcement learning"]
+        end
+
+        subgraph VN["Value Network"]
+            VN1["Input: Board state"]
+            VN2["Output: Single win rate value"]
+            VN3["Training: Self-play generated positions"]
+        end
+
+        subgraph MCTS["MCTS"]
+            MCTS1["Use Policy Network to guide search"]
+            MCTS2["Evaluate with Value Network + Rollout"]
+        end
+    end
 ```
 
 ### Technical Highlights
@@ -207,19 +208,15 @@ DOI: 10.1038/nature24270
 
 #### 1. Single Dual-Head Network
 
-```
-              Input (17 planes)
-                   │
-              ┌────┴────┐
-              │ Residual│
-              │  Tower  │
-              │ (19 or  │
-              │ 39 layers│
-              └────┬────┘
-           ┌──────┴──────┐
-           │             │
-        Policy         Value
-        (361)          (1)
+```mermaid
+flowchart TB
+    Input["Input (17 planes)"]
+    Input --> ResNet
+    subgraph ResNet["Residual Tower (19 or 39 layers)"]
+        R[" "]
+    end
+    ResNet --> Policy["Policy (361)"]
+    ResNet --> Value["Value (1)"]
 ```
 
 #### 2. Simplified Input Features
@@ -247,26 +244,16 @@ Cleaner, faster
 
 #### 4. Training Process
 
-```
-Initialize random network
-    │
-    ▼
-┌─────────────────────────────┐
-│  Self-play generates games  │ ←─┐
-└──────────────┬──────────────┘   │
-               │                   │
-               ▼                   │
-┌─────────────────────────────┐   │
-│  Train neural network       │   │
-│  - Policy: Minimize cross-entropy│
-│  - Value: Minimize MSE      │   │
-└──────────────┬──────────────┘   │
-               │                   │
-               ▼                   │
-┌─────────────────────────────┐   │
-│  Evaluate new network       │   │
-│  Replace if stronger        │───┘
-└─────────────────────────────┘
+```mermaid
+flowchart TB
+    Init["Initialize random network"]
+    Init --> SelfPlay
+    SelfPlay["Self-play generates games"]
+    SelfPlay --> Train
+    Train["Train neural network<br/>- Policy: Minimize cross-entropy<br/>- Value: Minimize MSE"]
+    Train --> Eval
+    Eval["Evaluate new network<br/>Replace if stronger"]
+    Eval --> SelfPlay
 ```
 
 ### Learning Curve

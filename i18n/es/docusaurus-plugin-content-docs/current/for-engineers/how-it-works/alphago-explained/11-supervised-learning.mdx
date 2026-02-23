@@ -170,16 +170,20 @@ def extract_features(board, history, current_player):
 
 El tablero de Go tiene **8 simetrías** (4 rotaciones × 2 reflexiones). Cada muestra original puede convertirse en 8:
 
-```
-Original:     Rotar 90°:   Rotar 180°:  Rotar 270°:
-┌───┐         ┌───┐        ┌───┐        ┌───┐
-│ ● │         │   │        │   │        │   │
-│   │ →       │   │  →     │   │  →     │   │
-│   │         │ ● │        │ ● │        │ ● │
-└───┘         └───┘        └───┘        └───┘
+**Transformaciones de simetria (8 en total):**
 
-Cada uno también se voltea horizontalmente, obteniendo 8 muestras de entrenamiento equivalentes
-```
+| Transformacion | Posicion de la piedra |
+|:--------------:|:---------------------:|
+| Original | Arriba-izquierda |
+| Rotar 90 grados | Abajo-izquierda |
+| Rotar 180 grados | Abajo-derecha |
+| Rotar 270 grados | Arriba-derecha |
+| Volteo horizontal | Arriba-derecha |
+| Volteo + Rotar 90 | Abajo-derecha |
+| Volteo + Rotar 180 | Abajo-izquierda |
+| Volteo + Rotar 270 | Arriba-izquierda |
+
+Cada posicion original puede producir 8 muestras de entrenamiento equivalentes.
 
 Esto aumenta los datos de entrenamiento efectivos 8 veces, mientras asegura que los patrones aprendidos por el modelo no dependan de una orientación específica.
 

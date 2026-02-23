@@ -170,16 +170,13 @@ def extract_features(board, history, current_player):
 
 The Go board has **8-fold symmetry** (4 rotations × 2 reflections). Each original sample can become 8:
 
-```
-Original:     Rotate 90°:   Rotate 180°:  Rotate 270°:
-┌───┐         ┌───┐         ┌───┐         ┌───┐
-│ ● │         │   │         │   │         │   │
-│   │ →       │   │  →      │   │  →      │   │
-│   │         │ ● │         │ ● │         │ ● │
-└───┘         └───┘         └───┘         └───┘
+| Original | Rotate 90 | Rotate 180 | Rotate 270 |
+|:---:|:---:|:---:|:---:|
+| **X** . . | . . . | . . . | . . . |
+| . . . | . . . | . . . | . . . |
+| . . . | **X** . . | . . **X** | . . **X** |
 
-Each then flipped horizontally, giving 8 equivalent training samples
-```
+Each of these 4 rotations can then be flipped horizontally, giving 8 equivalent training samples.
 
 This effectively increases training data by 8× while ensuring learned patterns don't depend on specific orientation.
 
@@ -296,13 +293,11 @@ scheduler = torch.optim.lr_scheduler.StepLR(
 )
 ```
 
-```
-Learning rate:
-0.003  ────────┐
-              └─────── 0.0003 ────────┐
-                                      └─────── 0.00003
-         80M steps     160M steps     240M steps
-```
+| Training Steps | Learning Rate |
+|:---|:---|
+| 0 - 80M | 0.003 |
+| 80M - 160M | 0.0003 |
+| 160M - 240M | 0.00003 |
 
 ### Training Loop
 

@@ -35,18 +35,18 @@ CNNs have three properties that make them particularly suitable for board-type d
 
 CNN kernels only look at local regions, which perfectly matches Go's characteristics:
 
-```
-Image recognition:          Go:
-Cat ears are local features "Eye" is a local shape
-Don't need to see whole image  Don't need to see whole board
+| Image recognition | Go |
+|-------------------|-----|
+| Cat ears are local features | "Eye" is a local shape |
+| Don't need to see whole image | Don't need to see whole board |
 
-    3×3 region              3×3 region
-   ┌───────┐            ┌───────┐
-   │ ○ ● ○ │            │ ○ ● ○ │
-   │ ● ○ ● │  ←  Eye    │ ● · ● │
-   │ ○ ● ○ │            │ ○ ● ○ │
-   └───────┘            └───────┘
-```
+**3x3 region example (Eye shape):**
+
+|   |   |   |
+|:-:|:-:|:-:|
+| ○ | ● | ○ |
+| ● | · | ● |
+| ○ | ● | ○ |
 
 Many Go concepts are "local":
 - **Eye**: 2×2 or 3×3 region
@@ -72,19 +72,37 @@ Weight sharing also dramatically reduces parameter count:
 
 If the input translates, CNN output also translates accordingly:
 
-```
-Input:                      Output (high probability region):
-  A B C D E                 A B C D E
-1 . . . . .              1  . . . . .
-2 . ● . . .   →          2  . * . . .
-3 . . . . .              3  . . . . .
+**Input:**
 
-After input translation:    Output also translates:
-  A B C D E                 A B C D E
-1 . . . . .              1  . . . . .
-2 . . . . .   →          2  . . . . .
-3 . . ● . .              3  . . * . .
-```
+|   | A | B | C | D | E |
+|---|:-:|:-:|:-:|:-:|:-:|
+| 1 | · | · | · | · | · |
+| 2 | · | ● | · | · | · |
+| 3 | · | · | · | · | · |
+
+**Output (high probability region):**
+
+|   | A | B | C | D | E |
+|---|:-:|:-:|:-:|:-:|:-:|
+| 1 | · | · | · | · | · |
+| 2 | · | * | · | · | · |
+| 3 | · | · | · | · | · |
+
+**After input translation:**
+
+|   | A | B | C | D | E |
+|---|:-:|:-:|:-:|:-:|:-:|
+| 1 | · | · | · | · | · |
+| 2 | · | · | · | · | · |
+| 3 | · | · | ● | · | · |
+
+**Output also translates:**
+
+|   | A | B | C | D | E |
+|---|:-:|:-:|:-:|:-:|:-:|
+| 1 | · | · | · | · | · |
+| 2 | · | · | · | · | · |
+| 3 | · | · | * | · | · |
 
 This is important for Go: the same local shape should have similar evaluation regardless of where it appears on the board.
 
@@ -96,16 +114,13 @@ This is important for Go: the same local shape should have similar evaluation re
 
 Convolution is the core of CNNs. It's a "sliding window" operation:
 
-```
-Input (5×5):              Kernel (3×3):         Output (5×5, padding=same):
-┌───────────────┐       ┌─────────┐           ┌───────────────┐
-│ 1 0 1 0 0     │       │ 1 0 1   │           │ 2 1 3 1 2     │
-│ 0 1 1 1 0     │   *   │ 0 1 0   │    =      │ 1 4 3 3 1     │
-│ 1 1 1 1 1     │       │ 1 0 1   │           │ 3 3 5 3 3     │
-│ 0 0 1 1 0     │       └─────────┘           │ 1 3 3 4 1     │
-│ 0 1 0 0 1     │                             │ 2 1 3 1 2     │
-└───────────────┘                             └───────────────┘
-```
+| Input (5x5) | | Kernel (3x3) | | Output (5x5) |
+|:---|:---:|:---|:---:|:---|
+| 1 0 1 0 0 | | 1 0 1 | | 2 1 3 1 2 |
+| 0 1 1 1 0 | * | 0 1 0 | = | 1 4 3 3 1 |
+| 1 1 1 1 1 | | 1 0 1 | | 3 3 5 3 3 |
+| 0 0 1 1 0 | | | | 1 3 3 4 1 |
+| 0 1 0 0 1 | | | | 2 1 3 1 2 |
 
 Calculation process (for center point):
 
@@ -121,17 +136,13 @@ Output[2,2] = 1×1 + 1×0 + 1×1 +
 
 When input has multiple channels (like 48 feature planes), the kernel also becomes 3D:
 
-```
-Input: 19×19×48          Kernel: 3×3×48          Output: 19×19×1
-    ┌─────┐               ┌───┐                  ┌─────┐
-   ╱     ╱│              ╱   ╱│                 │     │
-  ╱     ╱ │   Convolution╱   ╱ │                │     │
- ╱     ╱  │   →        ╱   ╱  │    →           │     │
-┌─────┐   │           ┌───┐   │                └─────┘
-│     │  ╱            │   │  ╱
-│     │ ╱             │   │╱
-└─────┘╱              └───┘
-48 layers             48 layers                 1 layer
+```mermaid
+flowchart LR
+    Input["Input<br/>19x19x48<br/>(48 layers)"]
+    Kernel["Kernel<br/>3x3x48<br/>(48 layers)"]
+    Output["Output<br/>19x19x1<br/>(1 layer)"]
+
+    Input -->|"Convolution"| Kernel -->|"Sum"| Output
 ```
 
 Each kernel computes across all input channels, producing one output channel.
@@ -140,28 +151,13 @@ Each kernel computes across all input channels, producing one output channel.
 
 AlphaGo uses 192 filters, each learning different features:
 
-```
-Input: 19×19×48
+```mermaid
+flowchart LR
+    Input["Input<br/>19x19x48"]
+    Filters["192 Kernels<br/>each 3x3x48"]
+    Output["Output<br/>19x19x192"]
 
-      ┌─────┐
-     ╱     ╱│
-    ╱     ╱ │     192 kernels of 3×3×48
-   ╱     ╱  │     ────────────────────►
-  ┌─────┐   │
-  │     │  ╱
-  │     │ ╱
-  └─────┘╱
-
-Output: 19×19×192
-
-      ┌─────┐
-     ╱     ╱│
-    ╱     ╱ │
-   ╱     ╱  │
-  ┌─────┐   │
-  │     │  ╱
-  │     │ ╱
-  └─────┘╱
+    Input -->|"Apply filters"| Filters -->|"Stack results"| Output
 ```
 
 Each filter may learn different shapes:
@@ -183,17 +179,15 @@ Each filter may learn different shapes:
 
 With a 3×3 kernel, each output position is influenced by only a 3×3 input region:
 
-```
-Input:                   Output:
-  ┌─────────────┐       ┌───────────┐
-  │ . . . . .   │       │ . . . .   │
-  │ . ● ● ● .   │  →    │ . ● . .   │
-  │ . ● ● ● .   │       │ . . . .   │
-  │ . ● ● ● .   │       │ . . . .   │
-  │ . . . . .   │       └───────────┘
-  └─────────────┘
-     3×3 receptive field
-```
+| Input (3x3 receptive field) | | Output |
+|:---:|:---:|:---:|
+| . . . . . | | . . . . |
+| . **X X X** . | --> | . **Y** . . |
+| . **X X X** . | | . . . . |
+| . **X X X** . | | . . . . |
+| . . . . . | | |
+
+The highlighted 3x3 region in input affects a single point in output.
 
 #### Multi-Layer Convolution
 
@@ -235,16 +229,15 @@ Shallow layers process local features; deep layers process global features.
 
 CNNs naturally form a hierarchical structure:
 
-```
-Input layer:       Black stones, white stones, empty points
-   ↓
-Shallow (1-3):     Eyes, connections, cuts, atari
-   ↓
-Middle (4-8):      Shapes, living groups, dead groups
-   ↓
-Deep (9-12):       Influence, thickness, big points
-   ↓
-Output layer:      Move probabilities / Win rate
+```mermaid
+flowchart TB
+    Input["Input layer:<br/>Black stones, white stones, empty points"]
+    Shallow["Shallow (1-3):<br/>Eyes, connections, cuts, atari"]
+    Middle["Middle (4-8):<br/>Shapes, living groups, dead groups"]
+    Deep["Deep (9-12):<br/>Influence, thickness, big points"]
+    Output["Output layer:<br/>Move probabilities / Win rate"]
+
+    Input --> Shallow --> Middle --> Deep --> Output
 ```
 
 This is strikingly similar to how humans learn Go:
@@ -259,14 +252,21 @@ Researchers found that CNN hidden layers indeed learn meaningful features:
 
 #### Shallow Filters
 
-```
-Filter A (eye detection):     Filter B (atari detection):
-┌───────┐                     ┌───────┐
-│ + - + │                     │ + + + │
-│ - + - │                     │ + - - │
-│ + - + │                     │ + + + │
-└───────┘                     └───────┘
-```
+**Filter A (eye detection):**
+
+|   |   |   |
+|:-:|:-:|:-:|
+| + | - | + |
+| - | + | - |
+| + | - | + |
+
+**Filter B (atari detection):**
+
+|   |   |   |
+|:-:|:-:|:-:|
+| + | + | + |
+| + | - | - |
+| + | + | + |
 
 #### Deep Filters
 
@@ -285,18 +285,10 @@ def relu(x):
     return max(0, x)
 ```
 
-Diagram:
-
-```
-Output
-  │
-  │    /
-  │   /
-  │  /
-  │ /
-──┼────── Input
-  │
-```
+**ReLU function behavior:**
+- For negative input values: output = 0 (flat line along x-axis)
+- For positive input values: output = input (45-degree line upward)
+- The function creates a "ramp" starting at the origin
 
 ### Why Not Other Functions?
 
@@ -549,47 +541,77 @@ See [Dual-Head Network and Residual Network](../dual-head-resnet) for details.
 
 ### Convolution Process
 
-```
-Input board (simplified to 5×5):
+**Input board (simplified to 5x5):**
 
-   A B C D E
-1  . . . . .
-2  . ● . . .
-3  . . ○ . .
-4  . . . ● .
-5  . . . . .
+|   | A | B | C | D | E |
+|---|:-:|:-:|:-:|:-:|:-:|
+| 1 | · | · | · | · | · |
+| 2 | · | ● | · | · | · |
+| 3 | · | · | ○ | · | · |
+| 4 | · | · | · | ● | · |
+| 5 | · | · | · | · | · |
 
-A filter (3×3, detecting "cross shape"):
-┌───────┐
-│ 0 1 0 │
-│ 1 1 1 │
-│ 0 1 0 │
-└───────┘
+**A filter (3x3, detecting "cross shape"):**
 
-Convolution output:
-   A B C D E
-1  0 0 0 0 0
-2  0 0 0 0 0
-3  0 0 1 0 0   ← Strong response at center (cross shape match)
-4  0 0 0 0 0
-5  0 0 0 0 0
-```
+|   |   |   |
+|:-:|:-:|:-:|
+| 0 | 1 | 0 |
+| 1 | 1 | 1 |
+| 0 | 1 | 0 |
+
+**Convolution output:**
+
+|   | A | B | C | D | E |
+|---|:-:|:-:|:-:|:-:|:-:|
+| 1 | 0 | 0 | 0 | 0 | 0 |
+| 2 | 0 | 0 | 0 | 0 | 0 |
+| 3 | 0 | 0 | **1** | 0 | 0 |
+| 4 | 0 | 0 | 0 | 0 | 0 |
+| 5 | 0 | 0 | 0 | 0 | 0 |
+
+Strong response at center (cross shape match)
 
 ### Multi-Layer Features
 
-```
 Layer 1 output (4 of 192 channels):
 
-Channel 1 (eye):    Channel 2 (edge):    Channel 3 (cut):     Channel 4 (connect):
-┌─────────┐         ┌─────────┐          ┌─────────┐          ┌─────────┐
-│ 0 0 0 0 │         │ 0.8 0 0 │          │ 0 0 0 0 │          │ 0 0 0 0 │
-│ 0 0.9 0 │         │ 0.8 0 0 │          │ 0 0 0.7 │          │ 0 0.5 0 │
-│ 0 0 0 0 │         │ 0.8 0 0 │          │ 0 0 0 0 │          │ 0 0.8 0 │
-│ 0 0 0 0 │         │ 0.8 0 0 │          │ 0 0 0 0 │          │ 0 0.5 0 │
-└─────────┘         └─────────┘          └─────────┘          └─────────┘
+**Channel 1 (eye):**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| 0 | 0 | 0 | 0 |
+| 0 | **0.9** | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+
+**Channel 2 (edge):**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| **0.8** | 0 | 0 | 0 |
+| **0.8** | 0 | 0 | 0 |
+| **0.8** | 0 | 0 | 0 |
+| **0.8** | 0 | 0 | 0 |
+
+**Channel 3 (cut):**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | **0.7** | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+
+**Channel 4 (connect):**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| 0 | 0 | 0 | 0 |
+| 0 | 0.5 | 0 | 0 |
+| 0 | **0.8** | 0 | 0 |
+| 0 | 0.5 | 0 | 0 |
 
 These features are combined into more complex concepts in deeper layers...
-```
 
 ---
 

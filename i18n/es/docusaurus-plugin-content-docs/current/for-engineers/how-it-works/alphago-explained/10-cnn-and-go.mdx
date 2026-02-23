@@ -35,18 +35,20 @@ Las CNN tienen tres características que las hacen especialmente adecuadas para 
 
 El kernel de convolución de las CNN solo observa regiones locales, lo cual coincide perfectamente con las características del Go:
 
-```
-Reconocimiento de imágenes:      Go:
-La oreja del gato es local       El "ojo" es una forma local
-No necesita ver toda la imagen   No necesita ver todo el tablero
+**Reconocimiento de imágenes vs Go:**
 
-    Región 3×3                   Región 3×3
-   ┌───────┐                    ┌───────┐
-   │ ○ ● ○ │                    │ ○ ● ○ │
-   │ ● ○ ● │  ←  Posición       │ ● · ● │
-   │ ○ ● ○ │     del ojo        │ ○ ● ○ │
-   └───────┘                    └───────┘
-```
+| Reconocimiento de imágenes | Go |
+|---------------------------|-----|
+| La oreja del gato es local | El "ojo" es una forma local |
+| No necesita ver toda la imagen | No necesita ver todo el tablero |
+
+**Región 3×3 - Posición del ojo:**
+
+|   |   |   |
+|:-:|:-:|:-:|
+| ○ | ● | ○ |
+| ● | · | ● |
+| ○ | ● | ○ |
 
 Muchos conceptos del Go son "locales":
 - **Ojo**: región de 2×2 o 3×3
@@ -96,16 +98,33 @@ Esto es importante para el Go: la misma forma local, sin importar dónde aparezc
 
 La operación de convolución es el núcleo de las CNN. Es una operación de "ventana deslizante":
 
-```
-Entrada (5×5):               Kernel (3×3):           Salida (5×5, padding=same):
-┌───────────────┐           ┌─────────┐             ┌───────────────┐
-│ 1 0 1 0 0     │           │ 1 0 1   │             │ 2 1 3 1 2     │
-│ 0 1 1 1 0     │   *       │ 0 1 0   │    =        │ 1 4 3 3 1     │
-│ 1 1 1 1 1     │           │ 1 0 1   │             │ 3 3 5 3 3     │
-│ 0 0 1 1 0     │           └─────────┘             │ 1 3 3 4 1     │
-│ 0 1 0 0 1     │                                   │ 2 1 3 1 2     │
-└───────────────┘                                   └───────────────┘
-```
+**Entrada (5x5):**
+
+| | | | | |
+|:-:|:-:|:-:|:-:|:-:|
+| 1 | 0 | 1 | 0 | 0 |
+| 0 | 1 | 1 | 1 | 0 |
+| 1 | 1 | 1 | 1 | 1 |
+| 0 | 0 | 1 | 1 | 0 |
+| 0 | 1 | 0 | 0 | 1 |
+
+**Kernel (3x3):**
+
+| | | |
+|:-:|:-:|:-:|
+| 1 | 0 | 1 |
+| 0 | 1 | 0 |
+| 1 | 0 | 1 |
+
+**Salida (5x5, padding=same):**
+
+| | | | | |
+|:-:|:-:|:-:|:-:|:-:|
+| 2 | 1 | 3 | 1 | 2 |
+| 1 | 4 | 3 | 3 | 1 |
+| 3 | 3 | 5 | 3 | 3 |
+| 1 | 3 | 3 | 4 | 1 |
+| 2 | 1 | 3 | 1 | 2 |
 
 Proceso de cálculo (tomando el punto central como ejemplo):
 
@@ -121,48 +140,27 @@ Salida[2,2] = 1×1 + 1×0 + 1×1 +
 
 Cuando la entrada tiene múltiples canales (como 48 planos de características), el kernel de convolución también se vuelve 3D:
 
-```
-Entrada: 19×19×48          Kernel: 3×3×48            Salida: 19×19×1
-    ┌─────┐                   ┌───┐                    ┌─────┐
-   ╱     ╱│                  ╱   ╱│                   │     │
-  ╱     ╱ │   convolución   ╱   ╱ │                   │     │
- ╱     ╱  │   →            ╱   ╱  │    →              │     │
-┌─────┐   │               ┌───┐   │                   └─────┘
-│     │  ╱                │   │  ╱
-│     │ ╱                 │   │╱
-└─────┘╱                  └───┘
-48 capas                  48 capas                  1 capa
-```
+**Convolucion multicanal:**
 
-Cada kernel de convolución calcula a través de todos los canales de entrada, produciendo un canal de salida.
+| Componente | Dimension |
+|:----------:|:---------:|
+| Entrada | 19 x 19 x 48 |
+| Kernel | 3 x 3 x 48 |
+| Salida | 19 x 19 x 1 |
+
+Cada kernel de convolucion calcula a traves de todos los canales de entrada (48 capas), produciendo un canal de salida (1 capa).
 
 ### Múltiples filtros
 
 AlphaGo usa 192 filtros, cada uno aprendiendo diferentes características:
 
-```
-Entrada: 19×19×48
+**Arquitectura de filtros multiples:**
 
-      ┌─────┐
-     ╱     ╱│
-    ╱     ╱ │     192 kernels de 3×3×48
-   ╱     ╱  │     ────────────────────►
-  ┌─────┐   │
-  │     │  ╱
-  │     │ ╱
-  └─────┘╱
-
-Salida: 19×19×192
-
-      ┌─────┐
-     ╱     ╱│
-    ╱     ╱ │
-   ╱     ╱  │
-  ┌─────┐   │
-  │     │  ╱
-  │     │ ╱
-  └─────┘╱
-```
+| Etapa | Dimension |
+|:-----:|:---------:|
+| Entrada | 19 x 19 x 48 |
+| Kernels | 192 kernels de 3 x 3 x 48 |
+| Salida | 19 x 19 x 192 |
 
 Cada filtro puede aprender diferentes formas:
 - Filtro 1: detección de ojos
@@ -183,17 +181,17 @@ El **campo receptivo (Receptive Field)** se refiere a qué posiciones de la entr
 
 Al usar un kernel de convolución 3×3, cada posición de salida solo es afectada por una región 3×3 de la entrada:
 
-```
-Entrada:                    Salida:
-  ┌─────────────┐           ┌───────────┐
-  │ . . . . .   │           │ . . . .   │
-  │ . ● ● ● .   │  →        │ . ● . .   │
-  │ . ● ● ● .   │           │ . . . .   │
-  │ . ● ● ● .   │           │ . . . .   │
-  │ . . . . .   │           └───────────┘
-  └─────────────┘
-     Campo receptivo 3×3
-```
+**Campo receptivo de una capa (3x3):**
+
+| Entrada (5x5) | | Salida (reducida) |
+|:-------------:|:-:|:-----------------:|
+| . . . . . | | . . . . |
+| . **X X X** . | -> | . **Y** . . |
+| . **X X X** . | | . . . . |
+| . **X X X** . | | . . . . |
+| . . . . . | | |
+
+La region marcada con **X** (3x3) afecta la posicion **Y** en la salida.
 
 #### Convolución multicapa
 
@@ -259,14 +257,21 @@ Los investigadores han descubierto que las capas ocultas de las CNN realmente ap
 
 #### Filtros superficiales
 
-```
-Filtro A (detección de ojos):    Filtro B (detección de atari):
-┌───────┐                        ┌───────┐
-│ + - + │                        │ + + + │
-│ - + - │                        │ + - - │
-│ + - + │                        │ + + + │
-└───────┘                        └───────┘
-```
+**Filtro A (detección de ojos):**
+
+|   |   |   |
+|:-:|:-:|:-:|
+| + | - | + |
+| - | + | - |
+| + | - | + |
+
+**Filtro B (detección de atari):**
+
+|   |   |   |
+|:-:|:-:|:-:|
+| + | + | + |
+| + | - | - |
+| + | + | + |
 
 #### Filtros profundos
 
@@ -285,18 +290,7 @@ def relu(x):
     return max(0, x)
 ```
 
-Ilustración:
-
-```
-Salida
-  │
-  │    /
-  │   /
-  │  /
-  │ /
-──┼────── Entrada
-  │
-```
+**Ilustración:** La función ReLU produce una salida de 0 para todas las entradas negativas, y para entradas positivas, la salida es igual a la entrada (una línea recta con pendiente 1 que pasa por el origen).
 
 ### ¿Por qué no usar otras funciones?
 
@@ -549,47 +543,75 @@ Ver [Red de doble cabeza y redes residuales](../dual-head-resnet) para más deta
 
 ### Proceso de convolución
 
-```
-Tablero de entrada (simplificado a 5×5):
+**Tablero de entrada (simplificado a 5×5):**
 
-   A B C D E
-1  . . . . .
-2  . ● . . .
-3  . . ○ . .
-4  . . . ● .
-5  . . . . .
+|   | A | B | C | D | E |
+|:-:|:-:|:-:|:-:|:-:|:-:|
+| 1 | · | · | · | · | · |
+| 2 | · | ● | · | · | · |
+| 3 | · | · | ○ | · | · |
+| 4 | · | · | · | ● | · |
+| 5 | · | · | · | · | · |
 
-Un filtro (3×3, detecta "forma de cruz"):
-┌───────┐
-│ 0 1 0 │
-│ 1 1 1 │
-│ 0 1 0 │
-└───────┘
+**Un filtro (3×3, detecta "forma de cruz"):**
 
-Salida de convolución:
-   A B C D E
-1  0 0 0 0 0
-2  0 0 0 0 0
-3  0 0 1 0 0   ← Fuerte respuesta en el centro (coincide con forma de cruz)
-4  0 0 0 0 0
-5  0 0 0 0 0
-```
+|   |   |   |
+|:-:|:-:|:-:|
+| 0 | 1 | 0 |
+| 1 | 1 | 1 |
+| 0 | 1 | 0 |
+
+**Salida de convolución:** (Fuerte respuesta en el centro - coincide con forma de cruz)
+
+|   | A | B | C | D | E |
+|:-:|:-:|:-:|:-:|:-:|:-:|
+| 1 | 0 | 0 | 0 | 0 | 0 |
+| 2 | 0 | 0 | 0 | 0 | 0 |
+| 3 | 0 | 0 | 1 | 0 | 0 |
+| 4 | 0 | 0 | 0 | 0 | 0 |
+| 5 | 0 | 0 | 0 | 0 | 0 |
 
 ### Características multicapa
 
-```
-Salida de la capa 1 (4 de 192 canales):
+**Salida de la capa 1 (4 de 192 canales):**
 
-Canal 1 (ojos):    Canal 2 (borde):    Canal 3 (cortes):    Canal 4 (conexiones):
-┌─────────┐        ┌─────────┐         ┌─────────┐          ┌─────────┐
-│ 0 0 0 0 │        │ 0.8 0 0 │         │ 0 0 0 0 │          │ 0 0 0 0 │
-│ 0 0.9 0 │        │ 0.8 0 0 │         │ 0 0 0.7 │          │ 0 0.5 0 │
-│ 0 0 0 0 │        │ 0.8 0 0 │         │ 0 0 0 0 │          │ 0 0.8 0 │
-│ 0 0 0 0 │        │ 0.8 0 0 │         │ 0 0 0 0 │          │ 0 0.5 0 │
-└─────────┘        └─────────┘         └─────────┘          └─────────┘
+**Canal 1 (ojos):**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| 0 | 0 | 0 | 0 |
+| 0 | 0.9 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+
+**Canal 2 (borde):**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| 0.8 | 0 | 0 | 0 |
+| 0.8 | 0 | 0 | 0 |
+| 0.8 | 0 | 0 | 0 |
+| 0.8 | 0 | 0 | 0 |
+
+**Canal 3 (cortes):**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0.7 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+
+**Canal 4 (conexiones):**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| 0 | 0 | 0 | 0 |
+| 0 | 0.5 | 0 | 0 |
+| 0 | 0.8 | 0 | 0 |
+| 0 | 0.5 | 0 | 0 |
 
 Estas características se combinan en capas más profundas para formar conceptos más complejos...
-```
 
 ---
 

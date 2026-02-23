@@ -39,24 +39,17 @@ Estado del tablero:          Plano de caracteristicas (negras):
 
 Las redes neuronales necesitan varios tipos de informacion, por lo que apilamos multiples planos de caracteristicas:
 
-```
-Tensor de entrada: 19 × 19 × N
+**Tensor de entrada: 19 x 19 x N**
 
-    N planos
-    ↓
-┌───────────┐
-│ Plano 1   │ ← Posicion de piedras negras
-├───────────┤
-│ Plano 2   │ ← Posicion de piedras blancas
-├───────────┤
-│ Plano 3   │ ← Posicion de puntos vacios
-├───────────┤
-│ ...       │
-├───────────┤
-│ Plano N   │ ← Otras caracteristicas
-└───────────┘
-    19×19
-```
+| Plano | Descripcion |
+|:-----:|:-----------:|
+| Plano 1 | Posicion de piedras negras |
+| Plano 2 | Posicion de piedras blancas |
+| Plano 3 | Posicion de puntos vacios |
+| ... | ... |
+| Plano N | Otras caracteristicas |
+
+Cada plano tiene dimension 19x19.
 
 Esto es similar a como una imagen a color tiene 3 canales R, G, B. La "imagen" del Go tiene N canales.
 

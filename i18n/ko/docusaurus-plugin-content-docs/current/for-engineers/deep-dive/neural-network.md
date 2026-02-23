@@ -14,31 +14,19 @@ description: KataGo의 신경망 설계, 입력 특성 및 다중 헤드 출력 
 
 KataGo는 **단일 신경망, 다중 헤드 출력** 설계를 사용합니다:
 
-```
-입력 특성 (19×19×22)
-        │
-        ▼
-┌───────────────────┐
-│     초기 합성곱층    │
-│   256 filters     │
-└─────────┬─────────┘
-          │
-          ▼
-┌───────────────────┐
-│     잔차 타워       │
-│  20-60개 잔차 블록  │
-│  + 글로벌 풀링층    │
-└─────────┬─────────┘
-          │
-    ┌─────┴─────┬─────────┬─────────┐
-    │           │         │         │
-    ▼           ▼         ▼         ▼
- Policy      Value     Score   Ownership
-  Head       Head      Head      Head
-    │           │         │         │
-    ▼           ▼         ▼         ▼
-362 확률    승률      집 차이    361 소유권
-(pass 포함)  (-1~+1)    (집)     (-1~+1)
+```mermaid
+flowchart TB
+    Input["입력 특성 (19×19×22)"]
+    Input --> InitConv["초기 합성곱층<br/>256 filters"]
+    InitConv --> ResNet["잔차 타워<br/>20-60개 잔차 블록<br/>+ 글로벌 풀링층"]
+    ResNet --> Policy["Policy Head"]
+    ResNet --> Value["Value Head"]
+    ResNet --> Score["Score Head"]
+    ResNet --> Ownership["Ownership Head"]
+    Policy --> PolicyOut["362 확률<br/>(pass 포함)"]
+    Value --> ValueOut["승률<br/>(-1~+1)"]
+    Score --> ScoreOut["집 차이<br/>(집)"]
+    Ownership --> OwnerOut["361 소유권<br/>(-1~+1)"]
 ```
 
 ---
@@ -113,34 +101,18 @@ def encode_rules(rules, komi):
 
 KataGo는 **Pre-activation ResNet** 구조를 사용합니다:
 
-```
-입력 x
-    │
-    ├────────────────────┐
-    │                    │
-    ▼                    │
-BatchNorm                │
-    │                    │
-    ▼                    │
-ReLU                     │
-    │                    │
-    ▼                    │
-Conv 3×3                 │
-    │                    │
-    ▼                    │
-BatchNorm                │
-    │                    │
-    ▼                    │
-ReLU                     │
-    │                    │
-    ▼                    │
-Conv 3×3                 │
-    │                    │
-    ▼                    │
-    +  ←─────────────────┘ (잔차 연결)
-    │
-    ▼
-출력
+```mermaid
+flowchart TB
+    X["입력 x"] --> BN1["BatchNorm"]
+    X --> Skip["잔차 연결"]
+    BN1 --> ReLU1["ReLU"]
+    ReLU1 --> Conv1["Conv 3×3"]
+    Conv1 --> BN2["BatchNorm"]
+    BN2 --> ReLU2["ReLU"]
+    ReLU2 --> Conv2["Conv 3×3"]
+    Conv2 --> Add(("+"))
+    Skip --> Add
+    Add --> Out["출력"]
 ```
 
 ### 코드 예제

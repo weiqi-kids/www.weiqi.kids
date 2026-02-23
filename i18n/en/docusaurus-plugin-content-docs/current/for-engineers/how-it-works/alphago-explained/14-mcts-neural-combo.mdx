@@ -26,18 +26,12 @@ MCTS's core idea: **Instead of exhaustively searching all possible moves, random
 
 Traditional MCTS contains four phases, repeated continuously:
 
-```
-     ┌─────────────────────────────────────────────────────────────┐
-     │                        MCTS Loop                           │
-     │                                                             │
-     │   ┌───────────┐    ┌───────────┐    ┌───────────┐    ┌───────────┐
-     │   │ Selection │ →  │ Expansion │ →  │ Simulation│ →  │Backprop   │
-     │   │           │    │           │    │           │    │           │
-     │   └───────────┘    └───────────┘    └───────────┘    └───────────┘
-     │        │                                                    │
-     │        └────────────────────────────────────────────────────┘
-     │                           Repeat N times
-     └─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph Loop["MCTS Loop (Repeat N times)"]
+        Selection --> Expansion --> Simulation --> Backprop
+        Backprop -.->|"Repeat"| Selection
+    end
 ```
 
 Let's understand each phase in detail:
@@ -65,15 +59,37 @@ This formula's wisdom:
 
 After reaching leaf node, select an unexplored action and create a new child node.
 
-```
-Before expansion:                After expansion:
-     ○ (root)                        ○ (root)
-    /│\                             /│\
-   ○ ○ ○                           ○ ○ ○
-  /│              →               /│
- ○ ○                             ○ ○
-   ↑                                \
-   leaf node                         ● (new node)
+```mermaid
+flowchart TB
+    subgraph Before["Before expansion"]
+        R1["○ root"]
+        A1["○"]
+        B1["○"]
+        C1["○"]
+        D1["○"]
+        E1["○ leaf"]
+        R1 --> A1
+        R1 --> B1
+        R1 --> C1
+        A1 --> D1
+        A1 --> E1
+    end
+
+    subgraph After["After expansion"]
+        R2["○ root"]
+        A2["○"]
+        B2["○"]
+        C2["○"]
+        D2["○"]
+        E2["○"]
+        F2["● new node"]
+        R2 --> A2
+        R2 --> B2
+        R2 --> C2
+        A2 --> D2
+        A2 --> E2
+        E2 --> F2
+    end
 ```
 
 ### 3. Simulation (Rollout)
@@ -118,34 +134,27 @@ These problems are elegantly solved by neural networks in AlphaGo.
 
 AlphaGo integrates two neural networks into MCTS:
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    AlphaGo Search Architecture               │
-│                                                             │
-│  ┌───────────────────────────────────────────────────────┐  │
-│  │                    MCTS                               │  │
-│  │                                                       │  │
-│  │   Selection    Expansion    Evaluation    Backup      │  │
-│  │       │            │            │            │        │  │
-│  │       ▼            ▼            ▼            ▼        │  │
-│  │    ┌─────┐    ┌─────┐    ┌─────────┐    ┌─────┐      │  │
-│  │    │PUCT │    │Policy│    │Value Net│    │Update│     │  │
-│  │    │Formula│   │Net   │    │+ Rollout│    │Stats │     │  │
-│  │    └─────┘    └─────┘    └─────────┘    └─────┘      │  │
-│  │       ↑            ↑            ↑                     │  │
-│  │       │            │            │                     │  │
-│  └───────┼────────────┼────────────┼─────────────────────┘  │
-│          │            │            │                        │
-│  ┌───────┴────────────┴────────────┴─────────────────────┐  │
-│  │                 Neural Networks                        │  │
-│  │  ┌─────────────────┐    ┌─────────────────┐           │  │
-│  │  │ Policy Network  │    │ Value Network   │           │  │
-│  │  │ π(a|s)          │    │ V(s)            │           │  │
-│  │  │ Output: action  │    │ Output: win rate│           │  │
-│  │  │ probabilities   │    │ estimate        │           │  │
-│  │  └─────────────────┘    └─────────────────┘           │  │
-│  └────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph AlphaGo["AlphaGo Search Architecture"]
+        subgraph MCTS["MCTS"]
+            Selection["Selection<br/>(PUCT Formula)"]
+            Expansion["Expansion<br/>(Policy Net)"]
+            Evaluation["Evaluation<br/>(Value Net + Rollout)"]
+            Backup["Backup<br/>(Update Stats)"]
+
+            Selection --> Expansion --> Evaluation --> Backup
+        end
+
+        subgraph NeuralNets["Neural Networks"]
+            PolicyNet["Policy Network π(a|s)<br/>Output: action probabilities"]
+            ValueNet["Value Network V(s)<br/>Output: win rate estimate"]
+        end
+
+        PolicyNet --> Selection
+        PolicyNet --> Expansion
+        ValueNet --> Evaluation
+    end
 ```
 
 ### Policy Network's Role
@@ -573,24 +582,18 @@ During search:
 
 ### Evolution Summary
 
-```
-AlphaGo Fan (2015)
-    │
-    │ + Larger network, more training
-    ▼
-AlphaGo Lee (2016)
-    │
-    │ + More self-play
-    ▼
-AlphaGo Master (2017)
-    │
-    │ + Remove human data, unified network, remove Rollout
-    ▼
-AlphaGo Zero (2017)
-    │
-    │ + Generalize to other games
-    ▼
-AlphaZero (2018)
+```mermaid
+flowchart TB
+    Fan["AlphaGo Fan (2015)"]
+    Lee["AlphaGo Lee (2016)"]
+    Master["AlphaGo Master (2017)"]
+    Zero["AlphaGo Zero (2017)"]
+    AlphaZero["AlphaZero (2018)"]
+
+    Fan -->|"+ Larger network, more training"| Lee
+    Lee -->|"+ More self-play"| Master
+    Master -->|"+ Remove human data, unified network, remove Rollout"| Zero
+    Zero -->|"+ Generalize to other games"| AlphaZero
 ```
 
 ---

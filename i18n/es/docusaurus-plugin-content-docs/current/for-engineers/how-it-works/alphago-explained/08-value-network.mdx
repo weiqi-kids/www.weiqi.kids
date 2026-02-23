@@ -422,17 +422,13 @@ Q(s, a) = (1/N(s,a)) × Σ V(hoja)
 
 Imagina un tablero simplificado de 3×3. La Value Network aprende una "superficie de valor":
 
-```
-        Posición de blanco
-       1   2   3
-    ┌───┬───┬───┐
-  1 │+0.3│-0.1│+0.2│
-N   ├───┼───┼───┤
-e  2 │-0.2│+0.5│-0.3│
-g   ├───┼───┼───┤
-r  3 │+0.1│-0.2│+0.4│
-o   └───┴───┴───┘
-```
+**Superficie de valor (tablero simplificado 3x3)**
+
+|  | Posición de blanco 1 | Posición de blanco 2 | Posición de blanco 3 |
+|:-:|:-:|:-:|:-:|
+| **Negro 1** | +0.3 | -0.1 | +0.2 |
+| **Negro 2** | -0.2 | +0.5 | -0.3 |
+| **Negro 3** | +0.1 | -0.2 | +0.4 |
 
 Esta superficie nos dice el valor de cada combinación de posiciones. Valores positivos favorecen a negro, valores negativos favorecen a blanco.
 

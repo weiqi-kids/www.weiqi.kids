@@ -35,19 +35,20 @@ CNN tem três características que a tornam especialmente adequada para dados do
 
 O kernel de convolução da CNN apenas observa regiões locais, o que combina perfeitamente com as características do Go:
 
-```
-Reconhecimento de imagem:          Go:
-Orelha de gato é característica    "Olho" é forma local
-  local
-Não precisa ver imagem inteira     Não precisa ver tabuleiro inteiro
+**Reconhecimento de imagem vs Go:**
 
-    Região 3×3                     Região 3×3
-   ┌───────┐                      ┌───────┐
-   │ ○ ● ○ │                      │ ○ ● ○ │
-   │ ● ○ ● │  ←  posição do olho  │ ● · ● │
-   │ ○ ● ○ │                      │ ○ ● ○ │
-   └───────┘                      └───────┘
-```
+| Reconhecimento de imagem | Go |
+|--------------------------|-----|
+| Orelha de gato é característica local | "Olho" é forma local |
+| Não precisa ver imagem inteira | Não precisa ver tabuleiro inteiro |
+
+**Região 3×3 - posição do olho:**
+
+|   |   |   |
+|:-:|:-:|:-:|
+| ○ | ● | ○ |
+| ● | · | ● |
+| ○ | ● | ○ |
 
 Muitos conceitos de Go são "locais":
 - **Olho**: região 2×2 ou 3×3
@@ -260,14 +261,21 @@ Pesquisadores descobriram que as camadas ocultas da CNN realmente aprendem carac
 
 #### Filtros de camadas rasas
 
-```
-Filtro A (detecção de olho):   Filtro B (detecção de atari):
-┌───────┐                      ┌───────┐
-│ + - + │                      │ + + + │
-│ - + - │                      │ + - - │
-│ + - + │                      │ + + + │
-└───────┘                      └───────┘
-```
+**Filtro A (detecção de olho):**
+
+|   |   |   |
+|:-:|:-:|:-:|
+| + | - | + |
+| - | + | - |
+| + | - | + |
+
+**Filtro B (detecção de atari):**
+
+|   |   |   |
+|:-:|:-:|:-:|
+| + | + | + |
+| + | - | - |
+| + | + | + |
 
 #### Filtros de camadas profundas
 
@@ -286,18 +294,7 @@ def relu(x):
     return max(0, x)
 ```
 
-Ilustração:
-
-```
-Saída
-  │
-  │    /
-  │   /
-  │  /
-  │ /
-──┼────── Entrada
-  │
-```
+**Ilustração:** A função ReLU produz uma saída de 0 para todas as entradas negativas, e para entradas positivas, a saída é igual à entrada (uma linha reta com inclinação 1 passando pela origem).
 
 ### Por que não usar outras funções?
 
@@ -550,47 +547,75 @@ Veja [Rede de Duas Cabeças e Rede Residual](../dual-head-resnet) para detalhes.
 
 ### Processo de convolução
 
-```
-Tabuleiro de entrada (simplificado para 5×5):
+**Tabuleiro de entrada (simplificado para 5×5):**
 
-   A B C D E
-1  . . . . .
-2  . ● . . .
-3  . . ○ . .
-4  . . . ● .
-5  . . . . .
+|   | A | B | C | D | E |
+|:-:|:-:|:-:|:-:|:-:|:-:|
+| 1 | · | · | · | · | · |
+| 2 | · | ● | · | · | · |
+| 3 | · | · | ○ | · | · |
+| 4 | · | · | · | ● | · |
+| 5 | · | · | · | · | · |
 
-Certo filtro (3×3, detecta "forma de cruz"):
-┌───────┐
-│ 0 1 0 │
-│ 1 1 1 │
-│ 0 1 0 │
-└───────┘
+**Certo filtro (3×3, detecta "forma de cruz"):**
 
-Saída da convolução:
-   A B C D E
-1  0 0 0 0 0
-2  0 0 0 0 0
-3  0 0 1 0 0   ← forte resposta no centro (correspondência de forma de cruz)
-4  0 0 0 0 0
-5  0 0 0 0 0
-```
+|   |   |   |
+|:-:|:-:|:-:|
+| 0 | 1 | 0 |
+| 1 | 1 | 1 |
+| 0 | 1 | 0 |
+
+**Saída da convolução:** (forte resposta no centro - correspondência de forma de cruz)
+
+|   | A | B | C | D | E |
+|:-:|:-:|:-:|:-:|:-:|:-:|
+| 1 | 0 | 0 | 0 | 0 | 0 |
+| 2 | 0 | 0 | 0 | 0 | 0 |
+| 3 | 0 | 0 | 1 | 0 | 0 |
+| 4 | 0 | 0 | 0 | 0 | 0 |
+| 5 | 0 | 0 | 0 | 0 | 0 |
 
 ### Características multicamada
 
-```
-Saída da 1ª camada (4 de 192 canais):
+**Saída da 1ª camada (4 de 192 canais):**
 
-Canal 1 (olho):      Canal 2 (borda):     Canal 3 (corte):    Canal 4 (conexão):
-┌─────────┐         ┌─────────┐          ┌─────────┐         ┌─────────┐
-│ 0 0 0 0 │         │ 0.8 0 0 │          │ 0 0 0 0 │         │ 0 0 0 0 │
-│ 0 0.9 0 │         │ 0.8 0 0 │          │ 0 0 0.7 │         │ 0 0.5 0 │
-│ 0 0 0 0 │         │ 0.8 0 0 │          │ 0 0 0 0 │         │ 0 0.8 0 │
-│ 0 0 0 0 │         │ 0.8 0 0 │          │ 0 0 0 0 │         │ 0 0.5 0 │
-└─────────┘         └─────────┘          └─────────┘         └─────────┘
+**Canal 1 (olho):**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| 0 | 0 | 0 | 0 |
+| 0 | 0.9 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+
+**Canal 2 (borda):**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| 0.8 | 0 | 0 | 0 |
+| 0.8 | 0 | 0 | 0 |
+| 0.8 | 0 | 0 | 0 |
+| 0.8 | 0 | 0 | 0 |
+
+**Canal 3 (corte):**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0.7 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+
+**Canal 4 (conexão):**
+
+|   |   |   |   |
+|:-:|:-:|:-:|:-:|
+| 0 | 0 | 0 | 0 |
+| 0 | 0.5 | 0 | 0 |
+| 0 | 0.8 | 0 | 0 |
+| 0 | 0.5 | 0 | 0 |
 
 Essas características serão combinadas em conceitos mais complexos em camadas mais profundas...
-```
 
 ---
 

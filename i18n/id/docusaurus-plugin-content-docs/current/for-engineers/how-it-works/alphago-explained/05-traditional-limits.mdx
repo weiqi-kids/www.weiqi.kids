@@ -161,16 +161,18 @@ Jika kita sudah tahu cabang tertentu "pasti tidak bagus", kita bisa langsung mel
 
 ### Prinsip Pruning
 
-```
-Node Max A (nilai terbaik saat ini α = +5)
-    │
-    ├── Cabang 1: Sudah dievaluasi, nilai = +5
-    │
-    └── Cabang 2: Node Min B
-            │
-            ├── Sub-cabang B1: nilai = +3
-            │
-            └── Sub-cabang B2: ??? (bisa dilewati!)
+```mermaid
+flowchart TB
+    A["Node Max A<br/>(nilai terbaik saat ini α = +5)"]
+    B1["Cabang 1<br/>Sudah dievaluasi, nilai = +5"]
+    B["Cabang 2: Node Min B"]
+    C1["Sub-cabang B1: nilai = +3"]
+    C2["Sub-cabang B2: ???<br/>(bisa dilewati!)"]
+
+    A --> B1
+    A --> B
+    B --> C1
+    B --> C2
 ```
 
 Dalam contoh ini:

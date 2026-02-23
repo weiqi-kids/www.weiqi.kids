@@ -39,23 +39,17 @@ Board state:                 Feature plane (Black stones):
 
 Neural networks need various information, so we stack multiple feature planes:
 
-```
-Input tensor: 19 × 19 × N
+```mermaid
+flowchart TB
+    subgraph Tensor["Input tensor: 19 x 19 x N"]
+        P1["Plane 1: Black stone positions"]
+        P2["Plane 2: White stone positions"]
+        P3["Plane 3: Empty positions"]
+        P4["..."]
+        PN["Plane N: Other features"]
+    end
 
-    N planes
-    ↓
-┌───────────┐
-│ Plane 1   │ ← Black stone positions
-├───────────┤
-│ Plane 2   │ ← White stone positions
-├───────────┤
-│ Plane 3   │ ← Empty positions
-├───────────┤
-│ ...       │
-├───────────┤
-│ Plane N   │ ← Other features
-└───────────┘
-    19×19
+    P1 --> P2 --> P3 --> P4 --> PN
 ```
 
 This is similar to how color images have R, G, B channels. Go "images" have N channels.

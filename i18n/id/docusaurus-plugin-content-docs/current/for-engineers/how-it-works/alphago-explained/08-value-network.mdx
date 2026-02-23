@@ -82,10 +82,9 @@ Ini sangat lambat. Value Network dapat memberikan evaluasi dengan **satu forward
 
 Arsitektur Value Network sangat mirip dengan Policy Network, keduanya adalah deep convolutional neural network:
 
-```
-Layer Input → Layer Konvolusi ×12 → Layer Fully Connected → Output
-   ↓         ↓           ↓         ↓
-19×19×48   19×19×192    256 dimensi     Nilai tunggal
+```mermaid
+flowchart LR
+    A["Layer Input<br/>19×19×48"] --> B["Layer Konvolusi ×12<br/>19×19×192"] --> C["Layer Fully Connected<br/>256 dimensi"] --> D["Output<br/>Nilai tunggal"]
 ```
 
 ### Layer Input
@@ -139,30 +138,19 @@ Rentang output Sigmoid adalah (0, 1), juga bisa mewakili win rate. Tapi Tanh mem
 
 ### Diagram Arsitektur Lengkap
 
-```
-Input: 19×19×49
-        ↓
-    Conv 5×5, 192 filter
-        ↓
-    ReLU
-        ↓
-    Conv 3×3, 192 filter (×11)
-        ↓
-    ReLU
-        ↓
-    Conv 1×1, 1 filter
-        ↓
-    Flatten (361 dimensi)
-        ↓
-    Fully Connected (256 dimensi)
-        ↓
-    ReLU
-        ↓
-    Fully Connected (1 dimensi)
-        ↓
-    Tanh
-        ↓
-Output: [-1, +1]
+```mermaid
+flowchart TB
+    A["Input: 19×19×49"] --> B["Conv 5×5, 192 filter"]
+    B --> C["ReLU"]
+    C --> D["Conv 3×3, 192 filter (×11)"]
+    D --> E["ReLU"]
+    E --> F["Conv 1×1, 1 filter"]
+    F --> G["Flatten (361 dimensi)"]
+    G --> H["Fully Connected (256 dimensi)"]
+    H --> I["ReLU"]
+    I --> J["Fully Connected (1 dimensi)"]
+    J --> K["Tanh"]
+    K --> L["Output: [-1, +1]"]
 ```
 
 ### Jumlah Parameter
@@ -353,17 +341,22 @@ Dalam MCTS, node ini akan mendapat lebih banyak sumber daya pencarian (karena ke
 
 Value Network memainkan peran kunci dalam tahap **Evaluation** MCTS:
 
+```mermaid
+flowchart TB
+    Root["Root Node<br/>(posisi saat ini)"]
+    Root --> A
+    Root --> B
+    A --> A1
+    A --> A2
+    B --> B1
+    B --> B2
+    A1 --> E1["Eval"]
+    A2 --> E2["Eval"]
+    B1 --> E3["Eval"]
+    B2 --> E4["Eval"]
 ```
-Pohon pencarian MCTS:
 
-        Root Node (posisi saat ini)
-           /    \
-         A        B
-        /  \    /  \
-       A1  A2  B1  B2 ← Leaf node
-        ↓   ↓   ↓   ↓
-       Eval  Eval  Eval  Eval
-```
+*A1, A2, B1, B2 adalah leaf node*
 
 Ketika MCTS mencapai leaf node, perlu mengevaluasi nilai posisi ini. Ada dua metode:
 
@@ -422,17 +415,11 @@ Q(s, a) = (1/N(s,a)) × Σ V(leaf)
 
 Bayangkan papan 3×3 yang disederhanakan. Value Network mempelajari "permukaan nilai":
 
-```
-        Posisi Putih
-       1   2   3
-    ┌───┬───┬───┐
-  1 │+0.3│-0.1│+0.2│
-Posisi├───┼───┼───┤
-Hitam 2 │-0.2│+0.5│-0.3│
-    ├───┼───┼───┤
-  3 │+0.1│-0.2│+0.4│
-    └───┴───┴───┘
-```
+| Posisi Hitam / Posisi Putih | 1 | 2 | 3 |
+|:---------------------------:|:---:|:---:|:---:|
+| **1** | +0.3 | -0.1 | +0.2 |
+| **2** | -0.2 | +0.5 | -0.3 |
+| **3** | +0.1 | -0.2 | +0.4 |
 
 Permukaan ini memberitahu kita nilai setiap kombinasi posisi. Nilai positif menguntungkan hitam, nilai negatif menguntungkan putih.
 

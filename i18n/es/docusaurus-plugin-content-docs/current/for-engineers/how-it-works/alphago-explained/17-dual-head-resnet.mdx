@@ -19,23 +19,23 @@ Este artículo analizará en profundidad los principios de diseño de esta arqui
 
 La red neuronal de AlphaGo Zero se puede dividir en tres partes:
 
-```
-Entrada (17 × 19 × 19)
-       ↓
-┌─────────────────────────────────────────┐
-│        Backbone Compartido (ResNet)      │
-│      40 bloques residuales, 256 canales  │
-└─────────────────────────────────────────┘
-       ↓                    ↓
-┌─────────────┐      ┌─────────────┐
-│  Policy Head │      │  Value Head  │
-│ (Cabeza de  │      │ (Cabeza de  │
-│  Política)  │      │   Valor)    │
-└─────────────┘      └─────────────┘
-       ↓                    ↓
-Distribución de prob.   Tasa de victoria [-1, 1]
-     19×19
-  + prob. de Pass
+```mermaid
+flowchart TB
+    Input["Entrada (17 x 19 x 19)"]
+
+    Backbone["Backbone Compartido (ResNet)<br/>40 bloques residuales, 256 canales"]
+
+    PolicyHead["Policy Head<br/>(Cabeza de Politica)"]
+    ValueHead["Value Head<br/>(Cabeza de Valor)"]
+
+    PolicyOut["Distribucion de prob.<br/>19x19 + prob. de Pass"]
+    ValueOut["Tasa de victoria<br/>[-1, 1]"]
+
+    Input --> Backbone
+    Backbone --> PolicyHead
+    Backbone --> ValueHead
+    PolicyHead --> PolicyOut
+    ValueHead --> ValueOut
 ```
 
 Analicemos cada parte.

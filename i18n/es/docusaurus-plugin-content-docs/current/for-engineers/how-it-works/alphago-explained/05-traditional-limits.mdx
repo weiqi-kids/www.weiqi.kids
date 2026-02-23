@@ -45,17 +45,41 @@ Donde:
 
 ### Diagrama del Arbol de Busqueda
 
-```
-                Capa Max (Yo)
-                    │
-        ┌───────────┼───────────┐
-        │           │           │
-       -3          +5          +2
-        │           │           │
-    ─────────   ─────────   ─────────
-    Capa Min (Oponente)
-    │   │   │   │   │   │   │   │   │
-   -3  +7  +5 +5  -2  +9 +2  +1  +4
+```mermaid
+flowchart TB
+    subgraph Max["Capa Max (Yo)"]
+        A["-3"]
+        B["+5"]
+        C["+2"]
+    end
+
+    subgraph MinA["Capa Min"]
+        A1["-3"]
+        A2["+7"]
+        A3["+5"]
+    end
+
+    subgraph MinB["Capa Min"]
+        B1["+5"]
+        B2["-2"]
+        B3["+9"]
+    end
+
+    subgraph MinC["Capa Min"]
+        C1["+2"]
+        C2["+1"]
+        C3["+4"]
+    end
+
+    A --> A1
+    A --> A2
+    A --> A3
+    B --> B1
+    B --> B2
+    B --> B3
+    C --> C1
+    C --> C2
+    C --> C3
 ```
 
 En este ejemplo:
@@ -140,16 +164,18 @@ Si ya sabemos que una rama es "definitivamente mala", podemos saltarla directame
 
 ### Principio de Poda
 
-```
-Nodo Max A (mejor actual α = +5)
-    │
-    ├── Rama 1: Ya evaluada, valor = +5
-    │
-    └── Rama 2: Nodo Min B
-            │
-            ├── Sub-rama B1: valor = +3
-            │
-            └── Sub-rama B2: ??? (¡se puede saltar!)
+```mermaid
+flowchart TB
+    A["Nodo Max A<br/>(mejor actual α = +5)"]
+    B1["Rama 1<br/>Ya evaluada, valor = +5"]
+    B["Rama 2: Nodo Min B"]
+    C1["Sub-rama B1: valor = +3"]
+    C2["Sub-rama B2: ???<br/>(se puede saltar!)"]
+
+    A --> B1
+    A --> B
+    B --> C1
+    B --> C2
 ```
 
 En este ejemplo:

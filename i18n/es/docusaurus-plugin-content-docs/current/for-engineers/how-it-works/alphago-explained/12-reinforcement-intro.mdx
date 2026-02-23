@@ -58,32 +58,22 @@ Este es uno de los problemas más centrales del aprendizaje por refuerzo, llamad
 
 La arquitectura básica del aprendizaje por refuerzo incluye dos protagonistas:
 
-```
-        ┌─────────────────────────────────────┐
-        │           Environment               │
-        │                                     │
-        │   ┌─────────┐      ┌─────────┐     │
-        │   │  State  │      │ Reward  │     │
-        │   │   s_t   │      │   r_t   │     │
-        │   └────┬────┘      └────┬────┘     │
-        │        │                │          │
-        └────────┼────────────────┼──────────┘
-                 │                │
-                 ▼                ▼
-        ┌─────────────────────────────────────┐
-        │            Agent                    │
-        │                                     │
-        │         ┌──────────┐               │
-        │         │  Policy  │               │
-        │         │   π(s)   │               │
-        │         └────┬─────┘               │
-        │              │                     │
-        │              ▼                     │
-        │         ┌──────────┐               │
-        │         │  Action  │               │
-        │         │   a_t    │───────────────┼───► Enviar al entorno
-        │         └──────────┘               │
-        └─────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Environment["Environment (Entorno)"]
+        State["State (Estado)<br/>s_t"]
+        Reward["Reward (Recompensa)<br/>r_t"]
+    end
+
+    subgraph Agent["Agent (Agente)"]
+        Policy["Policy (Politica)<br/>π(s)"]
+        Action["Action (Accion)<br/>a_t"]
+    end
+
+    State --> Policy
+    Reward --> Policy
+    Policy --> Action
+    Action -->|"Enviar al entorno"| Environment
 ```
 
 **Agent (agente)**:

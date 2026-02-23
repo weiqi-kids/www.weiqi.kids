@@ -317,20 +317,15 @@ This is intuitively reasonable: the closer to game end, the more certain the out
 
 A well-trained Value Network's output distribution:
 
+```mermaid
+xychart-beta
+    title "Output Distribution"
+    x-axis "Output Value" [-1, -0.5, 0, 0.5, 1]
+    y-axis "Frequency"
+    bar [0.4, 0.15, 0.05, 0.15, 0.4]
 ```
-        Frequency
-          |
-          |    *
-          |   * *
-          |  *   *
-          | *     *
-          |*       *
-          +----+----+---- Output Value
-         -1    0   +1
 
-Most outputs concentrated near -1 and +1
-(because most positions have clear win/loss tendency)
-```
+Most outputs concentrated near -1 and +1 (because most positions have clear win/loss tendency).
 
 ### Uncertain Positions
 
@@ -432,17 +427,11 @@ Q(s, a) = (1/N(s,a)) × Σ V(leaf)
 
 Imagine a simplified 3×3 board. What the Value Network learns is a "value surface":
 
-```
-        White position
-       1   2   3
-    ┌───┬───┬───┐
-  1 │+0.3│-0.1│+0.2│
-Black├───┼───┼───┤
-pos.  2 │-0.2│+0.5│-0.3│
-    ├───┼───┼───┤
-    3 │+0.1│-0.2│+0.4│
-    └───┴───┴───┘
-```
+| | White 1 | White 2 | White 3 |
+|:---:|:---:|:---:|:---:|
+| **Black 1** | +0.3 | -0.1 | +0.2 |
+| **Black 2** | -0.2 | +0.5 | -0.3 |
+| **Black 3** | +0.1 | -0.2 | +0.4 |
 
 This surface tells us the value of each position combination. Positive values favor Black, negative values favor White.
 
@@ -450,16 +439,12 @@ This surface tells us the value of each position combination. Positive values fa
 
 As training progresses, Value Network predictions become more accurate:
 
-```
-       Prediction Error
-          |
-     1.0  |*
-          | *
-     0.5  |  *
-          |   *
-     0.1  |    * * * * *
-          +─────────────── Training Steps
-          0   100K  500K  1M
+```mermaid
+xychart-beta
+    title "Prediction Error During Training"
+    x-axis "Training Steps" [0, "100K", "500K", "1M"]
+    y-axis "Error" 0 --> 1
+    line [1.0, 0.5, 0.15, 0.1]
 ```
 
 Error drops rapidly then stabilizes.

@@ -100,35 +100,32 @@ DOI: 10.1038/nature16961
 
 ### Arquitetura do Sistema
 
-```
-┌─────────────────────────────────────────────┐
-│              Arquitetura AlphaGo            │
-├─────────────────────────────────────────────┤
-│                                             │
-│   Policy Network (SL)                       │
-│   ├── Entrada: Estado do tabuleiro          │
-│   │   (48 planos de recursos)               │
-│   ├── Arquitetura: CNN de 13 camadas        │
-│   ├── Saida: Probabilidade de 361 posicoes  │
-│   └── Treinamento: 30 milhoes de registros  │
-│       humanos                               │
-│                                             │
-│   Policy Network (RL)                       │
-│   ├── Inicializado a partir de SL Policy    │
-│   └── Aprendizado por reforco via auto-jogo │
-│                                             │
-│   Value Network                             │
-│   ├── Entrada: Estado do tabuleiro          │
-│   ├── Saida: Valor unico de taxa de vitoria │
-│   └── Treinamento: Posicoes geradas por     │
-│       auto-jogo                             │
-│                                             │
-│   MCTS                                      │
-│   ├── Usa Policy Network para guiar busca   │
-│   └── Usa Value Network + Rollout para      │
-│       avaliacao                             │
-│                                             │
-└─────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph AlphaGo["Arquitetura AlphaGo"]
+        subgraph SL["Policy Network (SL)"]
+            SL1["Entrada: Estado do tabuleiro (48 planos)"]
+            SL2["Arquitetura: CNN de 13 camadas"]
+            SL3["Saida: Probabilidade de 361 posicoes"]
+            SL4["Treinamento: 30 milhoes de registros humanos"]
+        end
+
+        subgraph RL["Policy Network (RL)"]
+            RL1["Inicializado a partir de SL Policy"]
+            RL2["Aprendizado por reforco via auto-jogo"]
+        end
+
+        subgraph VN["Value Network"]
+            VN1["Entrada: Estado do tabuleiro"]
+            VN2["Saida: Valor unico de taxa de vitoria"]
+            VN3["Treinamento: Posicoes geradas por auto-jogo"]
+        end
+
+        subgraph MCTS["MCTS"]
+            MCTS1["Usa Policy Network para guiar busca"]
+            MCTS2["Usa Value Network + Rollout para avaliacao"]
+        end
+    end
 ```
 
 ### Pontos Tecnicos
@@ -211,19 +208,15 @@ DOI: 10.1038/nature24270
 
 #### 1. Rede Unica com Duas Cabecas
 
-```
-              Entrada (17 planos)
-                   │
-              ┌────┴────┐
-              │ Torre    │
-              │ Residual │
-              │ (19 ou   │
-              │  39 cam.)│
-              └────┬────┘
-           ┌──────┴──────┐
-           │             │
-        Policy         Value
-        (361)          (1)
+```mermaid
+flowchart TB
+    Input["Entrada (17 planos)"]
+    Input --> ResNet
+    subgraph ResNet["Torre Residual (19 ou 39 camadas)"]
+        R[" "]
+    end
+    ResNet --> Policy["Policy (361)"]
+    ResNet --> Value["Value (1)"]
 ```
 
 #### 2. Recursos de Entrada Simplificados
@@ -251,27 +244,16 @@ Mais simples e rapido
 
 #### 4. Fluxo de Treinamento
 
-```
-Inicializar rede aleatoria
-    │
-    ▼
-┌─────────────────────────────┐
-│  Auto-jogo gera registros   │ ←─┐
-└──────────────┬──────────────┘   │
-               │                   │
-               ▼                   │
-┌─────────────────────────────┐   │
-│  Treinar rede neural        │   │
-│  - Policy: minimizar        │   │
-│    entropia cruzada         │   │
-│  - Value: minimizar MSE     │   │
-└──────────────┬──────────────┘   │
-               │                   │
-               ▼                   │
-┌─────────────────────────────┐   │
-│  Avaliar nova rede          │   │
-│  Se mais forte, substitui   │───┘
-└─────────────────────────────┘
+```mermaid
+flowchart TB
+    Init["Inicializar rede aleatoria"]
+    Init --> SelfPlay
+    SelfPlay["Auto-jogo gera registros"]
+    SelfPlay --> Train
+    Train["Treinar rede neural<br/>- Policy: minimizar entropia cruzada<br/>- Value: minimizar MSE"]
+    Train --> Eval
+    Eval["Avaliar nova rede<br/>Se mais forte, substitui"]
+    Eval --> SelfPlay
 ```
 
 ### Curva de Aprendizado

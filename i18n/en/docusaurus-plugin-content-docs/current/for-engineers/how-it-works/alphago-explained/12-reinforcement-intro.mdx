@@ -58,32 +58,22 @@ This is one of the core problems in reinforcement learning, called the **Credit 
 
 The basic architecture of reinforcement learning includes two main characters:
 
-```
-        ┌─────────────────────────────────────┐
-        │           Environment               │
-        │                                     │
-        │   ┌─────────┐      ┌─────────┐     │
-        │   │  State  │      │ Reward  │     │
-        │   │   s_t   │      │   r_t   │     │
-        │   └────┬────┘      └────┬────┘     │
-        │        │                │          │
-        └────────┼────────────────┼──────────┘
-                 │                │
-                 ▼                ▼
-        ┌─────────────────────────────────────┐
-        │            Agent                    │
-        │                                     │
-        │         ┌──────────┐               │
-        │         │  Policy  │               │
-        │         │   π(s)   │               │
-        │         └────┬─────┘               │
-        │              │                     │
-        │              ▼                     │
-        │         ┌──────────┐               │
-        │         │  Action  │               │
-        │         │   a_t    │───────────────┼───► Send to environment
-        │         └──────────┘               │
-        └─────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Environment
+        State["State s_t"]
+        Reward["Reward r_t"]
+    end
+
+    subgraph Agent
+        Policy["Policy π(s)"]
+        Action["Action a_t"]
+    end
+
+    State --> Policy
+    Reward --> Policy
+    Policy --> Action
+    Action -->|"Send to environment"| Environment
 ```
 
 **Agent**:

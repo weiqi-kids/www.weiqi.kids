@@ -14,31 +14,19 @@ description: KataGoのニューラルネットワーク設計、入力特徴、�
 
 KataGoは**単一ニューラルネットワーク・マルチヘッド出力**設計を採用しています：
 
-```
-入力特徴（19×19×22）
-        │
-        ▼
-┌───────────────────┐
-│     初期畳み込み層   │
-│   256 filters     │
-└─────────┬─────────┘
-          │
-          ▼
-┌───────────────────┐
-│     残差タワー      │
-│  20-60 残差ブロック │
-│  + グローバルプーリング層 │
-└─────────┬─────────┘
-          │
-    ┌─────┴─────┬─────────┬─────────┐
-    │           │         │         │
-    ▼           ▼         ▼         ▼
- Policy      Value     Score   Ownership
-  Head       Head      Head      Head
-    │           │         │         │
-    ▼           ▼         ▼         ▼
-362 確率    勝率      目数差    361 帰属
-(パス含む)  (-1~+1)    (目)     (-1~+1)
+```mermaid
+flowchart TB
+    Input["入力特徴（19×19×22）"]
+    Input --> InitConv["初期畳み込み層<br/>256 filters"]
+    InitConv --> ResNet["残差タワー<br/>20-60残差ブロック<br/>+ グローバルプーリング層"]
+    ResNet --> Policy["Policy Head"]
+    ResNet --> Value["Value Head"]
+    ResNet --> Score["Score Head"]
+    ResNet --> Ownership["Ownership Head"]
+    Policy --> PolicyOut["362確率<br/>(パス含む)"]
+    Value --> ValueOut["勝率<br/>(-1~+1)"]
+    Score --> ScoreOut["目数差<br/>(目)"]
+    Ownership --> OwnerOut["361帰属<br/>(-1~+1)"]
 ```
 
 ---
@@ -113,34 +101,18 @@ def encode_rules(rules, komi):
 
 KataGoは **Pre-activation ResNet** 構造を使用しています：
 
-```
-入力 x
-    │
-    ├────────────────────┐
-    │                    │
-    ▼                    │
-BatchNorm                │
-    │                    │
-    ▼                    │
-ReLU                     │
-    │                    │
-    ▼                    │
-Conv 3×3                 │
-    │                    │
-    ▼                    │
-BatchNorm                │
-    │                    │
-    ▼                    │
-ReLU                     │
-    │                    │
-    ▼                    │
-Conv 3×3                 │
-    │                    │
-    ▼                    │
-    +  ←─────────────────┘ (残差接続)
-    │
-    ▼
-出力
+```mermaid
+flowchart TB
+    X["入力 x"] --> BN1["BatchNorm"]
+    X --> Skip["残差接続"]
+    BN1 --> ReLU1["ReLU"]
+    ReLU1 --> Conv1["Conv 3×3"]
+    Conv1 --> BN2["BatchNorm"]
+    BN2 --> ReLU2["ReLU"]
+    ReLU2 --> Conv2["Conv 3×3"]
+    Conv2 --> Add(("+"))
+    Skip --> Add
+    Add --> Out["出力"]
 ```
 
 ### コード例

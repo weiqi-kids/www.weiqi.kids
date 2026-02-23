@@ -100,31 +100,32 @@ DOI：10.1038/nature16961
 
 ### 系统架构
 
-```
-┌─────────────────────────────────────────────┐
-│              AlphaGo 架构                    │
-├─────────────────────────────────────────────┤
-│                                             │
-│   Policy Network (SL)                       │
-│   ├── 输入：棋盘状态（48 个特征平面）        │
-│   ├── 架构：13 层 CNN                       │
-│   ├── 输出：361 个位置的概率                │
-│   └── 训练：3000 万人类棋谱                 │
-│                                             │
-│   Policy Network (RL)                       │
-│   ├── 从 SL Policy 初始化                   │
-│   └── 自我对弈强化学习                      │
-│                                             │
-│   Value Network                             │
-│   ├── 输入：棋盘状态                        │
-│   ├── 输出：单一胜率值                      │
-│   └── 训练：自我对弈产生的局面              │
-│                                             │
-│   MCTS                                      │
-│   ├── 用 Policy Network 引导搜索            │
-│   └── 用 Value Network + Rollout 评估       │
-│                                             │
-└─────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph AlphaGo["AlphaGo 架构"]
+        subgraph SL["Policy Network (SL)"]
+            SL1["输入：棋盘状态（48特征平面）"]
+            SL2["架构：13层CNN"]
+            SL3["输出：361个位置的概率"]
+            SL4["训练：3000万人类棋谱"]
+        end
+
+        subgraph RL["Policy Network (RL)"]
+            RL1["从 SL Policy 初始化"]
+            RL2["自我对弈强化学习"]
+        end
+
+        subgraph VN["Value Network"]
+            VN1["输入：棋盘状态"]
+            VN2["输出：单一胜率值"]
+            VN3["训练：自我对弈产生的局面"]
+        end
+
+        subgraph MCTS["MCTS"]
+            MCTS1["用 Policy Network 引导搜索"]
+            MCTS2["用 Value Network + Rollout 评估"]
+        end
+    end
 ```
 
 ### 技术要点
@@ -207,18 +208,15 @@ DOI：10.1038/nature24270
 
 #### 1. 单一双头网络
 
-```
-              输入（17 平面）
-                   │
-              ┌────┴────┐
-              │ 残差塔   │
-              │ (19 or  │
-              │  39 层) │
-              └────┬────┘
-           ┌──────┴──────┐
-           │             │
-        Policy         Value
-        (361)          (1)
+```mermaid
+flowchart TB
+    Input["输入（17平面）"]
+    Input --> ResNet
+    subgraph ResNet["残差塔 (19 or 39层)"]
+        R[" "]
+    end
+    ResNet --> Policy["Policy (361)"]
+    ResNet --> Value["Value (1)"]
 ```
 
 #### 2. 简化输入特征
@@ -246,26 +244,16 @@ features = [
 
 #### 4. 训练流程
 
-```
-初始化随机网络
-    │
-    ▼
-┌─────────────────────────────┐
-│  自我对弈产生棋谱           │ ←─┐
-└──────────────┬──────────────┘   │
-               │                   │
-               ▼                   │
-┌─────────────────────────────┐   │
-│  训练神经网络               │   │
-│  - Policy: 最小化交叉熵      │   │
-│  - Value: 最小化 MSE        │   │
-└──────────────┬──────────────┘   │
-               │                   │
-               ▼                   │
-┌─────────────────────────────┐   │
-│  评估新网络                 │   │
-│  若较强则替换               │───┘
-└─────────────────────────────┘
+```mermaid
+flowchart TB
+    Init["初始化随机网络"]
+    Init --> SelfPlay
+    SelfPlay["自我对弈产生棋谱"]
+    SelfPlay --> Train
+    Train["训练神经网络<br/>- Policy: 最小化交叉熵<br/>- Value: 最小化 MSE"]
+    Train --> Eval
+    Eval["评估新网络<br/>若较强则替换"]
+    Eval --> SelfPlay
 ```
 
 ### 学习曲线
