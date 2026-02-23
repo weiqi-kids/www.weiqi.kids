@@ -19,65 +19,47 @@ Artikel ini akan menganalisis secara mendalam arsitektur sistem di balik AlphaGo
 
 AlphaGo asli (versi yang mengalahkan Lee Sedol) memiliki pelatihan yang dibagi menjadi beberapa tahap, setiap tahap menggunakan konfigurasi sumber daya yang berbeda:
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Tahap 1: Supervised Learning              │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐     │
-│  │  Kifu       │ →  │  GPU Cluster│ →  │ Policy Net  │     │
-│  │  Manusia    │    │  (50 GPUs)  │    │  (versi SL) │     │
-│  │  (30 juta)  │    │             │    │             │     │
-│  └─────────────┘    └─────────────┘    └─────────────┘     │
-└─────────────────────────────────────────────────────────────┘
-                            ↓
-┌─────────────────────────────────────────────────────────────┐
-│                    Tahap 2: Reinforcement Learning           │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐     │
-│  │  Self-play  │ →  │  GPU Cluster│ →  │ Policy Net  │     │
-│  │  (jutaan)   │    │  (50 GPUs)  │    │  (versi RL) │     │
-│  └─────────────┘    └─────────────┘    └─────────────┘     │
-└─────────────────────────────────────────────────────────────┘
-                            ↓
-┌─────────────────────────────────────────────────────────────┐
-│                    Tahap 3: Pelatihan Value Network          │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐     │
-│  │  Data RL    │ →  │  GPU Cluster│ →  │ Value Net   │     │
-│  │ (30 juta    │    │  (50 GPUs)  │    │             │     │
-│  │  posisi)    │    │             │    │             │     │
-│  └─────────────┘    └─────────────┘    └─────────────┘     │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph S1["Tahap 1: Supervised Learning"]
+        K1["Kifu Manusia<br/>(30 juta)"]
+        G1["GPU Cluster<br/>(50 GPUs)"]
+        P1["Policy Net<br/>(versi SL)"]
+        K1 --> G1 --> P1
+    end
+
+    subgraph S2["Tahap 2: Reinforcement Learning"]
+        SP["Self-play<br/>(jutaan)"]
+        G2["GPU Cluster<br/>(50 GPUs)"]
+        P2["Policy Net<br/>(versi RL)"]
+        SP --> G2 --> P2
+    end
+
+    subgraph S3["Tahap 3: Pelatihan Value Network"]
+        D["Data RL<br/>(30 juta posisi)"]
+        G3["GPU Cluster<br/>(50 GPUs)"]
+        V["Value Net"]
+        D --> G3 --> V
+    end
+
+    S1 --> S2 --> S3
 ```
 
 ### Arsitektur Pelatihan AlphaGo Zero
 
 AlphaGo Zero sangat menyederhanakan alur pelatihan, menggunakan satu loop pelatihan end-to-end:
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                   Loop Pelatihan AlphaGo Zero                │
-│                                                              │
-│  ┌───────────────────┐                                      │
-│  │   Self-play       │  ← Network terbaru                   │
-│  │   Workers         │                                      │
-│  │   (TPU × N)       │                                      │
-│  └─────────┬─────────┘                                      │
-│            ↓                                                 │
-│  ┌───────────────────┐                                      │
-│  │   Replay Buffer   │  (500.000 pertandingan terakhir)     │
-│  │   (RAM/SSD)       │                                      │
-│  └─────────┬─────────┘                                      │
-│            ↓                                                 │
-│  ┌───────────────────┐                                      │
-│  │   Training        │                                      │
-│  │   Workers         │                                      │
-│  │   (TPU × M)       │                                      │
-│  └─────────┬─────────┘                                      │
-│            ↓                                                 │
-│  ┌───────────────────┐                                      │
-│  │   Network         │  → Perbarui network untuk Self-play  │
-│  │   Checkpoint      │                                      │
-│  └───────────────────┘                                      │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    SP["Self-play Workers<br/>(TPU × N)"]
+    RB["Replay Buffer<br/>(500.000 pertandingan terakhir)<br/>(RAM/SSD)"]
+    TW["Training Workers<br/>(TPU × M)"]
+    CK["Network Checkpoint"]
+
+    SP -->|Data pertandingan| RB
+    RB -->|Sampel pelatihan| TW
+    TW -->|Perbarui| CK
+    CK -->|Network terbaru| SP
 ```
 
 Keunggulan arsitektur ini:
@@ -163,25 +145,21 @@ Training Workers bertanggung jawab mengambil sampel data dari Replay Buffer dan 
 
 Pelatihan skala besar menggunakan **Data Parallelism**:
 
-```
-                    ┌─────────────┐
-                    │  Parameter  │
-                    │   Server    │
-                    └──────┬──────┘
-                           │
-         ┌─────────────────┼─────────────────┐
-         │                 │                 │
-    ┌────▼────┐      ┌────▼────┐      ┌────▼────┐
-    │  TPU 0  │      │  TPU 1  │      │  TPU 2  │
-    │ Batch 0 │      │ Batch 1 │      │ Batch 2 │
-    └────┬────┘      └────┬────┘      └────┬────┘
-         │                 │                 │
-         └─────────────────┼─────────────────┘
-                           │
-                    ┌──────▼──────┐
-                    │  Gradient   │
-                    │  Aggregation│
-                    └─────────────┘
+```mermaid
+flowchart TB
+    PS["Parameter Server"]
+    T0["TPU 0<br/>Batch 0"]
+    T1["TPU 1<br/>Batch 1"]
+    T2["TPU 2<br/>Batch 2"]
+    GA["Gradient Aggregation"]
+
+    PS --> T0
+    PS --> T1
+    PS --> T2
+    T0 --> GA
+    T1 --> GA
+    T2 --> GA
+    GA --> PS
 ```
 
 Setiap TPU memproses mini-batch berbeda, menghitung gradien lokal, kemudian mengagregasi untuk memperbarui parameter global.
@@ -214,19 +192,13 @@ AlphaGo Zero menggunakan **update sinkron** untuk memastikan stabilitas pelatiha
 
 Inti TPU adalah **MXU (Matrix Multiply Unit)**:
 
-```
-┌─────────────────────────────────────────┐
-│              TPU v2/v3                  │
-│  ┌─────────────────────────────────┐    │
-│  │         MXU (128×128)           │    │
-│  │    Matrix Multiply Unit         │    │
-│  │    (128×128 = 16K MACs/cycle)   │    │
-│  └─────────────────────────────────┘    │
-│  ┌──────────┐  ┌──────────────────┐     │
-│  │ Vector   │  │     HBM          │     │
-│  │ Unit     │  │   (16-32 GB)     │     │
-│  └──────────┘  └──────────────────┘     │
-└─────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph TPU["TPU v2/v3"]
+        MXU["MXU (128×128)<br/>Matrix Multiply Unit<br/>(128×128 = 16K MACs/cycle)"]
+        VU["Vector Unit"]
+        HBM["HBM<br/>(16-32 GB)"]
+    end
 ```
 
 MXU dapat menjalankan 16K operasi multiply-add per siklus, ini sangat penting untuk perkalian matriks neural network.
@@ -275,20 +247,23 @@ Tetapi evaluasi neural network adalah **operasi batch** yang ramah GPU/TPU. Baga
 
 Cara paralel paling sederhana: jalankan beberapa simulasi lengkap secara bersamaan, gabungkan hasilnya di akhir.
 
-```
-┌────────────┐
-│   Root     │
-└──────┬─────┘
-       ├──────────┬──────────┬──────────┐
-  ┌────▼────┐ ┌───▼────┐ ┌───▼────┐ ┌───▼────┐
-  │ Sim 1   │ │ Sim 2  │ │ Sim 3  │ │ Sim 4  │
-  │ (indep) │ │ (indep)│ │ (indep)│ │ (indep)│
-  └────┬────┘ └───┬────┘ └───┬────┘ └───┬────┘
-       └──────────┴──────────┴──────────┘
-                      │
-              ┌───────▼───────┐
-              │  Merge Trees  │
-              └───────────────┘
+```mermaid
+flowchart TB
+    Root["Root"]
+    S1["Sim 1<br/>(indep)"]
+    S2["Sim 2<br/>(indep)"]
+    S3["Sim 3<br/>(indep)"]
+    S4["Sim 4<br/>(indep)"]
+    Merge["Merge Trees"]
+
+    Root --> S1
+    Root --> S2
+    Root --> S3
+    Root --> S4
+    S1 --> Merge
+    S2 --> Merge
+    S3 --> Merge
+    S4 --> Merge
 ```
 
 Masalah: Setiap simulasi dimulai dari root, akan berulang kali menjelajahi jalur yang sama.
@@ -340,18 +315,24 @@ Waktu T3:
 
 Melalui virtual loss, dapat mengumpulkan beberapa leaf node yang menunggu evaluasi, melakukan **batch inference**:
 
-```
-┌─────────────────────────────────────────┐
-│            Parallel MCTS                │
-│                                         │
-│  Thread 1 → Leaf node L1 ──┐            │
-│  Thread 2 → Leaf node L2 ──┼──→ Batch ─→ TPU
-│  Thread 3 → Leaf node L3 ──┤            │
-│  Thread 4 → Leaf node L4 ──┘            │
-│                                         │
-│  ← Mendapat (P1,V1), (P2,V2), ... secara bersamaan  │
-│                                         │
-└─────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph Threads["Parallel MCTS"]
+        T1["Thread 1 → Leaf L1"]
+        T2["Thread 2 → Leaf L2"]
+        T3["Thread 3 → Leaf L3"]
+        T4["Thread 4 → Leaf L4"]
+    end
+
+    Batch["Batch"]
+    TPU["TPU"]
+    Result["(P1,V1), (P2,V2), ..."]
+
+    T1 --> Batch
+    T2 --> Batch
+    T3 --> Batch
+    T4 --> Batch
+    Batch --> TPU --> Result
 ```
 
 Efisiensi batch inference TPU jauh lebih tinggi daripada inferensi satu per satu, ini membuat MCTS paralel menjadi mungkin.
@@ -375,36 +356,22 @@ Arsitektur inferensi AlphaGo dalam pertandingan resmi:
 
 Alur inferensi saat pertandingan (contoh AlphaGo Lee):
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Arsitektur Inferensi Terdistribusi        │
-│                                                              │
-│  ┌──────────────┐                                           │
-│  │   Node       │ ← Terima langkah lawan, kirim langkah     │
-│  │   Utama      │   AlphaGo                                 │
-│  └──────┬───────┘                                           │
-│         │                                                    │
-│         ↓                                                    │
-│  ┌──────────────────────────────────────────────────┐       │
-│  │              MCTS Controller                      │       │
-│  │  Kelola search tree, distribusi tugas,            │       │
-│  │  kumpulkan hasil                                  │       │
-│  └──────────────────────────────────────────────────┘       │
-│         │                                                    │
-│         ↓                                                    │
-│  ┌──────────────────────────────────────────────────┐       │
-│  │              Cluster TPU (48 TPU)                 │       │
-│  │                                                   │       │
-│  │   ┌────┐ ┌────┐ ┌────┐ ┌────┐ ┌────┐ ┌────┐     │       │
-│  │   │TPU │ │TPU │ │TPU │ │TPU │ │TPU │ │... │     │       │
-│  │   │ 1  │ │ 2  │ │ 3  │ │ 4  │ │ 5  │ │ 48 │     │       │
-│  │   └────┘ └────┘ └────┘ └────┘ └────┘ └────┘     │       │
-│  │                                                   │       │
-│  │   Batch memproses permintaan inferensi            │       │
-│  │   neural network                                  │       │
-│  └──────────────────────────────────────────────────┘       │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    Node["Node Utama<br/>Terima langkah lawan, kirim langkah AlphaGo"]
+    MCTS["MCTS Controller<br/>Kelola search tree, distribusi tugas, kumpulkan hasil"]
+
+    subgraph Cluster["Cluster TPU (48 TPU)"]
+        TPU1["TPU 1"]
+        TPU2["TPU 2"]
+        TPU3["TPU 3"]
+        TPU4["TPU 4"]
+        TPU5["TPU 5"]
+        TPUN["... TPU 48"]
+    end
+
+    Node --> MCTS
+    MCTS --> Cluster
 ```
 
 ### Manajemen Waktu Berpikir

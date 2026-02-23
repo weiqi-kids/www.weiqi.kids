@@ -296,12 +296,9 @@ scheduler = torch.optim.lr_scheduler.StepLR(
 )
 ```
 
-```
-Learning rate:
-0.003  ────────┐
-              └─────── 0.0003 ────────┐
-                                      └─────── 0.00003
-         80M langkah    160M langkah   240M langkah
+```mermaid
+flowchart LR
+    A["0.003<br/>(0-80M langkah)"] --> B["0.0003<br/>(80M-160M langkah)"] --> C["0.00003<br/>(160M-240M langkah)"]
 ```
 
 ### Loop Pelatihan

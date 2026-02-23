@@ -12,37 +12,21 @@ Artikel ini memperkenalkan arsitektur sistem pelatihan terdistribusi KataGo, men
 
 ## Gambaran Arsitektur Sistem
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│              Sistem Pelatihan Terdistribusi KataGo          │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│   ┌─────────────┐    ┌─────────────┐    ┌─────────────┐   │
-│   │  Worker 1   │    │  Worker 2   │    │  Worker N   │   │
-│   │  (Self-play)│    │  (Self-play)│    │  (Self-play)│   │
-│   └──────┬──────┘    └──────┬──────┘    └──────┬──────┘   │
-│          │                  │                  │           │
-│          └────────────┬─────┴──────────────────┘           │
-│                       │                                     │
-│                       ▼                                     │
-│            ┌─────────────────────┐                         │
-│            │   Server Pelatihan  │                         │
-│            │  (Data Collection)  │                         │
-│            └──────────┬──────────┘                         │
-│                       │                                     │
-│                       ▼                                     │
-│            ┌─────────────────────┐                         │
-│            │   Proses Pelatihan  │                         │
-│            │  (Model Training)   │                         │
-│            └──────────┬──────────┘                         │
-│                       │                                     │
-│                       ▼                                     │
-│            ┌─────────────────────┐                         │
-│            │   Rilis Model Baru  │                         │
-│            │  (Model Release)    │                         │
-│            └─────────────────────┘                         │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Workers["Self-play Workers"]
+        W1["Worker 1<br/>(Self-play)"]
+        W2["Worker 2<br/>(Self-play)"]
+        WN["Worker N<br/>(Self-play)"]
+    end
+
+    W1 --> Server
+    W2 --> Server
+    WN --> Server
+
+    Server["Server Pelatihan<br/>(Data Collection)"]
+    Server --> Training["Proses Pelatihan<br/>(Model Training)"]
+    Training --> Release["Rilis Model Baru<br/>(Model Release)"]
 ```
 
 ---

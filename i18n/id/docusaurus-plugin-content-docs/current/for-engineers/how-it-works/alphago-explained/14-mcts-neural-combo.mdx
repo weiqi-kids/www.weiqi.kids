@@ -26,18 +26,15 @@ Ide inti MCTS adalah: **daripada menghitung semua kemungkinan langkah secara men
 
 MCTS tradisional terdiri dari empat tahap yang terus diulang:
 
-```
-     ┌─────────────────────────────────────────────────────────────┐
-     │                        Siklus MCTS                          │
-     │                                                             │
-     │   ┌───────────┐    ┌───────────┐    ┌───────────┐    ┌───────────┐
-     │   │ Selection │ →  │ Expansion │ →  │ Simulation│ →  │Backprop   │
-     │   │   Seleksi │    │  Ekspansi │    │  Simulasi │    │  Propagasi│
-     │   └───────────┘    └───────────┘    └───────────┘    └───────────┘
-     │        │                                                    │
-     │        └────────────────────────────────────────────────────┘
-     │                           Ulangi N kali
-     └─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    S["Selection<br/>Seleksi"]
+    E["Expansion<br/>Ekspansi"]
+    Sim["Simulation<br/>Simulasi"]
+    B["Backprop<br/>Propagasi"]
+
+    S --> E --> Sim --> B
+    B -->|Ulangi N kali| S
 ```
 
 Mari kita pahami setiap tahap secara detail:
@@ -118,34 +115,23 @@ Masalah-masalah ini diselesaikan secara elegan oleh Neural Network di AlphaGo.
 
 AlphaGo mengintegrasikan dua Neural Network ke dalam MCTS:
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Arsitektur Pencarian AlphaGo              │
-│                                                             │
-│  ┌───────────────────────────────────────────────────────┐  │
-│  │                    MCTS                               │  │
-│  │                                                       │  │
-│  │   Selection    Expansion    Evaluation    Backup      │  │
-│  │       │            │            │            │        │  │
-│  │       ▼            ▼            ▼            ▼        │  │
-│  │    ┌─────┐    ┌─────┐    ┌─────────┐    ┌─────┐      │  │
-│  │    │PUCT │    │Policy│    │Value Net│    │Update│     │  │
-│  │    │Rumus│    │Net   │    │+ Rollout│    │Stats │     │  │
-│  │    └─────┘    └─────┘    └─────────┘    └─────┘      │  │
-│  │       ↑            ↑            ↑                     │  │
-│  │       │            │            │                     │  │
-│  └───────┼────────────┼────────────┼─────────────────────┘  │
-│          │            │            │                        │
-│  ┌───────┴────────────┴────────────┴─────────────────────┐  │
-│  │                 Neural Networks                        │  │
-│  │  ┌─────────────────┐    ┌─────────────────┐           │  │
-│  │  │ Policy Network  │    │ Value Network   │           │  │
-│  │  │ π(a|s)          │    │ V(s)            │           │  │
-│  │  │ Output: prob.   │    │ Output: win rate│           │  │
-│  │  │ aksi            │    │ estimasi        │           │  │
-│  │  └─────────────────┘    └─────────────────┘           │  │
-│  └────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph MCTS["MCTS"]
+        Selection["Selection<br/>PUCT Rumus"]
+        Expansion["Expansion<br/>Policy Net"]
+        Evaluation["Evaluation<br/>Value Net + Rollout"]
+        Backup["Backup<br/>Update Stats"]
+    end
+
+    subgraph NN["Neural Networks"]
+        Policy["Policy Network<br/>π(a|s)<br/>Output: prob. aksi"]
+        Value["Value Network<br/>V(s)<br/>Output: win rate estimasi"]
+    end
+
+    Policy --> Selection
+    Policy --> Expansion
+    Value --> Evaluation
 ```
 
 ### Peran Policy Network
@@ -573,24 +559,18 @@ Saat pencarian:
 
 ### Ringkasan Evolusi
 
-```
-AlphaGo Fan (2015)
-    │
-    │ + Network lebih besar, lebih banyak pelatihan
-    ▼
-AlphaGo Lee (2016)
-    │
-    │ + Lebih banyak self-play
-    ▼
-AlphaGo Master (2017)
-    │
-    │ + Hapus data manusia, unifikasi network, hapus Rollout
-    ▼
-AlphaGo Zero (2017)
-    │
-    │ + Generalisasi ke game lain
-    ▼
-AlphaZero (2018)
+```mermaid
+flowchart TB
+    Fan["AlphaGo Fan (2015)"]
+    Lee["AlphaGo Lee (2016)"]
+    Master["AlphaGo Master (2017)"]
+    Zero["AlphaGo Zero (2017)"]
+    AZ["AlphaZero (2018)"]
+
+    Fan -->|"+ Network lebih besar, lebih banyak pelatihan"| Lee
+    Lee -->|"+ Lebih banyak self-play"| Master
+    Master -->|"+ Hapus data manusia, unifikasi network, hapus Rollout"| Zero
+    Zero -->|"+ Generalisasi ke game lain"| AZ
 ```
 
 ---

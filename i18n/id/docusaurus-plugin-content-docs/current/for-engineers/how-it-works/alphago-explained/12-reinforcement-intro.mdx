@@ -58,32 +58,22 @@ Ini adalah salah satu masalah paling inti dari reinforcement learning, yang kita
 
 Arsitektur dasar reinforcement learning mencakup dua protagonis:
 
-```
-        ┌─────────────────────────────────────┐
-        │           Environment               │
-        │                                     │
-        │   ┌─────────┐      ┌─────────┐     │
-        │   │  State  │      │ Reward  │     │
-        │   │   s_t   │      │   r_t   │     │
-        │   └────┬────┘      └────┬────┘     │
-        │        │                │          │
-        └────────┼────────────────┼──────────┘
-                 │                │
-                 ▼                ▼
-        ┌─────────────────────────────────────┐
-        │            Agent                    │
-        │                                     │
-        │         ┌──────────┐               │
-        │         │  Policy  │               │
-        │         │   π(s)   │               │
-        │         └────┬─────┘               │
-        │              │                     │
-        │              ▼                     │
-        │         ┌──────────┐               │
-        │         │  Action  │               │
-        │         │   a_t    │───────────────┼───► Kirim kembali ke environment
-        │         └──────────┘               │
-        └─────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Env["Environment"]
+        State["State s_t"]
+        Reward["Reward r_t"]
+    end
+
+    subgraph Agent["Agent"]
+        Policy["Policy π(s)"]
+        Action["Action a_t"]
+    end
+
+    State --> Policy
+    Reward --> Policy
+    Policy --> Action
+    Action -->|Kirim kembali ke environment| Env
 ```
 
 **Agent (Agen)**:

@@ -12,27 +12,15 @@ Artikel ini menganalisis secara mendalam detail implementasi Monte Carlo Tree Se
 
 ## Tinjauan Empat Langkah MCTS
 
-```
-┌─────────────────────────────────────────────────────┐
-│                 Siklus Pencarian MCTS               │
-├─────────────────────────────────────────────────────┤
-│                                                     │
-│   1. Selection      Seleksi: Turun pohon,           │
-│         │           gunakan PUCT untuk memilih node │
-│         ▼                                           │
-│   2. Expansion      Ekspansi: Mencapai leaf node,   │
-│         │           buat child node                 │
-│         ▼                                           │
-│   3. Evaluation     Evaluasi: Gunakan neural        │
-│         │           network untuk mengevaluasi      │
-│         ▼           leaf node                       │
-│   4. Backprop       Backprop: Update statistik      │
-│                     semua node di jalur             │
-│                                                     │
-│   Ulangi ribuan kali, pilih aksi dengan             │
-│   kunjungan terbanyak                               │
-│                                                     │
-└─────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    S["1. Selection<br/>Seleksi: Turun pohon, gunakan PUCT untuk memilih node"]
+    E["2. Expansion<br/>Ekspansi: Mencapai leaf node, buat child node"]
+    V["3. Evaluation<br/>Evaluasi: Gunakan neural network untuk mengevaluasi leaf node"]
+    B["4. Backprop<br/>Backprop: Update statistik semua node di jalur"]
+    R["Ulangi ribuan kali, pilih aksi dengan kunjungan terbanyak"]
+
+    S --> E --> V --> B --> R
 ```
 
 ---
@@ -144,14 +132,19 @@ def select_child(self, c_puct=1.5):
 
 ### Keseimbangan Eksplorasi vs Eksploitasi
 
-```
-Tahap Awal: N(s,a) kecil
-├── U(s,a) besar → Dominan eksplorasi
-└── Aksi dengan probabilitas prior tinggi dieksplorasi lebih dulu
+```mermaid
+flowchart LR
+    subgraph Early["Tahap Awal: N(s,a) kecil"]
+        E1["U(s,a) besar → Dominan eksplorasi"]
+        E2["Aksi dengan probabilitas prior tinggi dieksplorasi lebih dulu"]
+    end
 
-Tahap Akhir: N(s,a) besar
-├── U(s,a) kecil → Dominan eksploitasi
-└── Q(s,a) mendominasi, pilih aksi yang diketahui bagus
+    subgraph Late["Tahap Akhir: N(s,a) besar"]
+        L1["U(s,a) kecil → Dominan eksploitasi"]
+        L2["Q(s,a) mendominasi, pilih aksi yang diketahui bagus"]
+    end
+
+    Early --> Late
 ```
 
 ---

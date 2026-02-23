@@ -14,31 +14,21 @@ description: تحليل معمق لتصميم الشبكة العصبية في K
 
 يستخدم KataGo تصميم **شبكة عصبية واحدة بإخراج متعدد الرؤوس**:
 
-```
-ميزات الإدخال (19×19×22)
-        │
-        ▼
-┌───────────────────┐
-│   طبقة التفاف أولية   │
-│   256 filters     │
-└─────────┬─────────┘
-          │
-          ▼
-┌───────────────────┐
-│     البرج المتبقي      │
-│  20-60 كتلة متبقية   │
-│  + طبقات تجميع شاملة  │
-└─────────┬─────────┘
-          │
-    ┌─────┴─────┬─────────┬─────────┐
-    │           │         │         │
-    ▼           ▼         ▼         ▼
- Policy      Value     Score   Ownership
-  Head       Head      Head      Head
-    │           │         │         │
-    ▼           ▼         ▼         ▼
-362 احتمال   معدل الفوز   فرق النقاط  361 ملكية
-(يشمل pass)  (-1~+1)    (نقاط)    (-1~+1)
+```mermaid
+flowchart TB
+    Input["ميزات الإدخال (19×19×22)"]
+    Input --> Conv["طبقة التفاف أولية<br/>256 filters"]
+    Conv --> ResNet["البرج المتبقي<br/>20-60 كتلة متبقية<br/>+ طبقات تجميع شاملة"]
+
+    ResNet --> Policy["Policy Head"]
+    ResNet --> Value["Value Head"]
+    ResNet --> Score["Score Head"]
+    ResNet --> Ownership["Ownership Head"]
+
+    Policy --> PolicyOut["362 احتمال<br/>(يشمل pass)"]
+    Value --> ValueOut["معدل الفوز<br/>(-1~+1)"]
+    Score --> ScoreOut["فرق النقاط<br/>(نقاط)"]
+    Ownership --> OwnershipOut["361 ملكية<br/>(-1~+1)"]
 ```
 
 ---
@@ -113,34 +103,18 @@ def encode_rules(rules, komi):
 
 يستخدم KataGo هيكل **Pre-activation ResNet**:
 
-```
-الإدخال x
-    │
-    ├────────────────────┐
-    │                    │
-    ▼                    │
-BatchNorm                │
-    │                    │
-    ▼                    │
-ReLU                     │
-    │                    │
-    ▼                    │
-Conv 3×3                 │
-    │                    │
-    ▼                    │
-BatchNorm                │
-    │                    │
-    ▼                    │
-ReLU                     │
-    │                    │
-    ▼                    │
-Conv 3×3                 │
-    │                    │
-    ▼                    │
-    +  ←─────────────────┘ (اتصال متبقي)
-    │
-    ▼
-الإخراج
+```mermaid
+flowchart TB
+    Input["الإدخال x"]
+    Input --> BN1["BatchNorm"]
+    Input -.->|اتصال متبقي| Add
+    BN1 --> ReLU1["ReLU"]
+    ReLU1 --> Conv1["Conv 3×3"]
+    Conv1 --> BN2["BatchNorm"]
+    BN2 --> ReLU2["ReLU"]
+    ReLU2 --> Conv2["Conv 3×3"]
+    Conv2 --> Add(("+"))
+    Add --> Output["الإخراج"]
 ```
 
 ### مثال الكود

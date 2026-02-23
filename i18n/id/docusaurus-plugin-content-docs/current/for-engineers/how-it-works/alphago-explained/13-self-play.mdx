@@ -359,22 +359,22 @@ Pengamatan ini menunjukkan bahwa meskipun kita tidak memiliki jaminan teoretis, 
 
 Untuk mempercepat pelatihan, AlphaGo menggunakan self-play paralel skala besar:
 
-```
-Arsitektur:
+```mermaid
+flowchart TB
+    Server["Parameter Server<br/>(Menyimpan θ terbaru, menerima update gradien)"]
 
-    ┌────────────────────────────────────────────┐
-    │           Parameter Server                  │
-    │    (Menyimpan θ terbaru, menerima update gradien)  │
-    └────────────────────────────────────────────┘
-         ▲                              │
-         │ Update gradien               │ Parameter terbaru
-         │                              ▼
-    ┌─────────┐  ┌─────────┐  ┌─────────┐
-    │ Worker 1 │  │ Worker 2 │  │ Worker N │
-    │ Self-play │  │ Self-play │  │ Self-play │
-    │ Kumpulkan │  │ Kumpulkan │  │ Kumpulkan │
-    │ trajectory │  │ trajectory │  │ trajectory │
-    └─────────┘  └─────────┘  └─────────┘
+    subgraph Workers["Workers"]
+        W1["Worker 1<br/>Self-play<br/>Kumpulkan trajectory"]
+        W2["Worker 2<br/>Self-play<br/>Kumpulkan trajectory"]
+        WN["Worker N<br/>Self-play<br/>Kumpulkan trajectory"]
+    end
+
+    W1 -->|Update gradien| Server
+    W2 -->|Update gradien| Server
+    WN -->|Update gradien| Server
+    Server -->|Parameter terbaru| W1
+    Server -->|Parameter terbaru| W2
+    Server -->|Parameter terbaru| WN
 ```
 
 **Keputusan desain kunci**:

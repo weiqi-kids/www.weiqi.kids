@@ -14,32 +14,23 @@ Artikel ini menganalisis secara mendalam arsitektur lengkap neural network KataG
 
 KataGo menggunakan desain **neural network tunggal dengan multi-head output**:
 
-```
-Fitur Input (19×19×22)
-        │
-        ▼
-┌───────────────────┐
-│   Layer Konvolusi │
-│   Awal 256 filter │
-└─────────┬─────────┘
-          │
-          ▼
-┌───────────────────┐
-│   Residual Tower  │
-│  20-60 blok       │
-│  residual         │
-│  + Global Pooling │
-└─────────┬─────────┘
-          │
-    ┌─────┴─────┬─────────┬─────────┐
-    │           │         │         │
-    ▼           ▼         ▼         ▼
- Policy      Value     Score   Ownership
-  Head       Head      Head      Head
-    │           │         │         │
-    ▼           ▼         ▼         ▼
-362 prob    Winrate   Selisih    361 kepemilikan
-(incl pass) (-1~+1)   (poin)    (-1~+1)
+```mermaid
+flowchart TB
+    Input["Fitur Input (19×19×22)"]
+    Conv["Layer Konvolusi Awal<br/>256 filter"]
+    Trunk["Residual Tower<br/>20-60 blok residual<br/>+ Global Pooling"]
+
+    Input --> Conv --> Trunk
+
+    Trunk --> Policy["Policy Head"]
+    Trunk --> Value["Value Head"]
+    Trunk --> Score["Score Head"]
+    Trunk --> Owner["Ownership Head"]
+
+    Policy --> P_Out["362 prob<br/>(incl pass)"]
+    Value --> V_Out["Winrate<br/>(-1~+1)"]
+    Score --> S_Out["Selisih<br/>(poin)"]
+    Owner --> O_Out["361 kepemilikan<br/>(-1~+1)"]
 ```
 
 ---
@@ -114,34 +105,21 @@ def encode_rules(rules, komi):
 
 KataGo menggunakan struktur **Pre-activation ResNet**:
 
-```
-Input x
-    │
-    ├────────────────────┐
-    │                    │
-    ▼                    │
-BatchNorm                │
-    │                    │
-    ▼                    │
-ReLU                     │
-    │                    │
-    ▼                    │
-Conv 3×3                 │
-    │                    │
-    ▼                    │
-BatchNorm                │
-    │                    │
-    ▼                    │
-ReLU                     │
-    │                    │
-    ▼                    │
-Conv 3×3                 │
-    │                    │
-    ▼                    │
-    +  ←─────────────────┘ (koneksi residual)
-    │
-    ▼
-Output
+```mermaid
+flowchart TB
+    Input["Input x"]
+    BN1["BatchNorm"]
+    R1["ReLU"]
+    C1["Conv 3×3"]
+    BN2["BatchNorm"]
+    R2["ReLU"]
+    C2["Conv 3×3"]
+    Add["+ (koneksi residual)"]
+    Output["Output"]
+
+    Input --> BN1 --> R1 --> C1 --> BN2 --> R2 --> C2 --> Add
+    Input -.-> Add
+    Add --> Output
 ```
 
 ### Contoh Kode

@@ -604,14 +604,18 @@ Policy Network dan Value Network saling melengkapi di AlphaGo:
 
 Di AlphaGo Zero, dua jaringan ini digabungkan menjadi satu **jaringan dual-head**:
 
-```
-       Layer ekstraksi fitur bersama
-              |
-       ┌──────┴──────┐
-       ↓              ↓
-  Policy Head    Value Head
-       ↓              ↓
-  361 probabilitas   Nilai tunggal
+```mermaid
+flowchart TB
+    Shared["Layer ekstraksi fitur bersama"]
+    PH["Policy Head"]
+    VH["Value Head"]
+    PO["361 probabilitas"]
+    VO["Nilai tunggal"]
+
+    Shared --> PH
+    Shared --> VH
+    PH --> PO
+    VH --> VO
 ```
 
 Keuntungan desain ini:

@@ -19,23 +19,20 @@ Artikel ini akan menganalisis secara mendalam prinsip desain arsitektur ini, das
 
 Neural network AlphaGo Zero bisa dibagi menjadi tiga bagian:
 
-```
-Input (17 x 19 x 19)
-       ↓
-┌─────────────────────────────────────────┐
-│            Shared Backbone (ResNet)      │
-│        40 residual block, 256 channel    │
-└─────────────────────────────────────────┘
-       ↓                    ↓
-┌─────────────┐      ┌─────────────┐
-│  Policy Head │      │  Value Head  │
-│  (Head       │      │  (Head       │
-│   Strategi)  │      │   Nilai)     │
-└─────────────┘      └─────────────┘
-       ↓                    ↓
-  Distribusi prob.       Win rate [-1, 1]
-  19x19 + 1 Pass
+```mermaid
+flowchart TB
+    Input["Input (17 x 19 x 19)"]
+    Backbone["Shared Backbone (ResNet)<br/>40 residual block, 256 channel"]
+    Policy["Policy Head<br/>(Head Strategi)"]
+    Value["Value Head<br/>(Head Nilai)"]
+    POut["Distribusi prob.<br/>19x19 + 1 Pass"]
+    VOut["Win rate [-1, 1]"]
 
+    Input --> Backbone
+    Backbone --> Policy
+    Backbone --> Value
+    Policy --> POut
+    Value --> VOut
 ```
 
 Mari kita analisis setiap bagian satu per satu.
@@ -70,22 +67,18 @@ Policy Head bertanggung jawab memprediksi probabilitas langkah untuk setiap posi
 
 #### Detail Arsitektur
 
-```
-Output Shared Backbone (256 x 19 x 19)
-       ↓
-Konvolusi 1x1 (2 channel)
-       ↓
-Batch Normalization
-       ↓
-ReLU
-       ↓
-Flatten (2 x 19 x 19 = 722)
-       ↓
-Fully connected layer (362)
-       ↓
-Softmax
-       ↓
-Output: 362 probabilitas (361 posisi + Pass)
+```mermaid
+flowchart TB
+    Input["Output Shared Backbone (256 x 19 x 19)"]
+    Conv["Konvolusi 1x1 (2 channel)"]
+    BN["Batch Normalization"]
+    ReLU["ReLU"]
+    Flat["Flatten (2 x 19 x 19 = 722)"]
+    FC["Fully connected layer (362)"]
+    Soft["Softmax"]
+    Out["Output: 362 probabilitas (361 posisi + Pass)"]
+
+    Input --> Conv --> BN --> ReLU --> Flat --> FC --> Soft --> Out
 ```
 
 #### Representasi Matematika
@@ -102,26 +95,20 @@ Value Head bertanggung jawab memprediksi win rate posisi saat ini.
 
 #### Detail Arsitektur
 
-```
-Output Shared Backbone (256 x 19 x 19)
-       ↓
-Konvolusi 1x1 (1 channel)
-       ↓
-Batch Normalization
-       ↓
-ReLU
-       ↓
-Flatten (1 x 19 x 19 = 361)
-       ↓
-Fully connected layer (256)
-       ↓
-ReLU
-       ↓
-Fully connected layer (1)
-       ↓
-Tanh
-       ↓
-Output: Win rate [-1, 1]
+```mermaid
+flowchart TB
+    Input["Output Shared Backbone (256 x 19 x 19)"]
+    Conv["Konvolusi 1x1 (1 channel)"]
+    BN["Batch Normalization"]
+    R1["ReLU"]
+    Flat["Flatten (1 x 19 x 19 = 361)"]
+    FC1["Fully connected layer (256)"]
+    R2["ReLU"]
+    FC2["Fully connected layer (1)"]
+    Tanh["Tanh"]
+    Out["Output: Win rate [-1, 1]"]
+
+    Input --> Conv --> BN --> R1 --> Flat --> FC1 --> R2 --> FC2 --> Tanh --> Out
 ```
 
 #### Representasi Matematika
@@ -211,22 +198,20 @@ Inilah **Masalah Degradasi (Degradation Problem)**:
 
 He Kaiming et al. pada 2015 mengajukan solusi simpel namun elegan: **Skip Connection (Residual Connection)**.
 
-```
-Input x
-   ↓
-┌─────────────┐
-│  Conv layer │
-│  BN + ReLU  │
-│  Conv layer │
-│  BN        │
-└─────────────┘
-   ↓ F(x)
-   ↓←────────────── x (skip connection)
-   +
-   ↓
- ReLU
-   ↓
-Output x + F(x)
+```mermaid
+flowchart TB
+    Input["Input x"]
+    Conv1["Conv layer"]
+    BN1["BN + ReLU"]
+    Conv2["Conv layer"]
+    BN2["BN"]
+    Add["+ (F(x) + x)"]
+    ReLU["ReLU"]
+    Output["Output x + F(x)"]
+
+    Input --> Conv1 --> BN1 --> Conv2 --> BN2 --> Add
+    Input -.->|skip connection| Add
+    Add --> ReLU --> Output
 ```
 
 #### Representasi Matematika

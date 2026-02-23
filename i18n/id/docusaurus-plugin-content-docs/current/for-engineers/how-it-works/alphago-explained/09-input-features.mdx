@@ -39,23 +39,17 @@ State papan:               Feature plane (batu hitam):
 
 Neural network memerlukan berbagai informasi, jadi kita menumpuk beberapa feature plane:
 
-```
-Tensor input: 19 × 19 × N
+```mermaid
+flowchart TB
+    subgraph Input["Tensor input: 19 × 19 × N"]
+        P1["Plane 1 - Posisi batu hitam"]
+        P2["Plane 2 - Posisi batu putih"]
+        P3["Plane 3 - Posisi kosong"]
+        Dots["..."]
+        PN["Plane N - Fitur lainnya"]
 
-    N plane
-    ↓
-┌───────────┐
-│ Plane 1    │ ← Posisi batu hitam
-├───────────┤
-│ Plane 2    │ ← Posisi batu putih
-├───────────┤
-│ Plane 3    │ ← Posisi kosong
-├───────────┤
-│ ...       │
-├───────────┤
-│ Plane N    │ ← Fitur lainnya
-└───────────┘
-    19×19
+        P1 --- P2 --- P3 --- Dots --- PN
+    end
 ```
 
 Ini mirip dengan gambar berwarna yang memiliki tiga channel R, G, B. "Gambar" Go memiliki N channel.

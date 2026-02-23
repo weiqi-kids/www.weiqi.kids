@@ -100,32 +100,35 @@ DOI: 10.1038/nature16961
 
 ### Arsitektur Sistem
 
-```
-┌─────────────────────────────────────────────┐
-│              Arsitektur AlphaGo             │
-├─────────────────────────────────────────────┤
-│                                             │
-│   Policy Network (SL)                       │
-│   ├── Input: Status papan (48 feature plane)│
-│   ├── Arsitektur: 13 layer CNN              │
-│   ├── Output: Probabilitas 361 posisi       │
-│   └── Pelatihan: 30 juta rekaman manusia    │
-│                                             │
-│   Policy Network (RL)                       │
-│   ├── Diinisialisasi dari SL Policy         │
-│   └── Reinforcement learning self-play      │
-│                                             │
-│   Value Network                             │
-│   ├── Input: Status papan                   │
-│   ├── Output: Nilai winrate tunggal         │
-│   └── Pelatihan: Posisi dari self-play      │
-│                                             │
-│   MCTS                                      │
-│   ├── Gunakan Policy Network untuk panduan  │
-│   └── Gunakan Value Network + Rollout       │
-│       untuk evaluasi                        │
-│                                             │
-└─────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph SL["Policy Network (SL)"]
+        SL1["Input: Status papan (48 feature plane)"]
+        SL2["Arsitektur: 13 layer CNN"]
+        SL3["Output: Probabilitas 361 posisi"]
+        SL4["Pelatihan: 30 juta rekaman manusia"]
+    end
+
+    subgraph RL["Policy Network (RL)"]
+        RL1["Diinisialisasi dari SL Policy"]
+        RL2["Reinforcement learning self-play"]
+    end
+
+    subgraph VN["Value Network"]
+        VN1["Input: Status papan"]
+        VN2["Output: Nilai winrate tunggal"]
+        VN3["Pelatihan: Posisi dari self-play"]
+    end
+
+    subgraph MCTS["MCTS"]
+        M1["Gunakan Policy Network untuk panduan"]
+        M2["Gunakan Value Network + Rollout untuk evaluasi"]
+    end
+
+    SL --> RL
+    RL --> VN
+    SL --> MCTS
+    VN --> MCTS
 ```
 
 ### Poin Teknis
@@ -208,19 +211,16 @@ DOI: 10.1038/nature24270
 
 #### 1. Single Dual-Head Network
 
-```
-              Input (17 plane)
-                   │
-              ┌────┴────┐
-              │ Residual│
-              │  Tower  │
-              │ (19 atau│
-              │  39 layer)│
-              └────┬────┘
-           ┌──────┴──────┐
-           │             │
-        Policy         Value
-        (361)          (1)
+```mermaid
+flowchart TB
+    Input["Input (17 plane)"]
+    Tower["Residual Tower<br/>(19 atau 39 layer)"]
+    Policy["Policy<br/>(361)"]
+    Value["Value<br/>(1)"]
+
+    Input --> Tower
+    Tower --> Policy
+    Tower --> Value
 ```
 
 #### 2. Fitur Input yang Disederhanakan
@@ -248,28 +248,17 @@ Lebih ringkas, lebih cepat
 
 #### 4. Alur Pelatihan
 
-```
-Inisialisasi network acak
-    │
-    ▼
-┌─────────────────────────────┐
-│  Self-play menghasilkan     │ ←─┐
-│  rekaman permainan          │   │
-└──────────────┬──────────────┘   │
-               │                   │
-               ▼                   │
-┌─────────────────────────────┐   │
-│  Latih neural network       │   │
-│  - Policy: Minimisasi       │   │
-│    cross entropy            │   │
-│  - Value: Minimisasi MSE    │   │
-└──────────────┬──────────────┘   │
-               │                   │
-               ▼                   │
-┌─────────────────────────────┐   │
-│  Evaluasi network baru      │   │
-│  Jika lebih kuat ganti      │───┘
-└─────────────────────────────┘
+```mermaid
+flowchart TB
+    Init["Inisialisasi network acak"]
+    SelfPlay["Self-play menghasilkan<br/>rekaman permainan"]
+    Train["Latih neural network<br/>- Policy: Minimisasi cross entropy<br/>- Value: Minimisasi MSE"]
+    Eval["Evaluasi network baru<br/>Jika lebih kuat ganti"]
+
+    Init --> SelfPlay
+    SelfPlay --> Train
+    Train --> Eval
+    Eval --> SelfPlay
 ```
 
 ### Kurva Pembelajaran
