@@ -1,0 +1,728 @@
+---
+sidebar_position: 16
+title: Penjelasan Detail Rumus PUCT
+description: Memahami secara mendalam mekanisme seleksi inti AlphaGo - Prinsip matematika rumus PUCT dan pengalaman tuning parameter
+---
+
+import { MCTSTree } from '@site/src/components/D3Charts';
+
+# Penjelasan Detail Rumus PUCT
+
+Pada artikel sebelumnya, kita telah mengulas kombinasi MCTS dengan Neural Network. Sekarang, mari kita jelajahi lebih dalam inti tahap seleksi MCTS—**rumus PUCT**.
+
+Rumus ini terlihat sederhana, namun merupakan salah satu kunci keberhasilan AlphaGo. Ia secara elegan menyeimbangkan dua tujuan yang tampak bertentangan: "memanfaatkan langkah bagus yang sudah diketahui" dan "mengeksplorasi langkah yang mungkin lebih baik".
+
+---
+
+## Rumus PUCT
+
+### Definisi Rumus
+
+Rumus **PUCT (Predictor Upper Confidence Trees)** yang digunakan AlphaGo:
+
+$$a^* = \arg\max_a \left[ Q(s,a) + U(s,a) \right]$$
+
+Di mana:
+
+$$U(s,a) = c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)}$$
+
+Ekspansi lengkap:
+
+$$a^* = \arg\max_a \left[ Q(s,a) + c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)} \right]$$
+
+### Penjelasan Simbol
+
+| Simbol | Makna | Sumber |
+|------|------|------|
+| $Q(s,a)$ | Nilai rata-rata aksi $a$ | Statistik MCTS |
+| $P(s,a)$ | Prior probability aksi $a$ | Policy Network |
+| $N(s)$ | Jumlah kunjungan parent node | Statistik MCTS |
+| $N(s,a)$ | Jumlah kunjungan child node | Statistik MCTS |
+| $c_{\text{puct}}$ | Konstanta eksplorasi | Hyperparameter |
+
+### Pemahaman Intuitif
+
+Rumus PUCT bisa dibagi menjadi dua bagian:
+
+```
+Skor total = Q(s,a)        + U(s,a)
+              ↓              ↓
+          Term eksploitasi   Term eksplorasi
+        "Seberapa bagus      "Apakah langkah ini
+         langkah ini?"        layak dieksplorasi lagi?"
+```
+
+**Term Eksploitasi Q(s,a)**:
+- Performa rata-rata langkah ini di masa lalu
+- Semakin banyak kunjungan, estimasi semakin akurat
+- Mendorong pemilihan langkah yang "sudah diketahui bagus"
+
+**Term Eksplorasi U(s,a)**:
+- Berapa banyak nilai eksplorasi yang tersisa untuk langkah ini
+- Semakin sedikit kunjungan, semakin tinggi reward eksplorasi
+- Mendorong untuk mencoba langkah yang "mungkin bagus"
+
+---
+
+## Makna Setiap Term
+
+### Q(s,a): Nilai Rata-rata
+
+$Q(s,a)$ adalah rata-rata hasil semua simulasi dari node $(s,a)$:
+
+$$Q(s,a) = \frac{W(s,a)}{N(s,a)} = \frac{\sum_i z_i}{N(s,a)}$$
+
+Di mana $z_i \in \{-1, +1\}$ adalah hasil simulasi ke-$i$.
+
+**Karakteristik**:
+- Range: $[-1, +1]$
+- Nilai awal: tidak terdefinisi (membutuhkan setidaknya satu kunjungan)
+- Menjadi stabil seiring bertambahnya kunjungan
+
+**Interpretasi**:
+- $Q = 0.6$: Win rate langkah ini sekitar 80% (karena $Q = 2 \times \text{win rate} - 1$)
+- $Q = 0$: Menang kalah seimbang
+- $Q = -0.3$: Win rate langkah ini sekitar 35%
+
+### P(s,a): Prior Probability
+
+$P(s,a)$ berasal dari output Policy Network:
+
+$$P(s,a) = \pi_\theta(a|s)$$
+
+**Karakteristik**:
+- Range: $[0, 1]$, dan $\sum_a P(s,a) = 1$
+- Dihitung saat node pertama kali di-expand
+- Mencerminkan penilaian neural network tentang "seberapa bagus langkah ini"
+
+**Fungsi**:
+- Aksi dengan probabilitas tinggi diprioritaskan untuk dieksplorasi
+- Meskipun jumlah kunjungan 0, tetap ada motivasi eksplorasi
+- Memandu pencarian untuk fokus pada langkah yang "terlihat masuk akal"
+
+### N(s) dan N(s,a): Jumlah Kunjungan
+
+$N(s)$ adalah total jumlah kunjungan parent node:
+
+$$N(s) = \sum_a N(s,a)$$
+
+**Peran dalam term eksplorasi**:
+
+$$\frac{\sqrt{N(s)}}{1 + N(s,a)}$$
+
+Perilaku pecahan ini:
+- Ketika $N(s,a) = 0$, skor = $\sqrt{N(s)}$ (motivasi eksplorasi maksimum)
+- Seiring bertambahnya $N(s,a)$, skor menurun
+- Ketika $N(s,a) \gg \sqrt{N(s)}$, skor mendekati 0
+
+Ini memastikan:
+1. **Setiap aksi dieksplorasi setidaknya sekali** (jika $P(s,a) > 0$)
+2. **Motivasi eksplorasi menurun seiring kunjungan**
+3. **Seleksi akhir didominasi oleh nilai $Q$**
+
+### c_puct: Konstanta Eksplorasi
+
+$c_{\text{puct}}$ mengontrol keseimbangan eksplorasi dan eksploitasi:
+
+| Nilai $c_{\text{puct}}$ | Efek |
+|-------------------|------|
+| Lebih kecil (mis. 0.5) | Lebih condong eksploitasi, cepat fokus pada langkah bagus |
+| Sedang (mis. 1-2) | Seimbang eksplorasi dan eksploitasi |
+| Lebih besar (mis. 5) | Lebih condong eksplorasi, mencoba lebih banyak kemungkinan |
+
+Nilai yang digunakan AlphaGo: $c_{\text{puct}} = 1.5$ (berdasarkan paper).
+
+---
+
+## Hubungan dengan UCB1
+
+### Tinjauan Rumus UCB1
+
+Rumus **UCB1** yang digunakan MCTS tradisional:
+
+$$\text{UCB1}(s,a) = \bar{X}_{s,a} + c \sqrt{\frac{\ln N(s)}{N(s,a)}}$$
+
+Di mana $\bar{X}_{s,a}$ adalah rata-rata return.
+
+### Perbandingan
+
+| Aspek | UCB1 | PUCT |
+|------|------|------|
+| Term eksploitasi | $\bar{X}_{s,a}$ (rata-rata return) | $Q(s,a)$ (nilai rata-rata) |
+| Term eksplorasi | $\sqrt{\frac{\ln N}{n}}$ (confidence bound) | $P \cdot \frac{\sqrt{N}}{1+n}$ (dipandu prior) |
+| Informasi prior | Tidak ada | Menggunakan Policy Network |
+| Decay eksplorasi | Decay logaritmik | Decay linear |
+
+### Keunggulan PUCT
+
+1. **Memanfaatkan prior knowledge**: $P(s,a)$ dari Policy Network membuat pencarian fokus pada langkah yang masuk akal sejak awal
+
+2. **Konvergensi lebih cepat**: Decay linear ($1/(1+n)$) lebih cepat membuat pencarian fokus dibanding decay logaritmik ($1/\sqrt{\ln N / n}$)
+
+3. **Eksplorasi lebih terkontrol**: $P(s,a)$ dan $c_{\text{puct}}$ menyediakan lebih banyak cara untuk mengontrol eksplorasi
+
+### Latar Belakang Teori
+
+UCB1 memiliki jaminan teori ketat (regret bound), tapi jaminan ini mengasumsikan:
+- Setiap arm (aksi) independen
+- Tidak ada informasi prior
+
+Dalam Go, kita memiliki prior yang kuat (Policy Network), PUCT bisa memanfaatkan informasi ini dengan lebih baik.
+
+---
+
+## Derivasi Matematika
+
+### Mulai dari Multi-Armed Bandit
+
+Inspirasi PUCT berasal dari masalah **Multi-Armed Bandit**.
+
+Bayangkan Anda menghadapi $K$ mesin slot, setiap mesin memiliki probabilitas menang berbeda tapi tidak diketahui. Tujuan Anda adalah memaksimalkan total kemenangan. Strateginya adalah:
+- **Eksploitasi**: Tarik mesin yang terlihat paling bagus
+- **Eksplorasi**: Coba mesin lain, mungkin menemukan yang lebih baik
+
+UCB1 adalah solusi klasik untuk masalah ini, PUCT adalah variannya.
+
+### Dasar Teori UCB
+
+Untuk variabel acak $X$, berdasarkan ketidaksamaan Hoeffding:
+
+$$P(|\bar{X}_n - \mu| \geq \epsilon) \leq 2 \exp(-2n\epsilon^2)$$
+
+Jika kita ingin probabilitas error $1/t^4$, diperlukan:
+
+$$\epsilon = \sqrt{\frac{2 \ln t}{n}}$$
+
+Inilah asal term eksplorasi UCB1.
+
+### Modifikasi PUCT
+
+PUCT membuat beberapa modifikasi pada UCB klasik:
+
+**1. Menambahkan prior probability**
+
+$$U(s,a) \propto P(s,a) \cdot (\text{term eksplorasi})$$
+
+Ini membuat eksplorasi terkonsentrasi pada aksi dengan probabilitas tinggi.
+
+**2. Mengubah bentuk term eksplorasi**
+
+Dari $\sqrt{\frac{\ln N}{n}}$ menjadi $\frac{\sqrt{N}}{1+n}$
+
+Ini mempercepat konvergensi:
+
+```
+Perbandingan (asumsi N = 1000, n = 10):
+
+UCB1:  sqrt(ln(1000) / 10) = sqrt(0.69) ≈ 0.83
+PUCT:  sqrt(1000) / 11 ≈ 2.87
+
+PUCT memberikan lebih banyak reward eksplorasi, tapi decay lebih cepat
+```
+
+**3. Prior yang bisa dipelajari**
+
+$P(s,a)$ berasal dari neural network, akan meningkat seiring pelatihan. Ini membuat MCTS dan neural network membentuk siklus positif.
+
+### Mengapa Bentuk Ini Efektif?
+
+Penjelasan intuitif:
+
+$$U(s,a) = c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)}$$
+
+1. **$P(s,a)$**: "Seberapa bagus langkah ini menurut expert"
+2. **$\sqrt{N(s)}$**: "Seberapa banyak kita memahami posisi ini"
+3. **$1/(1 + N(s,a))$**: "Seberapa banyak kita memahami langkah ini"
+
+Kombinasinya: **Ketika kita sangat memahami posisi, tapi kurang memahami suatu langkah, dan expert menganggap langkah itu bagus, kita harus mengeksplorasinya**.
+
+---
+
+## Pemahaman Visual
+
+### Perubahan Term Eksplorasi
+
+Mari kita visualisasikan bagaimana term eksplorasi berubah seiring jumlah kunjungan:
+
+```
+U(s,a) = c_puct × P(s,a) × √N(s) / (1 + N(s,a))
+
+Asumsi P(s,a) = 0.1, c_puct = 1.5, N(s) = 1600
+
+N(s,a)  |  U(s,a)
+--------|----------
+   0    |  6.00      ← Belum dikunjungi, reward eksplorasi tertinggi
+   1    |  3.00
+   5    |  1.00
+  10    |  0.55
+  50    |  0.12
+ 100    |  0.06
+ 400    |  0.015     ← Setelah banyak kunjungan, reward eksplorasi sangat kecil
+```
+
+### Pengaruh Prior Probability Berbeda
+
+```
+Asumsi c_puct = 1.5, N(s) = 1600, N(s,a) = 0
+
+P(s,a)  |  U(s,a)
+--------|----------
+  0.30  |  18.00     ← Aksi probabilitas tinggi punya lebih banyak motivasi eksplorasi
+  0.10  |   6.00
+  0.03  |   1.80
+  0.01  |   0.60
+  0.001 |   0.06     ← Aksi probabilitas rendah hampir tidak dieksplorasi
+```
+
+### Eksplorasi Interaktif
+
+Coba sesuaikan parameter $c_{\text{puct}}$ di bawah, amati bagaimana pengaruhnya terhadap seleksi MCTS:
+
+<MCTSTree width={700} height={450} showPUCT={true} interactive={true} cPuct={1.5} />
+
+---
+
+## Implementasi Konkret di AlphaGo
+
+### Implementasi AlphaGo Fan/Lee
+
+AlphaGo original menggunakan rumus yang sedikit berbeda:
+
+$$U(s,a) = c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{\sum_b N(s,b)}}{1 + N(s,a)}$$
+
+Dan perhitungan $Q(s,a)$ mempertimbangkan virtual loss:
+
+```python
+def get_ucb_score(node, action, c_puct=1.5):
+    Q = node.W[action] / (node.N[action] + 1)  # Hindari pembagian dengan nol
+    P = node.prior[action]
+    N_parent = sum(node.N.values())
+    N_child = node.N[action]
+
+    U = c_puct * P * math.sqrt(N_parent) / (1 + N_child)
+
+    return Q + U
+```
+
+### Implementasi AlphaGo Zero
+
+AlphaGo Zero menggunakan implementasi yang lebih simpel:
+
+```python
+def select_action(node, c_puct=1.5):
+    """Pilih aksi dengan skor PUCT tertinggi"""
+    N_parent = sum(node.visit_count.values())
+
+    def puct_score(action):
+        Q = node.value_sum[action] / (node.visit_count[action] + 1)
+        P = node.prior[action]
+        U = c_puct * P * math.sqrt(N_parent) / (1 + node.visit_count[action])
+        return Q + U
+
+    return max(node.legal_actions, key=puct_score)
+```
+
+### Menangani Node yang Belum Dikunjungi
+
+Ketika $N(s,a) = 0$, $Q(s,a)$ tidak terdefinisi. Cara penanganan umum:
+
+**Metode 1: Gunakan nilai parent node**
+```python
+Q = parent_value if N[action] == 0 else W[action] / N[action]
+```
+
+**Metode 2: Gunakan nilai awal**
+```python
+Q = 0 if N[action] == 0 else W[action] / N[action]
+```
+
+**Metode 3: Gunakan FPU (First Play Urgency)**
+```python
+# Node yang belum dikunjungi menggunakan nilai Q lebih rendah
+fpu_value = parent_Q - fpu_reduction
+Q = fpu_value if N[action] == 0 else W[action] / N[action]
+```
+
+AlphaGo Zero menggunakan FPU, ini membuat pencarian lebih cenderung untuk mencoba node yang sudah dikunjungi terlebih dahulu.
+
+---
+
+## Pengalaman Tuning Parameter Praktis
+
+### Pemilihan c_puct
+
+$c_{\text{puct}}$ adalah hyperparameter paling penting. Pedoman praktis:
+
+**1. Terkait dengan kualitas network**
+- Network sangat kuat (akurasi tinggi): bisa gunakan $c_{\text{puct}}$ lebih kecil
+- Network lebih lemah: butuh $c_{\text{puct}}$ lebih besar untuk koreksi error
+
+**2. Terkait dengan budget pencarian**
+- Simulasi banyak: bisa gunakan $c_{\text{puct}}$ lebih besar (cukup waktu untuk eksplorasi)
+- Simulasi sedikit: gunakan $c_{\text{puct}}$ lebih kecil (cepat fokus)
+
+**3. Terkait dengan karakteristik game**
+- Game dengan taktik kuat: mungkin butuh lebih banyak eksplorasi
+- Game dengan strategi kuat: bisa lebih percaya prior
+
+### Nilai Tipikal
+
+| Proyek | $c_{\text{puct}}$ |
+|------|-------------------|
+| AlphaGo | 1.5 |
+| AlphaGo Zero | 1.0 - 2.0 |
+| AlphaZero | 1.25 |
+| KataGo | 0.5 - 1.0 (penyesuaian dinamis) |
+| Leela Zero | 1.5 - 2.0 |
+
+### Penyesuaian Dinamis
+
+Beberapa implementasi lanjutan menggunakan $c_{\text{puct}}$ dinamis:
+
+```python
+def dynamic_cpuct(visit_count):
+    """Sesuaikan konstanta eksplorasi berdasarkan jumlah kunjungan"""
+    base = 1.0
+    init = 1.5
+    log_base = 19652  # Parameter penyesuaian
+
+    return math.log((visit_count + log_base + 1) / log_base) + init
+```
+
+Ini membuat pencarian lebih condong ke eksplorasi di awal, dan lebih condong ke eksploitasi di akhir.
+
+### Analisis Sensitivitas
+
+Pengaruh $c_{\text{puct}}$ terhadap kekuatan bermain:
+
+```
+Eksperimen (kondisi lain tetap, variasi c_puct):
+
+c_puct | Elo Relatif
+-------|----------
+  0.5  |   -50     ← Eksploitasi berlebihan, melewatkan langkah bagus
+  1.0  |   +20
+  1.5  |    0      ← Baseline
+  2.0  |   -10
+  3.0  |   -30     ← Eksplorasi berlebihan, membuang pencarian
+  5.0  |   -80
+```
+
+Nilai optimal biasanya antara 1.0-2.0, tapi tergantung kualitas network dan budget pencarian.
+
+---
+
+## Varian Lanjutan
+
+### Varian PUCT
+
+**1. Polynomial PUCT (P-UCT)**
+
+$$U(s,a) = c \cdot P(s,a) \cdot \frac{N(s)^\alpha}{1 + N(s,a)}$$
+
+Di mana $\alpha$ adalah parameter yang bisa disesuaikan (biasanya $\alpha = 0.5$).
+
+**2. PUCT dengan Noise**
+
+Tambahkan Dirichlet noise di root node:
+
+$$P'(s,a) = (1-\varepsilon) P(s,a) + \varepsilon \cdot \eta_a$$
+
+Di mana $\eta \sim \text{Dir}(\alpha)$. Ini menambah diversitas eksplorasi.
+
+**3. UCT-like PUCT**
+
+$$U(s,a) = c \cdot P(s,a) \cdot \sqrt{\frac{\ln(1 + N(s) + c_{\text{base}})}{1 + N(s,a)}}$$
+
+Ini menggabungkan bentuk logaritmik UCT dan panduan prior PUCT.
+
+### Peningkatan KataGo
+
+KataGo membuat beberapa peningkatan pada PUCT:
+
+**1. $c_{\text{puct}}$ Dinamis**
+Menyesuaikan berdasarkan kompleksitas posisi dan progres pencarian.
+
+**2. Ketidakpastian Prediksi Nilai**
+Mempertimbangkan confidence prediksi Value Network.
+
+**3. Pembelajaran Target Policy**
+Langsung belajar distribusi kunjungan MCTS, bukan hanya output policy head.
+
+### Rumus Seleksi Lain
+
+Selain PUCT, ada rumus seleksi lain:
+
+**RAVE (Rapid Action Value Estimation)**
+
+$$Q_{\text{RAVE}}(s,a) = (1-\beta) Q(s,a) + \beta Q_{\text{AMAF}}(s,a)$$
+
+Menggunakan statistik "All Moves As First" untuk mempercepat pembelajaran.
+
+**GRAVE (Generalized RAVE)**
+
+Varian RAVE yang menggunakan informasi statistik dari ancestor node.
+
+---
+
+## Analisis Teori
+
+### Konvergensi
+
+Apakah PUCT menjamin konvergensi ke solusi optimal?
+
+**Secara ketat**: Tidak ada jaminan teori seperti UCB1.
+
+**Dalam praktik**: Dengan cukup banyak simulasi, PUCT akan konvergen ke solusi berkualitas tinggi, karena:
+1. Term eksplorasi akhirnya akan mendekati nol
+2. Semua aksi akhirnya akan dikunjungi
+3. Nilai $Q$ akan konvergen ke nilai sebenarnya
+
+### Analisis Kompleksitas
+
+**Kompleksitas waktu** (per simulasi):
+- Selection: $O(\log N)$ (kedalaman tree)
+- Expansion: $O(A)$ (jumlah aksi legal, butuh inferensi neural network)
+- Evaluation: $O(1)$ (Value Network) atau $O(T)$ (Rollout, $T$ adalah panjang permainan)
+- Backpropagation: $O(\log N)$
+
+**Kompleksitas ruang**:
+- Per node: $O(A)$ (menyimpan prior dan statistik kunjungan)
+- Seluruh tree: $O(N \cdot A)$ ($N$ adalah jumlah node)
+
+### Hubungan dengan Minimax
+
+Ketika $c_{\text{puct}} \to 0$ dan jumlah simulasi $\to \infty$, MCTS + PUCT akan mendekati pencarian Minimax.
+
+Tapi dengan budget terbatas, PUCT biasanya lebih efisien daripada Minimax + Alpha-Beta, karena bisa memanfaatkan prior knowledge dengan lebih baik.
+
+---
+
+## FAQ
+
+### Q: Mengapa tidak langsung menggunakan output Policy Network sebagai seleksi?
+
+**A: Policy Network mungkin membuat kesalahan**. Pencarian MCTS bisa:
+1. Memverifikasi penilaian neural network
+2. Menemukan langkah bagus yang diabaikan neural network
+3. Memperbaiki bias sistematis neural network
+
+Eksperimen menunjukkan, bahkan dengan neural network yang sangat kuat, menambahkan pencarian tetap bisa meningkatkan kekuatan bermain secara signifikan.
+
+### Q: Dalam situasi apa PUCT berkinerja buruk?
+
+1. **Prior probability benar-benar salah**: Jika Policy Network menilai langkah bagus dengan probabilitas rendah, PUCT membutuhkan banyak simulasi untuk koreksi
+
+2. **Taktik jangka panjang**: PUCT mungkin kesulitan menemukan sekuens taktik panjang yang membutuhkan kalkulasi presisi
+
+3. **Tidak ada model lawan**: PUCT mengasumsikan lawan juga menggunakan strategi optimal, mungkin tidak optimal menghadapi lawan yang tidak rasional
+
+### Q: Bagaimana menangani action space yang sangat besar?
+
+Beberapa teknik:
+1. **Filter Policy Network**: Hanya pertimbangkan aksi dengan $P(s,a) > \epsilon$
+2. **Progressive widening**: Hanya expand sedikit aksi di awal, expand lebih ketika dibutuhkan
+3. **Dynamic pruning**: Hapus aksi yang jelas buruk
+
+---
+
+## Korespondensi Animasi
+
+Konsep inti yang dibahas dalam artikel ini dan nomor animasinya:
+
+| Nomor | Konsep | Korespondensi Fisika/Matematika |
+|------|------|--------------|
+| E4 E4 | Eksplorasi dan Eksploitasi | Multi-armed bandit |
+| E5 C3 | Seleksi PUCT | Confidence bound |
+
+---
+
+## Ringkasan
+
+Rumus PUCT adalah inti MCTS AlphaGo, kita telah mempelajari:
+
+1. **Struktur rumus**: $Q + U$, term eksploitasi ditambah term eksplorasi
+2. **Makna setiap term**: $Q$ adalah nilai pengalaman, $P$ adalah prior probability, $N$ mengontrol decay eksplorasi
+3. **Hubungan dengan UCB1**: PUCT menambahkan prior dan menggunakan bentuk term eksplorasi berbeda
+4. **Derivasi matematika**: Dari multi-armed bandit ke seleksi MCTS
+5. **Tuning praktis**: Pemilihan $c_{\text{puct}}$ dan pengaruhnya
+6. **Varian lanjutan**: Penyesuaian dinamis, noise, peningkatan KataGo
+
+Keeleganan PUCT terletak pada kesederhanaan namun efektif—dengan satu rumus menyeimbangkan eksplorasi dan eksploitasi, dan dengan elegan mengintegrasikan prior knowledge dari neural network.
+
+---
+
+## Bacaan Lanjutan
+
+- **Artikel Berikutnya**: [Ikhtisar AlphaGo Zero](./16-alphago-zero) — Terobosan dari nol
+- **Artikel Sebelumnya**: [Kombinasi MCTS dan Neural Network](./14-mcts-neural-combo) — Arsitektur keseluruhan
+- **Terkait**: [Batas Metode Tradisional](./05-traditional-limits) — Mengapa butuh metode baru
+
+---
+
+## Referensi
+
+1. Rosin, C. D. (2011). "Multi-armed bandits with episode context." *Annals of Mathematics and Artificial Intelligence*, 61(3), 203-230.
+2. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+3. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 550, 354-359.
+4. Kocsis, L., & Szepesvari, C. (2006). "Bandit based Monte-Carlo Planning." *ECML*.
+5. Auer, P., Cesa-Bianchi, N., & Fischer, P. (2002). "Finite-time analysis of the multiarmed bandit problem." *Machine Learning*, 47(2), 235-256.
+6. Wu, D., et al. (2019). "Accelerating Self-Play Learning in Go." *arXiv preprint* (Laporan teknis KataGo).
+
+---
+
+## Lampiran: Contoh Implementasi Lengkap
+
+```python
+import math
+import numpy as np
+from typing import Dict, List, Optional
+
+class MCTSNode:
+    """Node MCTS"""
+    def __init__(self, prior: float = 0.0):
+        self.prior = prior          # P(s,a)
+        self.visit_count = 0        # N(s,a)
+        self.value_sum = 0.0        # W(s,a)
+        self.children: Dict[int, 'MCTSNode'] = {}
+
+    @property
+    def q_value(self) -> float:
+        """Hitung Q(s,a)"""
+        if self.visit_count == 0:
+            return 0.0
+        return self.value_sum / self.visit_count
+
+
+class MCTS:
+    """MCTS searcher menggunakan PUCT"""
+
+    def __init__(
+        self,
+        policy_network,
+        value_network,
+        c_puct: float = 1.5,
+        num_simulations: int = 800
+    ):
+        self.policy_network = policy_network
+        self.value_network = value_network
+        self.c_puct = c_puct
+        self.num_simulations = num_simulations
+
+    def search(self, root_state) -> Dict[int, float]:
+        """Jalankan pencarian MCTS, kembalikan distribusi kunjungan aksi"""
+        root = MCTSNode()
+
+        # Expand root node
+        policy = self.policy_network(root_state)
+        for action, prob in enumerate(policy):
+            if is_legal(root_state, action):
+                root.children[action] = MCTSNode(prior=prob)
+
+        # Jalankan simulasi
+        for _ in range(self.num_simulations):
+            self._simulate(root, root_state)
+
+        # Kembalikan distribusi kunjungan
+        total_visits = sum(
+            child.visit_count for child in root.children.values()
+        )
+        return {
+            action: child.visit_count / total_visits
+            for action, child in root.children.items()
+        }
+
+    def _simulate(self, node: MCTSNode, state) -> float:
+        """Jalankan satu simulasi"""
+
+        # Jika terminal state
+        if is_terminal(state):
+            return get_result(state)
+
+        # Jika leaf node, expand dan evaluasi
+        if not node.children:
+            policy = self.policy_network(state)
+            value = self.value_network(state)
+
+            for action, prob in enumerate(policy):
+                if is_legal(state, action):
+                    node.children[action] = MCTSNode(prior=prob)
+
+            return value
+
+        # Selection: pilih aksi dengan skor PUCT tertinggi
+        action = self._select_action(node)
+        child = node.children[action]
+        next_state = apply_action(state, action)
+
+        # Simulasi rekursif
+        value = -self._simulate(child, next_state)
+
+        # Backpropagation: update statistik
+        child.visit_count += 1
+        child.value_sum += value
+
+        return value
+
+    def _select_action(self, node: MCTSNode) -> int:
+        """Gunakan rumus PUCT untuk memilih aksi"""
+        total_visits = sum(
+            child.visit_count for child in node.children.values()
+        )
+
+        def puct_score(action: int, child: MCTSNode) -> float:
+            # Q(s,a): nilai rata-rata
+            q = child.q_value
+
+            # U(s,a): bonus eksplorasi
+            u = (
+                self.c_puct
+                * child.prior
+                * math.sqrt(total_visits)
+                / (1 + child.visit_count)
+            )
+
+            return q + u
+
+        return max(
+            node.children.keys(),
+            key=lambda a: puct_score(a, node.children[a])
+        )
+
+
+# Contoh penggunaan
+def play_game():
+    policy_net = PolicyNetwork()
+    value_net = ValueNetwork()
+
+    mcts = MCTS(
+        policy_network=policy_net,
+        value_network=value_net,
+        c_puct=1.5,
+        num_simulations=1600
+    )
+
+    state = initial_state()
+
+    while not is_terminal(state):
+        # Jalankan pencarian MCTS
+        visit_distribution = mcts.search(state)
+
+        # Pilih aksi dengan kunjungan terbanyak
+        action = max(visit_distribution.keys(),
+                     key=lambda a: visit_distribution[a])
+
+        # Eksekusi aksi
+        state = apply_action(state, action)
+        print(f"Selected action {action} with visit ratio "
+              f"{visit_distribution[action]:.2%}")
+
+    print(f"Game result: {get_result(state)}")
+```
+
+Implementasi ini menunjukkan peran inti rumus PUCT dalam MCTS. Implementasi AlphaGo yang sebenarnya juga mencakup:
+- Pencarian paralel (virtual loss)
+- Evaluasi neural network batch
+- Penggunaan ulang tree
+- Dirichlet noise
+- Kontrol temperature dan fitur lainnya

@@ -1,0 +1,578 @@
+---
+sidebar_position: 18
+title: Dual-Head Network dan Residual Network
+description: Analisis mendalam arsitektur neural network AlphaGo Zero - Shared backbone, Policy Head, Value Head, dan 40-layer ResNet
+keywords: [dual-head network, residual network, ResNet, Policy Head, Value Head, deep learning, arsitektur neural network]
+---
+
+# Dual-Head Network dan Residual Network
+
+Salah satu inovasi arsitektur terpenting AlphaGo Zero adalah menggunakan **Dual-Head Network** menggantikan desain dual network AlphaGo original. Perubahan yang tampak sederhana ini membawa peningkatan performa signifikan dan proses pembelajaran yang lebih elegan.
+
+Artikel ini akan menganalisis secara mendalam prinsip desain arsitektur ini, dasar matematika, dan mengapa ia sangat efektif.
+
+---
+
+## Desain Dual-Head Network
+
+### Arsitektur Keseluruhan
+
+Neural network AlphaGo Zero bisa dibagi menjadi tiga bagian:
+
+```
+Input (17 x 19 x 19)
+       ↓
+┌─────────────────────────────────────────┐
+│            Shared Backbone (ResNet)      │
+│        40 residual block, 256 channel    │
+└─────────────────────────────────────────┘
+       ↓                    ↓
+┌─────────────┐      ┌─────────────┐
+│  Policy Head │      │  Value Head  │
+│  (Head       │      │  (Head       │
+│   Strategi)  │      │   Nilai)     │
+└─────────────┘      └─────────────┘
+       ↓                    ↓
+  Distribusi prob.       Win rate [-1, 1]
+  19x19 + 1 Pass
+
+```
+
+Mari kita analisis setiap bagian satu per satu.
+
+### Shared Backbone
+
+Shared backbone adalah **Residual Network (ResNet)** yang dalam, bertanggung jawab mengekstrak fitur dari state papan.
+
+#### Detail Arsitektur
+
+| Komponen | Spesifikasi |
+|------|------|
+| Layer input | Konvolusi 3x3, 256 channel |
+| Residual block | 40 (atau 20 versi ringkas) |
+| Setiap residual block | 2 layer konvolusi 3x3, 256 channel |
+| Fungsi aktivasi | ReLU |
+| Normalisasi | Batch Normalization |
+
+#### Representasi Matematika
+
+Misalkan input adalah x (dimensi 17 x 19 x 19), output shared backbone adalah:
+
+```
+f(x) = ResNet_40(Conv_3x3(x))
+```
+
+Di mana f(x) (dimensi 256 x 19 x 19) adalah representasi fitur dimensi tinggi.
+
+### Policy Head (Head Strategi)
+
+Policy Head bertanggung jawab memprediksi probabilitas langkah untuk setiap posisi.
+
+#### Detail Arsitektur
+
+```
+Output Shared Backbone (256 x 19 x 19)
+       ↓
+Konvolusi 1x1 (2 channel)
+       ↓
+Batch Normalization
+       ↓
+ReLU
+       ↓
+Flatten (2 x 19 x 19 = 722)
+       ↓
+Fully connected layer (362)
+       ↓
+Softmax
+       ↓
+Output: 362 probabilitas (361 posisi + Pass)
+```
+
+#### Representasi Matematika
+
+```
+π = Softmax(FC(Flatten(ReLU(BN(Conv_1x1(f(x)))))))
+```
+
+Output π adalah vektor 362 dimensi, memenuhi semua elemen non-negatif dan jumlahnya 1.
+
+### Value Head (Head Nilai)
+
+Value Head bertanggung jawab memprediksi win rate posisi saat ini.
+
+#### Detail Arsitektur
+
+```
+Output Shared Backbone (256 x 19 x 19)
+       ↓
+Konvolusi 1x1 (1 channel)
+       ↓
+Batch Normalization
+       ↓
+ReLU
+       ↓
+Flatten (1 x 19 x 19 = 361)
+       ↓
+Fully connected layer (256)
+       ↓
+ReLU
+       ↓
+Fully connected layer (1)
+       ↓
+Tanh
+       ↓
+Output: Win rate [-1, 1]
+```
+
+#### Representasi Matematika
+
+```
+v = Tanh(FC_1(ReLU(FC_2(Flatten(ReLU(BN(Conv_1x1(f(x)))))))))
+```
+
+Output v dalam range [-1, 1]:
+- v = 1: Pemain saat ini pasti menang
+- v = -1: Pemain saat ini pasti kalah
+- v = 0: Seimbang
+
+---
+
+## Mengapa Perlu Shared Backbone?
+
+### Pemahaman Intuitif
+
+"Langkah berikutnya harus dimainkan di mana" (Policy) dan "siapa yang akan menang" (Value) kedua masalah ini sebenarnya membutuhkan pemahaman pola papan yang sama:
+
+- **Bentuk batu**: Bentuk mana yang bagus, mana yang buruk
+- **Pengaruh**: Sisi mana lebih besar, area mana masih ada ruang
+- **Hidup-mati**: Kelompok batu mana yang sudah hidup, mana yang masih dalam ko
+- **Pertempuran**: Di mana ada serangan, bagaimana hasil lokal
+
+Jika menggunakan dua network independen, fitur-fitur ini perlu dipelajari dua kali. Shared backbone membuat fitur-fitur dasar ini hanya perlu dipelajari sekali, kedua tugas bisa menggunakannya.
+
+### Perspektif Multi-task Learning
+
+Dari sudut pandang machine learning, ini adalah **Multi-task Learning**:
+
+```
+L = L_policy + L_value
+```
+
+Kedua tugas berbagi representasi dasar, ini membawa beberapa keuntungan:
+
+#### 1. Efek Regularisasi
+
+Berbagi parameter setara dengan regularisasi implisit. Jika suatu fitur hanya berguna untuk Policy tapi tidak untuk Value (atau sebaliknya), lebih sulit untuk diperbesar berlebihan.
+
+Jumlah parameter efektif lebih kecil dari jumlah parameter dua network independen.
+
+#### 2. Efisiensi Data
+
+Setiap permainan secara bersamaan menghasilkan label Policy (probabilitas pencarian MCTS) dan label Value (hasil akhir menang/kalah). Shared backbone membuat kedua label digunakan untuk melatih fitur bersama, meningkatkan efisiensi pemanfaatan data.
+
+#### 3. Sinyal Gradien yang Kaya
+
+Gradien dari kedua tugas mengalir ke shared backbone:
+
+```
+∂L/∂θ_shared = ∂L_policy/∂θ_shared + ∂L_value/∂θ_shared
+```
+
+Ini menyediakan sinyal supervisi yang lebih kaya, membuat fitur bersama lebih robust.
+
+### Bukti Eksperimental
+
+Eksperimen ablasi DeepMind menunjukkan, performa dual-head network secara signifikan lebih baik dari dual network terpisah:
+
+| Konfigurasi | Rating ELO | Selisih Relatif |
+|------|----------|----------|
+| Network Policy + Value terpisah | Baseline | - |
+| Dual-head network (shared backbone) | +300 ELO | ~65% selisih win rate |
+
+Selisih 300 ELO berarti dual-head network memiliki sekitar 65% win rate terhadap network terpisah. Ini adalah peningkatan yang signifikan.
+
+---
+
+## Prinsip Residual Network
+
+### Dilema Deep Network
+
+Sebelum ResNet ditemukan, deep neural network menghadapi paradoks:
+
+> Secara teori, network lebih dalam seharusnya setidaknya sama baiknya dengan network dangkal (worst case, layer tambahan bisa mempelajari identity mapping). Tapi kenyataannya, network lebih dalam seringkali berkinerja lebih buruk.
+
+Inilah **Masalah Degradasi (Degradation Problem)**:
+
+- Training error meningkat dengan kedalaman (bukan overfitting, tapi kesulitan optimisasi)
+- Gradien menghilang secara bertahap saat backpropagation (Vanishing Gradient)
+- Parameter layer dalam hampir tidak bisa diupdate secara efektif
+
+### Desain Residual Block
+
+He Kaiming et al. pada 2015 mengajukan solusi simpel namun elegan: **Skip Connection (Residual Connection)**.
+
+```
+Input x
+   ↓
+┌─────────────┐
+│  Conv layer │
+│  BN + ReLU  │
+│  Conv layer │
+│  BN        │
+└─────────────┘
+   ↓ F(x)
+   ↓←────────────── x (skip connection)
+   +
+   ↓
+ ReLU
+   ↓
+Output x + F(x)
+```
+
+#### Representasi Matematika
+
+Network tradisional: Belajar target mapping H(x)
+
+```
+y = H(x)
+```
+
+Residual network: Belajar **residual mapping** F(x) = H(x) - x
+
+```
+y = F(x) + x
+```
+
+### Mengapa Residual Connection Efektif?
+
+#### 1. Highway Gradien
+
+Pertimbangkan gradien saat backpropagation:
+
+```
+∂L/∂x = ∂L/∂y × ∂y/∂x = ∂L/∂y × (1 + ∂F(x)/∂x)
+```
+
+Kuncinya adalah **+1** itu. Bahkan jika ∂F(x)/∂x sangat kecil atau nol, gradien tetap bisa langsung diteruskan kembali melalui +1.
+
+Ini seperti membangun "highway gradien", membiarkan gradien mengalir tanpa hambatan dari output layer kembali ke input layer.
+
+#### 2. Identity Mapping Lebih Mudah Dipelajari
+
+Jika solusi optimal mendekati identity mapping (H(x) mendekati x), maka:
+- Network tradisional: Perlu belajar H(x) = x, mungkin sulit
+- Residual network: Hanya perlu belajar F(x) mendekati 0, relatif mudah
+
+Menginisialisasi weight ke nol atau mendekati nol, residual block secara natural menuju identity mapping.
+
+#### 3. Efek Ensemble
+
+Deep ResNet bisa dilihat sebagai **ensemble implisit** dari banyak shallow network. Jika ada n residual block, informasi bisa mengalir melalui 2^n jalur berbeda.
+
+Efek ensemble ini meningkatkan robustness model.
+
+### Terobosan ResNet di ImageNet
+
+ResNet meraih hasil menakjubkan di kompetisi ImageNet 2015:
+
+| Kedalaman | Top-5 Error Rate |
+|------|-------------|
+| VGG-19 (tanpa residual) | 7.3% |
+| ResNet-34 | 5.7% |
+| ResNet-152 | 4.5% |
+| Level manusia | ~5.1% |
+
+ResNet **152 layer** tidak hanya bisa dilatih, tapi juga jauh lebih baik dari VGG 19 layer. Ini membuktikan residual connection memang menyelesaikan masalah pelatihan deep network.
+
+---
+
+## 40-Layer ResNet AlphaGo Zero
+
+### Mengapa Memilih 40 Layer?
+
+DeepMind menguji ResNet dengan kedalaman berbeda:
+
+| Jumlah Residual Block | Total Layer | Rating ELO |
+|------------|--------|----------|
+| 5 | 11 | Baseline |
+| 10 | 21 | +200 |
+| 20 | 41 | +400 |
+| 40 | 81 | +500 |
+
+Network lebih dalam memang lebih kuat, tapi diminishing returns. AlphaGo Zero menggunakan 20 atau 40 residual block:
+
+- **AlphaGo Zero (versi paper)**: 40 residual block, 256 channel
+- **Versi ringkas**: 20 residual block, 256 channel
+
+Konfigurasi 40 layer mencapai keseimbangan yang baik antara kekuatan bermain dan biaya pelatihan.
+
+### Konfigurasi Konkret
+
+Konfigurasi ResNet AlphaGo Zero sebagai berikut:
+
+```
+Input: 17 x 19 x 19
+↓
+Conv layer: 3x3, 256 channel, BN, ReLU
+↓
+Residual block x40:
+  ├─ Conv layer: 3x3, 256 channel, BN, ReLU
+  ├─ Conv layer: 3x3, 256 channel, BN
+  └─ Skip connection + ReLU
+↓
+Policy Head / Value Head
+```
+
+#### Estimasi Jumlah Parameter
+
+| Komponen | Jumlah Parameter (aprox.) |
+|------|-------------|
+| Input convolution | 17 x 3 x 3 x 256 ≈ 39K |
+| Setiap residual block | 2 x 256 x 3 x 3 x 256 ≈ 1.2M |
+| 40 residual block | 40 x 1.2M ≈ 47M |
+| Policy Head | ~1M |
+| Value Head | ~0.2M |
+| **Total** | **~48M** |
+
+Sekitar 48 juta parameter, neural network skala menengah menurut standar modern.
+
+### Peran Batch Normalization
+
+Setiap layer konvolusi diikuti **Batch Normalization (BN)**, ini krusial untuk stabilitas pelatihan:
+
+#### 1. Normalisasi Nilai Aktivasi
+
+BN menormalisasi nilai aktivasi setiap layer ke mean 0, variance 1:
+
+```
+x_hat = (x - μ_B) / sqrt(σ_B² + ε)
+y = γ × x_hat + β
+```
+
+Di mana γ dan β adalah parameter yang bisa dipelajari.
+
+#### 2. Mengurangi Internal Covariate Shift
+
+Dalam deep network, distribusi input setiap layer berubah seiring update parameter layer sebelumnya. BN membuat distribusi input setiap layer tetap stabil, mempercepat konvergensi pelatihan.
+
+#### 3. Efek Regularisasi
+
+BN menggunakan statistik mini-batch saat pelatihan, memperkenalkan randomness, memiliki efek regularisasi ringan.
+
+---
+
+## Perbandingan dengan Arsitektur Lain
+
+### vs. CNN AlphaGo Original
+
+| Fitur | AlphaGo Original | AlphaGo Zero |
+|------|-------------|--------------|
+| Tipe arsitektur | CNN standar | ResNet |
+| Kedalaman | 13 layer | 41-81 layer |
+| Residual connection | Tidak ada | Ada |
+| Jumlah network | 2 (terpisah) | 1 (shared) |
+| BN | Tidak ada | Ada |
+
+### vs. Network Gaya VGG
+
+VGG adalah arsitektur runner-up ImageNet 2014, menggunakan konvolusi 3x3 bertumpuk:
+
+| Fitur | VGG | ResNet |
+|------|-----|--------|
+| Kedalaman maksimum yang bisa dilatih | ~19 layer | 152+ layer |
+| Aliran gradien | Berkurang layer per layer | Ada highway |
+| Kesulitan pelatihan | Layer dalam sulit | Layer dalam bisa dilatih |
+
+### vs. Inception / GoogLeNet
+
+Inception menggunakan konvolusi multi-skala paralel:
+
+| Fitur | Inception | ResNet |
+|------|-----------|--------|
+| Keunggulan | Fitur multi-skala | Penumpukan dalam |
+| Kompleksitas | Lebih tinggi | Simpel |
+| Aplikabilitas Go | Biasa | Bagus |
+
+Desain simpel ResNet lebih cocok untuk Go yang membutuhkan penalaran dalam.
+
+### vs. Transformer
+
+Arsitektur Transformer yang diajukan tahun 2017 meraih sukses besar di bidang NLP. Ada yang mencoba menerapkan Transformer ke Go:
+
+| Fitur | ResNet | Transformer |
+|------|--------|-------------|
+| Inductive bias | Lokalitas (konvolusi) | Attention global |
+| Position encoding | Implisit (konvolusi) | Eksplisit |
+| Performa Go | Bagus | Bisa tapi tidak lebih baik dari ResNet |
+| Efisiensi komputasi | Lebih tinggi | Lebih rendah (O(n²)) |
+
+Untuk masalah seperti Go yang memiliki struktur spasial jelas, inductive bias CNN/ResNet lebih cocok.
+
+---
+
+## Analisis Mendalam Pilihan Desain
+
+### Mengapa Menggunakan Konvolusi 3x3?
+
+AlphaGo Zero menggunakan konvolusi 3x3 secara konsisten, bukan kernel konvolusi lebih besar:
+
+1. **Efisiensi parameter**: Dua konvolusi 3x3 memiliki receptive field sama dengan satu 5x5, tapi jumlah parameter lebih sedikit (18 vs 25)
+2. **Network lebih dalam**: Dengan jumlah parameter sama, bisa menumpuk lebih banyak layer
+3. **Lebih banyak non-linearitas**: Ada ReLU antar layer, meningkatkan ekspresivitas
+
+### Mengapa Menggunakan 256 Channel?
+
+256 channel adalah pilihan empiris:
+
+- **Terlalu sedikit** (mis. 64): Ekspresivitas tidak cukup, tidak bisa menangkap pola kompleks
+- **Terlalu banyak** (mis. 512): Jumlah parameter berlipat ganda, biaya pelatihan meningkat drastis, tapi peningkatan kekuatan terbatas
+
+Eksperimen KataGo kemudian menunjukkan, jumlah channel bisa disesuaikan berdasarkan sumber daya pelatihan:
+- Sumber daya rendah: 128 channel, 20 block
+- Sumber daya tinggi: 256 channel, 40 block
+- Sumber daya lebih tinggi: 384 channel, 60 block
+
+### Mengapa Policy Head Menggunakan Softmax, Value Head Menggunakan Tanh?
+
+#### Policy Head: Softmax
+
+Memainkan langkah adalah **masalah klasifikasi**—memilih satu dari 361 posisi (plus Pass). Output Softmax memenuhi:
+- Semua probabilitas non-negatif: π_i >= 0
+- Jumlah probabilitas = 1: Σπ_i = 1
+
+Ini konsisten dengan definisi distribusi probabilitas.
+
+#### Value Head: Tanh
+
+Win rate adalah **masalah regresi**—memprediksi nilai kontinu. Range output Tanh adalah [-1, 1]:
+- Bounded: Tidak akan menghasilkan nilai ekstrem
+- Simetris: Menang dan kalah ditangani secara simetris
+- Differentiable: Mudah untuk perhitungan gradien
+
+Menggunakan Tanh bukan output unbounded (seperti linear layer) bisa mencegah ketidakstabilan pelatihan.
+
+---
+
+## Detail Pelatihan
+
+### Loss Function
+
+Total loss AlphaGo Zero adalah jumlah tiga term:
+
+```
+L = L_policy + L_value + L_reg
+```
+
+#### Policy Loss
+
+Menggunakan **cross-entropy loss**, membuat output network mendekati probabilitas pencarian MCTS:
+
+```
+L_policy = -Σ π_MCTS(a) × log(π_net(a))
+```
+
+Di mana:
+- π_MCTS(a) adalah probabilitas pencarian MCTS untuk aksi a
+- π_net(a) adalah probabilitas output network
+
+#### Value Loss
+
+Menggunakan **Mean Squared Error (MSE)**, membuat output network mendekati hasil menang/kalah aktual:
+
+```
+L_value = (v_net - z)²
+```
+
+Di mana:
+- v_net adalah win rate prediksi network
+- z adalah hasil pertandingan aktual (+1 atau -1)
+
+#### Regularization Loss
+
+Menggunakan **L2 regularization** untuk mencegah overfitting:
+
+```
+L_reg = c × ||θ||²
+```
+
+Di mana c adalah koefisien regularisasi, θ adalah parameter network.
+
+### Konfigurasi Optimizer
+
+| Parameter | Nilai |
+|------|-----|
+| Optimizer | SGD + Momentum |
+| Momentum | 0.9 |
+| Learning rate awal | 0.01 |
+| Decay learning rate | Setengah setiap X langkah |
+| Batch Size | 32 x 2048 = 64K (distributed)|
+| Koefisien L2 regularization | 1e-4 |
+
+### Data Augmentation
+
+Papan Go memiliki 8 simetri (4 rotasi x 2 flip). Saat pelatihan, setiap posisi bisa menghasilkan 8 sampel pelatihan ekuivalen.
+
+Ini membuat data pelatihan efektif meningkat 8 kali lipat, tanpa memerlukan self-play tambahan.
+
+---
+
+## Pertimbangan Implementasi
+
+### Optimisasi Memori
+
+Pelatihan 40-layer ResNet membutuhkan banyak memori:
+- **Forward pass**: Perlu menyimpan nilai aktivasi setiap layer (untuk backpropagation)
+- **Backward pass**: Perlu menyimpan gradien
+
+Strategi optimisasi:
+1. **Gradient Checkpointing**: Hanya simpan sebagian nilai aktivasi, hitung ulang saat dibutuhkan
+2. **Mixed Precision Training**: Gunakan FP16 untuk mengurangi penggunaan memori
+3. **Distributed Training**: Sebarkan batch ke beberapa GPU/TPU
+
+### Optimisasi Inferensi
+
+Saat inferensi tidak perlu statistik mini-batch BN, bisa menggunakan moving average yang diakumulasi saat pelatihan:
+
+```
+x_hat = (x - μ_moving) / sqrt(σ_moving² + ε)
+```
+
+Ini membuat kecepatan inferensi lebih cepat dan hasil deterministik.
+
+### Quantization dan Compression
+
+Saat deployment bisa compress network lebih lanjut:
+- **Weight Quantization**: FP32 → INT8, memori berkurang 4x
+- **Pruning**: Hapus koneksi weight kecil
+- **Knowledge Distillation**: Gunakan network besar untuk melatih network kecil
+
+---
+
+## Korespondensi Animasi
+
+Konsep inti yang dibahas dalam artikel ini dan nomor animasinya:
+
+| Nomor | Konsep | Korespondensi Fisika/Matematika |
+|------|------|--------------|
+| E5 E3 | Dual-head network | Multi-task learning |
+| E5 D12 | Residual connection | Highway gradien |
+| E5 D8 | Convolutional Neural Network | Receptive field lokal |
+| E5 D10 | Batch Normalization | Normalisasi distribusi |
+
+---
+
+## Bacaan Lanjutan
+
+- **Artikel Sebelumnya**: [Ikhtisar AlphaGo Zero](./16-alphago-zero) — Mengapa tidak memerlukan catatan permainan manusia
+- **Artikel Berikutnya**: [Proses Pelatihan dari Nol](./18-training-from-scratch) — Evolusi detail Hari 0-3
+- **Teknis Mendalam**: [CNN dan Go](./10-cnn-and-go) — Mengapa CNN cocok untuk papan
+
+---
+
+## Referensi
+
+1. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 550, 354-359.
+2. He, K., et al. (2016). "Deep Residual Learning for Image Recognition." *CVPR 2016*.
+3. Ioffe, S., & Szegedy, C. (2015). "Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift." *ICML 2015*.
+4. Caruana, R. (1997). "Multitask Learning." *Machine Learning*, 28(1), 41-75.
+5. Veit, A., et al. (2016). "Residual Networks Behave Like Ensembles of Relatively Shallow Networks." *NeurIPS 2016*.
