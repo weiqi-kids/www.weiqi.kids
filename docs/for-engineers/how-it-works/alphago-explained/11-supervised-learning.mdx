@@ -5,6 +5,18 @@ description: AlphaGo 如何從 3000 萬局人類棋譜中學習，達到 57% 的
 ---
 
 import { EloChart } from '@site/src/components/D3Charts';
+import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<ArticleSchema
+  title="監督學習階段"
+  description="AlphaGo 如何從 3000 萬局人類棋譜中學習，達到 57% 的預測準確率"
+  slug="for-engineers/how-it-works/alphago-explained/11-supervised-learning"
+  datePublished="2024-01-15"
+  dateModified="2024-02-22"
+  section="AlphaGo 完整解析"
+  keywords={["監督學習", "AlphaGo", "KGS", "交叉熵", "人類棋譜", "深度學習", "圍棋AI", "SGF"]}
+  wordCount={4500}
+/>
 
 # 監督學習階段
 
@@ -643,3 +655,18 @@ def evaluate_policy(model, test_dataloader):
 2. Maddison, C. J., et al. (2014). "Move Evaluation in Go Using Deep Convolutional Neural Networks." *arXiv:1412.6564*.
 3. Clark, C., & Storkey, A. (2015). "Training Deep Convolutional Neural Networks to Play Go." *ICML*.
 4. KGS Game Archives: [https://www.gokgs.com/archives.jsp](https://www.gokgs.com/archives.jsp)
+
+---
+
+<KeyTakeaway>
+本文重點：
+- 監督學習從 KGS 約 3000 萬局面中學習，達到 57% 預測準確率，超越之前最好方法 13 個百分點
+- 使用交叉熵損失函數和 8 重對稱性資料增強，有效提升訓練效果
+- 監督學習為強化學習奠定基礎，但有天花板限制，無法超越訓練資料的水平
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "57% 的預測準確率有多厲害？", answer: "考慮到圍棋每個局面平均有 250 種合法走法，隨機猜測只有 0.4% 準確率。57% 代表模型能在超過一半的情況下猜中人類專家的選擇，是 2016 年的重大突破。" },
+  { question: "為什麼要用 KGS 棋譜而非職業棋譜？", answer: "KGS 提供大量統一格式的 SGF 棋譜、明確的棋力標籤和多樣化的下棋風格。雖然包含業餘棋手對局，但資料量和格式統一性使其成為理想的訓練資料來源。" },
+  { question: "監督學習的主要限制是什麼？", answer: "監督學習只能模仿訓練資料，無法超越人類水平。它會學到人類的錯誤習慣，且無法發現訓練資料中不存在的好棋。這就是為什麼需要後續的強化學習。" }
+]} />

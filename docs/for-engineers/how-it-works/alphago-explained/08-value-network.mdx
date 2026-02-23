@@ -4,6 +4,19 @@ title: Value Network 詳解
 description: 深入理解 AlphaGo 的價值網路架構、訓練挑戰與在 MCTS 中的關鍵作用
 ---
 
+import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<ArticleSchema
+  title="Value Network 詳解"
+  description="深入理解 AlphaGo 的價值網路架構、訓練挑戰與在 MCTS 中的關鍵作用"
+  slug="for-engineers/how-it-works/alphago-explained/08-value-network"
+  datePublished="2024-01-15"
+  dateModified="2024-02-22"
+  section="AlphaGo 完整解析"
+  keywords={["Value Network", "價值網路", "AlphaGo", "勝率預測", "MCTS", "深度學習", "圍棋AI"]}
+  wordCount={4200}
+/>
+
 # Value Network 詳解
 
 如果說 Policy Network 告訴 AlphaGo「下一步應該下哪裡」，那麼 Value Network 回答的是一個更根本的問題：
@@ -662,3 +675,18 @@ Value Network 是 AlphaGo 的「判斷力」——它讓 AI 能夠評估任何�
 2. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 551, 354-359.
 3. Sutton, R. S., & Barto, A. G. (2018). *Reinforcement Learning: An Introduction*. MIT Press.
 4. Tesauro, G. (1995). "Temporal difference learning and TD-Gammon." *Communications of the ACM*, 38(3), 58-68.
+
+---
+
+<KeyTakeaway>
+本文重點：
+- Value Network 預測當前局面的勝率，輸出介於 -1 到 +1 之間的單一數值
+- 使用 MSE 損失函數訓練，需透過自我對弈資料避免過擬合問題
+- 一次 Value Network 評估相當於 15000 次隨機模擬，大幅提升 MCTS 效率
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "Value Network 和 Policy Network 有什麼區別？", answer: "Policy Network 回答「下一步應該下哪裡」，輸出 361 個位置的機率分布；Value Network 回答「這盤棋會贏嗎」，輸出單一的勝率數值。兩者在 MCTS 中扮演互補的角色。" },
+  { question: "為什麼 Value Network 容易過擬合？", answer: "因為同一盤棋的局面具有高度相關性，如果直接使用人類棋譜訓練，模型可能「記住」特定棋局而非學會泛化。解決方案是使用自我對弈產生的獨立局面進行訓練。" },
+  { question: "AlphaGo Zero 為什麼能完全棄用隨機模擬？", answer: "因為 Value Network 的預測精度已經足夠高，可以直接替代傳統 MCTS 中的 rollout 評估，這大幅簡化了系統架構並提升了棋力。" }
+]} />

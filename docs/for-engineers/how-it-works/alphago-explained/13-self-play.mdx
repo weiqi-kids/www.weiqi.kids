@@ -5,6 +5,18 @@ description: 深入理解 AlphaGo 如何透過自我對弈突破人類棋力的�
 ---
 
 import { EloChart } from '@site/src/components/D3Charts';
+import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<ArticleSchema
+  title="自我對弈"
+  description="深入理解 AlphaGo 如何透過自我對弈突破人類棋力的極限"
+  slug="for-engineers/how-it-works/alphago-explained/13-self-play"
+  datePublished="2024-01-15"
+  dateModified="2024-02-22"
+  section="AlphaGo 完整解析"
+  keywords={["自我對弈", "Self-Play", "AlphaGo Zero", "強化學習", "Elo評分", "對抗性學習", "深度學習", "圍棋AI"]}
+  wordCount={5500}
+/>
 
 # 自我對弈
 
@@ -627,3 +639,18 @@ AlphaGo 之後，職業圍棋發生了顯著變化：
 3. Silver, D., et al. (2018). "A general reinforcement learning algorithm that masters chess, shogi, and Go through self-play." *Science*, 362(6419), 1140-1144.
 4. Heinrich, J., & Silver, D. (2016). "Deep Reinforcement Learning from Self-Play in Imperfect-Information Games." *arXiv preprint*.
 5. Lanctot, M., et al. (2017). "A Unified Game-Theoretic Approach to Multiagent Reinforcement Learning." *NeurIPS*.
+
+---
+
+<KeyTakeaway>
+本文重點：
+- 自我對弈透過對抗性學習形成軍備競賽，雙方不斷發現並克服彼此弱點
+- AlphaGo Zero 在 3 天內從零開始超越人類數千年的圍棋智慧
+- 隨機化（溫度參數、狄利克雷噪音）確保探索多樣性，避免陷入局部最優
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "AI 和自己下棋怎麼會變強？", answer: "關鍵在於對抗性學習：即使雙方是同一個 AI，每盤棋的結果仍包含資訊。好的選擇被強化，差的被抑制。隨著 AI 發現有效戰術，作為對手的自己會學會防守，迫使發現更好的策略。" },
+  { question: "自我對弈會收斂嗎？", answer: "理論上對於簡單遊戲可以證明收斂到納什均衡，但圍棋太複雜無法嚴格證明。實際觀察顯示：棋力持續提升、沒有振盪或退化、最終超越人類，表明在實踐中確實有效。" },
+  { question: "為什麼 AlphaGo Zero 不需要人類棋譜？", answer: "自我對弈提供無限的訓練資料，且對手水平隨自己提升而提升。關鍵在於規則定義了什麼是好棋，自我對弈只是揭示這些隱含在規則中的結構。3 天訓練就能超越人類。" }
+]} />

@@ -4,6 +4,19 @@ title: 輸入特徵設計
 description: 從 AlphaGo 的 48 平面到 AlphaGo Zero 的 17 平面，探索圍棋 AI 特徵工程的演進
 ---
 
+import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<ArticleSchema
+  title="輸入特徵設計"
+  description="從 AlphaGo 的 48 平面到 AlphaGo Zero 的 17 平面，探索圍棋 AI 特徵工程的演進"
+  slug="for-engineers/how-it-works/alphago-explained/09-input-features"
+  datePublished="2024-01-15"
+  dateModified="2024-02-22"
+  section="AlphaGo 完整解析"
+  keywords={["特徵工程", "輸入特徵", "AlphaGo", "AlphaGo Zero", "KataGo", "特徵平面", "深度學習", "圍棋AI"]}
+  wordCount={3500}
+/>
+
 # 輸入特徵設計
 
 神經網路只能處理數字。要讓它理解圍棋，我們需要一種方法把棋盤「翻譯」成數字。
@@ -544,3 +557,18 @@ print(f"AlphaGo Zero 風格: {zero_time:.2f}s")
 2. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 551, 354-359.
 3. Wu, D. (2019). "Accelerating Self-Play Learning in Go." *arXiv:1902.10565*.
 4. KataGo Documentation: [https://github.com/lightvector/KataGo](https://github.com/lightvector/KataGo)
+
+---
+
+<KeyTakeaway>
+本文重點：
+- 特徵平面是將棋盤狀態轉換為神經網路可處理的 19x19 矩陣
+- AlphaGo 使用 48 個特徵平面編碼人類圍棋知識，AlphaGo Zero 簡化為 17 個
+- KataGo 採用 22 個精選特徵平面，在效率與性能間取得平衡
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "為什麼 AlphaGo Zero 用更少特徵反而更強？", answer: "因為過多的人類知識可能包含偏見或錯誤。AlphaGo Zero 證明神經網路可以自己學會氣數、征子等概念，甚至可能發現比人類更好的特徵表示方式。" },
+  { question: "特徵平面中的歷史記錄有什麼作用？", answer: "歷史記錄幫助處理劫爭判斷、理解走棋意圖，並補充 CNN 本身不具備的時序資訊。這對於理解對局脈絡非常重要。" },
+  { question: "KataGo 為什麼要加入規則特徵？", answer: "圍棋有多種規則變體（不同貼目、自殺規則等），在輸入中編碼規則讓單一網路能處理所有規則變體，大幅提升訓練效率和實用性。" }
+]} />

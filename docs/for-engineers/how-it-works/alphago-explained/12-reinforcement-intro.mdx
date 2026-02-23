@@ -4,6 +4,19 @@ title: 強化學習入門
 description: 深入理解強化學習的核心概念：Agent、Environment、Reward、MDP、策略梯度與價值函數
 ---
 
+import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<ArticleSchema
+  title="強化學習入門"
+  description="深入理解強化學習的核心概念：Agent、Environment、Reward、MDP、策略梯度與價值函數"
+  slug="for-engineers/how-it-works/alphago-explained/12-reinforcement-intro"
+  datePublished="2024-01-15"
+  dateModified="2024-02-22"
+  section="AlphaGo 完整解析"
+  keywords={["強化學習", "MDP", "策略梯度", "REINFORCE", "價值函數", "AlphaGo", "深度學習", "圍棋AI"]}
+  wordCount={5000}
+/>
+
 # 強化學習入門
 
 在前面的文章中，我們介紹了 AlphaGo 如何使用監督學習從人類棋譜中學習。但監督學習有一個根本性的限制：**它只能模仿人類，無法超越人類**。
@@ -601,3 +614,18 @@ AlphaGo 的訓練使用了數百個 GPU 和 TPU，同時進行數千局自我對
 3. Schulman, J., et al. (2017). "Proximal Policy Optimization Algorithms." *arXiv preprint*.
 4. Williams, R. J. (1992). "Simple statistical gradient-following algorithms for connectionist reinforcement learning." *Machine Learning*, 8(3-4), 229-256.
 5. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+
+---
+
+<KeyTakeaway>
+本文重點：
+- 強化學習透過獎勵信號學習，解決監督學習無法超越人類的根本限制
+- MDP 框架定義了狀態、動作、獎勵和轉移機率，是圍棋 AI 的數學基礎
+- 策略梯度方法直接優化策略，配合 Value Network 作為基準線減少方差
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "強化學習和監督學習的主要區別是什麼？", answer: "監督學習從標記資料學習正確答案，強化學習則透過嘗試和錯誤自己發現好的策略。在圍棋中，監督學習模仿人類下法，強化學習則追求獲勝，可以發現超越人類的策略。" },
+  { question: "什麼是信用分配問題？", answer: "圍棋一盤棋可能有 200 步，但只有終局才知道勝負。第 50 手下的棋對最終結果有多少貢獻？這就是信用分配問題，策略梯度和 Value Network 是主要解決方案。" },
+  { question: "為什麼 AlphaGo 使用 Actor-Critic 架構？", answer: "Policy Network（Actor）直接輸出動作機率，處理圍棋的大動作空間；Value Network（Critic）評估狀態價值，提供基準線減少策略梯度的方差。兩者結合兼具效率和穩定性。" }
+]} />

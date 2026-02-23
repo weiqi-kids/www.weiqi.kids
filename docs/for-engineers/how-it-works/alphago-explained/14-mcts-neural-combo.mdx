@@ -5,6 +5,18 @@ description: 深入理解 AlphaGo 如何將蒙地卡羅樹搜索與深度神經�
 ---
 
 import { MCTSTree } from '@site/src/components/D3Charts';
+import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<ArticleSchema
+  title="MCTS 與神經網路的結合"
+  description="深入理解 AlphaGo 如何將蒙地卡羅樹搜索與深度神經網路完美結合"
+  slug="for-engineers/how-it-works/alphago-explained/14-mcts-neural-combo"
+  datePublished="2024-01-15"
+  dateModified="2024-02-22"
+  section="AlphaGo 完整解析"
+  keywords={["MCTS", "蒙地卡羅樹搜索", "PUCT", "AlphaGo", "神經網路", "UCB", "深度學習", "圍棋AI"]}
+  wordCount={5200}
+/>
 
 # MCTS 與神經網路的結合
 
@@ -734,3 +746,18 @@ MCTS 與神經網路的結合是 AlphaGo 的核心創新。我們學習了：
 4. Kocsis, L., & Szepesvári, C. (2006). "Bandit based Monte-Carlo Planning." *ECML*.
 5. Browne, C., et al. (2012). "A Survey of Monte Carlo Tree Search Methods." *IEEE TCIAIG*.
 6. Rosin, C. D. (2011). "Multi-armed bandits with episode context." *Annals of Mathematics and Artificial Intelligence*.
+
+---
+
+<KeyTakeaway>
+本文重點：
+- MCTS 四階段（選擇、展開、評估、反向傳播）與神經網路結合，形成直覺與推理的完美整合
+- Policy Network 提供先驗機率引導搜索方向，Value Network 直接評估局面取代隨機模擬
+- 搜索可以修正神經網路盲點，純 Policy + Value + MCTS 比純神經網路提升約 1500 Elo
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "為什麼需要 MCTS，不能只用神經網路嗎？", answer: "神經網路提供快速直覺但可能有盲點，MCTS 提供深入推理來修正錯誤。實驗顯示純神經網路約 3000 Elo，加入 MCTS 後提升到 4500 Elo，搜索對戰術計算和罕見局面特別有價值。" },
+  { question: "PUCT 公式如何平衡探索與利用？", answer: "PUCT 結合平均價值 Q(s,a) 和探索加成 U(s,a)。Q 值偏好已知好的走法（利用），U 值偏好訪問次數少的走法（探索）。Policy Network 的先驗機率進一步引導探索方向。" },
+  { question: "AlphaGo Zero 為什麼能移除隨機模擬？", answer: "因為 Value Network 的精度已足夠高，直接評估比隨機模擬更準確且更快。這簡化了系統架構，也說明神經網路品質的提升讓搜索次數從 100,000 降到 1,600 仍能更強。" }
+]} />
