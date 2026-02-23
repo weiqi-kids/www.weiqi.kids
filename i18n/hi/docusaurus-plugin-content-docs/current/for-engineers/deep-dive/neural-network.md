@@ -14,31 +14,25 @@ description: KataGo के न्यूरल नेटवर्क डिज़
 
 KataGo **एकल न्यूरल नेटवर्क, मल्टी-हेड आउटपुट** डिज़ाइन का उपयोग करता है:
 
-```
-इनपुट फीचर्स (19×19×22)
-        │
-        ▼
-┌───────────────────┐
-│     प्रारंभिक कन्वोल्यूशन लेयर     │
-│   256 filters     │
-└─────────┬─────────┘
-          │
-          ▼
-┌───────────────────┐
-│     रेसिड्यूअल टावर        │
-│  20-60 रेसिड्यूअल ब्लॉक   │
-│  + ग्लोबल पूलिंग लेयर     │
-└─────────┬─────────┘
-          │
-    ┌─────┴─────┬─────────┬─────────┐
-    │           │         │         │
-    ▼           ▼         ▼         ▼
- Policy      Value     Score   Ownership
-  Head       Head      Head      Head
-    │           │         │         │
-    ▼           ▼         ▼         ▼
-362 प्रायिकता    जीत दर      अंक अंतर    361 स्वामित्व
-(pass सहित)  (-1~+1)    (अंक)     (-1~+1)
+```mermaid
+flowchart TB
+    Input["इनपुट फीचर्स (19×19×22)"]
+    Conv["प्रारंभिक कन्वोल्यूशन लेयर<br/>256 filters"]
+    Res["रेसिड्यूअल टावर<br/>20-60 रेसिड्यूअल ब्लॉक<br/>+ ग्लोबल पूलिंग लेयर"]
+    Policy["Policy Head"]
+    Value["Value Head"]
+    Score["Score Head"]
+    Ownership["Ownership Head"]
+    PolicyOut["362 प्रायिकता<br/>(pass सहित)"]
+    ValueOut["जीत दर<br/>(-1~+1)"]
+    ScoreOut["अंक अंतर<br/>(अंक)"]
+    OwnerOut["361 स्वामित्व<br/>(-1~+1)"]
+
+    Input --> Conv --> Res
+    Res --> Policy --> PolicyOut
+    Res --> Value --> ValueOut
+    Res --> Score --> ScoreOut
+    Res --> Ownership --> OwnerOut
 ```
 
 ---
@@ -113,34 +107,21 @@ def encode_rules(rules, komi):
 
 KataGo **Pre-activation ResNet** संरचना का उपयोग करता है:
 
-```
-इनपुट x
-    │
-    ├────────────────────┐
-    │                    │
-    ▼                    │
-BatchNorm                │
-    │                    │
-    ▼                    │
-ReLU                     │
-    │                    │
-    ▼                    │
-Conv 3×3                 │
-    │                    │
-    ▼                    │
-BatchNorm                │
-    │                    │
-    ▼                    │
-ReLU                     │
-    │                    │
-    ▼                    │
-Conv 3×3                 │
-    │                    │
-    ▼                    │
-    +  ←─────────────────┘ (रेसिड्यूअल कनेक्शन)
-    │
-    ▼
-आउटपुट
+```mermaid
+flowchart TB
+    X["इनपुट x"]
+    BN1["BatchNorm"]
+    R1["ReLU"]
+    C1["Conv 3×3"]
+    BN2["BatchNorm"]
+    R2["ReLU"]
+    C2["Conv 3×3"]
+    Add["+ (रेसिड्यूअल कनेक्शन)"]
+    Out["आउटपुट"]
+
+    X --> BN1 --> R1 --> C1 --> BN2 --> R2 --> C2 --> Add
+    X --> Add
+    Add --> Out
 ```
 
 ### कोड उदाहरण

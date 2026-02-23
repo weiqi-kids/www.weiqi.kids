@@ -38,18 +38,14 @@ MCTS 的核心思想是：**與其窮舉所有可能的走法，不如隨機模�
 
 傳統的 MCTS 包含四個階段，不斷重複：
 
-```
-     ┌─────────────────────────────────────────────────────────────┐
-     │                        MCTS 循環                            │
-     │                                                             │
-     │   ┌───────────┐    ┌───────────┐    ┌───────────┐    ┌───────────┐
-     │   │ Selection │ →  │ Expansion │ →  │ Simulation│ →  │Backprop   │
-     │   │   選擇     │    │   展開     │    │   模擬     │    │  反向傳播  │
-     │   └───────────┘    └───────────┘    └───────────┘    └───────────┘
-     │        │                                                    │
-     │        └────────────────────────────────────────────────────┘
-     │                           重複 N 次
-     └─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph MCTS["MCTS 循環（重複 N 次）"]
+        Selection["Selection<br/>選擇"] --> Expansion["Expansion<br/>展開"]
+        Expansion --> Simulation["Simulation<br/>模擬"]
+        Simulation --> Backprop["Backprop<br/>反向傳播"]
+        Backprop --> Selection
+    end
 ```
 
 讓我們詳細了解每個階段：
@@ -77,15 +73,26 @@ $$\text{UCB1}(s, a) = \bar{X}_{s,a} + c \sqrt{\frac{\ln N_s}{N_{s,a}}}$$
 
 到達葉節點後，選擇一個未被探索的動作，創建新的子節點。
 
-```
-展開前：                    展開後：
-     ○ (根)                      ○ (根)
-    /│\                         /│\
-   ○ ○ ○                       ○ ○ ○
-  /│              →           /│
- ○ ○                         ○ ○
-   ↑                            \
-   葉節點                         ● (新節點)
+```mermaid
+flowchart TB
+    subgraph Before["展開前"]
+        R1((根)) --> A1((○))
+        R1 --> B1((○))
+        R1 --> C1((○))
+        A1 --> D1((○))
+        A1 --> E1["○<br/>葉節點"]
+    end
+
+    subgraph After["展開後"]
+        R2((根)) --> A2((○))
+        R2 --> B2((○))
+        R2 --> C2((○))
+        A2 --> D2((○))
+        A2 --> E2((○))
+        E2 --> F2(("●<br/>新節點"))
+    end
+
+    Before --> After
 ```
 
 ### 3. Simulation（模擬/Rollout）
@@ -130,33 +137,35 @@ $$\text{UCB1}(s, a) = \bar{X}_{s,a} + c \sqrt{\frac{\ln N_s}{N_{s,a}}}$$
 
 AlphaGo 將兩個神經網路整合進 MCTS：
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    AlphaGo 搜索架構                          │
-│                                                             │
-│  ┌───────────────────────────────────────────────────────┐  │
-│  │                    MCTS                               │  │
-│  │                                                       │  │
-│  │   Selection    Expansion    Evaluation    Backup      │  │
-│  │       │            │            │            │        │  │
-│  │       ▼            ▼            ▼            ▼        │  │
-│  │    ┌─────┐    ┌─────┐    ┌─────────┐    ┌─────┐      │  │
-│  │    │PUCT │    │Policy│    │Value Net│    │更新  │      │  │
-│  │    │公式 │    │Net   │    │+ Rollout│    │統計  │      │  │
-│  │    └─────┘    └─────┘    └─────────┘    └─────┘      │  │
-│  │       ↑            ↑            ↑                     │  │
-│  │       │            │            │                     │  │
-│  └───────┼────────────┼────────────┼─────────────────────┘  │
-│          │            │            │                        │
-│  ┌───────┴────────────┴────────────┴─────────────────────┐  │
-│  │                 Neural Networks                        │  │
-│  │  ┌─────────────────┐    ┌─────────────────┐           │  │
-│  │  │ Policy Network  │    │ Value Network   │           │  │
-│  │  │ π(a|s)          │    │ V(s)            │           │  │
-│  │  │ 輸出：動作機率    │    │ 輸出：勝率估計    │           │  │
-│  │  └─────────────────┘    └─────────────────┘           │  │
-│  └────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph AlphaGo["AlphaGo 搜索架構"]
+        subgraph MCTS["MCTS"]
+            Selection["Selection<br/>選擇"]
+            Expansion["Expansion<br/>展開"]
+            Evaluation["Evaluation<br/>評估"]
+            Backup["Backup<br/>更新統計"]
+
+            PUCT["PUCT 公式"]
+            PolicyNet["Policy Net"]
+            ValueNet["Value Net<br/>+ Rollout"]
+            UpdateStats["更新統計"]
+
+            Selection --> PUCT
+            Expansion --> PolicyNet
+            Evaluation --> ValueNet
+            Backup --> UpdateStats
+        end
+
+        subgraph NN["Neural Networks"]
+            PolicyNetwork["Policy Network<br/>π(a|s)<br/>輸出：動作機率"]
+            ValueNetwork["Value Network<br/>V(s)<br/>輸出：勝率估計"]
+        end
+
+        PolicyNetwork --> PUCT
+        PolicyNetwork --> PolicyNet
+        ValueNetwork --> ValueNet
+    end
 ```
 
 ### Policy Network 的角色
@@ -584,24 +593,18 @@ Policy + Value + MCTS：約 4500 Elo
 
 ### 演進總結
 
-```
-AlphaGo Fan (2015)
-    │
-    │ + 更大網路、更多訓練
-    ▼
-AlphaGo Lee (2016)
-    │
-    │ + 更多自我對弈
-    ▼
-AlphaGo Master (2017)
-    │
-    │ + 移除人類資料、統一網路、移除 Rollout
-    ▼
-AlphaGo Zero (2017)
-    │
-    │ + 泛化到其他遊戲
-    ▼
-AlphaZero (2018)
+```mermaid
+flowchart TB
+    Fan["AlphaGo Fan (2015)"]
+    Lee["AlphaGo Lee (2016)"]
+    Master["AlphaGo Master (2017)"]
+    Zero["AlphaGo Zero (2017)"]
+    AZ["AlphaZero (2018)"]
+
+    Fan -->|"+ 更大網路、更多訓練"| Lee
+    Lee -->|"+ 更多自我對弈"| Master
+    Master -->|"+ 移除人類資料、統一網路、移除 Rollout"| Zero
+    Zero -->|"+ 泛化到其他遊戲"| AZ
 ```
 
 ---

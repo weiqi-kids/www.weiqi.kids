@@ -12,28 +12,17 @@ Este artículo analiza en profundidad los detalles de implementación de Monte C
 
 ## Repaso de los cuatro pasos de MCTS
 
-```
-┌─────────────────────────────────────────────────────┐
-│                Ciclo de búsqueda MCTS               │
-├─────────────────────────────────────────────────────┤
-│                                                     │
-│   1. Selection    Selección: bajar por el árbol    │
-│         │         usando PUCT para elegir nodos    │
-│         ▼                                           │
-│   2. Expansion    Expansión: al llegar a una hoja, │
-│         │         crear nodos hijos                 │
-│         ▼                                           │
-│   3. Evaluation   Evaluación: evaluar el nodo hoja │
-│         │         con la red neuronal               │
-│         ▼                                           │
-│   4. Backprop     Retropropagación: actualizar     │
-│                   estadísticas de todos los nodos   │
-│                   en el camino                      │
-│                                                     │
-│   Repetir miles de veces, elegir la acción con     │
-│   más visitas                                       │
-│                                                     │
-└─────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph MCTS["Ciclo de búsqueda MCTS"]
+        S1["1. Selection<br/>Selección: bajar por el árbol<br/>usando PUCT para elegir nodos"]
+        S2["2. Expansion<br/>Expansión: al llegar a una hoja,<br/>crear nodos hijos"]
+        S3["3. Evaluation<br/>Evaluación: evaluar el nodo hoja<br/>con la red neuronal"]
+        S4["4. Backprop<br/>Retropropagación: actualizar<br/>estadísticas de todos los nodos<br/>en el camino"]
+        Final["Repetir miles de veces,<br/>elegir la acción con más visitas"]
+
+        S1 --> S2 --> S3 --> S4 --> Final
+    end
 ```
 
 ---

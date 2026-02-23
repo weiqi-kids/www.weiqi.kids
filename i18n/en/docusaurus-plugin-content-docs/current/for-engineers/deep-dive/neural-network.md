@@ -14,31 +14,23 @@ This article provides an in-depth analysis of KataGo's complete neural network a
 
 KataGo uses a **single neural network with multi-head output** design:
 
-```
-Input Features (19×19×22)
-        │
-        ▼
-┌───────────────────┐
-│  Initial Conv Layer │
-│   256 filters     │
-└─────────┬─────────┘
-          │
-          ▼
-┌───────────────────┐
-│   Residual Tower   │
-│  20-60 res blocks │
-│  + Global Pooling │
-└─────────┬─────────┘
-          │
-    ┌─────┴─────┬─────────┬─────────┐
-    │           │         │         │
-    ▼           ▼         ▼         ▼
- Policy      Value     Score   Ownership
-  Head       Head      Head      Head
-    │           │         │         │
-    ▼           ▼         ▼         ▼
-362 probs   Win rate   Score    361 ownership
-(incl pass)  (-1~+1)   (points)  (-1~+1)
+```mermaid
+flowchart TB
+    Input["Input Features (19×19×22)"]
+    Conv["Initial Conv Layer<br/>256 filters"]
+    Tower["Residual Tower<br/>20-60 res blocks<br/>+ Global Pooling"]
+
+    Input --> Conv --> Tower
+
+    Tower --> Policy["Policy Head"]
+    Tower --> Value["Value Head"]
+    Tower --> Score["Score Head"]
+    Tower --> Owner["Ownership Head"]
+
+    Policy --> P_Out["362 probs<br/>(incl pass)"]
+    Value --> V_Out["Win rate<br/>(-1~+1)"]
+    Score --> S_Out["Score<br/>(points)"]
+    Owner --> O_Out["361 ownership<br/>(-1~+1)"]
 ```
 
 ---
@@ -113,34 +105,21 @@ def encode_rules(rules, komi):
 
 KataGo uses **Pre-activation ResNet** structure:
 
-```
-Input x
-    │
-    ├────────────────────┐
-    │                    │
-    ▼                    │
-BatchNorm                │
-    │                    │
-    ▼                    │
-ReLU                     │
-    │                    │
-    ▼                    │
-Conv 3×3                 │
-    │                    │
-    ▼                    │
-BatchNorm                │
-    │                    │
-    ▼                    │
-ReLU                     │
-    │                    │
-    ▼                    │
-Conv 3×3                 │
-    │                    │
-    ▼                    │
-    +  ←─────────────────┘ (residual connection)
-    │
-    ▼
-Output
+```mermaid
+flowchart TB
+    Input["Input x"]
+    BN1["BatchNorm"]
+    ReLU1["ReLU"]
+    Conv1["Conv 3×3"]
+    BN2["BatchNorm"]
+    ReLU2["ReLU"]
+    Conv2["Conv 3×3"]
+    Add(("+"))
+    Output["Output"]
+
+    Input --> BN1 --> ReLU1 --> Conv1 --> BN2 --> ReLU2 --> Conv2 --> Add
+    Input -->|"residual connection"| Add
+    Add --> Output
 ```
 
 ### Code Example

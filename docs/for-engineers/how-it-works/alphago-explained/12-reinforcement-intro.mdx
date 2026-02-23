@@ -71,32 +71,22 @@ import { ArticleSchema, KeyTakeaway, FAQ } from '@site/src/components/SEO';
 
 強化學習的基本架構包含兩個主角：
 
-```
-        ┌─────────────────────────────────────┐
-        │           Environment               │
-        │                                     │
-        │   ┌─────────┐      ┌─────────┐     │
-        │   │  State  │      │ Reward  │     │
-        │   │   s_t   │      │   r_t   │     │
-        │   └────┬────┘      └────┬────┘     │
-        │        │                │          │
-        └────────┼────────────────┼──────────┘
-                 │                │
-                 ▼                ▼
-        ┌─────────────────────────────────────┐
-        │            Agent                    │
-        │                                     │
-        │         ┌──────────┐               │
-        │         │  Policy  │               │
-        │         │   π(s)   │               │
-        │         └────┬─────┘               │
-        │              │                     │
-        │              ▼                     │
-        │         ┌──────────┐               │
-        │         │  Action  │               │
-        │         │   a_t    │───────────────┼───► 送回環境
-        │         └──────────┘               │
-        └─────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Environment["Environment（環境）"]
+        State["State<br/>s_t"]
+        Reward["Reward<br/>r_t"]
+    end
+
+    subgraph Agent["Agent（智能體）"]
+        Policy["Policy<br/>π(s)"]
+        Action["Action<br/>a_t"]
+        Policy --> Action
+    end
+
+    State --> Policy
+    Reward --> Policy
+    Action -->|送回環境| Environment
 ```
 
 **Agent（智能體）**：

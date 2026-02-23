@@ -12,25 +12,19 @@ This article provides an in-depth analysis of Monte Carlo Tree Search (MCTS) imp
 
 ## MCTS Four-Step Review
 
-```
-┌─────────────────────────────────────────────────────┐
-│                 MCTS Search Loop                     │
-├─────────────────────────────────────────────────────┤
-│                                                     │
-│   1. Selection      Select: Follow tree down using PUCT│
-│         │                                           │
-│         ▼                                           │
-│   2. Expansion      Expand: At leaf node, create children│
-│         │                                           │
-│         ▼                                           │
-│   3. Evaluation     Evaluate: Use neural net on leaf│
-│         │                                           │
-│         ▼                                           │
-│   4. Backprop       Backprop: Update stats along path│
-│                                                     │
-│   Repeat thousands of times, choose most visited move│
-│                                                     │
-└─────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Loop["MCTS Search Loop"]
+        S["1. Selection<br/>Follow tree down using PUCT"]
+        E["2. Expansion<br/>At leaf node, create children"]
+        V["3. Evaluation<br/>Use neural net on leaf"]
+        B["4. Backprop<br/>Update stats along path"]
+
+        S --> E --> V --> B
+    end
+
+    B --> R["Repeat thousands of times"]
+    R --> C["Choose most visited move"]
 ```
 
 ---
@@ -142,14 +136,23 @@ def select_child(self, c_puct=1.5):
 
 ### Exploration vs Exploitation Balance
 
-```
-Early stage: N(s,a) is small
-├── U(s,a) is large → Exploration dominant
-└── High prior probability actions explored first
+```mermaid
+flowchart TB
+    subgraph Early["Early stage: N(s,a) is small"]
+        E1["U(s,a) is large"]
+        E2["Exploration dominant"]
+        E3["High prior probability actions explored first"]
+        E1 --> E2
+        E1 --> E3
+    end
 
-Late stage: N(s,a) is large
-├── U(s,a) is small → Exploitation dominant
-└── Q(s,a) dominates, selecting known good actions
+    subgraph Late["Late stage: N(s,a) is large"]
+        L1["U(s,a) is small"]
+        L2["Exploitation dominant"]
+        L3["Q(s,a) dominates, selecting known good actions"]
+        L1 --> L2
+        L1 --> L3
+    end
 ```
 
 ---
@@ -279,17 +282,16 @@ def backpropagate(self, value):
 
 ### Importance of Perspective Alternation
 
-```
-Black's perspective: value = +0.6 (Black favorable)
+```mermaid
+flowchart BT
+    Leaf["Leaf node (Black's turn)<br/>value_sum += +0.6"]
+    Parent["Parent (White's turn)<br/>value_sum += -0.6<br/>Unfavorable for White"]
+    Grand["Grandparent (Black's turn)<br/>value_sum += +0.6"]
+    More["..."]
 
-Backprop path:
-Leaf node (Black's turn): value_sum += +0.6
-    ↑
-Parent (White's turn): value_sum += -0.6  ← Unfavorable for White
-    ↑
-Grandparent (Black's turn): value_sum += +0.6
-    ↑
-...
+    Leaf --> Parent --> Grand --> More
+
+    Note["Black's perspective: value = +0.6 (Black favorable)"]
 ```
 
 ---

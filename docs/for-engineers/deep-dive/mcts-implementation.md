@@ -12,25 +12,17 @@ description: 深入解析蒙地卡羅樹搜索的實作、PUCT 選擇與並行�
 
 ## MCTS 四步驟回顧
 
-```
-┌─────────────────────────────────────────────────────┐
-│                    MCTS 搜索循環                     │
-├─────────────────────────────────────────────────────┤
-│                                                     │
-│   1. Selection      選擇：沿樹向下，用 PUCT 選節點  │
-│         │                                           │
-│         ▼                                           │
-│   2. Expansion      展開：到達葉節點，創建子節點    │
-│         │                                           │
-│         ▼                                           │
-│   3. Evaluation     評估：用神經網路評估葉節點      │
-│         │                                           │
-│         ▼                                           │
-│   4. Backprop       回傳：更新路徑上所有節點統計    │
-│                                                     │
-│   重複數千次，選擇訪問次數最多的動作                │
-│                                                     │
-└─────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph MCTS["MCTS 搜索循環"]
+        S1["1. Selection<br/>選擇：沿樹向下，用 PUCT 選節點"]
+        S2["2. Expansion<br/>展開：到達葉節點，創建子節點"]
+        S3["3. Evaluation<br/>評估：用神經網路評估葉節點"]
+        S4["4. Backprop<br/>回傳：更新路徑上所有節點統計"]
+        S5["重複數千次，選擇訪問次數最多的動作"]
+
+        S1 --> S2 --> S3 --> S4 --> S5
+    end
 ```
 
 ---
@@ -142,14 +134,17 @@ def select_child(self, c_puct=1.5):
 
 ### 探索 vs 利用的平衡
 
-```
-初期：N(s,a) 小
-├── U(s,a) 大 → 探索為主
-└── 高先驗機率的動作優先被探索
+```mermaid
+flowchart TB
+    subgraph Early["初期：N（s,a）小"]
+        E1["U（s,a）大 → 探索為主"]
+        E2["高先驗機率的動作優先被探索"]
+    end
 
-後期：N(s,a) 大
-├── U(s,a) 小 → 利用為主
-└── Q(s,a) 主導，選擇已知好的動作
+    subgraph Late["後期：N（s,a）大"]
+        L1["U（s,a）小 → 利用為主"]
+        L2["Q（s,a）主導，選擇已知好的動作"]
+    end
 ```
 
 ---
@@ -279,17 +274,16 @@ def backpropagate(self, value):
 
 ### 視角交替的重要性
 
-```
-黑方視角：value = +0.6（黑方有利）
+```mermaid
+flowchart BT
+    Leaf["葉節點（黑方走）<br/>value_sum += +0.6"]
+    Parent["父節點（白方走）<br/>value_sum += -0.6<br/>← 對白方來說是不利的"]
+    Grandparent["祖父節點（黑方走）<br/>value_sum += +0.6"]
+    More["..."]
 
-回傳路徑：
-葉節點（黑方走）: value_sum += +0.6
-    ↑
-父節點（白方走）: value_sum += -0.6  ← 對白方來說是不利的
-    ↑
-祖父節點（黑方走）: value_sum += +0.6
-    ↑
-...
+    Leaf --> Parent --> Grandparent --> More
+
+    Note["黑方視角：value = +0.6（黑方有利）"]
 ```
 
 ---
@@ -300,10 +294,11 @@ def backpropagate(self, value):
 
 多執行緒同時搜索時，可能都選到同一個節點：
 
-```
-Thread 1: 選擇節點 A（Q=0.6, N=100）
-Thread 2: 選擇節點 A（Q=0.6, N=100）← 重複！
-Thread 3: 選擇節點 A（Q=0.6, N=100）← 重複！
+```mermaid
+flowchart LR
+    T1["Thread 1: 選擇節點 A（Q=0.6, N=100）"]
+    T2["Thread 2: 選擇節點 A（Q=0.6, N=100）← 重複！"]
+    T3["Thread 3: 選擇節點 A（Q=0.6, N=100）← 重複！"]
 ```
 
 ### 解決方案：虛擬損失
@@ -342,15 +337,16 @@ def backpropagate_with_virtual_loss(self, value):
 
 ### 效果
 
-```
-Thread 1: 選擇節點 A，加虛擬損失
-         A 的 Q 值暫時下降
+```mermaid
+flowchart TB
+    T1["Thread 1: 選擇節點 A，加虛擬損失<br/>A 的 Q 值暫時下降"]
+    T2["Thread 2: 選擇節點 B<br/>（因為 A 看起來變差了）"]
+    T3["Thread 3: 選擇節點 C"]
+    Result["→ 不同執行緒探索不同分支，提高效率"]
 
-Thread 2: 選擇節點 B（因為 A 看起來變差了）
-
-Thread 3: 選擇節點 C
-
-→ 不同執行緒探索不同分支，提高效率
+    T1 --> Result
+    T2 --> Result
+    T3 --> Result
 ```
 
 ---

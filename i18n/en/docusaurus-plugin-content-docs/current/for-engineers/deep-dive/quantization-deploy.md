@@ -22,16 +22,19 @@ This article introduces how to quantize KataGo models to reduce resource require
 
 ### Quantization Types
 
-```
-Post-Training Quantization (PTQ)
-├── Simple and fast
-├── No retraining needed
-└── May have accuracy loss
+```mermaid
+flowchart TB
+    subgraph PTQ["Post-Training Quantization (PTQ)"]
+        P1["Simple and fast"]
+        P2["No retraining needed"]
+        P3["May have accuracy loss"]
+    end
 
-Quantization-Aware Training (QAT)
-├── Higher accuracy
-├── Requires retraining
-└── More complex
+    subgraph QAT["Quantization-Aware Training (QAT)"]
+        Q1["Higher accuracy"]
+        Q2["Requires retraining"]
+        Q3["More complex"]
+    end
 ```
 
 ---

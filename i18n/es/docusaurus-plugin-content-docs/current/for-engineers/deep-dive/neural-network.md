@@ -14,35 +14,25 @@ Este artículo analiza en profundidad la arquitectura completa de la red neurona
 
 KataGo utiliza un diseño de **red neuronal única con salida múltiple**:
 
-```
-Características de entrada (19×19×22)
-        │
-        ▼
-┌───────────────────┐
-│   Capa de conv.   │
-│   inicial 256     │
-│   filtros         │
-└─────────┬─────────┘
-          │
-          ▼
-┌───────────────────┐
-│   Torre residual  │
-│  20-60 bloques    │
-│  residuales       │
-│  + capa de pooling│
-│  global           │
-└─────────┬─────────┘
-          │
-    ┌─────┴─────┬─────────┬─────────┐
-    │           │         │         │
-    ▼           ▼         ▼         ▼
- Policy      Value     Score   Ownership
-  Head       Head      Head      Head
-    │           │         │         │
-    ▼           ▼         ▼         ▼
-362 prob.   Tasa de   Dif. de   361 prop.
-(incl.pass) victoria  puntos    (-1~+1)
-            (-1~+1)   (puntos)
+```mermaid
+flowchart TB
+    Input["Características de entrada<br/>(19×19×22)"]
+    Conv["Capa de conv. inicial<br/>256 filtros"]
+    Trunk["Torre residual<br/>20-60 bloques residuales<br/>+ capa de pooling global"]
+    Policy["Policy Head"]
+    Value["Value Head"]
+    Score["Score Head"]
+    Ownership["Ownership Head"]
+    PolicyOut["362 prob.<br/>(incl. pass)"]
+    ValueOut["Tasa de victoria<br/>(-1~+1)"]
+    ScoreOut["Dif. de puntos<br/>(puntos)"]
+    OwnerOut["361 prop.<br/>(-1~+1)"]
+
+    Input --> Conv --> Trunk
+    Trunk --> Policy --> PolicyOut
+    Trunk --> Value --> ValueOut
+    Trunk --> Score --> ScoreOut
+    Trunk --> Ownership --> OwnerOut
 ```
 
 ---
@@ -117,34 +107,21 @@ def encode_rules(rules, komi):
 
 KataGo utiliza la estructura **Pre-activation ResNet**:
 
-```
-Entrada x
-    │
-    ├────────────────────┐
-    │                    │
-    ▼                    │
-BatchNorm                │
-    │                    │
-    ▼                    │
-ReLU                     │
-    │                    │
-    ▼                    │
-Conv 3×3                 │
-    │                    │
-    ▼                    │
-BatchNorm                │
-    │                    │
-    ▼                    │
-ReLU                     │
-    │                    │
-    ▼                    │
-Conv 3×3                 │
-    │                    │
-    ▼                    │
-    +  ←─────────────────┘ (conexión residual)
-    │
-    ▼
-Salida
+```mermaid
+flowchart TB
+    Input["Entrada x"]
+    BN1["BatchNorm"]
+    ReLU1["ReLU"]
+    Conv1["Conv 3×3"]
+    BN2["BatchNorm"]
+    ReLU2["ReLU"]
+    Conv2["Conv 3×3"]
+    Add["+ (conexión residual)"]
+    Output["Salida"]
+
+    Input --> BN1 --> ReLU1 --> Conv1 --> BN2 --> ReLU2 --> Conv2 --> Add
+    Input -.-> Add
+    Add --> Output
 ```
 
 ### Ejemplo de código

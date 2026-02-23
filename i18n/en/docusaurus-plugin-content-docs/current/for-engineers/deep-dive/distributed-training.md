@@ -12,37 +12,22 @@ This article introduces KataGo's distributed training system architecture, expla
 
 ## System Architecture Overview
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│              KataGo Distributed Training System              │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│   ┌─────────────┐    ┌─────────────┐    ┌─────────────┐   │
-│   │  Worker 1   │    │  Worker 2   │    │  Worker N   │   │
-│   │  (Self-play)│    │  (Self-play)│    │  (Self-play)│   │
-│   └──────┬──────┘    └──────┬──────┘    └──────┬──────┘   │
-│          │                  │                  │           │
-│          └────────────┬─────┴──────────────────┘           │
-│                       │                                     │
-│                       ▼                                     │
-│            ┌─────────────────────┐                         │
-│            │   Training Server   │                         │
-│            │  (Data Collection)  │                         │
-│            └──────────┬──────────┘                         │
-│                       │                                     │
-│                       ▼                                     │
-│            ┌─────────────────────┐                         │
-│            │  Training Process   │                         │
-│            │  (Model Training)   │                         │
-│            └──────────┬──────────┘                         │
-│                       │                                     │
-│                       ▼                                     │
-│            ┌─────────────────────┐                         │
-│            │   New Model Release │                         │
-│            │  (Model Release)    │                         │
-│            └─────────────────────┘                         │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Workers["Self-play Workers"]
+        W1["Worker 1<br/>(Self-play)"]
+        W2["Worker 2<br/>(Self-play)"]
+        WN["Worker N<br/>(Self-play)"]
+    end
+
+    Server["Training Server<br/>(Data Collection)"]
+    Train["Training Process<br/>(Model Training)"]
+    Release["New Model Release<br/>(Model Release)"]
+
+    W1 --> Server
+    W2 --> Server
+    WN --> Server
+    Server --> Train --> Release
 ```
 
 ---

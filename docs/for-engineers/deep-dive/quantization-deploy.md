@@ -22,16 +22,19 @@ description: KataGo 模型的量化技術、匯出格式與各平台部署方案
 
 ### 量化類型
 
-```
-訓練後量化（PTQ）
-├── 簡單快速
-├── 不需要重新訓練
-└── 可能有精度損失
+```mermaid
+flowchart TB
+    subgraph PTQ[訓練後量化 PTQ]
+        PTQ1[簡單快速]
+        PTQ2[不需要重新訓練]
+        PTQ3[可能有精度損失]
+    end
 
-量化感知訓練（QAT）
-├── 精度更高
-├── 需要重新訓練
-└── 較為複雜
+    subgraph QAT[量化感知訓練 QAT]
+        QAT1[精度更高]
+        QAT2[需要重新訓練]
+        QAT3[較為複雜]
+    end
 ```
 
 ---

@@ -45,17 +45,41 @@ Where:
 
 ### Search Tree Diagram
 
-```
-                Max layer (me)
-                    │
-        ┌───────────┼───────────┐
-        │           │           │
-       -3          +5          +2
-        │           │           │
-    ─────────   ─────────   ─────────
-    Min layer (opponent)
-    │   │   │   │   │   │   │   │   │
-   -3  +7  +5 +5  -2  +9 +2  +1  +4
+```mermaid
+flowchart TB
+    subgraph Max["Max layer (me)"]
+        A["-3"]
+        B["+5"]
+        C["+2"]
+    end
+
+    subgraph MinA["Min layer"]
+        A1["-3"]
+        A2["+7"]
+        A3["+5"]
+    end
+
+    subgraph MinB["Min layer"]
+        B1["+5"]
+        B2["-2"]
+        B3["+9"]
+    end
+
+    subgraph MinC["Min layer"]
+        C1["+2"]
+        C2["+1"]
+        C3["+4"]
+    end
+
+    A --> A1
+    A --> A2
+    A --> A3
+    B --> B1
+    B --> B2
+    B --> B3
+    C --> C1
+    C --> C2
+    C --> C3
 ```
 
 In this example:
@@ -140,16 +164,18 @@ If we already know a branch is "definitely bad," we can skip it directly.
 
 ### Pruning Principle
 
-```
-Max node A (current best α = +5)
-    │
-    ├── Branch 1: Already evaluated, value = +5
-    │
-    └── Branch 2: Min node B
-            │
-            ├── Child B1: value = +3
-            │
-            └── Child B2: ??? (can be skipped!)
+```mermaid
+flowchart TB
+    A["Max node A<br/>(current best α = +5)"]
+    B1["Branch 1<br/>Already evaluated, value = +5"]
+    B["Branch 2: Min node B"]
+    C1["Child B1: value = +3"]
+    C2["Child B2: ???<br/>(can be skipped!)"]
+
+    A --> B1
+    A --> B
+    B --> C1
+    B --> C2
 ```
 
 In this example:

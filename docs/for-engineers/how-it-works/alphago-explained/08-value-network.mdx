@@ -95,10 +95,11 @@ v = f_θ(s)
 
 Value Network 的架構與 Policy Network 非常相似，都是深度卷積神經網路：
 
-```
-輸入層 → 卷積層 ×12 → 全連接層 → 輸出
-   ↓         ↓           ↓         ↓
-19×19×48   19×19×192    256維     單一數值
+```mermaid
+flowchart LR
+    A["輸入層<br/>19×19×48"] --> B["卷積層 ×12<br/>19×19×192"]
+    B --> C["全連接層<br/>256維"]
+    C --> D["輸出<br/>單一數值"]
 ```
 
 ### 輸入層
@@ -152,30 +153,19 @@ Sigmoid 的輸出範圍是 (0, 1)，也可以表示勝率。但 Tanh 有幾個�
 
 ### 完整架構圖
 
-```
-輸入: 19×19×49
-        ↓
-    Conv 5×5, 192 filters
-        ↓
-    ReLU
-        ↓
-    Conv 3×3, 192 filters (×11)
-        ↓
-    ReLU
-        ↓
-    Conv 1×1, 1 filter
-        ↓
-    展平 (361 維)
-        ↓
-    全連接 (256 維)
-        ↓
-    ReLU
-        ↓
-    全連接 (1 維)
-        ↓
-    Tanh
-        ↓
-輸出: [-1, +1]
+```mermaid
+flowchart TB
+    A["輸入: 19×19×49"] --> B["Conv 5×5, 192 filters"]
+    B --> C["ReLU"]
+    C --> D["Conv 3×3, 192 filters ×11"]
+    D --> E["ReLU"]
+    E --> F["Conv 1×1, 1 filter"]
+    F --> G["展平 (361 維)"]
+    G --> H["全連接 (256 維)"]
+    H --> I["ReLU"]
+    I --> J["全連接 (1 維)"]
+    J --> K["Tanh"]
+    K --> L["輸出: [-1, +1]"]
 ```
 
 ### 參數數量
@@ -366,16 +356,18 @@ Value Network 的準確度取決於遊戲進程：
 
 Value Network 在 MCTS 的 **Evaluation** 階段發揮關鍵作用：
 
-```
-MCTS 搜索樹：
-
-        根節點 (當前局面)
-           /    \
-         A        B
-        /  \    /  \
-       A1  A2  B1  B2 ← 葉節點
-        ↓   ↓   ↓   ↓
-       評估  評估  評估  評估
+```mermaid
+flowchart TB
+    Root["根節點<br/>(當前局面)"] --> A["A"]
+    Root --> B["B"]
+    A --> A1["A1<br/>葉節點"]
+    A --> A2["A2<br/>葉節點"]
+    B --> B1["B1<br/>葉節點"]
+    B --> B2["B2<br/>葉節點"]
+    A1 --> E1["評估"]
+    A2 --> E2["評估"]
+    B1 --> E3["評估"]
+    B2 --> E4["評估"]
 ```
 
 當 MCTS 到達一個葉節點時，需要評估這個局面的價值。有兩種方法：
@@ -411,14 +403,11 @@ V(leaf) = V_network(leaf)
 
 評估完葉節點後，這個值會沿路徑回溯更新：
 
-```
-v3 = V(leaf) = 0.6
-      ↑
-A2 的 Q 值更新
-      ↑
-A 的 Q 值更新
-      ↑
-根節點的統計更新
+```mermaid
+flowchart BT
+    A["v3 = V(leaf) = 0.6"] --> B["A2 的 Q 值更新"]
+    B --> C["A 的 Q 值更新"]
+    C --> D["根節點的統計更新"]
 ```
 
 每個節點維護的 Q 值是所有經過它的葉節點評估的平均：
@@ -617,14 +606,12 @@ Policy Network 和 Value Network 在 AlphaGo 中互補：
 
 在 AlphaGo Zero 中，這兩個網路被合併成一個**雙頭網路**：
 
-```
-       共享的特徵提取層
-              |
-       ┌──────┴──────┐
-       ↓              ↓
-  Policy Head    Value Head
-       ↓              ↓
-  361個機率       單一數值
+```mermaid
+flowchart TB
+    A["共享的特徵提取層"] --> B["Policy Head"]
+    A --> C["Value Head"]
+    B --> D["361個機率"]
+    C --> E["單一數值"]
 ```
 
 這種設計的優點：
