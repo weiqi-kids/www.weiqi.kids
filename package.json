@@ -19,10 +19,14 @@
     "@docusaurus/theme-mermaid": "^3.8.1",
     "@easyops-cn/docusaurus-search-local": "^0.55.0",
     "@mdx-js/react": "^3.0.0",
+    "@types/d3": "^7.4.3",
     "clsx": "^2.0.0",
+    "d3": "^7.9.0",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "rehype-katex": "7",
+    "remark-math": "6"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.8.1",

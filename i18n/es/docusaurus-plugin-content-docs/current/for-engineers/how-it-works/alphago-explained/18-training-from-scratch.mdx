@@ -1,0 +1,493 @@
+---
+sidebar_position: 19
+title: El proceso de entrenamiento desde cero
+description: Observa cómo AlphaGo Zero pasó de jugadas aleatorias a superar a los humanos en tres días, redescubriendo y superando miles de años de teoría del Go
+keywords: [AlphaGo Zero, proceso de entrenamiento, auto-juego, crecimiento de fuerza, Go AI, deep learning]
+---
+
+import { EloChart } from '@site/src/components/D3Charts';
+
+# El proceso de entrenamiento desde cero
+
+Lo más asombroso de AlphaGo Zero no es solo su fuerza final, sino su **proceso de crecimiento**: partiendo de un estado completamente aleatorio, en solo tres días atravesó la acumulación de conocimiento del Go que a los humanos les tomó miles de años completar, y luego superó toda comprensión humana.
+
+Este artículo te guiará paso a paso a través de esta asombrosa transformación.
+
+---
+
+## Curva de entrenamiento
+
+Primero, veamos la curva de crecimiento de fuerza de AlphaGo Zero:
+
+<EloChart mode="zero" width={700} height={400} />
+
+Esta curva muestra los cambios en la fuerza de AlphaGo Zero durante 72 horas. Observa algunos hitos clave:
+
+| Tiempo | Puntuación ELO | Equivalente a |
+|--------|----------------|---------------|
+| 0 horas | 0 | Jugadas aleatorias |
+| 3 horas | ~1000 | Descubre reglas básicas |
+| 12 horas | ~3000 | Descubre joseki y formas |
+| 36 horas | ~4500 | Supera AlphaGo versión Fan Hui |
+| 60 horas | ~5200 | Supera AlphaGo versión Lee Sedol |
+| 72 horas | ~5400 | Supera todas las versiones anteriores |
+
+**Tres días, de cero a superar la cima humana.**
+
+---
+
+## Día 0: El comienzo caótico
+
+### Estado inicial completamente aleatorio
+
+Al inicio del entrenamiento, los pesos de la red neuronal se inicializan aleatoriamente. Esto significa:
+
+- **Policy Head**: Produce una distribución casi uniforme, con probabilidad de colocar en cada posición de aproximadamente 1/361
+- **Value Head**: Produce valores cercanos a 0, incapaz de distinguir entre posiciones buenas y malas
+
+En este punto, AlphaGo Zero juega de manera completamente aleatoria, peor que alguien que nunca ha visto un tablero de Go.
+
+### El primer auto-juego
+
+Imagina cómo sería el primer auto-juego:
+
+```
+Negro 1: Coloca aleatoriamente en algún lugar (podría ser el tengen, una esquina, o la primera línea)
+Blanco 2: Coloca aleatoriamente en otro lugar
+Negro 3: Aleatorio...
+...
+Movimiento 200: El tablero está lleno de piedras aisladas, sin ninguna conexión
+Final: El resultado se determina por factores aleatorios
+```
+
+La "calidad" de esta partida es extremadamente baja, pero contiene información valiosa: **quién ganó al final**.
+
+### La primera señal de entrenamiento
+
+Aunque ambos lados juegan aleatoriamente, el resultado de ganar o perder es definitivo. La red neuronal comienza a aprender:
+
+> "En esta posición, negro finalmente ganó. Aunque no sé por qué, esta posición podría ser mejor para negro."
+
+Esta es una señal muy débil, pero es real. Después de miles de estas "partidas basura", la red comienza a descubrir algunos patrones estadísticos.
+
+---
+
+## Hora 1-3: Descubriendo las reglas del juego
+
+### Emergencia de la conciencia de las reglas
+
+Después de decenas de miles de auto-juegos, AlphaGo Zero comienza a "descubrir" las reglas básicas del Go (aunque estas reglas ya están incorporadas en el motor del juego):
+
+#### 1. La importancia de la conexión
+
+```
+Observación: Cuando las piedras están conectadas, son más difíciles de capturar
+Aprendizaje: Comienza a priorizar colocar junto a piedras existentes
+```
+
+Esto no fue enseñado, sino aprendido de los resultados de ganar/perder. Las piedras dispersas son fáciles de derrotar una por una, mientras que las piedras conectadas sobreviven más fácilmente.
+
+#### 2. El concepto de libertades
+
+```
+Observación: Cuando todos los puntos adyacentes de una piedra están ocupados, la piedra desaparece
+Aprendizaje: Comienza a evitar posiciones con pocas libertades, comienza a atacar piedras del oponente con pocas libertades
+```
+
+La red aprendió a rastrear las libertades, aunque no hay una característica explícita de "libertades" en la entrada, se puede inferir de los estados históricos del tablero.
+
+#### 3. Embrión del ojo
+
+```
+Observación: Ciertas formas son particularmente difíciles de capturar
+Aprendizaje: Comienza a formar formas con espacio en esquinas y bordes
+```
+
+Este es el inicio del concepto de piedras vivas. La red descubrió que los grupos con espacio interno sobreviven más fácilmente.
+
+### Evaluación de fuerza
+
+En este punto, AlphaGo Zero es aproximadamente:
+- **ELO**: ~1000
+- **Equivalente a**: Principiante que acaba de aprender las reglas
+- **Características**: Sabe que debe conectar piedras, sabe capturar piedras del oponente
+
+---
+
+## Hora 3-12: Descubriendo joseki y formas
+
+### El despertar de las esquinas
+
+Con más entrenamiento, la red descubrió la importancia de las esquinas:
+
+```
+Observación: Las piedras en las esquinas solo necesitan 2 ojos para vivir
+           En los bordes, hacer 2 ojos es más difícil
+           En el centro, hacer 2 ojos es lo más difícil
+Aprendizaje: Prioriza ocupar las esquinas en la apertura
+```
+
+Este es el proceso de descubrimiento del principio humano "Las esquinas son oro, los bordes son plata, el centro es hierba". La red no fue informada de este principio, sino que lo descubrió por sí misma a partir de cientos de miles de partidas.
+
+### La emergencia del joseki
+
+Más sorprendente aún, la red comenzó a "inventar" joseki, secuencias estándar de juego en las esquinas:
+
+#### Fenómeno observado
+
+```
+Etapa temprana del entrenamiento: El juego en las esquinas es muy variado
+Etapa media del entrenamiento: Ciertas jugadas aparecen repetidamente
+Etapa tardía del entrenamiento: Se forman joseki estables en las esquinas
+```
+
+Estos joseki son **muy similares** a los joseki que los humanos acumularon durante cientos de años, validando que estos joseki son efectivamente aproximaciones a la solución óptima para ambos lados.
+
+### Joseki emergente típico
+
+Tomemos el joseki de komoku como ejemplo:
+
+```
+  A B C D E F G H J
+9 . . . . . . . . .
+8 . . . . . . . . .
+7 . . . . . . . . .
+6 . . . ● . . . . .   ● = Negro
+5 . . . . . . . . .   ○ = Blanco
+4 . . . ○ . ● . . .
+3 . . . . . . . . .
+2 . . . . . . . . .
+1 . . . . . . . . .
+```
+
+Negro ocupa el komoku, blanco hace kakari, negro pinza; esta secuencia emergió naturalmente durante el entrenamiento.
+
+### Conocimiento de formas
+
+Además del joseki, la red también aprendió la diferencia entre buenas y malas formas:
+
+| Forma | Evaluación humana | Aprendizaje de Zero |
+|-------|-------------------|---------------------|
+| Triángulo vacío | Forma torpe | Gradualmente evitada |
+| Boca de tigre | Buena forma | Gradualmente preferida |
+| Doble ala voladora | Forma de ataque clásica | Descubierta naturalmente |
+| Cabeza del dios | Ataque poderoso | Descubierto naturalmente |
+
+### Evaluación de fuerza
+
+En este punto, AlphaGo Zero:
+- **ELO**: ~3000
+- **Equivalente a**: Dan alto amateur
+- **Características**: Tiene conocimiento básico de joseki, entiende formas básicas
+
+---
+
+## Hora 12-36: Maduración de la teoría del Go
+
+### Formación de la visión global
+
+Entrando en el segundo día, la red comienza a mostrar **visión global**:
+
+#### Influencia y territorio
+
+```
+Observación: Rodear espacio produce puntos
+           Pero la influencia también tiene valor, puede atacar al oponente
+Aprendizaje: Buscar equilibrio entre tomar territorio y tomar influencia
+```
+
+Este es uno de los conceptos más profundos del Go. La red aprendió a evaluar el valor de lo "virtual" y lo "real".
+
+#### Juicio de grosor y delgadez
+
+```
+Observación: Las piedras "gruesas" pueden apoyar luchas distantes
+           Las piedras "delgadas" necesitan refuerzo, de lo contrario serán atacadas
+Aprendizaje: Construir activamente grosor, atacar las debilidades del oponente
+```
+
+### Tácticas de medio juego
+
+Las habilidades de lucha en el medio juego de la red mejoraron significativamente:
+
+| Técnica | Descripción |
+|---------|-------------|
+| Atacar grupos débiles | Identificar grupos aislados del oponente, lanzar ofensiva |
+| Usar grosor | Usar influencia gruesa para apoyar ataques, obtener beneficios |
+| Intercambio | Renunciar a pérdidas locales, ganar ventaja global |
+| Invasión | Reducir el marco del oponente |
+
+### Habilidades de yose
+
+El cálculo preciso en la fase de yose también mejora:
+
+```
+Observación: El valor de cada movimiento en yose puede calcularse con precisión
+Aprendizaje: Hacer yose en orden de valor decreciente
+```
+
+La red aprendió conceptos de yose como "sente para ambos", "sente unilateral", "gote".
+
+### Evaluación de fuerza
+
+En este punto, AlphaGo Zero:
+- **ELO**: ~4500
+- **Equivalente a**: Nivel de jugador profesional
+- **Características**: Tiene comprensión completa del Go, puede jugar partidas de alta calidad
+
+---
+
+## Hora 36-72: Superando a los humanos
+
+### Superando el nivel profesional
+
+Alrededor de las 36 horas, la fuerza de AlphaGo Zero alcanzó el nivel de jugadores profesionales. Pero el entrenamiento no se detuvo; continuó el auto-juego, continuó mejorando.
+
+Lo que sucedió después es aún más interesante: **comenzó a descubrir movimientos que los humanos nunca habían pensado**.
+
+### Aperturas revolucionarias
+
+Las aperturas tradicionales del Go tienen muchas "ideas establecidas":
+
+| Visión tradicional | Descubrimiento de AlphaGo Zero |
+|--------------------|--------------------------------|
+| Ocupar esquinas primero en la apertura | En algunos casos es mejor ocupar los bordes primero |
+| Komoku es lo más sólido | Ocupar san-san directamente es viable |
+| Hay que memorizar bien el joseki | Puedes desviarte activamente del joseki |
+| San-san temprano es codicioso | San-san es correcto en ciertas posiciones |
+
+Estos "descubrimientos" fueron ampliamente estudiados por jugadores profesionales humanos después de AlphaGo, y muchos ya han sido incorporados a la teoría moderna del Go.
+
+### Formas contra-intuitivas
+
+AlphaGo Zero a veces juega formas que los humanos consideran "feas":
+
+```
+Humano: "Esta es una forma torpe, no puede ser un buen movimiento"
+Zero: (juega ese movimiento)
+Después del análisis: "Resulta que esto es más eficiente"
+```
+
+Esto revela las limitaciones de la teoría humana del Go: algunas "malas formas" son en realidad la solución óptima en posiciones específicas.
+
+### Sacrificio agresivo
+
+Zero está más dispuesto que los humanos a sacrificar piedras por otros beneficios:
+
+```
+Pérdida local de 3 puntos
+Ganar la iniciativa global
+Tasa de victoria final aumenta
+```
+
+Los jugadores humanos a menudo se preocupan demasiado por ganancias y pérdidas locales, mientras que Zero siempre observa la tasa de victoria final.
+
+### Evaluación de fuerza
+
+AlphaGo Zero después de 72 horas:
+- **ELO**: ~5400
+- **Equivalente a**: Supera a todos los jugadores humanos
+- **Características**: Descubre movimientos desconocidos para humanos, crea nueva teoría del Go
+
+---
+
+## Redescubriendo la teoría humana del Go
+
+### Miles de años vs. tres días
+
+El Go humano se desarrolló durante miles de años:
+- Originado en China alrededor del año 2000 a.C.
+- Transmitido a Japón en la dinastía Tang, desarrolló teoría refinada
+- El sistema profesional apareció en el siglo XX, la teoría se profundizó más
+- En 2016, los humanos pensaban que ya entendían bastante bien el Go
+
+AlphaGo Zero recorrió este camino en tres días. Más sorprendente aún, la teoría que descubrió es **altamente consistente** con la de los humanos.
+
+### Validación y superación
+
+| Conocimiento humano | Actitud de Zero |
+|---------------------|-----------------|
+| Las esquinas son oro, los bordes son plata | Confirmado (las esquinas son realmente importantes) |
+| Joseki básico | Mayormente confirmado, algunos mejorados |
+| Buenas y malas formas | Mayormente confirmado, existen excepciones |
+| Sacrificio e intercambio | Más agresivo que los humanos |
+| Juicio de grosor y delgadez | Generalmente consistente, detalles diferentes |
+
+Esto indica que la teoría del Go acumulada por los humanos durante miles de años **es correcta en la dirección general**. Pero también hay algunas áreas donde la comprensión humana necesita corrección.
+
+### Implicaciones para el aprendizaje humano
+
+El proceso de entrenamiento de AlphaGo Zero trae inspiración al aprendizaje humano:
+
+1. **Comenzar desde lo básico**: Zero primero aprendió las reglas, luego las formas, finalmente desarrolló visión global
+2. **Mucha práctica**: 4.9 millones de auto-juegos equivalen a decenas de miles de años de partidas humanas
+3. **Enfocarse en ganar/perder**: No perseguir "Go bonito", solo perseguir ganar
+4. **No estar limitado por la tradición**: Atreverse a probar movimientos "imposibles"
+
+---
+
+## Detalles técnicos del proceso de entrenamiento
+
+### Mecanismo de auto-juego
+
+El flujo de cada auto-juego:
+
+```
+Inicialización: Tablero vacío
+↓
+Cada movimiento:
+  1. Usar red neuronal para evaluar la posición actual
+  2. Ejecutar búsqueda MCTS (1600 simulaciones)
+  3. Elegir movimiento según resultado de búsqueda
+  4. Registrar (posición, probabilidad MCTS, -)
+↓
+Fin del juego:
+  1. Determinar victoria/derrota z ∈ {-1, +1}
+  2. Completar todos los registros con resultado (posición, probabilidad MCTS, z)
+  3. Añadir datos al pool de entrenamiento
+```
+
+### Ritmo del entrenamiento
+
+El entrenamiento de AlphaGo Zero es **continuo**:
+
+```
+Self-play Workers:       Producen datos de auto-juego constantemente
+Training Workers:        Muestrean del pool de datos constantemente para entrenar
+Network Updates:         Actualizan periódicamente la red usada para auto-juego
+```
+
+Estos tres procesos ocurren simultáneamente, formando un ciclo de mejora continua.
+
+### Gestión del pool de datos
+
+Gestión del pool de datos de entrenamiento:
+
+| Parámetro | Valor |
+|-----------|-------|
+| Tamaño del pool | Últimas 500,000 partidas |
+| Muestras por partida | ~200 movimientos |
+| Total de muestras | ~100 millones |
+| Método de muestreo | Aleatorio uniforme |
+
+Los datos antiguos son reemplazados por datos nuevos, asegurando que los datos de entrenamiento reflejen el nivel actual de la red.
+
+### Estrategia de actualización de red
+
+No se actualiza la red de auto-juego después de cada paso de entrenamiento. En cambio:
+
+1. Después de entrenar un tiempo, se genera una red candidata
+2. La red candidata juega contra la red actual (400 partidas)
+3. Si la tasa de victoria de la candidata > 55%, se actualiza
+4. De lo contrario, continúa entrenando
+
+Esto asegura que el auto-juego siempre use una red **suficientemente fuerte**.
+
+---
+
+## Análisis de la velocidad de aprendizaje
+
+### ¿Por qué tan rápido?
+
+Razones de la asombrosa velocidad de aprendizaje de AlphaGo Zero:
+
+#### 1. Recursos computacionales
+
+- 4 TPUs, decenas de miles de inferencias por segundo
+- Cientos de miles de auto-juegos generados por día
+- Equivalente a miles de años de partidas humanas
+
+#### 2. Oponente perfecto
+
+Auto-juego significa:
+- El oponente siempre tiene nivel similar
+- Ni demasiado débil (no aprende nada) ni demasiado fuerte (no puede ganar)
+- Estas son condiciones de aprendizaje ideales
+
+#### 3. Objetivo directo
+
+Solo un objetivo: ganar. Sin:
+- Preferencias del maestro
+- Búsqueda de estilo
+- Consideraciones estéticas
+
+#### 4. Aprendizaje de representación eficiente
+
+Las redes residuales pueden aprender características de tablero muy abstractas, más efectivas que las características diseñadas manualmente.
+
+### Comparación con humanos
+
+| Aspecto | Humano | AlphaGo Zero |
+|---------|--------|--------------|
+| Velocidad de aprendizaje | ~10 partidas/día | ~100,000 partidas/día |
+| Retención de memoria | Hay olvido | Retención perfecta |
+| Límites de energía | Necesita descanso | Funciona 24/7 |
+| Capacidad de innovación | Influenciado por tradición | Sin límites preestablecidos |
+
+---
+
+## Fenómenos interesantes durante el entrenamiento
+
+### Estancamiento por etapas
+
+La curva de entrenamiento no es completamente suave, a veces aparecen **períodos de estancamiento**:
+
+```
+ELO: 2000 -----> 2000 -----> 2500 ---->
+          (estancamiento) (avance)
+```
+
+Esto puede ser porque la red está aprendiendo algún concepto nuevo y necesita tiempo para "digerirlo".
+
+### Emergencia y desaparición de estrategias
+
+Ciertas estrategias emergen durante el entrenamiento y luego desaparecen:
+
+```
+Etapa 1: Descubre cierto medio de ataque
+Etapa 2: El oponente aprende a defenderse
+Etapa 3: La frecuencia de uso de ese medio disminuye
+Etapa 4: Descubre nuevo medio de ataque
+```
+
+Esto es una miniatura de la carrera armamentística.
+
+### "Reinventando la rueda"
+
+Durante el entrenamiento, Zero "reinventa" conceptos ya conocidos por humanos:
+
+- **Escalera**: Descubre que atari continuo puede capturar piedras
+- **Snap-back**: Descubre que puede ofrecer piedras primero y luego contra-capturar
+- **Ko**: Descubre cómo explotar la regla de ko
+
+El orden de estos descubrimientos es similar al orden en que los humanos aprenden Go.
+
+---
+
+## Correspondencia con animaciones
+
+Conceptos centrales de este artículo y números de animación:
+
+| Número | Concepto | Correspondencia física/matemática |
+|--------|----------|-----------------------------------|
+| 🎬 E12 | Curva de crecimiento de fuerza | Crecimiento en S (logístico) |
+| 🎬 E7 | Desde cero | Fenómeno de auto-organización |
+| 🎬 E5 | Auto-juego | Convergencia de punto fijo |
+| 🎬 F8 | Capacidades emergentes | Transición de fase |
+
+---
+
+## Lecturas adicionales
+
+- **Artículo anterior**: [Red de doble cabeza y ResNet](../dual-head-resnet) — La arquitectura de red neuronal que sustenta todo esto
+- **Artículo siguiente**: [Sistemas distribuidos y TPU](../distributed-systems) — El hardware que hace todo esto posible
+- **Artículo relacionado**: [Auto-juego](../self-play) — Por qué el auto-juego es tan efectivo
+
+---
+
+## Referencias
+
+1. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 550, 354-359.
+2. Silver, D., et al. (2017). "AlphaGo Zero: Starting from scratch." *DeepMind Blog*.
+3. DeepMind. (2017). "AlphaGo Zero: Learning from scratch." *YouTube*.
+4. Wang, F., et al. (2019). "A Survey on the Evolution of AlphaGo." *arXiv:1907.11180*.

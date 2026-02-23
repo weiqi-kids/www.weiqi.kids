@@ -1,0 +1,493 @@
+---
+sidebar_position: 19
+title: Training from Scratch
+description: Witness how AlphaGo Zero went from random moves to surpassing humans in three days, rediscovering and transcending millennia of Go wisdom
+keywords: [AlphaGo Zero, training process, self-play, strength growth, Go AI, deep learning]
+---
+
+import { EloChart } from '@site/src/components/D3Charts';
+
+# Training from Scratch
+
+What's most astonishing about AlphaGo Zero isn't just its final playing strength, but its **growth process** - starting from a completely random state, in just three days it went through the Go knowledge accumulation that took humans thousands of years, then surpassed all human understanding.
+
+This article will walk you through this stunning transformation step by step.
+
+---
+
+## Training Curve
+
+First, let's look at AlphaGo Zero's strength growth curve:
+
+<EloChart mode="zero" width={700} height={400} />
+
+This curve shows AlphaGo Zero's strength changes over 72 hours. Note several key milestones:
+
+| Time | ELO Rating | Equivalent to |
+|------|------------|---------------|
+| 0 hours | 0 | Random moves |
+| 3 hours | ~1000 | Discovers basic rules |
+| 12 hours | ~3000 | Discovers joseki and shapes |
+| 36 hours | ~4500 | Surpasses AlphaGo Fan version |
+| 60 hours | ~5200 | Surpasses AlphaGo Lee version |
+| 72 hours | ~5400 | Surpasses all previous versions |
+
+**Three days, from zero to surpassing the peak of human achievement.**
+
+---
+
+## Day 0: Chaotic Beginning
+
+### Completely Random Initial State
+
+At the start of training, the neural network weights are randomly initialized. This means:
+
+- **Policy Head**: Outputs approximately uniform distribution, each position has about 1/361 probability
+- **Value Head**: Outputs approximately 0, cannot distinguish good positions from bad ones
+
+At this point, AlphaGo Zero plays completely randomly - worse than someone who has never seen a Go board.
+
+### The First Self-Play Game
+
+Imagine what the first self-play game looks like:
+
+```
+Black 1: Randomly placed somewhere (could be tengen, a corner, or the first line)
+White 2: Randomly placed elsewhere
+Black 3: Random...
+...
+Move 200: The board is covered with isolated stones, no connections
+Final: Win/loss determined by random factors
+```
+
+This game's "quality" is extremely low, but it contains precious information: **who won in the end**.
+
+### The First Training Signal
+
+Although both sides are playing randomly, the outcome is definite. The neural network begins to learn:
+
+> "In this position, Black won in the end. I don't know why, but this position might be better for Black."
+
+This is a very weak signal, but it's real. After thousands of such "junk games," the network begins to discover some statistical patterns.
+
+---
+
+## Hour 1-3: Discovering Game Rules
+
+### Emerging Rule Awareness
+
+After tens of thousands of self-play games, AlphaGo Zero begins to "discover" Go's basic rules (though these rules were built into the game engine all along):
+
+#### 1. Importance of Connection
+
+```
+Observation: When stones are connected, they're harder to capture
+Learning: Begins to prefer playing next to existing stones
+```
+
+This wasn't taught - it was learned from win/loss results. Scattered stones are easily defeated one by one; connected groups survive more easily.
+
+#### 2. Concept of Liberties
+
+```
+Observation: When all adjacent empty points of a stone are occupied, the stone disappears
+Learning: Begins to avoid positions with few liberties, begins to attack opponent's stones with few liberties
+```
+
+The network learned to track liberty counts - though there's no explicit "liberty count" feature in the input, it can be inferred from historical board states.
+
+#### 3. Embryo of Eyes
+
+```
+Observation: Certain shapes are especially hard to capture
+Learning: Begins forming shapes with internal space in corners and edges
+```
+
+This is the beginning of the living group concept. The network discovered that stone groups with internal space survive more easily.
+
+### Strength Assessment
+
+At this point, AlphaGo Zero is approximately:
+- **ELO**: ~1000
+- **Equivalent to**: Beginner who just learned the rules
+- **Characteristics**: Knows to connect stones, knows to capture opponent's stones
+
+---
+
+## Hour 3-12: Discovering Joseki and Shapes
+
+### Corner Awakening
+
+With more training, the network discovered the importance of corners:
+
+```
+Observation: Corner stones only need 2 eyes to live
+          Edge stones need 2 eyes but it's harder
+          Center stones need 2 eyes and it's hardest
+Learning: Prioritize occupying corners in the opening
+```
+
+This is the discovery process for what humans call "corners are gold, edges are silver, center is grass." The network wasn't told this principle - it discovered it from hundreds of thousands of games.
+
+### Emergence of Joseki
+
+More amazingly, the network began to "invent" joseki - standard corner sequences for both sides:
+
+#### Observed Phenomenon
+
+```
+Early training: Corner play varies wildly
+Mid training: Certain sequences appear repeatedly
+Late training: Stable corner joseki forms
+```
+
+These joseki are **highly similar** to joseki humans accumulated over centuries, validating that these joseki are indeed approximations of optimal play for both sides.
+
+### Typical Emergent Joseki
+
+Using komoku joseki as an example:
+
+```
+  A B C D E F G H J
+9 . . . . . . . . .
+8 . . . . . . . . .
+7 . . . . . . . . .
+6 . . . ● . . . . .   ● = Black
+5 . . . . . . . . .   ○ = White
+4 . . . ○ . ● . . .
+3 . . . . . . . . .
+2 . . . . . . . . .
+1 . . . . . . . . .
+```
+
+Black occupies komoku, White approaches, Black pincer - this sequence naturally emerged during training.
+
+### Shape Knowledge
+
+Beyond joseki, the network also learned the difference between good and bad shapes:
+
+| Shape | Human Evaluation | Zero's Learning |
+|-------|------------------|-----------------|
+| Empty triangle | Bad shape | Gradually avoids |
+| Tiger's mouth | Good shape | Gradually prefers |
+| Double wing | Classic attack shape | Naturally discovered |
+| Capping move | Strong attack | Naturally discovered |
+
+### Strength Assessment
+
+At this point, AlphaGo Zero:
+- **ELO**: ~3000
+- **Equivalent to**: Strong amateur
+- **Characteristics**: Has basic joseki knowledge, understands basic shapes
+
+---
+
+## Hour 12-36: Maturation of Go Principles
+
+### Formation of Global Vision
+
+Entering the second day, the network began to exhibit **global vision**:
+
+#### Influence vs. Territory
+
+```
+Observation: Enclosing space gives points
+          But influence also has value - can attack opponent
+Learning: Finding balance between territory and influence
+```
+
+This is one of Go's most profound concepts. The network learned to evaluate "virtual" and "solid" value.
+
+#### Thickness Judgment
+
+```
+Observation: "Thick" stones can support distant fighting
+          "Thin" stones need reinforcement or will be attacked
+Learning: Proactively build thickness, attack opponent's weaknesses
+```
+
+### Middle Game Tactics
+
+The network's middle game fighting ability improved dramatically:
+
+| Technique | Description |
+|-----------|-------------|
+| Attack weak groups | Identify opponent's isolated stones, launch attacks |
+| Utilize thickness | Use strong positions to support attacks, gain benefits |
+| Exchange | Give up local loss for global advantage |
+| Invasion | Reduce opponent's framework |
+
+### Endgame Skills
+
+Endgame calculation precision also improved:
+
+```
+Observation: Each endgame move's value can be precisely calculated
+Learning: Collect endgame points in order of value
+```
+
+The network learned endgame concepts like "sente for both," "sente for one," and "gote."
+
+### Strength Assessment
+
+At this point, AlphaGo Zero:
+- **ELO**: ~4500
+- **Equivalent to**: Professional level
+- **Characteristics**: Has complete Go understanding, can play high-quality games
+
+---
+
+## Hour 36-72: Surpassing Humans
+
+### Breaking Through Professional Level
+
+Around 36 hours, AlphaGo Zero's strength reached professional level. But training didn't stop - it continued self-play, continued improving.
+
+What happened next is even more interesting: **it began discovering moves humans never thought of**.
+
+### Revolutionary Openings
+
+Traditional Go openings have many "established views":
+
+| Traditional View | AlphaGo Zero's Discovery |
+|------------------|--------------------------|
+| Occupy corners first in opening | Sometimes occupying edges first is better |
+| Komoku is most stable | Direct 3-3 invasion is viable |
+| Must memorize joseki | Can actively deviate from joseki |
+| 3-3 invasion too early is greedy | 3-3 invasion is correct in some positions |
+
+These "discoveries" have been widely studied by professional players after AlphaGo, and many have been incorporated into modern Go theory.
+
+### Counter-intuitive Shapes
+
+AlphaGo Zero sometimes plays shapes humans consider "ugly":
+
+```
+Human: "This is bad shape, can't possibly be good"
+Zero: (plays that move)
+After analysis: "Turns out this is more efficient"
+```
+
+This reveals limitations in human Go theory: some "bad shapes" are actually optimal in specific positions.
+
+### Aggressive Sacrifices
+
+Zero is more willing than humans to sacrifice stones for other benefits:
+
+```
+Local loss of 3 points
+Gain global initiative
+Final win rate increases
+```
+
+Human players often care too much about local gains and losses, while Zero always focuses on final win rate.
+
+### Strength Assessment
+
+AlphaGo Zero after 72 hours:
+- **ELO**: ~5400
+- **Equivalent to**: Surpasses all human players
+- **Characteristics**: Discovers unknown moves, creates new Go theory
+
+---
+
+## Rediscovering Human Go Principles
+
+### Thousands of Years vs. Three Days
+
+Human Go developed over thousands of years:
+- Originated in China around 2000 BCE
+- Spread to Japan during Tang Dynasty, developed refined theory
+- Professional system emerged in 20th century, theory deepened further
+- By 2016, humans believed they understood Go quite well
+
+AlphaGo Zero completed this journey in three days. Even more stunning, the Go principles it discovered are **highly consistent** with human ones.
+
+### Validation and Transcendence
+
+| Human Knowledge | Zero's Attitude |
+|-----------------|-----------------|
+| Corners gold, edges silver, center grass | Confirmed (corners are indeed important) |
+| Basic joseki | Mostly confirmed, few improvements |
+| Good/bad shapes | Mostly confirmed, exceptions exist |
+| Sacrifice exchanges | More aggressive than humans |
+| Thickness judgment | Generally consistent, details differ |
+
+This shows human Go principles accumulated over thousands of years **are largely correct**. But there are also areas where human understanding needs revision.
+
+### Insights for Human Learning
+
+AlphaGo Zero's training process offers insights for human learning:
+
+1. **Start from basics**: Zero first learned rules, then shapes, finally global vision
+2. **Massive practice**: 4.9 million self-play games equals tens of thousands of years of human games
+3. **Focus on winning**: Don't pursue "beautiful play," only pursue winning
+4. **Don't be bound by tradition**: Dare to try "impossible" moves
+
+---
+
+## Technical Details of Training
+
+### Self-Play Mechanism
+
+Each self-play game flow:
+
+```
+Initialize: Empty board
+↓
+Each move:
+  1. Evaluate current position with neural network
+  2. Execute MCTS search (1600 simulations)
+  3. Select move based on search results
+  4. Record (position, MCTS probabilities, -)
+↓
+Game ends:
+  1. Determine winner z ∈ {-1, +1}
+  2. Add outcome to all records (position, MCTS probabilities, z)
+  3. Add data to training pool
+```
+
+### Training Rhythm
+
+AlphaGo Zero's training is **continuous**:
+
+```
+Self-play Workers:       Continuously generate self-play data
+Training Workers:        Continuously sample from data pool and train
+Network Updates:         Periodically update network used for self-play
+```
+
+These three processes run simultaneously, forming a continuous improvement loop.
+
+### Data Pool Management
+
+Training data pool management:
+
+| Parameter | Value |
+|-----------|-------|
+| Pool size | Most recent 500,000 games |
+| Samples per game | ~200 moves |
+| Total samples | ~100 million |
+| Sampling method | Uniform random |
+
+Old data is replaced by new data, ensuring training data reflects current network level.
+
+### Network Update Strategy
+
+The self-play network isn't updated after every training step. Instead:
+
+1. After training for a while, generate candidate network
+2. Have candidate network play against current network (400 games)
+3. If candidate win rate > 55%, update
+4. Otherwise continue training
+
+This ensures self-play always uses a **sufficiently strong** network.
+
+---
+
+## Analysis of Learning Speed
+
+### Why So Fast?
+
+Reasons for AlphaGo Zero's stunning learning speed:
+
+#### 1. Computational Resources
+
+- 4 TPUs, tens of thousands of inferences per second
+- Hundreds of thousands of self-play games per day
+- Equivalent to thousands of years of human games
+
+#### 2. Perfect Opponent
+
+Self-play means:
+- Opponent level is always comparable to self
+- Not too weak (nothing to learn) or too strong (can't win)
+- These are ideal learning conditions
+
+#### 3. Direct Objective
+
+Only one goal: win. No:
+- Teacher preferences
+- Style pursuits
+- Aesthetic considerations
+
+#### 4. Efficient Representation Learning
+
+Residual networks can learn very abstract board features, more effective than hand-designed features.
+
+### Comparison with Humans
+
+| Aspect | Human | AlphaGo Zero |
+|--------|-------|--------------|
+| Learning speed | ~10 games/day | ~100,000 games/day |
+| Memory retention | Has forgetting | Perfect retention |
+| Energy limits | Needs rest | Runs 24/7 |
+| Innovation ability | Influenced by tradition | No preset limitations |
+
+---
+
+## Interesting Phenomena During Training
+
+### Periodic Stagnation
+
+The training curve isn't completely smooth; sometimes **plateau periods** appear:
+
+```
+ELO: 2000 -----> 2000 -----> 2500 ---->
+          (stagnation)  (breakthrough)
+```
+
+This might be because the network is learning some new concept and needs time to "digest."
+
+### Emergence and Disappearance of Strategies
+
+Certain strategies emerge during training, then disappear:
+
+```
+Stage 1: Discover some attack technique
+Stage 2: Opponent learns to defend
+Stage 3: That technique's usage decreases
+Stage 4: Discover new attack technique
+```
+
+This is an arms race in miniature.
+
+### "Reinventing the Wheel"
+
+During training, Zero "reinvents" concepts humans already knew:
+
+- **Ladder**: Discovers continuous atari can capture stones
+- **Snapback**: Discovers sacrificing first then counter-killing
+- **Ko**: Discovers how to use the superko rule
+
+The order of these discoveries is similar to how humans learn Go.
+
+---
+
+## Animation Reference
+
+Core concepts covered in this article with animation numbers:
+
+| Number | Concept | Physics/Math Correspondence |
+|--------|---------|----------------------------|
+| Animation E12 | Strength growth curve | S-curve growth (logistic) |
+| Animation E7 | From scratch | Self-organization |
+| Animation E5 | Self-play | Fixed-point convergence |
+| Animation F8 | Emergent abilities | Phase transition |
+
+---
+
+## Further Reading
+
+- **Previous**: [Dual-Head Network and Residual Network](../dual-head-resnet) - The neural network architecture supporting all this
+- **Next**: [Distributed Systems and TPU](../distributed-systems) - The hardware making this possible
+- **Related Article**: [Self-Play](../self-play) - Why self-play is so effective
+
+---
+
+## References
+
+1. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 550, 354-359.
+2. Silver, D., et al. (2017). "AlphaGo Zero: Starting from scratch." *DeepMind Blog*.
+3. DeepMind. (2017). "AlphaGo Zero: Learning from scratch." *YouTube*.
+4. Wang, F., et al. (2019). "A Survey on the Evolution of AlphaGo." *arXiv:1907.11180*.

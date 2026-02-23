@@ -1,0 +1,741 @@
+---
+sidebar_position: 6
+title: 传统方法的极限
+description: 从 Minimax 到 MCTS，深入理解为什么传统 AI 方法在围棋上失败
+keywords: [Minimax, Alpha-Beta剪枝, MCTS, 蒙特卡洛树搜索, 计算机围棋历史]
+---
+
+import { MCTSTree, GoBoard } from '@site/src/components/D3Charts';
+
+# 传统方法的极限
+
+在深度学习出现之前，研究者花了数十年时间尝试用「传统」方法解决围棋问题。从 Minimax 算法到蒙特卡洛树搜索（MCTS），每一次进步都让计算机围棋更强一点，但始终无法达到人类职业水平。
+
+本文将深入探讨这些方法的原理、优缺点，以及它们为什么在围棋上遇到了瓶颈。
+
+---
+
+## Minimax 算法：博弈论的基础
+
+### 基本原理
+
+**Minimax 算法**是博弈论的核心概念，由 John von Neumann 在 1928 年提出。其基本思想是：
+
+> 在零和游戏中，我应该选择让对手「最佳反应」后，我仍然最好的选项。
+
+换句话说：
+- **我（Max）** 想要最大化分数
+- **对手（Min）** 想要最小化我的分数
+- 我应该假设对手总是做最好的应对
+
+### 数学形式化
+
+设 V(s) 为局面 s 的价值，递归定义如下：
+
+```
+V(s) = eval(s)                        // 如果 s 是终局
+V(s) = max{ V(result(s, a)) | a ∈ A(s) }  // 如果轮到 Max
+V(s) = min{ V(result(s, a)) | a ∈ A(s) }  // 如果轮到 Min
+```
+
+其中：
+- **A(s)**：局面 s 的所有合法动作
+- **result(s, a)**：在局面 s 执行动作 a 后的结果
+- **eval(s)**：对终局局面的评估
+
+### 搜索树示意
+
+```
+                Max 层 (我)
+                    │
+        ┌───────────┼───────────┐
+        │           │           │
+       -3          +5          +2
+        │           │           │
+    ─────────   ─────────   ─────────
+    Min 层 (对手)
+    │   │   │   │   │   │   │   │   │
+   -3  +7  +5 +5  -2  +9 +2  +1  +4
+```
+
+在这个例子中：
+- Min 层会选择对我最不利的值（最小值）
+- Max 层会选择对我最有利的值（最大值）
+- 最终，Max 应该选择中间的分支（+5）
+
+### 代码实现
+
+```python
+def minimax(state, depth, is_max_turn):
+    """
+    Minimax 算法的基本实现
+
+    Args:
+        state: 当前局面
+        depth: 搜索深度
+        is_max_turn: 是否轮到 Max 行动
+
+    Returns:
+        (最佳价值, 最佳动作)
+    """
+    # 终止条件：达到深度限制或游戏结束
+    if depth == 0 or is_terminal(state):
+        return evaluate(state), None
+
+    legal_moves = get_legal_moves(state)
+    best_move = None
+
+    if is_max_turn:
+        best_value = float('-inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            value, _ = minimax(next_state, depth - 1, False)
+            if value > best_value:
+                best_value = value
+                best_move = move
+    else:
+        best_value = float('inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            value, _ = minimax(next_state, depth - 1, True)
+            if value < best_value:
+                best_value = value
+                best_move = move
+
+    return best_value, best_move
+```
+
+### Minimax 在围棋上的问题
+
+#### 1. 搜索空间爆炸
+
+如[上一篇](../why-go-is-hard)所述，围棋的分支因子约为 250。要看 N 步棋：
+
+**节点数 ≈ 250^N**
+
+| 深度 | 节点数 | 以 1 秒评估 100 万节点计算 |
+|------|--------|--------------------------|
+| 2 | 62,500 | 0.06 秒 |
+| 4 | 39 亿 | 65 分钟 |
+| 6 | 2.4×10^14 | 7,600 年 |
+| 8 | 1.5×10^19 | 4.8 亿年 |
+
+看 6 步都需要 7,600 年，更不用说看完整局棋了。
+
+#### 2. 评估函数的困难
+
+即使我们只看 4 步，还需要一个准确的**评估函数**来判断非终局局面的价值。但如上一篇所述，围棋的局面评估极度困难。
+
+**结论：纯 Minimax 在围棋上完全不可行。**
+
+---
+
+## Alpha-Beta 剪枝：减少无用搜索
+
+### 核心洞见
+
+Alpha-Beta 剪枝的核心洞见是：**我们不需要搜索每一个分支**。
+
+如果我们已经知道某个分支「肯定不好」，就可以直接跳过它。
+
+### 剪枝原理
+
+```
+Max 节点 A（当前最佳 α = +5）
+    │
+    ├── 分支 1：已评估，值 = +5
+    │
+    └── 分支 2：Min 节点 B
+            │
+            ├── 子分支 B1：值 = +3
+            │
+            └── 子分支 B2：？？？（可以跳过！）
+```
+
+在这个例子中：
+- A 已经有一个值为 +5 的选项
+- B 的第一个子分支是 +3，所以 B 的最终值 ≤ +3
+- 既然 B ≤ +3 < +5，A 不会选 B
+- **B2 不需要评估**
+
+这就是 **Beta 剪枝**。类似地，还有 **Alpha 剪枝**。
+
+### 数学形式化
+
+引入两个参数：
+- **α（alpha）**：Max 目前能保证的最小值（下界）
+- **β（beta）**：Min 目前能保证的最大值（上界）
+
+剪枝条件：
+- 在 Max 节点，如果 value ≥ β，剪枝（Beta 剪枝）
+- 在 Min 节点，如果 value ≤ α，剪枝（Alpha 剪枝）
+
+### 代码实现
+
+```python
+def alpha_beta(state, depth, alpha, beta, is_max_turn):
+    """
+    Alpha-Beta 剪枝算法
+
+    Args:
+        state: 当前局面
+        depth: 搜索深度
+        alpha: Max 的下界
+        beta: Min 的上界
+        is_max_turn: 是否轮到 Max 行动
+
+    Returns:
+        (价值, 最佳动作)
+    """
+    if depth == 0 or is_terminal(state):
+        return evaluate(state), None
+
+    legal_moves = get_legal_moves(state)
+    best_move = None
+
+    if is_max_turn:
+        value = float('-inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            child_value, _ = alpha_beta(next_state, depth - 1,
+                                        alpha, beta, False)
+            if child_value > value:
+                value = child_value
+                best_move = move
+            alpha = max(alpha, value)
+            if value >= beta:
+                break  # Beta 剪枝
+        return value, best_move
+    else:
+        value = float('inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            child_value, _ = alpha_beta(next_state, depth - 1,
+                                        alpha, beta, True)
+            if child_value < value:
+                value = child_value
+                best_move = move
+            beta = min(beta, value)
+            if value <= alpha:
+                break  # Alpha 剪枝
+        return value, best_move
+
+# 调用方式
+value, best_move = alpha_beta(state, depth=4,
+                               alpha=float('-inf'),
+                               beta=float('inf'),
+                               is_max_turn=True)
+```
+
+### 剪枝效率
+
+在理想情况下（完美的落子排序），Alpha-Beta 可以将有效分支因子从 b 减少到 √b：
+
+**有效分支因子 = b^0.5**
+
+这意味着：
+- 国际象棋：从 35 减少到 ~6
+- 围棋：从 250 减少到 ~16
+
+| 深度 | 原始节点数 | Alpha-Beta（理想） | 加速比 |
+|------|-----------|-------------------|--------|
+| 4 | 39 亿 | 6.5 万 | 60,000× |
+| 6 | 2.4×10^14 | 1600 万 | 1.5×10^7 × |
+| 8 | 1.5×10^19 | 42 亿 | 3.6×10^9 × |
+
+### 仍然不够的原因
+
+即使有 Alpha-Beta 剪枝，围棋仍然难以处理：
+
+#### 1. 理想剪枝需要完美排序
+
+要达到理想的剪枝效率，需要先搜索「最好的」分支。但要知道哪个分支最好，本身就需要搜索...这是一个鸡生蛋的问题。
+
+实际上，围棋的剪枝效率远低于理想值，有效分支因子可能仍有 50-100。
+
+#### 2. 深度仍然不足
+
+即使有效分支因子降到 50，看 10 步仍需要 50^10 ≈ 10^17 个节点。这对计算机来说仍然太多。
+
+#### 3. 评估函数的瓶颈
+
+Alpha-Beta 只解决「搜索效率」问题，不解决「评估准确度」问题。一个差劲的评估函数，配上再快的搜索，结果还是差。
+
+**结论：Alpha-Beta 大幅提升了国际象棋 AI，但对围棋的帮助有限。**
+
+---
+
+## 纯蒙特卡洛方法：随机的力量
+
+### 放弃评估函数
+
+1990 年代，研究者开始尝试一个激进的想法：**不使用评估函数**。
+
+取而代之的是**随机模拟**（Random Playout）：
+
+1. 从当前局面开始
+2. 双方都随机下棋，直到游戏结束
+3. 记录结果（胜/负）
+4. 重复 N 次，统计胜率
+
+### 统计估计原理
+
+根据大数定律，当模拟次数 N 足够大时：
+
+**V̂(s) = 模拟胜场数 / N ≈ V(s)**
+
+这个估计的标准误差为：
+
+**SE = √(V(s)(1-V(s))/N) ≈ 1/(2√N)**
+
+| 模拟次数 | 标准误差 |
+|----------|---------|
+| 100 | 5% |
+| 1,000 | 1.6% |
+| 10,000 | 0.5% |
+| 100,000 | 0.16% |
+
+### 代码实现
+
+```python
+import random
+
+def random_playout(state, player):
+    """
+    从当前局面开始，双方随机下棋直到结束
+
+    Returns:
+        1 如果 player 获胜，0 如果失败
+    """
+    current = state.copy()
+    current_player = player
+
+    while not is_terminal(current):
+        legal_moves = get_legal_moves(current)
+        if not legal_moves:
+            current_player = opponent(current_player)
+            continue
+
+        # 随机选择一步
+        move = random.choice(legal_moves)
+        current = apply_move(current, move)
+        current_player = opponent(current_player)
+
+    return 1 if get_winner(current) == player else 0
+
+
+def monte_carlo_move_selection(state, player, num_simulations=10000):
+    """
+    使用蒙特卡洛方法选择最佳落子
+    """
+    legal_moves = get_legal_moves(state)
+
+    if len(legal_moves) == 0:
+        return None
+
+    # 为每个合法走法分配模拟次数
+    sims_per_move = num_simulations // len(legal_moves)
+
+    best_move = None
+    best_win_rate = -1
+
+    for move in legal_moves:
+        next_state = apply_move(state, move)
+
+        wins = 0
+        for _ in range(sims_per_move):
+            wins += random_playout(next_state, opponent(player))
+
+        # 对手胜率低 = 我方胜率高
+        my_win_rate = 1 - (wins / sims_per_move)
+
+        if my_win_rate > best_win_rate:
+            best_win_rate = my_win_rate
+            best_move = move
+
+    return best_move, best_win_rate
+```
+
+### 优点与限制
+
+#### 优点
+
+1. **不需要评估函数**：完全依赖模拟
+2. **任何游戏都适用**：只要知道规则即可
+3. **给出概率估计**：知道「有多确定」
+
+#### 限制
+
+1. **随机性太强**：随机下棋与专业下棋差距太大
+2. **需要大量模拟**：每步棋都需要数万次模拟
+3. **战术盲点**：关键战术可能被随机遗漏
+
+### 纯蒙特卡洛在围棋上的表现
+
+使用纯蒙特卡洛方法的围棋程序，大约能达到：
+
+> **业余 5-10 级** 的水平
+
+这比之前纯用 Minimax + 评估函数的程序要好，但离职业水平还有巨大差距。
+
+---
+
+## MCTS 的突破（2006）
+
+### UCT 算法的诞生
+
+2006 年，Rémi Coulom 提出了 **MCTS（Monte Carlo Tree Search）** 算法，结合了树搜索和蒙特卡洛模拟的优点。同年，Levente Kocsis 和 Csaba Szepesvári 提出了 **UCT（Upper Confidence Bounds for Trees）** 算法，为 MCTS 提供了理论基础。
+
+这是计算机围棋的**里程碑式突破**。
+
+### UCB1 公式
+
+MCTS 的核心是 **UCB1（Upper Confidence Bound）** 公式：
+
+```
+UCB1(s, a) = X̄(s,a) + C × √(ln(Ns) / n(s,a))
+```
+
+其中：
+- **X̄(s,a)**：在状态 s 采取动作 a 的平均价值（胜率）
+- **Ns**：状态 s 被访问的总次数
+- **n(s,a)**：在状态 s 采取动作 a 的次数
+- **C**：探索常数（通常 C = √2）
+
+这个公式巧妙地平衡了**利用**（选择已知好的）和**探索**（尝试未知的）。
+
+### MCTS 的四个阶段
+
+<MCTSTree showPUCT={true} width={700} height={450} />
+
+MCTS 的每一次迭代包含四个阶段：
+
+#### 1. Selection（选择）
+
+从根节点开始，使用 UCB1 公式选择子节点，直到到达叶节点。
+
+```python
+def select(node):
+    """使用 UCB1 选择最佳子节点"""
+    while node.is_fully_expanded():
+        node = max(node.children,
+                   key=lambda c: ucb1(c, node.visits))
+    return node
+
+def ucb1(child, parent_visits, C=1.414):
+    """UCB1 公式"""
+    if child.visits == 0:
+        return float('inf')  # 未访问的节点优先
+
+    exploitation = child.wins / child.visits
+    exploration = C * math.sqrt(math.log(parent_visits) / child.visits)
+
+    return exploitation + exploration
+```
+
+#### 2. Expansion（扩展）
+
+在叶节点添加一个或多个子节点。
+
+```python
+def expand(node, state):
+    """扩展节点"""
+    legal_moves = get_legal_moves(state)
+    untried = [m for m in legal_moves if m not in node.tried_moves]
+
+    if untried:
+        move = random.choice(untried)
+        new_state = apply_move(state, move)
+        child = Node(move=move, parent=node)
+        node.children.append(child)
+        node.tried_moves.add(move)
+        return child, new_state
+
+    return node, state
+```
+
+#### 3. Simulation（模拟）
+
+从新节点开始，进行随机模拟直到游戏结束。
+
+```python
+def simulate(state, player):
+    """随机模拟直到游戏结束"""
+    return random_playout(state, player)
+```
+
+#### 4. Backpropagation（回传）
+
+将模拟结果回传给所有祖先节点。
+
+```python
+def backpropagate(node, result):
+    """将结果回传给所有祖先"""
+    while node is not None:
+        node.visits += 1
+        node.wins += result
+        result = 1 - result  # 切换视角
+        node = node.parent
+```
+
+### 完整 MCTS 实现
+
+```python
+class MCTSNode:
+    def __init__(self, move=None, parent=None):
+        self.move = move
+        self.parent = parent
+        self.children = []
+        self.wins = 0
+        self.visits = 0
+        self.tried_moves = set()
+
+    def is_fully_expanded(self, legal_moves):
+        return len(self.tried_moves) == len(legal_moves)
+
+
+def mcts(root_state, player, num_iterations=10000):
+    """
+    MCTS 主函数
+
+    Args:
+        root_state: 初始局面
+        player: 当前玩家
+        num_iterations: 迭代次数
+
+    Returns:
+        最佳动作
+    """
+    root = MCTSNode()
+
+    for _ in range(num_iterations):
+        node = root
+        state = root_state.copy()
+        current_player = player
+
+        # 1. Selection
+        while node.children and node.is_fully_expanded(get_legal_moves(state)):
+            node = max(node.children,
+                      key=lambda c: ucb1(c, node.visits))
+            state = apply_move(state, node.move)
+            current_player = opponent(current_player)
+
+        # 2. Expansion
+        legal_moves = get_legal_moves(state)
+        if not node.is_fully_expanded(legal_moves) and not is_terminal(state):
+            move = random.choice([m for m in legal_moves
+                                  if m not in node.tried_moves])
+            state = apply_move(state, move)
+            child = MCTSNode(move=move, parent=node)
+            node.children.append(child)
+            node.tried_moves.add(move)
+            node = child
+            current_player = opponent(current_player)
+
+        # 3. Simulation
+        result = simulate(state, current_player)
+
+        # 4. Backpropagation
+        backpropagate(node, result)
+
+    # 选择访问次数最多的子节点
+    return max(root.children, key=lambda c: c.visits).move
+```
+
+### MCTS 为什么有效？
+
+MCTS 的成功有几个关键因素：
+
+#### 1. 渐进式聚焦
+
+MCTS 不是均匀搜索所有分支，而是把更多资源投入看起来更有希望的分支。这使得它能够「忽略」明显的烂棋。
+
+#### 2. 任意时间算法
+
+MCTS 可以在任何时候停止，并给出当前最佳答案。时间越多，答案越好。
+
+#### 3. 不需要评估函数
+
+MCTS 通过模拟来估计价值，不需要手工设计评估函数。
+
+### 2006-2015：MCTS 时代
+
+MCTS 的出现让计算机围棋进入了新时代：
+
+| 程序 | 年份 | 特点 | 实力 |
+|------|------|------|------|
+| **Crazy Stone** | 2006 | 首个 MCTS 围棋程序 | 业余高段 |
+| **MoGo** | 2007 | 优化的 MCTS | 业余 5 段 |
+| **Zen** | 2009 | 加入模式识别 | 业余 6 段 |
+| **Crazy Stone** | 2013 | 让四子击败职业九段 | 职业初段（让子后） |
+
+这是历史性的进步，但仍有巨大的差距：
+
+> 最强的 MCTS 程序，在**不让子**的情况下，仍无法击败职业棋手。
+
+---
+
+## 评估函数的瓶颈
+
+### 手工特征的局限
+
+在 MCTS 之前，研究者尝试设计各种**手工特征**来评估局面：
+
+#### 常见特征
+
+```python
+def evaluate_position(state):
+    """手工设计的评估函数"""
+    score = 0
+
+    # 1. 领地估计
+    score += count_territory(state, BLACK) - count_territory(state, WHITE)
+
+    # 2. 棋子的自由度（气数）
+    score += sum(liberties(group) for group in groups(state, BLACK))
+    score -= sum(liberties(group) for group in groups(state, WHITE))
+
+    # 3. 眼的数量
+    score += count_eyes(state, BLACK) * 10
+    score -= count_eyes(state, WHITE) * 10
+
+    # 4. 连接强度
+    score += connectivity_score(state, BLACK)
+    score -= connectivity_score(state, WHITE)
+
+    # ... 更多特征
+
+    return score
+```
+
+#### 问题
+
+1. **特征不完整**：人类直觉中的很多因素难以用程序描述
+2. **权重难调**：各特征的相对重要性如何确定？
+3. **局部 vs 全局**：局部计算容易，全局判断困难
+4. **相互作用**：特征之间的交互作用难以建模
+
+### MCTS 中的模拟问题
+
+即使在 MCTS 中不直接使用评估函数，**模拟的品质**仍然是关键瓶颈。
+
+#### 随机模拟的问题
+
+随机下棋会产生很多「不合理」的局面，导致估计不准确：
+
+- 大龙白白送死
+- 可以提子却不提
+- 错过简单的杀棋
+
+#### 改进尝试
+
+研究者尝试在模拟中加入**先验知识**：
+
+```python
+def simulation_policy(state, legal_moves):
+    """
+    带有先验知识的模拟策略
+    """
+    # 优先考虑：
+    # 1. 吃子
+    # 2. 逃跑
+    # 3. 连接
+    # 4. 占大场
+    # ...
+
+    for move in legal_moves:
+        if is_capture(state, move):
+            return move
+        if saves_group(state, move):
+            return move
+
+    # 其余随机
+    return random.choice(legal_moves)
+```
+
+但这些启发式规则：
+- 增加了计算成本
+- 可能引入偏差
+- 仍不够精确
+
+### 为什么需要神经网络
+
+传统方法的瓶颈，本质上是**表示学习**的问题：
+
+> 如何从棋盘像素（361 个点的状态）学到「好棋」的特征？
+
+这正是**深度学习**的强项：
+- **自动特征学习**：不需要人工设计
+- **非线性映射**：可以捕捉复杂关系
+- **端到端训练**：从输入直接到输出
+
+2012 年深度学习在 ImageNet 上的突破，让研究者开始思考：
+
+> 如果神经网络可以「看懂」照片，是否也可以「看懂」棋盘？
+
+这个问题的答案，就是 AlphaGo。
+
+---
+
+## 传统方法的极限总结
+
+| 方法 | 优点 | 围棋上的问题 |
+|------|------|-------------|
+| **Minimax** | 理论完备、最优解 | 分支因子太大，无法深搜 |
+| **Alpha-Beta** | 大幅减少搜索量 | 有效分支因子仍然太高 |
+| **纯蒙特卡洛** | 不需评估函数 | 随机模拟品质太差 |
+| **MCTS** | 智能聚焦搜索 | 模拟仍不够好，达业余高段 |
+
+### 核心瓶颈
+
+归根结底，传统方法面临两大瓶颈：
+
+#### 1. 评估问题
+- 没有好的评估函数
+- 无法量化「厚势」「外势」等抽象概念
+- 手工特征不够表达力
+
+#### 2. 搜索问题
+- 即使有剪枝，搜索空间仍然太大
+- 无法看到够深的变化
+- 模拟品质影响估计准确度
+
+### AlphaGo 的解决方案
+
+AlphaGo 用深度学习解决了这两个问题：
+
+1. **Policy Network**：学习「哪里可能是好棋」，减少有效分支因子
+2. **Value Network**：学习「谁更可能赢」，替代手工评估函数
+3. **MCTS 整合**：用神经网络引导搜索，用搜索改进决策
+
+这不是简单的「用神经网络替代评估函数」，而是一种全新的架构。
+
+---
+
+## 动画对应
+
+本文涉及的核心概念与动画编号：
+
+| 编号 | 概念 | 物理/数学对应 |
+|------|------|--------------|
+| A-B3 | Minimax 搜索 | 博弈论、零和游戏 |
+| A-C5 | MCTS 四阶段 | 蒙特卡洛方法、UCB |
+| A-C2 | UCB1 公式 | 多臂老虎机、探索-利用平衡 |
+| A-C4 | 搜索树生长 | 渐进式扩展 |
+
+---
+
+## 延伸阅读
+
+- **上一篇**：[围棋为什么难？](../why-go-is-hard) — 状态空间与评估困难
+- **下一篇**：[棋盘状态表示](../board-representation) — Zobrist Hashing、特征编码
+- **技术深入**：[MCTS 与神经网络的结合](../mcts-neural-combo) — AlphaGo 的核心架构
+
+---
+
+## 参考资料
+
+1. Coulom, R. (2006). "Efficient Selectivity and Backup Operators in Monte-Carlo Tree Search." *Computers and Games*, 72-83. — MCTS 的原始论文
+2. Kocsis, L., & Szepesvári, C. (2006). "Bandit based Monte-Carlo Planning." *ECML*, 282-293. — UCT 算法
+3. Browne, C., et al. (2012). "A Survey of Monte Carlo Tree Search Methods." *IEEE TCIAIG*, 4(1), 1-43. — MCTS 综述
+4. Gelly, S., & Silver, D. (2011). "Monte-Carlo tree search and rapid action value estimation in computer Go." *Artificial Intelligence*, 175(11), 1856-1875. — MCTS 在围棋的应用

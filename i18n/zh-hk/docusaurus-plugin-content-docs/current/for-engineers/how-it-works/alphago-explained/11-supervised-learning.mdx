@@ -1,0 +1,645 @@
+---
+sidebar_position: 12
+title: 監督學習階段
+description: AlphaGo 點樣由 3000 萬局人類棋譜入面學習，達到 57% 嘅預測準確率
+---
+
+import { EloChart } from '@site/src/components/D3Charts';
+
+# 監督學習階段
+
+喺 AlphaGo 可以自我對弈之前，佢需要先「睇」大量嘅人類棋譜。呢個過程叫做**監督學習**。
+
+透過分析 3000 萬個人類棋局局面，AlphaGo 嘅 Policy Network 達到咗 **57% 嘅預測準確率**——能夠喺超過一半嘅情況下，估中人類專家嘅下一步。
+
+呢個聽落可能唔係咁驚人，但考慮到每個局面平均有 250 種合法走法，呢個係一個驚人嘅成就。
+
+---
+
+## 點解由人類棋譜開始？
+
+### 學習嘅起點
+
+想像你要教一個完全唔識圍棋嘅人落棋。你會點做？
+
+**方案 A：隨機探索**
+```
+畀佢亂咁落，慢慢發現咩係好棋
+→ 效率極低，可能永遠都學唔識
+```
+
+**方案 B：睇高手點落**
+```
+畀佢睇大量職業棋手嘅對局，模仿佢哋嘅下法
+→ 有基礎之後，再自己探索
+```
+
+AlphaGo 揀咗方案 B。監督學習就係「睇高手點落」嘅數學版本。
+
+### 人類棋譜嘅價值
+
+人類花咗幾千年發展圍棋理論。呢啲知識都被編碼喺棋譜入面：
+
+- **開局定式**：經過長期驗證嘅開局下法
+- **中盤戰術**：攻防轉換嘅智慧
+- **收官技巧**：目數計算嘅精髓
+- **大局觀**：全局判斷嘅直覺
+
+監督學習令 AlphaGo 「繼承」咗呢啲人類智慧，而唔使由零開始摸索。
+
+---
+
+## 訓練資料來源
+
+### KGS Go Server
+
+AlphaGo 嘅訓練資料主要嚟自 **KGS Go Server**（又叫 Kiseido Go Server），呢個係一個出名嘅網上圍棋平台。
+
+#### KGS 嘅特點
+
+| 特性 | 說明 |
+|------|------|
+| 用戶 | 業餘棋手為主，都有職業棋手 |
+| 棋力範圍 | 由入門到職業九段 |
+| 對局記錄 | 保存完整嘅 SGF 棋譜 |
+| 活躍時期 | 2000 年至今 |
+
+#### 點解揀 KGS？
+
+1. **資料量大**：數百萬盤棋譜
+2. **格式統一**：SGF 格式易於解析
+3. **有棋力標籤**：每位用戶有等級分
+4. **多樣性**：唔同風格嘅棋手
+
+### 3000 萬局面
+
+由 KGS 嘅棋譜入面，DeepMind 提取咗大約 **3000 萬個局面**：
+
+```
+原始資料:
+- 大約 16 萬盤棋譜
+- 每盤大約 200 手
+- 共 ~3200 萬局面
+
+資料篩選:
+- 過濾低段位對局
+- 過濾中途認輸嘅局面
+- 最終大約 3000 萬個高質量局面
+```
+
+### 資料格式
+
+每個訓練樣本包含：
+
+```python
+{
+    "board_state": [[0, 1, 2, ...], ...],  # 19×19 棋盤
+    "features": [...],                      # 48 個特徵平面
+    "next_move": 123,                       # 人類落嘅位置 (0-360)
+    "game_result": 1,                       # 1=黑勝, -1=白勝
+    "player_rank": "5d",                    # 落呢步棋嘅人嘅段位
+}
+```
+
+---
+
+## 資料預處理
+
+### SGF 解析
+
+SGF（Smart Game Format）係圍棋棋譜嘅標準格式：
+
+```
+(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]
+RU[Japanese]SZ[19]KM[6.50]
+PW[White]PB[Black]
+;B[pd];W[dd];B[pq];W[dp];B[qk];W[nc]...
+)
+```
+
+需要解析出：
+- 棋盤大小（SZ[19]）
+- 每一手棋（B[pd], W[dd]...）
+- 對局結果（RE[B+2.5]）
+
+```python
+def parse_sgf(sgf_string):
+    """解析 SGF 棋譜"""
+    moves = []
+    # 提取所有棋步
+    pattern = r';([BW])\[([a-s]{2})\]'
+    for match in re.finditer(pattern, sgf_string):
+        color = match.group(1)  # 'B' or 'W'
+        coord = match.group(2)  # 'pd', 'dd', etc.
+
+        # 轉換座標
+        x = ord(coord[0]) - ord('a')
+        y = ord(coord[1]) - ord('a')
+
+        moves.append((color, x, y))
+
+    return moves
+```
+
+### 特徵提取
+
+對每個局面，提取 48 個特徵平面（詳見 [輸入特徵設計](../input-features)）：
+
+```python
+def extract_features(board, history, current_player):
+    """提取 48 個特徵平面"""
+    features = np.zeros((48, 19, 19))
+
+    # 棋子位置
+    features[0] = (board == 1)  # 黑子
+    features[1] = (board == 2)  # 白子
+    features[2] = (board == 0)  # 空點
+
+    # 歷史記錄
+    for i, hist in enumerate(history[:8]):
+        features[3+i] = (hist == 1)
+        features[11+i] = (hist == 2)
+
+    # 氣數、叫吃、征子等...
+    # (詳細實現省略)
+
+    return features
+```
+
+### 資料增強
+
+圍棋棋盤有 **8 重對稱性**（4 個旋轉 × 2 個鏡像）。每個原始樣本可以變成 8 個：
+
+```
+原始:     旋轉90°:   旋轉180°:  旋轉270°:
+┌───┐    ┌───┐      ┌───┐      ┌───┐
+│ ● │    │   │      │   │      │   │
+│   │ → │   │  →   │   │  →   │   │
+│   │    │ ● │      │ ● │      │ ● │
+└───┘    └───┘      └───┘      └───┘
+
+各自再水平翻轉，得到 8 個等價嘅訓練樣本
+```
+
+呢個令有效訓練資料增加 8 倍，同時確保模型學到嘅模式唔會依賴特定方向。
+
+```python
+def augment(state, action):
+    """8 重對稱性增強"""
+    augmented = []
+
+    for rotation in [0, 1, 2, 3]:  # 0, 90, 180, 270 度
+        rotated_state = np.rot90(state, rotation, axes=(1, 2))
+        rotated_action = rotate_action(action, rotation)
+        augmented.append((rotated_state, rotated_action))
+
+        # 水平翻轉
+        flipped_state = np.flip(rotated_state, axis=2)
+        flipped_action = flip_action(rotated_action)
+        augmented.append((flipped_state, flipped_action))
+
+    return augmented
+```
+
+---
+
+## 損失函數
+
+### 交叉熵損失
+
+監督學習使用**交叉熵損失（Cross-Entropy Loss）**嚟訓練 Policy Network：
+
+```
+L(θ) = -Σ log p_θ(a | s)
+```
+
+其中：
+- `s`：棋盤狀態
+- `a`：人類實際落嘅位置（標籤）
+- `p_θ(a | s)`：模型預測該位置嘅機率
+
+### 直覺理解
+
+交叉熵損失衡量「模型預測同標籤嘅差距」：
+
+| 場景 | 模型預測 | 損失 | 說明 |
+|------|---------|------|------|
+| 完美預測 | a 嘅機率 = 1.0 | 0 | 最好 |
+| 有信心同時正確 | a 嘅機率 = 0.9 | 0.1 | 好好 |
+| 唔肯定但正確 | a 嘅機率 = 0.5 | 0.7 | 都可以 |
+| 錯誤預測 | a 嘅機率 = 0.1 | 2.3 | 好差 |
+| 完全錯誤 | a 嘅機率 = 0.01 | 4.6 | 最差 |
+
+損失函數驅動模型提高正確位置嘅機率。
+
+### 同 MSE 嘅比較
+
+點解唔用均方誤差（MSE）？
+
+```python
+# MSE：
+loss_mse = (prediction - target)^2
+
+# Cross-Entropy：
+loss_ce = -log(prediction[target])
+```
+
+| 特性 | MSE | Cross-Entropy |
+|------|-----|---------------|
+| 目標類型 | 回歸（連續值） | 分類（機率分佈） |
+| 梯度行為 | 錯誤越大，梯度越大 | 自信錯誤時，梯度更大 |
+| 適合場景 | Value Network | Policy Network |
+
+Policy Network 輸出嘅係 361 個類別嘅機率分佈，交叉熵係自然嘅選擇。
+
+---
+
+## 訓練過程
+
+### 硬件配置
+
+DeepMind 使用咗大量計算資源：
+
+| 資源 | 數量 |
+|------|------|
+| GPU | 50 個 |
+| 訓練時間 | 大約 3 週 |
+| 批次大小 | 16 |
+| 總訓練步數 | ~340M |
+
+### 優化器
+
+使用**隨機梯度下降（SGD）+ 動量**：
+
+```python
+optimizer = torch.optim.SGD(
+    model.parameters(),
+    lr=0.003,         # 初始學習率
+    momentum=0.9,     # 動量係數
+    weight_decay=1e-4 # L2 正則化
+)
+```
+
+#### 點解用 SGD 而唔係 Adam？
+
+喺 2016 年，SGD + momentum 仲係圖像任務嘅主流選擇。實際上，之後嘅研究（包括 KataGo）發現 Adam 類優化器可能更好。
+
+### 學習率調度
+
+學習率喺訓練過程中逐步衰減：
+
+```python
+scheduler = torch.optim.lr_scheduler.StepLR(
+    optimizer,
+    step_size=80_000_000,  # 每 80M 步
+    gamma=0.1              # 學習率乘 0.1
+)
+```
+
+```
+學習率:
+0.003  ────────┐
+              └─────── 0.0003 ────────┐
+                                      └─────── 0.00003
+         80M 步        160M 步        240M 步
+```
+
+### 訓練循環
+
+```python
+def train_epoch(model, dataloader, optimizer):
+    model.train()
+    total_loss = 0
+    correct = 0
+    total = 0
+
+    for batch in dataloader:
+        states, actions = batch
+
+        # 前向傳播
+        policy = model(states)  # (batch, 361)
+
+        # 計算損失
+        loss = F.cross_entropy(policy, actions)
+
+        # 反向傳播
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        # 統計
+        total_loss += loss.item()
+        predictions = policy.argmax(dim=1)
+        correct += (predictions == actions).sum().item()
+        total += actions.size(0)
+
+    accuracy = correct / total
+    avg_loss = total_loss / len(dataloader)
+
+    return avg_loss, accuracy
+```
+
+### 訓練曲線
+
+典型嘅訓練過程：
+
+```
+準確率
+60% |                    ......**********
+    |              ......*
+50% |        ......*
+    |    ....*
+40% |  ..*
+    |..*
+30% |*
+    +───────────────────────────────────── 訓練步數
+    0       100M     200M     300M     340M
+```
+
+損失同準確率會快速提升，然後趨於穩定。
+
+---
+
+## 結果分析
+
+### 57% 準確率
+
+經過完整訓練，Policy Network 達到咗 **57.0% 嘅 top-1 準確率**。
+
+#### 咩係 top-1 準確率？
+
+```
+預測: 模型輸出 361 個機率
+Top-1: 機率最高嘅位置
+準確率: 呢個位置等於人類實際落嘅位置嘅比例
+```
+
+57% 意味住：模型有超過一半嘅機會估中人類專家嘅下一步。
+
+### 同其他程式嘅比較
+
+| 程式 | Top-1 準確率 | 說明 |
+|------|-------------|------|
+| 隨機選擇 | 0.4% | 基線 |
+| 傳統特徵 + 線性模型 | ~24% | 2008 年水平 |
+| 淺層 CNN | ~44% | 2014 年水平 |
+| **AlphaGo Policy Network** | **57%** | 2016 年突破 |
+| AlphaGo Zero | ~60% | 2017 年 |
+
+DeepMind 嘅深層 CNN 比之前最好嘅方法提升咗 13 個百分點。
+
+### 棋力評估
+
+單獨使用 Policy Network（唔加搜索）落棋嘅棋力：
+
+<EloChart mode="training" width={600} height={350} />
+
+| 配置 | Elo 評分 | 大約等級 |
+|------|---------|---------|
+| 傳統最強（Pachi） | ~2500 | 業餘 4-5 段 |
+| SL Policy Network | ~2800 | 業餘 6-7 段 |
+
+純監督學習就已經達到業餘高段水平，呢個喺 2016 年係重大突破。
+
+### 準確率 vs 棋力
+
+有趣嘅係，準確率同棋力唔係線性關係：
+
+```
+準確率:  44% → 57%（提升 13%）
+Elo:    ~2500 → ~2800（提升 ~300）
+
+準確率提升比例：13% / 44% ≈ 30%
+Elo 提升比例：300 / 2500 ≈ 12%
+```
+
+準確率嘅細提升可能帶嚟顯著嘅棋力提升，因為：
+- 關鍵局面嘅正確選擇更加重要
+- 避免明顯錯誤比多落好棋更加重要
+
+---
+
+## 監督學習嘅限制
+
+### 問題 1：天花板效應
+
+監督學習只能達到「人類水平」，冇辦法超越：
+
+```
+SL Policy 嘅目標：模仿人類
+          ↓
+如果人類有錯誤嘅習慣
+          ↓
+SL Policy 都會學到呢啲錯誤
+```
+
+例如，如果訓練資料入面嘅棋手唔常落「第 37 手」嗰種非傳統嘅棋，SL Policy 都唔會學到。
+
+### 問題 2：冇辦法區分好棋同壞棋
+
+監督學習只睇「人類落咗咩」，唔理呢步棋好唔好：
+
+```
+局面 A：人類落咗 K10（其實係壞棋）
+局面 B：人類落咗 Q4（好棋）
+
+SL Policy 一視同仁，都要學
+```
+
+訓練資料包含業餘棋手嘅對局，入面有好多錯誤。SL Policy 會學到呢啲錯誤。
+
+### 問題 3：探索不足
+
+SL Policy 只學習人類已知嘅走法：
+
+```
+人類走法集合: {A, B, C, D, E}
+           ↓
+SL Policy 只會喺呢啲走法入面揀
+           ↓
+可能存在更好嘅走法 F，但從未被發現
+```
+
+呢個係監督學習嘅根本限制：佢只能學習訓練資料入面有嘅嘢。
+
+### 解決方案：強化學習
+
+為咗超越人類，AlphaGo 喺監督學習之後進行**強化學習**：
+
+```
+SL Policy (人類水平)
+      ↓ 自我對弈
+RL Policy (超越人類)
+```
+
+詳見 [強化學習入門](../reinforcement-intro) 同 [自我對弈](../self-play)。
+
+---
+
+## 實作要點
+
+### 完整訓練代碼
+
+```python
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader, Dataset
+
+class GoDataset(Dataset):
+    def __init__(self, data_path):
+        # 載入預處理嘅資料
+        self.states = np.load(f"{data_path}/states.npy")
+        self.actions = np.load(f"{data_path}/actions.npy")
+
+    def __len__(self):
+        return len(self.states)
+
+    def __getitem__(self, idx):
+        state = torch.FloatTensor(self.states[idx])
+        action = torch.LongTensor([self.actions[idx]])[0]
+        return state, action
+
+def train_policy_network():
+    # 模型
+    model = PolicyNetwork(input_channels=48, num_filters=192, num_layers=12)
+    model = model.cuda()
+
+    # 資料
+    dataset = GoDataset("data/kgs")
+    dataloader = DataLoader(
+        dataset, batch_size=16, shuffle=True, num_workers=4
+    )
+
+    # 優化器
+    optimizer = optim.SGD(
+        model.parameters(),
+        lr=0.003,
+        momentum=0.9,
+        weight_decay=1e-4
+    )
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=80_000_000, gamma=0.1)
+
+    # 訓練循環
+    best_accuracy = 0
+
+    for epoch in range(100):
+        model.train()
+        total_loss = 0
+        correct = 0
+        total = 0
+
+        for states, actions in dataloader:
+            states = states.cuda()
+            actions = actions.cuda()
+
+            # 前向傳播
+            policy = model(states)
+            loss = nn.functional.cross_entropy(policy, actions)
+
+            # 反向傳播
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            scheduler.step()
+
+            # 統計
+            total_loss += loss.item()
+            predictions = policy.argmax(dim=1)
+            correct += (predictions == actions).sum().item()
+            total += actions.size(0)
+
+        accuracy = correct / total
+        print(f"Epoch {epoch}: Loss={total_loss/len(dataloader):.4f}, Acc={accuracy:.4f}")
+
+        # 保存最佳模型
+        if accuracy > best_accuracy:
+            best_accuracy = accuracy
+            torch.save(model.state_dict(), "best_policy.pth")
+
+    print(f"Best accuracy: {best_accuracy:.4f}")
+```
+
+### 評估代碼
+
+```python
+def evaluate_policy(model, test_dataloader):
+    model.eval()
+
+    correct_top1 = 0
+    correct_top5 = 0
+    total = 0
+
+    with torch.no_grad():
+        for states, actions in test_dataloader:
+            states = states.cuda()
+            actions = actions.cuda()
+
+            policy = model(states)
+
+            # Top-1 準確率
+            top1_pred = policy.argmax(dim=1)
+            correct_top1 += (top1_pred == actions).sum().item()
+
+            # Top-5 準確率
+            top5_pred = policy.topk(5, dim=1)[1]
+            for i, action in enumerate(actions):
+                if action in top5_pred[i]:
+                    correct_top5 += 1
+
+            total += actions.size(0)
+
+    print(f"Top-1 Accuracy: {correct_top1/total:.4f}")
+    print(f"Top-5 Accuracy: {correct_top5/total:.4f}")
+```
+
+### 常見問題同解決
+
+| 問題 | 症狀 | 解決方案 |
+|------|------|---------|
+| 過擬合 | 訓練準確率高，測試準確率低 | 增加資料增強、Dropout |
+| 訓練唔穩定 | 損失劇烈波動 | 降低學習率、增加批次大小 |
+| 收斂過慢 | 準確率停滯不前 | 調整學習率、檢查資料 |
+| 記憶體不足 | OOM 錯誤 | 減細批次大小、使用混合精度 |
+
+---
+
+## 動畫對應
+
+本文涉及嘅核心概念與動畫編號：
+
+| 編號 | 概念 | 物理/數學對應 |
+|------|------|--------------|
+| 🎬 D3 | 監督學習 | 極大似然估計 |
+| 🎬 D5 | 交叉熵損失 | KL 散度 |
+| 🎬 D6 | 梯度下降 | 最佳化 |
+| 🎬 A6 | 資料預處理 | 標準化 |
+
+---
+
+## 延伸閱讀
+
+- **上一篇**：[CNN 與圍棋嘅結合](../cnn-and-go) — 卷積神經網絡點樣處理棋盤
+- **下一篇**：[強化學習入門](../reinforcement-intro) — 超越人類嘅關鍵
+- **相關主題**：[Policy Network 詳解](../policy-network) — 網絡架構嘅細節
+
+---
+
+## 關鍵要點
+
+1. **KGS 棋譜係訓練資料來源**：大約 3000 萬個高質量局面
+2. **交叉熵損失驅動學習**：令模型提高正確位置嘅機率
+3. **57% 準確率係重大突破**：超越之前最好嘅方法 13 個百分點
+4. **8 重對稱性增強**：有效增加訓練資料
+5. **監督學習有天花板**：冇辦法超越訓練資料嘅水平
+
+監督學習係 AlphaGo 嘅「起點」——佢繼承咗人類幾千年嘅圍棋智慧，為之後嘅強化學習打好基礎。
+
+---
+
+## 參考資料
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. Maddison, C. J., et al. (2014). "Move Evaluation in Go Using Deep Convolutional Neural Networks." *arXiv:1412.6564*.
+3. Clark, C., & Storkey, A. (2015). "Training Deep Convolutional Neural Networks to Play Go." *ICML*.
+4. KGS Game Archives: [https://www.gokgs.com/archives.jsp](https://www.gokgs.com/archives.jsp)

@@ -1,0 +1,741 @@
+---
+sidebar_position: 6
+title: 従来手法の限界
+description: MinimaxからMCTSまで、従来のAI手法が囲碁で失敗した理由を深く理解する
+keywords: [Minimax, Alpha-Beta剪定, MCTS, モンテカルロ木探索, コンピュータ囲碁の歴史]
+---
+
+import { MCTSTree, GoBoard } from '@site/src/components/D3Charts';
+
+# 従来手法の限界
+
+ディープラーニングが登場する前、研究者たちは数十年をかけて「従来の」手法で囲碁問題の解決を試みてきました。Minimaxアルゴリズムからモンテカルロ木探索（MCTS）まで、一歩一歩の進歩がコンピュータ囲碁を少しずつ強くしてきましたが、人間のプロレベルには決して到達できませんでした。
+
+本記事では、これらの手法の原理、長所と短所、そしてなぜ囲碁においてボトルネックに直面したのかを深く掘り下げます。
+
+---
+
+## Minimaxアルゴリズム：ゲーム理論の基礎
+
+### 基本原理
+
+**Minimaxアルゴリズム**はゲーム理論の核心概念であり、1928年にJohn von Neumannによって提唱されました。その基本的な考え方は：
+
+> ゼロサムゲームにおいて、相手が「最善の対応」をした後でも、自分にとって最も良い選択肢を選ぶべきである。
+
+言い換えれば：
+- **自分（Max）** はスコアを最大化したい
+- **相手（Min）** は自分のスコアを最小化したい
+- 相手は常に最善の対応をすると仮定すべき
+
+### 数学的形式化
+
+局面 s の価値を V(s) とし、再帰的に以下のように定義します：
+
+```
+V(s) = eval(s)                        // s が終局の場合
+V(s) = max{ V(result(s, a)) | a ∈ A(s) }  // Maxの手番の場合
+V(s) = min{ V(result(s, a)) | a ∈ A(s) }  // Minの手番の場合
+```
+
+ここで：
+- **A(s)**：局面 s のすべての合法手
+- **result(s, a)**：局面 s でアクション a を実行した後の結果
+- **eval(s)**：終局局面の評価
+
+### 探索木の図解
+
+```
+                Max層（自分）
+                    │
+        ┌───────────┼───────────┐
+        │           │           │
+       -3          +5          +2
+        │           │           │
+    ─────────   ─────────   ─────────
+    Min層（相手）
+    │   │   │   │   │   │   │   │   │
+   -3  +7  +5 +5  -2  +9 +2  +1  +4
+```
+
+この例では：
+- Min層は自分にとって最も不利な値（最小値）を選ぶ
+- Max層は自分にとって最も有利な値（最大値）を選ぶ
+- 最終的に、Maxは中央の分岐（+5）を選ぶべき
+
+### コード実装
+
+```python
+def minimax(state, depth, is_max_turn):
+    """
+    Minimaxアルゴリズムの基本実装
+
+    Args:
+        state: 現在の局面
+        depth: 探索深度
+        is_max_turn: Maxの手番かどうか
+
+    Returns:
+        (最善の価値, 最善の手)
+    """
+    # 終了条件：深度制限に達したかゲーム終了
+    if depth == 0 or is_terminal(state):
+        return evaluate(state), None
+
+    legal_moves = get_legal_moves(state)
+    best_move = None
+
+    if is_max_turn:
+        best_value = float('-inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            value, _ = minimax(next_state, depth - 1, False)
+            if value > best_value:
+                best_value = value
+                best_move = move
+    else:
+        best_value = float('inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            value, _ = minimax(next_state, depth - 1, True)
+            if value < best_value:
+                best_value = value
+                best_move = move
+
+    return best_value, best_move
+```
+
+### Minimaxの囲碁における問題
+
+#### 1. 探索空間の爆発
+
+[前回の記事](../why-go-is-hard)で述べたように、囲碁の分岐因子は約250です。N手先を読むには：
+
+**ノード数 ≈ 250^N**
+
+| 深度 | ノード数 | 1秒間に100万ノード評価として |
+|------|--------|--------------------------|
+| 2 | 62,500 | 0.06秒 |
+| 4 | 39億 | 65分 |
+| 6 | 2.4×10^14 | 7,600年 |
+| 8 | 1.5×10^19 | 4.8億年 |
+
+6手先を読むだけで7,600年かかり、ましてや一局全体を読み切ることは不可能です。
+
+#### 2. 評価関数の困難さ
+
+たとえ4手先までしか読まないとしても、非終局局面の価値を判断するための正確な**評価関数**が必要です。しかし前回述べたように、囲碁の局面評価は極めて困難です。
+
+**結論：純粋なMinimaxは囲碁では完全に実用不可能。**
+
+---
+
+## Alpha-Beta剪定：無駄な探索の削減
+
+### 核心的な洞察
+
+Alpha-Beta剪定の核心的な洞察は：**すべての分岐を探索する必要はない**ということです。
+
+ある分岐が「確実に良くない」とわかれば、それを直接スキップできます。
+
+### 剪定の原理
+
+```
+Maxノード A（現在の最善 α = +5）
+    │
+    ├── 分岐1：評価済み、値 = +5
+    │
+    └── 分岐2：Minノード B
+            │
+            ├── 子分岐 B1：値 = +3
+            │
+            └── 子分岐 B2：？？？（スキップ可能！）
+```
+
+この例では：
+- A はすでに +5 という選択肢を持っている
+- B の最初の子分岐は +3 なので、B の最終値 ≤ +3
+- B ≤ +3 < +5 なので、A は B を選ばない
+- **B2 は評価不要**
+
+これが **Beta剪定** です。同様に、**Alpha剪定** もあります。
+
+### 数学的形式化
+
+2つのパラメータを導入します：
+- **α（alpha）**：Maxが現在保証できる最小値（下限）
+- **β（beta）**：Minが現在保証できる最大値（上限）
+
+剪定条件：
+- Maxノードで、value ≥ β ならば剪定（Beta剪定）
+- Minノードで、value ≤ α ならば剪定（Alpha剪定）
+
+### コード実装
+
+```python
+def alpha_beta(state, depth, alpha, beta, is_max_turn):
+    """
+    Alpha-Beta剪定アルゴリズム
+
+    Args:
+        state: 現在の局面
+        depth: 探索深度
+        alpha: Maxの下限
+        beta: Minの上限
+        is_max_turn: Maxの手番かどうか
+
+    Returns:
+        (価値, 最善の手)
+    """
+    if depth == 0 or is_terminal(state):
+        return evaluate(state), None
+
+    legal_moves = get_legal_moves(state)
+    best_move = None
+
+    if is_max_turn:
+        value = float('-inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            child_value, _ = alpha_beta(next_state, depth - 1,
+                                        alpha, beta, False)
+            if child_value > value:
+                value = child_value
+                best_move = move
+            alpha = max(alpha, value)
+            if value >= beta:
+                break  # Beta剪定
+        return value, best_move
+    else:
+        value = float('inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            child_value, _ = alpha_beta(next_state, depth - 1,
+                                        alpha, beta, True)
+            if child_value < value:
+                value = child_value
+                best_move = move
+            beta = min(beta, value)
+            if value <= alpha:
+                break  # Alpha剪定
+        return value, best_move
+
+# 呼び出し方
+value, best_move = alpha_beta(state, depth=4,
+                               alpha=float('-inf'),
+                               beta=float('inf'),
+                               is_max_turn=True)
+```
+
+### 剪定効率
+
+理想的な場合（完璧な手順の並べ替え）、Alpha-Betaは有効分岐因子を b から √b に削減できます：
+
+**有効分岐因子 = b^0.5**
+
+これは以下を意味します：
+- チェス：35 から 約6 に削減
+- 囲碁：250 から 約16 に削減
+
+| 深度 | 元のノード数 | Alpha-Beta（理想） | 高速化倍率 |
+|------|-----------|-------------------|--------|
+| 4 | 39億 | 6.5万 | 60,000× |
+| 6 | 2.4×10^14 | 1600万 | 1.5×10^7 × |
+| 8 | 1.5×10^19 | 42億 | 3.6×10^9 × |
+
+### それでも不十分な理由
+
+Alpha-Beta剪定があっても、囲碁はまだ処理が困難です：
+
+#### 1. 理想的な剪定には完璧な並べ替えが必要
+
+理想的な剪定効率を達成するには、まず「最善の」分岐を探索する必要があります。しかし、どの分岐が最善かを知るには、探索そのものが必要です...これは鶏と卵の問題です。
+
+実際には、囲碁の剪定効率は理想値をはるかに下回り、有効分岐因子は50-100程度かもしれません。
+
+#### 2. 深度がまだ不足
+
+有効分岐因子が50に下がったとしても、10手先を読むには50^10 ≈ 10^17ノードが必要です。これはコンピュータにとってまだ多すぎます。
+
+#### 3. 評価関数のボトルネック
+
+Alpha-Betaは「探索効率」の問題を解決しますが、「評価精度」の問題は解決しません。悪い評価関数では、どれだけ高速に探索しても結果は悪いままです。
+
+**結論：Alpha-Betaはチェスのレベルを大きく向上させましたが、囲碁への効果は限定的でした。**
+
+---
+
+## 純粋なモンテカルロ法：ランダムの力
+
+### 評価関数を放棄する
+
+1990年代、研究者たちは過激なアイデアを試み始めました：**評価関数を使わない**。
+
+代わりに**ランダムシミュレーション**（Random Playout）を使用します：
+
+1. 現在の局面から開始
+2. 双方がランダムに打ち、ゲーム終了まで続ける
+3. 結果を記録（勝ち/負け）
+4. N回繰り返し、勝率を統計
+
+### 統計的推定の原理
+
+大数の法則により、シミュレーション回数 N が十分大きい場合：
+
+**V̂(s) = シミュレーション勝利数 / N ≈ V(s)**
+
+この推定の標準誤差は：
+
+**SE = √(V(s)(1-V(s))/N) ≈ 1/(2√N)**
+
+| シミュレーション回数 | 標準誤差 |
+|----------|---------|
+| 100 | 5% |
+| 1,000 | 1.6% |
+| 10,000 | 0.5% |
+| 100,000 | 0.16% |
+
+### コード実装
+
+```python
+import random
+
+def random_playout(state, player):
+    """
+    現在の局面から、双方がランダムに打ち終局まで進める
+
+    Returns:
+        1 playerが勝った場合、0 負けた場合
+    """
+    current = state.copy()
+    current_player = player
+
+    while not is_terminal(current):
+        legal_moves = get_legal_moves(current)
+        if not legal_moves:
+            current_player = opponent(current_player)
+            continue
+
+        # ランダムに一手選択
+        move = random.choice(legal_moves)
+        current = apply_move(current, move)
+        current_player = opponent(current_player)
+
+    return 1 if get_winner(current) == player else 0
+
+
+def monte_carlo_move_selection(state, player, num_simulations=10000):
+    """
+    モンテカルロ法で最善手を選択
+    """
+    legal_moves = get_legal_moves(state)
+
+    if len(legal_moves) == 0:
+        return None
+
+    # 各合法手にシミュレーション回数を割り当て
+    sims_per_move = num_simulations // len(legal_moves)
+
+    best_move = None
+    best_win_rate = -1
+
+    for move in legal_moves:
+        next_state = apply_move(state, move)
+
+        wins = 0
+        for _ in range(sims_per_move):
+            wins += random_playout(next_state, opponent(player))
+
+        # 相手の勝率が低い = 自分の勝率が高い
+        my_win_rate = 1 - (wins / sims_per_move)
+
+        if my_win_rate > best_win_rate:
+            best_win_rate = my_win_rate
+            best_move = move
+
+    return best_move, best_win_rate
+```
+
+### 長所と制限
+
+#### 長所
+
+1. **評価関数不要**：完全にシミュレーションに依存
+2. **どのゲームにも適用可能**：ルールさえわかれば良い
+3. **確率的推定を提供**：「どれだけ確信があるか」がわかる
+
+#### 制限
+
+1. **ランダム性が強すぎる**：ランダムな着手とプロの着手の差が大きすぎる
+2. **大量のシミュレーションが必要**：一手ごとに数万回のシミュレーションが必要
+3. **戦術的な盲点**：重要な戦術がランダムに見逃される可能性
+
+### 純粋なモンテカルロ法の囲碁での性能
+
+純粋なモンテカルロ法を使用した囲碁プログラムは、約：
+
+> **アマチュア5-10級** のレベル
+
+これは以前のMinimax + 評価関数のプログラムよりも優れていますが、プロレベルとはまだ大きな差があります。
+
+---
+
+## MCTSの突破（2006年）
+
+### UCTアルゴリズムの誕生
+
+2006年、Rémi Coulomが **MCTS（Monte Carlo Tree Search）** アルゴリズムを提案し、木探索とモンテカルロシミュレーションの長所を組み合わせました。同年、Levente KocsisとCsaba Szepesvariが **UCT（Upper Confidence Bounds for Trees）** アルゴリズムを提案し、MCTSに理論的基盤を与えました。
+
+これはコンピュータ囲碁の**画期的なブレークスルー**でした。
+
+### UCB1公式
+
+MCTSの核心は **UCB1（Upper Confidence Bound）** 公式です：
+
+```
+UCB1(s, a) = X̄(s,a) + C × √(ln(Ns) / n(s,a))
+```
+
+ここで：
+- **X̄(s,a)**：状態 s でアクション a を取ったときの平均価値（勝率）
+- **Ns**：状態 s が訪問された総回数
+- **n(s,a)**：状態 s でアクション a を取った回数
+- **C**：探索定数（通常 C = √2）
+
+この公式は**活用**（既知の良い手を選ぶ）と**探索**（未知の手を試す）を巧みにバランスさせます。
+
+### MCTSの4つのフェーズ
+
+<MCTSTree showPUCT={true} width={700} height={450} />
+
+MCTSの各イテレーションは4つのフェーズで構成されます：
+
+#### 1. Selection（選択）
+
+ルートノードから始め、UCB1公式を使用して子ノードを選択し、リーフノードに到達するまで続けます。
+
+```python
+def select(node):
+    """UCB1を使用して最善の子ノードを選択"""
+    while node.is_fully_expanded():
+        node = max(node.children,
+                   key=lambda c: ucb1(c, node.visits))
+    return node
+
+def ucb1(child, parent_visits, C=1.414):
+    """UCB1公式"""
+    if child.visits == 0:
+        return float('inf')  # 未訪問ノードを優先
+
+    exploitation = child.wins / child.visits
+    exploration = C * math.sqrt(math.log(parent_visits) / child.visits)
+
+    return exploitation + exploration
+```
+
+#### 2. Expansion（展開）
+
+リーフノードに1つ以上の子ノードを追加します。
+
+```python
+def expand(node, state):
+    """ノードを展開"""
+    legal_moves = get_legal_moves(state)
+    untried = [m for m in legal_moves if m not in node.tried_moves]
+
+    if untried:
+        move = random.choice(untried)
+        new_state = apply_move(state, move)
+        child = Node(move=move, parent=node)
+        node.children.append(child)
+        node.tried_moves.add(move)
+        return child, new_state
+
+    return node, state
+```
+
+#### 3. Simulation（シミュレーション）
+
+新しいノードから始め、ゲーム終了までランダムシミュレーションを行います。
+
+```python
+def simulate(state, player):
+    """ゲーム終了までランダムシミュレーション"""
+    return random_playout(state, player)
+```
+
+#### 4. Backpropagation（逆伝播）
+
+シミュレーション結果をすべての祖先ノードに伝播します。
+
+```python
+def backpropagate(node, result):
+    """結果をすべての祖先に伝播"""
+    while node is not None:
+        node.visits += 1
+        node.wins += result
+        result = 1 - result  # 視点を切り替え
+        node = node.parent
+```
+
+### 完全なMCTS実装
+
+```python
+class MCTSNode:
+    def __init__(self, move=None, parent=None):
+        self.move = move
+        self.parent = parent
+        self.children = []
+        self.wins = 0
+        self.visits = 0
+        self.tried_moves = set()
+
+    def is_fully_expanded(self, legal_moves):
+        return len(self.tried_moves) == len(legal_moves)
+
+
+def mcts(root_state, player, num_iterations=10000):
+    """
+    MCTSメイン関数
+
+    Args:
+        root_state: 初期局面
+        player: 現在のプレイヤー
+        num_iterations: イテレーション回数
+
+    Returns:
+        最善の手
+    """
+    root = MCTSNode()
+
+    for _ in range(num_iterations):
+        node = root
+        state = root_state.copy()
+        current_player = player
+
+        # 1. Selection
+        while node.children and node.is_fully_expanded(get_legal_moves(state)):
+            node = max(node.children,
+                      key=lambda c: ucb1(c, node.visits))
+            state = apply_move(state, node.move)
+            current_player = opponent(current_player)
+
+        # 2. Expansion
+        legal_moves = get_legal_moves(state)
+        if not node.is_fully_expanded(legal_moves) and not is_terminal(state):
+            move = random.choice([m for m in legal_moves
+                                  if m not in node.tried_moves])
+            state = apply_move(state, move)
+            child = MCTSNode(move=move, parent=node)
+            node.children.append(child)
+            node.tried_moves.add(move)
+            node = child
+            current_player = opponent(current_player)
+
+        # 3. Simulation
+        result = simulate(state, current_player)
+
+        # 4. Backpropagation
+        backpropagate(node, result)
+
+    # 訪問回数が最も多い子ノードを選択
+    return max(root.children, key=lambda c: c.visits).move
+```
+
+### MCTSはなぜ効果的なのか？
+
+MCTSの成功にはいくつかの重要な要因があります：
+
+#### 1. 漸進的な集中
+
+MCTSはすべての分岐を均等に探索するのではなく、より有望に見える分岐により多くのリソースを投入します。これにより明らかな悪手を「無視」できます。
+
+#### 2. 任意時間アルゴリズム
+
+MCTSはいつでも停止でき、その時点での最善の答えを返します。時間が長いほど、答えは良くなります。
+
+#### 3. 評価関数不要
+
+MCTSはシミュレーションを通じて価値を推定するため、手作りの評価関数を必要としません。
+
+### 2006-2015年：MCTSの時代
+
+MCTSの出現により、コンピュータ囲碁は新時代に入りました：
+
+| プログラム | 年 | 特徴 | 実力 |
+|------|------|------|------|
+| **Crazy Stone** | 2006 | 最初のMCTS囲碁プログラム | アマチュア高段 |
+| **MoGo** | 2007 | 最適化されたMCTS | アマチュア5段 |
+| **Zen** | 2009 | パターン認識を追加 | アマチュア6段 |
+| **Crazy Stone** | 2013 | 4子置いてプロ九段に勝利 | プロ初段（置碁後） |
+
+これは歴史的な進歩でしたが、まだ大きな差がありました：
+
+> 最強のMCTSプログラムでも、**置碁なし**ではプロ棋士に勝てませんでした。
+
+---
+
+## 評価関数のボトルネック
+
+### 手作り特徴量の限界
+
+MCTS以前、研究者たちは局面を評価するための様々な**手作り特徴量**の設計を試みました：
+
+#### 一般的な特徴量
+
+```python
+def evaluate_position(state):
+    """手作り設計の評価関数"""
+    score = 0
+
+    # 1. 地の推定
+    score += count_territory(state, BLACK) - count_territory(state, WHITE)
+
+    # 2. 石の自由度（ダメの数）
+    score += sum(liberties(group) for group in groups(state, BLACK))
+    score -= sum(liberties(group) for group in groups(state, WHITE))
+
+    # 3. 眼の数
+    score += count_eyes(state, BLACK) * 10
+    score -= count_eyes(state, WHITE) * 10
+
+    # 4. 連結強度
+    score += connectivity_score(state, BLACK)
+    score -= connectivity_score(state, WHITE)
+
+    # ... さらに多くの特徴量
+
+    return score
+```
+
+#### 問題点
+
+1. **特徴量が不完全**：人間の直感にある多くの要素をプログラムで記述するのが難しい
+2. **重み付けが困難**：各特徴量の相対的な重要性をどう決めるか？
+3. **局所 vs 全体**：局所計算は容易、全体判断は困難
+4. **相互作用**：特徴量間の相互作用をモデル化するのが難しい
+
+### MCTSにおけるシミュレーションの問題
+
+MCTSで評価関数を直接使用しなくても、**シミュレーションの品質**は依然として重要なボトルネックです。
+
+#### ランダムシミュレーションの問題
+
+ランダムな着手は多くの「不合理な」局面を生み出し、推定が不正確になります：
+
+- 大石を無駄に捨てる
+- 取れる石を取らない
+- 単純な殺しを見逃す
+
+#### 改善の試み
+
+研究者たちはシミュレーションに**事前知識**を加えることを試みました：
+
+```python
+def simulation_policy(state, legal_moves):
+    """
+    事前知識を持つシミュレーションポリシー
+    """
+    # 優先的に考慮：
+    # 1. 取り
+    # 2. 逃げ
+    # 3. 連結
+    # 4. 大場占め
+    # ...
+
+    for move in legal_moves:
+        if is_capture(state, move):
+            return move
+        if saves_group(state, move):
+            return move
+
+    # 残りはランダム
+    return random.choice(legal_moves)
+```
+
+しかしこれらのヒューリスティックルールは：
+- 計算コストを増加させる
+- バイアスを導入する可能性がある
+- それでも十分に正確ではない
+
+### なぜニューラルネットワークが必要なのか
+
+従来手法のボトルネックは、本質的に**表現学習**の問題です：
+
+> 盤面のピクセル（361点の状態）から「良い手」の特徴をどう学習するか？
+
+これはまさに**ディープラーニング**の強みです：
+- **自動特徴学習**：手動設計不要
+- **非線形マッピング**：複雑な関係を捉えられる
+- **エンドツーエンド学習**：入力から直接出力へ
+
+2012年にImageNetでディープラーニングが突破を見せたとき、研究者たちは考え始めました：
+
+> ニューラルネットワークが写真を「理解」できるなら、盤面も「理解」できるのではないか？
+
+この問いへの答えが、AlphaGoでした。
+
+---
+
+## 従来手法の限界のまとめ
+
+| 手法 | 長所 | 囲碁での問題 |
+|------|------|-------------|
+| **Minimax** | 理論的に完全、最適解 | 分岐因子が大きすぎて深く探索できない |
+| **Alpha-Beta** | 探索量を大幅削減 | 有効分岐因子がまだ高すぎる |
+| **純粋なモンテカルロ** | 評価関数不要 | ランダムシミュレーションの品質が悪すぎる |
+| **MCTS** | 知的に探索を集中 | シミュレーションがまだ不十分、アマチュア高段レベル |
+
+### 核心的なボトルネック
+
+結局のところ、従来手法は2つの大きなボトルネックに直面していました：
+
+#### 1. 評価問題
+- 良い評価関数がない
+- 「厚み」「模様」などの抽象概念を定量化できない
+- 手作り特徴量の表現力が不足
+
+#### 2. 探索問題
+- 剪定があっても探索空間がまだ大きすぎる
+- 十分深い変化を読めない
+- シミュレーション品質が推定精度に影響
+
+### AlphaGoの解決策
+
+AlphaGoはディープラーニングでこれら2つの問題を解決しました：
+
+1. **Policy Network**：「どこが良い手になりそうか」を学習し、有効分岐因子を削減
+2. **Value Network**：「どちらが勝ちそうか」を学習し、手作り評価関数を置き換え
+3. **MCTSとの統合**：ニューラルネットワークで探索を導き、探索で決定を改善
+
+これは単なる「ニューラルネットワークで評価関数を置き換える」ではなく、全く新しいアーキテクチャでした。
+
+---
+
+## アニメーション対応
+
+本記事で扱う核心概念とアニメーション番号：
+
+| 番号 | 概念 | 物理/数学対応 |
+|------|------|--------------|
+| 🎬 B3 | Minimax探索 | ゲーム理論、ゼロサムゲーム |
+| 🎬 C5 | MCTS 4フェーズ | モンテカルロ法、UCB |
+| 🎬 C2 | UCB1公式 | 多腕バンディット、探索と活用のバランス |
+| 🎬 C4 | 探索木の成長 | 漸進的展開 |
+
+---
+
+## 関連記事
+
+- **前回**：[囲碁はなぜ難しいのか？](../why-go-is-hard) — 状態空間と評価の困難さ
+- **次回**：[盤面状態の表現](../board-representation) — Zobrist Hashing、特徴量エンコーディング
+- **技術詳細**：[MCTSとニューラルネットワークの融合](../mcts-neural-combo) — AlphaGoのコアアーキテクチャ
+
+---
+
+## 参考文献
+
+1. Coulom, R. (2006). "Efficient Selectivity and Backup Operators in Monte-Carlo Tree Search." *Computers and Games*, 72-83. — MCTSの原論文
+2. Kocsis, L., & Szepesvári, C. (2006). "Bandit based Monte-Carlo Planning." *ECML*, 282-293. — UCTアルゴリズム
+3. Browne, C., et al. (2012). "A Survey of Monte Carlo Tree Search Methods." *IEEE TCIAIG*, 4(1), 1-43. — MCTSサーベイ
+4. Gelly, S., & Silver, D. (2011). "Monte-Carlo tree search and rapid action value estimation in computer Go." *Artificial Intelligence*, 175(11), 1856-1875. — MCTSの囲碁への応用

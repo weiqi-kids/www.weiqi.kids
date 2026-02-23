@@ -1,0 +1,610 @@
+---
+sidebar_position: 8
+title: Penjelasan Detail Policy Network
+description: Memahami secara mendalam arsitektur, metode training, dan aplikasi praktis policy network AlphaGo, dari 13 layer konvolusi hingga output Softmax
+---
+
+import { PolicyHeatmap } from '@site/src/components/D3Charts';
+
+# Penjelasan Detail Policy Network
+
+Dalam posisi apapun di Go, rata-rata ada 250 langkah legal. Jika komputer memilih secara acak, tidak akan pernah bisa bermain dengan baik.
+
+Terobosan AlphaGo adalah: ia belajar "melihat papan sekali dan tahu posisi mana yang layak dipertimbangkan".
+
+Kemampuan ini berasal dari **Policy Network (Jaringan Kebijakan)**.
+
+---
+
+## Apa itu Policy Network?
+
+### Fungsi Inti
+
+Policy Network adalah deep convolutional neural network, tugasnya adalah:
+
+> **Diberikan state papan saat ini, menghasilkan probabilitas langkah untuk setiap posisi**
+
+Dinyatakan secara matematis:
+
+```
+p = f_θ(s)
+```
+
+Di mana:
+- `s`: State papan saat ini (papan 19×19 + fitur lainnya)
+- `f_θ`: Policy Network (θ adalah parameter jaringan)
+- `p`: Distribusi probabilitas 361 posisi (termasuk pass)
+
+### Pemahaman Intuitif
+
+Bayangkan Anda adalah pemain Go profesional. Ketika Anda melihat suatu posisi, otak Anda secara otomatis "menyalakan" beberapa posisi penting — ini adalah titik-titik yang intuisi Anda anggap layak dipertimbangkan.
+
+Policy Network mensimulasikan proses ini.
+
+<PolicyHeatmap initialPosition="corner" size={400} />
+
+Heatmap di atas menunjukkan output Policy Network. Warna yang lebih terang menunjukkan posisi yang model anggap lebih layak dimainkan.
+
+### Mengapa Memerlukan Policy Network?
+
+Ruang pencarian Go terlalu besar. Jika mencari semua kemungkinan langkah tanpa penyaringan:
+
+| Strategi | Langkah yang dipertimbangkan per giliran | Node untuk pencarian 10 langkah |
+|------|--------------|------------------|
+| Pertimbangkan semua | 361 | 361^10 ≈ 10^25 |
+| Penyaringan Policy Network | ~20 | 20^10 ≈ 10^13 |
+
+Policy Network mengurangi ruang pencarian sebesar **10^12 kali** (satu triliun kali).
+
+---
+
+## Arsitektur Jaringan
+
+### Struktur Keseluruhan
+
+Policy Network AlphaGo menggunakan arsitektur deep convolutional neural network (CNN):
+
+```
+Layer Input → Layer Konvolusi ×12 → Layer Konvolusi Output → Softmax
+   ↓         ↓            ↓           ↓
+19×19×48   19×19×192   19×19×1     362 probabilitas
+```
+
+### Layer Input
+
+Input adalah tensor fitur **19×19×48**:
+- **19×19**: Ukuran papan
+- **48**: 48 feature plane (lihat [Desain Fitur Input](../input-features))
+
+48 plane ini mencakup:
+- Posisi batu hitam, posisi batu putih
+- Riwayat 8 langkah terakhir
+- Fitur liberty, atari, ladder, dll.
+- Legalitas (posisi mana yang bisa dimainkan)
+
+### Layer Konvolusi
+
+Jaringan berisi **12 layer konvolusi**, konfigurasi setiap layer:
+
+| Parameter | Nilai | Deskripsi |
+|------|------|------|
+| Jumlah filter | 192 | Setiap layer menghasilkan 192 feature map |
+| Ukuran kernel | 3×3 (layer pertama 5×5) | Melihat area 3×3 setiap kali |
+| Mode padding | same | Mempertahankan ukuran 19×19 |
+| Fungsi aktivasi | ReLU | max(0, x) |
+
+#### Mengapa 192 Filter?
+
+Ini adalah nilai empiris. Terlalu sedikit akan membatasi kapasitas model, terlalu banyak akan meningkatkan beban komputasi dan risiko overfitting. Tim DeepMind menentukan 192 adalah titik keseimbangan yang baik melalui eksperimen.
+
+#### Mengapa Kernel 3×3?
+
+3×3 adalah ukuran paling umum dalam CNN, alasannya:
+1. **Cukup untuk menangkap pola lokal**: Eye, koneksi, pemotongan di Go semuanya dalam rentang 3×3
+2. **Efisien secara komputasi**: Dibandingkan kernel besar, 3×3 memiliki lebih sedikit parameter
+3. **Dapat ditumpuk**: Multiple layer konvolusi 3×3 dapat mencapai receptive field besar
+
+#### Mengapa Layer Pertama Menggunakan 5×5?
+
+Layer pertama menggunakan kernel 5×5 yang lebih besar untuk menangkap pola rentang sedikit lebih besar (seperti knight's move, jump) di layer input. Ini adalah pilihan desain, AlphaGo Zero kemudian menyatukan menggunakan 3×3.
+
+### Fungsi Aktivasi ReLU
+
+Setiap layer konvolusi diikuti fungsi aktivasi ReLU (Rectified Linear Unit):
+
+```
+ReLU(x) = max(0, x)
+```
+
+Mengapa menggunakan ReLU?
+
+1. **Komputasi sederhana**: Hanya mengambil maksimum, jauh lebih cepat dari sigmoid
+2. **Mengurangi vanishing gradient**: Gradien di area positif selalu 1
+3. **Aktivasi sparse**: Nilai negatif menjadi nol, menghasilkan representasi sparse
+
+### Layer Output
+
+Layer terakhir adalah layer konvolusi khusus:
+
+```
+19×19×192 → Konvolusi(1×1, 1 filter) → 19×19×1 → Flatten → Vektor 362 dimensi → Softmax
+```
+
+#### Konvolusi 1×1
+
+Layer output menggunakan konvolusi 1×1, mengompres 192 channel menjadi 1. Ini setara dengan kombinasi linear fitur 192 dimensi di setiap posisi.
+
+#### Output Softmax
+
+Vektor 362 dimensi (361 posisi papan + 1 pass) melewati fungsi Softmax:
+
+```
+Softmax(z_i) = exp(z_i) / Σ_j exp(z_j)
+```
+
+Softmax memastikan output adalah distribusi probabilitas yang valid:
+- Semua nilai antara 0 dan 1
+- Jumlah semua nilai adalah 1
+
+### Jumlah Parameter
+
+Mari kita hitung total parameter jaringan:
+
+| Layer | Perhitungan | Jumlah Parameter |
+|---|------|---------|
+| Layer konvolusi pertama | 5×5×48×192 + 192 | 230,592 |
+| Layer konvolusi tengah ×11 | (3×3×192×192 + 192) × 11 | 3,633,792 |
+| Layer konvolusi output | 1×1×192×1 + 1 | 193 |
+| **Total** | | **~3.9M** |
+
+Sekitar **3,9 juta parameter**, yang merupakan jaringan kecil menurut standar saat ini.
+
+---
+
+## Tujuan dan Metode Training
+
+### Data Training
+
+Policy Network menggunakan **supervised learning**, belajar dari catatan permainan manusia.
+
+Sumber data:
+- **KGS Go Server**: Permainan pemain amatir dan profesional
+- **Sekitar 30 juta posisi**: Diambil sampel dari 160.000 permainan
+- **Label**: Langkah manusia berikutnya yang sesuai dengan setiap posisi
+
+### Fungsi Loss Cross-Entropy
+
+Tujuan training adalah memaksimalkan probabilitas memprediksi langkah manusia. Menggunakan fungsi loss cross-entropy:
+
+```
+L(θ) = -Σ log p_θ(a | s)
+```
+
+Di mana:
+- `s`: State papan
+- `a`: Posisi aktual yang dimainkan manusia
+- `p_θ(a | s)`: Probabilitas model memprediksi posisi tersebut
+
+#### Pemahaman Intuitif
+
+Loss cross-entropy memiliki makna sederhana:
+
+> **Semakin tinggi probabilitas model memprediksi posisi yang benar, semakin rendah loss-nya**
+
+Jika manusia bermain di K10, dan probabilitas model untuk K10 adalah:
+- 0.9 → Loss = -log(0.9) ≈ 0.1 (sangat rendah, bagus)
+- 0.1 → Loss = -log(0.1) ≈ 2.3 (sangat tinggi, buruk)
+- 0.01 → Loss = -log(0.01) ≈ 4.6 (sangat tinggi, sangat buruk)
+
+### Proses Training
+
+```python
+# Pseudocode
+for epoch in range(num_epochs):
+    for batch in dataloader:
+        states, actions = batch
+
+        # Forward propagation
+        policy = network(states)  # Vektor probabilitas 361 dimensi
+
+        # Menghitung loss (cross-entropy)
+        loss = cross_entropy(policy, actions)
+
+        # Backpropagation
+        loss.backward()
+        optimizer.step()
+```
+
+Detail training:
+- **Optimizer**: SGD with momentum
+- **Learning rate**: Awal 0.003, menurun secara bertahap
+- **Batch size**: 16
+- **Waktu training**: Sekitar 3 minggu (50 GPU)
+
+### Augmentasi Data
+
+Papan Go memiliki 8 simetri (4 rotasi × 2 pencerminan). Setiap sampel training dapat ditransformasi menjadi 8 sampel ekivalen:
+
+```
+Asli → Rotasi 90° → Rotasi 180° → Rotasi 270°
+  ↓       ↓         ↓          ↓
+Flip horizontal → ...
+```
+
+Ini meningkatkan data training efektif 8 kali lipat, dan memastikan pola yang dipelajari model tidak bergantung pada arah.
+
+---
+
+## Hasil Training
+
+### Akurasi 57%
+
+Setelah training, Policy Network mencapai **akurasi top-1 57%**.
+
+Ini berarti: diberikan posisi apapun, model memiliki 57% peluang untuk memprediksi langkah yang benar-benar dimainkan ahli manusia.
+
+#### Apakah Akurasi Ini Tinggi?
+
+Mengingat setiap posisi rata-rata memiliki 250 langkah legal, akurasi menebak acak hanya 0,4%.
+
+| Metode | Akurasi Top-1 |
+|------|-------------|
+| Tebakan acak | 0.4% |
+| Program Go komputer terkuat sebelumnya | ~44% |
+| Policy Network AlphaGo | **57%** |
+
+Peningkatan 13 poin persentase, terlihat tidak banyak, tapi sangat signifikan.
+
+### Peningkatan Kekuatan Bermain
+
+Murni menggunakan Policy Network (tanpa pencarian) untuk bermain, kekuatan apa yang bisa dicapai?
+
+| Konfigurasi | Rating Elo | Perkiraan Level |
+|------|---------|---------|
+| Program terkuat sebelumnya (Pachi) | 2,500 | Amatir 4-5 dan |
+| Policy Network saja | 2,800 | Amatir 6-7 dan |
+| + MCTS 1600 simulasi | 3,200+ | Level profesional |
+
+Policy Network saja sudah level amatir tinggi, dengan MCTS naik ke level profesional.
+
+### Mengapa Hanya 57%?
+
+Catatan permainan manusia memiliki karakteristik berikut yang membatasi akurasi:
+
+#### 1. Beberapa Langkah Bagus
+
+Banyak posisi memiliki beberapa langkah yang semuanya bagus. Misalnya "approach" dan "defend corner" mungkin keduanya pilihan yang benar. Jika model memilih langkah bagus lainnya, dihitung sebagai "salah".
+
+#### 2. Perbedaan Gaya
+
+Pemain yang berbeda memiliki gaya berbeda. Pemain agresif dan pemain solid mungkin bermain berbeda di posisi yang sama. Model mempelajari gaya "rata-rata".
+
+#### 3. Manusia Juga Membuat Kesalahan
+
+Data KGS mencakup permainan pemain amatir, pilihan mereka belum tentu optimal. Model mempelajari beberapa "kesalahan" adalah normal.
+
+---
+
+## Peran dalam MCTS
+
+Policy Network memainkan dua peran kunci dalam MCTS AlphaGo:
+
+### 1. Membimbing Arah Pencarian
+
+Dalam tahap **Selection** MCTS, output Policy Network digunakan untuk menghitung UCB (Upper Confidence Bound):
+
+```
+UCB(s, a) = Q(s, a) + c_puct × P(s, a) × √(N(s)) / (1 + N(s, a))
+```
+
+Di mana `P(s, a)` adalah probabilitas yang diberikan Policy Network.
+
+Ini berarti:
+- **Langkah dengan probabilitas tinggi dieksplorasi lebih dulu**
+- **Langkah dengan probabilitas rendah juga punya kesempatan dieksplorasi** (karena ada term eksplorasi)
+
+### 2. Prior untuk Node yang Diperluas
+
+Ketika MCTS memperluas node baru, Policy Network menyediakan **prior probability** untuk semua node anak.
+
+```
+Memperluas node s:
+  for each action a:
+    child = Node()
+    child.prior = policy_network(s)[a]  # Prior probability
+    child.value = 0
+    child.visits = 0
+```
+
+Prior probability ini membuat MCTS "tahu" node anak mana yang lebih layak dieksplorasi, bahkan ketika belum dikunjungi.
+
+---
+
+## Versi Ringan vs Versi Lengkap
+
+AlphaGo sebenarnya memiliki dua Policy Network:
+
+### Versi Lengkap (SL Policy Network)
+
+- **Arsitektur**: CNN 13 layer, 192 filter
+- **Akurasi**: 57%
+- **Waktu inferensi**: Sekitar 3 milidetik/posisi
+- **Kegunaan**: Selection dan Expansion dalam MCTS
+
+### Versi Ringan (Rollout Policy Network)
+
+- **Arsitektur**: Model linear + fitur manual
+- **Akurasi**: 24%
+- **Waktu inferensi**: Sekitar 2 mikrodetik/posisi (1500 kali lebih cepat)
+- **Kegunaan**: Simulasi cepat (rollout)
+
+### Mengapa Memerlukan Versi Ringan?
+
+Dalam tahap **Simulation** MCTS, perlu bermain dari node saat ini sampai akhir permainan, mungkin memerlukan 100+ langkah. Jika setiap langkah menggunakan Policy Network versi lengkap, terlalu lambat.
+
+Versi ringan meskipun akurasi hanya 24%, tapi 1500 kali lebih cepat. Dalam rollout, kecepatan lebih penting dari presisi.
+
+### Fitur Versi Ringan
+
+Versi ringan menggunakan fitur yang dirancang secara manual, termasuk:
+
+| Tipe Fitur | Contoh |
+|---------|------|
+| Pola lokal | Konfigurasi batu di area 3×3 |
+| Fitur global | Apakah di sudut/tepi, titik besar |
+| Fitur taktis | Atari, ladder, respons |
+
+Fitur ini dimasukkan ke model linear (tanpa hidden layer), perhitungan sangat cepat.
+
+### Perbaikan AlphaGo Zero
+
+AlphaGo Zero kemudian sepenuhnya meninggalkan versi ringan dan rollout. Ia langsung menggunakan Value Network untuk mengevaluasi leaf node, tidak perlu simulasi cepat. Ini adalah penyederhanaan besar.
+
+---
+
+## Fine-tuning Reinforcement Learning (RL Policy Network)
+
+### Keterbatasan Supervised Learning
+
+Policy Network yang dilatih dengan supervised learning memiliki masalah fundamental:
+
+> **Ia belajar "meniru manusia", bukan "menang"**
+
+Ini berarti ia akan mempelajari kebiasaan buruk manusia, dan juga tampil buruk di posisi yang manusia belum pernah temui.
+
+### Penguatan Self-Play
+
+Solusi DeepMind adalah menggunakan metode **Policy Gradient** untuk reinforcement learning:
+
+```
+1. Biarkan Policy Network self-play
+2. Catat semua langkah setiap permainan
+3. Sesuaikan parameter berdasarkan menang/kalah:
+   - Menang → Tingkatkan probabilitas langkah-langkah ini
+   - Kalah → Kurangi probabilitas langkah-langkah ini
+```
+
+### Algoritma REINFORCE
+
+Secara khusus menggunakan algoritma REINFORCE:
+
+```
+∇J(θ) = E[Σ_t ∇log π_θ(a_t | s_t) × z]
+```
+
+Di mana:
+- `z`: Hasil permainan (+1 menang, -1 kalah)
+- `π_θ(a_t | s_t)`: Probabilitas memilih aksi `a_t` di state `s_t`
+
+### Hasil
+
+Setelah sekitar 1 hari training self-play (1,28 juta permainan), RL Policy Network:
+
+| Metrik | SL Policy | RL Policy |
+|------|-----------|-----------|
+| Win rate melawan SL Policy | 50% | **80%** |
+| Peningkatan Elo | - | +100 |
+
+Akurasi mungkin sedikit turun (karena tidak lagi sepenuhnya meniru manusia), tapi win rate aktual meningkat signifikan.
+
+### Dari "Meniru" ke "Berinovasi"
+
+Reinforcement learning memungkinkan Policy Network mempelajari beberapa langkah yang manusia tidak pernah pikirkan. Langkah-langkah ini tidak pernah muncul dalam data training, tapi efektif.
+
+Inilah mengapa AlphaGo bisa memainkan "langkah dewa" — tidak dibatasi oleh pengalaman manusia.
+
+---
+
+## Analisis Visualisasi
+
+### Distribusi Probabilitas di Posisi Berbeda
+
+Mari kita lihat output Policy Network di posisi berbeda:
+
+#### Pembukaan (Tahap Fuseki)
+
+<PolicyHeatmap initialPosition="opening" size={400} />
+
+Saat pembukaan, probabilitas terutama terkonsentrasi di:
+- Sudut (mengambil sudut)
+- Tepi (approach, defend corner)
+- Posisi "titik besar"
+
+Ini sesuai dengan prinsip dasar Go: Sudut emas, tepi perak, tengah rumput.
+
+#### Posisi Pertarungan
+
+<PolicyHeatmap initialPosition="fighting" size={400} />
+
+Saat bertarung, probabilitas terkonsentrasi di:
+- Titik pemotongan kunci
+- Atari, respons
+- Membuat eye, menghancurkan eye
+
+Ini menunjukkan model mempelajari taktik lokal.
+
+#### Tahap Yose
+
+<PolicyHeatmap initialPosition="endgame" size={400} />
+
+Saat yose, probabilitas tersebar di berbagai titik yose, memerlukan perhitungan poin yang presisi.
+
+### Apa yang Dipelajari Hidden Layer?
+
+Dengan memvisualisasikan output layer konvolusi, kita bisa melihat "fitur" yang dipelajari model:
+
+- **Layer rendah**: Bentuk dasar (eye, titik pemotongan)
+- **Layer tengah**: Pola taktis (atari, ladder)
+- **Layer tinggi**: Konsep global (influence, tebal/tipis)
+
+Ini sangat mirip dengan struktur hierarkis bagaimana manusia memahami Go.
+
+---
+
+## Poin Implementasi
+
+### Implementasi PyTorch
+
+Berikut implementasi Policy Network yang disederhanakan:
+
+```python
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class PolicyNetwork(nn.Module):
+    def __init__(self, input_channels=48, num_filters=192, num_layers=12):
+        super().__init__()
+
+        # Layer konvolusi pertama (5×5)
+        self.conv1 = nn.Conv2d(input_channels, num_filters,
+                               kernel_size=5, padding=2)
+
+        # Layer konvolusi tengah (3×3)×11
+        self.conv_layers = nn.ModuleList([
+            nn.Conv2d(num_filters, num_filters,
+                     kernel_size=3, padding=1)
+            for _ in range(num_layers - 1)
+        ])
+
+        # Layer konvolusi output (1×1)
+        self.conv_out = nn.Conv2d(num_filters, 1, kernel_size=1)
+
+    def forward(self, x):
+        # x: (batch, 48, 19, 19)
+
+        # Layer pertama
+        x = F.relu(self.conv1(x))
+
+        # Layer tengah
+        for conv in self.conv_layers:
+            x = F.relu(conv(x))
+
+        # Layer output
+        x = self.conv_out(x)  # (batch, 1, 19, 19)
+
+        # Flatten + Softmax
+        x = x.view(x.size(0), -1)  # (batch, 361)
+        x = F.softmax(x, dim=1)
+
+        return x
+```
+
+### Loop Training
+
+```python
+def train_step(model, optimizer, states, actions):
+    """
+    states: (batch, 48, 19, 19) - Fitur papan
+    actions: (batch,) - Posisi yang dimainkan manusia (0-360)
+    """
+    # Forward propagation
+    policy = model(states)  # (batch, 361)
+
+    # Loss cross-entropy
+    loss = F.cross_entropy(
+        torch.log(policy + 1e-8),  # Mencegah log(0)
+        actions
+    )
+
+    # Backpropagation
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    # Menghitung akurasi
+    predictions = policy.argmax(dim=1)
+    accuracy = (predictions == actions).float().mean()
+
+    return loss.item(), accuracy.item()
+```
+
+### Catatan Saat Inferensi
+
+Dalam permainan sebenarnya, perlu memperhatikan:
+
+1. **Filter langkah ilegal**: Set probabilitas posisi ilegal ke 0, lalu renormalisasi
+2. **Pengaturan temperatur**: Dapat menggunakan parameter temperatur untuk mengontrol "ketajaman" distribusi probabilitas
+3. **Batch inference**: Dapat memproses batch beberapa posisi dalam MCTS
+
+```python
+def get_move_probabilities(model, state, legal_moves, temperature=1.0):
+    """Mendapatkan distribusi probabilitas langkah legal"""
+    policy = model(state)  # (361,)
+
+    # Hanya menyimpan langkah legal
+    mask = torch.zeros(361)
+    mask[legal_moves] = 1
+    policy = policy * mask
+
+    # Pengaturan temperatur
+    if temperature != 1.0:
+        policy = policy ** (1 / temperature)
+
+    # Renormalisasi
+    policy = policy / policy.sum()
+
+    return policy
+```
+
+---
+
+## Korespondensi Animasi
+
+Konsep inti yang dibahas dalam artikel ini dan nomor animasi:
+
+| Nomor | Konsep | Korespondensi Fisika/Matematika |
+|------|------|--------------|
+| E1 | Policy Network | Medan probabilitas |
+| D9 | Ekstraksi fitur CNN | Respons filter |
+| D3 | Supervised learning | Maximum likelihood estimation |
+| H4 | Policy gradient | Optimisasi stokastik |
+
+---
+
+## Bacaan Lanjutan
+
+- **Artikel berikutnya**: [Penjelasan Detail Value Network](../value-network) — Bagaimana AlphaGo mengevaluasi posisi
+- **Topik terkait**: [Desain Fitur Input](../input-features) — Penjelasan detail 48 feature plane
+- **Mendalam ke prinsip**: [Kombinasi CNN dan Go](../cnn-and-go) — Mengapa CNN cocok untuk papan
+
+---
+
+## Poin Kunci
+
+1. **Policy Network adalah generator distribusi probabilitas**: Input papan, output probabilitas 361 posisi
+2. **13 layer CNN + Softmax**: Konvolusi dalam mengekstrak fitur, Softmax menghasilkan probabilitas
+3. **Akurasi 57%**: Jauh melebihi program Go komputer sebelumnya
+4. **Dua versi**: Versi lengkap untuk keputusan MCTS, versi ringan untuk simulasi cepat
+5. **Fine-tuning reinforcement learning**: Dari "meniru manusia" berevolusi ke "mengejar kemenangan"
+
+Policy Network adalah "intuisi" AlphaGo — memungkinkan AI dengan cepat mengidentifikasi langkah yang layak dipertimbangkan, seperti manusia.
+
+---
+
+## Referensi
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. Maddison, C. J., et al. (2014). "Move Evaluation in Go Using Deep Convolutional Neural Networks." *arXiv:1412.6564*.
+3. Sutton, R. S., & Barto, A. G. (2018). *Reinforcement Learning: An Introduction*. MIT Press.
+4. LeCun, Y., Bengio, Y., & Hinton, G. (2015). "Deep learning." *Nature*, 521, 436-444.

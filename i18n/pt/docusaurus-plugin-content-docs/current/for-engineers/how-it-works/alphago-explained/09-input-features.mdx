@@ -1,0 +1,546 @@
+---
+sidebar_position: 10
+title: Design de Caracteristicas de Entrada
+description: Dos 48 planos do AlphaGo aos 17 planos do AlphaGo Zero, explorando a evolucao da engenharia de caracteristicas em IA de Go
+---
+
+# Design de Caracteristicas de Entrada
+
+Redes neurais so podem processar numeros. Para faze-las entender Go, precisamos de uma forma de "traduzir" o tabuleiro em numeros.
+
+Esse processo de traducao e o **design de caracteristicas de entrada**.
+
+O AlphaGo usou 48 planos de caracteristicas, o AlphaGo Zero simplificou para 17, e o KataGo otimizou para 22. Este artigo analisara em detalhes as consideracoes por tras dessas escolhas de design.
+
+---
+
+## O que e um Plano de Caracteristicas?
+
+### Conceito Basico
+
+Um **plano de caracteristicas** e uma matriz 19x19, onde cada elemento representa algum atributo da posicao correspondente no tabuleiro.
+
+Por exemplo, o plano de caracteristicas "posicao de pedras pretas":
+
+```
+Estado do tabuleiro:         Plano de caracteristicas (preto):
+  A B C D E               A B C D E
+1 . . . . .            1  0 0 0 0 0
+2 . ● . . .            2  0 1 0 0 0
+3 . . ○ . .    ->      3  0 0 0 0 0
+4 . . . ● .            4  0 0 0 1 0
+5 . . . . .            5  0 0 0 0 0
+```
+
+- Posicoes com pedras pretas = 1
+- Posicoes sem pedras pretas = 0
+
+### Multiplos Planos de Caracteristicas
+
+Redes neurais precisam de varios tipos de informacao, entao empilhamos multiplos planos de caracteristicas:
+
+```
+Tensor de entrada: 19 x 19 x N
+
+    N planos
+    ↓
+┌───────────┐
+│ Plano 1   │ ← Posicao de pedras pretas
+├───────────┤
+│ Plano 2   │ ← Posicao de pedras brancas
+├───────────┤
+│ Plano 3   │ ← Posicao de pontos vazios
+├───────────┤
+│ ...       │
+├───────────┤
+│ Plano N   │ ← Outras caracteristicas
+└───────────┘
+    19x19
+```
+
+Isso e similar a como imagens coloridas tem canais R, G, B. A "imagem" de Go tem N canais.
+
+---
+
+## Os 48 Planos de Caracteristicas do AlphaGo
+
+### Lista Completa
+
+O AlphaGo usa 48 planos de caracteristicas, divididos em varias categorias:
+
+#### 1. Posicao de Pedras (3 planos)
+
+| Plano | Nome | Descricao |
+|-------|------|-----------|
+| 1 | Pedras pretas | Tem pedra preta = 1, caso contrario = 0 |
+| 2 | Pedras brancas | Tem pedra branca = 1, caso contrario = 0 |
+| 3 | Pontos vazios | Ponto vazio = 1, caso contrario = 0 |
+
+#### 2. Historico (16 planos)
+
+| Plano | Nome | Descricao |
+|-------|------|-----------|
+| 4-11 | Historico preto | Posicoes de pedras pretas 1-8 jogadas atras |
+| 12-19 | Historico branco | Posicoes de pedras brancas 1-8 jogadas atras |
+
+Por que precisamos de historico?
+- **Avaliacao de ko**: Precisa saber se pode capturar de volta imediatamente
+- **Intencao das jogadas**: As jogadas recentes revelam os planos de ambos os lados
+- **Informacao temporal**: CNN em si nao processa tempo, planos de historico complementam isso
+
+#### 3. Caracteristicas de Liberdades (8 planos)
+
+| Plano | Nome | Descricao |
+|-------|------|-----------|
+| 20-23 | 1-4 liberdades (proprio) | Grupo proprio tem 1/2/3/4 liberdades = 1 |
+| 24-27 | 1-4 liberdades (oponente) | Grupo do oponente tem 1/2/3/4 liberdades = 1 |
+
+Liberdades sao o conceito tatico mais importante no Go:
+- **1 liberdade**: Em atari, prestes a ser capturado
+- **2 liberdades**: Estado perigoso
+- **3 liberdades**: Requer atencao
+- **4+ liberdades**: Temporariamente seguro
+
+#### 4. Caracteristicas de Atari (8 planos)
+
+| Plano | Nome | Descricao |
+|-------|------|-----------|
+| 28-31 | Posicao de atari (proprio) | Jogar aqui coloca em atari 1/2/3/4 pedras do oponente |
+| 32-35 | Posicao de atari (oponente) | Jogar aqui coloca em atari 1/2/3/4 pedras proprias |
+
+Atari e a tatica mais comum no Go:
+- Colocar em atari mais pedras = maior ameaca
+- Ataris de tamanhos diferentes requerem respostas diferentes
+
+#### 5. Caracteristicas de Escada (8 planos)
+
+| Plano | Nome | Descricao |
+|-------|------|-----------|
+| 36-39 | Relacionado a escada (proprio) | Posicoes relacionadas a escada propria |
+| 40-43 | Relacionado a escada (oponente) | Posicoes relacionadas a escada do oponente |
+
+Escada (Ladder) e uma tatica famosa no Go:
+- Perseguir pedras do oponente ao longo da diagonal
+- Precisa determinar se "escada funciona" ou "escada falha"
+- Isso requer visao global, foi um desafio para programas de Go tradicionais
+
+#### 6. Caracteristicas de Legalidade (1 plano)
+
+| Plano | Nome | Descricao |
+|-------|------|-----------|
+| 44 | Posicao legal | Pode jogar legalmente = 1 |
+
+Isso evita que a rede produza jogadas ilegais:
+- Posicoes com pedras nao podem ser jogadas
+- Pontos proibidos (suicidio sem captura) nao podem ser jogados
+- Recaptura imediata de ko nao pode ser jogada
+
+#### 7. Caracteristicas de Borda e Canto (4 planos)
+
+| Plano | Nome | Descricao |
+|-------|------|-----------|
+| 45 | Distancia da borda 1 | Na 1a linha = 1 |
+| 46 | Distancia da borda 2 | Na 2a linha = 1 |
+| 47 | Distancia da borda 3 | Na 3a linha = 1 |
+| 48 | Distancia da borda 4+ | Na 4a linha ou mais interna = 1 |
+
+Bordas e cantos tem significado especial no Go:
+- **1a linha**: Linha da morte, pedras facilmente cercadas e mortas
+- **2a linha**: Linha de vida, mas baixa eficiencia
+- **3a linha**: Linha de territorio, solida
+- **4a linha**: Linha de influencia, busca influencia
+
+### Por que tantas caracteristicas?
+
+A filosofia de design do DeepMind foi **fornecer o maximo de informacao possivel**, deixando a rede decidir o que e util:
+
+```
+Tabuleiro bruto -> 48 planos de caracteristicas -> Rede neural -> Decisao
+
+Trabalho do engenheiro de caracteristicas: Codificar conhecimento de Go em caracteristicas
+Trabalho da rede neural: Aprender a combinar essas caracteristicas
+```
+
+Isso e uma estrategia de "passar a bola para a rede neural" - humanos sao responsaveis pelo design de caracteristicas, a rede e responsavel por aprender combinacoes.
+
+---
+
+## Simplificacao do AlphaGo Zero: 17 Planos de Caracteristicas
+
+### A Mudanca Revolucionaria
+
+O AlphaGo Zero simplificou significativamente as caracteristicas de entrada:
+
+| Versao | Numero de Planos de Caracteristicas | Usa Conhecimento Humano |
+|--------|-------------------------------------|------------------------|
+| AlphaGo | 48 | Muito (liberdades, escada, etc.) |
+| AlphaGo Zero | 17 | Quase nenhum |
+
+### Composicao dos 17 Planos
+
+#### 1. Historico de Posicao de Pedras (16 planos)
+
+| Plano | Nome | Descricao |
+|-------|------|-----------|
+| 1-8 | Preto T-0 a T-7 | Posicao de pedras pretas no atual e ultimos 7 passos |
+| 9-16 | Branco T-0 a T-7 | Posicao de pedras brancas no atual e ultimos 7 passos |
+
+#### 2. Cor (1 plano)
+
+| Plano | Nome | Descricao |
+|-------|------|-----------|
+| 17 | De quem e a vez | Vez do preto = todos 1, vez do branco = todos 0 |
+
+### Por que pode ser tao simplificado?
+
+O insight central do AlphaGo Zero:
+
+> **Se dados recursos computacionais e tempo de treinamento suficientes, a rede neural pode aprender essas caracteristicas sozinha**
+
+Conceitos como "liberdades", "atari", "escada" levaram milhares de anos para os humanos desenvolverem. Mas o AlphaGo Zero provou que redes neurais podem aprender isso em poucos dias - e possivelmente aprender representacoes melhores que as humanas.
+
+### Comparacao de Resultados
+
+Surpreendentemente, o AlphaGo Zero com menos caracteristicas foi na verdade mais forte:
+
+| Versao | Numero de Caracteristicas | Tempo de Treinamento | Forca Final |
+|--------|--------------------------|----------------------|-------------|
+| AlphaGo Master | 48 | Varios meses | ~5185 Elo |
+| AlphaGo Zero | 17 | 40 dias | ~5185 Elo |
+| AlphaGo Zero (3 dias) | 17 | 3 dias | Supera humanos |
+
+Menos conhecimento humano na verdade levou a melhor desempenho.
+
+### Por que Conhecimento Humano se Torna um Fardo?
+
+#### 1. Conhecimento Humano Pode Estar Errado
+
+As regras de Go resumidas pelos humanos sao empiricas, podem nao ser otimas. Por exemplo:
+- "Cantos primeiro, depois bordas, depois centro" - mas em algumas posicoes o centro e mais importante
+- "Nao jogue se escada falha" - mas as vezes voce pode sacrificar deliberadamente
+
+#### 2. Codificacao de Caracteristicas Limita a Representacao
+
+Quando codificamos "liberdades" como quatro planos de 1-4 liberdades, implicitamente assumimos que "liberdades" sao uma forma importante de classificacao. Mas talvez existam formas melhores de classificacao, e essa codificacao impede a rede de descobri-las.
+
+#### 3. Gargalo de Representacao
+
+48 planos consomem mais recursos computacionais. Se algumas dessas caracteristicas sao redundantes, esses recursos sao desperdicados.
+
+---
+
+## Otimizacao do KataGo: 22 Planos de Caracteristicas
+
+### Equilibrio Pragmatico
+
+O KataGo adicionou uma pequena quantidade de conhecimento humano selecionado sobre a base do AlphaGo Zero:
+
+| Item | AlphaGo Zero | KataGo |
+|------|-------------|--------|
+| Planos de historico | 16 | 5 |
+| Posicao de pedras | Sim | Sim |
+| De quem e a vez | Sim | Sim |
+| Estado de ko | Nao | Sim |
+| Variantes de regras | Nao | Sim (komi, regra de suicidio, etc.) |
+| **Total** | 17 | 22 |
+
+### Lista de Caracteristicas do KataGo
+
+#### Caracteristicas Basicas (5)
+
+| Plano | Nome | Descricao |
+|-------|------|-----------|
+| 1 | Pedras pretas | Posicao atual de pedras pretas |
+| 2 | Pedras brancas | Posicao atual de pedras brancas |
+| 3 | Pontos vazios | Posicao atual de pontos vazios |
+| 4 | De quem e a vez (1) | Plano constante sempre 1 |
+| 5 | De quem e a vez (2) | Vez do preto = 1, vez do branco = 0 |
+
+#### Caracteristicas de Historico (5)
+
+| Plano | Nome | Descricao |
+|-------|------|-----------|
+| 6 | Posicao da ultima jogada | Onde o oponente jogou por ultimo |
+| 7 | Posicao da penultima jogada | Onde jogamos por ultimo |
+| 8 | Posicao de 3 jogadas atras | Onde o oponente jogou antes |
+| 9 | Posicao de 4 jogadas atras | Onde jogamos antes |
+| 10 | Posicao de 5 jogadas atras | Onde o oponente jogou 3 vezes atras |
+
+#### Caracteristicas de Ko (3)
+
+| Plano | Nome | Descricao |
+|-------|------|-----------|
+| 11 | Ponto proibido de ko | Ponto de ko atual que nao pode ser jogado |
+| 12 | Pontos potenciais de ko (proprio) | Jogar aqui cria ko para nos |
+| 13 | Pontos potenciais de ko (oponente) | Jogar aqui cria ko para o oponente |
+
+#### Caracteristicas de Regras (9)
+
+| Plano | Nome | Descricao |
+|-------|------|-----------|
+| 14-22 | Codificacao de regras | Komi, regra de suicidio, superko, etc. |
+
+### Por que Adicionar Essas Caracteristicas?
+
+O autor do KataGo, lightvector, explicou:
+
+#### 1. Ko e Muito Importante
+
+Ko e um dos conceitos mais complexos no Go. Aprender as regras de ko puramente do estado bruto do tabuleiro requer muitas amostras. Marcar explicitamente pontos proibidos de ko pode acelerar o aprendizado.
+
+#### 2. Diversidade de Regras
+
+Go tem multiplas regras:
+- **Komi**: Regras chinesas 7.5 pontos, regras japonesas 6.5 pontos
+- **Regra de suicidio**: Algumas regras permitem suicidio
+- **Superko**: Diferentes formas de lidar com ciclos longos
+
+Codificar explicitamente regras na entrada permite que uma rede lide com todas as variantes.
+
+#### 3. Eficiencia de Treinamento
+
+Adicionar uma pequena quantidade de conhecimento humano pode acelerar significativamente o treinamento. O KataGo alcancou com 50 GPU-dias a forca que o AlphaGo Zero levou 5000+ TPU-dias para alcancar.
+
+---
+
+## Filosofia do Design de Caracteristicas
+
+### Tres Abordagens
+
+| Abordagem | Representante | Numero de Caracteristicas | Conhecimento Humano | Requisitos Computacionais |
+|-----------|--------------|--------------------------|--------------------|-----------------------|
+| Muito conhecimento humano | AlphaGo | 48 | Muito | Medio |
+| Minimo conhecimento humano | AlphaGo Zero | 17 | Quase nenhum | Muito alto |
+| Conhecimento humano moderado | KataGo | 22 | Pequena quantidade selecionada | Menor |
+
+### Consideracoes de Trade-off
+
+#### Quando Recursos Sao Limitados
+
+Se os recursos computacionais sao limitados (a situacao da maioria dos pesquisadores), adicionar algum conhecimento humano e sensato:
+- Acelera a convergencia do treinamento
+- Reduz dados de treinamento necessarios
+- Evita reinventar a roda
+
+#### Quando Buscando Limites
+
+Se os recursos computacionais sao abundantes, reduzir conhecimento humano pode alcancar maior forca de jogo:
+- Evitar vies humano
+- Descobrir estrategias desconhecidas pelos humanos
+- Verdadeiro "do zero"
+
+### Insights
+
+A evolucao da serie AlphaGo nos diz:
+
+1. **Engenharia de caracteristicas ainda importa** - mas a forma mudou
+2. **Aprendizado fim-a-fim e a tendencia** - deixar a rede aprender caracteristicas sozinha
+3. **Nao ha resposta unica correta** - depende de recursos e objetivos
+
+---
+
+## Exemplo de Implementacao
+
+### Extracao de Caracteristicas (Estilo AlphaGo)
+
+```python
+import numpy as np
+
+def extract_features_alphago(board, history, current_player):
+    """
+    Extrair 48 planos de caracteristicas estilo AlphaGo
+
+    board: Tabuleiro 19x19, 0=vazio, 1=preto, 2=branco
+    history: Historico das ultimas 8 jogadas
+    current_player: 1=preto, 2=branco
+    """
+    features = np.zeros((48, 19, 19))
+
+    # 1-3: Posicao de pedras
+    features[0] = (board == 1)  # Pedras pretas
+    features[1] = (board == 2)  # Pedras brancas
+    features[2] = (board == 0)  # Pontos vazios
+
+    # 4-19: Posicoes historicas
+    for i, hist_board in enumerate(history[:8]):
+        features[3 + i] = (hist_board == 1)      # Historico preto
+        features[11 + i] = (hist_board == 2)     # Historico branco
+
+    # 20-27: Caracteristicas de liberdades
+    liberties = compute_liberties(board)
+    for i, lib_count in enumerate([1, 2, 3, 4]):
+        my_color = current_player
+        opp_color = 3 - current_player
+        features[19 + i] = (liberties == lib_count) & (board == my_color)
+        features[23 + i] = (liberties == lib_count) & (board == opp_color)
+
+    # 28-35: Caracteristicas de atari
+    capture_counts = compute_captures(board)
+    for i, cap_count in enumerate([1, 2, 3, 4]):
+        features[27 + i] = (capture_counts[current_player] == cap_count)
+        features[31 + i] = (capture_counts[3-current_player] == cap_count)
+
+    # 36-43: Caracteristicas de escada (simplificado)
+    ladder_status = compute_ladder(board)
+    # ... implementacao detalhada omitida ...
+
+    # 44: Posicoes legais
+    features[43] = compute_legal_moves(board, current_player)
+
+    # 45-48: Distancia de bordas e cantos
+    for i in range(19):
+        for j in range(19):
+            dist = min(i, j, 18-i, 18-j)
+            if dist == 0:
+                features[44, i, j] = 1
+            elif dist == 1:
+                features[45, i, j] = 1
+            elif dist == 2:
+                features[46, i, j] = 1
+            else:
+                features[47, i, j] = 1
+
+    return features
+```
+
+### Extracao de Caracteristicas (Estilo AlphaGo Zero)
+
+```python
+def extract_features_zero(board_history, current_player):
+    """
+    Extrair 17 planos de caracteristicas estilo AlphaGo Zero
+
+    board_history: Lista dos ultimos 8 estados do tabuleiro
+    current_player: 1=preto, 2=branco
+    """
+    features = np.zeros((17, 19, 19))
+
+    # 1-8: Posicao de pedras pretas em T-0 a T-7
+    for i, board in enumerate(board_history[:8]):
+        features[i] = (board == 1)
+
+    # 9-16: Posicao de pedras brancas em T-0 a T-7
+    for i, board in enumerate(board_history[:8]):
+        features[8 + i] = (board == 2)
+
+    # 17: De quem e a vez
+    if current_player == 1:  # Preto
+        features[16] = np.ones((19, 19))
+    else:
+        features[16] = np.zeros((19, 19))
+
+    return features
+```
+
+### Comparacao de Desempenho
+
+```python
+import time
+
+# Simular 1000 extracoes de caracteristicas
+board = np.random.randint(0, 3, (19, 19))
+history = [np.random.randint(0, 3, (19, 19)) for _ in range(8)]
+
+# Estilo AlphaGo (tem calculos complexos)
+start = time.time()
+for _ in range(1000):
+    features = extract_features_alphago(board, history, 1)
+alphago_time = time.time() - start
+
+# Estilo AlphaGo Zero (simples)
+start = time.time()
+for _ in range(1000):
+    features = extract_features_zero(history, 1)
+zero_time = time.time() - start
+
+print(f"Estilo AlphaGo: {alphago_time:.2f}s")
+print(f"Estilo AlphaGo Zero: {zero_time:.2f}s")
+# Resultado tipico: Estilo AlphaGo e 5-10x mais lento
+```
+
+---
+
+## Visualizando Planos de Caracteristicas
+
+### Exemplo de Posicao Real
+
+```
+Tabuleiro real:
+   A B C D E F G H J K L M N O P Q R S T
+19 . . . . . . . . . . . . . . . . . . .
+18 . . . . . . . . . . . . . . . . . . .
+17 . . . ● . . . . . . . . . . . ○ . . .
+16 . . . . . . . . . . . . . . . . . . .
+15 . . . . . . . . . . . . . . . . . . .
+...
+
+Plano de caracteristicas 1 (pedras pretas):
+   A B C D E F G H J K L M N O P Q R S T
+19 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+18 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+17 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+...
+
+Plano de caracteristicas 2 (pedras brancas):
+   A B C D E F G H J K L M N O P Q R S T
+19 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+18 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+17 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0
+16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+...
+```
+
+### Insights dos Planos de Caracteristicas
+
+Observar diferentes planos de caracteristicas pode ajudar a entender o que o modelo "ve":
+
+| Caracteristica | Significado Intuitivo | O que o Modelo Provavelmente Aprende |
+|----------------|----------------------|-------------------------------------|
+| Posicao de pedras pretas/brancas | Quem esta onde | Formas de pedras, conectividade |
+| Historico | O que aconteceu recentemente | Intencao das jogadas, direcao da batalha |
+| Liberdades | Quem esta em perigo | Alvos de ataque/defesa |
+| Atari | Oportunidades taticas | Taticas locais |
+| Distancia da borda | Importancia da posicao | Selecao de abertura, joseki de canto |
+
+---
+
+## Correspondencia com Animacoes
+
+Conceitos centrais abordados neste artigo e numeros das animacoes:
+
+| Numero | Conceito | Correspondencia Fisica/Matematica |
+|--------|----------|-----------------------------------|
+| A8 | Codificacao de caracteristicas | Representacao tensorial |
+| A10 | Normalizacao de entrada | Engenharia de caracteristicas |
+| D1 | Entrada de convolucao | Imagem multicanal |
+| E3 | Simplificacao do Zero | Representacao minima |
+
+---
+
+## Leitura Adicional
+
+- **Artigo anterior**: [Detalhes da Value Network](../value-network) - Como avaliar valor da posicao
+- **Proximo artigo**: [CNN e Go](../cnn-and-go) - Como redes neurais convolucionais processam o tabuleiro
+- **Topico relacionado**: [Representacao do Estado do Tabuleiro](../board-representation) - Estruturas de dados de nivel inferior
+
+---
+
+## Pontos-Chave
+
+1. **Planos de caracteristicas sao representacao digital do tabuleiro**: Cada plano e uma matriz 19x19
+2. **AlphaGo usa 48 planos**: Contem muito conhecimento humano de Go
+3. **AlphaGo Zero simplifica para 17**: Prova que a rede pode aprender caracteristicas sozinha
+4. **KataGo otimiza para 22**: Equilibrio entre eficiencia e desempenho
+5. **Design de caracteristicas e um trade-off**: Conhecimento humano vs. recursos computacionais
+
+O design de caracteristicas de entrada e a ponte que conecta "Go como humanos entendem" e "numeros que maquinas podem processar".
+
+---
+
+## Referencias
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 551, 354-359.
+3. Wu, D. (2019). "Accelerating Self-Play Learning in Go." *arXiv:1902.10565*.
+4. KataGo Documentation: [https://github.com/lightvector/KataGo](https://github.com/lightvector/KataGo)

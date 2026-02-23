@@ -1,0 +1,736 @@
+---
+sidebar_position: 15
+title: MCTS とニューラルネットワークの融合
+description: AlphaGo がモンテカルロ木探索と深層ニューラルネットワークをどのように組み合わせているかを深く理解する
+---
+
+import { MCTSTree } from '@site/src/components/D3Charts';
+
+# MCTS とニューラルネットワークの融合
+
+前の記事では、ニューラルネットワーク（Policy Network と Value Network）および強化学習の概念をそれぞれ紹介しました。ここでは、AlphaGo の核心的なイノベーション——**モンテカルロ木探索（MCTS）とニューラルネットワークの完璧な融合**について探っていきましょう。
+
+この融合こそが AlphaGo 成功の鍵です：ニューラルネットワークが「直感」を提供し、MCTS が「推論」を提供する。両者は相互に補完し合います。
+
+---
+
+## 従来の MCTS の復習
+
+### MCTS とは何か？
+
+**モンテカルロ木探索（Monte Carlo Tree Search, MCTS）** は、ランダムサンプリングに基づく探索アルゴリズムで、特にゲーム AI に適しています。
+
+MCTS の核心的な考え方は：**すべての可能な手を網羅的に探索するのではなく、大量の対局をランダムにシミュレーションし、統計を用いて各手の良し悪しを推定する**というものです。
+
+### 4つのフェーズ
+
+従来の MCTS は4つのフェーズを繰り返し実行します：
+
+```
+     ┌─────────────────────────────────────────────────────────────┐
+     │                        MCTS ループ                          │
+     │                                                             │
+     │   ┌───────────┐    ┌───────────┐    ┌───────────┐    ┌───────────┐
+     │   │ Selection │ →  │ Expansion │ →  │ Simulation│ →  │Backprop   │
+     │   │   選択     │    │   展開     │    │ シミュレーション│    │  逆伝播   │
+     │   └───────────┘    └───────────┘    └───────────┘    └───────────┘
+     │        │                                                    │
+     │        └────────────────────────────────────────────────────┘
+     │                           N 回繰り返す
+     └─────────────────────────────────────────────────────────────┘
+```
+
+各フェーズを詳しく見ていきましょう：
+
+### 1. Selection（選択）
+
+ルートノードから開始し、木を下方向にたどり、「最も有望な」子ノードを選択して、葉ノードに到達するまで続けます。
+
+選択の基準は **UCB1（Upper Confidence Bound）** 公式です：
+
+$$\text{UCB1}(s, a) = \bar{X}_{s,a} + c \sqrt{\frac{\ln N_s}{N_{s,a}}}$$
+
+ここで：
+- $\bar{X}_{s,a}$：ノード $(s, a)$ からの平均報酬（**活用項**）
+- $\sqrt{\frac{\ln N_s}{N_{s,a}}}$：探索ボーナス（**探索項**）
+- $N_s$：親ノードの訪問回数
+- $N_{s,a}$：子ノードの訪問回数
+- $c$：探索と活用のバランスを取る定数
+
+この公式の知恵は：
+- 訪問回数の少ないノードはより高い探索ボーナスを得る
+- 訪問回数が増えるにつれ、選択は実際の価値が高いノードに偏る
+
+### 2. Expansion（展開）
+
+葉ノードに到達したら、まだ探索されていない行動を選び、新しい子ノードを作成します。
+
+```
+展開前：                    展開後：
+     ○ (ルート)                   ○ (ルート)
+    /│\                         /│\
+   ○ ○ ○                       ○ ○ ○
+  /│              →           /│
+ ○ ○                         ○ ○
+   ↑                            \
+   葉ノード                        ● (新ノード)
+```
+
+### 3. Simulation（シミュレーション/Rollout）
+
+新しいノードから、何らかの戦略（通常はランダムまたは単純なヒューリスティック）を使って対局を素早く完了させ、結果を得ます。
+
+これが「モンテカルロ」という名前の由来です——**ランダムシミュレーションを使って結果を推定する**。
+
+従来の MCTS の rollout 戦略は以下のようなものがあります：
+- **純粋ランダム**：合法手から均一にランダム選択
+- **軽量ヒューリスティック**：明らかに悪い手を簡単なルールでフィルタリング
+
+### 4. Backpropagation（逆伝播）
+
+シミュレーションの結果（勝ち/負け）をパスに沿って逆伝播し、各ノードの統計情報を更新します：
+
+```
+更新内容：
+- 訪問回数：N(s, a) ← N(s, a) + 1
+- 累積価値：W(s, a) ← W(s, a) + z
+- 平均価値：Q(s, a) = W(s, a) / N(s, a)
+```
+
+ここで $z$ はシミュレーション結果（+1 または -1）です。
+
+### 従来の MCTS の限界
+
+従来の MCTS は囲碁での性能が限定的で、主な問題は：
+
+1. **Rollout の品質が低い**：ランダムシミュレーションは不合理な対局を生成しがち
+2. **大量のシミュレーションが必要**：各手で数万回のシミュレーションが必要な場合も
+3. **評価が不正確**：勝敗統計だけでは情報の利用効率が低い
+4. **パターンを活用できない**：毎回ゼロから探索し、経験を蓄積しない
+
+これらの問題は AlphaGo ではニューラルネットワークによってエレガントに解決されました。
+
+---
+
+## ニューラルネットワークによる MCTS の改善
+
+### 全体アーキテクチャ
+
+AlphaGo は2つのニューラルネットワークを MCTS に統合しています：
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    AlphaGo 探索アーキテクチャ                  │
+│                                                             │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │                    MCTS                               │  │
+│  │                                                       │  │
+│  │   Selection    Expansion    Evaluation    Backup      │  │
+│  │       │            │            │            │        │  │
+│  │       ▼            ▼            ▼            ▼        │  │
+│  │    ┌─────┐    ┌─────┐    ┌─────────┐    ┌─────┐      │  │
+│  │    │PUCT │    │Policy│    │Value Net│    │統計  │      │  │
+│  │    │公式 │    │Net   │    │+ Rollout│    │更新  │      │  │
+│  │    └─────┘    └─────┘    └─────────┘    └─────┘      │  │
+│  │       ↑            ↑            ↑                     │  │
+│  │       │            │            │                     │  │
+│  └───────┼────────────┼────────────┼─────────────────────┘  │
+│          │            │            │                        │
+│  ┌───────┴────────────┴────────────┴─────────────────────┐  │
+│  │                 Neural Networks                        │  │
+│  │  ┌─────────────────┐    ┌─────────────────┐           │  │
+│  │  │ Policy Network  │    │ Value Network   │           │  │
+│  │  │ π(a|s)          │    │ V(s)            │           │  │
+│  │  │ 出力：行動確率    │    │ 出力：勝率推定    │           │  │
+│  │  └─────────────────┘    └─────────────────┘           │  │
+│  └────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Policy Network の役割
+
+**Policy Network は Expansion フェーズで機能します**。
+
+従来の MCTS では、展開時にすべての未探索行動は同等に重要と見なされます。しかし Policy Network は**事前確率（prior probability）**を提供します：
+
+$$P(s, a) = \pi_\theta(a|s)$$
+
+これにより、MCTS は「より良く見える」手を優先的に探索し、探索効率を大幅に向上させます。
+
+例えば、ある局面で：
+- 「天元」は 0.01% の確率しかないかもしれない
+- 「隅の定石」は 15% の確率があるかもしれない
+- 「大場」は 10% の確率があるかもしれない
+
+MCTS は高確率の手を優先的に探索し、明らかに良くない選択に時間を浪費しません。
+
+### Value Network の役割
+
+**Value Network は Evaluation フェーズで機能します**。
+
+従来の MCTS は対局全体をシミュレーションして初めて評価を得られます。しかし Value Network は任意の局面の勝率を直接評価できます：
+
+$$v(s) = V_\phi(s)$$
+
+これは、二人の初心者が対局を最後まで打つのを見るのではなく、名人に局面を評価してもらうようなものです。
+
+AlphaGo のオリジナルバージョンでは Value Network と Rollout を混合して使用しています：
+
+$$V(s_L) = (1 - \lambda) \cdot v_\theta(s_L) + \lambda \cdot z_L$$
+
+ここで：
+- $v_\theta(s_L)$：Value Network の評価
+- $z_L$：Rollout の結果
+- $\lambda$：混合係数（AlphaGo では $\lambda = 0.5$ を使用）
+
+### 探索木の可視化
+
+MCTS の探索木を可視化してみましょう：
+
+<MCTSTree width={700} height={450} showPUCT={true} interactive={true} />
+
+この可視化では、以下が確認できます：
+- ノードのサイズは訪問回数を反映
+- 青いパスは MCTS が選択した最良のパス
+- 各ノードは訪問回数 N と平均価値 Q を表示
+
+---
+
+## 探索プロセスの詳細
+
+### 完全なフロー
+
+1回の完全な MCTS シミュレーションを追跡してみましょう：
+
+```
+アルゴリズム：AlphaGo MCTS 単一シミュレーション
+
+入力：ルートノード s_root、Policy Network π、Value Network V
+
+1. Selection（選択）
+   s = s_root
+   パス = []
+
+   while s が葉ノードでない:
+       # PUCT 公式を使用して行動を選択
+       a* = argmax_a [Q(s,a) + U(s,a)]
+
+       ここで U(s,a) = c_puct · P(s,a) · √N(s) / (1 + N(s,a))
+
+       パス.append((s, a*))
+       s = 行動 a* 実行後の状態
+
+2. Expansion（展開）
+   s が終局状態でない場合:
+       # Policy Network で事前確率を計算
+       P(s, ·) = π(·|s)
+
+       # すべての合法手に子ノードを作成
+       for a in 合法手:
+           子ノード (s, a) を作成
+           P(s,a), N(s,a)=0, W(s,a)=0 を設定
+
+3. Evaluation（評価）
+   # Value Network と Rollout を混合
+   v = V(s)                          # Value Network 評価
+   z = rollout(s)                    # Rollout 結果
+   value = (1-λ)·v + λ·z             # 混合
+
+   # AlphaGo Zero では Value Network のみに簡略化
+   # value = V(s)
+
+4. Backpropagation（逆伝播）
+   for (s', a') in reversed(パス):
+       N(s', a') += 1
+       W(s', a') += value
+       Q(s', a') = W(s', a') / N(s', a')
+       value = -value                 # 視点を切り替え
+```
+
+### Selection フェーズの詳細
+
+Selection フェーズでは **PUCT 公式**を使用します（次の記事で詳しく説明）：
+
+$$a^* = \arg\max_a \left[ Q(s,a) + c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)} \right]$$
+
+この公式は以下をバランスさせます：
+- **Q(s,a)**：既知の平均価値（活用）
+- **U(s,a)**：探索ボーナス、事前確率と訪問回数を組み合わせ（探索）
+
+### Expansion フェーズの詳細
+
+葉ノードに到達したら、Policy Network を使用して新しいノードを初期化します：
+
+```python
+def expand(state, policy_network):
+    # すべての合法手の確率を取得
+    action_probs = policy_network(state)
+
+    # 非合法手をフィルタリングして再正規化
+    legal_actions = get_legal_actions(state)
+    legal_probs = action_probs[legal_actions]
+    legal_probs = legal_probs / legal_probs.sum()
+
+    # 子ノードを作成
+    for action, prob in zip(legal_actions, legal_probs):
+        child = create_node(
+            state=apply_action(state, action),
+            prior=prob,
+            visit_count=0,
+            value_sum=0
+        )
+        add_child(current_node, action, child)
+```
+
+### Evaluation フェーズの詳細
+
+AlphaGo のオリジナルバージョンでは2種類の評価を混合して使用します：
+
+**Value Network 評価**：
+- 局面を直接入力し、勝率を出力
+- 計算が高速（1回のニューラルネットワーク推論）
+- 大局的な視点での評価を提供
+
+**Rollout 評価**：
+- 高速戦略（Fast Rollout Policy）で対局を完了
+- 計算は遅いが完全な対局結果を提供
+- ニューラルネットワークが見逃す可能性のある戦術を発見できる
+
+```python
+def evaluate(state, value_network, rollout_policy, lambda_mix=0.5):
+    # Value Network 評価
+    v = value_network(state)
+
+    # Rollout 評価
+    current = state
+    while not is_terminal(current):
+        action = rollout_policy(current)
+        current = apply_action(current, action)
+    z = get_result(current)
+
+    # 混合
+    return (1 - lambda_mix) * v + lambda_mix * z
+```
+
+AlphaGo Zero では Rollout を削除し、Value Network のみを使用しています。これによりシステムが簡素化され、効率が向上しました。
+
+### Backpropagation フェーズの詳細
+
+評価結果をパスに沿って逆伝播し、統計を更新します：
+
+```python
+def backpropagate(path, value):
+    for state, action in reversed(path):
+        # 訪問回数を更新
+        state.visit_count[action] += 1
+        # 価値の合計を更新
+        state.value_sum[action] += value
+        # 平均価値を更新
+        state.Q[action] = state.value_sum[action] / state.visit_count[action]
+        # 視点を切り替え（相手の利益は自分の損失）
+        value = -value
+```
+
+`value = -value` のステップに注目してください：囲碁はゼロサムゲームで、一方の勝利は他方の敗北です。
+
+---
+
+## 計算リソースの配分
+
+### シミュレーション回数
+
+AlphaGo は各手で大量の MCTS シミュレーションを実行します：
+
+| バージョン | 1手あたりのシミュレーション数 | 思考時間 |
+|------|-------------|---------|
+| AlphaGo Fan | 〜100,000 | 分単位 |
+| AlphaGo Lee | 〜100,000 | 分単位 |
+| AlphaGo Zero (訓練) | 1,600 | 秒単位 |
+| AlphaGo Zero (対局) | 〜1,600 | 秒単位 |
+
+AlphaGo Zero は少ないシミュレーションでより強い棋力を達成しています。これはニューラルネットワークの品質向上の結果です。
+
+### 時間配分戦略
+
+異なる局面では異なる思考時間が必要な場合があります：
+
+```python
+def allocate_time(game_state, remaining_time):
+    # 基本配分
+    num_moves_remaining = estimate_remaining_moves(game_state)
+    base_time = remaining_time / num_moves_remaining
+
+    # 調整要因
+    complexity = estimate_complexity(game_state)
+    importance = estimate_importance(game_state)
+
+    # 複雑または重要な局面にはより多くの時間を配分
+    allocated_time = base_time * complexity * importance
+
+    # 時間切れを防止
+    return min(allocated_time, remaining_time * 0.3)
+```
+
+実際の対局では、AlphaGo は重要な局面（勝敗の分かれ目に近い瞬間など）により多くの思考時間を投入します。
+
+### 並列探索
+
+MCTS は本質的に並列化に適しています：
+
+**仮想損失（Virtual Loss）** 技術：
+
+```
+あるスレッドがパス P を探索中の場合：
+1. このパスが一時的に負けたと仮定する（virtual loss）
+2. 他のスレッドは他のパスを探索する傾向になる
+3. 結果が返ってきたら、実際の統計を更新し仮想損失を除去
+```
+
+これにより、複数のスレッドが同じパスを重複して探索することを防ぎます。
+
+```python
+def parallel_mcts_simulation(root, num_threads=8):
+    virtual_losses = {}
+
+    def simulate(thread_id):
+        # Selection フェーズ（仮想損失付き）
+        path = []
+        node = root
+        while not node.is_leaf():
+            action = select_with_virtual_loss(node, virtual_losses)
+            add_virtual_loss(node, action, virtual_losses)
+            path.append((node, action))
+            node = node.children[action]
+
+        # Expansion と Evaluation
+        value = expand_and_evaluate(node)
+
+        # Backpropagation と仮想損失の除去
+        backpropagate(path, value)
+        remove_virtual_losses(path, virtual_losses)
+
+    # 複数のシミュレーションを並列実行
+    threads = [Thread(target=simulate, args=(i,)) for i in range(num_threads)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+```
+
+### GPU バッチ処理
+
+ニューラルネットワーク推論は GPU 上でバッチ処理が最も効率的です。AlphaGo は**バッチ評価**を使用しています：
+
+```
+バッチなし：
+  シミュレーション 1 → 評価 1 → シミュレーション 2 → 評価 2 → ...
+  GPU 利用率が低い
+
+バッチあり：
+  32個の評価待ち局面を収集
+  → 一度に GPU に送って評価
+  → 32個の結果を返す
+  GPU 利用率が高い
+```
+
+これにはより複雑なスケジューリングが必要ですが、スループットが大幅に向上します。
+
+---
+
+## 温度と最終選択
+
+### 訓練時の温度
+
+自己対局訓練では、AlphaGo は**温度**を使用して探索を制御します：
+
+$$\pi(a) = \frac{N(s,a)^{1/\tau}}{\sum_{a'} N(s,a')^{1/\tau}}$$
+
+ここで $\tau$ は温度パラメータです。
+
+- $\tau = 1$：確率は訪問回数に比例（多様性を維持）
+- $\tau \to 0$：訪問回数が最も多い行動を選択（決定論的選択）
+
+AlphaGo Zero の戦略：
+- **最初の30手**：$\tau = 1$、序盤の多様性を維持
+- **それ以降**：$\tau \to 0$、最良の手を選択
+
+### 対局時の選択
+
+実際の対局では、選択は通常決定論的です：
+
+```python
+def select_move(root, temperature=0):
+    if temperature == 0:
+        # 訪問回数が最も多い行動を選択
+        return argmax(root.visit_counts)
+    else:
+        # 温度調整された確率分布からサンプリング
+        probs = root.visit_counts ** (1 / temperature)
+        probs = probs / probs.sum()
+        return np.random.choice(actions, p=probs)
+```
+
+### 勝率の考慮
+
+訪問回数だけでなく平均価値も考慮する場合があります：
+
+```python
+def select_move_with_value(root, temperature=0):
+    # 訪問回数と価値を混合
+    scores = root.visit_counts * (1 + root.Q_values)
+    scores = scores / scores.sum()
+
+    if temperature == 0:
+        return argmax(scores)
+    else:
+        probs = scores ** (1 / temperature)
+        probs = probs / probs.sum()
+        return np.random.choice(actions, p=probs)
+```
+
+---
+
+## 純粋なニューラルネットワークとの比較
+
+### なぜ探索が必要なのか？
+
+自然な疑問は：**ニューラルネットワークがすでに良い手を予測できるなら、なぜ探索が必要なのか？**
+
+答えは：**探索はニューラルネットワークの誤りを修正し、より良い手を発見できる**ということです。
+
+| 方法 | 利点 | 欠点 |
+|------|------|------|
+| 純粋なニューラルネットワーク | 高速、直感的 | 盲点がある可能性 |
+| 純粋な MCTS | 深く分析できる | 遅い、評価が必要 |
+| ニューラルネットワーク + MCTS | 両者の利点を組み合わせ | 計算量が大きい |
+
+### 実験的証拠
+
+DeepMind の実験では：
+
+```
+純粋な Policy Network：約 3000 Elo
+Policy + 少量の MCTS：約 3500 Elo
+Policy + Value + MCTS：約 4500 Elo
+```
+
+探索は顕著な棋力向上をもたらします。
+
+### 探索の役割
+
+探索は以下の状況で特に価値があります：
+
+1. **戦術的計算**：複雑な攻め合いを読む
+2. **偏りの修正**：ニューラルネットワークの系統的誤差を修正
+3. **珍しい局面の処理**：ニューラルネットワークが訓練時に見たことがないケース
+4. **直感の検証**：「良さそうな」手が本当に良い手かを確認
+
+---
+
+## AlphaGo 各バージョンの違い
+
+### AlphaGo Fan/Lee
+
+```
+アーキテクチャ：
+- SL Policy Network（教師あり学習）
+- RL Policy Network（強化学習）
+- Value Network
+- Fast Rollout Policy
+
+探索時：
+- SL Policy Network の事前確率を使用
+- Value Network と Rollout 評価を混合
+```
+
+### AlphaGo Master
+
+```
+アーキテクチャ：
+- より大きなニューラルネットワーク
+- より多くの訓練データ
+- 改善された特徴
+
+探索時：
+- AlphaGo Lee と類似
+- より強力なネットワーク = 探索の必要性が減少
+```
+
+### AlphaGo Zero
+
+```
+アーキテクチャ：
+- 単一のデュアルヘッド ResNet
+- ゼロから訓練
+- Rollout なし
+
+探索時：
+- Policy ヘッドが事前確率を提供
+- Value ヘッドが直接評価
+- よりシンプルで、より強力
+```
+
+### 進化のまとめ
+
+```
+AlphaGo Fan (2015)
+    │
+    │ + より大きなネットワーク、より多くの訓練
+    ▼
+AlphaGo Lee (2016)
+    │
+    │ + より多くの自己対局
+    ▼
+AlphaGo Master (2017)
+    │
+    │ + 人間のデータを削除、ネットワークを統一、Rollout を削除
+    ▼
+AlphaGo Zero (2017)
+    │
+    │ + 他のゲームへの一般化
+    ▼
+AlphaZero (2018)
+```
+
+---
+
+## 実装上の考慮事項
+
+### メモリ管理
+
+MCTS の木は非常に大きくなる可能性があります：
+
+```
+仮定：
+- 各手で平均200の合法手
+- 探索深さ10
+- 完全展開：200^10 ≈ 10^23 ノード（不可能）
+
+実際のアプローチ：
+- 訪問されたノードのみを展開
+- ほとんど訪問されないノードを定期的にクリーンアップ
+- 前の手の探索木を再利用
+```
+
+### 木の再利用
+
+相手が手を打った後、探索木の一部を再利用できます：
+
+```python
+def reuse_tree(root, opponent_move):
+    if opponent_move in root.children:
+        new_root = root.children[opponent_move]
+        # 不要な他の分岐をクリーンアップ
+        for action in root.children:
+            if action != opponent_move:
+                delete_subtree(root.children[action])
+        return new_root
+    else:
+        # 相手が予想外の手を打った、最初から開始
+        return create_new_root()
+```
+
+### ニューラルネットワークキャッシュ
+
+同じ局面が複数回評価される可能性があり、キャッシュを使用して重複計算を回避します：
+
+```python
+class NeuralNetworkCache:
+    def __init__(self, max_size=100000):
+        self.cache = LRUCache(max_size)
+
+    def evaluate(self, state, network):
+        state_hash = hash(state)
+        if state_hash in self.cache:
+            return self.cache[state_hash]
+        else:
+            result = network(state)
+            self.cache[state_hash] = result
+            return result
+```
+
+### 対称性の活用
+
+囲碁には8重の対称性があり、探索を強化するために使用できます：
+
+```python
+def evaluate_with_symmetry(state, network):
+    # すべての対称変換を生成
+    symmetries = generate_symmetries(state)  # 8つのバージョン
+
+    # すべてのバージョンを評価
+    values = [network(s) for s in symmetries]
+
+    # 平均（より安定）
+    return np.mean(values)
+```
+
+---
+
+## 探索の深さと幅
+
+### 動的調整
+
+MCTS は深さと幅を自動的にバランスさせます：
+
+- **幅**：Policy Network の事前確率によって制御
+- **深さ**：Value Network の精度によって決定
+
+ニューラルネットワークが優れている場合：
+- 高い信頼度の手は深く探索される
+- 低い信頼度の手は素早く除外される
+- 探索は自然に重要な分岐に集中する
+
+### 従来の探索との比較
+
+| 方法 | 深さ制御 | 幅制御 |
+|------|---------|---------|
+| Minimax | 固定深さ | Alpha-Beta 枝刈り |
+| 従来の MCTS | シミュレーションによって決定 | UCB1 |
+| AlphaGo MCTS | Policy + Value によるガイド | PUCT + Policy |
+
+AlphaGo の探索はより「賢い」——どこを深く掘り下げるべきか、どこを素早くスキップできるかを知っています。
+
+---
+
+## アニメーション対応
+
+本記事で扱う核心概念とアニメーション番号：
+
+| 番号 | 概念 | 物理/数学対応 |
+|------|------|--------------|
+| 🎬 C5 | MCTS の4フェーズ | 木探索 |
+
+---
+
+## まとめ
+
+MCTS とニューラルネットワークの融合は AlphaGo の核心的なイノベーションです。学んだ内容：
+
+1. **従来の MCTS**：Selection、Expansion、Simulation、Backpropagation
+2. **ニューラルネットワークによる改善**：Policy Network が展開をガイド、Value Network が Rollout を代替
+3. **探索プロセス**：PUCT 選択、バッチ評価、逆伝播
+4. **リソース配分**：シミュレーション回数、時間管理、並列探索
+5. **温度選択**：訓練と対局での異なる戦略
+6. **実装の詳細**：メモリ管理、木の再利用、キャッシュ
+
+次の記事では、PUCT 公式の数学的詳細を深く探ります。
+
+---
+
+## 関連記事
+
+- **次の記事**：[PUCT 公式詳解](../puct-formula) — MCTS 選択の数学原理
+- **前の記事**：[自己対局](../self-play) — 自己対局のメカニズムと効果
+- **関連**：[Policy Network 詳解](../policy-network) — 方策ネットワークのアーキテクチャ
+
+---
+
+## 参考文献
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 550, 354-359.
+3. Coulom, R. (2006). "Efficient Selectivity and Backup Operators in Monte-Carlo Tree Search." *Computers and Games*.
+4. Kocsis, L., & Szepesvári, C. (2006). "Bandit based Monte-Carlo Planning." *ECML*.
+5. Browne, C., et al. (2012). "A Survey of Monte Carlo Tree Search Methods." *IEEE TCIAIG*.
+6. Rosin, C. D. (2011). "Multi-armed bandits with episode context." *Annals of Mathematics and Artificial Intelligence*.

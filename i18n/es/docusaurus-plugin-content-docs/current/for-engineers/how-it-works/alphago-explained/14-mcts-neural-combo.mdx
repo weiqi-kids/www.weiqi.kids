@@ -1,0 +1,737 @@
+---
+sidebar_position: 15
+title: La Combinación de MCTS y Redes Neuronales
+description: Comprensión profunda de cómo AlphaGo combina perfectamente la Búsqueda de Árbol Monte Carlo con redes neuronales profundas
+---
+
+import { MCTSTree } from '@site/src/components/D3Charts';
+
+# La Combinación de MCTS y Redes Neuronales
+
+En los artículos anteriores, presentamos por separado las redes neuronales (Policy Network y Value Network) y los conceptos de aprendizaje por refuerzo. Ahora, exploremos la innovación central de AlphaGo: **cómo combinar perfectamente la Búsqueda de Árbol Monte Carlo (MCTS) con las redes neuronales**.
+
+Esta combinación es la clave del éxito de AlphaGo: las redes neuronales proporcionan "intuición", MCTS proporciona "razonamiento", y ambos se complementan mutuamente.
+
+---
+
+## Revisión del MCTS Tradicional
+
+### ¿Qué es MCTS?
+
+**La Búsqueda de Árbol Monte Carlo (Monte Carlo Tree Search, MCTS)** es un algoritmo de búsqueda basado en muestreo aleatorio, particularmente adecuado para IA de juegos.
+
+La idea central de MCTS es: **en lugar de enumerar todos los movimientos posibles, simular aleatoriamente un gran número de partidas y usar estadísticas para estimar la calidad de cada movimiento**.
+
+### Las Cuatro Fases
+
+El MCTS tradicional incluye cuatro fases que se repiten constantemente:
+
+```
+     ┌─────────────────────────────────────────────────────────────┐
+     │                        Ciclo MCTS                           │
+     │                                                             │
+     │   ┌───────────┐    ┌───────────┐    ┌───────────┐    ┌───────────┐
+     │   │ Selection │ →  │ Expansion │ →  │ Simulation│ →  │Backprop   │
+     │   │ Selección │    │ Expansión │    │ Simulación│    │Retroprop. │
+     │   └───────────┘    └───────────┘    └───────────┘    └───────────┘
+     │        │                                                    │
+     │        └────────────────────────────────────────────────────┘
+     │                           Repetir N veces
+     └─────────────────────────────────────────────────────────────┘
+```
+
+Veamos cada fase en detalle:
+
+### 1. Selection (Selección)
+
+Comenzando desde el nodo raíz, descendemos por el árbol seleccionando el nodo hijo "más prometedor" hasta llegar a un nodo hoja.
+
+El criterio de selección es la fórmula **UCB1 (Upper Confidence Bound)**:
+
+$$\text{UCB1}(s, a) = \bar{X}_{s,a} + c \sqrt{\frac{\ln N_s}{N_{s,a}}}$$
+
+Donde:
+- $\bar{X}_{s,a}$: Recompensa promedio desde el nodo $(s, a)$ (**término de explotación**)
+- $\sqrt{\frac{\ln N_s}{N_{s,a}}}$: Bonificación de exploración (**término de exploración**)
+- $N_s$: Número de visitas al nodo padre
+- $N_{s,a}$: Número de visitas al nodo hijo
+- $c$: Constante que equilibra exploración y explotación
+
+La sabiduría de esta fórmula radica en:
+- Los nodos con menos visitas obtienen mayor bonificación de exploración
+- A medida que aumentan las visitas, la selección se inclina más hacia nodos con alto valor real
+
+### 2. Expansion (Expansión)
+
+Al llegar a un nodo hoja, seleccionamos una acción no explorada y creamos un nuevo nodo hijo.
+
+```
+Antes de la expansión:              Después de la expansión:
+     ○ (raíz)                            ○ (raíz)
+    /│\                                 /│\
+   ○ ○ ○                               ○ ○ ○
+  /│              →                   /│
+ ○ ○                                 ○ ○
+   ↑                                    \
+   nodo hoja                             ● (nuevo nodo)
+```
+
+### 3. Simulation (Simulación/Rollout)
+
+Desde el nuevo nodo, usamos alguna estrategia (generalmente aleatoria o heurística simple) para completar rápidamente la partida y obtener el resultado.
+
+Este es el origen del nombre "Monte Carlo": **usar simulación aleatoria para estimar resultados**.
+
+Las estrategias de rollout en MCTS tradicional pueden ser:
+- **Puramente aleatorias**: Selección uniforme aleatoria de movimientos legales
+- **Heurística ligera**: Usar reglas simples para filtrar movimientos obviamente malos
+
+### 4. Backpropagation (Retropropagación)
+
+Propagamos el resultado de la simulación (victoria/derrota) a lo largo del camino, actualizando las estadísticas de cada nodo:
+
+```
+Contenido de actualización:
+- Conteo de visitas: N(s, a) ← N(s, a) + 1
+- Valor acumulado: W(s, a) ← W(s, a) + z
+- Valor promedio: Q(s, a) = W(s, a) / N(s, a)
+```
+
+Donde $z$ es el resultado de la simulación (+1 o -1).
+
+### Limitaciones del MCTS Tradicional
+
+El rendimiento del MCTS tradicional en Go era limitado, con los principales problemas siendo:
+
+1. **Calidad de rollout deficiente**: Las simulaciones aleatorias a menudo producen partidas irrazonables
+2. **Requiere muchas simulaciones**: Cada movimiento puede necesitar decenas de miles de simulaciones
+3. **Evaluación imprecisa**: La eficiencia del uso de información basada únicamente en estadísticas de victoria/derrota es baja
+4. **No puede aprovechar patrones**: Cada búsqueda comienza desde cero, sin acumular experiencia
+
+Estos problemas se resolvieron elegantemente en AlphaGo mediante redes neuronales.
+
+---
+
+## Cómo las Redes Neuronales Mejoran MCTS
+
+### Arquitectura General
+
+AlphaGo integra dos redes neuronales en MCTS:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Arquitectura de Búsqueda AlphaGo          │
+│                                                             │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │                    MCTS                               │  │
+│  │                                                       │  │
+│  │   Selection    Expansion    Evaluation    Backup      │  │
+│  │       │            │            │            │        │  │
+│  │       ▼            ▼            ▼            ▼        │  │
+│  │    ┌─────┐    ┌─────┐    ┌─────────┐    ┌─────┐      │  │
+│  │    │PUCT │    │Policy│    │Value Net│    │Actua│      │  │
+│  │    │Fórm.│    │Net   │    │+ Rollout│    │lizar│      │  │
+│  │    └─────┘    └─────┘    └─────────┘    └─────┘      │  │
+│  │       ↑            ↑            ↑                     │  │
+│  │       │            │            │                     │  │
+│  └───────┼────────────┼────────────┼─────────────────────┘  │
+│          │            │            │                        │
+│  ┌───────┴────────────┴────────────┴─────────────────────┐  │
+│  │                 Neural Networks                        │  │
+│  │  ┌─────────────────┐    ┌─────────────────┐           │  │
+│  │  │ Policy Network  │    │ Value Network   │           │  │
+│  │  │ π(a|s)          │    │ V(s)            │           │  │
+│  │  │ Salida: prob.   │    │ Salida: tasa    │           │  │
+│  │  │ de acciones     │    │ de victoria     │           │  │
+│  │  └─────────────────┘    └─────────────────┘           │  │
+│  └────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### El Rol de Policy Network
+
+**Policy Network desempeña su papel en la fase de Expansion**.
+
+En el MCTS tradicional, durante la expansión, todas las acciones no exploradas se consideran igualmente importantes. Pero Policy Network proporciona **probabilidades a priori (prior probability)**:
+
+$$P(s, a) = \pi_\theta(a|s)$$
+
+Esto permite que MCTS explore primero los movimientos que "parecen mejores", mejorando significativamente la eficiencia de búsqueda.
+
+Por ejemplo, en una posición:
+- "Tengen" (centro) podría tener solo 0.01% de probabilidad
+- "Joseki de esquina" podría tener 15% de probabilidad
+- "Punto grande" podría tener 10% de probabilidad
+
+MCTS explorará primero los movimientos de alta probabilidad, en lugar de perder tiempo en opciones obviamente malas.
+
+### El Rol de Value Network
+
+**Value Network desempeña su papel en la fase de Evaluation**.
+
+El MCTS tradicional necesita completar partidas enteras para obtener evaluaciones. Pero Value Network puede evaluar directamente la tasa de victoria de cualquier posición:
+
+$$v(s) = V_\phi(s)$$
+
+Es como pedirle a un maestro que evalúe la posición, en lugar de dejar que dos principiantes terminen toda la partida para ver el resultado.
+
+La versión original de AlphaGo usaba una mezcla de Value Network y Rollout:
+
+$$V(s_L) = (1 - \lambda) \cdot v_\theta(s_L) + \lambda \cdot z_L$$
+
+Donde:
+- $v_\theta(s_L)$: Evaluación de Value Network
+- $z_L$: Resultado del Rollout
+- $\lambda$: Coeficiente de mezcla (AlphaGo usó $\lambda = 0.5$)
+
+### Visualización del Árbol de Búsqueda
+
+Visualicemos un árbol de búsqueda MCTS:
+
+<MCTSTree width={700} height={450} showPUCT={true} interactive={true} />
+
+En esta visualización, puedes ver:
+- El tamaño del nodo refleja el número de visitas
+- El camino azul es el mejor camino seleccionado por MCTS
+- Cada nodo muestra el conteo de visitas N y el valor promedio Q
+
+---
+
+## Explicación Detallada del Proceso de Búsqueda
+
+### Flujo Completo
+
+Sigamos una simulación MCTS completa:
+
+```
+Algoritmo: Simulación Única de MCTS de AlphaGo
+
+Entrada: nodo raíz s_root, Policy Network π, Value Network V
+
+1. Selection (Selección)
+   s = s_root
+   camino = []
+
+   while s no es nodo hoja:
+       # Usar fórmula PUCT para seleccionar acción
+       a* = argmax_a [Q(s,a) + U(s,a)]
+
+       donde U(s,a) = c_puct · P(s,a) · √N(s) / (1 + N(s,a))
+
+       camino.append((s, a*))
+       s = estado después de ejecutar acción a*
+
+2. Expansion (Expansión)
+   si s no es estado terminal:
+       # Usar Policy Network para calcular probabilidades a priori
+       P(s, ·) = π(·|s)
+
+       # Crear nodos hijos para todas las acciones legales
+       for a in acciones_legales:
+           crear nodo hijo (s, a)
+           establecer P(s,a), N(s,a)=0, W(s,a)=0
+
+3. Evaluation (Evaluación)
+   # Mezclar Value Network y Rollout
+   v = V(s)                          # Evaluación de Value Network
+   z = rollout(s)                    # Resultado de Rollout
+   value = (1-λ)·v + λ·z             # Mezcla
+
+   # AlphaGo Zero simplificó a usar solo Value Network
+   # value = V(s)
+
+4. Backpropagation (Retropropagación)
+   for (s', a') in reverso(camino):
+       N(s', a') += 1
+       W(s', a') += value
+       Q(s', a') = W(s', a') / N(s', a')
+       value = -value                 # Cambiar perspectiva
+```
+
+### Explicación Detallada de la Fase de Selección
+
+La fase de selección usa la **fórmula PUCT** (que discutiremos en detalle en el próximo artículo):
+
+$$a^* = \arg\max_a \left[ Q(s,a) + c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)} \right]$$
+
+Esta fórmula equilibra:
+- **Q(s,a)**: Valor promedio conocido (explotación)
+- **U(s,a)**: Bonificación de exploración, combinando probabilidad a priori y conteo de visitas (exploración)
+
+### Explicación Detallada de la Fase de Expansión
+
+Al llegar a un nodo hoja, usamos Policy Network para inicializar nuevos nodos:
+
+```python
+def expand(state, policy_network):
+    # Obtener probabilidades de todas las acciones legales
+    action_probs = policy_network(state)
+
+    # Filtrar acciones ilegales y renormalizar
+    legal_actions = get_legal_actions(state)
+    legal_probs = action_probs[legal_actions]
+    legal_probs = legal_probs / legal_probs.sum()
+
+    # Crear nodos hijos
+    for action, prob in zip(legal_actions, legal_probs):
+        child = create_node(
+            state=apply_action(state, action),
+            prior=prob,
+            visit_count=0,
+            value_sum=0
+        )
+        add_child(current_node, action, child)
+```
+
+### Explicación Detallada de la Fase de Evaluación
+
+La versión original de AlphaGo usaba dos tipos de evaluación mezclados:
+
+**Evaluación de Value Network**:
+- Entrada directa de posición, salida de tasa de victoria
+- Cálculo rápido (una inferencia de red neuronal)
+- Proporciona evaluación desde una perspectiva global
+
+**Evaluación de Rollout**:
+- Usar política de rollout rápido (Fast Rollout Policy) para completar partidas
+- Más lento pero proporciona resultados completos de partidas
+- Puede descubrir algunas tácticas que la red neuronal podría ignorar
+
+```python
+def evaluate(state, value_network, rollout_policy, lambda_mix=0.5):
+    # Evaluación de Value Network
+    v = value_network(state)
+
+    # Evaluación de Rollout
+    current = state
+    while not is_terminal(current):
+        action = rollout_policy(current)
+        current = apply_action(current, action)
+    z = get_result(current)
+
+    # Mezcla
+    return (1 - lambda_mix) * v + lambda_mix * z
+```
+
+AlphaGo Zero eliminó el Rollout, usando solo Value Network. Esto simplificó el sistema y mejoró la eficiencia.
+
+### Explicación Detallada de la Retropropagación
+
+Propagar el resultado de la evaluación a lo largo del camino, actualizando estadísticas:
+
+```python
+def backpropagate(path, value):
+    for state, action in reversed(path):
+        # Actualizar conteo de visitas
+        state.visit_count[action] += 1
+        # Actualizar suma de valores
+        state.value_sum[action] += value
+        # Actualizar valor promedio
+        state.Q[action] = state.value_sum[action] / state.visit_count[action]
+        # Cambiar perspectiva (la ventaja del oponente es mi desventaja)
+        value = -value
+```
+
+Nota el paso `value = -value`: Go es un juego de suma cero, la victoria de un lado es la derrota del otro.
+
+---
+
+## Asignación de Recursos Computacionales
+
+### Número de Simulaciones
+
+AlphaGo ejecuta un gran número de simulaciones MCTS en cada movimiento:
+
+| Versión | Simulaciones por movimiento | Tiempo de pensamiento |
+|---------|----------------------------|----------------------|
+| AlphaGo Fan | ~100,000 | Minutos |
+| AlphaGo Lee | ~100,000 | Minutos |
+| AlphaGo Zero (entrenamiento) | 1,600 | Segundos |
+| AlphaGo Zero (competición) | ~1,600 | Segundos |
+
+AlphaGo Zero logró mayor fuerza con menos simulaciones, resultado de la mejora en la calidad de la red neuronal.
+
+### Estrategia de Asignación de Tiempo
+
+Diferentes posiciones pueden requerir diferentes tiempos de pensamiento:
+
+```python
+def allocate_time(game_state, remaining_time):
+    # Asignación base
+    num_moves_remaining = estimate_remaining_moves(game_state)
+    base_time = remaining_time / num_moves_remaining
+
+    # Factores de ajuste
+    complexity = estimate_complexity(game_state)
+    importance = estimate_importance(game_state)
+
+    # Posiciones complejas o importantes obtienen más tiempo
+    allocated_time = base_time * complexity * importance
+
+    # Asegurar no exceder tiempo límite
+    return min(allocated_time, remaining_time * 0.3)
+```
+
+En partidas reales, AlphaGo invirtió más tiempo de pensamiento en posiciones críticas (como momentos cercanos a la línea de victoria/derrota).
+
+### Búsqueda Paralela
+
+MCTS es naturalmente adecuado para paralelización:
+
+**Técnica de Pérdida Virtual (Virtual Loss)**:
+
+```
+Cuando un hilo está explorando el camino P:
+1. Temporalmente asumir que este camino ya perdió (virtual loss)
+2. Otros hilos tenderán a explorar otros caminos
+3. Cuando el resultado regrese, actualizar estadísticas reales y eliminar pérdida virtual
+```
+
+Esto asegura que múltiples hilos no exploren repetidamente el mismo camino.
+
+```python
+def parallel_mcts_simulation(root, num_threads=8):
+    virtual_losses = {}
+
+    def simulate(thread_id):
+        # Fase de selección (con pérdida virtual)
+        path = []
+        node = root
+        while not node.is_leaf():
+            action = select_with_virtual_loss(node, virtual_losses)
+            add_virtual_loss(node, action, virtual_losses)
+            path.append((node, action))
+            node = node.children[action]
+
+        # Expandir y evaluar
+        value = expand_and_evaluate(node)
+
+        # Retropropagar y eliminar pérdidas virtuales
+        backpropagate(path, value)
+        remove_virtual_losses(path, virtual_losses)
+
+    # Ejecutar múltiples simulaciones en paralelo
+    threads = [Thread(target=simulate, args=(i,)) for i in range(num_threads)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+```
+
+### Procesamiento por Lotes en GPU
+
+La inferencia de redes neuronales es más eficiente en GPU con procesamiento por lotes. AlphaGo usa **evaluación por lotes**:
+
+```
+Sin lotes:
+  Simulación 1 → Evaluar 1 → Simulación 2 → Evaluar 2 → ...
+  Baja utilización de GPU
+
+Con lotes:
+  Recopilar 32 posiciones a evaluar
+  → Enviar a GPU para evaluación de una vez
+  → Devolver 32 resultados
+  Alta utilización de GPU
+```
+
+Esto requiere programación más compleja, pero mejora significativamente el rendimiento.
+
+---
+
+## Temperatura y Selección Final
+
+### Temperatura Durante el Entrenamiento
+
+Durante el auto-juego en entrenamiento, AlphaGo usa **temperatura** para controlar la exploración:
+
+$$\pi(a) = \frac{N(s,a)^{1/\tau}}{\sum_{a'} N(s,a')^{1/\tau}}$$
+
+Donde $\tau$ es el parámetro de temperatura.
+
+- $\tau = 1$: Probabilidad proporcional al conteo de visitas (mantiene diversidad)
+- $\tau \to 0$: Seleccionar la acción con más visitas (selección determinista)
+
+Estrategia de AlphaGo Zero:
+- **Primeros 30 movimientos**: $\tau = 1$, mantener diversidad en la apertura
+- **Después**: $\tau \to 0$, seleccionar el mejor movimiento
+
+### Selección Durante la Competición
+
+En competición real, la selección es generalmente determinista:
+
+```python
+def select_move(root, temperature=0):
+    if temperature == 0:
+        # Seleccionar la acción con más visitas
+        return argmax(root.visit_counts)
+    else:
+        # Muestrear de distribución de probabilidad ajustada por temperatura
+        probs = root.visit_counts ** (1 / temperature)
+        probs = probs / probs.sum()
+        return np.random.choice(actions, p=probs)
+```
+
+### Considerando la Tasa de Victoria
+
+A veces también se considera el valor promedio además del conteo de visitas:
+
+```python
+def select_move_with_value(root, temperature=0):
+    # Mezclar conteo de visitas y valor
+    scores = root.visit_counts * (1 + root.Q_values)
+    scores = scores / scores.sum()
+
+    if temperature == 0:
+        return argmax(scores)
+    else:
+        probs = scores ** (1 / temperature)
+        probs = probs / probs.sum()
+        return np.random.choice(actions, p=probs)
+```
+
+---
+
+## Comparación con Redes Neuronales Puras
+
+### ¿Por Qué Se Necesita la Búsqueda?
+
+Una pregunta natural es: **si la red neuronal ya puede predecir buenos movimientos, ¿por qué todavía se necesita búsqueda?**
+
+La respuesta es: **la búsqueda puede corregir errores de la red neuronal y descubrir mejores movimientos**.
+
+| Método | Ventajas | Desventajas |
+|--------|----------|-------------|
+| Red neuronal pura | Rápida, intuitiva | Puede tener puntos ciegos |
+| MCTS puro | Puede analizar profundamente | Lento, necesita evaluación |
+| Red neuronal + MCTS | Combina ventajas de ambos | Alto costo computacional |
+
+### Evidencia Experimental
+
+Los experimentos de DeepMind mostraron:
+
+```
+Policy Network pura: ~3000 Elo
+Policy + poco MCTS: ~3500 Elo
+Policy + Value + MCTS: ~4500 Elo
+```
+
+La búsqueda proporcionó una mejora significativa en la fuerza de juego.
+
+### El Valor de la Búsqueda
+
+La búsqueda es particularmente valiosa en las siguientes situaciones:
+
+1. **Cálculo táctico**: Leer capturas complicadas
+2. **Corregir sesgos**: Corregir errores sistemáticos de la red neuronal
+3. **Manejar posiciones raras**: Que la red neuronal puede no haber visto durante el entrenamiento
+4. **Verificar intuición**: Confirmar que un movimiento que "parece bueno" realmente es bueno
+
+---
+
+## Diferencias Entre Versiones de AlphaGo
+
+### AlphaGo Fan/Lee
+
+```
+Arquitectura:
+- SL Policy Network (aprendizaje supervisado)
+- RL Policy Network (aprendizaje por refuerzo)
+- Value Network
+- Fast Rollout Policy
+
+Durante la búsqueda:
+- Usar probabilidades a priori de SL Policy Network
+- Mezclar evaluación de Value Network y Rollout
+```
+
+### AlphaGo Master
+
+```
+Arquitectura:
+- Red neuronal más grande
+- Más datos de entrenamiento
+- Características mejoradas
+
+Durante la búsqueda:
+- Similar a AlphaGo Lee
+- Red más fuerte = menos necesidad de búsqueda
+```
+
+### AlphaGo Zero
+
+```
+Arquitectura:
+- ResNet única de doble cabeza
+- Entrenamiento desde cero
+- Sin Rollout
+
+Durante la búsqueda:
+- Cabeza de política proporciona probabilidades a priori
+- Cabeza de valor evalúa directamente
+- Más simple, más fuerte
+```
+
+### Resumen de la Evolución
+
+```
+AlphaGo Fan (2015)
+    │
+    │ + Red más grande, más entrenamiento
+    ▼
+AlphaGo Lee (2016)
+    │
+    │ + Más auto-juego
+    ▼
+AlphaGo Master (2017)
+    │
+    │ + Sin datos humanos, red unificada, sin Rollout
+    ▼
+AlphaGo Zero (2017)
+    │
+    │ + Generalización a otros juegos
+    ▼
+AlphaZero (2018)
+```
+
+---
+
+## Consideraciones de Implementación
+
+### Gestión de Memoria
+
+El árbol MCTS puede volverse muy grande:
+
+```
+Suposiciones:
+- Promedio de 200 acciones legales por movimiento
+- Profundidad de búsqueda 10
+- Expansión completa: 200^10 ≈ 10^23 nodos (imposible)
+
+Enfoque real:
+- Solo expandir nodos visitados
+- Limpiar periódicamente nodos poco visitados
+- Reutilizar el árbol de búsqueda del movimiento anterior
+```
+
+### Reutilización del Árbol
+
+Cuando el oponente juega, se puede reutilizar parte del árbol de búsqueda:
+
+```python
+def reuse_tree(root, opponent_move):
+    if opponent_move in root.children:
+        new_root = root.children[opponent_move]
+        # Limpiar otras ramas innecesarias
+        for action in root.children:
+            if action != opponent_move:
+                delete_subtree(root.children[action])
+        return new_root
+    else:
+        # El oponente jugó un movimiento inesperado, necesita reiniciar
+        return create_new_root()
+```
+
+### Caché de Red Neuronal
+
+La misma posición puede ser evaluada múltiples veces, usar caché para evitar cálculos repetidos:
+
+```python
+class NeuralNetworkCache:
+    def __init__(self, max_size=100000):
+        self.cache = LRUCache(max_size)
+
+    def evaluate(self, state, network):
+        state_hash = hash(state)
+        if state_hash in self.cache:
+            return self.cache[state_hash]
+        else:
+            result = network(state)
+            self.cache[state_hash] = result
+            return result
+```
+
+### Uso de Simetría
+
+El tablero de Go tiene 8 simetrías, que pueden usarse para mejorar la búsqueda:
+
+```python
+def evaluate_with_symmetry(state, network):
+    # Generar todas las transformaciones simétricas
+    symmetries = generate_symmetries(state)  # 8 versiones
+
+    # Evaluar todas las versiones
+    values = [network(s) for s in symmetries]
+
+    # Promedio (más estable)
+    return np.mean(values)
+```
+
+---
+
+## Profundidad y Amplitud de Búsqueda
+
+### Ajuste Dinámico
+
+MCTS equilibra automáticamente profundidad y amplitud:
+
+- **Amplitud**: Controlada por probabilidades a priori de Policy Network
+- **Profundidad**: Determinada por la precisión de Value Network
+
+Cuando la red neuronal es buena:
+- Movimientos de alta confianza se exploran profundamente
+- Movimientos de baja confianza se descartan rápidamente
+- La búsqueda se enfoca naturalmente en ramas importantes
+
+### Comparación con Búsqueda Tradicional
+
+| Método | Control de Profundidad | Control de Amplitud |
+|--------|----------------------|---------------------|
+| Minimax | Profundidad fija | Poda Alpha-Beta |
+| MCTS Tradicional | Determinado por simulación | UCB1 |
+| MCTS de AlphaGo | Guiado por Policy + Value | PUCT + Policy |
+
+La búsqueda de AlphaGo es más "inteligente" -- sabe qué lugares vale la pena explorar profundamente y cuáles pueden omitirse rápidamente.
+
+---
+
+## Correspondencia con Animaciones
+
+Conceptos centrales cubiertos en este artículo y sus números de animación:
+
+| Número | Concepto | Correspondencia Física/Matemática |
+|--------|----------|----------------------------------|
+| C5 | Cuatro fases de MCTS | Búsqueda de árbol |
+
+---
+
+## Resumen
+
+La combinación de MCTS y redes neuronales es la innovación central de AlphaGo. Aprendimos:
+
+1. **MCTS Tradicional**: Selection, Expansion, Simulation, Backpropagation
+2. **Mejoras de Red Neuronal**: Policy Network guía expansión, Value Network reemplaza Rollout
+3. **Proceso de Búsqueda**: Selección PUCT, evaluación por lotes, retropropagación
+4. **Asignación de Recursos**: Número de simulaciones, gestión de tiempo, búsqueda paralela
+5. **Selección por Temperatura**: Diferentes estrategias para entrenamiento y competición
+6. **Detalles de Implementación**: Gestión de memoria, reutilización de árbol, caché
+
+En el próximo artículo, exploraremos en detalle los detalles matemáticos de la fórmula PUCT.
+
+---
+
+## Lecturas Adicionales
+
+- **Siguiente artículo**: [Explicación Detallada de la Fórmula PUCT](../puct-formula) — Principios matemáticos de la selección MCTS
+- **Artículo anterior**: [Auto-juego](../self-play) — Mecanismo y efectos del auto-juego
+- **Relacionado**: [Explicación Detallada de Policy Network](../policy-network) — Arquitectura de la red de políticas
+
+---
+
+## Referencias
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 550, 354-359.
+3. Coulom, R. (2006). "Efficient Selectivity and Backup Operators in Monte-Carlo Tree Search." *Computers and Games*.
+4. Kocsis, L., & Szepesvari, C. (2006). "Bandit based Monte-Carlo Planning." *ECML*.
+5. Browne, C., et al. (2012). "A Survey of Monte Carlo Tree Search Methods." *IEEE TCIAIG*.
+6. Rosin, C. D. (2011). "Multi-armed bandits with episode context." *Annals of Mathematics and Artificial Intelligence*.

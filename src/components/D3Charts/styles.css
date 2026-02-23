@@ -1,0 +1,309 @@
+/* D3Charts 共用樣式 */
+
+/* 棋盤容器 */
+.go-board-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.go-board {
+  background: #dcb35c;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.go-board .grid-line {
+  stroke: #333;
+  stroke-width: 1;
+}
+
+.go-board .star-point {
+  fill: #333;
+}
+
+.go-board .stone-black {
+  fill: #1a1a1a;
+  stroke: #000;
+  stroke-width: 1;
+}
+
+.go-board .stone-white {
+  fill: #f5f5f5;
+  stroke: #333;
+  stroke-width: 1;
+}
+
+/* 熱力圖 */
+.heatmap-cell {
+  stroke: none;
+  transition: opacity 0.2s;
+}
+
+.heatmap-cell:hover {
+  stroke: #333;
+  stroke-width: 2;
+}
+
+.heatmap-label {
+  font-size: 10px;
+  fill: #333;
+  pointer-events: none;
+}
+
+/* MCTS 樹 */
+.mcts-tree-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+  overflow-x: auto;
+}
+
+.mcts-tree .node circle {
+  fill: #fff;
+  stroke: #4a90d9;
+  stroke-width: 2;
+  transition: all 0.3s;
+}
+
+.mcts-tree .node circle:hover {
+  fill: #e6f0ff;
+  stroke-width: 3;
+}
+
+.mcts-tree .node text {
+  font-size: 11px;
+  fill: #333;
+}
+
+.mcts-tree .link {
+  fill: none;
+  stroke: #999;
+  stroke-width: 1.5;
+}
+
+.mcts-tree .link.selected {
+  stroke: #4a90d9;
+  stroke-width: 3;
+}
+
+/* ELO 圖表 */
+.elo-chart-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.elo-chart .axis-label {
+  font-size: 12px;
+  fill: #666;
+}
+
+.elo-chart .line {
+  fill: none;
+  stroke: #4a90d9;
+  stroke-width: 2;
+}
+
+.elo-chart .area {
+  fill: #4a90d9;
+  opacity: 0.1;
+}
+
+.elo-chart .grid line {
+  stroke: #ddd;
+  stroke-dasharray: 2,2;
+}
+
+.elo-chart .milestone {
+  fill: #e74c3c;
+}
+
+.elo-chart .milestone-label {
+  font-size: 10px;
+  fill: #333;
+}
+
+/* CNN 層視覺化 */
+.cnn-layers-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+  overflow-x: auto;
+}
+
+.cnn-layer {
+  fill: #4a90d9;
+  opacity: 0.7;
+  stroke: #2c5282;
+  stroke-width: 1;
+}
+
+.cnn-layer:hover {
+  opacity: 1;
+}
+
+.cnn-arrow {
+  fill: #666;
+}
+
+.cnn-label {
+  font-size: 10px;
+  fill: #333;
+  text-anchor: middle;
+}
+
+/* ResNet Block */
+.resnet-block-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.resnet-block rect {
+  fill: #4a90d9;
+  rx: 4;
+  ry: 4;
+}
+
+.resnet-block .skip-connection {
+  fill: none;
+  stroke: #e74c3c;
+  stroke-width: 2;
+  stroke-dasharray: 5,3;
+}
+
+.resnet-block .add-node {
+  fill: #27ae60;
+}
+
+/* 互動控制 */
+.d3-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.d3-controls button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.d3-controls button:hover {
+  background: #f5f5f5;
+  border-color: #4a90d9;
+}
+
+.d3-controls button.active {
+  background: #4a90d9;
+  color: #fff;
+  border-color: #4a90d9;
+}
+
+.d3-slider {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.d3-slider input[type="range"] {
+  width: 150px;
+}
+
+.d3-slider label {
+  font-size: 14px;
+  color: #666;
+}
+
+/* 提示框 */
+.d3-tooltip {
+  position: absolute;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  pointer-events: none;
+  z-index: 1000;
+  max-width: 200px;
+}
+
+/* 圖例 */
+.d3-legend {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.d3-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 12px;
+  color: #666;
+}
+
+.d3-legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+}
+
+/* 響應式 */
+@media (max-width: 768px) {
+  .go-board-container,
+  .mcts-tree-container,
+  .elo-chart-container,
+  .cnn-layers-container,
+  .resnet-block-container {
+    overflow-x: auto;
+    padding: 0 1rem;
+  }
+
+  .d3-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* 暗色主題支援 */
+[data-theme='dark'] .go-board {
+  background: #b8943f;
+}
+
+[data-theme='dark'] .go-board .grid-line {
+  stroke: #1a1a1a;
+}
+
+[data-theme='dark'] .mcts-tree .node text,
+[data-theme='dark'] .elo-chart .axis-label,
+[data-theme='dark'] .cnn-label,
+[data-theme='dark'] .heatmap-label {
+  fill: #ddd;
+}
+
+[data-theme='dark'] .elo-chart .grid line {
+  stroke: #444;
+}
+
+[data-theme='dark'] .d3-controls button {
+  background: #333;
+  border-color: #555;
+  color: #ddd;
+}
+
+[data-theme='dark'] .d3-controls button:hover {
+  background: #444;
+}
+
+[data-theme='dark'] .d3-controls button.active {
+  background: #4a90d9;
+}

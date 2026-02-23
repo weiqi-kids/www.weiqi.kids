@@ -1,0 +1,547 @@
+---
+sidebar_position: 4
+title: Análise Profunda da "Jogada Divina"
+description: Da teoria do Go às reações dos especialistas e à perspectiva da IA, uma análise completa da jogada 37 do segundo jogo de AlphaGo contra Lee Sedol
+---
+
+import { PolicyHeatmap } from '@site/src/components/D3Charts';
+
+# Análise Profunda da "Jogada Divina"
+
+Em 10 de março de 2016, no segundo jogo entre AlphaGo e Lee Sedol, na jogada 37, AlphaGo colocou uma pedra na quinta linha no canto superior direito - uma "shoulder hit" (kata-tsuki).
+
+Esta jogada foi mais tarde chamada de "**Jogada Divina**" (Divine Move). Ela não apenas ajudou o AlphaGo a vencer o jogo, mas também mudou a compreensão humana do Go.
+
+Este artigo analisará esta jogada de múltiplas perspectivas: contexto do jogo, teoria tradicional do Go, reações dos especialistas, perspectiva da IA e seu impacto duradouro na teoria do Go.
+
+---
+
+## Revisão da Posição do Jogo
+
+### Abertura do Segundo Jogo
+
+Após perder o primeiro jogo, Lee Sedol fez ajustes no segundo. Ele escolheu jogar de brancas (segundo a mover), esperando observar as tendências de abertura do AlphaGo antes de formular uma estratégia.
+
+Fase de abertura:
+- **Preto 1**: Ponto estrela no canto superior direito
+- **Branco 2**: Ponto estrela no canto inferior esquerdo
+- **Preto 3-Branco 4**: Cada lado ocupa um canto
+
+Até a jogada 36, o jogo se desenvolveu normalmente. AlphaGo jogando de pretas tinha travado uma batalha local no canto superior direito. Brancas (Lee Sedol) tinham construído influência no lado direito, enquanto pretas tinham algum potencial de território no topo.
+
+### Posição Após a Jogada 36
+
+Vejamos o estado do tabuleiro após a jogada 36:
+
+```
+     A B C D E F G H J K L M N O P Q R S T
+ 19  . . . . . . . . . . . . . . . . . . .
+ 18  . . . . . . . . . . . . . . . . . . .
+ 17  . . . ○ . . . . . . . . . . . ● . . .
+ 16  . . . ╋ . . . . . ╋ . . . . . ╋ . . .
+ 15  . . . . . . . . . . . . . . . ● . . .
+ 14  . . . . . . . . . . . . . . ○ . . . .  ← Esfera de influência branca
+ 13  . . . . . . . . . . . . . . . . . . .
+ 12  . . . . . . . . . . . . . . . . . . .
+ 11  . . . . . . . . . . . . . . . . . . .
+ 10  . . . ╋ . . . . . ╋ . . . . . ╋ . . .
+  9  . . . . . . . . . . . . . . . . . . .
+  8  . . . . . . . . . . . . . . . . . . .
+  7  . . . . . . . . . . . . . . . . . . .
+  6  . . . . . . . . . . . . . . . . . . .
+  5  . . . . . . . . . . . . . . . . . . .
+  4  . . . ╋ . . . . . ╋ . . . . . ╋ . . .
+  3  . . . ○ . . . . . . . . . . . ● . . .
+  2  . . . . . . . . . . . . . . . . . . .
+  1  . . . . . . . . . . . . . . . . . . .
+```
+
+(Diagrama simplificado; a posição real é mais complexa)
+
+Observações principais:
+- Brancas têm influência exterior no lado direito
+- Pretas têm potencial de território no topo
+- A batalha do canto superior direito chegou a uma pausa
+
+Era a vez das pretas (AlphaGo) jogar.
+
+---
+
+## Análise das Jogadas Tradicionais
+
+### Expectativas dos Jogadores Profissionais
+
+Antes da jogada 37, os jogadores profissionais na sala de comentários estavam discutindo intensamente. A expectativa geral era que pretas escolheria uma das seguintes jogadas:
+
+**Opção A: Aproximação no canto inferior direito**
+
+Esta era a escolha mais "normal". Pretas poderia:
+- Ocupar o último ponto grande (canto inferior direito)
+- Manter o equilíbrio na posição
+- Seguir o valor tradicional de "cantos de ouro, bordas de prata, centro de capim"
+
+**Opção B: Reforçar o território no topo**
+
+Pretas também poderia fazer uma extensão de dois ou três espaços no topo, consolidando sua esfera de influência. Isso poderia:
+- Converter o potencial do topo em território
+- Limitar o espaço de desenvolvimento das brancas
+
+**Opção C: Redução no centro**
+
+Alguns jogadores pensaram que pretas poderia jogar no centro para restringir a influência externa das brancas no lado direito. Embora não fosse a escolha mais comum, fazia sentido estratégico.
+
+🎬 C3: Avaliação de valor na teoria tradicional do Go
+
+### Uma Escolha que Ninguém Previu
+
+No entanto, AlphaGo escolheu uma posição que quase ninguém havia pensado:
+
+**E5 (Shoulder hit na quinta linha)**
+
+Esta jogada foi colocada na metade direita do tabuleiro, próximo ao centro, como um "shoulder hit" na influência exterior das brancas no lado direito.
+
+---
+
+## Jogada 37: Shoulder Hit na Quinta Linha
+
+### Onde Está Esta Jogada?
+
+```
+     A B C D E F G H J K L M N O P Q R S T
+ 19  . . . . . . . . . . . . . . . . . . .
+ 18  . . . . . . . . . . . . . . . . . . .
+ 17  . . . ○ . . . . . . . . . . . ● . . .
+ 16  . . . ╋ . . . . . ╋ . . . . . ╋ . . .
+ 15  . . . . . . . . . ★ . . . . . ● . . .  ← Jogada 37 (★)
+ 14  . . . . . . . . . . . . . . ○ . . . .
+ 13  . . . . . . . . . . . . . . . . . . .
+ 12  . . . . . . . . . . . . . . . . . . .
+```
+
+A jogada 37 foi colocada na posição **K15** (ou J5, dependendo do sistema de coordenadas usado).
+
+### O Que É um "Shoulder Hit"?
+
+"Shoulder hit" (kata-tsuki) é uma técnica no Go que se refere a uma jogada diagonal próxima a uma pedra adversária. Suas características são:
+
+- **Sem contato direto**: Mantém uma distância de uma intersecção da pedra adversária
+- **Destrói a estrutura**: Perturba o desenvolvimento esperado do oponente
+- **Difícil de responder**: Qualquer resposta do oponente terá algum custo
+
+Tradicionalmente, shoulder hits são jogados na terceira ou quarta linha. **Shoulder hit na quinta linha** é extremamente raro porque:
+
+1. **Posição muito alta**: A quinta linha está próxima ao centro, tradicionalmente considerada menos eficiente
+2. **Vulnerável a ataques**: Pedras isoladas podem se tornar alvos de ataque
+3. **Valor incerto**: Não tem valor territorial claro como cantos e bordas
+
+🎬 C5: Propriedades geométricas do shoulder hit
+
+---
+
+## Reações Imediatas dos Especialistas
+
+### Choque na Sala de Comentários
+
+No momento em que a jogada 37 foi feita, a sala de comentários ficou brevemente em silêncio.
+
+**Comentarista coreano (Kim Seong-ryong 9 dan)**:
+
+> "Isso... o que é isso? Esta jogada está na quinta linha? Eu não entendo. Deve ser um erro, certo?"
+
+**Comentarista chinês (Gu Li 9 dan)**:
+
+> "Eu não consigo entender esta jogada. Se um dos meus alunos jogasse assim, eu o criticaria severamente."
+
+**Comentarista americano (Michael Redmond 9 dan)**:
+
+> "Very unusual move. I don't think any human would play this."
+>
+> (Uma jogada muito incomum. Não creio que qualquer humano jogaria assim.)
+
+### Comentários em Tempo Real dos Jogadores Profissionais
+
+Em várias plataformas de transmissão ao vivo, jogadores profissionais expressaram suas opiniões:
+
+**Ke Jie** (número 1 do ranking mundial na época):
+
+> "Eu não consigo entender a intenção desta jogada. Se AlphaGo vencer, vou estudá-la seriamente."
+
+**Park Junghwan** (jogador coreano de elite):
+
+> "Esta jogada é muito estranha. Será que o programa deu algum bug?"
+
+**Mi Yuting** (campeão mundial chinês):
+
+> "Shoulder hit na quinta linha? Nunca vi esse tipo de jogada."
+
+🎬 C7: A lacuna entre a intuição dos especialistas e a avaliação da IA
+
+### "Uma em Dez Mil"
+
+Após a partida, a equipe da DeepMind revelou um dado surpreendente:
+
+> "De acordo com nossa análise, se um jogador profissional enfrentasse a mesma posição, a probabilidade de escolher a posição da jogada 37 seria aproximadamente **uma em dez mil**."
+
+Em outras palavras, no corpo de conhecimento do Go humano, esta jogada praticamente "não existia" como opção.
+
+---
+
+## A Perspectiva da IA
+
+### Distribuição de Probabilidades da Policy Network
+
+Vejamos como a Policy Network do AlphaGo avaliou esta posição:
+
+<PolicyHeatmap initialPosition="move37" size={450} showTopN={5} />
+
+A figura acima mostra a avaliação de probabilidade de jogada do AlphaGo para cada posição.
+
+Observações principais:
+- **Posição da jogada 37**: Probabilidade de aproximadamente 8%, não a mais alta
+- **Pontos tradicionais** (como canto inferior direito): Probabilidade de aproximadamente 12%
+- **Outras posições candidatas**: Distribuídas em diferentes áreas
+
+Curiosamente, a jogada 37 **não era a escolha de maior probabilidade** na avaliação da Policy Network. Então por que o AlphaGo a escolheu?
+
+🎬 C9: Distribuição de saída da Policy Network
+
+### Avaliação Profunda do MCTS
+
+A resposta está na **Busca em Árvore Monte Carlo (MCTS)**.
+
+A Policy Network apenas fornece "intuição"; a decisão real vem das simulações profundas do MCTS. Antes de tomar uma decisão, o AlphaGo simula milhares de futuros possíveis.
+
+Para a jogada 37, o processo de avaliação do MCTS foi assim:
+
+```
+Posição K15 (Jogada 37):
+├── Simulação 1: Vitória preta (+0.3)
+├── Simulação 2: Vitória preta (+0.5)
+├── Simulação 3: Vitória preta (+0.2)
+├── ...
+└── Taxa de vitória média: 58%
+
+Posição R3 (Aproximação canto inferior direito):
+├── Simulação 1: Vitória preta (+0.1)
+├── Simulação 2: Vitória branca (-0.2)
+├── Simulação 3: Vitória preta (+0.2)
+├── ...
+└── Taxa de vitória média: 52%
+```
+
+Embora o canto inferior direito tivesse maior "probabilidade intuitiva", após simulação profunda, a jogada 37 tinha uma **taxa de vitória esperada mais alta**.
+
+🎬 C11: Como o MCTS corrige o julgamento da Policy Network
+
+### Avaliação Global da Value Network
+
+A Value Network avaliou o valor da jogada 37 de uma perspectiva global:
+
+**Taxa de vitória antes da jogada 37**: Aproximadamente 52% (pretas ligeiramente à frente)
+
+**Taxa de vitória após a jogada 37**: Aproximadamente 58% (vantagem clara das pretas)
+
+Isso significa que a jogada 37 aumentou a taxa de vitória esperada do AlphaGo em **6 pontos percentuais**.
+
+Essa magnitude de melhoria é bastante significativa no Go. Normalmente, uma boa jogada trazendo uma melhoria de 2-3% na taxa de vitória já é considerada excelente.
+
+🎬 C13: Avaliação incremental da Value Network
+
+---
+
+## Análise da Teoria do Go: Por Que Shoulder Hit na Quinta Linha?
+
+### Do Ponto de Vista Local
+
+Superficialmente, a jogada 37 parece muito ineficiente:
+
+- **Posição muito alta**: A quinta linha está mais próxima do centro que a quarta ou terceira
+- **Sem território**: Não cerca território diretamente como cantos e bordas
+- **Vulnerável a ataques**: A pedra isolada pode ser atacada pelas brancas
+
+Mas se analisarmos cuidadosamente, esta jogada tem vários benefícios sutis:
+
+1. **Destrói a influência das brancas**: Brancas planejavam desenvolver o lado direito; a jogada 37 interrompeu esse plano
+2. **Estabelece própria influência**: Embora não cerque território, estabelece presença no centro
+3. **Aumenta a complexidade**: Cria uma posição complexa, favorável ao lado com maior poder de cálculo
+
+### Do Ponto de Vista Global
+
+O verdadeiro valor desta jogada precisa ser entendido de uma perspectiva global:
+
+**O Equilíbrio Entre Espessura e Território**
+
+A teoria tradicional do Go diz "cantos de ouro, bordas de prata, centro de capim" — cantos têm mais valor, o centro tem menos. Mas a jogada 37 desafiou essa noção.
+
+A avaliação do AlphaGo mostrou: nesta posição específica, **a influência no centro era mais valiosa que o território nos cantos e bordas**.
+
+Isso porque:
+- Pretas já tinham base territorial suficiente
+- A influência externa das brancas no lado direito seria muito forte se se desenvolvesse
+- Restringir as brancas era mais importante que expandir a si mesmo
+
+🎬 C15: Cálculo da função de valor global
+
+**O Valor do "Sente"**
+
+A jogada 37 também tinha um benefício subestimado: ela mantinha o "sente" (iniciativa).
+
+No Go, "sente" significa ter a iniciativa. Depois da jogada 37, brancas tiveram que responder, permitindo que pretas continuasse a direcionar o desenvolvimento do jogo.
+
+Se pretas tivesse escolhido a "normal" aproximação no canto inferior direito, ambos os lados poderiam ter jogado um joseki no canto, e a posição tenderia ao equilíbrio. Mas a jogada 37 quebrou esse equilíbrio, tornando a posição cheia de incerteza — exatamente o que AlphaGo dominava.
+
+### O Dilema de Lee Sedol
+
+Após a jogada 37, Lee Sedol pensou por muito tempo. O dilema que enfrentou:
+
+**Se responder diretamente (por exemplo, pular ou saltar)**:
+- Equivale a reconhecer o valor da jogada 37
+- Permite que pretas atinja seu objetivo de destruir a influência das brancas
+
+**Se ignorar**:
+- Pretas pode desenvolver ainda mais o centro
+- A influência externa das brancas no lado direito dificilmente se tornará território
+
+No final, Lee Sedol escolheu responder. Mas não importava o que escolhesse, a jogada 37 já havia alcançado seu propósito.
+
+🎬 C17: Escolha forçada na teoria dos jogos
+
+---
+
+## Desenvolvimento Subsequente: Da Jogada 37 à Vitória
+
+### Evolução do Meio de Jogo
+
+Após a jogada 37, o jogo entrou em uma complexa batalha de meio de jogo.
+
+**Desenvolvimentos principais**:
+
+- **Jogadas 40-50**: Ambos os lados travaram uma intensa batalha de contato no lado direito
+- **Jogadas 50-70**: AlphaGo usou a influência estabelecida pela jogada 37 para ganhar vantagem no centro
+- **Jogadas 70-100**: Pretas gradualmente converteu a vantagem em território
+
+Por volta da jogada 100, a liderança do AlphaGo já era bastante óbvia. Embora Lee Sedol tentasse contra-atacar, não conseguiu reverter a situação.
+
+### Resultado Final
+
+**AlphaGo venceu por desistência no meio de jogo**
+
+A vitória neste jogo foi em grande parte graças à jogada 37. Análises pós-jogo mostraram que sem a jogada 37, a posição teria sido muito mais equilibrada, e brancas poderiam até ter conseguido vantagem.
+
+🎬 C19: Como uma jogada muda o rumo de todo o jogo
+
+---
+
+## Impacto na Teoria do Go
+
+### Nascimento de Novos Josekis
+
+A jogada 37 provocou uma reconsideração da técnica "shoulder hit" no mundo do Go.
+
+**Visão tradicional**:
+- Shoulder hits devem ser jogados na terceira ou quarta linha
+- Shoulder hit na quinta linha é muito ineficiente
+- Pedras isoladas são vulneráveis a ataques
+
+**Após AlphaGo**:
+- Shoulder hit na quinta linha é a melhor escolha em certas posições
+- A "altura" de uma posição importa menos que o "efeito"
+- É preciso avaliar o valor de cada jogada de uma perspectiva global
+
+### Aprendizado dos Jogadores Humanos
+
+Após a jogada 37, muitos jogadores profissionais começaram a tentar jogadas similares:
+
+**Ke Jie** usou shoulder hit na quinta linha em vários jogos em 2017, com sucesso:
+
+> "AlphaGo me ensinou que muitas jogadas que considerávamos 'ruins' são apenas coisas que não entendíamos."
+
+**Park Junghwan** também incorporou essa forma de pensar em seus próprios jogos:
+
+> "O importante não é memorizar a posição específica da jogada 37, mas aprender a ver o tabuleiro com novos olhos."
+
+🎬 C21: Como a IA expande os limites da cognição humana
+
+### Insights para o Treinamento de IA de Go
+
+A jogada 37 também teve profundo impacto na pesquisa de IA de Go:
+
+**Reflexão sobre a Policy Network**:
+
+Por que a Policy Network deu menor probabilidade à jogada 37? Porque ela aprendeu com registros de jogos humanos, e humanos quase nunca jogam esse tipo de jogada.
+
+Isso mostra: **aprendizado supervisionado (aprender com humanos) não é suficiente**. A IA precisa de auto-exploração para descobrir boas jogadas desconhecidas pelos humanos.
+
+Esta também foi uma das razões pelas quais o **AlphaGo Zero** adotou treinamento puramente por auto-jogo.
+
+**Afirmação do MCTS**:
+
+A jogada 37 provou o valor da busca profunda do MCTS. Mesmo que a intuição (Policy Network) não favorecesse uma jogada, análise profunda pode descobrir seu valor potencial.
+
+Esse insight foi posteriormente aplicado a muitos outros campos.
+
+---
+
+## Detalhes Técnicos: Reproduzindo o Processo de Decisão da Jogada 37
+
+### Características de Entrada da Policy Network
+
+Após a jogada 36, a entrada da Policy Network incluía:
+
+| Plano de Características | Descrição |
+|--------------------------|-----------|
+| 1-8 | Posições das pretas (últimas 8 jogadas) |
+| 9-16 | Posições das brancas (últimas 8 jogadas) |
+| 17 | De quem é a vez |
+| 18-48 | Outras características (liberdades, atari, etc.) |
+
+Total de **48 planos de características 19x19**, formando o tensor de entrada.
+
+🎬 C23: Importância da engenharia de características na IA de Go
+
+### Saída da Policy Network
+
+A Policy Network produz uma distribuição de probabilidade de **19x19 = 361** dimensões.
+
+Para a posição da jogada 37:
+
+```python
+# Top 5 posições candidatas (ilustração simplificada)
+{
+    "R3": 0.12,   # Aproximação canto inferior direito
+    "Q17": 0.10,  # Canto superior direito
+    "C10": 0.09,  # Ponto grande no lado esquerdo
+    "K15": 0.08,  # Posição da jogada 37
+    "D16": 0.07,  # Canto superior esquerdo
+    # ... outras 356 posições
+}
+```
+
+### Processo de Exploração do MCTS
+
+AlphaGo usa a fórmula PUCT para equilibrar exploração e aproveitamento:
+
+```
+U(s,a) = Q(s,a) + c_puct × P(s,a) × sqrt(sum_b N(s,b)) / (1 + N(s,a))
+```
+
+Onde:
+- `Q(s,a)`: Valor médio da posição a
+- `P(s,a)`: Probabilidade dada pela Policy Network
+- `N(s,a)`: Número de vezes que a posição foi explorada
+- `c_puct`: Constante de exploração
+
+Para a jogada 37, embora a probabilidade inicial P fosse baixa, após múltiplas simulações, o valor Q aumentou continuamente, eventualmente superando outras posições candidatas.
+
+🎬 C25: Como a fórmula PUCT descobre boas jogadas não intuitivas
+
+### Impacto do Número de Simulações
+
+A equipe da DeepMind analisou posteriormente que a "descoberta" da jogada 37 requer um número suficiente de simulações:
+
+| Número de Simulações | Melhor Escolha |
+|----------------------|----------------|
+| 100 | R3 (canto inferior direito) |
+| 1.000 | Q17 (canto superior direito) |
+| 10.000 | K15 (jogada 37) |
+| 100.000 | K15 (mais certeza) |
+
+Isso mostra: **busca profunda pode descobrir boas jogadas que busca superficial não consegue encontrar**.
+
+---
+
+## Reflexões Filosóficas: Diferenças Cognitivas Entre Humanos e IA
+
+### Por Que Humanos Não Pensaram na Jogada 37?
+
+Esta é uma questão profunda. Possíveis razões incluem:
+
+**1. Limitações da Experiência**
+
+O conhecimento dos jogadores humanos vem do estudo de registros de jogos anteriores. Se predecessores nunca jogaram certo tipo de jogada, não vamos considerá-la.
+
+**2. Viés da Intuição**
+
+A intuição humana é útil, mas também tem limitações. Nossa intuição nos faz "não ver" certas opções.
+
+**3. Diferenças no Poder de Cálculo**
+
+O valor da jogada 37 requer cálculo profundo para ser descoberto. Humanos têm poder de cálculo limitado e não podem simular milhares de possibilidades como a IA.
+
+🎬 C27: Viés cognitivo e a transcendência da IA
+
+### O Que É a "Intuição" da Máquina?
+
+AlphaGo tem "intuição"?
+
+Em certo sentido, a Policy Network é a "intuição" do AlphaGo — ela pode avaliar o potencial de cada posição em milissegundos.
+
+Mas essa "intuição" difere da intuição humana:
+- **Intuição humana**: Vem da experiência e reconhecimento de padrões
+- **Intuição da IA**: Vem da aprendizagem estatística de grandes quantidades de dados
+
+Curiosamente, a jogada 37 provou que: **a "intuição" da IA pode ser corrigida pelo MCTS**. Isso significa que a IA pode "refletir" sobre sua própria intuição e encontrar melhores escolhas.
+
+### O Que os Humanos Podem Aprender com a IA?
+
+O maior insight que a jogada 37 deu aos jogadores humanos pode ser:
+
+> **Não deixe a experiência se tornar uma prisão**
+
+Muitas jogadas "ruins" podem ser apenas coisas que não entendemos. Abrir a mente, estar disposto a tentar jogadas não tradicionais, pode revelar novas possibilidades.
+
+Esse insight não se aplica apenas ao Go, mas a muitas áreas da vida.
+
+---
+
+## Correspondência com Animações
+
+Os conceitos principais abordados neste artigo e seus números de animação:
+
+| Número | Conceito | Correspondência Física/Matemática |
+|--------|----------|-----------------------------------|
+| 🎬 C3 | Avaliação de valor na teoria tradicional do Go | Função heurística |
+| 🎬 C5 | Propriedades geométricas do shoulder hit | Relações espaciais |
+| 🎬 C7 | Lacuna entre intuição dos especialistas e avaliação da IA | Erro de previsão |
+| 🎬 C9 | Distribuição de saída da Policy Network | Probabilidade Softmax |
+| 🎬 C11 | Como o MCTS corrige a Policy Network | Atualização Bayesiana |
+| 🎬 C13 | Avaliação incremental da Value Network | Função de valor |
+| 🎬 C15 | Cálculo da função de valor global | Aproximação integral |
+| 🎬 C17 | Escolha forçada na teoria dos jogos | Estratégia dominante |
+| 🎬 C19 | Como uma jogada muda o rumo de todo o jogo | Ponto de bifurcação |
+| 🎬 C21 | Como a IA expande os limites da cognição humana | Expansão do espaço de busca |
+| 🎬 C23 | Importância da engenharia de características na IA de Go | Aprendizado de representação |
+| 🎬 C25 | Como a fórmula PUCT descobre boas jogadas não intuitivas | Trade-off exploração-aproveitamento |
+| 🎬 C27 | Viés cognitivo e a transcendência da IA | Estimativa imparcial |
+
+---
+
+## Leitura Adicional
+
+- **Artigo anterior**: [Revisão de Partidas Importantes](../key-matches) — Histórico completo das partidas com Fan Hui, Lee Sedol e Ke Jie
+- **Próximo artigo**: [Por Que o Go É Difícil?](../why-go-is-hard) — Entendendo a complexidade computacional do Go
+- **Detalhes técnicos**: [Policy Network em Detalhe](../policy-network) — Compreensão profunda da rede de intuição
+- **Leitura avançada**: [Fórmula PUCT em Detalhe](../puct-formula) — A matemática da exploração e aproveitamento
+
+---
+
+## Exploração Interativa
+
+### Distribuição de Probabilidades da Policy Network
+
+Use a visualização interativa abaixo para explorar a saída da Policy Network em diferentes posições:
+
+<PolicyHeatmap initialPosition="move37" size={450} showTopN={5} interactive={true} />
+
+Tente alternar entre diferentes posições predefinidas e observe como a IA avalia a probabilidade de jogada para cada posição.
+
+---
+
+## Referências
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. DeepMind Blog: "AlphaGo: The story so far"
+3. Documentário *AlphaGo* (2017), dirigido por Greg Kohs.
+4. Registro oficial do segundo jogo Lee Sedol vs AlphaGo
+5. Análise profissional de registros Go4Go.net
+6. Relatório técnico pós-jogo da Associação Coreana de Go

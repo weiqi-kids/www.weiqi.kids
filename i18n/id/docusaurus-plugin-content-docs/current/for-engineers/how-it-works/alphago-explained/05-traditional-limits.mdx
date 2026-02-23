@@ -1,0 +1,741 @@
+---
+sidebar_position: 6
+title: Batas Metode Tradisional
+description: Dari Minimax hingga MCTS, memahami mengapa metode AI tradisional gagal dalam Go
+keywords: [Minimax, Alpha-Beta pruning, MCTS, Monte Carlo Tree Search, sejarah komputer Go]
+---
+
+import { MCTSTree, GoBoard } from '@site/src/components/D3Charts';
+
+# Batas Metode Tradisional
+
+Sebelum deep learning muncul, para peneliti menghabiskan puluhan tahun mencoba memecahkan masalah Go dengan metode "tradisional". Dari algoritma Minimax hingga Monte Carlo Tree Search (MCTS), setiap kemajuan membuat komputer Go sedikit lebih kuat, tetapi tidak pernah bisa mencapai level profesional manusia.
+
+Artikel ini akan membahas secara mendalam prinsip-prinsip metode ini, kelebihan dan kekurangannya, serta mengapa mereka menemui hambatan dalam Go.
+
+---
+
+## Algoritma Minimax: Fondasi Teori Permainan
+
+### Prinsip Dasar
+
+**Algoritma Minimax** adalah konsep inti teori permainan, dikemukakan oleh John von Neumann pada tahun 1928. Ide dasarnya adalah:
+
+> Dalam permainan zero-sum, saya harus memilih opsi yang tetap terbaik bagi saya setelah lawan memberikan "respons terbaik" mereka.
+
+Dengan kata lain:
+- **Saya (Max)** ingin memaksimalkan skor
+- **Lawan (Min)** ingin meminimalkan skor saya
+- Saya harus mengasumsikan lawan selalu membuat respons terbaik
+
+### Formalisasi Matematis
+
+Misalkan V(s) adalah nilai dari posisi s, didefinisikan secara rekursif sebagai berikut:
+
+```
+V(s) = eval(s)                        // jika s adalah posisi akhir
+V(s) = max{ V(result(s, a)) | a ∈ A(s) }  // jika giliran Max
+V(s) = min{ V(result(s, a)) | a ∈ A(s) }  // jika giliran Min
+```
+
+Di mana:
+- **A(s)**: Semua langkah legal di posisi s
+- **result(s, a)**: Hasil setelah melakukan langkah a di posisi s
+- **eval(s)**: Evaluasi untuk posisi akhir
+
+### Ilustrasi Pohon Pencarian
+
+```
+                Max Layer (Saya)
+                    │
+        ┌───────────┼───────────┐
+        │           │           │
+       -3          +5          +2
+        │           │           │
+    ─────────   ─────────   ─────────
+    Min Layer (Lawan)
+    │   │   │   │   │   │   │   │   │
+   -3  +7  +5 +5  -2  +9 +2  +1  +4
+```
+
+Dalam contoh ini:
+- Layer Min akan memilih nilai yang paling tidak menguntungkan bagi saya (nilai minimum)
+- Layer Max akan memilih nilai yang paling menguntungkan bagi saya (nilai maksimum)
+- Akhirnya, Max harus memilih cabang tengah (+5)
+
+### Implementasi Kode
+
+```python
+def minimax(state, depth, is_max_turn):
+    """
+    Implementasi dasar algoritma Minimax
+
+    Args:
+        state: Posisi saat ini
+        depth: Kedalaman pencarian
+        is_max_turn: Apakah giliran Max
+
+    Returns:
+        (nilai terbaik, langkah terbaik)
+    """
+    # Kondisi terminasi: mencapai batas kedalaman atau permainan berakhir
+    if depth == 0 or is_terminal(state):
+        return evaluate(state), None
+
+    legal_moves = get_legal_moves(state)
+    best_move = None
+
+    if is_max_turn:
+        best_value = float('-inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            value, _ = minimax(next_state, depth - 1, False)
+            if value > best_value:
+                best_value = value
+                best_move = move
+    else:
+        best_value = float('inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            value, _ = minimax(next_state, depth - 1, True)
+            if value < best_value:
+                best_value = value
+                best_move = move
+
+    return best_value, best_move
+```
+
+### Masalah Minimax dalam Go
+
+#### 1. Ledakan Ruang Pencarian
+
+Seperti disebutkan di [artikel sebelumnya](../why-go-is-hard), branching factor Go sekitar 250. Untuk melihat N langkah:
+
+**Jumlah node ≈ 250^N**
+
+| Kedalaman | Jumlah Node | Dengan evaluasi 1 juta node/detik |
+|-----------|-------------|-----------------------------------|
+| 2 | 62.500 | 0,06 detik |
+| 4 | 3,9 miliar | 65 menit |
+| 6 | 2,4×10^14 | 7.600 tahun |
+| 8 | 1,5×10^19 | 480 juta tahun |
+
+Melihat 6 langkah saja membutuhkan 7.600 tahun, apalagi melihat seluruh permainan.
+
+#### 2. Kesulitan Fungsi Evaluasi
+
+Bahkan jika kita hanya melihat 4 langkah, kita masih membutuhkan **fungsi evaluasi** yang akurat untuk menilai posisi non-terminal. Namun seperti disebutkan di artikel sebelumnya, evaluasi posisi Go sangat sulit.
+
+**Kesimpulan: Minimax murni sama sekali tidak dapat digunakan dalam Go.**
+
+---
+
+## Alpha-Beta Pruning: Mengurangi Pencarian yang Tidak Berguna
+
+### Wawasan Inti
+
+Wawasan inti Alpha-Beta pruning adalah: **Kita tidak perlu mencari setiap cabang**.
+
+Jika kita sudah tahu cabang tertentu "pasti tidak bagus", kita bisa langsung melewatinya.
+
+### Prinsip Pruning
+
+```
+Node Max A (nilai terbaik saat ini α = +5)
+    │
+    ├── Cabang 1: Sudah dievaluasi, nilai = +5
+    │
+    └── Cabang 2: Node Min B
+            │
+            ├── Sub-cabang B1: nilai = +3
+            │
+            └── Sub-cabang B2: ??? (bisa dilewati!)
+```
+
+Dalam contoh ini:
+- A sudah memiliki opsi dengan nilai +5
+- Sub-cabang pertama B adalah +3, jadi nilai akhir B ≤ +3
+- Karena B ≤ +3 < +5, A tidak akan memilih B
+- **B2 tidak perlu dievaluasi**
+
+Ini adalah **Beta pruning**. Demikian pula, ada **Alpha pruning**.
+
+### Formalisasi Matematis
+
+Memperkenalkan dua parameter:
+- **α (alpha)**: Nilai minimum yang dijamin Max saat ini (batas bawah)
+- **β (beta)**: Nilai maksimum yang dijamin Min saat ini (batas atas)
+
+Kondisi pruning:
+- Di node Max, jika value ≥ β, prune (Beta pruning)
+- Di node Min, jika value ≤ α, prune (Alpha pruning)
+
+### Implementasi Kode
+
+```python
+def alpha_beta(state, depth, alpha, beta, is_max_turn):
+    """
+    Algoritma Alpha-Beta Pruning
+
+    Args:
+        state: Posisi saat ini
+        depth: Kedalaman pencarian
+        alpha: Batas bawah Max
+        beta: Batas atas Min
+        is_max_turn: Apakah giliran Max
+
+    Returns:
+        (nilai, langkah terbaik)
+    """
+    if depth == 0 or is_terminal(state):
+        return evaluate(state), None
+
+    legal_moves = get_legal_moves(state)
+    best_move = None
+
+    if is_max_turn:
+        value = float('-inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            child_value, _ = alpha_beta(next_state, depth - 1,
+                                        alpha, beta, False)
+            if child_value > value:
+                value = child_value
+                best_move = move
+            alpha = max(alpha, value)
+            if value >= beta:
+                break  # Beta pruning
+        return value, best_move
+    else:
+        value = float('inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            child_value, _ = alpha_beta(next_state, depth - 1,
+                                        alpha, beta, True)
+            if child_value < value:
+                value = child_value
+                best_move = move
+            beta = min(beta, value)
+            if value <= alpha:
+                break  # Alpha pruning
+        return value, best_move
+
+# Cara pemanggilan
+value, best_move = alpha_beta(state, depth=4,
+                               alpha=float('-inf'),
+                               beta=float('inf'),
+                               is_max_turn=True)
+```
+
+### Efisiensi Pruning
+
+Dalam kondisi ideal (urutan langkah sempurna), Alpha-Beta dapat mengurangi branching factor efektif dari b menjadi √b:
+
+**Branching factor efektif = b^0.5**
+
+Ini berarti:
+- Catur: Dari 35 berkurang menjadi ~6
+- Go: Dari 250 berkurang menjadi ~16
+
+| Kedalaman | Jumlah Node Asli | Alpha-Beta (Ideal) | Percepatan |
+|-----------|------------------|--------------------| -----------|
+| 4 | 3,9 miliar | 65.000 | 60.000× |
+| 6 | 2,4×10^14 | 16 juta | 1,5×10^7 × |
+| 8 | 1,5×10^19 | 4,2 miliar | 3,6×10^9 × |
+
+### Mengapa Masih Tidak Cukup
+
+Bahkan dengan Alpha-Beta pruning, Go masih sulit ditangani:
+
+#### 1. Pruning Ideal Membutuhkan Urutan Sempurna
+
+Untuk mencapai efisiensi pruning ideal, perlu mencari cabang "terbaik" terlebih dahulu. Tetapi untuk mengetahui cabang mana yang terbaik, itu sendiri membutuhkan pencarian... Ini adalah masalah ayam dan telur.
+
+Pada kenyataannya, efisiensi pruning Go jauh di bawah nilai ideal, branching factor efektif mungkin masih 50-100.
+
+#### 2. Kedalaman Masih Tidak Cukup
+
+Bahkan jika branching factor efektif turun ke 50, melihat 10 langkah masih membutuhkan 50^10 ≈ 10^17 node. Ini masih terlalu banyak untuk komputer.
+
+#### 3. Hambatan Fungsi Evaluasi
+
+Alpha-Beta hanya memecahkan masalah "efisiensi pencarian", bukan masalah "akurasi evaluasi". Fungsi evaluasi yang buruk, dengan pencarian secepat apapun, hasilnya tetap buruk.
+
+**Kesimpulan: Alpha-Beta sangat meningkatkan AI catur, tetapi manfaatnya terbatas untuk Go.**
+
+---
+
+## Metode Monte Carlo Murni: Kekuatan Keacakan
+
+### Meninggalkan Fungsi Evaluasi
+
+Pada tahun 1990-an, para peneliti mulai mencoba ide yang radikal: **tidak menggunakan fungsi evaluasi**.
+
+Sebagai gantinya adalah **simulasi acak** (Random Playout):
+
+1. Mulai dari posisi saat ini
+2. Kedua pemain bermain secara acak sampai permainan berakhir
+3. Catat hasilnya (menang/kalah)
+4. Ulangi N kali, hitung win rate
+
+### Prinsip Estimasi Statistik
+
+Menurut hukum bilangan besar, ketika jumlah simulasi N cukup besar:
+
+**V̂(s) = Jumlah kemenangan simulasi / N ≈ V(s)**
+
+Standard error dari estimasi ini adalah:
+
+**SE = √(V(s)(1-V(s))/N) ≈ 1/(2√N)**
+
+| Jumlah Simulasi | Standard Error |
+|-----------------|----------------|
+| 100 | 5% |
+| 1.000 | 1,6% |
+| 10.000 | 0,5% |
+| 100.000 | 0,16% |
+
+### Implementasi Kode
+
+```python
+import random
+
+def random_playout(state, player):
+    """
+    Mulai dari posisi saat ini, kedua pemain bermain acak sampai selesai
+
+    Returns:
+        1 jika player menang, 0 jika kalah
+    """
+    current = state.copy()
+    current_player = player
+
+    while not is_terminal(current):
+        legal_moves = get_legal_moves(current)
+        if not legal_moves:
+            current_player = opponent(current_player)
+            continue
+
+        # Pilih langkah secara acak
+        move = random.choice(legal_moves)
+        current = apply_move(current, move)
+        current_player = opponent(current_player)
+
+    return 1 if get_winner(current) == player else 0
+
+
+def monte_carlo_move_selection(state, player, num_simulations=10000):
+    """
+    Gunakan metode Monte Carlo untuk memilih langkah terbaik
+    """
+    legal_moves = get_legal_moves(state)
+
+    if len(legal_moves) == 0:
+        return None
+
+    # Alokasikan jumlah simulasi untuk setiap langkah legal
+    sims_per_move = num_simulations // len(legal_moves)
+
+    best_move = None
+    best_win_rate = -1
+
+    for move in legal_moves:
+        next_state = apply_move(state, move)
+
+        wins = 0
+        for _ in range(sims_per_move):
+            wins += random_playout(next_state, opponent(player))
+
+        # Win rate lawan rendah = win rate saya tinggi
+        my_win_rate = 1 - (wins / sims_per_move)
+
+        if my_win_rate > best_win_rate:
+            best_win_rate = my_win_rate
+            best_move = move
+
+    return best_move, best_win_rate
+```
+
+### Kelebihan dan Keterbatasan
+
+#### Kelebihan
+
+1. **Tidak membutuhkan fungsi evaluasi**: Sepenuhnya bergantung pada simulasi
+2. **Berlaku untuk permainan apapun**: Hanya perlu mengetahui aturan
+3. **Memberikan estimasi probabilitas**: Mengetahui "seberapa yakin"
+
+#### Keterbatasan
+
+1. **Keacakan terlalu kuat**: Bermain acak sangat berbeda dari bermain profesional
+2. **Membutuhkan banyak simulasi**: Setiap langkah membutuhkan puluhan ribu simulasi
+3. **Titik buta taktis**: Taktik kunci mungkin terlewatkan secara acak
+
+### Performa Monte Carlo Murni dalam Go
+
+Program Go yang menggunakan metode Monte Carlo murni, kira-kira bisa mencapai:
+
+> Level **amatir 5-10 kyu**
+
+Ini lebih baik dari program yang menggunakan Minimax + fungsi evaluasi murni sebelumnya, tetapi masih sangat jauh dari level profesional.
+
+---
+
+## Terobosan MCTS (2006)
+
+### Lahirnya Algoritma UCT
+
+Pada tahun 2006, Rémi Coulom mengusulkan algoritma **MCTS (Monte Carlo Tree Search)**, menggabungkan keunggulan pencarian pohon dan simulasi Monte Carlo. Pada tahun yang sama, Levente Kocsis dan Csaba Szepesvári mengusulkan algoritma **UCT (Upper Confidence Bounds for Trees)**, memberikan dasar teoretis untuk MCTS.
+
+Ini adalah **terobosan tonggak sejarah** untuk komputer Go.
+
+### Rumus UCB1
+
+Inti dari MCTS adalah rumus **UCB1 (Upper Confidence Bound)**:
+
+```
+UCB1(s, a) = X̄(s,a) + C × √(ln(Ns) / n(s,a))
+```
+
+Di mana:
+- **X̄(s,a)**: Nilai rata-rata (win rate) mengambil aksi a di state s
+- **Ns**: Total kunjungan ke state s
+- **n(s,a)**: Jumlah mengambil aksi a di state s
+- **C**: Konstanta eksplorasi (biasanya C = √2)
+
+Rumus ini dengan cerdik menyeimbangkan **eksploitasi** (memilih yang sudah diketahui baik) dan **eksplorasi** (mencoba yang tidak diketahui).
+
+### Empat Tahap MCTS
+
+<MCTSTree showPUCT={true} width={700} height={450} />
+
+Setiap iterasi MCTS mencakup empat tahap:
+
+#### 1. Selection (Seleksi)
+
+Mulai dari node root, gunakan rumus UCB1 untuk memilih node anak, sampai mencapai node daun.
+
+```python
+def select(node):
+    """Gunakan UCB1 untuk memilih node anak terbaik"""
+    while node.is_fully_expanded():
+        node = max(node.children,
+                   key=lambda c: ucb1(c, node.visits))
+    return node
+
+def ucb1(child, parent_visits, C=1.414):
+    """Rumus UCB1"""
+    if child.visits == 0:
+        return float('inf')  # Node yang belum dikunjungi diprioritaskan
+
+    exploitation = child.wins / child.visits
+    exploration = C * math.sqrt(math.log(parent_visits) / child.visits)
+
+    return exploitation + exploration
+```
+
+#### 2. Expansion (Ekspansi)
+
+Tambahkan satu atau lebih node anak ke node daun.
+
+```python
+def expand(node, state):
+    """Ekspansi node"""
+    legal_moves = get_legal_moves(state)
+    untried = [m for m in legal_moves if m not in node.tried_moves]
+
+    if untried:
+        move = random.choice(untried)
+        new_state = apply_move(state, move)
+        child = Node(move=move, parent=node)
+        node.children.append(child)
+        node.tried_moves.add(move)
+        return child, new_state
+
+    return node, state
+```
+
+#### 3. Simulation (Simulasi)
+
+Mulai dari node baru, lakukan simulasi acak sampai permainan berakhir.
+
+```python
+def simulate(state, player):
+    """Simulasi acak sampai permainan berakhir"""
+    return random_playout(state, player)
+```
+
+#### 4. Backpropagation (Propagasi Balik)
+
+Propagasikan hasil simulasi ke semua node ancestor.
+
+```python
+def backpropagate(node, result):
+    """Propagasikan hasil ke semua ancestor"""
+    while node is not None:
+        node.visits += 1
+        node.wins += result
+        result = 1 - result  # Ganti perspektif
+        node = node.parent
+```
+
+### Implementasi MCTS Lengkap
+
+```python
+class MCTSNode:
+    def __init__(self, move=None, parent=None):
+        self.move = move
+        self.parent = parent
+        self.children = []
+        self.wins = 0
+        self.visits = 0
+        self.tried_moves = set()
+
+    def is_fully_expanded(self, legal_moves):
+        return len(self.tried_moves) == len(legal_moves)
+
+
+def mcts(root_state, player, num_iterations=10000):
+    """
+    Fungsi utama MCTS
+
+    Args:
+        root_state: Posisi awal
+        player: Pemain saat ini
+        num_iterations: Jumlah iterasi
+
+    Returns:
+        Langkah terbaik
+    """
+    root = MCTSNode()
+
+    for _ in range(num_iterations):
+        node = root
+        state = root_state.copy()
+        current_player = player
+
+        # 1. Selection
+        while node.children and node.is_fully_expanded(get_legal_moves(state)):
+            node = max(node.children,
+                      key=lambda c: ucb1(c, node.visits))
+            state = apply_move(state, node.move)
+            current_player = opponent(current_player)
+
+        # 2. Expansion
+        legal_moves = get_legal_moves(state)
+        if not node.is_fully_expanded(legal_moves) and not is_terminal(state):
+            move = random.choice([m for m in legal_moves
+                                  if m not in node.tried_moves])
+            state = apply_move(state, move)
+            child = MCTSNode(move=move, parent=node)
+            node.children.append(child)
+            node.tried_moves.add(move)
+            node = child
+            current_player = opponent(current_player)
+
+        # 3. Simulation
+        result = simulate(state, current_player)
+
+        # 4. Backpropagation
+        backpropagate(node, result)
+
+    # Pilih node anak dengan kunjungan terbanyak
+    return max(root.children, key=lambda c: c.visits).move
+```
+
+### Mengapa MCTS Efektif?
+
+Keberhasilan MCTS memiliki beberapa faktor kunci:
+
+#### 1. Fokus Bertahap
+
+MCTS tidak mencari semua cabang secara merata, tetapi mengalokasikan lebih banyak sumber daya ke cabang yang terlihat lebih menjanjikan. Ini memungkinkannya untuk "mengabaikan" langkah yang jelas buruk.
+
+#### 2. Algoritma Anytime
+
+MCTS dapat dihentikan kapan saja dan memberikan jawaban terbaik saat ini. Semakin banyak waktu, semakin baik jawabannya.
+
+#### 3. Tidak Membutuhkan Fungsi Evaluasi
+
+MCTS memperkirakan nilai melalui simulasi, tidak perlu merancang fungsi evaluasi secara manual.
+
+### 2006-2015: Era MCTS
+
+Kemunculan MCTS membawa komputer Go ke era baru:
+
+| Program | Tahun | Fitur | Kekuatan |
+|---------|-------|-------|----------|
+| **Crazy Stone** | 2006 | Program Go MCTS pertama | Amatir dan tinggi |
+| **MoGo** | 2007 | MCTS yang dioptimalkan | Amatir 5 dan |
+| **Zen** | 2009 | Menambahkan pengenalan pola | Amatir 6 dan |
+| **Crazy Stone** | 2013 | Mengalahkan 9 dan profesional dengan handicap 4 batu | Profesional 1 dan (setelah handicap) |
+
+Ini adalah kemajuan bersejarah, tetapi masih ada kesenjangan besar:
+
+> Program MCTS terkuat, dalam kondisi **tanpa handicap**, masih tidak bisa mengalahkan pemain profesional.
+
+---
+
+## Hambatan Fungsi Evaluasi
+
+### Keterbatasan Fitur Manual
+
+Sebelum MCTS, para peneliti mencoba merancang berbagai **fitur manual** untuk mengevaluasi posisi:
+
+#### Fitur Umum
+
+```python
+def evaluate_position(state):
+    """Fungsi evaluasi yang dirancang secara manual"""
+    score = 0
+
+    # 1. Estimasi wilayah
+    score += count_territory(state, BLACK) - count_territory(state, WHITE)
+
+    # 2. Kebebasan batu (jumlah liberti)
+    score += sum(liberties(group) for group in groups(state, BLACK))
+    score -= sum(liberties(group) for group in groups(state, WHITE))
+
+    # 3. Jumlah mata
+    score += count_eyes(state, BLACK) * 10
+    score -= count_eyes(state, WHITE) * 10
+
+    # 4. Kekuatan koneksi
+    score += connectivity_score(state, BLACK)
+    score -= connectivity_score(state, WHITE)
+
+    # ... lebih banyak fitur
+
+    return score
+```
+
+#### Masalah
+
+1. **Fitur tidak lengkap**: Banyak faktor dalam intuisi manusia sulit dideskripsikan dalam program
+2. **Sulit menyesuaikan bobot**: Bagaimana menentukan kepentingan relatif setiap fitur?
+3. **Lokal vs Global**: Perhitungan lokal mudah, penilaian global sulit
+4. **Interaksi**: Interaksi antar fitur sulit dimodelkan
+
+### Masalah Simulasi dalam MCTS
+
+Bahkan dalam MCTS yang tidak menggunakan fungsi evaluasi secara langsung, **kualitas simulasi** masih menjadi hambatan kunci.
+
+#### Masalah Simulasi Acak
+
+Bermain acak menghasilkan banyak posisi "tidak masuk akal", menyebabkan estimasi tidak akurat:
+
+- Naga besar mati sia-sia
+- Bisa menangkap tapi tidak menangkap
+- Melewatkan pembunuhan sederhana
+
+#### Upaya Perbaikan
+
+Para peneliti mencoba menambahkan **pengetahuan prior** dalam simulasi:
+
+```python
+def simulation_policy(state, legal_moves):
+    """
+    Kebijakan simulasi dengan pengetahuan prior
+    """
+    # Prioritaskan:
+    # 1. Menangkap
+    # 2. Melarikan diri
+    # 3. Menghubungkan
+    # 4. Menduduki titik besar
+    # ...
+
+    for move in legal_moves:
+        if is_capture(state, move):
+            return move
+        if saves_group(state, move):
+            return move
+
+    # Sisanya acak
+    return random.choice(legal_moves)
+```
+
+Tetapi aturan heuristik ini:
+- Meningkatkan biaya komputasi
+- Mungkin memperkenalkan bias
+- Masih tidak cukup akurat
+
+### Mengapa Perlu Neural Network
+
+Hambatan metode tradisional, pada dasarnya adalah masalah **representation learning**:
+
+> Bagaimana mempelajari fitur "langkah bagus" dari piksel papan (status 361 titik)?
+
+Inilah keunggulan **deep learning**:
+- **Pembelajaran fitur otomatis**: Tidak perlu desain manual
+- **Pemetaan non-linear**: Dapat menangkap hubungan kompleks
+- **Pelatihan end-to-end**: Langsung dari input ke output
+
+Terobosan deep learning di ImageNet pada 2012 membuat para peneliti mulai berpikir:
+
+> Jika neural network dapat "memahami" foto, apakah juga bisa "memahami" papan?
+
+Jawaban untuk pertanyaan ini adalah AlphaGo.
+
+---
+
+## Ringkasan Batas Metode Tradisional
+
+| Metode | Kelebihan | Masalah dalam Go |
+|--------|-----------|------------------|
+| **Minimax** | Teoritis lengkap, solusi optimal | Branching factor terlalu besar, tidak bisa pencarian dalam |
+| **Alpha-Beta** | Sangat mengurangi jumlah pencarian | Branching factor efektif masih terlalu tinggi |
+| **Monte Carlo Murni** | Tidak perlu fungsi evaluasi | Kualitas simulasi acak terlalu buruk |
+| **MCTS** | Pencarian fokus cerdas | Simulasi masih tidak cukup bagus, mencapai amatir tinggi |
+
+### Hambatan Inti
+
+Pada dasarnya, metode tradisional menghadapi dua hambatan besar:
+
+#### 1. Masalah Evaluasi
+- Tidak ada fungsi evaluasi yang bagus
+- Tidak bisa mengkuantifikasi konsep abstrak seperti "ketebalan" "pengaruh luar"
+- Fitur manual tidak cukup ekspresif
+
+#### 2. Masalah Pencarian
+- Bahkan dengan pruning, ruang pencarian masih terlalu besar
+- Tidak bisa melihat variasi cukup dalam
+- Kualitas simulasi mempengaruhi akurasi estimasi
+
+### Solusi AlphaGo
+
+AlphaGo menggunakan deep learning untuk memecahkan kedua masalah ini:
+
+1. **Policy Network**: Mempelajari "di mana mungkin langkah bagus", mengurangi branching factor efektif
+2. **Value Network**: Mempelajari "siapa lebih mungkin menang", menggantikan fungsi evaluasi manual
+3. **Integrasi MCTS**: Menggunakan neural network untuk memandu pencarian, menggunakan pencarian untuk meningkatkan keputusan
+
+Ini bukan sekadar "mengganti fungsi evaluasi dengan neural network", tetapi arsitektur yang sepenuhnya baru.
+
+---
+
+## Korespondensi Animasi
+
+Konsep inti yang dibahas dalam artikel ini dan nomor animasi:
+
+| Nomor | Konsep | Korespondensi Fisika/Matematika |
+|-------|--------|--------------------------------|
+| A B3 | Pencarian Minimax | Teori permainan, permainan zero-sum |
+| A C5 | Empat tahap MCTS | Metode Monte Carlo, UCB |
+| A C2 | Rumus UCB1 | Multi-armed bandit, keseimbangan eksplorasi-eksploitasi |
+| A C4 | Pertumbuhan pohon pencarian | Ekspansi bertahap |
+
+---
+
+## Bacaan Lanjutan
+
+- **Artikel sebelumnya**: [Mengapa Go Sulit?](../why-go-is-hard) - Ruang status dan kesulitan evaluasi
+- **Artikel selanjutnya**: [Representasi Status Papan](../board-representation) - Zobrist Hashing, pengkodean fitur
+- **Pendalaman teknis**: [Kombinasi MCTS dan Neural Network](../mcts-neural-combo) - Arsitektur inti AlphaGo
+
+---
+
+## Referensi
+
+1. Coulom, R. (2006). "Efficient Selectivity and Backup Operators in Monte-Carlo Tree Search." *Computers and Games*, 72-83. - Makalah asli MCTS
+2. Kocsis, L., & Szepesvári, C. (2006). "Bandit based Monte-Carlo Planning." *ECML*, 282-293. - Algoritma UCT
+3. Browne, C., et al. (2012). "A Survey of Monte Carlo Tree Search Methods." *IEEE TCIAIG*, 4(1), 1-43. - Survei MCTS
+4. Gelly, S., & Silver, D. (2011). "Monte-Carlo tree search and rapid action value estimation in computer Go." *Artificial Intelligence*, 175(11), 1856-1875. - Aplikasi MCTS dalam Go

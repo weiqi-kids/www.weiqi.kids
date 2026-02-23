@@ -1,0 +1,741 @@
+---
+sidebar_position: 6
+title: पारंपरिक तरीकों की सीमाएँ
+description: Minimax से MCTS तक, पारंपरिक AI तरीके गो में क्यों विफल होते हैं, इसकी गहन समझ
+keywords: [Minimax, Alpha-Beta छंटाई, MCTS, मोंटे कार्लो ट्री सर्च, कंप्यूटर गो इतिहास]
+---
+
+import { MCTSTree, GoBoard } from '@site/src/components/D3Charts';
+
+# पारंपरिक तरीकों की सीमाएँ
+
+डीप लर्निंग के आने से पहले, शोधकर्ताओं ने दशकों तक "पारंपरिक" तरीकों से गो की समस्या को हल करने का प्रयास किया। Minimax एल्गोरिथम से लेकर मोंटे कार्लो ट्री सर्च (MCTS) तक, हर प्रगति ने कंप्यूटर गो को थोड़ा मजबूत बनाया, लेकिन मानव पेशेवर स्तर तक कभी नहीं पहुँच पाया।
+
+यह लेख इन तरीकों के सिद्धांतों, फायदे-नुकसान, और गो में उनकी सीमाओं की गहराई से जाँच करेगा।
+
+---
+
+## Minimax एल्गोरिथम: गेम थ्योरी की नींव
+
+### मूल सिद्धांत
+
+**Minimax एल्गोरिथम** गेम थ्योरी की मूल अवधारणा है, जिसे John von Neumann ने 1928 में प्रस्तुत किया था। इसका मूल विचार है:
+
+> शून्य-योग खेल में, मुझे वह विकल्प चुनना चाहिए जिसमें प्रतिद्वंद्वी की "सर्वश्रेष्ठ प्रतिक्रिया" के बाद भी मेरी स्थिति सबसे अच्छी रहे।
+
+दूसरे शब्दों में:
+- **मैं (Max)** स्कोर को अधिकतम करना चाहता हूँ
+- **प्रतिद्वंद्वी (Min)** मेरे स्कोर को न्यूनतम करना चाहता है
+- मुझे मानना चाहिए कि प्रतिद्वंद्वी हमेशा सर्वश्रेष्ठ प्रतिक्रिया देगा
+
+### गणितीय सूत्रीकरण
+
+मान लें V(s) स्थिति s का मान है, पुनरावर्ती परिभाषा इस प्रकार है:
+
+```
+V(s) = eval(s)                        // यदि s अंतिम स्थिति है
+V(s) = max{ V(result(s, a)) | a ∈ A(s) }  // यदि Max की बारी है
+V(s) = min{ V(result(s, a)) | a ∈ A(s) }  // यदि Min की बारी है
+```
+
+जहाँ:
+- **A(s)**: स्थिति s में सभी वैध चालें
+- **result(s, a)**: स्थिति s में चाल a के बाद का परिणाम
+- **eval(s)**: अंतिम स्थिति का मूल्यांकन
+
+### सर्च ट्री आरेख
+
+```
+                Max स्तर (मैं)
+                    │
+        ┌───────────┼───────────┐
+        │           │           │
+       -3          +5          +2
+        │           │           │
+    ─────────   ─────────   ─────────
+    Min स्तर (प्रतिद्वंद्वी)
+    │   │   │   │   │   │   │   │   │
+   -3  +7  +5 +5  -2  +9 +2  +1  +4
+```
+
+इस उदाहरण में:
+- Min स्तर मेरे लिए सबसे प्रतिकूल मान (न्यूनतम) चुनेगा
+- Max स्तर मेरे लिए सबसे अनुकूल मान (अधिकतम) चुनेगा
+- अंत में, Max को बीच की शाखा (+5) चुननी चाहिए
+
+### कोड कार्यान्वयन
+
+```python
+def minimax(state, depth, is_max_turn):
+    """
+    Minimax एल्गोरिथम का मूल कार्यान्वयन
+
+    Args:
+        state: वर्तमान स्थिति
+        depth: सर्च गहराई
+        is_max_turn: क्या Max की बारी है
+
+    Returns:
+        (सर्वश्रेष्ठ मान, सर्वश्रेष्ठ चाल)
+    """
+    # समाप्ति शर्त: गहराई सीमा या खेल समाप्त
+    if depth == 0 or is_terminal(state):
+        return evaluate(state), None
+
+    legal_moves = get_legal_moves(state)
+    best_move = None
+
+    if is_max_turn:
+        best_value = float('-inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            value, _ = minimax(next_state, depth - 1, False)
+            if value > best_value:
+                best_value = value
+                best_move = move
+    else:
+        best_value = float('inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            value, _ = minimax(next_state, depth - 1, True)
+            if value < best_value:
+                best_value = value
+                best_move = move
+
+    return best_value, best_move
+```
+
+### गो में Minimax की समस्याएँ
+
+#### 1. सर्च स्पेस विस्फोट
+
+जैसा कि [पिछले लेख](../why-go-is-hard) में बताया गया है, गो का ब्रांचिंग फैक्टर लगभग 250 है। N चालों को देखने के लिए:
+
+**नोड संख्या ≈ 250^N**
+
+| गहराई | नोड संख्या | 1 सेकंड में 10 लाख नोड मूल्यांकन की दर से |
+|------|--------|--------------------------|
+| 2 | 62,500 | 0.06 सेकंड |
+| 4 | 3.9 अरब | 65 मिनट |
+| 6 | 2.4×10^14 | 7,600 वर्ष |
+| 8 | 1.5×10^19 | 48 करोड़ वर्ष |
+
+6 चालें देखने में ही 7,600 वर्ष लगेंगे, पूरा खेल देखना तो असंभव है।
+
+#### 2. मूल्यांकन फ़ंक्शन की कठिनाई
+
+यदि हम केवल 4 चालें देखें, तब भी गैर-अंतिम स्थितियों का मूल्यांकन करने के लिए एक सटीक **मूल्यांकन फ़ंक्शन** चाहिए। लेकिन जैसा कि पिछले लेख में बताया, गो में स्थिति मूल्यांकन अत्यंत कठिन है।
+
+**निष्कर्ष: शुद्ध Minimax गो में पूर्णतः अव्यावहारिक है।**
+
+---
+
+## Alpha-Beta छंटाई: अनावश्यक सर्च को कम करना
+
+### मूल अंतर्दृष्टि
+
+Alpha-Beta छंटाई की मूल अंतर्दृष्टि है: **हमें हर शाखा को सर्च करने की आवश्यकता नहीं है**।
+
+यदि हम पहले से जानते हैं कि कोई शाखा "निश्चित रूप से खराब है", तो हम उसे छोड़ सकते हैं।
+
+### छंटाई सिद्धांत
+
+```
+Max नोड A (वर्तमान सर्वश्रेष्ठ α = +5)
+    │
+    ├── शाखा 1: मूल्यांकित, मान = +5
+    │
+    └── शाखा 2: Min नोड B
+            │
+            ├── उप-शाखा B1: मान = +3
+            │
+            └── उप-शाखा B2: ??? (छोड़ सकते हैं!)
+```
+
+इस उदाहरण में:
+- A के पास पहले से +5 मान का विकल्प है
+- B की पहली उप-शाखा +3 है, इसलिए B का अंतिम मान ≤ +3
+- चूँकि B ≤ +3 < +5, A कभी B नहीं चुनेगा
+- **B2 का मूल्यांकन आवश्यक नहीं है**
+
+यही **Beta छंटाई** है। इसी प्रकार, **Alpha छंटाई** भी होती है।
+
+### गणितीय सूत्रीकरण
+
+दो पैरामीटर प्रस्तुत करें:
+- **α (alpha)**: Max का वर्तमान न्यूनतम गारंटीड मान (निचली सीमा)
+- **β (beta)**: Min का वर्तमान अधिकतम गारंटीड मान (ऊपरी सीमा)
+
+छंटाई शर्त:
+- Max नोड पर, यदि value ≥ β, छंटाई (Beta छंटाई)
+- Min नोड पर, यदि value ≤ α, छंटाई (Alpha छंटाई)
+
+### कोड कार्यान्वयन
+
+```python
+def alpha_beta(state, depth, alpha, beta, is_max_turn):
+    """
+    Alpha-Beta छंटाई एल्गोरिथम
+
+    Args:
+        state: वर्तमान स्थिति
+        depth: सर्च गहराई
+        alpha: Max की निचली सीमा
+        beta: Min की ऊपरी सीमा
+        is_max_turn: क्या Max की बारी है
+
+    Returns:
+        (मान, सर्वश्रेष्ठ चाल)
+    """
+    if depth == 0 or is_terminal(state):
+        return evaluate(state), None
+
+    legal_moves = get_legal_moves(state)
+    best_move = None
+
+    if is_max_turn:
+        value = float('-inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            child_value, _ = alpha_beta(next_state, depth - 1,
+                                        alpha, beta, False)
+            if child_value > value:
+                value = child_value
+                best_move = move
+            alpha = max(alpha, value)
+            if value >= beta:
+                break  # Beta छंटाई
+        return value, best_move
+    else:
+        value = float('inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            child_value, _ = alpha_beta(next_state, depth - 1,
+                                        alpha, beta, True)
+            if child_value < value:
+                value = child_value
+                best_move = move
+            beta = min(beta, value)
+            if value <= alpha:
+                break  # Alpha छंटाई
+        return value, best_move
+
+# कॉल का तरीका
+value, best_move = alpha_beta(state, depth=4,
+                               alpha=float('-inf'),
+                               beta=float('inf'),
+                               is_max_turn=True)
+```
+
+### छंटाई दक्षता
+
+आदर्श परिस्थितियों में (परिपूर्ण चाल क्रम), Alpha-Beta प्रभावी ब्रांचिंग फैक्टर को b से √b तक कम कर सकता है:
+
+**प्रभावी ब्रांचिंग फैक्टर = b^0.5**
+
+इसका मतलब:
+- शतरंज: 35 से ~6
+- गो: 250 से ~16
+
+| गहराई | मूल नोड संख्या | Alpha-Beta (आदर्श) | गति वृद्धि |
+|------|-----------|-------------------|--------|
+| 4 | 3.9 अरब | 65,000 | 60,000× |
+| 6 | 2.4×10^14 | 1.6 करोड़ | 1.5×10^7 × |
+| 8 | 1.5×10^19 | 4.2 अरब | 3.6×10^9 × |
+
+### फिर भी अपर्याप्त क्यों
+
+Alpha-Beta छंटाई के बावजूद, गो संभालना कठिन रहता है:
+
+#### 1. आदर्श छंटाई के लिए परिपूर्ण क्रम चाहिए
+
+आदर्श छंटाई दक्षता के लिए, "सर्वश्रेष्ठ" शाखा को पहले सर्च करना होगा। लेकिन कौन सी शाखा सर्वश्रेष्ठ है, यह जानने के लिए सर्च करनी होगी... यह मुर्गी और अंडे की समस्या है।
+
+वास्तव में, गो में छंटाई दक्षता आदर्श से बहुत कम है, प्रभावी ब्रांचिंग फैक्टर 50-100 भी हो सकता है।
+
+#### 2. गहराई अभी भी अपर्याप्त
+
+यदि प्रभावी ब्रांचिंग फैक्टर 50 भी हो, 10 चालें देखने के लिए अभी भी 50^10 ≈ 10^17 नोड चाहिए। यह कंप्यूटर के लिए बहुत अधिक है।
+
+#### 3. मूल्यांकन फ़ंक्शन की बाधा
+
+Alpha-Beta केवल "सर्च दक्षता" समस्या हल करता है, "मूल्यांकन सटीकता" नहीं। एक खराब मूल्यांकन फ़ंक्शन के साथ, चाहे सर्च कितनी भी तेज़ हो, परिणाम खराब ही रहेगा।
+
+**निष्कर्ष: Alpha-Beta ने शतरंज AI को बहुत उन्नत किया, लेकिन गो में सीमित मदद की।**
+
+---
+
+## शुद्ध मोंटे कार्लो विधि: यादृच्छिकता की शक्ति
+
+### मूल्यांकन फ़ंक्शन को छोड़ना
+
+1990 के दशक में, शोधकर्ताओं ने एक क्रांतिकारी विचार आज़माया: **मूल्यांकन फ़ंक्शन का उपयोग न करना**।
+
+इसके बजाय **यादृच्छिक सिमुलेशन** (Random Playout):
+
+1. वर्तमान स्थिति से शुरू करें
+2. दोनों पक्ष यादृच्छिक रूप से खेलें, जब तक खेल समाप्त न हो
+3. परिणाम रिकॉर्ड करें (जीत/हार)
+4. N बार दोहराएँ, जीत दर गिनें
+
+### सांख्यिकीय अनुमान सिद्धांत
+
+बड़ी संख्या के नियम के अनुसार, जब सिमुलेशन संख्या N पर्याप्त हो:
+
+**V̂(s) = सिमुलेशन जीत / N ≈ V(s)**
+
+इस अनुमान की मानक त्रुटि:
+
+**SE = √(V(s)(1-V(s))/N) ≈ 1/(2√N)**
+
+| सिमुलेशन संख्या | मानक त्रुटि |
+|----------|---------|
+| 100 | 5% |
+| 1,000 | 1.6% |
+| 10,000 | 0.5% |
+| 100,000 | 0.16% |
+
+### कोड कार्यान्वयन
+
+```python
+import random
+
+def random_playout(state, player):
+    """
+    वर्तमान स्थिति से, दोनों पक्ष समाप्ति तक यादृच्छिक खेलें
+
+    Returns:
+        1 यदि player जीते, 0 यदि हारे
+    """
+    current = state.copy()
+    current_player = player
+
+    while not is_terminal(current):
+        legal_moves = get_legal_moves(current)
+        if not legal_moves:
+            current_player = opponent(current_player)
+            continue
+
+        # यादृच्छिक चाल चुनें
+        move = random.choice(legal_moves)
+        current = apply_move(current, move)
+        current_player = opponent(current_player)
+
+    return 1 if get_winner(current) == player else 0
+
+
+def monte_carlo_move_selection(state, player, num_simulations=10000):
+    """
+    मोंटे कार्लो विधि से सर्वश्रेष्ठ चाल चुनें
+    """
+    legal_moves = get_legal_moves(state)
+
+    if len(legal_moves) == 0:
+        return None
+
+    # प्रत्येक वैध चाल के लिए सिमुलेशन संख्या आवंटित करें
+    sims_per_move = num_simulations // len(legal_moves)
+
+    best_move = None
+    best_win_rate = -1
+
+    for move in legal_moves:
+        next_state = apply_move(state, move)
+
+        wins = 0
+        for _ in range(sims_per_move):
+            wins += random_playout(next_state, opponent(player))
+
+        # प्रतिद्वंद्वी की कम जीत दर = मेरी उच्च जीत दर
+        my_win_rate = 1 - (wins / sims_per_move)
+
+        if my_win_rate > best_win_rate:
+            best_win_rate = my_win_rate
+            best_move = move
+
+    return best_move, best_win_rate
+```
+
+### फायदे और सीमाएँ
+
+#### फायदे
+
+1. **मूल्यांकन फ़ंक्शन की आवश्यकता नहीं**: पूर्णतः सिमुलेशन पर निर्भर
+2. **किसी भी खेल में लागू**: केवल नियम जानना काफी है
+3. **संभावना अनुमान देता है**: "कितना निश्चित" पता चलता है
+
+#### सीमाएँ
+
+1. **बहुत अधिक यादृच्छिकता**: यादृच्छिक खेल और पेशेवर खेल में बहुत अंतर
+2. **बहुत सारे सिमुलेशन चाहिए**: हर चाल के लिए हज़ारों सिमुलेशन
+3. **रणनीतिक अंधे बिंदु**: महत्वपूर्ण रणनीति यादृच्छिक रूप से छूट सकती है
+
+### गो में शुद्ध मोंटे कार्लो का प्रदर्शन
+
+शुद्ध मोंटे कार्लो विधि वाले गो प्रोग्राम लगभग पहुँच सकते हैं:
+
+> **शौकिया 5-10 क्यू** का स्तर
+
+यह पहले के शुद्ध Minimax + मूल्यांकन फ़ंक्शन वाले प्रोग्राम से बेहतर था, लेकिन पेशेवर स्तर से बहुत दूर।
+
+---
+
+## MCTS की सफलता (2006)
+
+### UCT एल्गोरिथम का जन्म
+
+2006 में, Rémi Coulom ने **MCTS (Monte Carlo Tree Search)** एल्गोरिथम प्रस्तुत किया, जो ट्री सर्च और मोंटे कार्लो सिमुलेशन के फायदों को जोड़ता है। उसी वर्ष, Levente Kocsis और Csaba Szepesvári ने **UCT (Upper Confidence Bounds for Trees)** एल्गोरिथम प्रस्तुत किया, जिसने MCTS को सैद्धांतिक आधार दिया।
+
+यह कंप्यूटर गो में **मील का पत्थर** था।
+
+### UCB1 सूत्र
+
+MCTS का केंद्र **UCB1 (Upper Confidence Bound)** सूत्र है:
+
+```
+UCB1(s, a) = X̄(s,a) + C × √(ln(Ns) / n(s,a))
+```
+
+जहाँ:
+- **X̄(s,a)**: स्थिति s में चाल a का औसत मान (जीत दर)
+- **Ns**: स्थिति s के कुल दौरे
+- **n(s,a)**: स्थिति s में चाल a की संख्या
+- **C**: अन्वेषण स्थिरांक (आमतौर पर C = √2)
+
+यह सूत्र चतुराई से **शोषण** (ज्ञात अच्छे चुनना) और **अन्वेषण** (अज्ञात आज़माना) को संतुलित करता है।
+
+### MCTS के चार चरण
+
+<MCTSTree showPUCT={true} width={700} height={450} />
+
+MCTS की प्रत्येक पुनरावृत्ति में चार चरण हैं:
+
+#### 1. Selection (चयन)
+
+मूल नोड से शुरू करें, UCB1 सूत्र से चाइल्ड नोड चुनें, जब तक लीफ नोड न मिले।
+
+```python
+def select(node):
+    """UCB1 से सर्वश्रेष्ठ चाइल्ड नोड चुनें"""
+    while node.is_fully_expanded():
+        node = max(node.children,
+                   key=lambda c: ucb1(c, node.visits))
+    return node
+
+def ucb1(child, parent_visits, C=1.414):
+    """UCB1 सूत्र"""
+    if child.visits == 0:
+        return float('inf')  # अदौरे नोड को प्राथमिकता
+
+    exploitation = child.wins / child.visits
+    exploration = C * math.sqrt(math.log(parent_visits) / child.visits)
+
+    return exploitation + exploration
+```
+
+#### 2. Expansion (विस्तार)
+
+लीफ नोड में एक या अधिक चाइल्ड नोड जोड़ें।
+
+```python
+def expand(node, state):
+    """नोड विस्तार करें"""
+    legal_moves = get_legal_moves(state)
+    untried = [m for m in legal_moves if m not in node.tried_moves]
+
+    if untried:
+        move = random.choice(untried)
+        new_state = apply_move(state, move)
+        child = Node(move=move, parent=node)
+        node.children.append(child)
+        node.tried_moves.add(move)
+        return child, new_state
+
+    return node, state
+```
+
+#### 3. Simulation (सिमुलेशन)
+
+नए नोड से यादृच्छिक सिमुलेशन करें जब तक खेल समाप्त न हो।
+
+```python
+def simulate(state, player):
+    """खेल समाप्त होने तक यादृच्छिक सिमुलेशन"""
+    return random_playout(state, player)
+```
+
+#### 4. Backpropagation (वापसी प्रसार)
+
+सिमुलेशन परिणाम सभी पूर्वज नोड को वापस भेजें।
+
+```python
+def backpropagate(node, result):
+    """परिणाम सभी पूर्वजों को वापस भेजें"""
+    while node is not None:
+        node.visits += 1
+        node.wins += result
+        result = 1 - result  # दृष्टिकोण बदलें
+        node = node.parent
+```
+
+### पूर्ण MCTS कार्यान्वयन
+
+```python
+class MCTSNode:
+    def __init__(self, move=None, parent=None):
+        self.move = move
+        self.parent = parent
+        self.children = []
+        self.wins = 0
+        self.visits = 0
+        self.tried_moves = set()
+
+    def is_fully_expanded(self, legal_moves):
+        return len(self.tried_moves) == len(legal_moves)
+
+
+def mcts(root_state, player, num_iterations=10000):
+    """
+    MCTS मुख्य फ़ंक्शन
+
+    Args:
+        root_state: प्रारंभिक स्थिति
+        player: वर्तमान खिलाड़ी
+        num_iterations: पुनरावृत्ति संख्या
+
+    Returns:
+        सर्वश्रेष्ठ चाल
+    """
+    root = MCTSNode()
+
+    for _ in range(num_iterations):
+        node = root
+        state = root_state.copy()
+        current_player = player
+
+        # 1. Selection
+        while node.children and node.is_fully_expanded(get_legal_moves(state)):
+            node = max(node.children,
+                      key=lambda c: ucb1(c, node.visits))
+            state = apply_move(state, node.move)
+            current_player = opponent(current_player)
+
+        # 2. Expansion
+        legal_moves = get_legal_moves(state)
+        if not node.is_fully_expanded(legal_moves) and not is_terminal(state):
+            move = random.choice([m for m in legal_moves
+                                  if m not in node.tried_moves])
+            state = apply_move(state, move)
+            child = MCTSNode(move=move, parent=node)
+            node.children.append(child)
+            node.tried_moves.add(move)
+            node = child
+            current_player = opponent(current_player)
+
+        # 3. Simulation
+        result = simulate(state, current_player)
+
+        # 4. Backpropagation
+        backpropagate(node, result)
+
+    # सबसे अधिक दौरे वाला चाइल्ड नोड चुनें
+    return max(root.children, key=lambda c: c.visits).move
+```
+
+### MCTS क्यों काम करता है?
+
+MCTS की सफलता के कई कारण हैं:
+
+#### 1. क्रमिक फोकसिंग
+
+MCTS सभी शाखाओं को समान रूप से सर्च नहीं करता, बल्कि अधिक आशाजनक शाखाओं में अधिक संसाधन लगाता है। इससे यह स्पष्ट खराब चालों को "अनदेखा" कर सकता है।
+
+#### 2. किसी भी समय एल्गोरिथम
+
+MCTS कभी भी रुक सकता है और वर्तमान सर्वश्रेष्ठ उत्तर दे सकता है। अधिक समय, बेहतर उत्तर।
+
+#### 3. मूल्यांकन फ़ंक्शन की आवश्यकता नहीं
+
+MCTS सिमुलेशन द्वारा मान अनुमानित करता है, हस्तनिर्मित मूल्यांकन फ़ंक्शन की आवश्यकता नहीं।
+
+### 2006-2015: MCTS युग
+
+MCTS के आगमन ने कंप्यूटर गो को नए युग में पहुँचाया:
+
+| प्रोग्राम | वर्ष | विशेषता | शक्ति |
+|------|------|------|------|
+| **Crazy Stone** | 2006 | पहला MCTS गो प्रोग्राम | शौकिया उच्च दान |
+| **MoGo** | 2007 | अनुकूलित MCTS | शौकिया 5 दान |
+| **Zen** | 2009 | पैटर्न पहचान जोड़ी | शौकिया 6 दान |
+| **Crazy Stone** | 2013 | 4 पत्थर हैंडीकैप में 9-दान को हराया | पेशेवर 1-दान (हैंडीकैप के बाद) |
+
+यह ऐतिहासिक प्रगति थी, लेकिन अभी भी बड़ा अंतर:
+
+> सबसे मजबूत MCTS प्रोग्राम, **बिना हैंडीकैप** के पेशेवर खिलाड़ियों को हरा नहीं सके।
+
+---
+
+## मूल्यांकन फ़ंक्शन की बाधा
+
+### हस्तनिर्मित विशेषताओं की सीमाएँ
+
+MCTS से पहले, शोधकर्ताओं ने स्थिति मूल्यांकन के लिए विभिन्न **हस्तनिर्मित विशेषताएँ** डिज़ाइन करने का प्रयास किया:
+
+#### सामान्य विशेषताएँ
+
+```python
+def evaluate_position(state):
+    """हस्तनिर्मित मूल्यांकन फ़ंक्शन"""
+    score = 0
+
+    # 1. क्षेत्र अनुमान
+    score += count_territory(state, BLACK) - count_territory(state, WHITE)
+
+    # 2. पत्थरों की स्वतंत्रता (साँसें)
+    score += sum(liberties(group) for group in groups(state, BLACK))
+    score -= sum(liberties(group) for group in groups(state, WHITE))
+
+    # 3. आँखों की संख्या
+    score += count_eyes(state, BLACK) * 10
+    score -= count_eyes(state, WHITE) * 10
+
+    # 4. कनेक्शन मजबूती
+    score += connectivity_score(state, BLACK)
+    score -= connectivity_score(state, WHITE)
+
+    # ... और विशेषताएँ
+
+    return score
+```
+
+#### समस्याएँ
+
+1. **अपूर्ण विशेषताएँ**: मानव अंतर्ज्ञान के कई कारकों को प्रोग्राम में व्यक्त करना कठिन
+2. **वज़न समायोजन कठिन**: विशेषताओं का सापेक्ष महत्व कैसे निर्धारित करें?
+3. **स्थानीय vs वैश्विक**: स्थानीय गणना आसान, वैश्विक निर्णय कठिन
+4. **परस्पर क्रिया**: विशेषताओं के बीच इंटरैक्शन मॉडल करना कठिन
+
+### MCTS में सिमुलेशन समस्या
+
+MCTS में सीधे मूल्यांकन फ़ंक्शन का उपयोग न करने पर भी, **सिमुलेशन की गुणवत्ता** महत्वपूर्ण बाधा रहती है।
+
+#### यादृच्छिक सिमुलेशन की समस्याएँ
+
+यादृच्छिक खेल कई "अतार्किक" स्थितियाँ बनाता है, जिससे अनुमान गलत होते हैं:
+
+- बड़े समूह व्यर्थ मर जाते हैं
+- कैप्चर कर सकते हैं पर नहीं करते
+- सरल किलिंग मूव्स छूट जाती हैं
+
+#### सुधार प्रयास
+
+शोधकर्ताओं ने सिमुलेशन में **पूर्व ज्ञान** जोड़ने का प्रयास किया:
+
+```python
+def simulation_policy(state, legal_moves):
+    """
+    पूर्व ज्ञान वाली सिमुलेशन नीति
+    """
+    # प्राथमिकता:
+    # 1. कैप्चर
+    # 2. भागना
+    # 3. कनेक्ट करना
+    # 4. बड़ा क्षेत्र लेना
+    # ...
+
+    for move in legal_moves:
+        if is_capture(state, move):
+            return move
+        if saves_group(state, move):
+            return move
+
+    # बाकी यादृच्छिक
+    return random.choice(legal_moves)
+```
+
+लेकिन ये हेयुरिस्टिक नियम:
+- गणना लागत बढ़ाते हैं
+- पूर्वाग्रह ला सकते हैं
+- अभी भी पर्याप्त सटीक नहीं
+
+### न्यूरल नेटवर्क क्यों चाहिए
+
+पारंपरिक तरीकों की बाधा मूलतः **प्रतिनिधित्व सीखने** की समस्या है:
+
+> बोर्ड पिक्सेल (361 बिंदुओं की स्थिति) से "अच्छी चाल" की विशेषताएँ कैसे सीखें?
+
+यही **डीप लर्निंग** की ताकत है:
+- **स्वचालित विशेषता सीखना**: मैन्युअल डिज़ाइन की आवश्यकता नहीं
+- **गैर-रैखिक मैपिंग**: जटिल संबंध पकड़ सकते हैं
+- **एंड-टू-एंड प्रशिक्षण**: इनपुट से सीधे आउटपुट
+
+2012 में ImageNet पर डीप लर्निंग की सफलता ने शोधकर्ताओं को सोचने पर मजबूर किया:
+
+> यदि न्यूरल नेटवर्क "फ़ोटो समझ" सकता है, क्या "बोर्ड भी समझ" सकता है?
+
+इस प्रश्न का उत्तर AlphaGo है।
+
+---
+
+## पारंपरिक तरीकों की सीमाओं का सारांश
+
+| विधि | फायदे | गो में समस्याएँ |
+|------|------|-------------|
+| **Minimax** | सैद्धांतिक रूप से पूर्ण, इष्टतम समाधान | ब्रांचिंग फैक्टर बहुत बड़ा, गहरी सर्च संभव नहीं |
+| **Alpha-Beta** | सर्च मात्रा बहुत कम करता है | प्रभावी ब्रांचिंग फैक्टर अभी भी बहुत अधिक |
+| **शुद्ध मोंटे कार्लो** | मूल्यांकन फ़ंक्शन की आवश्यकता नहीं | यादृच्छिक सिमुलेशन गुणवत्ता बहुत खराब |
+| **MCTS** | बुद्धिमान फोकस्ड सर्च | सिमुलेशन अभी भी अपर्याप्त, शौकिया उच्च दान तक |
+
+### मूल बाधाएँ
+
+मूलतः, पारंपरिक तरीके दो बड़ी बाधाओं का सामना करते हैं:
+
+#### 1. मूल्यांकन समस्या
+- अच्छा मूल्यांकन फ़ंक्शन नहीं
+- "मोटाई" "बाहरी प्रभाव" जैसी अमूर्त अवधारणाओं को मापना असंभव
+- हस्तनिर्मित विशेषताएँ पर्याप्त अभिव्यक्तिपूर्ण नहीं
+
+#### 2. सर्च समस्या
+- छंटाई के बावजूद, सर्च स्पेस बहुत बड़ा
+- पर्याप्त गहरी भिन्नताएँ नहीं देख सकते
+- सिमुलेशन गुणवत्ता अनुमान सटीकता को प्रभावित करती है
+
+### AlphaGo का समाधान
+
+AlphaGo ने डीप लर्निंग से दोनों समस्याएँ हल कीं:
+
+1. **Policy Network**: "कहाँ अच्छी चाल हो सकती है" सीखना, प्रभावी ब्रांचिंग फैक्टर कम करना
+2. **Value Network**: "कौन जीतने की संभावना अधिक" सीखना, हस्तनिर्मित मूल्यांकन की जगह
+3. **MCTS एकीकरण**: न्यूरल नेटवर्क से सर्च मार्गदर्शन, सर्च से निर्णय सुधार
+
+यह केवल "न्यूरल नेटवर्क से मूल्यांकन फ़ंक्शन बदलना" नहीं है, बल्कि एक पूर्णतः नई वास्तुकला है।
+
+---
+
+## एनिमेशन संदर्भ
+
+इस लेख की मुख्य अवधारणाएँ और एनिमेशन नंबर:
+
+| नंबर | अवधारणा | भौतिकी/गणित संदर्भ |
+|------|------|--------------|
+| A B3 | Minimax सर्च | गेम थ्योरी, शून्य-योग खेल |
+| A C5 | MCTS चार चरण | मोंटे कार्लो विधि, UCB |
+| A C2 | UCB1 सूत्र | मल्टी-आर्म बैंडिट, अन्वेषण-शोषण संतुलन |
+| A C4 | सर्च ट्री वृद्धि | क्रमिक विस्तार |
+
+---
+
+## आगे पढ़ें
+
+- **पिछला लेख**: [गो इतना कठिन क्यों?](../why-go-is-hard) — स्थिति स्पेस और मूल्यांकन कठिनाई
+- **अगला लेख**: [बोर्ड स्थिति प्रतिनिधित्व](../board-representation) — Zobrist Hashing, विशेषता एन्कोडिंग
+- **तकनीकी गहराई**: [MCTS और न्यूरल नेटवर्क का संयोजन](../mcts-neural-combo) — AlphaGo की मुख्य वास्तुकला
+
+---
+
+## संदर्भ
+
+1. Coulom, R. (2006). "Efficient Selectivity and Backup Operators in Monte-Carlo Tree Search." *Computers and Games*, 72-83. — MCTS का मूल पेपर
+2. Kocsis, L., & Szepesvári, C. (2006). "Bandit based Monte-Carlo Planning." *ECML*, 282-293. — UCT एल्गोरिथम
+3. Browne, C., et al. (2012). "A Survey of Monte Carlo Tree Search Methods." *IEEE TCIAIG*, 4(1), 1-43. — MCTS सर्वेक्षण
+4. Gelly, S., & Silver, D. (2011). "Monte-Carlo tree search and rapid action value estimation in computer Go." *Artificial Intelligence*, 175(11), 1856-1875. — गो में MCTS का अनुप्रयोग

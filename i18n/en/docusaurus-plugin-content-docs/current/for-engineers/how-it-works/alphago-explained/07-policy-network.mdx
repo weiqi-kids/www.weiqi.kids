@@ -1,0 +1,610 @@
+---
+sidebar_position: 8
+title: Policy Network Deep Dive
+description: Deep understanding of AlphaGo's policy network architecture, training methods, and practical applications, from 13 convolutional layers to Softmax output
+---
+
+import { PolicyHeatmap } from '@site/src/components/D3Charts';
+
+# Policy Network Deep Dive
+
+In any Go position, there are on average 250 legal moves. If a computer chose randomly, it would never play good moves.
+
+AlphaGo's breakthrough was this: it learned to "glance at the board and know which positions are worth considering."
+
+This ability comes from the **Policy Network**.
+
+---
+
+## What is the Policy Network?
+
+### Core Function
+
+The Policy Network is a deep convolutional neural network with the task of:
+
+> **Given the current board state, output the probability of playing at each position**
+
+In mathematical terms:
+
+```
+p = f_θ(s)
+```
+
+Where:
+- `s`: Current board state (19×19 board + other features)
+- `f_θ`: Policy Network (θ is the network parameters)
+- `p`: Probability distribution over 361 positions (including pass)
+
+### Intuitive Understanding
+
+Imagine you're a professional player. When you see a position, your brain automatically "lights up" several important locations—these are the points you intuitively consider worth examining.
+
+The Policy Network simulates this process.
+
+<PolicyHeatmap initialPosition="corner" size={400} />
+
+The heatmap above shows the Policy Network's output. Brighter positions are what the model considers more worth playing.
+
+### Why Do We Need a Policy Network?
+
+Go's search space is too large. If we search all possible moves without filtering:
+
+| Strategy | Moves considered per turn | Nodes for 10-move search |
+|----------|--------------------------|-------------------------|
+| Consider all | 361 | 361^10 ≈ 10^25 |
+| Policy Network filtering | ~20 | 20^10 ≈ 10^13 |
+
+The Policy Network reduces the search space by **10^12 times** (one trillion times).
+
+---
+
+## Network Architecture
+
+### Overall Structure
+
+AlphaGo's Policy Network uses a deep convolutional neural network (CNN) architecture:
+
+```
+Input layer → Conv layers ×12 → Output conv layer → Softmax
+     ↓            ↓                  ↓                ↓
+19×19×48      19×19×192          19×19×1         362 probabilities
+```
+
+### Input Layer
+
+Input is a **19×19×48** feature tensor:
+- **19×19**: Board size
+- **48**: 48 feature planes (see [Input Features Design](../input-features))
+
+These 48 planes include:
+- Black stone positions, white stone positions
+- History of the last 8 moves
+- Liberties, atari, ladder features
+- Legality (which positions can be played)
+
+### Convolutional Layers
+
+The network contains **12 convolutional layers**, each with this configuration:
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| Number of filters | 192 | Each layer outputs 192 feature maps |
+| Kernel size | 3×3 (5×5 for first layer) | Each convolution looks at a 3×3 region |
+| Padding | same | Maintains 19×19 size |
+| Activation | ReLU | max(0, x) |
+
+#### Why 192 Filters?
+
+This is an empirical value. Too few limits model capacity, too many increases computation and overfitting risk. The DeepMind team determined through experiments that 192 is a good balance point.
+
+#### Why 3×3 Kernels?
+
+3×3 is the most common size in CNNs, because:
+1. **Sufficient to capture local patterns**: Go patterns like eyes, connections, and cuts all fit within 3×3 regions
+2. **Computationally efficient**: Compared to larger kernels, 3×3 has fewer parameters
+3. **Stackable**: Multiple 3×3 convolutions can achieve a large receptive field
+
+#### Why 5×5 for the First Layer?
+
+The first layer uses a larger 5×5 kernel to capture slightly larger patterns (like knight's moves, one-point jumps) at the input layer. This is a design choice; later, AlphaGo Zero unified to use 3×3 throughout.
+
+### ReLU Activation Function
+
+Each convolutional layer is followed by a ReLU (Rectified Linear Unit) activation function:
+
+```
+ReLU(x) = max(0, x)
+```
+
+Why use ReLU?
+
+1. **Simple computation**: Just taking the maximum, much faster than sigmoid
+2. **Mitigates vanishing gradient**: Gradient is always 1 in the positive region
+3. **Sparse activation**: Negative values become zero, creating sparse representations
+
+### Output Layer
+
+The final layer is a special convolutional layer:
+
+```
+19×19×192 → Conv(1×1, 1 filter) → 19×19×1 → Flatten → 362-dim vector → Softmax
+```
+
+#### 1×1 Convolution
+
+The output layer uses 1×1 convolution to compress 192 channels into 1. This is equivalent to a linear combination of the 192-dimensional features at each position.
+
+#### Softmax Output
+
+The 362-dimensional vector (361 board positions + 1 pass) goes through the Softmax function:
+
+```
+Softmax(z_i) = exp(z_i) / Σ_j exp(z_j)
+```
+
+Softmax ensures the output is a valid probability distribution:
+- All values are between 0 and 1
+- All values sum to 1
+
+### Parameter Count
+
+Let's calculate the total number of parameters:
+
+| Layer | Calculation | Parameters |
+|-------|-------------|-----------|
+| First conv layer | 5×5×48×192 + 192 | 230,592 |
+| Middle conv layers ×11 | (3×3×192×192 + 192) × 11 | 3,633,792 |
+| Output conv layer | 1×1×192×1 + 1 | 193 |
+| **Total** | | **~3.9M** |
+
+Approximately **3.9 million parameters**, which by today's standards is a small network.
+
+---
+
+## Training Objective and Methods
+
+### Training Data
+
+The Policy Network uses **supervised learning**, learning from human game records.
+
+Data sources:
+- **KGS Go Server**: Games from amateur and professional players
+- **About 30 million positions**: Sampled from 160,000 games
+- **Labels**: The human's next move for each position
+
+### Cross-Entropy Loss Function
+
+The training objective is to maximize the probability of predicting human moves. Using cross-entropy loss:
+
+```
+L(θ) = -Σ log p_θ(a | s)
+```
+
+Where:
+- `s`: Board state
+- `a`: Position where the human actually played
+- `p_θ(a | s)`: Model's predicted probability for that position
+
+#### Intuitive Understanding
+
+Cross-entropy loss has a simple meaning:
+
+> **When the model predicts higher probability for the correct position, the loss is lower**
+
+If a human plays at K10, and the model's probability for K10 is:
+- 0.9 → Loss = -log(0.9) ≈ 0.1 (very low, good)
+- 0.1 → Loss = -log(0.1) ≈ 2.3 (high, bad)
+- 0.01 → Loss = -log(0.01) ≈ 4.6 (very high, very bad)
+
+### Training Process
+
+```python
+# Pseudocode
+for epoch in range(num_epochs):
+    for batch in dataloader:
+        states, actions = batch
+
+        # Forward pass
+        policy = network(states)  # 361-dimensional probability vector
+
+        # Calculate loss (cross-entropy)
+        loss = cross_entropy(policy, actions)
+
+        # Backward pass
+        loss.backward()
+        optimizer.step()
+```
+
+Training details:
+- **Optimizer**: SGD with momentum
+- **Learning rate**: Initial 0.003, gradually decayed
+- **Batch size**: 16
+- **Training time**: About 3 weeks (50 GPUs)
+
+### Data Augmentation
+
+The Go board has 8-fold symmetry (4 rotations × 2 reflections). Each training sample can be transformed into 8 equivalent samples:
+
+```
+Original → Rotate 90° → Rotate 180° → Rotate 270°
+    ↓          ↓            ↓            ↓
+Flip horizontal → ...
+```
+
+This increases effective training data by 8×, and ensures the model learns patterns that don't depend on orientation.
+
+---
+
+## Training Results
+
+### 57% Accuracy
+
+After training, the Policy Network achieved **57% top-1 accuracy**.
+
+This means: Given any position, the model has a 57% chance of predicting the exact move the human expert played.
+
+#### Is This Accuracy High?
+
+Considering that each position has on average 250 legal moves, random guessing has only 0.4% accuracy.
+
+| Method | Top-1 Accuracy |
+|--------|---------------|
+| Random guessing | 0.4% |
+| Previous strongest computer Go | ~44% |
+| AlphaGo Policy Network | **57%** |
+
+A 13 percentage point improvement may not seem like much, but it's highly significant.
+
+### Playing Strength Improvement
+
+What playing strength can be achieved using only the Policy Network (without search)?
+
+| Configuration | Elo Rating | Approximate Level |
+|--------------|-----------|------------------|
+| Previous strongest program (Pachi) | 2,500 | Amateur 4-5 dan |
+| Policy Network alone | 2,800 | Amateur 6-7 dan |
+| + MCTS 1600 simulations | 3,200+ | Professional level |
+
+The Policy Network alone is already strong amateur level, and with MCTS it jumps to professional level.
+
+### Why Only 57%?
+
+Human game records have the following characteristics that limit accuracy:
+
+#### 1. Multiple Good Moves
+
+Many positions have multiple good moves. For example, both "approach" and "defend corner" might be correct choices. If the model chooses a different good move, it's counted as "wrong."
+
+#### 2. Style Differences
+
+Different players have different styles. Aggressive players and steady players might play different moves in the same position. The model learns an "average" style.
+
+#### 3. Humans Make Mistakes Too
+
+KGS data includes amateur player games, whose choices aren't always optimal. The model learning some "mistakes" is normal.
+
+---
+
+## Role in MCTS
+
+The Policy Network plays two key roles in AlphaGo's MCTS:
+
+### 1. Guiding Search Direction
+
+In the MCTS **Selection** phase, Policy Network output is used to calculate UCB (Upper Confidence Bound):
+
+```
+UCB(s, a) = Q(s, a) + c_puct × P(s, a) × √(N(s)) / (1 + N(s, a))
+```
+
+Where `P(s, a)` is the probability given by the Policy Network.
+
+This means:
+- **High-probability moves are explored first**
+- **Low-probability moves also have a chance to be explored** (because of the exploration term)
+
+### 2. Priors for Expanding Nodes
+
+When MCTS expands a new node, the Policy Network provides **prior probabilities** for all child nodes.
+
+```
+Expand node s:
+  for each action a:
+    child = Node()
+    child.prior = policy_network(s)[a]  # Prior probability
+    child.value = 0
+    child.visits = 0
+```
+
+These prior probabilities let MCTS "know" which child nodes are more worth exploring, even if they haven't been visited yet.
+
+---
+
+## Lightweight vs Full Version
+
+AlphaGo actually has two Policy Networks:
+
+### Full Version (SL Policy Network)
+
+- **Architecture**: 13-layer CNN, 192 filters
+- **Accuracy**: 57%
+- **Inference time**: About 3 milliseconds/position
+- **Use**: Selection and Expansion in MCTS
+
+### Lightweight Version (Rollout Policy Network)
+
+- **Architecture**: Linear model + handcrafted features
+- **Accuracy**: 24%
+- **Inference time**: About 2 microseconds/position (1500× faster)
+- **Use**: Fast simulation (rollout)
+
+### Why a Lightweight Version?
+
+In the MCTS **Simulation** phase, we need to play from the current node all the way to the end of the game, potentially playing 100+ moves. If every move used the full Policy Network, it would be too slow.
+
+The lightweight version has only 24% accuracy, but is 1500× faster. In rollouts, speed matters more than precision.
+
+### Lightweight Version Features
+
+The lightweight version uses handcrafted features, including:
+
+| Feature Type | Examples |
+|-------------|----------|
+| Local patterns | Stone configurations in 3×3 regions |
+| Global features | Whether on edge/corner, big points |
+| Tactical features | Atari, ladder, connection |
+
+These features are input to a linear model (no hidden layers), making computation extremely fast.
+
+### AlphaGo Zero's Improvement
+
+Later, AlphaGo Zero completely abandoned the lightweight version and rollouts. It directly used the Value Network to evaluate leaf nodes, eliminating the need for fast simulation. This was a major simplification.
+
+---
+
+## Reinforcement Learning Fine-Tuning (RL Policy Network)
+
+### Limitations of Supervised Learning
+
+The supervised learning-trained Policy Network has a fundamental problem:
+
+> **It learns to "imitate humans," not to "win games"**
+
+This means it will learn humans' bad habits and also perform poorly in positions humans have never encountered.
+
+### Self-Play Reinforcement
+
+DeepMind's solution was to use **Policy Gradient** methods for reinforcement learning:
+
+```
+1. Have the Policy Network play against itself
+2. Record all moves in each game
+3. Adjust parameters based on outcome:
+   - Won → Increase probability of these moves
+   - Lost → Decrease probability of these moves
+```
+
+### REINFORCE Algorithm
+
+Specifically, using the REINFORCE algorithm:
+
+```
+∇J(θ) = E[Σ_t ∇log π_θ(a_t | s_t) × z]
+```
+
+Where:
+- `z`: Game outcome (+1 win, -1 loss)
+- `π_θ(a_t | s_t)`: Probability of choosing action `a_t` in state `s_t`
+
+### Results
+
+After about 1 day of self-play training (1.28 million games), the RL Policy Network:
+
+| Metric | SL Policy | RL Policy |
+|--------|-----------|-----------|
+| Win rate vs SL Policy | 50% | **80%** |
+| Elo improvement | - | +100 |
+
+Accuracy may drop slightly (since it no longer fully imitates humans), but actual game win rate significantly improved.
+
+### From "Imitation" to "Innovation"
+
+Reinforcement learning let the Policy Network learn some moves humans had never thought of. These moves never appeared in training data, but they're effective.
+
+This is why AlphaGo could play the "Divine Move"—it's not limited by human experience.
+
+---
+
+## Visual Analysis
+
+### Probability Distribution for Different Positions
+
+Let's look at the Policy Network's output in different positions:
+
+#### Opening (Fuseki Stage)
+
+<PolicyHeatmap initialPosition="opening" size={400} />
+
+During the opening, probability is mainly concentrated on:
+- Corners (taking corners)
+- Edges (approaching, defending corners)
+- "Big point" positions
+
+This matches basic Go principles: corners are gold, edges are silver, center is grass.
+
+#### Fighting Position
+
+<PolicyHeatmap initialPosition="fighting" size={400} />
+
+During fighting, probability concentrates on:
+- Key cutting points
+- Atari, connections
+- Making eyes, destroying eyes
+
+This shows the model learned local tactics.
+
+#### Endgame Stage
+
+<PolicyHeatmap initialPosition="endgame" size={400} />
+
+During the endgame, probability is scattered across various endgame points, requiring precise point calculation.
+
+### What Do Hidden Layers Learn?
+
+By visualizing convolutional layer outputs, we can see the "features" the model learned:
+
+- **Low layers**: Basic shapes (eyes, cutting points)
+- **Middle layers**: Tactical patterns (atari, ladders)
+- **High layers**: Global concepts (influence, thickness)
+
+This closely resembles the hierarchical structure of how humans understand Go.
+
+---
+
+## Implementation Notes
+
+### PyTorch Implementation
+
+Here's a simplified Policy Network implementation:
+
+```python
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class PolicyNetwork(nn.Module):
+    def __init__(self, input_channels=48, num_filters=192, num_layers=12):
+        super().__init__()
+
+        # First convolutional layer (5×5)
+        self.conv1 = nn.Conv2d(input_channels, num_filters,
+                               kernel_size=5, padding=2)
+
+        # Middle convolutional layers (3×3) ×11
+        self.conv_layers = nn.ModuleList([
+            nn.Conv2d(num_filters, num_filters,
+                     kernel_size=3, padding=1)
+            for _ in range(num_layers - 1)
+        ])
+
+        # Output convolutional layer (1×1)
+        self.conv_out = nn.Conv2d(num_filters, 1, kernel_size=1)
+
+    def forward(self, x):
+        # x: (batch, 48, 19, 19)
+
+        # First layer
+        x = F.relu(self.conv1(x))
+
+        # Middle layers
+        for conv in self.conv_layers:
+            x = F.relu(conv(x))
+
+        # Output layer
+        x = self.conv_out(x)  # (batch, 1, 19, 19)
+
+        # Flatten + Softmax
+        x = x.view(x.size(0), -1)  # (batch, 361)
+        x = F.softmax(x, dim=1)
+
+        return x
+```
+
+### Training Loop
+
+```python
+def train_step(model, optimizer, states, actions):
+    """
+    states: (batch, 48, 19, 19) - Board features
+    actions: (batch,) - Positions where humans played (0-360)
+    """
+    # Forward pass
+    policy = model(states)  # (batch, 361)
+
+    # Cross-entropy loss
+    loss = F.cross_entropy(
+        torch.log(policy + 1e-8),  # Prevent log(0)
+        actions
+    )
+
+    # Backward pass
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    # Calculate accuracy
+    predictions = policy.argmax(dim=1)
+    accuracy = (predictions == actions).float().mean()
+
+    return loss.item(), accuracy.item()
+```
+
+### Notes for Inference
+
+When actually playing, note:
+
+1. **Filter illegal moves**: Set probability of illegal positions to 0, then renormalize
+2. **Temperature adjustment**: Use a temperature parameter to control the "sharpness" of the probability distribution
+3. **Batch inference**: In MCTS, multiple positions can be processed in batches
+
+```python
+def get_move_probabilities(model, state, legal_moves, temperature=1.0):
+    """Get probability distribution over legal moves"""
+    policy = model(state)  # (361,)
+
+    # Keep only legal moves
+    mask = torch.zeros(361)
+    mask[legal_moves] = 1
+    policy = policy * mask
+
+    # Temperature adjustment
+    if temperature != 1.0:
+        policy = policy ** (1 / temperature)
+
+    # Renormalize
+    policy = policy / policy.sum()
+
+    return policy
+```
+
+---
+
+## Animation Mapping
+
+Core concepts covered in this article and their animation numbers:
+
+| Number | Concept | Physics/Math Correspondence |
+|--------|---------|----------------------------|
+| Animation E1 | Policy Network | Probability field |
+| Animation D9 | CNN feature extraction | Filter response |
+| Animation D3 | Supervised learning | Maximum likelihood estimation |
+| Animation H4 | Policy gradient | Stochastic optimization |
+
+---
+
+## Further Reading
+
+- **Next article**: [Value Network Deep Dive](../value-network) — How AlphaGo evaluates positions
+- **Related topic**: [Input Features Design](../input-features) — Detailed explanation of 48 feature planes
+- **Deep dive**: [CNN and Go](../cnn-and-go) — Why CNNs are suitable for board games
+
+---
+
+## Key Takeaways
+
+1. **Policy Network is a probability distribution generator**: Input board, output probabilities for 361 positions
+2. **13-layer CNN + Softmax**: Deep convolutions extract features, Softmax outputs probabilities
+3. **57% accuracy**: Far exceeding previous computer Go programs
+4. **Two versions**: Full version for MCTS decisions, lightweight version for fast simulation
+5. **Reinforcement learning fine-tuning**: Evolving from "imitating humans" to "pursuing victory"
+
+The Policy Network is AlphaGo's "intuition"—it allows the AI to quickly identify moves worth considering, just like a human.
+
+---
+
+## References
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. Maddison, C. J., et al. (2014). "Move Evaluation in Go Using Deep Convolutional Neural Networks." *arXiv:1412.6564*.
+3. Sutton, R. S., & Barto, A. G. (2018). *Reinforcement Learning: An Introduction*. MIT Press.
+4. LeCun, Y., Bengio, Y., & Hinton, G. (2015). "Deep learning." *Nature*, 521, 436-444.

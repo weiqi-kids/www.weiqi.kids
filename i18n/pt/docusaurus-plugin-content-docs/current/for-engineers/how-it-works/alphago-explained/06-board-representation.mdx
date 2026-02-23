@@ -1,0 +1,866 @@
+---
+sidebar_position: 7
+title: Representacao do Estado do Tabuleiro
+description: De arrays bidimensionais a planos de caracteristicas para redes neurais, entendendo como a IA de Go "ve" o tabuleiro
+keywords: [Representacao do Tabuleiro, Zobrist Hashing, Union-Find, Codificacao de Caracteristicas, Planos de Caracteristicas do AlphaGo]
+---
+
+import { GoBoard } from '@site/src/components/D3Charts';
+
+# Representacao do Estado do Tabuleiro
+
+Antes de projetar uma IA de Go, primeiro precisamos resolver um problema basico: **como fazer o computador "entender" o tabuleiro?**
+
+Essa questao parece simples, mas envolve estruturas de dados, algoritmos e design de entrada para redes neurais em multiplos niveis. Este artigo comecara com o array bidimensional mais basico, apresentando progressivamente varios metodos de representacao de tabuleiro usados em IA de Go, e finalmente explicando como o AlphaGo codifica o tabuleiro em um formato que as redes neurais podem processar.
+
+---
+
+## Representacao em Array Bidimensional: A Forma Mais Intuitiva
+
+### Conceito Basico
+
+O tabuleiro de Go e uma grade 19×19, e a forma mais intuitiva de representa-lo e usando um **array bidimensional**:
+
+```python
+import numpy as np
+
+# Constantes do tabuleiro
+BOARD_SIZE = 19
+EMPTY = 0
+BLACK = 1
+WHITE = 2
+
+# Inicializar tabuleiro vazio
+board = np.zeros((BOARD_SIZE, BOARD_SIZE), dtype=np.int8)
+
+# Jogar: pedra preta em D4 (3, 3)
+board[3, 3] = BLACK
+
+# Jogar: pedra branca em Q16 (15, 3)
+board[15, 3] = WHITE
+```
+
+### Sistema de Coordenadas
+
+O Go usa dois sistemas de coordenadas comuns:
+
+#### 1. Coordenadas Numericas (para programacao)
+
+```
+    0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
+0   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+1   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+2   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+3   .  .  .  ●  .  .  .  .  .  +  .  .  .  .  .  ○  .  .  .
+...
+```
+
+#### 2. Coordenadas Letra-Numero (para registros de partidas)
+
+```
+    A  B  C  D  E  F  G  H  J  K  L  M  N  O  P  Q  R  S  T
+19  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+18  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+17  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+16  .  .  .  ●  .  .  .  .  .  +  .  .  .  .  .  ○  .  .  .
+...
+```
+
+Nota: as coordenadas de letra pulam o "I" (para evitar confusao com o numero 1).
+
+### Funcoes de Conversao de Coordenadas
+
+```python
+def coord_to_index(coord):
+    """
+    Converter coordenada de registro para indice de array
+    Exemplo: 'D4' -> (3, 15)
+    """
+    letters = 'ABCDEFGHJKLMNOPQRST'  # pula I
+    col = letters.index(coord[0].upper())
+    row = BOARD_SIZE - int(coord[1:])
+    return row, col
+
+
+def index_to_coord(row, col):
+    """
+    Converter indice de array para coordenada de registro
+    Exemplo: (3, 15) -> 'Q16'
+    """
+    letters = 'ABCDEFGHJKLMNOPQRST'
+    return f"{letters[col]}{BOARD_SIZE - row}"
+```
+
+### Analise de Complexidade de Espaco
+
+Complexidade de espaco da representacao em array bidimensional:
+
+| Representacao | Tamanho por celula | Espaco total |
+|---------------|-------------------|--------------|
+| `int8` | 1 byte | 361 bytes |
+| `int32` | 4 bytes | 1,4 KB |
+| `float64` | 8 bytes | 2,9 KB |
+
+Para computadores modernos, essa quantidade de memoria nao e problema. Mas quando precisamos armazenar muitos estados de tabuleiro (como na arvore de busca MCTS), usar `int8` pode reduzir significativamente o uso de memoria.
+
+### Operacoes Basicas
+
+```python
+class Board:
+    def __init__(self, size=19):
+        self.size = size
+        self.board = np.zeros((size, size), dtype=np.int8)
+        self.current_player = BLACK
+        self.ko_point = None  # ponto proibido por ko
+        self.move_history = []
+
+    def is_valid_move(self, row, col):
+        """Verificar se a jogada e legal"""
+        # 1. Posicao esta dentro do tabuleiro
+        if not (0 <= row < self.size and 0 <= col < self.size):
+            return False
+
+        # 2. Posicao esta vazia
+        if self.board[row, col] != EMPTY:
+            return False
+
+        # 3. Nao e ponto proibido por ko
+        if self.ko_point == (row, col):
+            return False
+
+        # 4. Nao e suicidio (a menos que capture)
+        # ... requer verificacao mais complexa
+
+        return True
+
+    def place_stone(self, row, col):
+        """Colocar pedra"""
+        if not self.is_valid_move(row, col):
+            return False
+
+        self.board[row, col] = self.current_player
+        self.move_history.append((row, col))
+
+        # Processar capturas
+        captures = self._remove_captured_stones(row, col)
+
+        # Atualizar ponto proibido por ko
+        self._update_ko(row, col, captures)
+
+        # Trocar jogador
+        self.current_player = WHITE if self.current_player == BLACK else BLACK
+
+        return True
+```
+
+---
+
+## Zobrist Hashing: Identificacao Rapida de Posicoes Repetidas
+
+### Contexto do Problema
+
+Em IA de Go, frequentemente precisamos determinar "se duas posicoes sao iguais":
+
+1. **Regra de ko**: nao pode retornar a posicao da jogada anterior
+2. **Ciclo de tres kos**: tratamento de regra especial
+3. **Tabela de Transposicao**: lembrar posicoes ja buscadas
+4. **Cache de rede neural**: evitar calculos repetidos
+
+Se compararmos celula por celula cada vez, precisamos de tempo O(361). Existe um metodo mais rapido?
+
+### Principio do Zobrist Hashing
+
+**Zobrist Hashing** (tambem conhecido como Chaves Zobrist) e um metodo de hash engenhoso, proposto por Albert Zobrist em 1970. Sua ideia central e:
+
+1. Pre-gerar um **numero aleatorio** para cada combinacao de "posicao × cor"
+2. Valor de hash do tabuleiro = **XOR** de todos os numeros aleatorios das posicoes com pedras
+3. Colocar/capturar pedra requer apenas uma operacao XOR para atualizar o hash
+
+### Tabela de Numeros Aleatorios
+
+```python
+import numpy as np
+
+# Gerar tabela de numeros aleatorios
+# Usar semente fixa para garantir reprodutibilidade
+np.random.seed(42)
+
+# Um numero aleatorio para cada posicao, cada cor
+# zobrist[cor][linha][coluna]
+zobrist_table = np.random.randint(
+    0, 2**64,
+    size=(3, BOARD_SIZE, BOARD_SIZE),  # 3: EMPTY, BLACK, WHITE
+    dtype=np.uint64
+)
+
+# Numero aleatorio para quem joga
+zobrist_player = np.random.randint(0, 2**64, dtype=np.uint64)
+```
+
+### Propriedades da Operacao XOR
+
+A operacao XOR (ou exclusivo) tem varias propriedades importantes que a tornam muito adequada para esta aplicacao:
+
+1. **Reflexividade**: A ⊕ A = 0 (um numero XOR consigo mesmo e 0)
+2. **Reversibilidade**: A ⊕ B ⊕ B = A (XOR duas vezes equivale a nada)
+3. **Comutatividade**: A ⊕ B = B ⊕ A
+4. **Associatividade**: (A ⊕ B) ⊕ C = A ⊕ (B ⊕ C)
+
+Isso significa:
+- Colocar pedra: `hash ^= zobrist[cor][linha][coluna]`
+- Capturar pedra: `hash ^= zobrist[cor][linha][coluna]` (mesma operacao!)
+
+### Implementacao
+
+```python
+class ZobristBoard:
+    def __init__(self, size=19):
+        self.size = size
+        self.board = np.zeros((size, size), dtype=np.int8)
+        self.current_player = BLACK
+        self.hash = np.uint64(0)
+
+        # Inicializar tabela de numeros aleatorios
+        self._init_zobrist_table()
+
+    def _init_zobrist_table(self):
+        np.random.seed(12345)
+        self.zobrist = np.random.randint(
+            0, 2**64,
+            size=(3, self.size, self.size),
+            dtype=np.uint64
+        )
+        self.zobrist_player = np.random.randint(0, 2**64, dtype=np.uint64)
+
+    def place_stone(self, row, col, color):
+        """Colocar pedra e atualizar valor de hash"""
+        # Remover estado antigo (se houver pedra)
+        old_color = self.board[row, col]
+        if old_color != EMPTY:
+            self.hash ^= self.zobrist[old_color, row, col]
+
+        # Adicionar nova pedra
+        self.board[row, col] = color
+        self.hash ^= self.zobrist[color, row, col]
+
+    def remove_stone(self, row, col):
+        """Capturar pedra e atualizar valor de hash"""
+        color = self.board[row, col]
+        if color != EMPTY:
+            self.hash ^= self.zobrist[color, row, col]
+            self.board[row, col] = EMPTY
+
+    def switch_player(self):
+        """Trocar jogador e atualizar valor de hash"""
+        self.hash ^= self.zobrist_player
+        self.current_player = WHITE if self.current_player == BLACK else BLACK
+
+    def get_hash(self):
+        """Obter valor de hash da posicao atual"""
+        return self.hash
+```
+
+### Vantagem da Atualizacao Incremental
+
+Usando Zobrist Hashing, atualizar o valor de hash requer apenas tempo O(1):
+
+| Operacao | Comparacao tradicional | Zobrist |
+|----------|------------------------|---------|
+| Comparar duas posicoes | O(361) | O(1) |
+| Atualizar apos colocar pedra | O(361) | O(1) |
+| Atualizar apos captura | O(361) | O(k), k e numero de capturas |
+
+### Probabilidade de Colisao
+
+Usando hash de 64 bits, a probabilidade de colisao e extremamente baixa:
+
+**P(colisao) ≈ n² / 2^65**
+
+Onde n e o numero de posicoes diferentes. Mesmo com 1 bilhao de posicoes, a probabilidade de colisao e apenas cerca de 10^-3.
+
+Na pratica, muitos programas de Go usam Zobrist Hashing de 64 bits sem verificacao de colisao, porque a probabilidade de colisao e baixa o suficiente para ser ignorada.
+
+---
+
+## Representacao de Grupos (Union-Find): Problema de Conectividade
+
+### Conceito de Grupo
+
+No Go, um **grupo** (String ou Chain) e um conjunto de pedras conectadas da mesma cor. As "liberdades" do grupo determinam sua vida ou morte.
+
+<GoBoard
+  size={200}
+  stones={[
+    {x: 3, y: 3, color: 'black'},
+    {x: 4, y: 3, color: 'black'},
+    {x: 5, y: 3, color: 'black'},
+    {x: 4, y: 4, color: 'black'},
+    {x: 6, y: 3, color: 'white'},
+    {x: 6, y: 4, color: 'white'},
+  ]}
+  labels={[
+    {x: 4, y: 3, text: 'A'},
+  ]}
+/>
+
+Na figura acima, quatro pedras pretas formam um grupo, e o numero de liberdades deste grupo determina sua vida ou morte.
+
+### Por que Precisamos de Gerenciamento Eficiente de Grupos?
+
+Cada jogada pode:
+1. **Criar** novo grupo
+2. **Unir** multiplos grupos
+3. **Reduzir** liberdades de grupos inimigos
+4. **Capturar** grupos sem liberdades
+
+Essas operacoes precisam ser executadas eficientemente, porque no MCTS, dezenas de milhares de simulacoes de jogadas podem ser necessarias por segundo.
+
+### Estrutura de Dados Union-Find
+
+**Union-Find** (tambem conhecido como Disjoint Set Union, DSU) e uma estrutura de dados classica para tratar problemas de "conectividade":
+
+```python
+class UnionFind:
+    def __init__(self, size):
+        # parent[i] aponta para o pai de i
+        # Se parent[i] = i, entao i e a raiz
+        self.parent = list(range(size))
+        self.rank = [0] * size
+
+    def find(self, x):
+        """
+        Encontrar a raiz do conjunto ao qual x pertence (com compressao de caminho)
+        """
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])  # Compressao de caminho
+        return self.parent[x]
+
+    def union(self, x, y):
+        """
+        Unir os conjuntos de x e y (com uniao por rank)
+        """
+        root_x = self.find(x)
+        root_y = self.find(y)
+
+        if root_x == root_y:
+            return  # Ja estao no mesmo conjunto
+
+        # Uniao por rank: conectar arvore menor a arvore maior
+        if self.rank[root_x] < self.rank[root_y]:
+            self.parent[root_x] = root_y
+        elif self.rank[root_x] > self.rank[root_y]:
+            self.parent[root_y] = root_x
+        else:
+            self.parent[root_y] = root_x
+            self.rank[root_x] += 1
+```
+
+### Complexidade de Tempo
+
+A complexidade de tempo do Union-Find e expressa usando a **funcao inversa de Ackermann** α(n):
+
+| Operacao | Complexidade de Tempo |
+|----------|----------------------|
+| find | O(α(n)) ≈ O(1) |
+| union | O(α(n)) ≈ O(1) |
+
+α(n) cresce muito lentamente, e para qualquer n pratico, α(n) ≤ 4. Portanto, pode ser considerado tempo constante.
+
+### Aplicacao de Union-Find no Go
+
+```python
+class GoStringManager:
+    def __init__(self, size=19):
+        self.size = size
+        num_points = size * size
+
+        # Estrutura Union-Find
+        self.parent = list(range(num_points))
+        self.rank = [0] * num_points
+
+        # Liberdades de cada grupo (indexadas pela raiz)
+        self.liberties = [set() for _ in range(num_points)]
+
+        # Pedras de cada grupo (indexadas pela raiz)
+        self.stones = [set() for _ in range(num_points)]
+
+    def _index(self, row, col):
+        return row * self.size + col
+
+    def _neighbors(self, row, col):
+        """Obter quatro vizinhos"""
+        neighbors = []
+        if row > 0: neighbors.append((row - 1, col))
+        if row < self.size - 1: neighbors.append((row + 1, col))
+        if col > 0: neighbors.append((row, col - 1))
+        if col < self.size - 1: neighbors.append((row, col + 1))
+        return neighbors
+
+    def find(self, idx):
+        if self.parent[idx] != idx:
+            self.parent[idx] = self.find(self.parent[idx])
+        return self.parent[idx]
+
+    def add_stone(self, row, col, color, board):
+        """
+        Adicionar uma pedra, processar conexoes e capturas
+        """
+        idx = self._index(row, col)
+
+        # Criar novo grupo
+        self.stones[idx] = {idx}
+        self.liberties[idx] = set()
+
+        # Calcular liberdades desta pedra
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == 0:  # Ponto vazio e liberdade
+                self.liberties[idx].add(nidx)
+
+        # Unir com vizinhos da mesma cor
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == color:
+                self._merge_strings(idx, nidx)
+
+        # Reduzir liberdades de grupos inimigos
+        opponent = 3 - color  # BLACK=1, WHITE=2
+        captured = []
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == opponent:
+                root = self.find(nidx)
+                self.liberties[root].discard(idx)
+                if len(self.liberties[root]) == 0:
+                    captured.append(root)
+
+        return captured
+
+    def _merge_strings(self, idx1, idx2):
+        """Unir dois grupos"""
+        root1 = self.find(idx1)
+        root2 = self.find(idx2)
+
+        if root1 == root2:
+            return
+
+        # Uniao por rank
+        if self.rank[root1] < self.rank[root2]:
+            root1, root2 = root2, root1
+
+        self.parent[root2] = root1
+        if self.rank[root1] == self.rank[root2]:
+            self.rank[root1] += 1
+
+        # Unir conjuntos de liberdades e pedras
+        self.liberties[root1] |= self.liberties[root2]
+        self.stones[root1] |= self.stones[root2]
+
+        # Remover propria posicao das liberdades (voce nao e sua propria liberdade)
+        for stone_idx in self.stones[root2]:
+            self.liberties[root1].discard(stone_idx)
+```
+
+### Calculo de Liberdades
+
+Calcular o numero de liberdades de um grupo e uma das operacoes mais comuns no Go:
+
+```python
+def count_liberties(self, row, col, board):
+    """Calcular numero de liberdades do grupo ao qual a pedra pertence"""
+    idx = self._index(row, col)
+    root = self.find(idx)
+    return len(self.liberties[root])
+```
+
+Usando Union-Find, esta operacao e O(1) (assumindo que find e O(1)).
+
+---
+
+## Evolucao da Codificacao de Caracteristicas
+
+Das caracteristicas manuais tradicionais as caracteristicas concisas do AlphaGo Zero, a codificacao de caracteristicas da IA de Go passou por uma evolucao significativa.
+
+### Caracteristicas Manuais do GNU Go
+
+Programas de Go antigos (como GNU Go) usavam muitas caracteristicas projetadas manualmente:
+
+```python
+def extract_features_gnugo(board, point):
+    """
+    Extracao de caracteristicas estilo GNU Go
+    """
+    features = {}
+
+    # 1. Padroes de forma (formas locais predefinidas)
+    features['pattern'] = match_pattern(board, point)
+
+    # 2. Caracteristicas taticas
+    features['can_capture'] = check_capture(board, point)
+    features['can_connect'] = check_connect(board, point)
+    features['creates_eye'] = check_eye_creation(board, point)
+
+    # 3. Caracteristicas locais
+    features['liberties_after'] = count_liberties_after_move(board, point)
+    features['enemy_liberties'] = count_enemy_liberties(board, point)
+
+    # 4. Caracteristicas globais
+    features['distance_to_edge'] = min(
+        point[0], point[1],
+        18 - point[0], 18 - point[1]
+    )
+
+    # ... mais caracteristicas
+
+    return features
+```
+
+Problemas com esta abordagem:
+- Requer muito conhecimento de especialistas humanos
+- Caracteristicas podem estar incompletas
+- Dificil descobrir novos padroes
+
+### Os 48 Planos de Caracteristicas do AlphaGo
+
+O AlphaGo (versao Nature 2016) usou **48 planos de caracteristicas** como entrada da rede neural:
+
+```python
+def encode_alphago_features(board, player, history):
+    """
+    48 planos de caracteristicas do AlphaGo 2016
+
+    Returns:
+        tensor de (19, 19, 48)
+    """
+    features = np.zeros((19, 19, 48), dtype=np.float32)
+
+    # Plano 1: posicao das pedras pretas
+    features[:, :, 0] = (board == BLACK)
+
+    # Plano 2: posicao das pedras brancas
+    features[:, :, 1] = (board == WHITE)
+
+    # Plano 3: pontos vazios
+    features[:, :, 2] = (board == EMPTY)
+
+    # Plano 4: todos 1 (termo de vies)
+    features[:, :, 3] = 1
+
+    # Planos 5-12: codificacao de liberdades (um plano para cada de 1-8 liberdades)
+    for i, num_libs in enumerate(range(1, 9)):
+        for r in range(19):
+            for c in range(19):
+                if board[r, c] != EMPTY:
+                    libs = count_liberties(board, r, c)
+                    if libs == num_libs:
+                        features[r, c, 4 + i] = 1
+
+    # Planos 13-20: liberdades do oponente apos captura
+    # ...
+
+    # Planos 21-28: liberdades proprias apos jogar
+    # ...
+
+    # Planos 29-36: historico das ultimas 8 jogadas (um plano por jogada)
+    for i, (r, c) in enumerate(history[-8:]):
+        features[r, c, 28 + i] = 1
+
+    # Planos 37-44: avaliacao de escada
+    # ...
+
+    # Planos 45-48: relacionados a simetria
+    # ...
+
+    # Plano 49: de quem e a vez (todos 1 para preto, todos 0 para branco)
+    if player == BLACK:
+        features[:, :, 47] = 1
+
+    return features
+```
+
+### Classificacao dos 48 Planos
+
+| Categoria | Numero de Planos | Descricao |
+|-----------|-----------------|-----------|
+| Posicao das pedras | 3 | Preto, branco, vazio |
+| Constante | 1 | Todos 1 |
+| Liberdades | 8 | 1-8 liberdades |
+| Liberdades apos captura | 8 | Liberdades assumindo jogada |
+| Liberdades apos jogar | 8 | Liberdades assumindo jogada |
+| Historico | 8 | Ultimas 8 jogadas |
+| Escada | 8 | Analise de escada complexa |
+| Outros | 4 | Vez, simetria, etc. |
+
+### Os 17 Planos de Caracteristicas do AlphaGo Zero
+
+O AlphaGo Zero (2017) simplificou muito a codificacao de caracteristicas, usando apenas **17 planos**:
+
+```python
+def encode_alphago_zero_features(board_history, player):
+    """
+    17 planos de caracteristicas do AlphaGo Zero
+
+    Args:
+        board_history: ultimas 8 posicoes (incluindo atual)
+        player: jogador atual
+
+    Returns:
+        tensor de (19, 19, 17)
+    """
+    features = np.zeros((19, 19, 17), dtype=np.float32)
+
+    # Planos 1-8: historico de pedras pretas (ultimas 8 jogadas)
+    for i, board in enumerate(board_history[-8:]):
+        features[:, :, i] = (board == BLACK)
+
+    # Planos 9-16: historico de pedras brancas (ultimas 8 jogadas)
+    for i, board in enumerate(board_history[-8:]):
+        features[:, :, 8 + i] = (board == WHITE)
+
+    # Plano 17: de quem e a vez (todos 1 para preto, todos 0 para branco)
+    if player == BLACK:
+        features[:, :, 16] = 1
+
+    return features
+```
+
+### A Simplicidade dos 17 Planos
+
+| Categoria | Numero de Planos | Descricao |
+|-----------|-----------------|-----------|
+| Historico de preto | 8 | Posicao das pedras pretas nos ultimos 8 passos |
+| Historico de branco | 8 | Posicao das pedras brancas nos ultimos 8 passos |
+| Jogador atual | 1 | Todos 1 ou todos 0 |
+
+Por que pode ser tao simples?
+
+> **Insight chave: deixar a rede neural aprender as caracteristicas sozinha.**
+
+O AlphaGo Zero provou que:
+- Nao precisa calcular liberdades manualmente (a rede pode inferir da posicao das pedras)
+- Nao precisa de analise de escada (a rede pode aprender a identificar escadas)
+- Nao precisa de previsao de captura complexa (a rede pode entender consequencias das jogadas)
+
+Isso demonstra a vantagem central do aprendizado profundo: **aprendizado fim-a-fim**.
+
+### Visualizacao dos Planos de Caracteristicas
+
+Vamos ver como esses planos de caracteristicas realmente parecem:
+
+```
+Tabuleiro original:         Plano preto:                Plano branco:
+. . . . . .            0 0 0 0 0 0            0 0 0 0 0 0
+. ● ○ . . .            0 1 0 0 0 0            0 0 1 0 0 0
+. . ● ○ . .    ->      0 0 1 0 0 0     +      0 0 0 1 0 0
+. . . ● . .            0 0 0 1 0 0            0 0 0 0 0 0
+. . . . . .            0 0 0 0 0 0            0 0 0 0 0 0
+```
+
+Cada plano e uma matriz binaria (0 ou 1), e a rede neural pode extrair padroes desses planos atraves de operacoes de convolucao.
+
+---
+
+## Tratamento de Simetria: 8 Transformacoes
+
+### Simetria do Go
+
+O tabuleiro de Go tem **8 simetrias**:
+
+1. **4 rotacoes**: 0, 90, 180, 270 graus
+2. **4 reflexoes com rotacao**: reflexao horizontal + 4 rotacoes
+
+Isso forma um **grupo diedrico D4**.
+
+### Representacao Matematica
+
+Seja (x, y) uma coordenada no tabuleiro (centro em (9, 9)), as 8 transformacoes podem ser representadas como:
+
+| Transformacao | Formula |
+|---------------|---------|
+| Identidade | (x, y) |
+| Rotacao 90 | (-y, x) |
+| Rotacao 180 | (-x, -y) |
+| Rotacao 270 | (y, -x) |
+| Reflexao horizontal | (-x, y) |
+| Reflexao vertical | (x, -y) |
+| Reflexao diagonal | (y, x) |
+| Reflexao anti-diagonal | (-y, -x) |
+
+### Implementacao em Codigo
+
+```python
+def get_symmetries(board):
+    """
+    Obter as 8 transformacoes simetricas do tabuleiro
+
+    Returns:
+        Lista de 8 tabuleiros
+    """
+    symmetries = []
+
+    # Original
+    symmetries.append(board.copy())
+
+    # Rotacao 90
+    symmetries.append(np.rot90(board, k=1))
+
+    # Rotacao 180
+    symmetries.append(np.rot90(board, k=2))
+
+    # Rotacao 270
+    symmetries.append(np.rot90(board, k=3))
+
+    # Reflexao horizontal
+    symmetries.append(np.fliplr(board))
+
+    # Reflexao vertical
+    symmetries.append(np.flipud(board))
+
+    # Reflexao diagonal
+    symmetries.append(board.T)
+
+    # Reflexao anti-diagonal
+    symmetries.append(np.rot90(board.T, k=2))
+
+    return symmetries
+
+
+def apply_symmetry(board, sym_index):
+    """
+    Aplicar a transformacao simetrica de indice sym_index
+    """
+    return get_symmetries(board)[sym_index]
+
+
+def inverse_symmetry(move, sym_index, board_size=19):
+    """
+    Converter coordenada de jogada transformada de volta para coordenada original
+    """
+    row, col = move
+
+    if sym_index == 0:  # Identidade
+        return row, col
+    elif sym_index == 1:  # Rotacao 90
+        return col, board_size - 1 - row
+    elif sym_index == 2:  # Rotacao 180
+        return board_size - 1 - row, board_size - 1 - col
+    elif sym_index == 3:  # Rotacao 270
+        return board_size - 1 - col, row
+    elif sym_index == 4:  # Reflexao horizontal
+        return row, board_size - 1 - col
+    elif sym_index == 5:  # Reflexao vertical
+        return board_size - 1 - row, col
+    elif sym_index == 6:  # Reflexao diagonal
+        return col, row
+    elif sym_index == 7:  # Reflexao anti-diagonal
+        return board_size - 1 - col, board_size - 1 - row
+```
+
+### Aumento de Dados
+
+Ao treinar redes neurais, podemos usar simetria para **aumento de dados**:
+
+```python
+def augment_training_data(board, policy, value):
+    """
+    Expandir uma amostra de treinamento para 8
+    """
+    augmented = []
+
+    for sym_index in range(8):
+        # Transformar tabuleiro
+        aug_board = apply_symmetry(board, sym_index)
+
+        # Transformar politica (vetor de 361 dimensoes)
+        policy_2d = policy.reshape(19, 19)
+        aug_policy_2d = apply_symmetry(policy_2d, sym_index)
+        aug_policy = aug_policy_2d.flatten()
+
+        # Valor nao muda
+        aug_value = value
+
+        augmented.append((aug_board, aug_policy, aug_value))
+
+    return augmented
+```
+
+Isso aumenta os dados de treinamento em 8 vezes, e e completamente gratis (nao precisa coletar novos dados).
+
+### Uso de Simetria na Inferencia
+
+O AlphaGo tambem usa simetria durante jogos reais:
+
+```python
+def predict_with_symmetry(model, board):
+    """
+    Usar simetria para melhorar previsao
+    """
+    policies = []
+    values = []
+
+    for sym_index in range(8):
+        # Transformar entrada
+        aug_board = apply_symmetry(board, sym_index)
+
+        # Previsao da rede neural
+        policy, value = model.predict(aug_board)
+
+        # Transformar politica de volta para sistema de coordenadas original
+        policy_2d = policy.reshape(19, 19)
+        original_policy = inverse_symmetry_2d(policy_2d, sym_index)
+        policies.append(original_policy.flatten())
+
+        values.append(value)
+
+    # Media de todas as previsoes
+    avg_policy = np.mean(policies, axis=0)
+    avg_value = np.mean(values)
+
+    return avg_policy, avg_value
+```
+
+Esta abordagem pode melhorar ligeiramente a precisao e estabilidade das previsoes.
+
+---
+
+## Resumo dos Metodos de Representacao de Tabuleiro
+
+| Metodo | Uso | Complexidade | Caracteristicas |
+|--------|-----|--------------|-----------------|
+| **Array bidimensional** | Armazenamento basico | O(361) espaco | Simples e intuitivo |
+| **Zobrist Hashing** | Identificacao de posicao | O(1) consulta | Hash eficiente |
+| **Union-Find** | Gerenciamento de grupos | O(α(n)) operacao | Trata conectividade |
+| **Planos de caracteristicas** | Entrada de rede neural | O(361×planos) | Codifica informacao rica |
+| **Transformacao de simetria** | Aumento de dados | 8× dados | Expansao gratuita |
+
+Essas tecnicas trabalham juntas para formar a infraestrutura da IA de Go moderna.
+
+---
+
+## Correspondencia com Animacoes
+
+Conceitos centrais abordados neste artigo e numeros das animacoes:
+
+| Numero | Conceito | Correspondencia Fisica/Matematica |
+|--------|----------|-----------------------------------|
+| A1 | Representacao em array bidimensional | Matriz, dados esparsos |
+| A2 | Zobrist Hashing | Funcao hash, operacao XOR |
+| A8 | Codificacao de planos de caracteristicas | Tensor, entrada multi-canal |
+| A5 | Tratamento de simetria | Teoria de grupos, grupo diedrico |
+
+---
+
+## Leitura Adicional
+
+- **Artigo anterior**: [Limites dos Metodos Tradicionais](../traditional-limits) - Do Minimax ao MCTS
+- **Proximo artigo**: [Policy Network em Detalhes](../policy-network) - Como redes neurais preveem jogadas
+- **Exercicio pratico**: [Execute sua primeira IA de Go em 30 minutos](../../../hands-on/) - Experiencia pratica
+
+---
+
+## Referencias
+
+1. Zobrist, A. L. (1970). "A new hashing method with application for game playing." ICCA journal.
+2. Tarjan, R. E. (1975). "Efficiency of a Good But Not Linear Set Union Algorithm." Journal of the ACM, 22(2), 215-225.
+3. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." Nature, 529, 484-489. - 48 planos de caracteristicas do AlphaGo
+4. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." Nature, 550, 354-359. - 17 planos de caracteristicas do AlphaGo Zero

@@ -1,0 +1,610 @@
+---
+sidebar_position: 8
+title: Detalhes da Policy Network
+description: Compreensão aprofundada da arquitetura, métodos de treinamento e aplicações práticas da rede de políticas do AlphaGo, desde 13 camadas convolucionais até a saída Softmax
+---
+
+import { PolicyHeatmap } from '@site/src/components/D3Charts';
+
+# Detalhes da Policy Network
+
+Em qualquer posição de Go, existem em média 250 jogadas legais. Se deixarmos o computador escolher aleatoriamente, ele nunca conseguirá jogar bem.
+
+A inovação do AlphaGo está em: ele aprendeu a "olhar para o tabuleiro e saber quais posições vale a pena considerar".
+
+Esta capacidade vem da **Policy Network (Rede de Políticas)**.
+
+---
+
+## O que é a Policy Network?
+
+### Função Principal
+
+A Policy Network é uma rede neural convolucional profunda, cuja tarefa é:
+
+> **Dado o estado atual do tabuleiro, produzir a probabilidade de jogar em cada posição**
+
+Em termos matemáticos:
+
+```
+p = f_θ(s)
+```
+
+Onde:
+- `s`: Estado atual do tabuleiro (tabuleiro 19×19 + outras características)
+- `f_θ`: Policy Network (θ são os parâmetros da rede)
+- `p`: Distribuição de probabilidade para 361 posições (incluindo passar)
+
+### Compreensão Intuitiva
+
+Imagine que você é um jogador profissional. Quando você vê uma posição, seu cérebro automaticamente "ilumina" algumas posições importantes — estas são as que sua intuição considera dignas de consideração.
+
+A Policy Network está simulando este processo.
+
+<PolicyHeatmap initialPosition="corner" size={400} />
+
+O mapa de calor acima mostra a saída da Policy Network. Quanto mais brilhante a cor, mais o modelo considera que vale a pena jogar ali.
+
+### Por que precisamos da Policy Network?
+
+O espaço de busca do Go é imenso. Se buscarmos todas as jogadas possíveis sem filtragem:
+
+| Estratégia | Jogadas consideradas por lance | Nós para buscar 10 lances |
+|------------|-------------------------------|---------------------------|
+| Considerar tudo | 361 | 361^10 ≈ 10^25 |
+| Filtrado pela Policy Network | ~20 | 20^10 ≈ 10^13 |
+
+A Policy Network reduz o espaço de busca em **10^12 vezes** (um trilhão de vezes).
+
+---
+
+## Arquitetura da Rede
+
+### Estrutura Geral
+
+A Policy Network do AlphaGo usa uma arquitetura de rede neural convolucional profunda (CNN):
+
+```
+Camada de Entrada → Camadas Conv ×12 → Camada Conv de Saída → Softmax
+        ↓                ↓                    ↓                  ↓
+    19×19×48         19×19×192            19×19×1           362 probabilidades
+```
+
+### Camada de Entrada
+
+A entrada é um tensor de características **19×19×48**:
+- **19×19**: Tamanho do tabuleiro
+- **48**: 48 planos de características (veja [Design de Características de Entrada](../input-features))
+
+Esses 48 planos incluem:
+- Posições das pedras pretas, posições das pedras brancas
+- Histórico das últimas 8 jogadas
+- Liberdades, atari, escadas, etc.
+- Legalidade (quais posições podem ser jogadas)
+
+### Camadas Convolucionais
+
+A rede contém **12 camadas convolucionais**, cada uma configurada como:
+
+| Parâmetro | Valor | Descrição |
+|-----------|-------|-----------|
+| Número de filtros | 192 | Cada camada produz 192 mapas de características |
+| Tamanho do kernel | 3×3 (5×5 na primeira camada) | Cada vez observa uma região 3×3 |
+| Modo de padding | same | Mantém o tamanho 19×19 |
+| Função de ativação | ReLU | max(0, x) |
+
+#### Por que 192 filtros?
+
+Este é um valor empírico. Muito poucos limitariam a capacidade do modelo, muitos aumentariam o custo computacional e o risco de overfitting. A equipe do DeepMind determinou através de experimentos que 192 é um bom ponto de equilíbrio.
+
+#### Por que kernels 3×3?
+
+3×3 é o tamanho mais comum em redes neurais convolucionais, pelas seguintes razões:
+1. **Captura suficiente de padrões locais**: Olhos, conexões e cortes no Go estão dentro de uma região 3×3
+2. **Alta eficiência computacional**: Comparado a kernels maiores, 3×3 tem menos parâmetros
+3. **Empilhável**: Múltiplas camadas de convolução 3×3 podem alcançar um campo receptivo maior
+
+#### Por que a primeira camada usa 5×5?
+
+A primeira camada usa um kernel 5×5 maior para capturar padrões de alcance ligeiramente maior na camada de entrada (como saltos pequenos e grandes). Esta é uma escolha de design, e o posterior AlphaGo Zero unificou para usar 3×3.
+
+### Função de Ativação ReLU
+
+Cada camada convolucional é seguida pela função de ativação ReLU (Rectified Linear Unit):
+
+```
+ReLU(x) = max(0, x)
+```
+
+Por que usar ReLU?
+
+1. **Computação simples**: Apenas toma o máximo, muito mais rápido que sigmoid
+2. **Alivia o desaparecimento do gradiente**: O gradiente na região positiva é constantemente 1
+3. **Ativação esparsa**: Valores negativos são zerados, produzindo representação esparsa
+
+### Camada de Saída
+
+A última camada é uma camada convolucional especial:
+
+```
+19×19×192 → Convolução(1×1, 1 filtro) → 19×19×1 → Achatado → Vetor 362-dim → Softmax
+```
+
+#### Convolução 1×1
+
+A camada de saída usa convolução 1×1, comprimindo 192 canais em 1. Isso equivale a fazer uma combinação linear das 192 características dimensionais em cada posição.
+
+#### Saída Softmax
+
+O vetor 362-dimensional (361 posições do tabuleiro + 1 para passar) passa pela função Softmax:
+
+```
+Softmax(z_i) = exp(z_i) / Σ_j exp(z_j)
+```
+
+O Softmax garante que a saída seja uma distribuição de probabilidade válida:
+- Todos os valores estão entre 0 e 1
+- A soma de todos os valores é 1
+
+### Contagem de Parâmetros
+
+Vamos calcular o número total de parâmetros da rede:
+
+| Camada | Cálculo | Número de Parâmetros |
+|--------|---------|----------------------|
+| Primeira camada conv | 5×5×48×192 + 192 | 230.592 |
+| Camadas conv intermediárias ×11 | (3×3×192×192 + 192) × 11 | 3.633.792 |
+| Camada conv de saída | 1×1×192×1 + 1 | 193 |
+| **Total** | | **~3,9M** |
+
+Aproximadamente **3,9 milhões de parâmetros**, considerada uma rede pequena pelos padrões atuais.
+
+---
+
+## Objetivo e Métodos de Treinamento
+
+### Dados de Treinamento
+
+A Policy Network usa **aprendizado supervisionado**, aprendendo a partir de registros de jogos humanos.
+
+Fontes de dados:
+- **KGS Go Server**: Jogos de jogadores amadores e profissionais
+- **Aproximadamente 30 milhões de posições**: Amostradas de 160 mil jogos
+- **Rótulos**: A próxima jogada humana correspondente a cada posição
+
+### Função de Perda de Entropia Cruzada
+
+O objetivo do treinamento é maximizar a probabilidade de prever as jogadas humanas. Usando a função de perda de entropia cruzada:
+
+```
+L(θ) = -Σ log p_θ(a | s)
+```
+
+Onde:
+- `s`: Estado do tabuleiro
+- `a`: Posição onde o humano realmente jogou
+- `p_θ(a | s)`: Probabilidade do modelo para aquela posição
+
+#### Compreensão Intuitiva
+
+A perda de entropia cruzada tem um significado simples:
+
+> **Quanto maior a probabilidade do modelo para a posição correta, menor a perda**
+
+Se o humano jogou em K10, e a probabilidade do modelo para K10 é:
+- 0,9 → Perda = -log(0,9) ≈ 0,1 (muito baixa, bom)
+- 0,1 → Perda = -log(0,1) ≈ 2,3 (alta, ruim)
+- 0,01 → Perda = -log(0,01) ≈ 4,6 (muito alta, muito ruim)
+
+### Processo de Treinamento
+
+```python
+# Pseudocódigo
+for epoch in range(num_epochs):
+    for batch in dataloader:
+        states, actions = batch
+
+        # Propagação direta
+        policy = network(states)  # Vetor de probabilidade 361-dim
+
+        # Calcular perda (entropia cruzada)
+        loss = cross_entropy(policy, actions)
+
+        # Retropropagação
+        loss.backward()
+        optimizer.step()
+```
+
+Detalhes do treinamento:
+- **Otimizador**: SGD com momentum
+- **Taxa de aprendizado**: Inicial 0,003, decaindo gradualmente
+- **Tamanho do lote**: 16
+- **Tempo de treinamento**: Aproximadamente 3 semanas (50 GPUs)
+
+### Aumento de Dados
+
+O tabuleiro de Go tem simetria de 8 dobras (4 rotações × 2 espelhamentos). Cada amostra de treinamento pode ser transformada em 8 amostras equivalentes:
+
+```
+Original → Rotação 90° → Rotação 180° → Rotação 270°
+    ↓          ↓              ↓              ↓
+Espelhamento horizontal → ...
+```
+
+Isso aumenta os dados de treinamento efetivos em 8 vezes e garante que os padrões aprendidos pelo modelo não dependam da orientação.
+
+---
+
+## Resultados do Treinamento
+
+### 57% de Precisão
+
+Após o treinamento, a Policy Network alcançou **57% de precisão top-1**.
+
+Isso significa: dada qualquer posição, o modelo tem 57% de chance de prever a jogada exata que o especialista humano fez.
+
+#### Esta precisão é alta?
+
+Considerando que cada posição tem em média 250 jogadas legais, a precisão de adivinhação aleatória é de apenas 0,4%.
+
+| Método | Precisão Top-1 |
+|--------|----------------|
+| Adivinhação aleatória | 0,4% |
+| Melhor programa de Go anterior | ~44% |
+| Policy Network do AlphaGo | **57%** |
+
+Um aumento de 13 pontos percentuais pode parecer pequeno, mas é muito significativo.
+
+### Melhoria na Força de Jogo
+
+Qual força de jogo pode ser alcançada usando puramente a Policy Network (sem busca)?
+
+| Configuração | Classificação Elo | Nível Aproximado |
+|--------------|-------------------|------------------|
+| Melhor programa anterior (Pachi) | 2.500 | Amador 4-5 dan |
+| Apenas Policy Network | 2.800 | Amador 6-7 dan |
+| + MCTS 1600 simulações | 3.200+ | Nível profissional |
+
+A Policy Network sozinha já é de nível amador alto, e com MCTS salta para nível profissional.
+
+### Por que apenas 57%?
+
+Os registros de jogos humanos têm as seguintes características que limitam a precisão:
+
+#### 1. Múltiplas Boas Jogadas
+
+Muitas posições têm múltiplas boas jogadas. Por exemplo, "aproximação do canto" e "defesa do canto" podem ambas ser escolhas corretas. Se o modelo escolhe outra boa jogada, é contado como "errado".
+
+#### 2. Diferenças de Estilo
+
+Diferentes jogadores têm estilos diferentes. Jogadores agressivos e jogadores sólidos podem fazer jogadas diferentes na mesma posição. O modelo aprende um estilo "médio".
+
+#### 3. Humanos Também Erram
+
+Os dados do KGS incluem jogos de jogadores amadores, cujas escolhas nem sempre são ótimas. É normal o modelo aprender alguns "erros".
+
+---
+
+## Papel no MCTS
+
+A Policy Network desempenha dois papéis-chave no MCTS do AlphaGo:
+
+### 1. Guiar a Direção da Busca
+
+Na fase de **Seleção** do MCTS, a saída da Policy Network é usada para calcular o UCB (Upper Confidence Bound):
+
+```
+UCB(s, a) = Q(s, a) + c_puct × P(s, a) × √(N(s)) / (1 + N(s, a))
+```
+
+Onde `P(s, a)` é a probabilidade dada pela Policy Network.
+
+Isso significa:
+- **Jogadas de alta probabilidade são exploradas primeiro**
+- **Jogadas de baixa probabilidade também têm chance de serem exploradas** (por causa do termo de exploração)
+
+### 2. Prior para Expansão de Nós
+
+Quando o MCTS expande um novo nó, a Policy Network fornece as **probabilidades a priori** para todos os nós filhos.
+
+```
+Expandir nó s:
+  for each action a:
+    child = Node()
+    child.prior = policy_network(s)[a]  # Probabilidade a priori
+    child.value = 0
+    child.visits = 0
+```
+
+Essas probabilidades a priori permitem que o MCTS "saiba" quais nós filhos vale mais a pena explorar, mesmo que ainda não tenham sido visitados.
+
+---
+
+## Versão Leve vs. Versão Completa
+
+O AlphaGo na verdade tem duas Policy Networks:
+
+### Versão Completa (SL Policy Network)
+
+- **Arquitetura**: CNN de 13 camadas, 192 filtros
+- **Precisão**: 57%
+- **Tempo de inferência**: ~3 milissegundos/posição
+- **Uso**: Seleção e Expansão no MCTS
+
+### Versão Leve (Rollout Policy Network)
+
+- **Arquitetura**: Modelo linear + características manuais
+- **Precisão**: 24%
+- **Tempo de inferência**: ~2 microssegundos/posição (1500× mais rápido)
+- **Uso**: Simulação rápida (rollout)
+
+### Por que precisamos da versão leve?
+
+Na fase de **Simulação** do MCTS, é necessário jogar desde o nó atual até o fim do jogo, potencialmente 100+ jogadas. Se cada jogada usar a Policy Network completa, é muito lento.
+
+A versão leve tem apenas 24% de precisão, mas é 1500× mais rápida. No rollout, velocidade é mais importante que precisão.
+
+### Características da Versão Leve
+
+A versão leve usa características projetadas manualmente, incluindo:
+
+| Tipo de Característica | Exemplos |
+|------------------------|----------|
+| Padrões locais | Configuração de pedras em região 3×3 |
+| Características globais | Se está no canto/borda, pontos grandes |
+| Características táticas | Atari, escadas, conexões |
+
+Essas características são alimentadas em um modelo linear (sem camadas ocultas), calculando extremamente rápido.
+
+### Melhorias no AlphaGo Zero
+
+O posterior AlphaGo Zero abandonou completamente a versão leve e os rollouts. Ele avalia os nós folha diretamente com a Value Network, não precisando de simulação rápida. Esta foi uma simplificação importante.
+
+---
+
+## Refinamento com Aprendizado por Reforço (RL Policy Network)
+
+### Limitações do Aprendizado Supervisionado
+
+A Policy Network treinada com aprendizado supervisionado tem um problema fundamental:
+
+> **Ela aprende a "imitar humanos", não a "vencer"**
+
+Isso significa que ela aprenderá os maus hábitos dos humanos e também terá desempenho ruim em posições que os humanos nunca encontraram.
+
+### Auto-jogo com Reforço
+
+A solução do DeepMind é usar o método de **Policy Gradient** para aprendizado por reforço:
+
+```
+1. Deixar a Policy Network jogar contra si mesma
+2. Registrar todas as jogadas de cada partida
+3. Ajustar parâmetros baseado no resultado:
+   - Venceu → Aumentar probabilidade dessas jogadas
+   - Perdeu → Diminuir probabilidade dessas jogadas
+```
+
+### Algoritmo REINFORCE
+
+Especificamente usando o algoritmo REINFORCE:
+
+```
+∇J(θ) = E[Σ_t ∇log π_θ(a_t | s_t) × z]
+```
+
+Onde:
+- `z`: Resultado do jogo (+1 vitória, -1 derrota)
+- `π_θ(a_t | s_t)`: Probabilidade de escolher ação `a_t` no estado `s_t`
+
+### Resultados
+
+Após aproximadamente 1 dia de treinamento com auto-jogo (1,28 milhão de jogos), a RL Policy Network:
+
+| Métrica | SL Policy | RL Policy |
+|---------|-----------|-----------|
+| Taxa de vitória contra SL Policy | 50% | **80%** |
+| Aumento de Elo | - | +100 |
+
+A precisão pode diminuir ligeiramente (porque não imita mais completamente os humanos), mas a taxa de vitória real melhora significativamente.
+
+### De "Imitar" para "Inovar"
+
+O aprendizado por reforço permitiu que a Policy Network aprendesse algumas jogadas que os humanos nunca pensaram. Essas jogadas nunca apareceram nos dados de treinamento, mas são eficazes.
+
+É por isso que o AlphaGo pode fazer "a jogada divina" — não é limitado pela experiência humana.
+
+---
+
+## Análise Visual
+
+### Distribuições de Probabilidade em Diferentes Posições
+
+Vamos ver a saída da Policy Network em diferentes posições:
+
+#### Abertura (Fase de Fuseki)
+
+<PolicyHeatmap initialPosition="opening" size={400} />
+
+Na abertura, a probabilidade está principalmente concentrada em:
+- Cantos (ocupar cantos)
+- Bordas (aproximação do canto, defesa do canto)
+- Posições de "grande escala"
+
+Isso está de acordo com o princípio básico do Go: cantos de ouro, bordas de prata, centro de grama.
+
+#### Posição de Combate
+
+<PolicyHeatmap initialPosition="fighting" size={400} />
+
+Durante o combate, a probabilidade está concentrada em:
+- Pontos de corte críticos
+- Atari, conexões
+- Fazer olhos, destruir olhos
+
+Isso mostra que o modelo aprendeu táticas locais.
+
+#### Fase de Yose
+
+<PolicyHeatmap initialPosition="endgame" size={400} />
+
+No yose, a probabilidade está dispersa em vários pontos de fechamento, requerendo cálculo preciso de pontos.
+
+### O que as Camadas Ocultas Aprenderam?
+
+Visualizando a saída das camadas convolucionais, podemos ver as "características" aprendidas pelo modelo:
+
+- **Camadas baixas**: Formas básicas (olhos, pontos de corte)
+- **Camadas médias**: Padrões táticos (atari, escadas)
+- **Camadas altas**: Conceitos globais (influência, espessura)
+
+Isso é muito similar à estrutura hierárquica de como os humanos compreendem o Go.
+
+---
+
+## Pontos de Implementação
+
+### Implementação em PyTorch
+
+Aqui está uma implementação simplificada da Policy Network:
+
+```python
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class PolicyNetwork(nn.Module):
+    def __init__(self, input_channels=48, num_filters=192, num_layers=12):
+        super().__init__()
+
+        # Primeira camada convolucional (5×5)
+        self.conv1 = nn.Conv2d(input_channels, num_filters,
+                               kernel_size=5, padding=2)
+
+        # Camadas convolucionais intermediárias (3×3)×11
+        self.conv_layers = nn.ModuleList([
+            nn.Conv2d(num_filters, num_filters,
+                     kernel_size=3, padding=1)
+            for _ in range(num_layers - 1)
+        ])
+
+        # Camada convolucional de saída (1×1)
+        self.conv_out = nn.Conv2d(num_filters, 1, kernel_size=1)
+
+    def forward(self, x):
+        # x: (batch, 48, 19, 19)
+
+        # Primeira camada
+        x = F.relu(self.conv1(x))
+
+        # Camadas intermediárias
+        for conv in self.conv_layers:
+            x = F.relu(conv(x))
+
+        # Camada de saída
+        x = self.conv_out(x)  # (batch, 1, 19, 19)
+
+        # Achatar + Softmax
+        x = x.view(x.size(0), -1)  # (batch, 361)
+        x = F.softmax(x, dim=1)
+
+        return x
+```
+
+### Loop de Treinamento
+
+```python
+def train_step(model, optimizer, states, actions):
+    """
+    states: (batch, 48, 19, 19) - Características do tabuleiro
+    actions: (batch,) - Posição jogada pelo humano (0-360)
+    """
+    # Propagação direta
+    policy = model(states)  # (batch, 361)
+
+    # Perda de entropia cruzada
+    loss = F.cross_entropy(
+        torch.log(policy + 1e-8),  # Prevenir log(0)
+        actions
+    )
+
+    # Retropropagação
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    # Calcular precisão
+    predictions = policy.argmax(dim=1)
+    accuracy = (predictions == actions).float().mean()
+
+    return loss.item(), accuracy.item()
+```
+
+### Considerações para Inferência
+
+Durante o jogo real, note:
+
+1. **Filtrar jogadas ilegais**: Definir probabilidade de posições ilegais como 0, depois renormalizar
+2. **Ajuste de temperatura**: Pode usar parâmetro de temperatura para controlar a "nitidez" da distribuição de probabilidade
+3. **Inferência em lote**: No MCTS pode processar múltiplas posições em lote
+
+```python
+def get_move_probabilities(model, state, legal_moves, temperature=1.0):
+    """Obter distribuição de probabilidade para jogadas legais"""
+    policy = model(state)  # (361,)
+
+    # Manter apenas jogadas legais
+    mask = torch.zeros(361)
+    mask[legal_moves] = 1
+    policy = policy * mask
+
+    # Ajuste de temperatura
+    if temperature != 1.0:
+        policy = policy ** (1 / temperature)
+
+    # Renormalizar
+    policy = policy / policy.sum()
+
+    return policy
+```
+
+---
+
+## Correspondência com Animações
+
+Os conceitos principais abordados neste artigo e seus números de animação:
+
+| Número | Conceito | Correspondência Física/Matemática |
+|--------|----------|-----------------------------------|
+| E1 | Policy Network | Campo de probabilidade |
+| D9 | Extração de características CNN | Resposta de filtros |
+| D3 | Aprendizado supervisionado | Estimativa de máxima verossimilhança |
+| H4 | Policy gradient | Otimização estocástica |
+
+---
+
+## Leitura Adicional
+
+- **Próximo artigo**: [Detalhes da Value Network](../value-network) — Como o AlphaGo avalia posições
+- **Tópico relacionado**: [Design de Características de Entrada](../input-features) — Detalhes dos 48 planos de características
+- **Princípios profundos**: [CNN e Go](../cnn-and-go) — Por que redes neurais convolucionais são adequadas para tabuleiros
+
+---
+
+## Pontos-Chave
+
+1. **Policy Network é um gerador de distribuição de probabilidade**: Entrada do tabuleiro, saída de probabilidades para 361 posições
+2. **13 camadas CNN + Softmax**: Convolução profunda para extração de características, Softmax para saída de probabilidades
+3. **57% de precisão**: Muito superior aos programas de Go anteriores
+4. **Duas versões**: Versão completa para decisões no MCTS, versão leve para simulação rápida
+5. **Refinamento com aprendizado por reforço**: De "imitar humanos" para "buscar vitória"
+
+A Policy Network é a "intuição" do AlphaGo — ela permite que a IA, como os humanos, identifique rapidamente jogadas que valem a pena considerar.
+
+---
+
+## Referências
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. Maddison, C. J., et al. (2014). "Move Evaluation in Go Using Deep Convolutional Neural Networks." *arXiv:1412.6564*.
+3. Sutton, R. S., & Barto, A. G. (2018). *Reinforcement Learning: An Introduction*. MIT Press.
+4. LeCun, Y., Bengio, Y., & Hinton, G. (2015). "Deep learning." *Nature*, 521, 436-444.

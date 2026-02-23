@@ -1,0 +1,634 @@
+---
+sidebar_position: 11
+title: CNN and Go
+description: Deep dive into why Convolutional Neural Networks are particularly suited for Go, from receptive fields to batch normalization
+---
+
+# CNN and Go
+
+When DeepMind chose to use **Convolutional Neural Networks (CNN)** to process Go, it was a brilliant design decision.
+
+CNNs were originally designed for image recognition. Why are they also suitable for Go? This article will explore how CNNs work and their perfect fit with Go.
+
+---
+
+## Why CNNs Suit the Board
+
+### The Board Is an "Image"
+
+From a certain perspective, the 19×19 Go board is just an **image**:
+
+| Image | Go Board |
+|-------|----------|
+| Pixels | Intersections |
+| RGB channels | Feature planes (black, white, empty...) |
+| 224×224 | 19×19 |
+| Recognize cats/dogs | Judge good/bad moves |
+
+This analogy is not coincidental. The reasons CNNs excel at images also make them excel at boards.
+
+### Three Key Properties
+
+CNNs have three properties that make them particularly suitable for board-type data:
+
+#### 1. Local Connectivity
+
+CNN kernels only look at local regions, which perfectly matches Go's characteristics:
+
+```
+Image recognition:          Go:
+Cat ears are local features "Eye" is a local shape
+Don't need to see whole image  Don't need to see whole board
+
+    3×3 region              3×3 region
+   ┌───────┐            ┌───────┐
+   │ ○ ● ○ │            │ ○ ● ○ │
+   │ ● ○ ● │  ←  Eye    │ ● · ● │
+   │ ○ ● ○ │            │ ○ ● ○ │
+   └───────┘            └───────┘
+```
+
+Many Go concepts are "local":
+- **Eye**: 2×2 or 3×3 region
+- **Atari**: 3×3 region
+- **Connect, cut**: 2×2 region
+
+#### 2. Weight Sharing
+
+The same kernel scans the entire board, meaning:
+
+> **An "eye" in the top-left corner and one in the bottom-right are recognized the same way**
+
+This is reasonable - Go rules don't change based on position (except edges, but those can be handled with edge feature planes).
+
+Weight sharing also dramatically reduces parameter count:
+
+| Method | Parameters |
+|--------|------------|
+| Fully connected | 361 × 361 × channels = tens of millions |
+| CNN | 3 × 3 × channels × filters = millions |
+
+#### 3. Translation Equivariance
+
+If the input translates, CNN output also translates accordingly:
+
+```
+Input:                      Output (high probability region):
+  A B C D E                 A B C D E
+1 . . . . .              1  . . . . .
+2 . ● . . .   →          2  . * . . .
+3 . . . . .              3  . . . . .
+
+After input translation:    Output also translates:
+  A B C D E                 A B C D E
+1 . . . . .              1  . . . . .
+2 . . . . .   →          2  . . . . .
+3 . . ● . .              3  . . * . .
+```
+
+This is important for Go: the same local shape should have similar evaluation regardless of where it appears on the board.
+
+---
+
+## Convolution Operations
+
+### Basic Principle
+
+Convolution is the core of CNNs. It's a "sliding window" operation:
+
+```
+Input (5×5):              Kernel (3×3):         Output (5×5, padding=same):
+┌───────────────┐       ┌─────────┐           ┌───────────────┐
+│ 1 0 1 0 0     │       │ 1 0 1   │           │ 2 1 3 1 2     │
+│ 0 1 1 1 0     │   *   │ 0 1 0   │    =      │ 1 4 3 3 1     │
+│ 1 1 1 1 1     │       │ 1 0 1   │           │ 3 3 5 3 3     │
+│ 0 0 1 1 0     │       └─────────┘           │ 1 3 3 4 1     │
+│ 0 1 0 0 1     │                             │ 2 1 3 1 2     │
+└───────────────┘                             └───────────────┘
+```
+
+Calculation process (for center point):
+
+```
+Output[2,2] = 1×1 + 1×0 + 1×1 +
+              1×0 + 1×1 + 1×0 +
+              1×1 + 1×0 + 1×1
+            = 1 + 0 + 1 + 0 + 1 + 0 + 1 + 0 + 1
+            = 5
+```
+
+### Multi-Channel Convolution
+
+When input has multiple channels (like 48 feature planes), the kernel also becomes 3D:
+
+```
+Input: 19×19×48          Kernel: 3×3×48          Output: 19×19×1
+    ┌─────┐               ┌───┐                  ┌─────┐
+   ╱     ╱│              ╱   ╱│                 │     │
+  ╱     ╱ │   Convolution╱   ╱ │                │     │
+ ╱     ╱  │   →        ╱   ╱  │    →           │     │
+┌─────┐   │           ┌───┐   │                └─────┘
+│     │  ╱            │   │  ╱
+│     │ ╱             │   │╱
+└─────┘╱              └───┘
+48 layers             48 layers                 1 layer
+```
+
+Each kernel computes across all input channels, producing one output channel.
+
+### Multiple Filters
+
+AlphaGo uses 192 filters, each learning different features:
+
+```
+Input: 19×19×48
+
+      ┌─────┐
+     ╱     ╱│
+    ╱     ╱ │     192 kernels of 3×3×48
+   ╱     ╱  │     ────────────────────►
+  ┌─────┐   │
+  │     │  ╱
+  │     │ ╱
+  └─────┘╱
+
+Output: 19×19×192
+
+      ┌─────┐
+     ╱     ╱│
+    ╱     ╱ │
+   ╱     ╱  │
+  ┌─────┐   │
+  │     │  ╱
+  │     │ ╱
+  └─────┘╱
+```
+
+Each filter may learn different shapes:
+- Filter 1: Eye detection
+- Filter 2: Cut point detection
+- Filter 3: Connection detection
+- ...
+- Filter 192: Some complex pattern
+
+---
+
+## Receptive Field
+
+### What Is Receptive Field?
+
+**Receptive field** refers to which input positions influence a given output position.
+
+#### Single-Layer Convolution
+
+With a 3×3 kernel, each output position is influenced by only a 3×3 input region:
+
+```
+Input:                   Output:
+  ┌─────────────┐       ┌───────────┐
+  │ . . . . .   │       │ . . . .   │
+  │ . ● ● ● .   │  →    │ . ● . .   │
+  │ . ● ● ● .   │       │ . . . .   │
+  │ . ● ● ● .   │       │ . . . .   │
+  │ . . . . .   │       └───────────┘
+  └─────────────┘
+     3×3 receptive field
+```
+
+#### Multi-Layer Convolution
+
+Stacking multiple conv layers expands the receptive field:
+
+| Layers | Receptive Field | Calculation |
+|--------|-----------------|-------------|
+| 1 | 3×3 | 3 |
+| 2 | 5×5 | 3 + (3-1) = 5 |
+| 3 | 7×7 | 5 + (3-1) = 7 |
+| ... | ... | ... |
+| 12 | 25×25 | 3 + 11×2 = 25 |
+
+AlphaGo's 12 conv layers give a **25×25 receptive field**, already larger than the 19×19 board!
+
+This means:
+- **Each output position can "see" the entire board**
+- But "seeing" works differently: nearby details are clear, distant ones are summarized
+- This is similar to how human players think
+
+### Receptive Field and Go
+
+The receptive field concept explains why AlphaGo can handle "global" problems:
+
+```
+Local problems (3×3 receptive field):  Global problems (25×25 receptive field):
+- Is there an eye here?                - Does this group have eye space?
+- Can we atari?                        - Does the ladder work?
+- Can we connect?                      - What's the overall position?
+```
+
+Shallow layers process local features; deep layers process global features.
+
+---
+
+## Local vs. Global Features
+
+### CNN's Hierarchical Structure
+
+CNNs naturally form a hierarchical structure:
+
+```
+Input layer:       Black stones, white stones, empty points
+   ↓
+Shallow (1-3):     Eyes, connections, cuts, atari
+   ↓
+Middle (4-8):      Shapes, living groups, dead groups
+   ↓
+Deep (9-12):       Influence, thickness, big points
+   ↓
+Output layer:      Move probabilities / Win rate
+```
+
+This is strikingly similar to how humans learn Go:
+1. First learn the rules (where stones are)
+2. Then learn tactics (how to capture)
+3. Then learn shapes (what's good shape)
+4. Finally learn whole-board vision (overall judgment)
+
+### Visualizing Hidden Layers
+
+Researchers found that CNN hidden layers indeed learn meaningful features:
+
+#### Shallow Filters
+
+```
+Filter A (eye detection):     Filter B (atari detection):
+┌───────┐                     ┌───────┐
+│ + - + │                     │ + + + │
+│ - + - │                     │ + - - │
+│ + - + │                     │ + + + │
+└───────┘                     └───────┘
+```
+
+#### Deep Filters
+
+Deep filters are more abstract and harder to interpret directly, but they capture complex shape patterns.
+
+---
+
+## Activation Function Choice
+
+### ReLU: Simple and Effective
+
+AlphaGo uses **ReLU (Rectified Linear Unit)** after all conv layers:
+
+```python
+def relu(x):
+    return max(0, x)
+```
+
+Diagram:
+
+```
+Output
+  │
+  │    /
+  │   /
+  │  /
+  │ /
+──┼────── Input
+  │
+```
+
+### Why Not Other Functions?
+
+| Activation | Formula | Pros | Cons |
+|------------|---------|------|------|
+| ReLU | max(0, x) | Fast, good gradients | Dead neurons |
+| Sigmoid | 1/(1+e^-x) | Bounded output | Vanishing gradients |
+| Tanh | (e^x-e^-x)/(e^x+e^-x) | Zero-centered | Vanishing gradients |
+| LeakyReLU | max(0.01x, x) | Fixes dead neurons | Extra hyperparameter |
+
+For deep networks, ReLU's advantages are clear:
+1. **Simple computation**: Just comparison and max
+2. **No vanishing gradients**: Gradient is always 1 in positive region
+3. **Sparse activation**: Many neurons output 0, improving efficiency
+
+### ReLU's Meaning in Go
+
+ReLU's sparsity has an interesting interpretation in Go:
+
+```
+A filter detecting "cut points":
+- Has cut point → Positive output (activated)
+- No cut point → Zero output (not activated)
+
+This is like a player only focusing on positions "where something is happening"
+```
+
+---
+
+## Batch Normalization
+
+### What Is Batch Normalization?
+
+**Batch Normalization (BN)** is a technique that keeps each layer's output in a stable distribution:
+
+```python
+def batch_norm(x, gamma, beta):
+    # Calculate batch mean and std
+    mean = x.mean(axis=0)
+    std = x.std(axis=0)
+
+    # Normalize
+    x_norm = (x - mean) / (std + 1e-8)
+
+    # Scale and shift
+    return gamma * x_norm + beta
+```
+
+### Why Is It Needed?
+
+#### Internal Covariate Shift
+
+When a network trains, each layer's input distribution changes as preceding layers' weights update. This is called "internal covariate shift":
+
+```
+First layer weights update → First layer output distribution changes
+                              ↓
+                         Second layer input distribution changes → Second layer needs to readapt
+                                                                      ↓
+                                                                 ... (propagates)
+```
+
+Batch normalization stabilizes training by forcing each layer's input to have a fixed distribution (mean 0, std 1).
+
+### Application in AlphaGo
+
+AlphaGo uses batch normalization after each conv layer, before the activation function:
+
+```
+Conv → BatchNorm → ReLU → Conv → BatchNorm → ReLU → ...
+```
+
+Benefits:
+1. **Faster training**: Can use larger learning rates
+2. **More stable**: Reduces sensitivity to initialization
+3. **Regularization effect**: Has mild dropout-like effect
+
+### Inference-Time Handling
+
+During training, use current batch statistics. During inference, use overall training set statistics (moving average):
+
+```python
+# During training
+mean = batch_mean
+var = batch_var
+
+# During inference
+mean = running_mean  # Mean accumulated during training
+var = running_var    # Variance accumulated during training
+```
+
+---
+
+## AlphaGo's Specific Configuration
+
+### Complete Architecture
+
+```
+Input: 19×19×48
+
+Layer 1:
+  Conv2D(5×5, 192 filters, padding='same')
+  BatchNorm
+  ReLU
+  Output: 19×19×192
+
+Layers 2-12 (11 layers total):
+  Conv2D(3×3, 192 filters, padding='same')
+  BatchNorm
+  ReLU
+  Output: 19×19×192
+
+Output Layer (Policy):
+  Conv2D(1×1, 1 filter)
+  Flatten
+  Softmax
+  Output: 361-dim probability
+
+Output Layer (Value):
+  Conv2D(1×1, 1 filter)
+  Flatten
+  Dense(256)
+  ReLU
+  Dense(1)
+  Tanh
+  Output: Single value
+```
+
+### Parameter Configuration
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| Input channels | 48 | Feature plane count |
+| Filters | 192 | Channels per layer |
+| Kernel size | 3×3 (first layer 5×5) | Receptive field |
+| Layers | 13 (including output) | Depth |
+| Activation | ReLU | Non-linearity |
+| Normalization | BatchNorm | Stabilize training |
+
+### PyTorch Implementation
+
+```python
+import torch
+import torch.nn as nn
+
+class AlphaGoCNN(nn.Module):
+    def __init__(self, input_channels=48, num_filters=192, num_layers=12):
+        super().__init__()
+
+        # First layer (5×5 conv)
+        self.conv1 = nn.Sequential(
+            nn.Conv2d(input_channels, num_filters, kernel_size=5, padding=2),
+            nn.BatchNorm2d(num_filters),
+            nn.ReLU(inplace=True)
+        )
+
+        # Middle layers (3×3 conv)
+        self.conv_layers = nn.Sequential(*[
+            nn.Sequential(
+                nn.Conv2d(num_filters, num_filters, kernel_size=3, padding=1),
+                nn.BatchNorm2d(num_filters),
+                nn.ReLU(inplace=True)
+            )
+            for _ in range(num_layers - 1)
+        ])
+
+        # Policy output head
+        self.policy_head = nn.Sequential(
+            nn.Conv2d(num_filters, 1, kernel_size=1),
+            nn.Flatten(),
+            nn.Softmax(dim=1)
+        )
+
+        # Value output head
+        self.value_head = nn.Sequential(
+            nn.Conv2d(num_filters, 1, kernel_size=1),
+            nn.Flatten(),
+            nn.Linear(361, 256),
+            nn.ReLU(inplace=True),
+            nn.Linear(256, 1),
+            nn.Tanh()
+        )
+
+    def forward(self, x):
+        # Shared feature extraction
+        x = self.conv1(x)
+        x = self.conv_layers(x)
+
+        # Split output heads
+        policy = self.policy_head(x)
+        value = self.value_head(x)
+
+        return policy, value
+```
+
+---
+
+## Comparison with Other Architectures
+
+### Fully Connected Networks
+
+If using fully connected networks for Go:
+
+| Property | Fully Connected | CNN |
+|----------|-----------------|-----|
+| Parameters | Huge (hundreds of millions) | Smaller (millions) |
+| Position invariance | None | Yes |
+| Local features | Hard to learn | Naturally captured |
+| Training efficiency | Low | High |
+
+Fully connected networks cannot utilize the board's spatial structure, making them extremely inefficient.
+
+### Recurrent Neural Networks (RNN)
+
+RNNs suit sequential data (like game history), but:
+
+| Property | RNN | CNN |
+|----------|-----|-----|
+| Spatial processing | Weak | Strong |
+| Sequence processing | Strong | Weak (needs history planes) |
+| Parallelization | Difficult | Easy |
+| Long-range dependencies | Needs LSTM | Deep layers suffice |
+
+AlphaGo chose CNN + history planes rather than CNN + RNN.
+
+### Residual Networks (ResNet)
+
+AlphaGo Zero upgraded to ResNet:
+
+```
+Regular CNN:                ResNet:
+  x                          x
+  ↓                          ↓
+ Conv                       Conv
+  ↓                          ↓
+ ReLU                       ReLU
+  ↓                          ↓
+ Conv                       Conv
+  ↓                          ↓
+  y                        y + x  ← Residual connection
+```
+
+Residual connections let gradients flow more easily, enabling training of much deeper networks (40 layers vs 12 layers).
+
+See [Dual-Head Network and Residual Network](../dual-head-resnet) for details.
+
+---
+
+## Visual Understanding
+
+### Convolution Process
+
+```
+Input board (simplified to 5×5):
+
+   A B C D E
+1  . . . . .
+2  . ● . . .
+3  . . ○ . .
+4  . . . ● .
+5  . . . . .
+
+A filter (3×3, detecting "cross shape"):
+┌───────┐
+│ 0 1 0 │
+│ 1 1 1 │
+│ 0 1 0 │
+└───────┘
+
+Convolution output:
+   A B C D E
+1  0 0 0 0 0
+2  0 0 0 0 0
+3  0 0 1 0 0   ← Strong response at center (cross shape match)
+4  0 0 0 0 0
+5  0 0 0 0 0
+```
+
+### Multi-Layer Features
+
+```
+Layer 1 output (4 of 192 channels):
+
+Channel 1 (eye):    Channel 2 (edge):    Channel 3 (cut):     Channel 4 (connect):
+┌─────────┐         ┌─────────┐          ┌─────────┐          ┌─────────┐
+│ 0 0 0 0 │         │ 0.8 0 0 │          │ 0 0 0 0 │          │ 0 0 0 0 │
+│ 0 0.9 0 │         │ 0.8 0 0 │          │ 0 0 0.7 │          │ 0 0.5 0 │
+│ 0 0 0 0 │         │ 0.8 0 0 │          │ 0 0 0 0 │          │ 0 0.8 0 │
+│ 0 0 0 0 │         │ 0.8 0 0 │          │ 0 0 0 0 │          │ 0 0.5 0 │
+└─────────┘         └─────────┘          └─────────┘          └─────────┘
+
+These features are combined into more complex concepts in deeper layers...
+```
+
+---
+
+## Animation Reference
+
+Core concepts covered in this article with animation numbers:
+
+| Number | Concept | Physics/Math Correspondence |
+|--------|---------|----------------------------|
+| Animation D9 | Convolution operation | Filter response |
+| Animation D10 | Receptive field | Local→Global |
+| Animation D11 | Batch normalization | Distribution stability |
+| Animation D1 | Multi-channel input | Tensor operations |
+
+---
+
+## Further Reading
+
+- **Previous**: [Input Feature Design](../input-features) - 48 feature planes explained
+- **Next**: [Supervised Learning Phase](../supervised-learning) - How to learn from human games
+- **Advanced Topic**: [Dual-Head Network and Residual Network](../dual-head-resnet) - AlphaGo Zero's network upgrade
+
+---
+
+## Key Takeaways
+
+1. **CNNs naturally suit boards**: Local connectivity, weight sharing, translation equivariance
+2. **Convolution extracts local features**: Pattern recognition in 3×3 regions
+3. **Deep networks gain global vision**: 12 layers → 25×25 receptive field
+4. **ReLU is fast and effective**: Simple non-linear activation
+5. **BatchNorm stabilizes training**: Normalizes each layer's output
+
+CNNs let AlphaGo "see" the board - as naturally as humans see images with their eyes.
+
+---
+
+## References
+
+1. LeCun, Y., Bengio, Y., & Hinton, G. (2015). "Deep learning." *Nature*, 521, 436-444.
+2. He, K., et al. (2015). "Deep Residual Learning for Image Recognition." *CVPR*.
+3. Ioffe, S., & Szegedy, C. (2015). "Batch Normalization: Accelerating Deep Network Training." *ICML*.
+4. Krizhevsky, A., Sutskever, I., & Hinton, G. E. (2012). "ImageNet Classification with Deep Convolutional Neural Networks." *NeurIPS*.

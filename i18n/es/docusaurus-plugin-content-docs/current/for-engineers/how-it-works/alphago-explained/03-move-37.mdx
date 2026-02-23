@@ -1,0 +1,547 @@
+---
+sidebar_position: 4
+title: Análisis Profundo del "Movimiento Divino"
+description: Un análisis completo del movimiento 37 de AlphaGo contra Lee Sedol en la segunda partida, desde la teoría del Go, las reacciones de los expertos hasta la perspectiva de la IA
+---
+
+import { PolicyHeatmap } from '@site/src/components/D3Charts';
+
+# Análisis Profundo del "Movimiento Divino"
+
+El 10 de marzo de 2016, durante la segunda partida entre AlphaGo y Lee Sedol, en el movimiento 37, AlphaGo jugó un "ataque al hombro" en la quinta línea en la esquina superior derecha.
+
+Este movimiento llegó a conocerse como el "**Movimiento Divino**" (Divine Move). No solo ayudó a AlphaGo a ganar la partida, sino que transformó la comprensión humana del Go.
+
+Este artículo analizará profundamente este movimiento desde múltiples perspectivas: el contexto de la partida, la teoría tradicional del Go, las reacciones de los expertos, la perspectiva de la IA y su impacto duradero en la teoría del Go.
+
+---
+
+## Revisión de la Posición
+
+### La Apertura de la Segunda Partida
+
+Después de perder la primera partida, Lee Sedol ajustó su estrategia para la segunda. Eligió jugar con blancas, esperando observar las tendencias de apertura de AlphaGo antes de formular su estrategia.
+
+Fase de apertura:
+- **Negro 1**: Estrella en la esquina superior derecha
+- **Blanco 2**: Estrella en la esquina inferior izquierda
+- **Negro 3-Blanco 4**: Cada lado ocupa una esquina
+
+Hasta el movimiento 36, la posición se había desarrollado normalmente. AlphaGo jugaba con negras y había completado una batalla local en la esquina superior derecha. Blancas (Lee Sedol) había establecido influencia en el lado derecho, mientras que negras tenía potencial territorial en la parte superior.
+
+### La Posición Después del Movimiento 36
+
+Veamos el estado del tablero después del movimiento 36:
+
+```
+     A B C D E F G H J K L M N O P Q R S T
+ 19  . . . . . . . . . . . . . . . . . . .
+ 18  . . . . . . . . . . . . . . . . . . .
+ 17  . . . ○ . . . . . . . . . . . ● . . .
+ 16  . . . ╋ . . . . . ╋ . . . . . ╋ . . .
+ 15  . . . . . . . . . . . . . . . ● . . .
+ 14  . . . . . . . . . . . . . . ○ . . . .  ← zona de influencia blanca
+ 13  . . . . . . . . . . . . . . . . . . .
+ 12  . . . . . . . . . . . . . . . . . . .
+ 11  . . . . . . . . . . . . . . . . . . .
+ 10  . . . ╋ . . . . . ╋ . . . . . ╋ . . .
+  9  . . . . . . . . . . . . . . . . . . .
+  8  . . . . . . . . . . . . . . . . . . .
+  7  . . . . . . . . . . . . . . . . . . .
+  6  . . . . . . . . . . . . . . . . . . .
+  5  . . . . . . . . . . . . . . . . . . .
+  4  . . . ╋ . . . . . ╋ . . . . . ╋ . . .
+  3  . . . ○ . . . . . . . . . . . ● . . .
+  2  . . . . . . . . . . . . . . . . . . .
+  1  . . . . . . . . . . . . . . . . . . .
+```
+
+(Diagrama simplificado, la posición real era más compleja)
+
+Observaciones clave:
+- Blancas tiene influencia exterior en el lado derecho
+- Negras tiene potencial territorial en la parte superior
+- La batalla en la esquina superior derecha había terminado
+
+Era el turno de negras (AlphaGo).
+
+---
+
+## Análisis de los Movimientos Tradicionales
+
+### Lo Que Esperaban los Jugadores Profesionales
+
+Antes del movimiento 37, los jugadores profesionales en la sala de comentarios estaban discutiendo activamente. Generalmente esperaban que negras eligiera una de las siguientes opciones:
+
+**Opción A: Aproximación a la Esquina Inferior Derecha**
+
+Esta era la elección más "normal". Negras podría:
+- Ocupar el último punto grande (esquina inferior derecha)
+- Mantener el equilibrio de la posición
+- Seguir el principio tradicional de "esquinas de oro, lados de plata, centro de hierba"
+
+**Opción B: Ampliar en la Parte Superior**
+
+Negras también podría extenderse dos o tres puntos en la parte superior, consolidando su zona de influencia. Esto:
+- Convertiría el potencial superior en territorio
+- Limitaría el espacio de desarrollo de blancas
+
+**Opción C: Invasión Central**
+
+Algunos jugadores pensaron que negras podría jugar en el centro, restringiendo la influencia exterior de blancas en el lado derecho. Aunque no era la opción más común, tenía sentido estratégico.
+
+🎬 C3: Juicio de valor en la teoría tradicional del Go
+
+### Una Elección Que Nadie Anticipó
+
+Sin embargo, AlphaGo eligió una posición que casi nadie había considerado:
+
+**E5 (Ataque al Hombro en la Quinta Línea)**
+
+Este movimiento se jugó en la mitad derecha del tablero, cerca del centro, como un "ataque al hombro" contra la influencia exterior de blancas en el lado derecho.
+
+---
+
+## Movimiento 37: Ataque al Hombro en la Quinta Línea
+
+### ¿Dónde Está Este Movimiento?
+
+```
+     A B C D E F G H J K L M N O P Q R S T
+ 19  . . . . . . . . . . . . . . . . . . .
+ 18  . . . . . . . . . . . . . . . . . . .
+ 17  . . . ○ . . . . . . . . . . . ● . . .
+ 16  . . . ╋ . . . . . ╋ . . . . . ╋ . . .
+ 15  . . . . . . . . . ★ . . . . . ● . . .  ← Movimiento 37 (★)
+ 14  . . . . . . . . . . . . . . ○ . . . .
+ 13  . . . . . . . . . . . . . . . . . . .
+ 12  . . . . . . . . . . . . . . . . . . .
+```
+
+El movimiento 37 se jugó en la posición **K15** (o J5, dependiendo del sistema de coordenadas).
+
+### ¿Qué es un "Ataque al Hombro"?
+
+El "ataque al hombro" es un tesuji (técnica táctica) en Go que se refiere a acercarse diagonalmente a las piedras del oponente. Sus características son:
+
+- **Sin contacto directo**: Mantiene un paso de distancia de las piedras del oponente
+- **Perturba la estructura**: Interrumpe el desarrollo esperado del oponente
+- **Difícil de responder**: Cualquier respuesta del oponente conlleva algún costo
+
+Tradicionalmente, los ataques al hombro se juegan en la tercera o cuarta línea. Los **ataques al hombro en la quinta línea** son extremadamente raros porque:
+
+1. **Posición demasiado alta**: La quinta línea está cerca del centro, tradicionalmente considerada ineficiente
+2. **Vulnerable a ataques**: Las piedras aisladas se convierten fácilmente en objetivos de ataque
+3. **Valor poco claro**: No tiene el valor territorial claro de las esquinas y lados
+
+🎬 C5: Propiedades geométricas del ataque al hombro
+
+---
+
+## Reacciones Inmediatas de los Expertos
+
+### Conmoción en la Sala de Comentarios
+
+En el momento en que se jugó el movimiento 37, la sala de comentarios quedó brevemente en silencio.
+
+**Comentarista coreano (Kim Seong-ryong 9-dan)**:
+
+> "Esto... ¿qué es esto? ¿Este movimiento está en la quinta línea? No lo entiendo. ¿Debe ser un error?"
+
+**Comentarista chino (Gu Li 9-dan)**:
+
+> "No entiendo este movimiento. Si uno de mis estudiantes jugara así, lo criticaría severamente."
+
+**Comentarista estadounidense (Michael Redmond 9-dan)**:
+
+> "Very unusual move. I don't think any human would play this."
+>
+> (Un movimiento muy inusual. No creo que ningún humano jugaría así.)
+
+### Comentarios en Tiempo Real de Jugadores Profesionales
+
+En varias plataformas de streaming, los jugadores profesionales compartieron sus comentarios:
+
+**Ke Jie** (entonces número uno del mundo):
+
+> "No puedo entender la intención de este movimiento. Si AlphaGo gana, lo estudiaré seriamente."
+
+**Park Junghwan** (jugador top coreano):
+
+> "Este movimiento es demasiado extraño. ¿Hay algún problema con el programa?"
+
+**Mi Yuting** (Campeón Mundial chino):
+
+> "¿Ataque al hombro en la quinta línea? Nunca he visto este tipo de movimiento."
+
+🎬 C7: La brecha entre la intuición de expertos y la evaluación de la IA
+
+### "Una Probabilidad de Uno en Diez Mil"
+
+Después de la partida, el equipo de DeepMind reveló una estadística sorprendente:
+
+> "Según nuestro análisis, si un jugador profesional se enfrentara a la misma posición, la probabilidad de elegir la posición del movimiento 37 sería aproximadamente **una en diez mil**."
+
+En otras palabras, en el sistema de conocimiento humano del Go, este movimiento prácticamente "no existía" como opción.
+
+---
+
+## Interpretación desde la Perspectiva de la IA
+
+### Distribución de Probabilidades de la Policy Network
+
+Veamos cómo la Policy Network de AlphaGo evaluó esta posición:
+
+<PolicyHeatmap initialPosition="move37" size={450} showTopN={5} />
+
+El gráfico anterior muestra la evaluación de probabilidad de AlphaGo para cada posición.
+
+Observaciones clave:
+- **Posición del movimiento 37**: Probabilidad de aproximadamente 8%, no la más alta
+- **Elecciones tradicionales** (como la esquina inferior derecha): Probabilidad de aproximadamente 12%
+- **Otras posiciones candidatas**: Distribuidas en diferentes áreas
+
+Curiosamente, el movimiento 37 **no fue la elección con mayor probabilidad** en la evaluación de la Policy Network. Entonces, ¿por qué lo eligió AlphaGo?
+
+🎬 C9: Distribución de salida de la Policy Network
+
+### Evaluación Profunda del MCTS
+
+La respuesta está en la **Búsqueda de Árbol Monte Carlo (MCTS)**.
+
+La Policy Network solo proporciona "intuición"; la decisión real viene de las simulaciones profundas del MCTS. AlphaGo simula miles de posibles futuros antes de tomar una decisión.
+
+Para el movimiento 37, el proceso de evaluación del MCTS fue el siguiente:
+
+```
+Posición K15 (Movimiento 37):
+├── Simulación 1: Victoria negra (+0.3)
+├── Simulación 2: Victoria negra (+0.5)
+├── Simulación 3: Victoria negra (+0.2)
+├── ...
+└── Tasa de victoria promedio: 58%
+
+Posición R3 (aproximación a esquina inferior derecha):
+├── Simulación 1: Victoria negra (+0.1)
+├── Simulación 2: Victoria blanca (-0.2)
+├── Simulación 3: Victoria negra (+0.2)
+├── ...
+└── Tasa de victoria promedio: 52%
+```
+
+Aunque la "probabilidad intuitiva" de la esquina inferior derecha era mayor, después de simulaciones profundas, el movimiento 37 tenía una **tasa de victoria esperada más alta**.
+
+🎬 C11: Cómo el MCTS corrige el juicio de la Policy Network
+
+### Evaluación Global de la Value Network
+
+La Value Network evaluó el valor del movimiento 37 desde una perspectiva global:
+
+**Tasa de victoria antes del movimiento 37**: Aproximadamente 52% (ligera ventaja negra)
+
+**Tasa de victoria después del movimiento 37**: Aproximadamente 58% (clara ventaja negra)
+
+Esto significa que el movimiento 37 aumentó la tasa de victoria esperada de AlphaGo en **6 puntos porcentuales**.
+
+Esta mejora es bastante significativa en Go. Normalmente, un buen movimiento aporta una mejora del 2-3% en la tasa de victoria.
+
+🎬 C13: Evaluación incremental de la Value Network
+
+---
+
+## Análisis de la Teoría del Go: ¿Por Qué un Ataque al Hombro en la Quinta Línea?
+
+### Desde una Perspectiva Local
+
+En la superficie, el movimiento 37 parece muy ineficiente:
+
+- **Posición demasiado alta**: La quinta línea está más cerca del centro que la cuarta o tercera línea
+- **Sin territorio**: No captura territorio directamente como las esquinas y lados
+- **Vulnerable a ataques**: Las piedras aisladas pueden ser atacadas por blancas
+
+Pero si analizamos cuidadosamente, este movimiento tiene varios beneficios sutiles:
+
+1. **Perturba la influencia de blancas**: Blancas originalmente planeaba desarrollarse en el lado derecho; el movimiento 37 interrumpió este plan
+2. **Establece presencia propia**: Aunque no captura territorio, establece presencia en el centro
+3. **Aumenta la complejidad**: Crea una posición compleja que favorece al lado con mayor capacidad de cálculo
+
+### Desde una Perspectiva Global
+
+El verdadero valor de este movimiento debe entenderse desde una perspectiva global:
+
+**El Equilibrio entre Influencia y Territorio**
+
+La teoría tradicional del Go sostiene que "las esquinas son de oro, los lados de plata, el centro de hierba" - las esquinas son más valiosas, el centro menos. Pero el movimiento 37 desafió esta noción.
+
+La evaluación de AlphaGo mostró que: en esta posición particular, **la influencia central era más valiosa que el territorio en las esquinas y lados**.
+
+Esto se debe a que:
+- Negras ya tenía suficiente base territorial
+- La influencia exterior de blancas en el lado derecho sería muy fuerte si se desarrollaba
+- Restringir a blancas era más importante que expandirse
+
+🎬 C15: Cálculo de la función de valor global
+
+**El Valor del "Sente"**
+
+El movimiento 37 también tenía un beneficio subestimado: mantuvo el "sente" (iniciativa).
+
+En Go, "sente" significa mantener la iniciativa. Después del movimiento 37, blancas tuvo que responder, permitiendo a negras seguir dirigiendo el flujo del juego.
+
+Si negras hubiera elegido el movimiento "normal" de aproximarse a la esquina inferior derecha, ambos lados podrían haber jugado un joseki (secuencia establecida) en la esquina, y la posición se habría equilibrado. Pero el movimiento 37 rompió este equilibrio, llenando la posición de incertidumbre - precisamente donde AlphaGo sobresalía.
+
+### El Dilema de Lee Sedol
+
+Después del movimiento 37, Lee Sedol pensó durante mucho tiempo. Su dilema era:
+
+**Si respondía directamente (por ejemplo, saltar o volar)**:
+- Equivalía a reconocer el valor del movimiento 37
+- Permitía a negras lograr su objetivo de perturbar la influencia de blancas
+
+**Si lo ignoraba**:
+- Negras podría desarrollar más el centro
+- La influencia exterior de blancas en el lado derecho difícilmente se convertiría en territorio
+
+Finalmente, Lee Sedol eligió responder. Pero sin importar lo que eligiera, el movimiento 37 ya había logrado su propósito.
+
+🎬 C17: Elección forzada en teoría de juegos
+
+---
+
+## Desarrollo Posterior: Del Movimiento 37 a la Victoria
+
+### La Evolución del Medio Juego
+
+Después del movimiento 37, la partida entró en un complejo combate de medio juego.
+
+**Desarrollos clave**:
+
+- **Movimientos 40-50**: Ambos lados libraron una intensa batalla de contacto en el lado derecho
+- **Movimientos 50-70**: AlphaGo utilizó la influencia establecida por el movimiento 37 para obtener ventaja en el centro
+- **Movimientos 70-100**: Negras gradualmente convirtió la ventaja en territorio
+
+Alrededor del movimiento 100, la ventaja de AlphaGo era bastante obvia. Aunque Lee Sedol intentó contraatacar, no pudo revertir la situación.
+
+### Resultado Final
+
+**Victoria de AlphaGo por abandono**
+
+La victoria en esta partida se debió en gran medida al movimiento 37. El análisis post-partida mostró que sin el movimiento 37, la posición habría estado más igualada, y blancas incluso podría haber obtenido ventaja.
+
+🎬 C19: Cómo un solo movimiento cambia el curso de toda la partida
+
+---
+
+## Impacto en la Teoría del Go
+
+### El Nacimiento de Nuevas Secuencias
+
+El movimiento 37 provocó una reconsideración del tesuji "ataque al hombro" en el mundo del Go.
+
+**Vista tradicional**:
+- Los ataques al hombro deberían jugarse en la tercera o cuarta línea
+- Los ataques al hombro en la quinta línea son demasiado ineficientes
+- Las piedras aisladas son vulnerables a ataques
+
+**Después de AlphaGo**:
+- Los ataques al hombro en la quinta línea son la mejor elección en ciertas posiciones
+- La "altura" de la posición es menos importante que su "efecto"
+- Cada movimiento necesita ser evaluado desde una perspectiva global
+
+### Aprendizaje de los Jugadores Humanos
+
+Después del movimiento 37, muchos jugadores profesionales comenzaron a intentar movimientos similares:
+
+**Ke Jie** usó ataques al hombro en la quinta línea en varias partidas en 2017, con éxito:
+
+> "AlphaGo me enseñó que muchos movimientos que pensábamos que eran 'malos' son solo movimientos que no entendemos."
+
+**Park Junghwan** también incorporó esta forma de pensar en sus propias partidas:
+
+> "Lo importante no es recordar la posición específica del movimiento 37, sino aprender a ver el tablero con nuevos ojos."
+
+🎬 C21: Cómo la IA expande los límites cognitivos humanos
+
+### Implicaciones para el Entrenamiento de IA en Go
+
+El movimiento 37 también tuvo un impacto profundo en la investigación de IA en Go:
+
+**Reflexiones sobre la Policy Network**:
+
+¿Por qué la Policy Network dio una probabilidad baja al movimiento 37? Porque aprendió de partidas humanas, y los humanos casi nunca juegan este tipo de movimiento.
+
+Esto demuestra que: **El aprendizaje supervisado solo (aprender de humanos) no es suficiente**. La IA necesita auto-exploración para descubrir buenos movimientos desconocidos para los humanos.
+
+Esta también es una de las razones por las que **AlphaGo Zero** posteriormente adoptó el entrenamiento de auto-juego puro.
+
+**Validación del MCTS**:
+
+El movimiento 37 demostró el valor de la búsqueda profunda del MCTS. Incluso si la intuición (Policy Network) no favorece un movimiento, el análisis profundo puede descubrir su valor potencial.
+
+Esta perspectiva fue posteriormente aplicada a muchos otros campos.
+
+---
+
+## Detalles Técnicos: Recreando el Proceso de Decisión del Movimiento 37
+
+### Características de Entrada de la Policy Network
+
+Después del movimiento 36, la entrada de la Policy Network incluía:
+
+| Plano de Características | Descripción |
+|----------|------|
+| 1-8 | Posiciones de negras (últimas 8 jugadas) |
+| 9-16 | Posiciones de blancas (últimas 8 jugadas) |
+| 17 | A quién le toca jugar |
+| 18-48 | Otras características (libertades, atari, etc.) |
+
+Un total de **48 planos de características de 19x19**, formando el tensor de entrada.
+
+🎬 C23: La importancia de la ingeniería de características en IA de Go
+
+### Salida de la Policy Network
+
+La Policy Network produce una distribución de probabilidad de **19x19 = 361** dimensiones.
+
+Para la posición del movimiento 37:
+
+```python
+# Top 5 posiciones candidatas (ilustración simplificada)
+{
+    "R3": 0.12,   # aproximación a esquina inferior derecha
+    "Q17": 0.10,  # esquina superior derecha
+    "C10": 0.09,  # punto grande izquierdo
+    "K15": 0.08,  # posición del movimiento 37
+    "D16": 0.07,  # esquina superior izquierda
+    # ... otras 356 posiciones
+}
+```
+
+### Proceso de Exploración del MCTS
+
+AlphaGo usa la fórmula PUCT para equilibrar exploración y explotación:
+
+```
+U(s,a) = Q(s,a) + c_puct × P(s,a) × sqrt(sum_b N(s,b)) / (1 + N(s,a))
+```
+
+Donde:
+- `Q(s,a)`: Valor promedio de la posición a
+- `P(s,a)`: Probabilidad dada por la Policy Network
+- `N(s,a)`: Número de veces que esa posición ha sido explorada
+- `c_puct`: Constante de exploración
+
+Para el movimiento 37, aunque la probabilidad inicial P era baja, después de muchas simulaciones, el valor Q aumentó continuamente, eventualmente superando a otras posiciones candidatas.
+
+🎬 C25: Cómo la fórmula PUCT descubre buenos movimientos contra-intuitivos
+
+### Impacto del Número de Simulaciones
+
+El equipo de DeepMind analizó posteriormente que el "descubrimiento" del movimiento 37 requería suficientes simulaciones:
+
+| Simulaciones | Mejor Elección |
+|----------|---------|
+| 100 | R3 (esquina inferior derecha) |
+| 1,000 | Q17 (esquina superior derecha) |
+| 10,000 | K15 (movimiento 37) |
+| 100,000 | K15 (más seguro) |
+
+Esto demuestra que: **La búsqueda profunda puede descubrir buenos movimientos que la búsqueda superficial no puede encontrar**.
+
+---
+
+## Reflexiones Filosóficas: Diferencias Cognitivas entre Humanos e IA
+
+### ¿Por Qué los Humanos No Pensaron en el Movimiento 37?
+
+Esta es una pregunta profunda. Las posibles razones incluyen:
+
+**1. Limitaciones de la Experiencia**
+
+El conocimiento de los jugadores humanos proviene de estudiar partidas de predecesores. Si los predecesores nunca jugaron ciertos movimientos, no los consideramos.
+
+**2. Sesgos de la Intuición**
+
+La intuición humana es útil, pero también tiene limitaciones. Nuestra intuición nos hace "no ver" ciertas opciones.
+
+**3. Diferencias en Capacidad de Cálculo**
+
+El valor del movimiento 37 requiere cálculos profundos para ser descubierto. La capacidad de cálculo humana es limitada y no puede simular miles de posibilidades como la IA.
+
+🎬 C27: Sesgos cognitivos y la trascendencia de la IA
+
+### ¿Qué es la "Intuición" de las Máquinas?
+
+¿Tiene AlphaGo "intuición"?
+
+En cierto sentido, la Policy Network es la "intuición" de AlphaGo - puede evaluar el potencial de cada posición en milisegundos.
+
+Pero esta "intuición" difiere de la intuición humana:
+- **Intuición humana**: Proviene de la experiencia y el reconocimiento de patrones
+- **Intuición de IA**: Proviene del aprendizaje estadístico de grandes cantidades de datos
+
+Curiosamente, el movimiento 37 demostró que: **La "intuición" de la IA puede ser corregida por el MCTS**. Esto significa que la IA puede "reflexionar" sobre su propia intuición y encontrar mejores elecciones.
+
+### ¿Qué Pueden Aprender los Humanos de la IA?
+
+La mayor lección del movimiento 37 para los jugadores humanos puede ser:
+
+> **No dejes que la experiencia se convierta en una prisión**
+
+Muchos movimientos "malos" pueden ser simplemente movimientos que no entendemos. Mantener una mente abierta y estar dispuesto a intentar movimientos no tradicionales puede revelar nuevas posibilidades.
+
+Esta lección no solo aplica al Go, sino a muchos aspectos de la vida.
+
+---
+
+## Correspondencia de Animaciones
+
+Los conceptos centrales de este artículo y sus números de animación:
+
+| Número | Concepto | Correspondencia Física/Matemática |
+|------|------|--------------|
+| 🎬 C3 | Juicio de valor en la teoría tradicional del Go | Función heurística |
+| 🎬 C5 | Propiedades geométricas del ataque al hombro | Relaciones espaciales |
+| 🎬 C7 | Brecha entre intuición de expertos y evaluación de IA | Error de predicción |
+| 🎬 C9 | Distribución de salida de la Policy Network | Probabilidad Softmax |
+| 🎬 C11 | Cómo el MCTS corrige la Policy Network | Actualización Bayesiana |
+| 🎬 C13 | Evaluación incremental de la Value Network | Función de valor |
+| 🎬 C15 | Cálculo de la función de valor global | Aproximación de integral |
+| 🎬 C17 | Elección forzada en teoría de juegos | Estrategia dominante |
+| 🎬 C19 | Cómo un movimiento cambia toda la partida | Punto de bifurcación |
+| 🎬 C21 | Cómo la IA expande los límites cognitivos humanos | Expansión del espacio de búsqueda |
+| 🎬 C23 | Importancia de la ingeniería de características en IA de Go | Aprendizaje de representación |
+| 🎬 C25 | Cómo la fórmula PUCT descubre buenos movimientos contra-intuitivos | Equilibrio exploración-explotación |
+| 🎬 C27 | Sesgos cognitivos y la trascendencia de la IA | Estimación insesgada |
+
+---
+
+## Lecturas Recomendadas
+
+- **Artículo anterior**: [Revisión de Partidas Clave](../key-matches) — Historia completa de las partidas contra Fan Hui, Lee Sedol y Ke Jie
+- **Siguiente artículo**: [¿Por Qué es Difícil el Go?](../why-go-is-hard) — Comprendiendo la complejidad computacional del Go
+- **Detalles técnicos**: [Policy Network Explicada en Detalle](../policy-network) — Comprensión profunda de la red de intuición
+- **Lectura avanzada**: [Fórmula PUCT Explicada en Detalle](../puct-formula) — Las matemáticas de la exploración y explotación
+
+---
+
+## Exploración Interactiva
+
+### Distribución de Probabilidades de la Policy Network
+
+Usa la visualización interactiva a continuación para explorar la salida de la Policy Network en diferentes posiciones:
+
+<PolicyHeatmap initialPosition="move37" size={450} showTopN={5} interactive={true} />
+
+Intenta cambiar entre diferentes posiciones preestablecidas para observar cómo la IA evalúa las probabilidades de juego en cada posición.
+
+---
+
+## Referencias
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. DeepMind Blog: "AlphaGo: The story so far"
+3. Documental *AlphaGo* (2017), Director Greg Kohs.
+4. Registro oficial de la segunda partida Lee Sedol vs AlphaGo
+5. Análisis profesional de partidas de Go4Go.net
+6. Informe técnico post-partida de la Asociación de Go de Corea

@@ -1,0 +1,866 @@
+---
+sidebar_position: 7
+title: Board State Representation
+description: From 2D arrays to neural network feature planes, understanding how Go AI "sees" the board
+keywords: [Board Representation, Zobrist Hashing, Union-Find, Feature Encoding, AlphaGo Feature Planes]
+---
+
+import { GoBoard } from '@site/src/components/D3Charts';
+
+# Board State Representation
+
+Before designing a Go AI, we must first solve a fundamental question: **How do we let a computer "understand" the board?**
+
+This seemingly simple question involves data structures, algorithms, and neural network input design on multiple levels. This article will start from the most basic 2D array and progressively introduce various board representation methods used in Go AI, ultimately explaining how AlphaGo encodes the board into a format that neural networks can process.
+
+---
+
+## 2D Array Representation: The Most Intuitive Approach
+
+### Basic Concept
+
+A Go board is a 19x19 grid network, and the most intuitive representation is using a **2D array**:
+
+```python
+import numpy as np
+
+# Board constants
+BOARD_SIZE = 19
+EMPTY = 0
+BLACK = 1
+WHITE = 2
+
+# Initialize empty board
+board = np.zeros((BOARD_SIZE, BOARD_SIZE), dtype=np.int8)
+
+# Place stone: Black at D4 (3, 3)
+board[3, 3] = BLACK
+
+# Place stone: White at Q16 (15, 3)
+board[15, 3] = WHITE
+```
+
+### Coordinate Systems
+
+Go uses two common coordinate systems:
+
+#### 1. Numeric Coordinates (For Programming)
+
+```
+    0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
+0   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+1   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+2   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+3   .  .  .  ●  .  .  .  .  .  +  .  .  .  .  .  ○  .  .  .
+...
+```
+
+#### 2. Letter-Number Coordinates (For Game Records)
+
+```
+    A  B  C  D  E  F  G  H  J  K  L  M  N  O  P  Q  R  S  T
+19  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+18  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+17  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+16  .  .  .  ●  .  .  .  .  .  +  .  .  .  .  .  ○  .  .  .
+...
+```
+
+Note: Letter coordinates skip "I" (to avoid confusion with the number 1).
+
+### Coordinate Conversion Functions
+
+```python
+def coord_to_index(coord):
+    """
+    Convert game record coordinates to array indices
+    Example: 'D4' -> (3, 15)
+    """
+    letters = 'ABCDEFGHJKLMNOPQRST'  # Skip I
+    col = letters.index(coord[0].upper())
+    row = BOARD_SIZE - int(coord[1:])
+    return row, col
+
+
+def index_to_coord(row, col):
+    """
+    Convert array indices to game record coordinates
+    Example: (3, 15) -> 'Q16'
+    """
+    letters = 'ABCDEFGHJKLMNOPQRST'
+    return f"{letters[col]}{BOARD_SIZE - row}"
+```
+
+### Space Complexity Analysis
+
+Space complexity of 2D array representation:
+
+| Representation | Size per Cell | Total Space |
+|----------------|---------------|-------------|
+| `int8` | 1 byte | 361 bytes |
+| `int32` | 4 bytes | 1.4 KB |
+| `float64` | 8 bytes | 2.9 KB |
+
+For modern computers, this memory usage is not an issue. However, when storing large numbers of board states (such as in MCTS search trees), using `int8` can significantly reduce memory usage.
+
+### Basic Operations
+
+```python
+class Board:
+    def __init__(self, size=19):
+        self.size = size
+        self.board = np.zeros((size, size), dtype=np.int8)
+        self.current_player = BLACK
+        self.ko_point = None  # Ko forbidden point
+        self.move_history = []
+
+    def is_valid_move(self, row, col):
+        """Check if a move is legal"""
+        # 1. Position is within the board
+        if not (0 <= row < self.size and 0 <= col < self.size):
+            return False
+
+        # 2. Position is empty
+        if self.board[row, col] != EMPTY:
+            return False
+
+        # 3. Not a ko forbidden point
+        if self.ko_point == (row, col):
+            return False
+
+        # 4. Not suicide (unless it captures stones)
+        # ... requires more complex checking
+
+        return True
+
+    def place_stone(self, row, col):
+        """Place a stone"""
+        if not self.is_valid_move(row, col):
+            return False
+
+        self.board[row, col] = self.current_player
+        self.move_history.append((row, col))
+
+        # Handle captures
+        captures = self._remove_captured_stones(row, col)
+
+        # Update ko forbidden point
+        self._update_ko(row, col, captures)
+
+        # Switch player
+        self.current_player = WHITE if self.current_player == BLACK else BLACK
+
+        return True
+```
+
+---
+
+## Zobrist Hashing: Fast Position Identification
+
+### Problem Background
+
+In Go AI, we often need to determine "whether two positions are the same":
+
+1. **Ko rule**: Cannot return to the previous move's state
+2. **Triple ko**: Special rule handling
+3. **Transposition Table**: Remember already-searched positions
+4. **Neural network cache**: Avoid redundant computations
+
+If we compare each cell every time, it takes O(361) time. Is there a faster method?
+
+### Zobrist Hashing Principle
+
+**Zobrist Hashing** (also called Zobrist Keys) is a clever hashing method proposed by Albert Zobrist in 1970. The core idea is:
+
+1. Pre-generate a **random number** for each "position x color" combination
+2. Board hash value = **XOR** of all random numbers for positions with stones
+3. Placing/removing a stone only requires one XOR operation to update the hash value
+
+### Random Number Table
+
+```python
+import numpy as np
+
+# Generate random number table
+# Use fixed seed for reproducibility
+np.random.seed(42)
+
+# One random number for each position and color
+# zobrist[color][row][col]
+zobrist_table = np.random.randint(
+    0, 2**64,
+    size=(3, BOARD_SIZE, BOARD_SIZE),  # 3: EMPTY, BLACK, WHITE
+    dtype=np.uint64
+)
+
+# Random number for whose turn it is
+zobrist_player = np.random.randint(0, 2**64, dtype=np.uint64)
+```
+
+### Properties of XOR Operation
+
+XOR has several important properties that make it ideal for this application:
+
+1. **Self-inverse**: A ^ A = 0 (XOR of same number equals 0)
+2. **Reversibility**: A ^ B ^ B = A (XOR twice cancels out)
+3. **Commutativity**: A ^ B = B ^ A
+4. **Associativity**: (A ^ B) ^ C = A ^ (B ^ C)
+
+This means:
+- Placing stone: `hash ^= zobrist[color][row][col]`
+- Removing stone: `hash ^= zobrist[color][row][col]` (same operation!)
+
+### Implementation
+
+```python
+class ZobristBoard:
+    def __init__(self, size=19):
+        self.size = size
+        self.board = np.zeros((size, size), dtype=np.int8)
+        self.current_player = BLACK
+        self.hash = np.uint64(0)
+
+        # Initialize random number table
+        self._init_zobrist_table()
+
+    def _init_zobrist_table(self):
+        np.random.seed(12345)
+        self.zobrist = np.random.randint(
+            0, 2**64,
+            size=(3, self.size, self.size),
+            dtype=np.uint64
+        )
+        self.zobrist_player = np.random.randint(0, 2**64, dtype=np.uint64)
+
+    def place_stone(self, row, col, color):
+        """Place stone and update hash value"""
+        # Remove old state (if there's a stone)
+        old_color = self.board[row, col]
+        if old_color != EMPTY:
+            self.hash ^= self.zobrist[old_color, row, col]
+
+        # Add new stone
+        self.board[row, col] = color
+        self.hash ^= self.zobrist[color, row, col]
+
+    def remove_stone(self, row, col):
+        """Remove stone and update hash value"""
+        color = self.board[row, col]
+        if color != EMPTY:
+            self.hash ^= self.zobrist[color, row, col]
+            self.board[row, col] = EMPTY
+
+    def switch_player(self):
+        """Switch player and update hash value"""
+        self.hash ^= self.zobrist_player
+        self.current_player = WHITE if self.current_player == BLACK else BLACK
+
+    def get_hash(self):
+        """Get current position's hash value"""
+        return self.hash
+```
+
+### Incremental Update Advantage
+
+With Zobrist Hashing, updating the hash value only takes O(1) time:
+
+| Operation | Traditional Comparison | Zobrist |
+|-----------|------------------------|---------|
+| Compare two positions | O(361) | O(1) |
+| Update after placing | O(361) | O(1) |
+| Update after capture | O(361) | O(k), k is number captured |
+
+### Collision Probability
+
+With 64-bit hash, collision probability is extremely low:
+
+**P(collision) ~ n^2 / 2^65**
+
+where n is the number of different positions. Even with 1 billion positions, collision probability is only about 10^-3.
+
+In practice, many Go programs use 64-bit Zobrist Hashing without collision checking because the probability is negligible.
+
+---
+
+## String Representation (Union-Find): Connectivity Problem
+
+### Concept of Strings
+
+In Go, a **string** (or chain) refers to a group of connected stones of the same color. The "liberties" of a string determine its life or death.
+
+<GoBoard
+  size={200}
+  stones={[
+    {x: 3, y: 3, color: 'black'},
+    {x: 4, y: 3, color: 'black'},
+    {x: 5, y: 3, color: 'black'},
+    {x: 4, y: 4, color: 'black'},
+    {x: 6, y: 3, color: 'white'},
+    {x: 6, y: 4, color: 'white'},
+  ]}
+  labels={[
+    {x: 4, y: 3, text: 'A'},
+  ]}
+/>
+
+In the figure above, the four black stones form a string. The number of liberties of this string determines its life or death.
+
+### Why Efficient String Management is Needed
+
+Each move may:
+1. **Create** a new string
+2. **Merge** multiple strings
+3. **Reduce** the liberties of opponent's strings
+4. **Capture** strings with no liberties
+
+These operations need to be performed efficiently because in MCTS, tens of thousands of move simulations may be performed per second.
+
+### Union-Find Data Structure
+
+**Union-Find** (also called Disjoint Set Union, DSU) is a classic data structure for handling "connectivity" problems:
+
+```python
+class UnionFind:
+    def __init__(self, size):
+        # parent[i] points to i's parent node
+        # If parent[i] = i, then i is a root node
+        self.parent = list(range(size))
+        self.rank = [0] * size
+
+    def find(self, x):
+        """
+        Find the root node of the set containing x (with path compression)
+        """
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])  # Path compression
+        return self.parent[x]
+
+    def union(self, x, y):
+        """
+        Merge the sets containing x and y (with union by rank)
+        """
+        root_x = self.find(x)
+        root_y = self.find(y)
+
+        if root_x == root_y:
+            return  # Already in the same set
+
+        # Union by rank: attach smaller tree to larger tree
+        if self.rank[root_x] < self.rank[root_y]:
+            self.parent[root_x] = root_y
+        elif self.rank[root_x] > self.rank[root_y]:
+            self.parent[root_y] = root_x
+        else:
+            self.parent[root_y] = root_x
+            self.rank[root_x] += 1
+```
+
+### Time Complexity
+
+Union-Find's time complexity uses the **inverse Ackermann function** alpha(n):
+
+| Operation | Time Complexity |
+|-----------|-----------------|
+| find | O(alpha(n)) ~ O(1) |
+| union | O(alpha(n)) ~ O(1) |
+
+alpha(n) grows extremely slowly; for any practical n, alpha(n) ≤ 4. Thus it can be considered constant time.
+
+### Union-Find Application in Go
+
+```python
+class GoStringManager:
+    def __init__(self, size=19):
+        self.size = size
+        num_points = size * size
+
+        # Union-Find structure
+        self.parent = list(range(num_points))
+        self.rank = [0] * num_points
+
+        # Liberties for each string (indexed by root)
+        self.liberties = [set() for _ in range(num_points)]
+
+        # Stones for each string (indexed by root)
+        self.stones = [set() for _ in range(num_points)]
+
+    def _index(self, row, col):
+        return row * self.size + col
+
+    def _neighbors(self, row, col):
+        """Get four neighbors"""
+        neighbors = []
+        if row > 0: neighbors.append((row - 1, col))
+        if row < self.size - 1: neighbors.append((row + 1, col))
+        if col > 0: neighbors.append((row, col - 1))
+        if col < self.size - 1: neighbors.append((row, col + 1))
+        return neighbors
+
+    def find(self, idx):
+        if self.parent[idx] != idx:
+            self.parent[idx] = self.find(self.parent[idx])
+        return self.parent[idx]
+
+    def add_stone(self, row, col, color, board):
+        """
+        Add a stone, handle connections and captures
+        """
+        idx = self._index(row, col)
+
+        # Create new string
+        self.stones[idx] = {idx}
+        self.liberties[idx] = set()
+
+        # Calculate this stone's liberties
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == 0:  # Empty point is a liberty
+                self.liberties[idx].add(nidx)
+
+        # Merge with same-color neighbors
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == color:
+                self._merge_strings(idx, nidx)
+
+        # Reduce opponent strings' liberties
+        opponent = 3 - color  # BLACK=1, WHITE=2
+        captured = []
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == opponent:
+                root = self.find(nidx)
+                self.liberties[root].discard(idx)
+                if len(self.liberties[root]) == 0:
+                    captured.append(root)
+
+        return captured
+
+    def _merge_strings(self, idx1, idx2):
+        """Merge two strings"""
+        root1 = self.find(idx1)
+        root2 = self.find(idx2)
+
+        if root1 == root2:
+            return
+
+        # Union by rank
+        if self.rank[root1] < self.rank[root2]:
+            root1, root2 = root2, root1
+
+        self.parent[root2] = root1
+        if self.rank[root1] == self.rank[root2]:
+            self.rank[root1] += 1
+
+        # Merge liberty and stone sets
+        self.liberties[root1] |= self.liberties[root2]
+        self.stones[root1] |= self.stones[root2]
+
+        # Remove own position from liberties (stone is not its own liberty)
+        for stone_idx in self.stones[root2]:
+            self.liberties[root1].discard(stone_idx)
+```
+
+### Liberty Counting
+
+Counting a string's liberties is one of the most common operations in Go:
+
+```python
+def count_liberties(self, row, col, board):
+    """Count liberties of the string containing this stone"""
+    idx = self._index(row, col)
+    root = self.find(idx)
+    return len(self.liberties[root])
+```
+
+With Union-Find, this operation is O(1) (assuming find is O(1)).
+
+---
+
+## Evolution of Feature Encoding
+
+From traditional hand-crafted features to AlphaGo Zero's simple features, Go AI feature encoding has undergone significant evolution.
+
+### GNU Go's Hand-Crafted Features
+
+Early Go programs (like GNU Go) used many hand-designed features:
+
+```python
+def extract_features_gnugo(board, point):
+    """
+    GNU Go style hand-crafted feature extraction
+    """
+    features = {}
+
+    # 1. Pattern matching (predefined local shapes)
+    features['pattern'] = match_pattern(board, point)
+
+    # 2. Tactical features
+    features['can_capture'] = check_capture(board, point)
+    features['can_connect'] = check_connect(board, point)
+    features['creates_eye'] = check_eye_creation(board, point)
+
+    # 3. Local features
+    features['liberties_after'] = count_liberties_after_move(board, point)
+    features['enemy_liberties'] = count_enemy_liberties(board, point)
+
+    # 4. Global features
+    features['distance_to_edge'] = min(
+        point[0], point[1],
+        18 - point[0], 18 - point[1]
+    )
+
+    # ... more features
+
+    return features
+```
+
+Problems with this approach:
+- Requires extensive human expert knowledge
+- Features may be incomplete
+- Difficult to discover new patterns
+
+### AlphaGo's 48 Feature Planes
+
+AlphaGo (2016 Nature version) used **48 feature planes** as neural network input:
+
+```python
+def encode_alphago_features(board, player, history):
+    """
+    AlphaGo 2016's 48 feature planes
+
+    Returns:
+        (19, 19, 48) tensor
+    """
+    features = np.zeros((19, 19, 48), dtype=np.float32)
+
+    # Plane 1: Black stone positions
+    features[:, :, 0] = (board == BLACK)
+
+    # Plane 2: White stone positions
+    features[:, :, 1] = (board == WHITE)
+
+    # Plane 3: Empty points
+    features[:, :, 2] = (board == EMPTY)
+
+    # Plane 4: All ones (bias term)
+    features[:, :, 3] = 1
+
+    # Planes 5-12: Liberty encoding (one plane each for 1-8 liberties)
+    for i, num_libs in enumerate(range(1, 9)):
+        for r in range(19):
+            for c in range(19):
+                if board[r, c] != EMPTY:
+                    libs = count_liberties(board, r, c)
+                    if libs == num_libs:
+                        features[r, c, 4 + i] = 1
+
+    # Planes 13-20: Opponent liberties after capture
+    # ...
+
+    # Planes 21-28: Own liberties after move
+    # ...
+
+    # Planes 29-36: History of past 8 moves (one plane each)
+    for i, (r, c) in enumerate(history[-8:]):
+        features[r, c, 28 + i] = 1
+
+    # Planes 37-44: Ladder analysis
+    # ...
+
+    # Planes 45-48: Symmetry-related
+    # ...
+
+    # Plane 49: Whose turn (all 1s for Black, all 0s for White)
+    if player == BLACK:
+        features[:, :, 47] = 1
+
+    return features
+```
+
+### Classification of 48 Planes
+
+| Category | # Planes | Description |
+|----------|----------|-------------|
+| Stone positions | 3 | Black, white, empty |
+| Constant | 1 | All ones |
+| Liberties | 8 | 1-8 liberties |
+| Liberties after capture | 8 | Liberties after hypothetical move |
+| Liberties after move | 8 | Liberties after hypothetical move |
+| History | 8 | Past 8 moves |
+| Ladder | 8 | Complex ladder analysis |
+| Other | 4 | Turn, symmetry, etc. |
+
+### AlphaGo Zero's 17 Feature Planes
+
+AlphaGo Zero (2017) greatly simplified feature encoding, using only **17 planes**:
+
+```python
+def encode_alphago_zero_features(board_history, player):
+    """
+    AlphaGo Zero's 17 feature planes
+
+    Args:
+        board_history: Past 8 board states (including current)
+        player: Current player
+
+    Returns:
+        (19, 19, 17) tensor
+    """
+    features = np.zeros((19, 19, 17), dtype=np.float32)
+
+    # Planes 1-8: Black stone history (most recent 8 steps)
+    for i, board in enumerate(board_history[-8:]):
+        features[:, :, i] = (board == BLACK)
+
+    # Planes 9-16: White stone history (most recent 8 steps)
+    for i, board in enumerate(board_history[-8:]):
+        features[:, :, 8 + i] = (board == WHITE)
+
+    # Plane 17: Whose turn (all 1s for Black, all 0s for White)
+    if player == BLACK:
+        features[:, :, 16] = 1
+
+    return features
+```
+
+### The Simplicity of 17 Planes
+
+| Category | # Planes | Description |
+|----------|----------|-------------|
+| Black history | 8 | Black stone positions for past 8 time steps |
+| White history | 8 | White stone positions for past 8 time steps |
+| Current player | 1 | All 1s or all 0s |
+
+Why can it be this simple?
+
+> **Key insight: Let the neural network learn features on its own.**
+
+AlphaGo Zero proved that:
+- No need to manually calculate liberties (network can infer from stone positions)
+- No need for ladder analysis (network can learn to recognize ladders)
+- No need for complex capture prediction (network can understand move consequences)
+
+This embodies the core advantage of deep learning: **end-to-end learning**.
+
+### Visualization of Feature Planes
+
+Let's see what these feature planes actually look like:
+
+```
+Original board:              Black stone plane:          White stone plane:
+. . . . . .            0 0 0 0 0 0            0 0 0 0 0 0
+. ● ○ . . .            0 1 0 0 0 0            0 0 1 0 0 0
+. . ● ○ . .    ->      0 0 1 0 0 0     +      0 0 0 1 0 0
+. . . ● . .            0 0 0 1 0 0            0 0 0 0 0 0
+. . . . . .            0 0 0 0 0 0            0 0 0 0 0 0
+```
+
+Each plane is a binary matrix (0 or 1), and neural networks can extract patterns from these planes through convolution operations.
+
+---
+
+## Symmetry Handling: 8 Transformations
+
+### Symmetry in Go
+
+The Go board has **8 symmetries**:
+
+1. **4 rotations**: 0, 90, 180, 270 degrees
+2. **4 flipped rotations**: Horizontal flip + 4 rotations
+
+This forms a **dihedral group D4**.
+
+### Mathematical Representation
+
+Let (x, y) be coordinates on the board (centered at (9, 9)), the 8 transformations can be represented as:
+
+| Transformation | Formula |
+|----------------|---------|
+| Identity | (x, y) |
+| Rotate 90 | (-y, x) |
+| Rotate 180 | (-x, -y) |
+| Rotate 270 | (y, -x) |
+| Horizontal flip | (-x, y) |
+| Vertical flip | (x, -y) |
+| Diagonal flip | (y, x) |
+| Anti-diagonal flip | (-y, -x) |
+
+### Implementation
+
+```python
+def get_symmetries(board):
+    """
+    Get 8 symmetric transformations of the board
+
+    Returns:
+        List of 8 boards
+    """
+    symmetries = []
+
+    # Original
+    symmetries.append(board.copy())
+
+    # Rotate 90
+    symmetries.append(np.rot90(board, k=1))
+
+    # Rotate 180
+    symmetries.append(np.rot90(board, k=2))
+
+    # Rotate 270
+    symmetries.append(np.rot90(board, k=3))
+
+    # Horizontal flip
+    symmetries.append(np.fliplr(board))
+
+    # Vertical flip
+    symmetries.append(np.flipud(board))
+
+    # Diagonal flip
+    symmetries.append(board.T)
+
+    # Anti-diagonal flip
+    symmetries.append(np.rot90(board.T, k=2))
+
+    return symmetries
+
+
+def apply_symmetry(board, sym_index):
+    """
+    Apply the sym_index-th symmetric transformation
+    """
+    return get_symmetries(board)[sym_index]
+
+
+def inverse_symmetry(move, sym_index, board_size=19):
+    """
+    Transform move coordinates back to original coordinates
+    """
+    row, col = move
+
+    if sym_index == 0:  # Identity
+        return row, col
+    elif sym_index == 1:  # Rotate 90
+        return col, board_size - 1 - row
+    elif sym_index == 2:  # Rotate 180
+        return board_size - 1 - row, board_size - 1 - col
+    elif sym_index == 3:  # Rotate 270
+        return board_size - 1 - col, row
+    elif sym_index == 4:  # Horizontal flip
+        return row, board_size - 1 - col
+    elif sym_index == 5:  # Vertical flip
+        return board_size - 1 - row, col
+    elif sym_index == 6:  # Diagonal flip
+        return col, row
+    elif sym_index == 7:  # Anti-diagonal flip
+        return board_size - 1 - col, board_size - 1 - row
+```
+
+### Data Augmentation
+
+When training neural networks, symmetry can be used for **data augmentation**:
+
+```python
+def augment_training_data(board, policy, value):
+    """
+    Expand one training sample to 8
+    """
+    augmented = []
+
+    for sym_index in range(8):
+        # Transform board
+        aug_board = apply_symmetry(board, sym_index)
+
+        # Transform policy (361-dim vector)
+        policy_2d = policy.reshape(19, 19)
+        aug_policy_2d = apply_symmetry(policy_2d, sym_index)
+        aug_policy = aug_policy_2d.flatten()
+
+        # Value unchanged
+        aug_value = value
+
+        augmented.append((aug_board, aug_policy, aug_value))
+
+    return augmented
+```
+
+This increases training data 8x completely free (no need to collect new data).
+
+### Using Symmetry During Inference
+
+AlphaGo also uses symmetry during actual play:
+
+```python
+def predict_with_symmetry(model, board):
+    """
+    Enhance prediction using symmetry
+    """
+    policies = []
+    values = []
+
+    for sym_index in range(8):
+        # Transform input
+        aug_board = apply_symmetry(board, sym_index)
+
+        # Neural network prediction
+        policy, value = model.predict(aug_board)
+
+        # Transform policy back to original coordinate system
+        policy_2d = policy.reshape(19, 19)
+        original_policy = inverse_symmetry_2d(policy_2d, sym_index)
+        policies.append(original_policy.flatten())
+
+        values.append(value)
+
+    # Average all predictions
+    avg_policy = np.mean(policies, axis=0)
+    avg_value = np.mean(values)
+
+    return avg_policy, avg_value
+```
+
+This approach can slightly improve prediction accuracy and stability.
+
+---
+
+## Summary of Board Representation Methods
+
+| Method | Purpose | Complexity | Features |
+|--------|---------|------------|----------|
+| **2D Array** | Basic storage | O(361) space | Simple and intuitive |
+| **Zobrist Hashing** | Position identification | O(1) lookup | Efficient hashing |
+| **Union-Find** | String management | O(alpha(n)) operations | Handles connectivity |
+| **Feature Planes** | Neural network input | O(361 x # planes) | Rich information encoding |
+| **Symmetry Transformations** | Data augmentation | 8x data volume | Free augmentation |
+
+These techniques work together to form the infrastructure of modern Go AI.
+
+---
+
+## Animation Reference
+
+Core concepts covered in this article and their animation numbers:
+
+| Number | Concept | Physics/Math Correspondence |
+|--------|---------|----------------------------|
+| A1 | 2D array representation | Matrices, sparse data |
+| A2 | Zobrist Hashing | Hash functions, XOR operations |
+| A8 | Feature plane encoding | Tensors, multi-channel input |
+| A5 | Symmetry handling | Group theory, dihedral groups |
+
+---
+
+## Further Reading
+
+- **Previous**: [Limits of Traditional Methods](../traditional-limits) - From Minimax to MCTS
+- **Next**: [Policy Network Explained](../policy-network) - How neural networks predict moves
+- **Hands-on**: [Run Your First Go AI in 30 Minutes](../../../hands-on/) - Try it yourself
+
+---
+
+## References
+
+1. Zobrist, A. L. (1970). "A new hashing method with application for game playing." ICCA journal.
+2. Tarjan, R. E. (1975). "Efficiency of a Good But Not Linear Set Union Algorithm." Journal of the ACM, 22(2), 215-225.
+3. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." Nature, 529, 484-489. - AlphaGo's 48 feature planes
+4. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." Nature, 550, 354-359. - AlphaGo Zero's 17 feature planes

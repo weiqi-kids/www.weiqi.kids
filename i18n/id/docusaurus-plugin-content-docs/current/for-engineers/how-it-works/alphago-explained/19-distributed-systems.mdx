@@ -1,0 +1,564 @@
+---
+sidebar_position: 20
+title: Sistem Terdistribusi dan TPU
+description: Analisis mendalam tentang arsitektur pelatihan terdistribusi AlphaGo, akselerasi TPU, dan MCTS paralel skala besar
+keywords: [sistem terdistribusi, TPU, komputasi paralel, MCTS, virtual loss, deep learning, akselerasi hardware]
+---
+
+# Sistem Terdistribusi dan TPU
+
+Keberhasilan AlphaGo bukan hanya kemenangan algoritma, tetapi juga kemenangan rekayasa. Untuk melatih AI Go yang melampaui manusia dalam waktu yang wajar, diperlukan sistem terdistribusi yang dirancang dengan cermat dan dukungan hardware khusus.
+
+Artikel ini akan menganalisis secara mendalam arsitektur sistem di balik AlphaGo, termasuk alur pelatihan, arsitektur inferensi, MCTS paralel, dan peran kunci TPU.
+
+---
+
+## Gambaran Arsitektur Pelatihan
+
+### Arsitektur Pelatihan AlphaGo Asli
+
+AlphaGo asli (versi yang mengalahkan Lee Sedol) memiliki pelatihan yang dibagi menjadi beberapa tahap, setiap tahap menggunakan konfigurasi sumber daya yang berbeda:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Tahap 1: Supervised Learning              │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐     │
+│  │  Kifu       │ →  │  GPU Cluster│ →  │ Policy Net  │     │
+│  │  Manusia    │    │  (50 GPUs)  │    │  (versi SL) │     │
+│  │  (30 juta)  │    │             │    │             │     │
+│  └─────────────┘    └─────────────┘    └─────────────┘     │
+└─────────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│                    Tahap 2: Reinforcement Learning           │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐     │
+│  │  Self-play  │ →  │  GPU Cluster│ →  │ Policy Net  │     │
+│  │  (jutaan)   │    │  (50 GPUs)  │    │  (versi RL) │     │
+│  └─────────────┘    └─────────────┘    └─────────────┘     │
+└─────────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│                    Tahap 3: Pelatihan Value Network          │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐     │
+│  │  Data RL    │ →  │  GPU Cluster│ →  │ Value Net   │     │
+│  │ (30 juta    │    │  (50 GPUs)  │    │             │     │
+│  │  posisi)    │    │             │    │             │     │
+│  └─────────────┘    └─────────────┘    └─────────────┘     │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Arsitektur Pelatihan AlphaGo Zero
+
+AlphaGo Zero sangat menyederhanakan alur pelatihan, menggunakan satu loop pelatihan end-to-end:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   Loop Pelatihan AlphaGo Zero                │
+│                                                              │
+│  ┌───────────────────┐                                      │
+│  │   Self-play       │  ← Network terbaru                   │
+│  │   Workers         │                                      │
+│  │   (TPU × N)       │                                      │
+│  └─────────┬─────────┘                                      │
+│            ↓                                                 │
+│  ┌───────────────────┐                                      │
+│  │   Replay Buffer   │  (500.000 pertandingan terakhir)     │
+│  │   (RAM/SSD)       │                                      │
+│  └─────────┬─────────┘                                      │
+│            ↓                                                 │
+│  ┌───────────────────┐                                      │
+│  │   Training        │                                      │
+│  │   Workers         │                                      │
+│  │   (TPU × M)       │                                      │
+│  └─────────┬─────────┘                                      │
+│            ↓                                                 │
+│  ┌───────────────────┐                                      │
+│  │   Network         │  → Perbarui network untuk Self-play  │
+│  │   Checkpoint      │                                      │
+│  └───────────────────┘                                      │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+Keunggulan arsitektur ini:
+
+1. **Pembelajaran berkelanjutan**: Self-play dan Training berjalan bersamaan, tidak perlu menunggu
+2. **Efisiensi sumber daya**: Semua sumber daya melakukan pekerjaan yang berguna
+3. **Iterasi cepat**: Network segera digunakan untuk menghasilkan data baru setelah diperbarui
+
+---
+
+## Self-play Workers
+
+### Pembagian Tugas
+
+Self-play Workers bertanggung jawab melakukan self-play dengan network terkuat saat ini, menghasilkan data pelatihan.
+
+| Konfigurasi | AlphaGo Zero |
+|-------------|--------------|
+| Jumlah Worker | Puluhan |
+| Per Worker | 1-4 TPU |
+| MCTS per pertandingan | 1600 simulasi |
+| Dihasilkan per hari | ~100.000 pertandingan |
+
+### Alur Kerja
+
+Alur kerja setiap Self-play Worker:
+
+```python
+while True:
+    # 1. Download bobot network terbaru
+    network = download_latest_checkpoint()
+
+    # 2. Lakukan beberapa pertandingan self-play
+    for game in range(batch_size):
+        positions = []
+        board = EmptyBoard()
+
+        while not board.is_terminal():
+            # Jalankan MCTS
+            mcts = MCTS(network, board)
+            policy = mcts.search(num_simulations=1600)
+
+            # Pilih langkah
+            action = sample(policy)
+
+            # Catat
+            positions.append((board.state, policy))
+
+            # Mainkan langkah
+            board = board.play(action)
+
+        # 3. Dapatkan hasil pertandingan
+        result = board.get_result()
+
+        # 4. Upload data
+        upload_to_replay_buffer(positions, result)
+```
+
+### Load Balancing
+
+Beberapa Worker memerlukan load balancing:
+
+- **Sinkronisasi network**: Semua Worker menggunakan versi network yang sama
+- **Keseimbangan data**: Pastikan data dari berbagai Worker semua digunakan
+- **Penanganan error**: Kegagalan satu Worker tidak mempengaruhi keseluruhan pelatihan
+
+---
+
+## Training Workers
+
+### Pembagian Tugas
+
+Training Workers bertanggung jawab mengambil sampel data dari Replay Buffer dan melatih neural network.
+
+| Konfigurasi | AlphaGo Zero |
+|-------------|--------------|
+| Jumlah Worker | 1-4 |
+| Per Worker | 4 TPU |
+| Batch Size | 2048 (512 per TPU) |
+| Langkah pelatihan | Puluhan ribu per hari |
+
+### Pelatihan Terdistribusi
+
+Pelatihan skala besar menggunakan **Data Parallelism**:
+
+```
+                    ┌─────────────┐
+                    │  Parameter  │
+                    │   Server    │
+                    └──────┬──────┘
+                           │
+         ┌─────────────────┼─────────────────┐
+         │                 │                 │
+    ┌────▼────┐      ┌────▼────┐      ┌────▼────┐
+    │  TPU 0  │      │  TPU 1  │      │  TPU 2  │
+    │ Batch 0 │      │ Batch 1 │      │ Batch 2 │
+    └────┬────┘      └────┬────┘      └────┬────┘
+         │                 │                 │
+         └─────────────────┼─────────────────┘
+                           │
+                    ┌──────▼──────┐
+                    │  Gradient   │
+                    │  Aggregation│
+                    └─────────────┘
+```
+
+Setiap TPU memproses mini-batch berbeda, menghitung gradien lokal, kemudian mengagregasi untuk memperbarui parameter global.
+
+### Update Sinkron vs. Asinkron
+
+| Metode Update | Kelebihan | Kekurangan |
+|---------------|-----------|------------|
+| Sinkron | Stabil, dapat direproduksi | Worker perlu menunggu yang paling lambat |
+| Asinkron | Throughput tinggi | Gradien mungkin usang |
+
+AlphaGo Zero menggunakan **update sinkron** untuk memastikan stabilitas pelatihan.
+
+---
+
+## Peran TPU
+
+### Apa itu TPU?
+
+**TPU (Tensor Processing Unit)** adalah akselerator yang dirancang khusus oleh Google untuk deep learning:
+
+| Karakteristik | TPU | GPU | CPU |
+|---------------|-----|-----|-----|
+| Tujuan desain | Operasi matriks | Paralel umum | Komputasi umum |
+| Presisi | Dioptimalkan FP16/BF16 | FP32/FP16 | FP64/FP32 |
+| Konsumsi daya | Relatif rendah | Lebih tinggi | Paling tinggi |
+| Latensi | Rendah | Sedang | Tinggi |
+
+### Arsitektur TPU
+
+Inti TPU adalah **MXU (Matrix Multiply Unit)**:
+
+```
+┌─────────────────────────────────────────┐
+│              TPU v2/v3                  │
+│  ┌─────────────────────────────────┐    │
+│  │         MXU (128×128)           │    │
+│  │    Matrix Multiply Unit         │    │
+│  │    (128×128 = 16K MACs/cycle)   │    │
+│  └─────────────────────────────────┘    │
+│  ┌──────────┐  ┌──────────────────┐     │
+│  │ Vector   │  │     HBM          │     │
+│  │ Unit     │  │   (16-32 GB)     │     │
+│  └──────────┘  └──────────────────┘     │
+└─────────────────────────────────────────┘
+```
+
+MXU dapat menjalankan 16K operasi multiply-add per siklus, ini sangat penting untuk perkalian matriks neural network.
+
+### Mengapa AlphaGo Membutuhkan TPU?
+
+Bottleneck komputasi AI Go ada di **inferensi neural network**:
+
+| Operasi | Persentase |
+|---------|-----------|
+| Forward pass neural network | ~95% |
+| Operasi tree MCTS | ~4% |
+| Lainnya | ~1% |
+
+Setiap langkah MCTS memerlukan 1600 inferensi neural network. Throughput tinggi TPU membuat ini menjadi mungkin.
+
+### Evolusi Penggunaan TPU
+
+| Versi | Training TPU | Inference TPU |
+|-------|--------------|---------------|
+| AlphaGo Lee | 50 GPU | 48 TPU (v1) |
+| AlphaGo Master | 4 TPU (v2) | 4 TPU (v2) |
+| AlphaGo Zero | 4 TPU (v2) | 4 TPU (v2) (dapat diperluas) |
+
+Jumlah TPU yang digunakan AlphaGo Zero berkurang drastis, ini berkat arsitektur yang lebih efisien dan versi TPU yang lebih baru.
+
+---
+
+## MCTS Paralel dan Virtual Loss
+
+### Tantangan Paralelisasi
+
+Implementasi standar MCTS adalah **serial**:
+
+```
+for i in range(num_simulations):
+    1. Selection: Pilih dari root ke bawah
+    2. Expansion: Ekspansi leaf node
+    3. Evaluation: Evaluasi neural network
+    4. Backup: Propagasi balik pembaruan
+```
+
+Tetapi evaluasi neural network adalah **operasi batch** yang ramah GPU/TPU. Bagaimana membuat beberapa simulasi berjalan bersamaan?
+
+### Leaf Parallelization
+
+Cara paralel paling sederhana: jalankan beberapa simulasi lengkap secara bersamaan, gabungkan hasilnya di akhir.
+
+```
+┌────────────┐
+│   Root     │
+└──────┬─────┘
+       ├──────────┬──────────┬──────────┐
+  ┌────▼────┐ ┌───▼────┐ ┌───▼────┐ ┌───▼────┐
+  │ Sim 1   │ │ Sim 2  │ │ Sim 3  │ │ Sim 4  │
+  │ (indep) │ │ (indep)│ │ (indep)│ │ (indep)│
+  └────┬────┘ └───┬────┘ └───┬────┘ └───┬────┘
+       └──────────┴──────────┴──────────┘
+                      │
+              ┌───────▼───────┐
+              │  Merge Trees  │
+              └───────────────┘
+```
+
+Masalah: Setiap simulasi dimulai dari root, akan berulang kali menjelajahi jalur yang sama.
+
+### Virtual Loss
+
+DeepMind mengadopsi teknik **virtual loss** untuk mengimplementasikan Tree Parallelization.
+
+#### Konsep Dasar
+
+Ketika sebuah thread sedang menjelajahi node tertentu, sementara menurunkan nilai node tersebut, membuat thread lain memilih jalur lain.
+
+```
+UCB normal: Q(s,a) + c * P(s,a) * sqrt(N(s)) / (1 + N(s,a))
+
+Setelah ditambah virtual loss:
+(Q(s,a) * N(s,a) - v * n_virtual) / (N(s,a) + n_virtual) + c * P(s,a) * sqrt(N(s)) / (1 + N(s,a) + n_virtual)
+```
+
+Di mana:
+- `n_virtual` adalah jumlah thread yang sedang menjelajahi node tersebut
+- `v` adalah nilai virtual loss (biasanya 1 atau nilai sesuai win rate)
+
+#### Alur Operasi
+
+```
+Waktu T1:
+  Thread 1 memilih jalur A → B → C
+  Node C mendapat virtual loss -1
+
+Waktu T2:
+  Thread 2 memilih jalur A → B → D (karena C "dihukum")
+  Node D mendapat virtual loss -1
+
+Waktu T3:
+  Thread 1 selesai evaluasi, perbarui nilai aktual C, hapus virtual loss
+  Thread 3 sekarang mungkin memilih C (jika nilai aktualnya cukup baik)
+```
+
+#### Efek Virtual Loss
+
+| Aspek | Efek |
+|-------|------|
+| Diversitas eksplorasi | Memaksa eksplorasi jalur berbeda |
+| Efisiensi batch | Dapat mengevaluasi beberapa leaf node secara bersamaan |
+| Konvergensi | Virtual loss akhirnya ditimpa nilai riil, tidak mempengaruhi konvergensi |
+
+### Evaluasi Neural Network Batch
+
+Melalui virtual loss, dapat mengumpulkan beberapa leaf node yang menunggu evaluasi, melakukan **batch inference**:
+
+```
+┌─────────────────────────────────────────┐
+│            Parallel MCTS                │
+│                                         │
+│  Thread 1 → Leaf node L1 ──┐            │
+│  Thread 2 → Leaf node L2 ──┼──→ Batch ─→ TPU
+│  Thread 3 → Leaf node L3 ──┤            │
+│  Thread 4 → Leaf node L4 ──┘            │
+│                                         │
+│  ← Mendapat (P1,V1), (P2,V2), ... secara bersamaan  │
+│                                         │
+└─────────────────────────────────────────┘
+```
+
+Efisiensi batch inference TPU jauh lebih tinggi daripada inferensi satu per satu, ini membuat MCTS paralel menjadi mungkin.
+
+---
+
+## Arsitektur Inferensi
+
+### Konfigurasi Saat Pertandingan
+
+Arsitektur inferensi AlphaGo dalam pertandingan resmi:
+
+| Versi | Konfigurasi Hardware |
+|-------|---------------------|
+| AlphaGo Fan | 176 GPU |
+| AlphaGo Lee | 48 TPU + beberapa server |
+| AlphaGo Master | 4 TPU |
+| AlphaGo Zero | 4 TPU (dapat diperluas) |
+
+### Alur Inferensi Terdistribusi
+
+Alur inferensi saat pertandingan (contoh AlphaGo Lee):
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Arsitektur Inferensi Terdistribusi        │
+│                                                              │
+│  ┌──────────────┐                                           │
+│  │   Node       │ ← Terima langkah lawan, kirim langkah     │
+│  │   Utama      │   AlphaGo                                 │
+│  └──────┬───────┘                                           │
+│         │                                                    │
+│         ↓                                                    │
+│  ┌──────────────────────────────────────────────────┐       │
+│  │              MCTS Controller                      │       │
+│  │  Kelola search tree, distribusi tugas,            │       │
+│  │  kumpulkan hasil                                  │       │
+│  └──────────────────────────────────────────────────┘       │
+│         │                                                    │
+│         ↓                                                    │
+│  ┌──────────────────────────────────────────────────┐       │
+│  │              Cluster TPU (48 TPU)                 │       │
+│  │                                                   │       │
+│  │   ┌────┐ ┌────┐ ┌────┐ ┌────┐ ┌────┐ ┌────┐     │       │
+│  │   │TPU │ │TPU │ │TPU │ │TPU │ │TPU │ │... │     │       │
+│  │   │ 1  │ │ 2  │ │ 3  │ │ 4  │ │ 5  │ │ 48 │     │       │
+│  │   └────┘ └────┘ └────┘ └────┘ └────┘ └────┘     │       │
+│  │                                                   │       │
+│  │   Batch memproses permintaan inferensi            │       │
+│  │   neural network                                  │       │
+│  └──────────────────────────────────────────────────┘       │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Manajemen Waktu Berpikir
+
+Strategi manajemen waktu AlphaGo:
+
+| Posisi | Waktu berpikir | Jumlah MCTS |
+|--------|----------------|-------------|
+| Pembukaan (ada joseki) | Lebih pendek | ~10.000 |
+| Tengah permainan (kompleks) | Lebih panjang | ~100.000 |
+| Posisi sederhana | Lebih pendek | ~5.000 |
+| Byoyomi | Tetap | ~1.600 |
+
+Lebih banyak simulasi MCTS biasanya berarti kualitas langkah yang lebih baik.
+
+---
+
+## Komunikasi dan Sinkronisasi
+
+### Format Data
+
+Format transmisi data pelatihan:
+
+```protobuf
+message TrainingExample {
+    // State papan (17 × 19 × 19)
+    repeated float board_planes = 1;
+
+    // Hasil pencarian MCTS (362)
+    repeated float mcts_policy = 2;
+
+    // Hasil pertandingan (1 = pihak saat ini menang, -1 = pihak saat ini kalah)
+    float game_result = 3;
+}
+```
+
+### Kebutuhan Bandwidth Jaringan
+
+| Aliran data | Ukuran | Frekuensi |
+|-------------|--------|-----------|
+| Sampel pelatihan | ~10 KB/sampel | Ribuan sampel per detik |
+| Bobot network | ~200 MB | Beberapa kali per jam |
+| Pesan kontrol | < 1 KB | Terus-menerus |
+
+Total kebutuhan bandwidth: ~100 Mbps (jaringan internal cukup)
+
+### Penanganan Kegagalan
+
+Penanganan kegagalan sistem terdistribusi:
+
+| Jenis kegagalan | Cara penanganan |
+|-----------------|-----------------|
+| Worker mati | Restart, lanjutkan dengan checkpoint terbaru |
+| Jaringan terputus | Buffer data, lanjutkan transfer setelah reconnect |
+| TPU gagal | Otomatis beralih ke TPU cadangan |
+| Data rusak | Verifikasi kemudian buang, generate ulang |
+
+---
+
+## Analisis Biaya
+
+### Estimasi Biaya Hardware
+
+Estimasi biaya pelatihan AlphaGo Zero dengan harga Google Cloud TPU:
+
+| Sumber daya | Jumlah | Harga/jam | Total/hari |
+|-------------|--------|-----------|------------|
+| TPU v2 Pod | 4 | ~$32 | ~$3.000 |
+| VM memori tinggi | Beberapa | ~$5 | ~$500 |
+| Penyimpanan | 10 TB | ~$0.02/GB | ~$200 |
+| Jaringan | - | Termasuk | - |
+
+**Sekitar $3.700 per hari**, pelatihan lengkap (40 hari) sekitar **$150.000**.
+
+Catatan: Ini adalah estimasi 2017, DeepMind sebagai anak perusahaan Google mungkin memiliki diskon internal.
+
+### Perbandingan dengan Pelatihan Manusia
+
+| Aspek | AlphaGo Zero | Pemain Go profesional manusia |
+|-------|--------------|------------------------------|
+| Mencapai level profesional | 2 hari | 10-15 tahun |
+| Biaya pelatihan | ~$7.500 | Jutaan (biaya sekolah, biaya hidup, biaya kesempatan) |
+| Biaya berkelanjutan | Listrik | Biaya hidup |
+| Dapat direplikasi | Replikasi sempurna | Tidak dapat direplikasi |
+
+Tentu saja, perbandingan ini tidak sepenuhnya adil—manusia belajar lebih dari sekadar Go dalam proses belajar Go.
+
+### Biaya Inferensi
+
+Biaya inferensi pertandingan resmi:
+
+| Konfigurasi | Biaya per pertandingan |
+|-------------|----------------------|
+| 48 TPU (AlphaGo Lee) | ~$500 |
+| 4 TPU (AlphaGo Zero) | ~$50 |
+| GPU tunggal (KataGo) | ~$1 |
+
+Biaya inferensi turun drastis seiring kemajuan teknologi.
+
+---
+
+## Evolusi Teknologi
+
+### Dari AlphaGo ke AlphaZero
+
+| Aspek | AlphaGo Lee | AlphaGo Zero | AlphaZero |
+|-------|-------------|--------------|-----------|
+| Training TPU | 50+ GPU → TPU | 4 TPU | 4 TPU |
+| Inference TPU | 48 TPU | 4 TPU | 4 TPU |
+| MCTS/langkah | ~100.000 | ~1.600 | ~800 |
+| Waktu pelatihan | Berbulan-bulan | 40 hari | Berjam-jam hingga berhari-hari |
+
+Peningkatan efisiensi sekitar 100 kali lipat.
+
+### Dampak pada Komunitas Open Source
+
+Arsitektur AlphaGo menginspirasi banyak proyek open source:
+
+| Proyek | Karakteristik |
+|--------|---------------|
+| Leela Zero | Pelatihan terdistribusi komunitas, mereplikasi AlphaGo Zero |
+| KataGo | Pelatihan efisien GPU tunggal, melampaui AlphaGo Zero |
+| ELF OpenGo | Open source Facebook, menggunakan PyTorch |
+| Minigo | Open source Google, menggunakan TensorFlow |
+
+Proyek-proyek ini memungkinkan peneliti biasa juga bisa melatih AI Go yang kuat.
+
+---
+
+## Korespondensi Animasi
+
+Konsep inti dalam artikel ini dan nomor animasi:
+
+| Nomor | Konsep | Korespondensi Fisika/Matematika |
+|-------|--------|--------------------------------|
+| 🎬 C9 | MCTS paralel | Masalah banyak benda |
+| 🎬 E9 | Pelatihan terdistribusi | Komputasi terdistribusi |
+| 🎬 C5 | Virtual loss | Potensial tolak |
+| 🎬 D15 | Batch inference | Komputasi tervektorisasi |
+
+---
+
+## Bacaan Lanjutan
+
+- **Artikel sebelumnya**: [Proses Pelatihan dari Nol](../training-from-scratch) — Analisis detail kurva pelatihan
+- **Artikel selanjutnya**: [Warisan AlphaGo](../legacy-and-impact) — Dampak mendalam AlphaGo pada bidang AI
+- **Artikel terkait**: [Kombinasi MCTS dan Neural Network](../mcts-neural-combo) — Pengetahuan dasar MCTS
+
+---
+
+## Referensi
+
+1. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 550, 354-359.
+2. Jouppi, N., et al. (2017). "In-Datacenter Performance Analysis of a Tensor Processing Unit." *ISCA 2017*.
+3. Dean, J., et al. (2012). "Large Scale Distributed Deep Networks." *NeurIPS 2012*.
+4. Chaslot, G., et al. (2008). "Parallel Monte-Carlo Tree Search." *CIG 2008*.
+5. Segal, R. (2010). "On the Scalability of Parallel UCT." *CIG 2010*.

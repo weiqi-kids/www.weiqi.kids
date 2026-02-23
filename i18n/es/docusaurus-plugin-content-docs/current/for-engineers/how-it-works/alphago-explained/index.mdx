@@ -1,0 +1,132 @@
+---
+sidebar_position: 1
+title: Analisis Completo de AlphaGo
+description: Desde el contexto historico hasta los detalles tecnicos, 20 articulos para comprender completamente AlphaGo
+---
+
+import { PolicyHeatmap, EloChart } from '@site/src/components/D3Charts';
+
+# Analisis Completo de AlphaGo
+
+En marzo de 2016, AlphaGo derroto al campeon mundial Lee Sedol con un marcador de 4:1, impactando al mundo entero. Esto no fue solo una victoria en una partida de Go, sino un avance significativo en la inteligencia artificial.
+
+Esta serie de **20 articulos en profundidad** te llevara desde el contexto historico, los principios tecnicos, hasta los detalles de implementacion, para comprender completamente todo sobre AlphaGo.
+
+---
+
+## Guia de la Serie
+
+### Modulo 1: Historia y Avances
+
+| Articulo | Descripcion |
+|----------|-------------|
+| [El Nacimiento de AlphaGo](./birth-of-alphago) | Fundacion de DeepMind, adquisicion por Google, composicion del equipo |
+| [Resena de Partidas Clave](./key-matches) | Fan Hui, Lee Sedol, Ke Jie, las 60 victorias consecutivas de Master |
+| [Analisis Profundo de "La Jugada Divina"](./move-37) | La teoria del Go y la interpretacion desde la perspectiva de la IA de la jugada 37 |
+
+### Modulo 2: El Desafio del Go
+
+| Articulo | Descripcion |
+|----------|-------------|
+| [Por que el Go es tan dificil?](./why-go-is-hard) | Espacio de estados 10^170, factor de ramificacion ~250 |
+| [Los Limites de los Metodos Tradicionales](./traditional-limits) | Minimax, Alpha-Beta, MCTS puro |
+| [Representacion del Estado del Tablero](./board-representation) | Zobrist Hashing, Union-Find, codificacion de caracteristicas |
+
+### Modulo 3: Nucleo de Redes Neuronales
+
+| Articulo | Descripcion |
+|----------|-------------|
+| [Policy Network en Detalle](./policy-network) | Arquitectura, salida Softmax, objetivos de entrenamiento |
+| [Value Network en Detalle](./value-network) | Arquitectura, salida Tanh, evitando el sobreajuste |
+| [Diseno de Caracteristicas de Entrada](./input-features) | Evolucion de 48 a 17 planos de caracteristicas |
+| [CNN y Go: La Combinacion](./cnn-and-go) | Por que las CNN son adecuadas para el tablero |
+| [Fase de Aprendizaje Supervisado](./supervised-learning) | Dataset KGS, 57% de precision en prediccion |
+
+### Modulo 4: Aprendizaje por Refuerzo y Busqueda
+
+| Articulo | Descripcion |
+|----------|-------------|
+| [Introduccion al Aprendizaje por Refuerzo](./reinforcement-intro) | MDP, gradiente de politica, funcion de valor |
+| [Auto-juego](./self-play) | Por que funciona, curva de crecimiento ELO |
+| [Combinacion de MCTS y Redes Neuronales](./mcts-neural-combo) | Seleccion→Expansion→Evaluacion→Retropropagacion |
+| [Formula PUCT en Detalle](./puct-formula) | Derivacion matematica, exploracion vs explotacion |
+
+### Modulo 5: Evolucion de AlphaGo Zero
+
+| Articulo | Descripcion |
+|----------|-------------|
+| [Vision General de AlphaGo Zero](./alphago-zero) | Por que no necesita partidas humanas |
+| [Red de Doble Cabeza y ResNet](./dual-head-resnet) | Representacion compartida, flujo de gradientes, ResNet de 40 capas |
+| [Entrenamiento desde Cero](./training-from-scratch) | Cambios del dia 0 al 3, superar a los humanos en 3 dias |
+
+### Modulo 6: Detalles Tecnicos y Extensiones
+
+| Articulo | Descripcion |
+|----------|-------------|
+| [Sistemas Distribuidos y TPU](./distributed-systems) | Arquitectura de entrenamiento, arquitectura de inferencia, MCTS paralelo |
+| [El Legado de AlphaGo](./legacy-and-impact) | Impacto en el mundo del Go, AlphaZero, MuZero, AlphaFold |
+
+---
+
+## Vista Rapida
+
+### Ejemplo de Salida del Policy Network
+
+El Policy Network produce la probabilidad de jugar en cada posicion:
+
+<PolicyHeatmap initialPosition="corner" size={400} />
+
+### Curva de Entrenamiento
+
+AlphaGo Zero supero a los humanos en 3 dias partiendo desde cero:
+
+<EloChart mode="zero" width={600} height={350} />
+
+---
+
+## Recomendaciones de Lectura
+
+### Elige tu Punto de Partida segun tu Experiencia
+
+| Tu Experiencia | Punto de Partida Recomendado |
+|----------------|------------------------------|
+| **Principiante absoluto** | Comienza desde [El Nacimiento de AlphaGo](./birth-of-alphago), lee en orden |
+| **Conoces el Go** | Comienza desde [Por que el Go es tan dificil?](./why-go-is-hard) |
+| **Tienes base en machine learning** | Comienza desde [Policy Network en Detalle](./policy-network) |
+| **Quieres una vision rapida** | Lee [Combinacion de MCTS y Redes Neuronales](./mcts-neural-combo) |
+| **Quieres entender el avance de Zero** | Comienza desde [Vision General de AlphaGo Zero](./alphago-zero) |
+
+### Tiempo Estimado de Lectura
+
+- **Lectura completa**: Aproximadamente 8-10 horas
+- **Vista rapida**: Aproximadamente 2-3 horas
+- **Por articulo**: Aproximadamente 15-25 minutos
+
+---
+
+## Correspondencia con Animaciones
+
+Esta serie de articulos hace referencia a las siguientes series de los [109 conceptos animados](../concepts/):
+
+| Serie | Tema | Articulos Relacionados |
+|-------|------|------------------------|
+| **Serie C** | Metodos de Monte Carlo | #5, #14, #15 |
+| **Serie D** | Redes Neuronales | #7, #8, #10, #11 |
+| **Serie E** | Arquitectura de AlphaGo | #13, #16, #17, #18 |
+| **Serie H** | Aprendizaje por Refuerzo | #12, #13 |
+
+---
+
+## Referencias
+
+### Articulos Academicos
+
+1. Silver, D., et al. (2016). ["Mastering the game of Go with deep neural networks and tree search."](https://www.nature.com/articles/nature16961) *Nature*.
+2. Silver, D., et al. (2017). ["Mastering the game of Go without human knowledge."](https://www.nature.com/articles/nature24270) *Nature*.
+3. Silver, D., et al. (2018). ["A general reinforcement learning algorithm that masters chess, shogi, and Go through self-play."](https://www.science.org/doi/10.1126/science.aar6404) *Science*.
+
+### Lecturas Adicionales
+
+- [Innovaciones Clave de KataGo](../katago-innovations) — Como lograr mayor fuerza con menos recursos
+- [Hoja de Referencia de Conceptos](../concepts/) — Lista completa de los 109 conceptos animados
+- [Tu Primera IA de Go en 30 Minutos](../../hands-on/) — Practica

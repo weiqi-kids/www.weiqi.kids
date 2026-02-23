@@ -1,0 +1,645 @@
+---
+sidebar_position: 12
+title: 지도 학습 단계
+description: AlphaGo가 3천만 개의 인간 기보에서 어떻게 학습하여 57% 예측 정확도를 달성했는지
+---
+
+import { EloChart } from '@site/src/components/D3Charts';
+
+# 지도 학습 단계
+
+AlphaGo가 스스로 대국할 수 있기 전에, 먼저 많은 인간 기보를 '봐야' 했습니다. 이 과정을 **지도 학습**이라고 합니다.
+
+3천만 개의 인간 대국 국면을 분석함으로써, AlphaGo의 Policy Network는 **57%의 예측 정확도**를 달성했습니다—절반 이상의 경우에서 인간 전문가의 다음 수를 맞출 수 있었습니다.
+
+이것이 그다지 놀랍지 않게 들릴 수도 있지만, 각 국면에서 평균 250가지의 합법적인 수가 있다는 것을 고려하면, 이것은 놀라운 성과입니다.
+
+---
+
+## 왜 인간 기보로 시작하는가?
+
+### 학습의 출발점
+
+바둑을 전혀 모르는 사람에게 바둑을 가르친다고 상상해 보세요. 어떻게 하시겠습니까?
+
+**방안 A: 무작위 탐색**
+```
+아무렇게나 두게 하고, 천천히 좋은 수가 무엇인지 발견하게 한다
+→ 효율이 매우 낮고, 영원히 배우지 못할 수도 있다
+```
+
+**방안 B: 고수가 어떻게 두는지 본다**
+```
+많은 프로 기사의 대국을 보게 하고, 그들의 수를 모방한다
+→ 기초가 생긴 후, 스스로 탐색한다
+```
+
+AlphaGo는 방안 B를 선택했습니다. 지도 학습은 '고수가 어떻게 두는지 보기'의 수학적 버전입니다.
+
+### 인간 기보의 가치
+
+인류는 수천 년에 걸쳐 바둑 이론을 발전시켜 왔습니다. 이 지식은 모두 기보에 인코딩되어 있습니다:
+
+- **포석 정석**: 오랜 기간 검증된 초반 수법
+- **중반 전술**: 공격과 방어 전환의 지혜
+- **끝내기 기술**: 집 계산의 정수
+- **대국관**: 전체 판단의 직관
+
+지도 학습은 AlphaGo가 이러한 인간의 지혜를 '계승'하게 하여, 처음부터 탐색할 필요가 없게 합니다.
+
+---
+
+## 훈련 데이터 출처
+
+### KGS Go Server
+
+AlphaGo의 훈련 데이터는 주로 **KGS Go Server**(Kiseido Go Server라고도 함)에서 왔습니다. 이것은 유명한 온라인 바둑 플랫폼입니다.
+
+#### KGS의 특징
+
+| 특성 | 설명 |
+|------|------|
+| 사용자 | 주로 아마추어 기사, 프로 기사도 있음 |
+| 기력 범위 | 입문자부터 프로 9단까지 |
+| 대국 기록 | 완전한 SGF 기보 저장 |
+| 활동 기간 | 2000년부터 현재까지 |
+
+#### 왜 KGS를 선택했는가?
+
+1. **데이터 양이 많음**: 수백만 판의 기보
+2. **형식이 통일됨**: SGF 형식은 파싱하기 쉬움
+3. **기력 레이블 있음**: 각 사용자에게 등급이 있음
+4. **다양성**: 다양한 스타일의 기사들
+
+### 3천만 국면
+
+KGS의 기보에서 DeepMind는 약 **3천만 개의 국면**을 추출했습니다:
+
+```
+원시 데이터:
+- 약 16만 판의 기보
+- 각 판당 약 200수
+- 총 ~3200만 국면
+
+데이터 필터링:
+- 저단위 대국 필터링
+- 중도 기권 국면 필터링
+- 최종 약 3천만 개의 고품질 국면
+```
+
+### 데이터 형식
+
+각 훈련 샘플에는 다음이 포함됩니다:
+
+```python
+{
+    "board_state": [[0, 1, 2, ...], ...],  # 19×19 바둑판
+    "features": [...],                      # 48개 특징 평면
+    "next_move": 123,                       # 인간이 둔 위치 (0-360)
+    "game_result": 1,                       # 1=흑승, -1=백승
+    "player_rank": "5d",                    # 이 수를 둔 사람의 단위
+}
+```
+
+---
+
+## 데이터 전처리
+
+### SGF 파싱
+
+SGF(Smart Game Format)는 바둑 기보의 표준 형식입니다:
+
+```
+(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]
+RU[Japanese]SZ[19]KM[6.50]
+PW[White]PB[Black]
+;B[pd];W[dd];B[pq];W[dp];B[qk];W[nc]...
+)
+```
+
+파싱해야 할 것:
+- 바둑판 크기(SZ[19])
+- 각 수(B[pd], W[dd]...)
+- 대국 결과(RE[B+2.5])
+
+```python
+def parse_sgf(sgf_string):
+    """SGF 기보 파싱"""
+    moves = []
+    # 모든 수 추출
+    pattern = r';([BW])\[([a-s]{2})\]'
+    for match in re.finditer(pattern, sgf_string):
+        color = match.group(1)  # 'B' or 'W'
+        coord = match.group(2)  # 'pd', 'dd', etc.
+
+        # 좌표 변환
+        x = ord(coord[0]) - ord('a')
+        y = ord(coord[1]) - ord('a')
+
+        moves.append((color, x, y))
+
+    return moves
+```
+
+### 특징 추출
+
+각 국면에서 48개의 특징 평면을 추출합니다([입력 특징 설계](../input-features) 참조):
+
+```python
+def extract_features(board, history, current_player):
+    """48개 특징 평면 추출"""
+    features = np.zeros((48, 19, 19))
+
+    # 돌 위치
+    features[0] = (board == 1)  # 흑돌
+    features[1] = (board == 2)  # 백돌
+    features[2] = (board == 0)  # 빈칸
+
+    # 기록
+    for i, hist in enumerate(history[:8]):
+        features[3+i] = (hist == 1)
+        features[11+i] = (hist == 2)
+
+    # 활로 수, 단수, 축 등...
+    # (상세 구현 생략)
+
+    return features
+```
+
+### 데이터 증강
+
+바둑판에는 **8중 대칭성**(4개 회전 × 2개 반전)이 있습니다. 각 원본 샘플은 8개가 될 수 있습니다:
+
+```
+원본:     90° 회전:   180° 회전:  270° 회전:
+┌───┐    ┌───┐      ┌───┐      ┌───┐
+│ ● │    │   │      │   │      │   │
+│   │ → │   │  →   │   │  →   │   │
+│   │    │ ● │      │ ● │      │ ● │
+└───┘    └───┘      └───┘      └───┘
+
+각각 수평 반전하여 8개의 동등한 훈련 샘플 획득
+```
+
+이것은 유효 훈련 데이터를 8배 증가시키고, 동시에 모델이 학습한 패턴이 특정 방향에 의존하지 않도록 합니다.
+
+```python
+def augment(state, action):
+    """8중 대칭성 증강"""
+    augmented = []
+
+    for rotation in [0, 1, 2, 3]:  # 0, 90, 180, 270도
+        rotated_state = np.rot90(state, rotation, axes=(1, 2))
+        rotated_action = rotate_action(action, rotation)
+        augmented.append((rotated_state, rotated_action))
+
+        # 수평 반전
+        flipped_state = np.flip(rotated_state, axis=2)
+        flipped_action = flip_action(rotated_action)
+        augmented.append((flipped_state, flipped_action))
+
+    return augmented
+```
+
+---
+
+## 손실 함수
+
+### 교차 엔트로피 손실
+
+지도 학습은 **교차 엔트로피 손실(Cross-Entropy Loss)**을 사용하여 Policy Network를 훈련합니다:
+
+```
+L(θ) = -Σ log p_θ(a | s)
+```
+
+여기서:
+- `s`: 바둑판 상태
+- `a`: 인간이 실제로 둔 위치(레이블)
+- `p_θ(a | s)`: 모델이 해당 위치를 예측하는 확률
+
+### 직관적 이해
+
+교차 엔트로피 손실은 '모델 예측과 레이블의 차이'를 측정합니다:
+
+| 시나리오 | 모델 예측 | 손실 | 설명 |
+|------|---------|------|------|
+| 완벽한 예측 | a의 확률 = 1.0 | 0 | 최고 |
+| 확신 있고 정확 | a의 확률 = 0.9 | 0.1 | 매우 좋음 |
+| 불확실하지만 정확 | a의 확률 = 0.5 | 0.7 | 괜찮음 |
+| 잘못된 예측 | a의 확률 = 0.1 | 2.3 | 매우 나쁨 |
+| 완전히 잘못됨 | a의 확률 = 0.01 | 4.6 | 최악 |
+
+손실 함수는 모델이 정확한 위치의 확률을 높이도록 합니다.
+
+### MSE와의 비교
+
+왜 평균 제곱 오차(MSE)를 사용하지 않는가?
+
+```python
+# MSE:
+loss_mse = (prediction - target)^2
+
+# Cross-Entropy:
+loss_ce = -log(prediction[target])
+```
+
+| 특성 | MSE | Cross-Entropy |
+|------|-----|---------------|
+| 목표 유형 | 회귀(연속 값) | 분류(확률 분포) |
+| 기울기 행동 | 오차가 클수록 기울기 큼 | 확신 있는 오류에 더 큰 기울기 |
+| 적합한 시나리오 | Value Network | Policy Network |
+
+Policy Network는 361개 클래스의 확률 분포를 출력하므로, 교차 엔트로피가 자연스러운 선택입니다.
+
+---
+
+## 훈련 과정
+
+### 하드웨어 구성
+
+DeepMind는 많은 계산 자원을 사용했습니다:
+
+| 자원 | 수량 |
+|------|------|
+| GPU | 50개 |
+| 훈련 시간 | 약 3주 |
+| 배치 크기 | 16 |
+| 총 훈련 스텝 | ~340M |
+
+### 옵티마이저
+
+**확률적 경사 하강법(SGD) + 모멘텀** 사용:
+
+```python
+optimizer = torch.optim.SGD(
+    model.parameters(),
+    lr=0.003,         # 초기 학습률
+    momentum=0.9,     # 모멘텀 계수
+    weight_decay=1e-4 # L2 정규화
+)
+```
+
+#### 왜 Adam 대신 SGD를 사용하는가?
+
+2016년에 SGD + momentum은 여전히 이미지 작업의 주류 선택이었습니다. 실제로, 이후 연구(KataGo 포함)에서 Adam류 옵티마이저가 더 나을 수 있음을 발견했습니다.
+
+### 학습률 스케줄
+
+학습률은 훈련 과정에서 점차 감소합니다:
+
+```python
+scheduler = torch.optim.lr_scheduler.StepLR(
+    optimizer,
+    step_size=80_000_000,  # 80M 스텝마다
+    gamma=0.1              # 학습률에 0.1 곱함
+)
+```
+
+```
+학습률:
+0.003  ────────┐
+              └─────── 0.0003 ────────┐
+                                      └─────── 0.00003
+         80M 스텝        160M 스텝        240M 스텝
+```
+
+### 훈련 루프
+
+```python
+def train_epoch(model, dataloader, optimizer):
+    model.train()
+    total_loss = 0
+    correct = 0
+    total = 0
+
+    for batch in dataloader:
+        states, actions = batch
+
+        # 순전파
+        policy = model(states)  # (batch, 361)
+
+        # 손실 계산
+        loss = F.cross_entropy(policy, actions)
+
+        # 역전파
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        # 통계
+        total_loss += loss.item()
+        predictions = policy.argmax(dim=1)
+        correct += (predictions == actions).sum().item()
+        total += actions.size(0)
+
+    accuracy = correct / total
+    avg_loss = total_loss / len(dataloader)
+
+    return avg_loss, accuracy
+```
+
+### 훈련 곡선
+
+전형적인 훈련 과정:
+
+```
+정확도
+60% |                    ......**********
+    |              ......*
+50% |        ......*
+    |    ....*
+40% |  ..*
+    |..*
+30% |*
+    +───────────────────────────────────── 훈련 스텝
+    0       100M     200M     300M     340M
+```
+
+손실과 정확도는 빠르게 향상된 후 안정됩니다.
+
+---
+
+## 결과 분석
+
+### 57% 정확도
+
+완전한 훈련 후, Policy Network는 **57.0%의 top-1 정확도**를 달성했습니다.
+
+#### top-1 정확도란?
+
+```
+예측: 모델이 361개의 확률 출력
+Top-1: 확률이 가장 높은 위치
+정확도: 이 위치가 인간이 실제로 둔 위치와 같은 비율
+```
+
+57%는 다음을 의미합니다: 모델이 절반 이상의 확률로 인간 전문가의 다음 수를 맞출 수 있습니다.
+
+### 다른 프로그램과의 비교
+
+| 프로그램 | Top-1 정확도 | 설명 |
+|------|-------------|------|
+| 무작위 선택 | 0.4% | 기준선 |
+| 전통적 특징 + 선형 모델 | ~24% | 2008년 수준 |
+| 얕은 CNN | ~44% | 2014년 수준 |
+| **AlphaGo Policy Network** | **57%** | 2016년 돌파 |
+| AlphaGo Zero | ~60% | 2017년 |
+
+DeepMind의 깊은 CNN은 이전 최고 방법보다 13 퍼센트 포인트 향상되었습니다.
+
+### 기력 평가
+
+Policy Network만 사용(검색 없이)하여 바둑을 둘 때의 기력:
+
+<EloChart mode="training" width={600} height={350} />
+
+| 구성 | Elo 평점 | 대략적 등급 |
+|------|---------|---------|
+| 전통 최강(Pachi) | ~2500 | 아마 4-5단 |
+| SL Policy Network | ~2800 | 아마 6-7단 |
+
+순수 지도 학습만으로 이미 아마추어 고단 수준에 도달했으며, 이것은 2016년의 주요 돌파구였습니다.
+
+### 정확도 vs 기력
+
+흥미롭게도, 정확도와 기력은 선형 관계가 아닙니다:
+
+```
+정확도:  44% → 57%(13% 향상)
+Elo:    ~2500 → ~2800(~300 향상)
+
+정확도 향상 비율: 13% / 44% ≈ 30%
+Elo 향상 비율: 300 / 2500 ≈ 12%
+```
+
+정확도의 작은 향상이 상당한 기력 향상을 가져올 수 있습니다. 왜냐하면:
+- 중요한 국면에서의 정확한 선택이 더 중요함
+- 명백한 실수를 피하는 것이 좋은 수를 많이 두는 것보다 중요함
+
+---
+
+## 지도 학습의 한계
+
+### 문제 1: 천장 효과
+
+지도 학습은 '인간 수준'에만 도달할 수 있고, 그 이상을 넘을 수 없습니다:
+
+```
+SL Policy의 목표: 인간 모방
+          ↓
+인간에게 잘못된 습관이 있다면
+          ↓
+SL Policy도 이러한 실수를 배움
+```
+
+예를 들어, 훈련 데이터의 기사들이 '37번째 수'와 같은 비전통적인 수를 자주 두지 않으면, SL Policy도 배우지 못합니다.
+
+### 문제 2: 좋은 수와 나쁜 수를 구분할 수 없음
+
+지도 학습은 '인간이 무엇을 뒀는지'만 보고, 그 수가 좋은지 나쁜지는 고려하지 않습니다:
+
+```
+국면 A: 인간이 K10을 둠(실제로는 나쁜 수)
+국면 B: 인간이 Q4를 둠(좋은 수)
+
+SL Policy는 똑같이 학습함
+```
+
+훈련 데이터에는 아마추어 기사들의 대국이 포함되어 있으며, 그 중에는 많은 실수가 있습니다. SL Policy는 이러한 실수를 배웁니다.
+
+### 문제 3: 탐색 부족
+
+SL Policy는 인간이 이미 알고 있는 수만 학습합니다:
+
+```
+인간 수법 집합: {A, B, C, D, E}
+           ↓
+SL Policy는 이러한 수법 중에서만 선택
+           ↓
+더 좋은 수법 F가 존재할 수 있지만, 발견되지 않음
+```
+
+이것은 지도 학습의 근본적 한계입니다: 훈련 데이터에 있는 것만 학습할 수 있습니다.
+
+### 해결책: 강화 학습
+
+인간을 초월하기 위해, AlphaGo는 지도 학습 후 **강화 학습**을 진행합니다:
+
+```
+SL Policy (인간 수준)
+      ↓ 자기 대국
+RL Policy (인간 초월)
+```
+
+자세한 내용은 [강화 학습 입문](../reinforcement-intro)과 [자기 대국](../self-play)을 참조하세요.
+
+---
+
+## 구현 요점
+
+### 완전한 훈련 코드
+
+```python
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader, Dataset
+
+class GoDataset(Dataset):
+    def __init__(self, data_path):
+        # 전처리된 데이터 로드
+        self.states = np.load(f"{data_path}/states.npy")
+        self.actions = np.load(f"{data_path}/actions.npy")
+
+    def __len__(self):
+        return len(self.states)
+
+    def __getitem__(self, idx):
+        state = torch.FloatTensor(self.states[idx])
+        action = torch.LongTensor([self.actions[idx]])[0]
+        return state, action
+
+def train_policy_network():
+    # 모델
+    model = PolicyNetwork(input_channels=48, num_filters=192, num_layers=12)
+    model = model.cuda()
+
+    # 데이터
+    dataset = GoDataset("data/kgs")
+    dataloader = DataLoader(
+        dataset, batch_size=16, shuffle=True, num_workers=4
+    )
+
+    # 옵티마이저
+    optimizer = optim.SGD(
+        model.parameters(),
+        lr=0.003,
+        momentum=0.9,
+        weight_decay=1e-4
+    )
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=80_000_000, gamma=0.1)
+
+    # 훈련 루프
+    best_accuracy = 0
+
+    for epoch in range(100):
+        model.train()
+        total_loss = 0
+        correct = 0
+        total = 0
+
+        for states, actions in dataloader:
+            states = states.cuda()
+            actions = actions.cuda()
+
+            # 순전파
+            policy = model(states)
+            loss = nn.functional.cross_entropy(policy, actions)
+
+            # 역전파
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            scheduler.step()
+
+            # 통계
+            total_loss += loss.item()
+            predictions = policy.argmax(dim=1)
+            correct += (predictions == actions).sum().item()
+            total += actions.size(0)
+
+        accuracy = correct / total
+        print(f"Epoch {epoch}: Loss={total_loss/len(dataloader):.4f}, Acc={accuracy:.4f}")
+
+        # 최고 모델 저장
+        if accuracy > best_accuracy:
+            best_accuracy = accuracy
+            torch.save(model.state_dict(), "best_policy.pth")
+
+    print(f"Best accuracy: {best_accuracy:.4f}")
+```
+
+### 평가 코드
+
+```python
+def evaluate_policy(model, test_dataloader):
+    model.eval()
+
+    correct_top1 = 0
+    correct_top5 = 0
+    total = 0
+
+    with torch.no_grad():
+        for states, actions in test_dataloader:
+            states = states.cuda()
+            actions = actions.cuda()
+
+            policy = model(states)
+
+            # Top-1 정확도
+            top1_pred = policy.argmax(dim=1)
+            correct_top1 += (top1_pred == actions).sum().item()
+
+            # Top-5 정확도
+            top5_pred = policy.topk(5, dim=1)[1]
+            for i, action in enumerate(actions):
+                if action in top5_pred[i]:
+                    correct_top5 += 1
+
+            total += actions.size(0)
+
+    print(f"Top-1 Accuracy: {correct_top1/total:.4f}")
+    print(f"Top-5 Accuracy: {correct_top5/total:.4f}")
+```
+
+### 일반적인 문제와 해결책
+
+| 문제 | 증상 | 해결책 |
+|------|------|---------|
+| 과적합 | 훈련 정확도 높음, 테스트 정확도 낮음 | 데이터 증강 추가, Dropout |
+| 훈련 불안정 | 손실이 급격히 변동 | 학습률 낮추기, 배치 크기 늘리기 |
+| 수렴 느림 | 정확도가 정체됨 | 학습률 조정, 데이터 확인 |
+| 메모리 부족 | OOM 오류 | 배치 크기 줄이기, 혼합 정밀도 사용 |
+
+---
+
+## 애니메이션 대응
+
+이 글에서 다루는 핵심 개념과 애니메이션 번호:
+
+| 번호 | 개념 | 물리/수학 대응 |
+|------|------|--------------|
+| D3 | 지도 학습 | 최대 우도 추정 |
+| D5 | 교차 엔트로피 손실 | KL 발산 |
+| D6 | 경사 하강 | 최적화 |
+| A6 | 데이터 전처리 | 표준화 |
+
+---
+
+## 추가 자료
+
+- **이전 글**: [CNN과 바둑의 결합](../cnn-and-go) — 합성곱 신경망이 바둑판을 처리하는 방법
+- **다음 글**: [강화 학습 입문](../reinforcement-intro) — 인간을 초월하는 핵심
+- **관련 주제**: [Policy Network 상세 설명](../policy-network) — 네트워크 아키텍처의 세부 사항
+
+---
+
+## 핵심 요점
+
+1. **KGS 기보가 훈련 데이터 출처**: 약 3천만 개의 고품질 국면
+2. **교차 엔트로피 손실이 학습 주도**: 모델이 정확한 위치의 확률을 높이도록 함
+3. **57% 정확도는 주요 돌파구**: 이전 최고 방법보다 13 퍼센트 포인트 향상
+4. **8중 대칭성 증강**: 효과적으로 훈련 데이터 증가
+5. **지도 학습에는 천장이 있음**: 훈련 데이터의 수준을 초과할 수 없음
+
+지도 학습은 AlphaGo의 '출발점'입니다—인류 수천 년의 바둑 지혜를 계승하여, 후속 강화 학습의 기반을 마련했습니다.
+
+---
+
+## 참고 자료
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. Maddison, C. J., et al. (2014). "Move Evaluation in Go Using Deep Convolutional Neural Networks." *arXiv:1412.6564*.
+3. Clark, C., & Storkey, A. (2015). "Training Deep Convolutional Neural Networks to Play Go." *ICML*.
+4. KGS Game Archives: [https://www.gokgs.com/archives.jsp](https://www.gokgs.com/archives.jsp)

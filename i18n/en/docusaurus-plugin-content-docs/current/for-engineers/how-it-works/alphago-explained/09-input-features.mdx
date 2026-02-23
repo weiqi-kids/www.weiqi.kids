@@ -1,0 +1,546 @@
+---
+sidebar_position: 10
+title: Input Feature Design
+description: From AlphaGo's 48 planes to AlphaGo Zero's 17 planes, exploring the evolution of Go AI feature engineering
+---
+
+# Input Feature Design
+
+Neural networks can only process numbers. To make them understand Go, we need a way to "translate" the board into numbers.
+
+This translation process is **input feature design**.
+
+AlphaGo used 48 feature planes, AlphaGo Zero simplified to 17, and KataGo optimized to 22. This article will explain the considerations behind these design choices in detail.
+
+---
+
+## What are Feature Planes?
+
+### Basic Concept
+
+A **feature plane** is a 19×19 matrix where each element represents a certain property of the corresponding board position.
+
+For example, the "Black stone positions" feature plane:
+
+```
+Board state:                 Feature plane (Black stones):
+  A B C D E                   A B C D E
+1 . . . . .                1  0 0 0 0 0
+2 . ● . . .                2  0 1 0 0 0
+3 . . ○ . .    →           3  0 0 0 0 0
+4 . . . ● .                4  0 0 0 1 0
+5 . . . . .                5  0 0 0 0 0
+```
+
+- Position with Black stone = 1
+- Position without Black stone = 0
+
+### Multiple Feature Planes
+
+Neural networks need various information, so we stack multiple feature planes:
+
+```
+Input tensor: 19 × 19 × N
+
+    N planes
+    ↓
+┌───────────┐
+│ Plane 1   │ ← Black stone positions
+├───────────┤
+│ Plane 2   │ ← White stone positions
+├───────────┤
+│ Plane 3   │ ← Empty positions
+├───────────┤
+│ ...       │
+├───────────┤
+│ Plane N   │ ← Other features
+└───────────┘
+    19×19
+```
+
+This is similar to how color images have R, G, B channels. Go "images" have N channels.
+
+---
+
+## AlphaGo's 48 Feature Planes
+
+### Complete List
+
+AlphaGo uses 48 feature planes, divided into several categories:
+
+#### 1. Stone Positions (3 planes)
+
+| Plane | Name | Description |
+|-------|------|-------------|
+| 1 | Black | Black stone = 1, otherwise = 0 |
+| 2 | White | White stone = 1, otherwise = 0 |
+| 3 | Empty | Empty point = 1, otherwise = 0 |
+
+#### 2. History (16 planes)
+
+| Plane | Name | Description |
+|-------|------|-------------|
+| 4-11 | Black history | Black positions 1-8 moves ago |
+| 12-19 | White history | White positions 1-8 moves ago |
+
+Why is history needed?
+- **Ko detection**: Need to know if immediate recapture is allowed
+- **Playing intention**: Recent moves reveal both sides' plans
+- **Temporal information**: CNN itself doesn't handle time, history planes fill this gap
+
+#### 3. Liberty Features (8 planes)
+
+| Plane | Name | Description |
+|-------|------|-------------|
+| 20-23 | 1-4 liberties (own) | Own string has 1/2/3/4 liberties = 1 |
+| 24-27 | 1-4 liberties (opponent) | Opponent string has 1/2/3/4 liberties = 1 |
+
+Liberty count is the most important tactical concept in Go:
+- **1 liberty**: In atari, about to be captured
+- **2 liberties**: Dangerous state
+- **3 liberties**: Needs attention
+- **4+ liberties**: Temporarily safe
+
+#### 4. Capture Features (8 planes)
+
+| Plane | Name | Description |
+|-------|------|-------------|
+| 28-31 | Capture positions (own) | Playing here can capture opponent's 1/2/3/4 stones |
+| 32-35 | Capture positions (opponent) | Playing here can capture own 1/2/3/4 stones |
+
+Atari is the most common tactic in Go:
+- Capturing more stones = bigger threat
+- Different capture sizes require different responses
+
+#### 5. Ladder Features (8 planes)
+
+| Plane | Name | Description |
+|-------|------|-------------|
+| 36-39 | Ladder-related (own) | Positions related to own ladders |
+| 40-43 | Ladder-related (opponent) | Positions related to opponent ladders |
+
+The ladder is a famous Go tactic:
+- Chasing opponent's stones along diagonal
+- Need to determine "ladder works" or "ladder fails"
+- Requires global vision, a challenge for traditional Go programs
+
+#### 6. Legality Feature (1 plane)
+
+| Plane | Name | Description |
+|-------|------|-------------|
+| 44 | Legal positions | Can legally play here = 1 |
+
+This prevents the network from outputting illegal moves:
+- Cannot play where a stone already exists
+- Cannot play at suicide points (self-capture without capturing)
+- Cannot immediately recapture in ko
+
+#### 7. Border Features (4 planes)
+
+| Plane | Name | Description |
+|-------|------|-------------|
+| 45 | Distance to edge 1 | On 1st line = 1 |
+| 46 | Distance to edge 2 | On 2nd line = 1 |
+| 47 | Distance to edge 3 | On 3rd line = 1 |
+| 48 | Distance to edge 4+ | On 4th line or inner = 1 |
+
+Edges and corners have special meaning in Go:
+- **1st line**: Death line, stones easily captured
+- **2nd line**: Survival line, but inefficient
+- **3rd line**: Territory line, solid
+- **4th line**: Influence line, pursuing influence
+
+### Why So Many Features?
+
+DeepMind's design philosophy was to **provide as much information as possible**, letting the network decide what's useful:
+
+```
+Raw board → 48 feature planes → Neural network → Decision
+
+Feature engineer's job: Encode Go knowledge as features
+Neural network's job: Learn to combine these features
+```
+
+This is a strategy of "passing the ball to the neural network" - humans handle feature design, the network handles learning combinations.
+
+---
+
+## AlphaGo Zero's Simplification: 17 Feature Planes
+
+### Revolutionary Change
+
+AlphaGo Zero dramatically simplified input features:
+
+| Version | Feature Planes | Human Knowledge Used |
+|---------|----------------|---------------------|
+| AlphaGo | 48 | Extensive (liberties, ladders, etc.) |
+| AlphaGo Zero | 17 | Almost none |
+
+### 17 Planes Composition
+
+#### 1. Stone Position History (16 planes)
+
+| Plane | Name | Description |
+|-------|------|-------------|
+| 1-8 | Black T-0 to T-7 | Black positions at current and past 7 moves |
+| 9-16 | White T-0 to T-7 | White positions at current and past 7 moves |
+
+#### 2. Color (1 plane)
+
+| Plane | Name | Description |
+|-------|------|-------------|
+| 17 | Whose turn | Black's turn = all 1s, White's turn = all 0s |
+
+### Why Can It Be Simplified?
+
+AlphaGo Zero's core insight:
+
+> **Given enough computation and training time, neural networks can learn these features themselves**
+
+Concepts like "liberties," "atari," "ladders" - humans took thousands of years to develop. But AlphaGo Zero proved that neural networks can learn them in days - and perhaps learn even better representations than humans.
+
+### Performance Comparison
+
+Surprisingly, AlphaGo Zero with fewer features is actually stronger:
+
+| Version | Features | Training Time | Final Strength |
+|---------|----------|---------------|----------------|
+| AlphaGo Master | 48 | Months | ~5185 Elo |
+| AlphaGo Zero | 17 | 40 days | ~5185 Elo |
+| AlphaGo Zero (3 days) | 17 | 3 days | Surpasses humans |
+
+Less human knowledge actually leads to stronger performance.
+
+### Why Is Human Knowledge a Burden?
+
+#### 1. Human Knowledge May Be Wrong
+
+Human-summarized Go principles are empirical and may not be optimal. For example:
+- "Golden corner, silver edge, grass belly" - but in some positions the center is more important
+- "Don't play ladder if it fails" - but sometimes you can deliberately sacrifice
+
+#### 2. Feature Encoding Limits Representation
+
+When we encode "liberty count" as four planes for 1-4 liberties, we implicitly assume "liberty count" is an important classification method. But perhaps there are better classifications, and this encoding prevents the network from discovering them.
+
+#### 3. Representation Bottleneck
+
+48 planes consume more computational resources. If some features are redundant, these resources are wasted.
+
+---
+
+## KataGo's Optimization: 22 Feature Planes
+
+### Pragmatic Balance
+
+KataGo built on AlphaGo Zero's foundation, adding a small amount of carefully selected human knowledge:
+
+| Item | AlphaGo Zero | KataGo |
+|------|--------------|--------|
+| History planes | 16 | 5 |
+| Stone positions | Yes | Yes |
+| Whose turn | Yes | Yes |
+| Ko state | No | Yes |
+| Rule variants | No | Yes (komi, suicide rules, etc.) |
+| **Total** | 17 | 22 |
+
+### KataGo's Feature List
+
+#### Basic Features (5)
+
+| Plane | Name | Description |
+|-------|------|-------------|
+| 1 | Black | Current black stone positions |
+| 2 | White | Current white stone positions |
+| 3 | Empty | Current empty positions |
+| 4 | Whose turn (1) | Constant plane always 1 |
+| 5 | Whose turn (2) | Black's turn = 1, White's turn = 0 |
+
+#### History Features (5)
+
+| Plane | Name | Description |
+|-------|------|-------------|
+| 6 | Last move | Opponent's last move position |
+| 7 | 2nd last move | Own last move position |
+| 8 | 3rd last move | Opponent's 2nd last move |
+| 9 | 4th last move | Own 2nd last move |
+| 10 | 5th last move | Opponent's 3rd last move |
+
+#### Ko Features (3)
+
+| Plane | Name | Description |
+|-------|------|-------------|
+| 11 | Ko forbidden | Current ko forbidden point |
+| 12 | Potential ko (own) | Playing here creates ko |
+| 13 | Potential ko (opponent) | Opponent playing here creates ko |
+
+#### Rule Features (9)
+
+| Plane | Name | Description |
+|-------|------|-------------|
+| 14-22 | Rule encoding | Komi, suicide rules, superko, etc. |
+
+### Why Add These Features?
+
+KataGo's author lightvector explains:
+
+#### 1. Ko Is Too Important
+
+Ko is one of the most complex concepts in Go. Learning ko rules purely from raw board states requires massive samples. Explicitly marking ko forbidden points accelerates learning.
+
+#### 2. Rule Diversity
+
+Go has multiple rule sets:
+- **Komi**: Chinese rules 7.5 points, Japanese rules 6.5 points
+- **Suicide rules**: Some rules allow suicide
+- **Superko**: Different ways to handle long cycles
+
+Explicitly encoding rules in input allows one network to handle all variants.
+
+#### 3. Training Efficiency
+
+Adding a small amount of human knowledge can dramatically accelerate training. KataGo achieved with 50 GPU-days what AlphaGo Zero took 5000+ TPU-days to achieve.
+
+---
+
+## Philosophy of Feature Design
+
+### Three Approaches
+
+| Approach | Representative | Feature Count | Human Knowledge | Compute Required |
+|----------|---------------|---------------|-----------------|------------------|
+| Heavy human knowledge | AlphaGo | 48 | Extensive | Medium |
+| Minimal human knowledge | AlphaGo Zero | 17 | Almost none | Very high |
+| Moderate human knowledge | KataGo | 22 | Small selection | Lower |
+
+### Trade-off Considerations
+
+#### Limited Resources
+
+If computational resources are limited (most researchers' situation), adding some human knowledge is wise:
+- Accelerates training convergence
+- Reduces required training data
+- Avoids reinventing the wheel
+
+#### Pursuing the Limit
+
+If computational resources are abundant, reducing human knowledge may achieve higher strength:
+- Avoids human biases
+- Discovers strategies unknown to humans
+- True "starting from scratch"
+
+### Insights
+
+The AlphaGo series evolution tells us:
+
+1. **Feature engineering still matters** - but the form has changed
+2. **End-to-end learning is the trend** - let networks learn features themselves
+3. **No single correct answer** - depends on resources and goals
+
+---
+
+## Implementation Examples
+
+### Feature Extraction (AlphaGo Style)
+
+```python
+import numpy as np
+
+def extract_features_alphago(board, history, current_player):
+    """
+    Extract AlphaGo-style 48 feature planes
+
+    board: 19×19 board, 0=empty, 1=black, 2=white
+    history: Last 8 moves' history
+    current_player: 1=black, 2=white
+    """
+    features = np.zeros((48, 19, 19))
+
+    # 1-3: Stone positions
+    features[0] = (board == 1)  # Black
+    features[1] = (board == 2)  # White
+    features[2] = (board == 0)  # Empty
+
+    # 4-19: History positions
+    for i, hist_board in enumerate(history[:8]):
+        features[3 + i] = (hist_board == 1)      # Black history
+        features[11 + i] = (hist_board == 2)     # White history
+
+    # 20-27: Liberty features
+    liberties = compute_liberties(board)
+    for i, lib_count in enumerate([1, 2, 3, 4]):
+        my_color = current_player
+        opp_color = 3 - current_player
+        features[19 + i] = (liberties == lib_count) & (board == my_color)
+        features[23 + i] = (liberties == lib_count) & (board == opp_color)
+
+    # 28-35: Capture features
+    capture_counts = compute_captures(board)
+    for i, cap_count in enumerate([1, 2, 3, 4]):
+        features[27 + i] = (capture_counts[current_player] == cap_count)
+        features[31 + i] = (capture_counts[3-current_player] == cap_count)
+
+    # 36-43: Ladder features (simplified)
+    ladder_status = compute_ladder(board)
+    # ... implementation omitted ...
+
+    # 44: Legal positions
+    features[43] = compute_legal_moves(board, current_player)
+
+    # 45-48: Border distance
+    for i in range(19):
+        for j in range(19):
+            dist = min(i, j, 18-i, 18-j)
+            if dist == 0:
+                features[44, i, j] = 1
+            elif dist == 1:
+                features[45, i, j] = 1
+            elif dist == 2:
+                features[46, i, j] = 1
+            else:
+                features[47, i, j] = 1
+
+    return features
+```
+
+### Feature Extraction (AlphaGo Zero Style)
+
+```python
+def extract_features_zero(board_history, current_player):
+    """
+    Extract AlphaGo Zero-style 17 feature planes
+
+    board_history: List of last 8 board states
+    current_player: 1=black, 2=white
+    """
+    features = np.zeros((17, 19, 19))
+
+    # 1-8: Black positions at T-0 to T-7
+    for i, board in enumerate(board_history[:8]):
+        features[i] = (board == 1)
+
+    # 9-16: White positions at T-0 to T-7
+    for i, board in enumerate(board_history[:8]):
+        features[8 + i] = (board == 2)
+
+    # 17: Whose turn
+    if current_player == 1:  # Black
+        features[16] = np.ones((19, 19))
+    else:
+        features[16] = np.zeros((19, 19))
+
+    return features
+```
+
+### Performance Comparison
+
+```python
+import time
+
+# Simulate 1000 feature extractions
+board = np.random.randint(0, 3, (19, 19))
+history = [np.random.randint(0, 3, (19, 19)) for _ in range(8)]
+
+# AlphaGo style (with complex computations)
+start = time.time()
+for _ in range(1000):
+    features = extract_features_alphago(board, history, 1)
+alphago_time = time.time() - start
+
+# AlphaGo Zero style (simple)
+start = time.time()
+for _ in range(1000):
+    features = extract_features_zero(history, 1)
+zero_time = time.time() - start
+
+print(f"AlphaGo style: {alphago_time:.2f}s")
+print(f"AlphaGo Zero style: {zero_time:.2f}s")
+# Typical result: AlphaGo style 5-10x slower
+```
+
+---
+
+## Visualizing Feature Planes
+
+### Real Position Example
+
+```
+Actual board:
+   A B C D E F G H J K L M N O P Q R S T
+19 . . . . . . . . . . . . . . . . . . .
+18 . . . . . . . . . . . . . . . . . . .
+17 . . . ● . . . . . . . . . . . ○ . . .
+16 . . . . . . . . . . . . . . . . . . .
+15 . . . . . . . . . . . . . . . . . . .
+...
+
+Feature plane 1 (Black):
+   A B C D E F G H J K L M N O P Q R S T
+19 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+18 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+17 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+...
+
+Feature plane 2 (White):
+   A B C D E F G H J K L M N O P Q R S T
+19 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+18 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+17 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0
+16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+...
+```
+
+### Insights from Feature Planes
+
+Observing different feature planes helps understand what the model "sees":
+
+| Feature | Intuitive Meaning | What Model Might Learn |
+|---------|-------------------|----------------------|
+| Black/White positions | Who is where | Shapes, connectivity |
+| History | What happened recently | Playing intentions, fighting directions |
+| Liberties | Who is in danger | Attack/defense targets |
+| Captures | Tactical opportunities | Local tactics |
+| Border distance | Position importance | Opening moves, corner joseki |
+
+---
+
+## Animation Reference
+
+Core concepts covered in this article with animation numbers:
+
+| Number | Concept | Physics/Math Correspondence |
+|--------|---------|----------------------------|
+| Animation A8 | Feature encoding | Tensor representation |
+| Animation A10 | Input normalization | Feature engineering |
+| Animation D1 | Convolution input | Multi-channel images |
+| Animation E3 | Zero's simplification | Minimal representation |
+
+---
+
+## Further Reading
+
+- **Previous**: [Value Network Explained](../value-network) - How to evaluate position value
+- **Next**: [CNN and Go](../cnn-and-go) - How CNNs process the board
+- **Related Topic**: [Board State Representation](../board-representation) - Lower-level data structures
+
+---
+
+## Key Takeaways
+
+1. **Feature planes are digital board representations**: Each plane is a 19×19 matrix
+2. **AlphaGo uses 48 planes**: Contains extensive human Go knowledge
+3. **AlphaGo Zero simplifies to 17**: Proves networks can learn features themselves
+4. **KataGo optimizes to 22**: Balances efficiency and performance
+5. **Feature design is a trade-off**: Human knowledge vs. computational resources
+
+Input feature design is the bridge connecting "human-understood Go" with "machine-processable numbers."
+
+---
+
+## References
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 551, 354-359.
+3. Wu, D. (2019). "Accelerating Self-Play Learning in Go." *arXiv:1902.10565*.
+4. KataGo Documentation: [https://github.com/lightvector/KataGo](https://github.com/lightvector/KataGo)

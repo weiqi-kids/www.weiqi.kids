@@ -1,0 +1,547 @@
+---
+sidebar_position: 4
+title: Analisis Mendalam "Langkah Ilahi"
+description: Analisis lengkap langkah ke-37 AlphaGo melawan Lee Sedol di game kedua, dari teori Go, reaksi para ahli hingga perspektif AI
+---
+
+import { PolicyHeatmap } from '@site/src/components/D3Charts';
+
+# Analisis Mendalam "Langkah Ilahi"
+
+Pada tanggal 10 Maret 2016, game kedua antara AlphaGo dan Lee Sedol. Langkah ke-37, AlphaGo menempatkan batu di "shoulder hit" pada garis kelima di sudut kanan atas.
+
+Langkah ini kemudian disebut sebagai "**Langkah Ilahi**" (Divine Move). Langkah ini tidak hanya membuat AlphaGo memenangkan pertandingan, tetapi juga mengubah pemahaman manusia tentang Go.
+
+Artikel ini akan menganalisis langkah ini secara mendalam dari berbagai sudut pandang: latar belakang pertandingan, teori Go tradisional, reaksi para ahli, perspektif AI, dan dampak jangka panjangnya terhadap teori Go.
+
+---
+
+## Tinjauan Situasi Permainan
+
+### Pembukaan Game Kedua
+
+Setelah kalah di game pertama, Lee Sedol melakukan penyesuaian di game kedua. Ia memilih bermain sebagai Putih (bergerak kedua), berharap mengamati kecenderungan pembukaan AlphaGo sebelum menyusun strategi.
+
+Fase pembukaan:
+- **Hitam 1**: Titik bintang sudut kanan atas
+- **Putih 2**: Titik bintang sudut kiri bawah
+- **Hitam 3-Putih 4**: Kedua belah pihak masing-masing menempati satu sudut
+
+Hingga langkah ke-36, situasi berkembang normal. AlphaGo bermain sebagai Hitam, melakukan pertempuran lokal di sudut kanan atas. Putih (Lee Sedol) membangun pengaruh di sisi kanan, sementara Hitam memiliki potensi wilayah di sisi atas.
+
+### Situasi Setelah Langkah ke-36
+
+Mari kita lihat kondisi papan setelah langkah ke-36:
+
+```
+     A B C D E F G H J K L M N O P Q R S T
+ 19  . . . . . . . . . . . . . . . . . . .
+ 18  . . . . . . . . . . . . . . . . . . .
+ 17  . . . ○ . . . . . . . . . . . ● . . .
+ 16  . . . ╋ . . . . . ╋ . . . . . ╋ . . .
+ 15  . . . . . . . . . . . . . . . ● . . .
+ 14  . . . . . . . . . . . . . . ○ . . . .  ← Area pengaruh Putih
+ 13  . . . . . . . . . . . . . . . . . . .
+ 12  . . . . . . . . . . . . . . . . . . .
+ 11  . . . . . . . . . . . . . . . . . . .
+ 10  . . . ╋ . . . . . ╋ . . . . . ╋ . . .
+  9  . . . . . . . . . . . . . . . . . . .
+  8  . . . . . . . . . . . . . . . . . . .
+  7  . . . . . . . . . . . . . . . . . . .
+  6  . . . . . . . . . . . . . . . . . . .
+  5  . . . . . . . . . . . . . . . . . . .
+  4  . . . ╋ . . . . . ╋ . . . . . ╋ . . .
+  3  . . . ○ . . . . . . . . . . . ● . . .
+  2  . . . . . . . . . . . . . . . . . . .
+  1  . . . . . . . . . . . . . . . . . . .
+```
+
+(Diagram ilustrasi yang disederhanakan, situasi sebenarnya lebih kompleks)
+
+Pengamatan penting:
+- Putih memiliki pengaruh luar di sisi kanan
+- Hitam memiliki potensi wilayah di sisi atas
+- Pertempuran di sudut kanan atas telah selesai sementara
+
+Saat itu, giliran Hitam (AlphaGo) untuk bergerak.
+
+---
+
+## Analisis Langkah Tradisional
+
+### Ekspektasi Pemain Profesional
+
+Sebelum langkah ke-37, para pemain profesional di ruang komentar sedang berdiskusi dengan antusias. Mereka umumnya mengharapkan Hitam akan memilih salah satu dari langkah-langkah berikut:
+
+**Opsi A: Approach di Sudut Kanan Bawah**
+
+Ini adalah pilihan paling "normal". Hitam dapat:
+- Merebut titik besar terakhir (sudut kanan bawah)
+- Menjaga keseimbangan situasi
+- Mengikuti nilai tradisional "sudut emas, sisi perak, tengah rumput"
+
+**Opsi B: Mengamankan Wilayah di Sisi Atas**
+
+Hitam juga bisa melakukan extension dua atau tiga titik di sisi atas untuk memperkuat area pengaruhnya. Ini dapat:
+- Mengubah potensi sisi atas menjadi wilayah nyata
+- Membatasi ruang pengembangan Putih
+
+**Opsi C: Splitting Move di Tengah**
+
+Beberapa pemain berpendapat Hitam mungkin akan bermain di tengah untuk membatasi pengaruh luar Putih di sisi kanan. Meskipun ini bukan pilihan paling umum, secara strategis masih masuk akal.
+
+🎬 C3: Penilaian nilai dalam teori Go tradisional
+
+### Pilihan yang Tidak Terduga
+
+Namun, AlphaGo memilih posisi yang hampir tidak terpikirkan oleh siapa pun:
+
+**E5 (Shoulder Hit Garis Kelima)**
+
+Langkah ini jatuh di setengah kanan papan, dekat tengah, merupakan "shoulder hit" terhadap pengaruh luar Putih di sisi kanan.
+
+---
+
+## Langkah ke-37: Shoulder Hit Garis Kelima
+
+### Di Mana Langkah Ini?
+
+```
+     A B C D E F G H J K L M N O P Q R S T
+ 19  . . . . . . . . . . . . . . . . . . .
+ 18  . . . . . . . . . . . . . . . . . . .
+ 17  . . . ○ . . . . . . . . . . . ● . . .
+ 16  . . . ╋ . . . . . ╋ . . . . . ╋ . . .
+ 15  . . . . . . . . . ★ . . . . . ● . . .  ← Langkah ke-37 (★)
+ 14  . . . . . . . . . . . . . . ○ . . . .
+ 13  . . . . . . . . . . . . . . . . . . .
+ 12  . . . . . . . . . . . . . . . . . . .
+```
+
+Langkah ke-37 ditempatkan di posisi **K15** (atau disebut J5, tergantung sistem koordinat).
+
+### Apa Itu "Shoulder Hit"?
+
+"Shoulder hit" adalah sebuah tesuji dalam Go, mengacu pada langkah yang mendekati batu lawan secara diagonal. Karakteristiknya:
+
+- **Tidak bersentuhan langsung**: Menjaga jarak satu langkah dari batu lawan
+- **Merusak struktur**: Mengacaukan perkembangan yang diharapkan lawan
+- **Sulit direspons**: Apapun respons lawan, akan ada konsekuensinya
+
+Secara tradisional, shoulder hit biasanya dimainkan di garis ketiga atau keempat. **Shoulder hit garis kelima** sangat jarang, karena:
+
+1. **Posisi terlalu tinggi**: Garis kelima dekat dengan tengah, secara tradisional dianggap kurang efisien
+2. **Mudah diserang**: Batu yang terisolasi mudah menjadi target serangan lawan
+3. **Nilai tidak jelas**: Tidak seperti sudut atau sisi yang memiliki nilai wilayah yang jelas
+
+🎬 C5: Karakteristik geometris shoulder hit
+
+---
+
+## Reaksi Langsung Para Ahli
+
+### Kejutan di Ruang Komentar
+
+Saat langkah ke-37 dimainkan, ruang komentar hening sejenak.
+
+**Komentator Korea (Kim Seong-ryong 9-dan)**:
+
+> "Ini... apa ini? Langkah ini di garis kelima? Saya tidak mengerti. Ini pasti kesalahan, kan?"
+
+**Komentator Tiongkok (Gu Li 9-dan)**:
+
+> "Saya tidak mengerti langkah ini. Kalau murid saya bermain seperti ini, saya akan memarahinya habis-habisan."
+
+**Komentator Amerika (Michael Redmond 9-dan)**:
+
+> "Very unusual move. I don't think any human would play this."
+>
+> (Langkah yang sangat tidak biasa. Saya tidak berpikir ada manusia yang akan bermain seperti ini.)
+
+### Komentar Real-time Pemain Profesional
+
+Di berbagai platform streaming, pemain profesional ramai berkomentar:
+
+**Ke Jie** (saat itu peringkat satu dunia):
+
+> "Saya tidak bisa memahami maksud langkah ini. Jika AlphaGo menang, saya akan mempelajarinya dengan serius."
+
+**Park Junghwan** (pemain top Korea):
+
+> "Langkah ini terlalu aneh. Apakah ada masalah dengan programnya?"
+
+**Mi Yuting** (juara dunia Tiongkok):
+
+> "Shoulder hit garis kelima? Tidak pernah melihat cara bermain seperti ini."
+
+🎬 C7: Kesenjangan antara intuisi ahli dan evaluasi AI
+
+### "Probabilitas Satu dari Sepuluh Ribu"
+
+Setelah pertandingan, tim DeepMind mengungkapkan data yang mengejutkan:
+
+> "Berdasarkan analisis kami, jika seorang pemain profesional menghadapi situasi yang sama, probabilitas memilih posisi langkah ke-37 adalah sekitar **satu dari sepuluh ribu**."
+
+Dengan kata lain, dalam sistem pengetahuan Go manusia, langkah ini hampir merupakan opsi yang "tidak ada".
+
+---
+
+## Interpretasi dari Perspektif AI
+
+### Distribusi Probabilitas Policy Network
+
+Mari kita lihat bagaimana Policy Network AlphaGo mengevaluasi situasi ini:
+
+<PolicyHeatmap initialPosition="move37" size={450} showTopN={5} />
+
+Gambar di atas menunjukkan evaluasi probabilitas AlphaGo untuk setiap posisi langkah.
+
+Pengamatan penting:
+- **Posisi langkah ke-37**: Probabilitas sekitar 8%, bukan yang tertinggi
+- **Pilihan tradisional** (seperti sudut kanan bawah): Probabilitas sekitar 12%
+- **Posisi kandidat lainnya**: Tersebar di berbagai area
+
+Menariknya, langkah ke-37 **bukan pilihan dengan probabilitas tertinggi** dalam evaluasi Policy Network. Lalu mengapa AlphaGo memilihnya?
+
+🎬 C9: Distribusi output Policy Network
+
+### Evaluasi Mendalam MCTS
+
+Jawabannya ada pada **Monte Carlo Tree Search (MCTS)**.
+
+Policy Network hanya memberikan "intuisi", keputusan sebenarnya datang dari simulasi mendalam MCTS. AlphaGo mensimulasikan ribuan kemungkinan masa depan sebelum membuat keputusan.
+
+Untuk langkah ke-37, proses evaluasi MCTS adalah sebagai berikut:
+
+```
+Posisi K15 (Langkah ke-37):
+├── Simulasi 1: Hitam menang (+0.3)
+├── Simulasi 2: Hitam menang (+0.5)
+├── Simulasi 3: Hitam menang (+0.2)
+├── ...
+└── Tingkat kemenangan rata-rata: 58%
+
+Posisi R3 (approach sudut kanan bawah):
+├── Simulasi 1: Hitam menang (+0.1)
+├── Simulasi 2: Putih menang (-0.2)
+├── Simulasi 3: Hitam menang (+0.2)
+├── ...
+└── Tingkat kemenangan rata-rata: 52%
+```
+
+Meskipun "probabilitas intuisi" sudut kanan bawah lebih tinggi, setelah simulasi mendalam, **tingkat kemenangan yang diharapkan** langkah ke-37 lebih tinggi.
+
+🎬 C11: Bagaimana MCTS mengoreksi penilaian Policy Network
+
+### Evaluasi Global Value Network
+
+Value Network mengevaluasi nilai langkah ke-37 dari perspektif global:
+
+**Tingkat kemenangan sebelum langkah ke-37**: Sekitar 52% (Hitam sedikit unggul)
+
+**Tingkat kemenangan setelah langkah ke-37**: Sekitar 58% (Hitam unggul jelas)
+
+Ini berarti langkah ke-37 meningkatkan tingkat kemenangan yang diharapkan AlphaGo sebesar **6 poin persentase**.
+
+Peningkatan ini cukup signifikan dalam Go. Biasanya, satu langkah bagus bisa membawa peningkatan tingkat kemenangan 2-3% sudah sangat baik.
+
+🎬 C13: Evaluasi inkremental Value Network
+
+---
+
+## Analisis Teori Go: Mengapa Shoulder Hit Garis Kelima?
+
+### Dari Perspektif Lokal
+
+Secara permukaan, langkah ke-37 tampak sangat tidak efisien:
+
+- **Posisi terlalu tinggi**: Garis kelima lebih dekat ke tengah daripada garis keempat atau ketiga
+- **Tidak ada wilayah**: Tidak seperti sudut atau sisi yang bisa langsung mengamankan wilayah
+- **Mudah diserang**: Batu terisolasi bisa diserang oleh Putih
+
+Tetapi jika kita menganalisis dengan cermat, langkah ini memiliki beberapa keuntungan halus:
+
+1. **Merusak pengaruh luar Putih**: Putih awalnya berencana berkembang di sisi kanan, langkah ke-37 mengacaukan rencana ini
+2. **Membangun pengaruh sendiri**: Meskipun tidak mengamankan wilayah, langkah ini membangun kehadiran di tengah
+3. **Menambah kompleksitas**: Menciptakan situasi kompleks, menguntungkan pihak dengan kemampuan kalkulasi lebih kuat
+
+### Dari Perspektif Global
+
+Nilai sebenarnya dari langkah ini perlu dipahami dari perspektif global:
+
+**Keseimbangan antara Ketebalan dan Wilayah**
+
+Teori Go tradisional menyatakan "sudut emas, sisi perak, tengah rumput" — sudut paling berharga, tengah paling tidak berharga. Tetapi langkah ke-37 menantang konsep ini.
+
+Evaluasi AlphaGo menunjukkan: dalam situasi spesifik ini, **pengaruh di tengah lebih berharga daripada wilayah di sudut/sisi**.
+
+Ini karena:
+- Hitam sudah memiliki fondasi wilayah yang cukup
+- Pengaruh luar Putih di sisi kanan akan sangat kuat jika dibiarkan berkembang
+- Membatasi Putih lebih penting daripada mengembangkan diri sendiri
+
+🎬 C15: Perhitungan fungsi nilai global
+
+**Nilai "Sente"**
+
+Langkah ke-37 juga memiliki keuntungan yang diremehkan: mempertahankan "sente" (inisiatif).
+
+Dalam Go, "sente" berarti memegang kendali. Setelah langkah ke-37 dimainkan, Putih harus merespons, membiarkan Hitam terus mengarahkan jalannya permainan.
+
+Jika Hitam memilih approach "normal" di sudut kanan bawah, kedua pihak mungkin akan bertukar joseki di sudut, lalu situasi menjadi seimbang. Tetapi langkah ke-37 memecah keseimbangan ini, membuat situasi penuh ketidakpastian — dan inilah yang menjadi keahlian AlphaGo.
+
+### Dilema Respons Lee Sedol
+
+Setelah langkah ke-37, Lee Sedol berpikir sangat lama. Dilema yang ia hadapi:
+
+**Jika merespons langsung (misalnya jump atau extension)**:
+- Sama dengan mengakui nilai langkah ke-37
+- Membiarkan Hitam mencapai tujuan merusak pengaruh luar Putih
+
+**Jika mengabaikan**:
+- Hitam mungkin akan terus mengembangkan tengah
+- Pengaruh luar Putih di sisi kanan sulit menjadi wilayah
+
+Pada akhirnya, Lee Sedol memilih untuk merespons. Tetapi apapun pilihannya, langkah ke-37 sudah mencapai tujuannya.
+
+🎬 C17: Pilihan paksa dalam teori permainan
+
+---
+
+## Perkembangan Selanjutnya: Dari Langkah ke-37 ke Kemenangan
+
+### Evolusi Pertengahan Permainan
+
+Setelah langkah ke-37, pertandingan memasuki pertempuran pertengahan permainan yang kompleks.
+
+**Perkembangan kunci**:
+
+- **Langkah 40-50**: Kedua pihak bertempur sengit di sisi kanan
+- **Langkah 50-70**: AlphaGo memanfaatkan pengaruh yang dibangun langkah ke-37 untuk mendapatkan keunggulan di tengah
+- **Langkah 70-100**: Hitam secara bertahap mengubah keunggulan menjadi wilayah
+
+Sekitar langkah ke-100, keunggulan AlphaGo sudah cukup jelas. Meskipun Lee Sedol berusaha keras melawan balik, ia tidak bisa membalikkan situasi.
+
+### Hasil Akhir
+
+**AlphaGo menang dengan menyerah**
+
+Kemenangan game ini, langkah ke-37 memainkan peran penting. Analisis pasca-pertandingan menunjukkan, tanpa langkah ke-37, situasi akan lebih ketat, dan Putih bahkan mungkin mendapatkan keunggulan.
+
+🎬 C19: Bagaimana satu langkah mengubah arah seluruh permainan
+
+---
+
+## Dampak terhadap Teori Go
+
+### Kelahiran Joseki Baru
+
+Langkah ke-37 memicu pemikiran ulang komunitas Go tentang tesuji "shoulder hit".
+
+**Pandangan tradisional**:
+- Shoulder hit harus dimainkan di garis ketiga atau keempat
+- Shoulder hit garis kelima terlalu tidak efisien
+- Batu terisolasi mudah diserang
+
+**Setelah AlphaGo**:
+- Shoulder hit garis kelima adalah pilihan terbaik dalam situasi tertentu
+- "Tinggi-rendah" posisi tidak sepenting "efek"
+- Perlu mengevaluasi nilai setiap langkah dari perspektif global
+
+### Pembelajaran Pemain Manusia
+
+Setelah langkah ke-37, banyak pemain profesional mulai mencoba langkah serupa:
+
+**Ke Jie** menggunakan shoulder hit garis kelima di beberapa game tahun 2017 dan berhasil:
+
+> "AlphaGo mengajarkan saya bahwa banyak langkah yang kita anggap 'buruk' sebenarnya hanya karena kita tidak memahaminya."
+
+**Park Junghwan** juga mengadopsi cara berpikir ini dalam permainannya sendiri:
+
+> "Yang penting bukan mengingat posisi spesifik langkah ke-37, tetapi belajar melihat papan dengan mata baru."
+
+🎬 C21: Bagaimana AI memperluas batas kognisi manusia
+
+### Pelajaran untuk Pelatihan AI Go
+
+Langkah ke-37 juga memiliki dampak mendalam pada penelitian AI Go:
+
+**Refleksi terhadap Policy Network**:
+
+Mengapa Policy Network memberikan probabilitas rendah pada langkah ke-37? Karena ia belajar dari catatan permainan manusia, dan manusia hampir tidak pernah bermain seperti ini.
+
+Ini menunjukkan: **pembelajaran terawasi saja (belajar dari manusia) tidak cukup**. AI perlu eksplorasi mandiri untuk menemukan langkah bagus yang tidak diketahui manusia.
+
+Ini juga salah satu alasan mengapa **AlphaGo Zero** kemudian menggunakan pelatihan murni self-play.
+
+**Konfirmasi terhadap MCTS**:
+
+Langkah ke-37 membuktikan nilai pencarian mendalam MCTS. Bahkan jika intuisi (Policy Network) tidak menyukai suatu langkah, analisis mendalam bisa menemukan nilai potensialnya.
+
+Wawasan ini kemudian diterapkan di banyak bidang lain.
+
+---
+
+## Detail Teknis: Mereproduksi Proses Keputusan Langkah ke-37
+
+### Fitur Input Policy Network
+
+Setelah langkah ke-36, input Policy Network meliputi:
+
+| Feature Plane | Deskripsi |
+|----------|------|
+| 1-8 | Posisi batu hitam (8 langkah terakhir) |
+| 9-16 | Posisi batu putih (8 langkah terakhir) |
+| 17 | Giliran siapa saat ini |
+| 18-48 | Fitur lainnya (jumlah kebebasan, atari, dll.) |
+
+Total **48 feature plane 19x19**, membentuk tensor input.
+
+🎬 C23: Pentingnya feature engineering dalam AI Go
+
+### Output Policy Network
+
+Policy Network menghasilkan distribusi probabilitas **19x19 = 361** dimensi.
+
+Untuk situasi langkah ke-37:
+
+```python
+# 5 posisi kandidat teratas (ilustrasi disederhanakan)
+{
+    "R3": 0.12,   # approach sudut kanan bawah
+    "Q17": 0.10,  # sudut kanan atas
+    "C10": 0.09,  # titik besar sisi kiri
+    "K15": 0.08,  # posisi langkah ke-37
+    "D16": 0.07,  # sudut kiri atas
+    # ... 356 posisi lainnya
+}
+```
+
+### Proses Eksplorasi MCTS
+
+AlphaGo menggunakan formula PUCT untuk menyeimbangkan eksplorasi dan eksploitasi:
+
+```
+U(s,a) = Q(s,a) + c_puct × P(s,a) × sqrt(sum_b N(s,b)) / (1 + N(s,a))
+```
+
+Di mana:
+- `Q(s,a)`: Nilai rata-rata posisi a
+- `P(s,a)`: Probabilitas dari Policy Network
+- `N(s,a)`: Jumlah kali posisi itu dieksplorasi
+- `c_puct`: Konstanta eksplorasi
+
+Untuk langkah ke-37, meskipun probabilitas awal P rendah, setelah banyak simulasi, nilai Q terus meningkat, akhirnya melebihi posisi kandidat lainnya.
+
+🎬 C25: Bagaimana formula PUCT menemukan langkah bagus yang tidak intuitif
+
+### Pengaruh Jumlah Simulasi
+
+Tim DeepMind kemudian menganalisis bahwa "penemuan" langkah ke-37 membutuhkan jumlah simulasi yang cukup:
+
+| Jumlah Simulasi | Pilihan Terbaik |
+|----------|---------|
+| 100 | R3 (sudut kanan bawah) |
+| 1,000 | Q17 (sudut kanan atas) |
+| 10,000 | K15 (langkah ke-37) |
+| 100,000 | K15 (lebih pasti) |
+
+Ini menunjukkan: **pencarian mendalam dapat menemukan langkah bagus yang tidak dapat ditemukan pencarian dangkal**.
+
+---
+
+## Refleksi Filosofis: Perbedaan Kognisi Manusia dan AI
+
+### Mengapa Manusia Tidak Memikirkan Langkah ke-37?
+
+Ini adalah pertanyaan mendalam. Kemungkinan penyebabnya meliputi:
+
+**1. Keterbatasan Pengalaman**
+
+Pengetahuan pemain manusia berasal dari mempelajari catatan permainan pendahulu. Jika pendahulu tidak pernah memainkan langkah tertentu, kita tidak akan mempertimbangkannya.
+
+**2. Bias Intuisi**
+
+Intuisi manusia berguna, tetapi juga terbatas. Intuisi kita membuat kita "tidak melihat" beberapa opsi tertentu.
+
+**3. Perbedaan Kemampuan Komputasi**
+
+Nilai langkah ke-37 membutuhkan kalkulasi mendalam untuk ditemukan. Kemampuan komputasi manusia terbatas, tidak bisa mensimulasikan ribuan kemungkinan seperti AI.
+
+🎬 C27: Bias kognitif dan transendensi AI
+
+### Apa Itu "Intuisi" Mesin?
+
+Apakah AlphaGo memiliki "intuisi"?
+
+Dalam arti tertentu, Policy Network adalah "intuisi" AlphaGo — ia dapat mengevaluasi potensi setiap posisi dalam milidetik.
+
+Tetapi "intuisi" ini berbeda dengan intuisi manusia:
+- **Intuisi manusia**: Berasal dari pengalaman dan pengenalan pola
+- **Intuisi AI**: Berasal dari pembelajaran statistik data besar
+
+Menariknya, langkah ke-37 membuktikan: **"intuisi" AI dapat dikoreksi oleh MCTS**. Ini berarti AI dapat "merefleksikan" intuisinya sendiri dan menemukan pilihan yang lebih baik.
+
+### Apa yang Bisa Dipelajari Manusia dari AI?
+
+Pelajaran terbesar dari langkah ke-37 untuk pemain manusia mungkin adalah:
+
+> **Jangan biarkan pengalaman menjadi belenggu**
+
+Banyak langkah "buruk" mungkin hanya karena kita tidak memahaminya. Membuka pikiran, bersedia mencoba langkah non-tradisional, mungkin akan menemukan kemungkinan baru.
+
+Pelajaran ini tidak hanya berlaku untuk Go, tetapi juga untuk banyak bidang kehidupan.
+
+---
+
+## Korespondensi Animasi
+
+Konsep inti yang terlibat dalam artikel ini dan nomor animasi:
+
+| Nomor | Konsep | Korespondensi Fisika/Matematika |
+|------|------|--------------|
+| 🎬 C3 | Penilaian nilai dalam teori Go tradisional | Fungsi heuristik |
+| 🎬 C5 | Karakteristik geometris shoulder hit | Hubungan spasial |
+| 🎬 C7 | Kesenjangan antara intuisi ahli dan evaluasi AI | Error prediksi |
+| 🎬 C9 | Distribusi output Policy Network | Probabilitas Softmax |
+| 🎬 C11 | Bagaimana MCTS mengoreksi Policy Network | Update Bayesian |
+| 🎬 C13 | Evaluasi inkremental Value Network | Fungsi nilai |
+| 🎬 C15 | Perhitungan fungsi nilai global | Aproksimasi integral |
+| 🎬 C17 | Pilihan paksa dalam teori permainan | Strategi dominan |
+| 🎬 C19 | Satu langkah mengubah arah seluruh permainan | Titik bifurkasi |
+| 🎬 C21 | Bagaimana AI memperluas batas kognisi manusia | Ekspansi ruang pencarian |
+| 🎬 C23 | Pentingnya feature engineering dalam AI Go | Representation learning |
+| 🎬 C25 | Bagaimana formula PUCT menemukan langkah non-intuitif | Trade-off eksplorasi-eksploitasi |
+| 🎬 C27 | Bias kognitif dan transendensi AI | Estimasi tidak bias |
+
+---
+
+## Bacaan Lanjutan
+
+- **Artikel sebelumnya**: [Tinjauan Pertandingan Penting](../key-matches) — Sejarah lengkap pertandingan Fan Hui, Lee Sedol, Ke Jie
+- **Artikel berikutnya**: [Mengapa Go Sulit?](../why-go-is-hard) — Memahami kompleksitas komputasi Go
+- **Detail teknis**: [Penjelasan Policy Network](../policy-network) — Memahami jaringan intuisi secara mendalam
+- **Bacaan lanjutan**: [Penjelasan Formula PUCT](../puct-formula) — Matematika eksplorasi dan eksploitasi
+
+---
+
+## Eksplorasi Interaktif
+
+### Distribusi Probabilitas Policy Network
+
+Gunakan visualisasi interaktif di bawah ini untuk menjelajahi output Policy Network di berbagai situasi:
+
+<PolicyHeatmap initialPosition="move37" size={450} showTopN={5} interactive={true} />
+
+Coba beralih di antara situasi preset yang berbeda, amati bagaimana AI mengevaluasi probabilitas langkah untuk setiap posisi.
+
+---
+
+## Referensi
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. DeepMind Blog: "AlphaGo: The story so far"
+3. Dokumenter *AlphaGo* (2017), sutradara Greg Kohs.
+4. Catatan resmi Lee Sedol vs AlphaGo game kedua
+5. Analisis catatan profesional Go4Go.net
+6. Laporan teknis pasca-pertandingan Asosiasi Go Korea

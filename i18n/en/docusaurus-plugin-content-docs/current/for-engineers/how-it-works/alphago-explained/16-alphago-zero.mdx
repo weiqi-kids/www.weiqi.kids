@@ -1,0 +1,451 @@
+---
+sidebar_position: 17
+title: AlphaGo Zero Overview
+description: Starting from scratch, completely self-taught - how AlphaGo Zero surpassed all previous versions without any human game records
+keywords: [AlphaGo Zero, self-play, reinforcement learning, deep learning, Go AI, unsupervised learning]
+---
+
+# AlphaGo Zero Overview
+
+In October 2017, DeepMind announced a result that shocked the AI world: **AlphaGo Zero**, without using any human game records, starting from a completely random state, surpassed the original AlphaGo that defeated Lee Sedol in just three days, winning **100:0**.
+
+This isn't just numerical progress. It represents a completely new paradigm: **AI doesn't need human knowledge; it can discover everything from scratch.**
+
+---
+
+## Why No Human Games Needed?
+
+### Limitations of Human Games
+
+Original AlphaGo's training process had two phases:
+
+1. **Supervised Learning**: Train Policy Network with 30 million human games
+2. **Reinforcement Learning**: Further improve through self-play
+
+This approach has several fundamental problems:
+
+#### 1. Human Games Have Upper Limits
+
+Human players have finite strength; game records contain human understanding but also human errors and biases. When AI learns from human games, it learns:
+
+- What humans think are good moves (but not necessarily optimal)
+- Human thought patterns (but might limit innovation)
+- Human mistakes (learned as if they were correct)
+
+#### 2. Supervised Learning Bottleneck
+
+Supervised learning's goal is to "imitate humans" - predict which move a human player would make. This means AI's capability ceiling is limited by human player capability.
+
+Like an apprentice who can only imitate the master, never surpassing them.
+
+#### 3. Data Collection Costs
+
+High-quality human game records take years to accumulate and only exist for games with long histories like Go. If we want to apply AI to new domains (like protein structure prediction), there simply are no "expert game records" available.
+
+### Zero's Breakthrough
+
+AlphaGo Zero completely skips the supervised learning phase, starting directly from **random initialization** for self-play. This solves all the above problems:
+
+| Problem | Original AlphaGo | AlphaGo Zero |
+|---------|------------------|--------------|
+| Human knowledge ceiling | Limited by game quality | No such limitation |
+| Learning objective | Imitate humans | Maximize win rate |
+| Data requirement | 30 million games | 0 |
+| Generalizability | Go only | Can extend to other domains |
+
+This is a fundamental paradigm shift: from "learning human knowledge" to "discovering knowledge from first principles."
+
+---
+
+## Comparison with Original AlphaGo: 100:0
+
+### Crushing Victory
+
+DeepMind had trained AlphaGo Zero play against various AlphaGo versions:
+
+| Opponent | AlphaGo Zero Record |
+|----------|---------------------|
+| AlphaGo Fan (defeated Fan Hui version) | 100:0 |
+| AlphaGo Lee (defeated Lee Sedol version) | 100:0 |
+| AlphaGo Master (60-game winning streak version) | 89:11 |
+
+**100:0** - this means in 100 games, original AlphaGo couldn't win a single one.
+
+### Less Resources, Stronger Play
+
+Not only winning, AlphaGo Zero achieved stronger play with fewer resources:
+
+| Metric | AlphaGo Lee | AlphaGo Zero |
+|--------|-------------|--------------|
+| Training time | Months | 40 days (3 days to surpass AlphaGo Lee) |
+| Training games | 30 million human games + self-play | 4.9 million self-play games |
+| TPUs (training) | 50+ | 4 |
+| TPUs (inference) | 48 | 4 |
+| Input features | 48 planes | 17 planes |
+| Neural network | SL + RL dual networks | Single dual-head network |
+
+This is stunning efficiency improvement: **10× fewer resources, yet much stronger play.**
+
+### Why Is Zero Stronger?
+
+AlphaGo Zero's superior strength can be understood from several angles:
+
+#### 1. Unbiased Learning
+
+Original AlphaGo learned from human games, inheriting human biases. For example, human players might overvalue certain joseki, or have wrong evaluations of some positions.
+
+AlphaGo Zero has no such baggage. It starts from blank slate, learning what's good only from win/loss results. This lets it discover moves humans never thought of.
+
+#### 2. Consistent Learning Objective
+
+Original AlphaGo's training had two different objectives:
+- Supervised learning: Maximize prediction accuracy of human moves
+- Reinforcement learning: Maximize win rate
+
+These two objectives might conflict. AlphaGo Zero has only one objective: **maximize win rate**. This makes learning more consistent and effective.
+
+#### 3. Simpler Architecture
+
+Original AlphaGo used separate Policy Network and Value Network. AlphaGo Zero uses a single dual-head network (see [next article: Dual-Head Network and Residual Network](../dual-head-resnet)), allowing feature representations to be shared, improving learning efficiency.
+
+---
+
+## Simplified Input Features: From 48 to 17
+
+### Original AlphaGo's 48 Feature Planes
+
+Original AlphaGo's neural network input included 48 19×19 feature planes, encoding many human-designed features:
+
+| Category | Count | Content |
+|----------|-------|---------|
+| Stone positions | 3 | Black, white, empty |
+| Liberties | 8 | Strings with 1-8 liberties |
+| Captures | 8 | Can capture 1-8 stones |
+| Ko | 1 | Ko position |
+| Edge distance | 4 | 1st to 4th line |
+| Move legality | 1 | Which positions can be played |
+| History | 8 | Past 8 moves' positions |
+| Turn | 1 | Black or White |
+| Other | 14 | Ladders, eyes, etc. |
+
+These 48 features were carefully designed by Go experts, containing extensive domain knowledge.
+
+### AlphaGo Zero's 17 Feature Planes
+
+AlphaGo Zero dramatically simplified input to just 17 feature planes:
+
+| Plane Number | Content | Count |
+|--------------|---------|-------|
+| 1-8 | Black positions (last 8 moves) | 8 |
+| 9-16 | White positions (last 8 moves) | 8 |
+| 17 | Current turn (all 1s or all 0s) | 1 |
+
+These 17 features only include:
+- **Current board state**: Black, white, or empty at each position
+- **History information**: Board states of past 8 moves
+- **Turn information**: Whose turn to play
+
+No liberty counts, no ladder detection, no edge distance - all this "Go knowledge" is left for the neural network to learn itself.
+
+### Why Is Simplification Good?
+
+#### 1. Let Network Discover Features
+
+Complex handcrafted features might miss important information or encode wrong assumptions. Letting neural network learn from raw data, it might discover better feature representations.
+
+In fact, AlphaGo Zero learned all features humans designed (liberties, ladders, etc.), and also learned patterns humans weren't explicitly aware of.
+
+#### 2. Better Generalizability
+
+Many of the 48 features are Go-specific (like ladders, edge distance). The 17 simplified features are universal - any board game can be encoded similarly.
+
+This laid foundation for later **AlphaZero** (general game AI).
+
+#### 3. Reduce Human Error
+
+Handcrafted features may contain errors or incomplete definitions. Simplified input eliminates this possibility.
+
+---
+
+## Single Network Architecture
+
+### Original Dual-Network Design
+
+Original AlphaGo used two independent neural networks:
+
+```
+Policy Network:  Input → CNN → 19×19 move probabilities
+Value Network:   Input → CNN → Win rate estimate (-1 to 1)
+```
+
+These two networks:
+- Have different architectures (slightly different layers and channels)
+- Train independently (first Policy, then Value)
+- Share no parameters
+
+### Zero's Dual-Head Network
+
+AlphaGo Zero uses a single network with two output heads:
+
+```
+Input → ResNet shared backbone → Policy Head → 19×19 move probabilities
+                              → Value Head  → Win rate estimate
+```
+
+Two Heads share the same ResNet backbone (see [next article: Dual-Head Network and Residual Network](../dual-head-resnet)), bringing several benefits:
+
+#### 1. Parameter Efficiency
+
+Shared backbone means most parameters are used by both tasks. This reduces total parameters, lowering overfitting risk.
+
+#### 2. Feature Sharing
+
+"Where to play" (Policy) and "who will win" (Value) need to understand similar board patterns. Shared backbone lets these features be learned and used by both tasks simultaneously.
+
+#### 3. Training Stability
+
+Joint training lets gradient signals come from two sources, providing richer supervision signal, making training more stable.
+
+### Power of Residual Networks
+
+AlphaGo Zero's backbone uses **40-layer Residual Network (ResNet)**, much deeper than original AlphaGo's 13-layer CNN.
+
+Residual connections (skip connections) enable effective training of deep networks, avoiding vanishing gradient problem. This was a breakthrough technology from 2015 ImageNet competition, successfully applied by AlphaGo Zero to Go.
+
+---
+
+## Training Efficiency Improvement
+
+### Exponential Growth of Self-Play
+
+AlphaGo Zero's training process shows stunning efficiency:
+
+| Training Time | Elo Rating | Equivalent to |
+|---------------|------------|---------------|
+| 0 hours | 0 | Random moves |
+| 3 hours | ~1000 | Discovers basic rules |
+| 12 hours | ~3000 | Discovers joseki |
+| 36 hours | ~4500 | Surpasses Fan Hui version |
+| 60 hours | ~5200 | Surpasses Lee Sedol version |
+| 72 hours | ~5400 | Surpasses original AlphaGo |
+| 40 days | ~5600 | Strongest version |
+
+**Three days to surpass humans, three days to surpass AI that took months to train** - this is exponential efficiency improvement.
+
+### Why So Fast?
+
+#### 1. Stronger Search Guidance
+
+AlphaGo Zero's MCTS is completely guided by neural network, no longer using fast rollout policy. This makes search more efficient and accurate.
+
+#### 2. Faster Self-Play
+
+Since only one network is needed (not two), computational cost per self-play game decreases. This means more training data in same time.
+
+#### 3. More Effective Learning
+
+Dual-head network's joint training lets each game's information be used more effectively. Policy and Value gradients reinforce each other, accelerating convergence.
+
+### Comparison with Human Learning
+
+How long does it take human players to reach different levels?
+
+| Level | Human Time | AlphaGo Zero |
+|-------|------------|--------------|
+| Beginner | Weeks | Minutes |
+| Amateur 1-dan | Years | Hours |
+| Professional | 10-20 years | 1-2 days |
+| World Champion | 20+ years full-time | 3 days |
+| Surpass humans | Impossible | 3 days |
+
+This comparison isn't to diminish human players - they use biological neurons while AlphaGo Zero uses specially designed TPUs and kilowatts of electricity. But it does show how efficient the right learning method can be.
+
+---
+
+## Generality: Chess, Shogi
+
+### Birth of AlphaZero
+
+In December 2017, DeepMind announced **AlphaZero** - the general version of AlphaGo Zero. Same algorithm, just changing game rules, achieved world-class level in three different board games:
+
+| Game | Training Time | Opponent | Record |
+|------|---------------|----------|--------|
+| Go | 8 hours | AlphaGo Zero | 60:40 |
+| Chess | 4 hours | Stockfish 8 | 28 wins 72 draws 0 losses |
+| Shogi | 2 hours | Elmo | 90:8:2 |
+
+Note the opponents:
+- **Stockfish** was then the strongest chess engine, using decades of human knowledge and optimization
+- **Elmo** was then the strongest Shogi AI
+
+AlphaZero, with hours of training, surpassed these systems that took years to develop.
+
+### Significance of Generality
+
+AlphaGo Zero / AlphaZero proved something important:
+
+> **The same learning algorithm can achieve superhuman level in different domains.**
+
+This isn't three different AIs, but one general learning framework:
+
+1. **Self-play** generates experience
+2. **Monte Carlo Tree Search** explores possibilities
+3. **Neural network** learns policy and value functions
+4. **Reinforcement learning** optimizes objective function
+
+This framework doesn't depend on domain-specific knowledge, taking an important step toward AI generalization.
+
+### Impact on Traditional AI
+
+Before AlphaZero, the strongest chess and shogi AIs were "expert system" style:
+
+- **Extensive human knowledge**: Opening books, endgame tables, evaluation functions
+- **Decades of optimization**: Countless players' and engineers' work
+- **Extreme specialization**: Stockfish can't play Go, Elmo can't play chess
+
+AlphaZero surpassed all this with one general algorithm in hours. This made many AI researchers rethink:
+
+> Should we invest more in "general learning algorithms" or "expert knowledge encoding"?
+
+The answer seems increasingly clear: letting machines learn themselves is more effective than teaching them knowledge.
+
+---
+
+## AlphaGo Zero's Playing Style
+
+### Beyond Human Aesthetics
+
+Go community's common evaluation of AlphaGo Zero's play: **more elegant.**
+
+AlphaGo Lee's moves sometimes seemed "strange" - like Move 37, humans needed post-game analysis to understand its brilliance. But AlphaGo Zero's moves are often evaluated as "obviously good at first glance."
+
+This might be because:
+
+1. **Stronger play**: Zero sees deeper, plays more calmly
+2. **No human bias**: Not bound by traditional joseki
+3. **Consistent objective**: Only pursues win rate, doesn't imitate humans
+
+### Rediscovering Human Go Principles
+
+Interestingly, AlphaGo Zero "rediscovered" thousands of years of accumulated Go knowledge during training:
+
+- **Joseki**: Zero discovered many common joseki on its own, because these are indeed optimal solutions for both sides
+- **Opening principles**: Order of importance of corners, edges, center
+- **Shape knowledge**: Difference between bad and good shapes
+
+This validates the reasonableness of human Go principles - this knowledge isn't coincidental, but reflects Go's essence.
+
+### Beyond Human Innovation
+
+But Zero also discovered moves humans never thought of:
+
+- **Unconventional openings**: Variations on traditional openings
+- **Aggressive sacrifice**: More willing than humans to give up locally for global advantage
+- **Counter-intuitive shapes**: Seemingly "bad shapes" that are actually optimal
+
+These innovations are changing human understanding of Go. Many professional players say studying AlphaGo Zero's games gave them a completely new understanding of Go.
+
+---
+
+## Technical Details Summary
+
+### Complete Comparison with Original AlphaGo
+
+| Aspect | AlphaGo (Original) | AlphaGo Zero |
+|--------|-------------------|--------------|
+| **Training data** | Human games + self-play | Pure self-play |
+| **Learning method** | Supervised + reinforcement | Pure reinforcement |
+| **Input features** | 48 planes | 17 planes |
+| **Network architecture** | Separate Policy/Value | Dual-head ResNet |
+| **Network depth** | 13 layers | 40 layers (or more) |
+| **MCTS evaluation** | Neural network + Rollout | Pure neural network |
+| **Simulations/move** | ~100,000 | ~1,600 |
+| **Training TPUs** | 50+ | 4 |
+| **Inference TPUs** | 48 | 4 (scalable) |
+
+### Core Algorithm
+
+AlphaGo Zero's training loop is very concise:
+
+```
+1. Self-play
+   - Perform MCTS with current network
+   - Select moves by MCTS search probabilities
+   - Record each move's (position, MCTS probabilities, win/loss result)
+
+2. Train network
+   - Sample from experience buffer
+   - Policy Head: Minimize cross-entropy with MCTS probabilities
+   - Value Head: Minimize MSE with actual win/loss
+   - Jointly optimize both objectives
+
+3. Update network
+   - Replace old network with new (verify new is stronger through play)
+   - Return to step 1
+```
+
+This loop runs continuously, network keeps improving. No human data, no human knowledge, just game rules and win/loss objective.
+
+---
+
+## Insights for AI Research
+
+### First-Principles Learning
+
+AlphaGo Zero demonstrates a "first-principles" learning approach:
+
+> Don't tell AI how to do it, only tell it what the goal is, let it discover methods itself.
+
+This contrasts sharply with traditional expert system approaches. Expert systems try to encode human knowledge into AI, while AlphaGo Zero lets AI discover knowledge itself.
+
+Result: AI-discovered knowledge may be more complete and accurate than human knowledge.
+
+### Power of Self-Play
+
+AlphaGo Zero proved self-play can generate unlimited training data, and this data's quality improves as network improves.
+
+This is a "positive feedback loop":
+- Stronger network → Better self-play data
+- Better data → Stronger network
+
+This loop can continue until reaching the game's theoretical limit (if one exists).
+
+### Importance of Simplification
+
+AlphaGo Zero's success proves the importance of "simplification":
+
+- Simplified input (48 → 17)
+- Simplified architecture (dual network → single network)
+- Simplified training (supervised + reinforcement → pure reinforcement)
+
+Each simplification made the system more powerful. This tells us: complex doesn't equal good, the simplest solution is often the best.
+
+---
+
+## Animation Reference
+
+Core concepts covered in this article with animation numbers:
+
+| Number | Concept | Physics/Math Correspondence |
+|--------|---------|----------------------------|
+| Animation E7 | Training from scratch | Self-organization |
+| Animation E5 | Self-play | Fixed-point convergence |
+| Animation E12 | Strength growth curve | S-curve growth |
+| Animation D12 | Residual network | Gradient highway |
+
+---
+
+## Further Reading
+
+- **Next**: [Dual-Head Network and Residual Network](../dual-head-resnet) - AlphaGo Zero's neural network architecture in detail
+- **Related Article**: [Self-Play](../self-play) - Why self-play produces superhuman level
+- **Technical Deep Dive**: [Training from Scratch](../training-from-scratch) - Detailed Day 0-3 evolution
+
+---
+
+## References
+
+1. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 550, 354-359.
+2. Silver, D., et al. (2018). "A general reinforcement learning algorithm that masters chess, shogi, and Go through self-play." *Science*, 362(6419), 1140-1144.
+3. DeepMind. (2017). "AlphaGo Zero: Starting from scratch." *DeepMind Blog*.
+4. Schrittwieser, J., et al. (2020). "Mastering Atari, Go, Chess and Shogi by Planning with a Learned Model." *Nature*, 588, 604-609.

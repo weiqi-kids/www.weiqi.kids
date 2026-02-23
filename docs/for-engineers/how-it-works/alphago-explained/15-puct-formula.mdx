@@ -1,0 +1,727 @@
+---
+sidebar_position: 16
+title: PUCT 公式詳解
+description: 深入理解 AlphaGo 的核心選擇機制：PUCT 公式的數學原理與調參經驗
+---
+
+import { MCTSTree } from '@site/src/components/D3Charts';
+
+# PUCT 公式詳解
+
+在前一篇文章中，我們概述了 MCTS 與神經網路的結合。現在，讓我們深入探討 MCTS 選擇階段的核心——**PUCT 公式**。
+
+這個公式看似簡單，卻是 AlphaGo 成功的關鍵之一。它優雅地平衡了「利用已知的好走法」和「探索可能更好的走法」這兩個看似矛盾的目標。
+
+---
+
+## PUCT 公式
+
+### 公式定義
+
+AlphaGo 使用的 **PUCT（Predictor Upper Confidence Trees）** 公式：
+
+$$a^* = \arg\max_a \left[ Q(s,a) + U(s,a) \right]$$
+
+其中：
+
+$$U(s,a) = c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)}$$
+
+完整展開：
+
+$$a^* = \arg\max_a \left[ Q(s,a) + c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)} \right]$$
+
+### 符號說明
+
+| 符號 | 意義 | 來源 |
+|------|------|------|
+| $Q(s,a)$ | 動作 $a$ 的平均價值 | MCTS 統計 |
+| $P(s,a)$ | 動作 $a$ 的先驗機率 | Policy Network |
+| $N(s)$ | 父節點的訪問次數 | MCTS 統計 |
+| $N(s,a)$ | 子節點的訪問次數 | MCTS 統計 |
+| $c_{\text{puct}}$ | 探索常數 | 超參數 |
+
+### 直觀理解
+
+PUCT 公式可以分為兩部分：
+
+```
+總分數 = Q(s,a)        + U(s,a)
+         ↓              ↓
+       利用項          探索項
+     「這步棋多好？」   「這步棋值得再探索嗎？」
+```
+
+**利用項 Q(s,a)**：
+- 這步棋過去的平均表現
+- 訪問越多，估計越準確
+- 鼓勵選擇「已知好」的走法
+
+**探索項 U(s,a)**：
+- 這步棋還有多少探索價值
+- 訪問越少，探索獎勵越高
+- 鼓勵嘗試「可能好」的走法
+
+---
+
+## 各項的意義
+
+### Q(s,a)：平均價值
+
+$Q(s,a)$ 是從節點 $(s,a)$ 出發的所有模擬的平均結果：
+
+$$Q(s,a) = \frac{W(s,a)}{N(s,a)} = \frac{\sum_i z_i}{N(s,a)}$$
+
+其中 $z_i \in \{-1, +1\}$ 是第 $i$ 次模擬的結果。
+
+**特性**：
+- 範圍：$[-1, +1]$
+- 初始值：未定義（需要至少一次訪問）
+- 隨著訪問次數增加趨於穩定
+
+**解讀**：
+- $Q = 0.6$：這步棋的勝率約 80%（因為 $Q = 2 \times \text{勝率} - 1$）
+- $Q = 0$：勝負各半
+- $Q = -0.3$：這步棋的勝率約 35%
+
+### P(s,a)：先驗機率
+
+$P(s,a)$ 來自 Policy Network 的輸出：
+
+$$P(s,a) = \pi_\theta(a|s)$$
+
+**特性**：
+- 範圍：$[0, 1]$，且 $\sum_a P(s,a) = 1$
+- 在節點首次展開時計算
+- 反映神經網路對「這步棋有多好」的判斷
+
+**作用**：
+- 高機率的動作會被優先探索
+- 即使訪問次數為 0，也有探索動力
+- 引導搜索聚焦在「看起來合理」的走法
+
+### N(s) 與 N(s,a)：訪問次數
+
+$N(s)$ 是父節點的總訪問次數：
+
+$$N(s) = \sum_a N(s,a)$$
+
+**探索項中的角色**：
+
+$$\frac{\sqrt{N(s)}}{1 + N(s,a)}$$
+
+這個分數的行為：
+- 當 $N(s,a) = 0$ 時，分數 = $\sqrt{N(s)}$（最大探索動力）
+- 隨著 $N(s,a)$ 增加，分數下降
+- 當 $N(s,a) \gg \sqrt{N(s)}$ 時，分數趨近於 0
+
+這確保了：
+1. **每個動作至少被探索一次**（如果 $P(s,a) > 0$）
+2. **探索動力隨訪問遞減**
+3. **最終選擇由 $Q$ 值主導**
+
+### c_puct：探索常數
+
+$c_{\text{puct}}$ 控制探索與利用的平衡：
+
+| $c_{\text{puct}}$ 值 | 效果 |
+|-------------------|------|
+| 較小（如 0.5） | 更偏向利用，快速聚焦在好的走法 |
+| 適中（如 1-2） | 平衡探索與利用 |
+| 較大（如 5） | 更偏向探索，嘗試更多可能性 |
+
+AlphaGo 使用的值：$c_{\text{puct}} = 1.5$（根據論文）。
+
+---
+
+## 與 UCB1 的關係
+
+### UCB1 公式回顧
+
+傳統 MCTS 使用的 **UCB1** 公式：
+
+$$\text{UCB1}(s,a) = \bar{X}_{s,a} + c \sqrt{\frac{\ln N(s)}{N(s,a)}}$$
+
+其中 $\bar{X}_{s,a}$ 是平均回報。
+
+### 比較
+
+| 方面 | UCB1 | PUCT |
+|------|------|------|
+| 利用項 | $\bar{X}_{s,a}$（平均回報） | $Q(s,a)$（平均價值） |
+| 探索項 | $\sqrt{\frac{\ln N}{n}}$（信賴界限） | $P \cdot \frac{\sqrt{N}}{1+n}$（先驗引導） |
+| 先驗資訊 | 無 | 使用 Policy Network |
+| 探索衰減 | 對數衰減 | 線性衰減 |
+
+### PUCT 的優勢
+
+1. **利用先驗知識**：Policy Network 提供的 $P(s,a)$ 讓搜索從一開始就聚焦在合理的走法上
+
+2. **更快的收斂**：線性衰減（$1/(1+n)$）比對數衰減（$1/\sqrt{\ln N / n}$）更快讓搜索聚焦
+
+3. **可調控的探索**：$P(s,a)$ 和 $c_{\text{puct}}$ 提供了更多調控探索的手段
+
+### 理論背景
+
+UCB1 有嚴格的理論保證（regret bound），但這些保證假設：
+- 每個臂（動作）是獨立的
+- 沒有先驗資訊
+
+在圍棋中，我們有強大的先驗（Policy Network），PUCT 能更好地利用這些資訊。
+
+---
+
+## 數學推導
+
+### 從多臂賭博機說起
+
+PUCT 的靈感來自**多臂賭博機（Multi-Armed Bandit）** 問題。
+
+想像你面前有 $K$ 台老虎機，每台的獲勝機率不同但未知。你的目標是最大化總獲勝次數。策略是：
+- **利用**：拉看起來最好的那台
+- **探索**：嘗試其他台，可能發現更好的
+
+UCB1 是這個問題的經典解法，PUCT 是其變體。
+
+### UCB 的理論基礎
+
+對於隨機變數 $X$，由 Hoeffding 不等式：
+
+$$P(|\bar{X}_n - \mu| \geq \epsilon) \leq 2 \exp(-2n\epsilon^2)$$
+
+如果我們想要以 $1/t^4$ 的機率犯錯，需要：
+
+$$\epsilon = \sqrt{\frac{2 \ln t}{n}}$$
+
+這就是 UCB1 探索項的來源。
+
+### PUCT 的修改
+
+PUCT 對經典 UCB 做了幾個修改：
+
+**1. 加入先驗機率**
+
+$$U(s,a) \propto P(s,a) \cdot (\text{探索項})$$
+
+這讓探索集中在高機率的動作上。
+
+**2. 改變探索項形式**
+
+從 $\sqrt{\frac{\ln N}{n}}$ 改為 $\frac{\sqrt{N}}{1+n}$
+
+這加速了收斂：
+
+```
+比較（假設 N = 1000, n = 10）：
+
+UCB1:  sqrt(ln(1000) / 10) = sqrt(0.69) ≈ 0.83
+PUCT:  sqrt(1000) / 11 ≈ 2.87
+
+PUCT 給予更多探索獎勵，但衰減更快
+```
+
+**3. 可學習的先驗**
+
+$P(s,a)$ 來自神經網路，會隨著訓練改進。這讓 MCTS 和神經網路形成正向循環。
+
+### 為什麼這個形式有效？
+
+直觀解釋：
+
+$$U(s,a) = c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)}$$
+
+1. **$P(s,a)$**：「專家說這步棋有多好」
+2. **$\sqrt{N(s)}$**：「我們對這個局面了解多少」
+3. **$1/(1 + N(s,a))$**：「我們對這步棋了解多少」
+
+組合起來：**當我們對局面了解很多，但對某步棋了解很少，且專家認為這步棋不錯時，應該去探索它**。
+
+---
+
+## 視覺化理解
+
+### 探索項的變化
+
+讓我們視覺化探索項如何隨訪問次數變化：
+
+```
+U(s,a) = c_puct × P(s,a) × √N(s) / (1 + N(s,a))
+
+假設 P(s,a) = 0.1, c_puct = 1.5, N(s) = 1600
+
+N(s,a)  |  U(s,a)
+--------|----------
+   0    |  6.00      ← 未訪問，最高探索獎勵
+   1    |  3.00
+   5    |  1.00
+  10    |  0.55
+  50    |  0.12
+ 100    |  0.06
+ 400    |  0.015     ← 訪問多次後，探索獎勵很小
+```
+
+### 不同先驗機率的影響
+
+```
+假設 c_puct = 1.5, N(s) = 1600, N(s,a) = 0
+
+P(s,a)  |  U(s,a)
+--------|----------
+  0.30  |  18.00     ← 高機率動作有更多探索動力
+  0.10  |   6.00
+  0.03  |   1.80
+  0.01  |   0.60
+  0.001 |   0.06     ← 低機率動作幾乎不被探索
+```
+
+### 互動式探索
+
+嘗試調整下面的 $c_{\text{puct}}$ 參數，觀察它如何影響 MCTS 的選擇：
+
+<MCTSTree width={700} height={450} showPUCT={true} interactive={true} cPuct={1.5} />
+
+---
+
+## AlphaGo 中的具體實現
+
+### AlphaGo Fan/Lee 的實現
+
+原版 AlphaGo 使用稍微不同的公式：
+
+$$U(s,a) = c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{\sum_b N(s,b)}}{1 + N(s,a)}$$
+
+並且 $Q(s,a)$ 的計算考慮了虛擬損失：
+
+```python
+def get_ucb_score(node, action, c_puct=1.5):
+    Q = node.W[action] / (node.N[action] + 1)  # 避免除以零
+    P = node.prior[action]
+    N_parent = sum(node.N.values())
+    N_child = node.N[action]
+
+    U = c_puct * P * math.sqrt(N_parent) / (1 + N_child)
+
+    return Q + U
+```
+
+### AlphaGo Zero 的實現
+
+AlphaGo Zero 使用更簡潔的實現：
+
+```python
+def select_action(node, c_puct=1.5):
+    """選擇 PUCT 分數最高的動作"""
+    N_parent = sum(node.visit_count.values())
+
+    def puct_score(action):
+        Q = node.value_sum[action] / (node.visit_count[action] + 1)
+        P = node.prior[action]
+        U = c_puct * P * math.sqrt(N_parent) / (1 + node.visit_count[action])
+        return Q + U
+
+    return max(node.legal_actions, key=puct_score)
+```
+
+### 處理未訪問節點
+
+當 $N(s,a) = 0$ 時，$Q(s,a)$ 未定義。常見處理方式：
+
+**方法 1：使用父節點價值**
+```python
+Q = parent_value if N[action] == 0 else W[action] / N[action]
+```
+
+**方法 2：使用初始值**
+```python
+Q = 0 if N[action] == 0 else W[action] / N[action]
+```
+
+**方法 3：使用 FPU（First Play Urgency）**
+```python
+# 未訪問節點使用較低的 Q 值
+fpu_value = parent_Q - fpu_reduction
+Q = fpu_value if N[action] == 0 else W[action] / N[action]
+```
+
+AlphaGo Zero 使用 FPU，這讓搜索更傾向於先嘗試訪問過的節點。
+
+---
+
+## 實際調參經驗
+
+### c_puct 的選擇
+
+$c_{\text{puct}}$ 是最重要的超參數。實踐中的指導原則：
+
+**1. 與網路品質相關**
+- 網路很強（高準確率）：可以用較小的 $c_{\text{puct}}$
+- 網路較弱：需要較大的 $c_{\text{puct}}$ 來修正錯誤
+
+**2. 與搜索預算相關**
+- 模擬次數多：可以用較大的 $c_{\text{puct}}$（有足夠時間探索）
+- 模擬次數少：用較小的 $c_{\text{puct}}$（快速聚焦）
+
+**3. 與遊戲特性相關**
+- 戰術性強的遊戲：可能需要更多探索
+- 戰略性強的遊戲：可以更信任先驗
+
+### 典型值
+
+| 專案 | $c_{\text{puct}}$ |
+|------|-------------------|
+| AlphaGo | 1.5 |
+| AlphaGo Zero | 1.0 - 2.0 |
+| AlphaZero | 1.25 |
+| KataGo | 0.5 - 1.0（動態調整） |
+| Leela Zero | 1.5 - 2.0 |
+
+### 動態調整
+
+一些進階實現使用動態 $c_{\text{puct}}$：
+
+```python
+def dynamic_cpuct(visit_count):
+    """根據訪問次數調整探索常數"""
+    base = 1.0
+    init = 1.5
+    log_base = 19652  # 調整參數
+
+    return math.log((visit_count + log_base + 1) / log_base) + init
+```
+
+這讓搜索在早期更偏向探索，後期更偏向利用。
+
+### 敏感度分析
+
+$c_{\text{puct}}$ 對棋力的影響：
+
+```
+實驗（固定其他條件，變化 c_puct）：
+
+c_puct | 相對 Elo
+-------|----------
+  0.5  |   -50     ← 過度利用，錯過好棋
+  1.0  |   +20
+  1.5  |    0      ← 基準
+  2.0  |   -10
+  3.0  |   -30     ← 過度探索，浪費搜索
+  5.0  |   -80
+```
+
+最佳值通常在 1.0-2.0 之間，但具體取決於網路品質和搜索預算。
+
+---
+
+## 進階變體
+
+### PUCT 的變體
+
+**1. Polynomial PUCT (P-UCT)**
+
+$$U(s,a) = c \cdot P(s,a) \cdot \frac{N(s)^\alpha}{1 + N(s,a)}$$
+
+其中 $\alpha$ 是可調參數（通常 $\alpha = 0.5$）。
+
+**2. 帶噪音的 PUCT**
+
+在根節點加入 Dirichlet 噪音：
+
+$$P'(s,a) = (1-\varepsilon) P(s,a) + \varepsilon \cdot \eta_a$$
+
+其中 $\eta \sim \text{Dir}(\alpha)$。這增加了探索的多樣性。
+
+**3. UCT-like PUCT**
+
+$$U(s,a) = c \cdot P(s,a) \cdot \sqrt{\frac{\ln(1 + N(s) + c_{\text{base}})}{1 + N(s,a)}}$$
+
+這結合了 UCT 的對數形式和 PUCT 的先驗引導。
+
+### KataGo 的改進
+
+KataGo 對 PUCT 做了多項改進：
+
+**1. 動態 $c_{\text{puct}}$**
+根據局面複雜度和搜索進度調整。
+
+**2. 價值預測的不確定性**
+考慮 Value Network 的預測信心。
+
+**3. 政策目標學習**
+直接學習 MCTS 訪問分佈，而非僅策略頭輸出。
+
+### 其他選擇公式
+
+除了 PUCT，還有其他選擇公式：
+
+**RAVE（Rapid Action Value Estimation）**
+
+$$Q_{\text{RAVE}}(s,a) = (1-\beta) Q(s,a) + \beta Q_{\text{AMAF}}(s,a)$$
+
+使用「All Moves As First」統計來加速學習。
+
+**GRAVE（Generalized RAVE）**
+
+RAVE 的變體，使用祖先節點的統計資訊。
+
+---
+
+## 理論分析
+
+### 收斂性
+
+PUCT 是否保證收斂到最佳解？
+
+**嚴格來說**：沒有像 UCB1 那樣的理論保證。
+
+**實踐中**：在足夠多的模擬後，PUCT 會收斂到高品質的解，因為：
+1. 探索項最終會趨近於零
+2. 所有動作最終都會被訪問
+3. $Q$ 值會收斂到真實價值
+
+### 複雜度分析
+
+**時間複雜度**（每次模擬）：
+- Selection：$O(\log N)$（樹的深度）
+- Expansion：$O(A)$（合法動作數，需要神經網路推理）
+- Evaluation：$O(1)$（Value Network）或 $O(T)$（Rollout，$T$ 是遊戲長度）
+- Backpropagation：$O(\log N)$
+
+**空間複雜度**：
+- 每個節點：$O(A)$（儲存先驗和訪問統計）
+- 整棵樹：$O(N \cdot A)$（$N$ 是節點數）
+
+### 與 Minimax 的關係
+
+當 $c_{\text{puct}} \to 0$ 且模擬次數 $\to \infty$ 時，MCTS + PUCT 會近似於 Minimax 搜索。
+
+但在有限預算下，PUCT 通常比 Minimax + Alpha-Beta 更有效率，因為它能更好地利用先驗知識。
+
+---
+
+## 常見問題
+
+### Q：為什麼不直接用 Policy Network 的輸出作為選擇？
+
+**A：Policy Network 可能會犯錯**。MCTS 的搜索能夠：
+1. 驗證神經網路的判斷
+2. 發現神經網路忽略的好棋
+3. 修正神經網路的系統性偏見
+
+實驗顯示，即使神經網路很強，加入搜索仍能顯著提升棋力。
+
+### Q：PUCT 在哪些情況下表現不好？
+
+1. **先驗機率完全錯誤**：如果 Policy Network 把好棋評為低機率，PUCT 需要很多模擬才能修正
+
+2. **長期戰術**：PUCT 可能難以發現需要精確計算的長序列戰術
+
+3. **對手模型缺失**：PUCT 假設對手也用最佳策略，面對不合理的對手可能不是最優
+
+### Q：如何處理超大的動作空間？
+
+一些技術：
+1. **Policy Network 過濾**：只考慮 $P(s,a) > \epsilon$ 的動作
+2. **漸進展寬**：先只展開少量動作，需要時再擴展
+3. **動態剪枝**：移除明顯差的動作
+
+---
+
+## 動畫對應
+
+本文涉及的核心概念與動畫編號：
+
+| 編號 | 概念 | 物理/數學對應 |
+|------|------|--------------|
+| 🎬 E4 | 探索與利用 | 多臂賭博機 |
+| 🎬 C3 | PUCT 選擇 | 信賴界限 |
+
+---
+
+## 總結
+
+PUCT 公式是 AlphaGo MCTS 的核心，我們學習了：
+
+1. **公式結構**：$Q + U$，利用項加探索項
+2. **各項意義**：$Q$ 是經驗價值，$P$ 是先驗機率，$N$ 控制探索衰減
+3. **與 UCB1 的關係**：PUCT 加入了先驗並使用不同的探索項形式
+4. **數學推導**：從多臂賭博機到 MCTS 選擇
+5. **實際調參**：$c_{\text{puct}}$ 的選擇與影響
+6. **進階變體**：動態調整、噪音、KataGo 改進
+
+PUCT 的優雅之處在於它簡單而有效——用一個公式就平衡了探索與利用，並優雅地整合了神經網路的先驗知識。
+
+---
+
+## 延伸閱讀
+
+- **下一篇**：[AlphaGo Zero 概述](../alphago-zero) — 從零開始的突破
+- **上一篇**：[MCTS 與神經網路的結合](../mcts-neural-combo) — 整體架構
+- **相關**：[傳統方法的極限](../traditional-limits) — 為什麼需要新方法
+
+---
+
+## 參考資料
+
+1. Rosin, C. D. (2011). "Multi-armed bandits with episode context." *Annals of Mathematics and Artificial Intelligence*, 61(3), 203-230.
+2. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+3. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 550, 354-359.
+4. Kocsis, L., & Szepesvári, C. (2006). "Bandit based Monte-Carlo Planning." *ECML*.
+5. Auer, P., Cesa-Bianchi, N., & Fischer, P. (2002). "Finite-time analysis of the multiarmed bandit problem." *Machine Learning*, 47(2), 235-256.
+6. Wu, D., et al. (2019). "Accelerating Self-Play Learning in Go." *arXiv preprint* (KataGo 技術報告).
+
+---
+
+## 附錄：完整實現範例
+
+```python
+import math
+import numpy as np
+from typing import Dict, List, Optional
+
+class MCTSNode:
+    """MCTS 節點"""
+    def __init__(self, prior: float = 0.0):
+        self.prior = prior          # P(s,a)
+        self.visit_count = 0        # N(s,a)
+        self.value_sum = 0.0        # W(s,a)
+        self.children: Dict[int, 'MCTSNode'] = {}
+
+    @property
+    def q_value(self) -> float:
+        """計算 Q(s,a)"""
+        if self.visit_count == 0:
+            return 0.0
+        return self.value_sum / self.visit_count
+
+
+class MCTS:
+    """MCTS 搜索器，使用 PUCT"""
+
+    def __init__(
+        self,
+        policy_network,
+        value_network,
+        c_puct: float = 1.5,
+        num_simulations: int = 800
+    ):
+        self.policy_network = policy_network
+        self.value_network = value_network
+        self.c_puct = c_puct
+        self.num_simulations = num_simulations
+
+    def search(self, root_state) -> Dict[int, float]:
+        """執行 MCTS 搜索，返回動作的訪問分佈"""
+        root = MCTSNode()
+
+        # 展開根節點
+        policy = self.policy_network(root_state)
+        for action, prob in enumerate(policy):
+            if is_legal(root_state, action):
+                root.children[action] = MCTSNode(prior=prob)
+
+        # 執行模擬
+        for _ in range(self.num_simulations):
+            self._simulate(root, root_state)
+
+        # 返回訪問分佈
+        total_visits = sum(
+            child.visit_count for child in root.children.values()
+        )
+        return {
+            action: child.visit_count / total_visits
+            for action, child in root.children.items()
+        }
+
+    def _simulate(self, node: MCTSNode, state) -> float:
+        """執行單次模擬"""
+
+        # 如果是終局狀態
+        if is_terminal(state):
+            return get_result(state)
+
+        # 如果是葉節點，展開並評估
+        if not node.children:
+            policy = self.policy_network(state)
+            value = self.value_network(state)
+
+            for action, prob in enumerate(policy):
+                if is_legal(state, action):
+                    node.children[action] = MCTSNode(prior=prob)
+
+            return value
+
+        # Selection：選擇 PUCT 分數最高的動作
+        action = self._select_action(node)
+        child = node.children[action]
+        next_state = apply_action(state, action)
+
+        # 遞迴模擬
+        value = -self._simulate(child, next_state)
+
+        # Backpropagation：更新統計
+        child.visit_count += 1
+        child.value_sum += value
+
+        return value
+
+    def _select_action(self, node: MCTSNode) -> int:
+        """使用 PUCT 公式選擇動作"""
+        total_visits = sum(
+            child.visit_count for child in node.children.values()
+        )
+
+        def puct_score(action: int, child: MCTSNode) -> float:
+            # Q(s,a)：平均價值
+            q = child.q_value
+
+            # U(s,a)：探索加成
+            u = (
+                self.c_puct
+                * child.prior
+                * math.sqrt(total_visits)
+                / (1 + child.visit_count)
+            )
+
+            return q + u
+
+        return max(
+            node.children.keys(),
+            key=lambda a: puct_score(a, node.children[a])
+        )
+
+
+# 使用範例
+def play_game():
+    policy_net = PolicyNetwork()
+    value_net = ValueNetwork()
+
+    mcts = MCTS(
+        policy_network=policy_net,
+        value_network=value_net,
+        c_puct=1.5,
+        num_simulations=1600
+    )
+
+    state = initial_state()
+
+    while not is_terminal(state):
+        # 執行 MCTS 搜索
+        visit_distribution = mcts.search(state)
+
+        # 選擇訪問次數最多的動作
+        action = max(visit_distribution.keys(),
+                     key=lambda a: visit_distribution[a])
+
+        # 執行動作
+        state = apply_action(state, action)
+        print(f"Selected action {action} with visit ratio "
+              f"{visit_distribution[action]:.2%}")
+
+    print(f"Game result: {get_result(state)}")
+```
+
+這個實現展示了 PUCT 公式在 MCTS 中的核心角色。實際的 AlphaGo 實現還包括：
+- 並行搜索（虛擬損失）
+- 批次神經網路評估
+- 樹的重用
+- 狄利克雷噪音
+- 溫度控制等功能

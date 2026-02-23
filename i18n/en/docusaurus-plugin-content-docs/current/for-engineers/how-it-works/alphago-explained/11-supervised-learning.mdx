@@ -1,0 +1,645 @@
+---
+sidebar_position: 12
+title: Supervised Learning Phase
+description: How AlphaGo learned from 30 million human game positions to achieve 57% prediction accuracy
+---
+
+import { EloChart } from '@site/src/components/D3Charts';
+
+# Supervised Learning Phase
+
+Before AlphaGo could play against itself, it needed to first "observe" massive amounts of human game records. This process is called **supervised learning**.
+
+By analyzing 30 million human game positions, AlphaGo's Policy Network achieved **57% prediction accuracy** - able to guess the human expert's next move more than half the time.
+
+This might not sound impressive, but considering each position averages 250 legal moves, this is a remarkable achievement.
+
+---
+
+## Why Start with Human Games?
+
+### The Starting Point of Learning
+
+Imagine you're teaching someone who knows nothing about Go. What would you do?
+
+**Option A: Random Exploration**
+```
+Let them play randomly, slowly discovering what's good
+→ Extremely inefficient, might never learn
+```
+
+**Option B: Watch How Experts Play**
+```
+Let them observe many professional games, imitating their moves
+→ After getting basics, then explore on their own
+```
+
+AlphaGo chose Option B. Supervised learning is the mathematical version of "watching how experts play."
+
+### Value of Human Games
+
+Humans spent thousands of years developing Go theory. This knowledge is encoded in game records:
+
+- **Opening joseki**: Time-tested opening patterns
+- **Middlegame tactics**: Wisdom of attack and defense transitions
+- **Endgame techniques**: Essence of point counting
+- **Whole-board vision**: Intuition for overall judgment
+
+Supervised learning let AlphaGo "inherit" this human wisdom without starting from scratch.
+
+---
+
+## Training Data Source
+
+### KGS Go Server
+
+AlphaGo's training data came primarily from **KGS Go Server** (also known as Kiseido Go Server), a well-known online Go platform.
+
+#### KGS Characteristics
+
+| Property | Description |
+|----------|-------------|
+| Users | Mainly amateurs, some professionals |
+| Strength range | From beginner to professional 9 dan |
+| Game records | Complete SGF records saved |
+| Active period | 2000 to present |
+
+#### Why Choose KGS?
+
+1. **Large data volume**: Millions of game records
+2. **Uniform format**: SGF format easy to parse
+3. **Strength labels**: Each user has rating
+4. **Diversity**: Different playing styles
+
+### 30 Million Positions
+
+From KGS game records, DeepMind extracted approximately **30 million positions**:
+
+```
+Raw data:
+- About 160,000 games
+- About 200 moves per game
+- Total ~32 million positions
+
+Data filtering:
+- Filter out low-ranked games
+- Filter out mid-game resignation positions
+- Final ~30 million high-quality positions
+```
+
+### Data Format
+
+Each training sample contains:
+
+```python
+{
+    "board_state": [[0, 1, 2, ...], ...],  # 19×19 board
+    "features": [...],                      # 48 feature planes
+    "next_move": 123,                       # Human's move position (0-360)
+    "game_result": 1,                       # 1=Black wins, -1=White wins
+    "player_rank": "5d",                    # Rank of player who made this move
+}
+```
+
+---
+
+## Data Preprocessing
+
+### SGF Parsing
+
+SGF (Smart Game Format) is the standard format for Go game records:
+
+```
+(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]
+RU[Japanese]SZ[19]KM[6.50]
+PW[White]PB[Black]
+;B[pd];W[dd];B[pq];W[dp];B[qk];W[nc]...
+)
+```
+
+Need to parse:
+- Board size (SZ[19])
+- Each move (B[pd], W[dd]...)
+- Game result (RE[B+2.5])
+
+```python
+def parse_sgf(sgf_string):
+    """Parse SGF game record"""
+    moves = []
+    # Extract all moves
+    pattern = r';([BW])\[([a-s]{2})\]'
+    for match in re.finditer(pattern, sgf_string):
+        color = match.group(1)  # 'B' or 'W'
+        coord = match.group(2)  # 'pd', 'dd', etc.
+
+        # Convert coordinates
+        x = ord(coord[0]) - ord('a')
+        y = ord(coord[1]) - ord('a')
+
+        moves.append((color, x, y))
+
+    return moves
+```
+
+### Feature Extraction
+
+For each position, extract 48 feature planes (see [Input Feature Design](../input-features)):
+
+```python
+def extract_features(board, history, current_player):
+    """Extract 48 feature planes"""
+    features = np.zeros((48, 19, 19))
+
+    # Stone positions
+    features[0] = (board == 1)  # Black
+    features[1] = (board == 2)  # White
+    features[2] = (board == 0)  # Empty
+
+    # History
+    for i, hist in enumerate(history[:8]):
+        features[3+i] = (hist == 1)
+        features[11+i] = (hist == 2)
+
+    # Liberties, captures, ladders, etc...
+    # (detailed implementation omitted)
+
+    return features
+```
+
+### Data Augmentation
+
+The Go board has **8-fold symmetry** (4 rotations × 2 reflections). Each original sample can become 8:
+
+```
+Original:     Rotate 90°:   Rotate 180°:  Rotate 270°:
+┌───┐         ┌───┐         ┌───┐         ┌───┐
+│ ● │         │   │         │   │         │   │
+│   │ →       │   │  →      │   │  →      │   │
+│   │         │ ● │         │ ● │         │ ● │
+└───┘         └───┘         └───┘         └───┘
+
+Each then flipped horizontally, giving 8 equivalent training samples
+```
+
+This effectively increases training data by 8× while ensuring learned patterns don't depend on specific orientation.
+
+```python
+def augment(state, action):
+    """8-fold symmetry augmentation"""
+    augmented = []
+
+    for rotation in [0, 1, 2, 3]:  # 0, 90, 180, 270 degrees
+        rotated_state = np.rot90(state, rotation, axes=(1, 2))
+        rotated_action = rotate_action(action, rotation)
+        augmented.append((rotated_state, rotated_action))
+
+        # Horizontal flip
+        flipped_state = np.flip(rotated_state, axis=2)
+        flipped_action = flip_action(rotated_action)
+        augmented.append((flipped_state, flipped_action))
+
+    return augmented
+```
+
+---
+
+## Loss Function
+
+### Cross-Entropy Loss
+
+Supervised learning uses **Cross-Entropy Loss** to train the Policy Network:
+
+```
+L(θ) = -Σ log p_θ(a | s)
+```
+
+Where:
+- `s`: Board state
+- `a`: Position where human actually played (label)
+- `p_θ(a | s)`: Model's predicted probability for that position
+
+### Intuitive Understanding
+
+Cross-entropy loss measures "gap between model prediction and label":
+
+| Scenario | Model Prediction | Loss | Description |
+|----------|------------------|------|-------------|
+| Perfect prediction | P(a) = 1.0 | 0 | Best |
+| Confident and correct | P(a) = 0.9 | 0.1 | Very good |
+| Uncertain but correct | P(a) = 0.5 | 0.7 | OK |
+| Wrong prediction | P(a) = 0.1 | 2.3 | Bad |
+| Completely wrong | P(a) = 0.01 | 4.6 | Worst |
+
+The loss function drives the model to increase probability of correct positions.
+
+### Comparison with MSE
+
+Why not use Mean Squared Error (MSE)?
+
+```python
+# MSE:
+loss_mse = (prediction - target)^2
+
+# Cross-Entropy:
+loss_ce = -log(prediction[target])
+```
+
+| Property | MSE | Cross-Entropy |
+|----------|-----|---------------|
+| Target type | Regression (continuous) | Classification (probability distribution) |
+| Gradient behavior | Larger error, larger gradient | Confident but wrong gets larger gradient |
+| Suitable for | Value Network | Policy Network |
+
+Policy Network outputs a probability distribution over 361 classes; cross-entropy is the natural choice.
+
+---
+
+## Training Process
+
+### Hardware Configuration
+
+DeepMind used substantial computational resources:
+
+| Resource | Quantity |
+|----------|----------|
+| GPUs | 50 |
+| Training time | About 3 weeks |
+| Batch size | 16 |
+| Total training steps | ~340M |
+
+### Optimizer
+
+Used **Stochastic Gradient Descent (SGD) + momentum**:
+
+```python
+optimizer = torch.optim.SGD(
+    model.parameters(),
+    lr=0.003,         # Initial learning rate
+    momentum=0.9,     # Momentum coefficient
+    weight_decay=1e-4 # L2 regularization
+)
+```
+
+#### Why SGD Instead of Adam?
+
+In 2016, SGD + momentum was still mainstream for image tasks. Actually, later research (including KataGo) found Adam-type optimizers may be better.
+
+### Learning Rate Schedule
+
+Learning rate decays during training:
+
+```python
+scheduler = torch.optim.lr_scheduler.StepLR(
+    optimizer,
+    step_size=80_000_000,  # Every 80M steps
+    gamma=0.1              # Multiply learning rate by 0.1
+)
+```
+
+```
+Learning rate:
+0.003  ────────┐
+              └─────── 0.0003 ────────┐
+                                      └─────── 0.00003
+         80M steps     160M steps     240M steps
+```
+
+### Training Loop
+
+```python
+def train_epoch(model, dataloader, optimizer):
+    model.train()
+    total_loss = 0
+    correct = 0
+    total = 0
+
+    for batch in dataloader:
+        states, actions = batch
+
+        # Forward pass
+        policy = model(states)  # (batch, 361)
+
+        # Calculate loss
+        loss = F.cross_entropy(policy, actions)
+
+        # Backward pass
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        # Statistics
+        total_loss += loss.item()
+        predictions = policy.argmax(dim=1)
+        correct += (predictions == actions).sum().item()
+        total += actions.size(0)
+
+    accuracy = correct / total
+    avg_loss = total_loss / len(dataloader)
+
+    return avg_loss, accuracy
+```
+
+### Training Curves
+
+Typical training process:
+
+```
+Accuracy
+60% |                    ......**********
+    |              ......*
+50% |        ......*
+    |    ....*
+40% |  ..*
+    |..*
+30% |*
+    +───────────────────────────────────── Training Steps
+    0       100M     200M     300M     340M
+```
+
+Loss and accuracy improve rapidly then stabilize.
+
+---
+
+## Results Analysis
+
+### 57% Accuracy
+
+After complete training, Policy Network achieved **57.0% top-1 accuracy**.
+
+#### What Is Top-1 Accuracy?
+
+```
+Prediction: Model outputs 361 probabilities
+Top-1: Position with highest probability
+Accuracy: Proportion where this position equals human's actual move
+```
+
+57% means: the model guesses the human expert's next move more than half the time.
+
+### Comparison with Other Programs
+
+| Program | Top-1 Accuracy | Notes |
+|---------|----------------|-------|
+| Random selection | 0.4% | Baseline |
+| Traditional features + linear model | ~24% | 2008 level |
+| Shallow CNN | ~44% | 2014 level |
+| **AlphaGo Policy Network** | **57%** | 2016 breakthrough |
+| AlphaGo Zero | ~60% | 2017 |
+
+DeepMind's deep CNN improved by 13 percentage points over previous best methods.
+
+### Strength Evaluation
+
+Playing strength using Policy Network alone (no search):
+
+<EloChart mode="training" width={600} height={350} />
+
+| Configuration | Elo Rating | Approximate Level |
+|---------------|------------|-------------------|
+| Traditional strongest (Pachi) | ~2500 | Amateur 4-5 dan |
+| SL Policy Network | ~2800 | Amateur 6-7 dan |
+
+Pure supervised learning already reached strong amateur level - a major breakthrough in 2016.
+
+### Accuracy vs. Strength
+
+Interestingly, accuracy and strength are not linearly related:
+
+```
+Accuracy:  44% → 57% (13% improvement)
+Elo:      ~2500 → ~2800 (~300 improvement)
+
+Accuracy improvement ratio: 13% / 44% ≈ 30%
+Elo improvement ratio: 300 / 2500 ≈ 12%
+```
+
+Small accuracy improvements can lead to significant strength gains because:
+- Correct choices in critical positions matter more
+- Avoiding obvious mistakes matters more than playing slightly better moves
+
+---
+
+## Limitations of Supervised Learning
+
+### Problem 1: Ceiling Effect
+
+Supervised learning can only reach "human level," cannot surpass it:
+
+```
+SL Policy's goal: Imitate humans
+          ↓
+If humans have wrong habits
+          ↓
+SL Policy will learn those mistakes too
+```
+
+For example, if training data players rarely play moves like "Move 37," SL Policy won't learn them either.
+
+### Problem 2: Cannot Distinguish Good from Bad Moves
+
+Supervised learning only sees "what humans played," not whether the move was good:
+
+```
+Position A: Human played K10 (actually a bad move)
+Position B: Human played Q4 (good move)
+
+SL Policy treats them equally, must learn both
+```
+
+Training data includes amateur games with many mistakes. SL Policy learns these mistakes.
+
+### Problem 3: Insufficient Exploration
+
+SL Policy only learns moves humans already know:
+
+```
+Human move set: {A, B, C, D, E}
+           ↓
+SL Policy will only choose among these moves
+           ↓
+Better move F might exist but was never discovered
+```
+
+This is a fundamental limitation of supervised learning: it can only learn what exists in training data.
+
+### Solution: Reinforcement Learning
+
+To surpass humans, AlphaGo uses **reinforcement learning** after supervised learning:
+
+```
+SL Policy (human level)
+      ↓ Self-play
+RL Policy (surpasses humans)
+```
+
+See [Introduction to Reinforcement Learning](../reinforcement-intro) and [Self-Play](../self-play) for details.
+
+---
+
+## Implementation Notes
+
+### Complete Training Code
+
+```python
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader, Dataset
+
+class GoDataset(Dataset):
+    def __init__(self, data_path):
+        # Load preprocessed data
+        self.states = np.load(f"{data_path}/states.npy")
+        self.actions = np.load(f"{data_path}/actions.npy")
+
+    def __len__(self):
+        return len(self.states)
+
+    def __getitem__(self, idx):
+        state = torch.FloatTensor(self.states[idx])
+        action = torch.LongTensor([self.actions[idx]])[0]
+        return state, action
+
+def train_policy_network():
+    # Model
+    model = PolicyNetwork(input_channels=48, num_filters=192, num_layers=12)
+    model = model.cuda()
+
+    # Data
+    dataset = GoDataset("data/kgs")
+    dataloader = DataLoader(
+        dataset, batch_size=16, shuffle=True, num_workers=4
+    )
+
+    # Optimizer
+    optimizer = optim.SGD(
+        model.parameters(),
+        lr=0.003,
+        momentum=0.9,
+        weight_decay=1e-4
+    )
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=80_000_000, gamma=0.1)
+
+    # Training loop
+    best_accuracy = 0
+
+    for epoch in range(100):
+        model.train()
+        total_loss = 0
+        correct = 0
+        total = 0
+
+        for states, actions in dataloader:
+            states = states.cuda()
+            actions = actions.cuda()
+
+            # Forward pass
+            policy = model(states)
+            loss = nn.functional.cross_entropy(policy, actions)
+
+            # Backward pass
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            scheduler.step()
+
+            # Statistics
+            total_loss += loss.item()
+            predictions = policy.argmax(dim=1)
+            correct += (predictions == actions).sum().item()
+            total += actions.size(0)
+
+        accuracy = correct / total
+        print(f"Epoch {epoch}: Loss={total_loss/len(dataloader):.4f}, Acc={accuracy:.4f}")
+
+        # Save best model
+        if accuracy > best_accuracy:
+            best_accuracy = accuracy
+            torch.save(model.state_dict(), "best_policy.pth")
+
+    print(f"Best accuracy: {best_accuracy:.4f}")
+```
+
+### Evaluation Code
+
+```python
+def evaluate_policy(model, test_dataloader):
+    model.eval()
+
+    correct_top1 = 0
+    correct_top5 = 0
+    total = 0
+
+    with torch.no_grad():
+        for states, actions in test_dataloader:
+            states = states.cuda()
+            actions = actions.cuda()
+
+            policy = model(states)
+
+            # Top-1 accuracy
+            top1_pred = policy.argmax(dim=1)
+            correct_top1 += (top1_pred == actions).sum().item()
+
+            # Top-5 accuracy
+            top5_pred = policy.topk(5, dim=1)[1]
+            for i, action in enumerate(actions):
+                if action in top5_pred[i]:
+                    correct_top5 += 1
+
+            total += actions.size(0)
+
+    print(f"Top-1 Accuracy: {correct_top1/total:.4f}")
+    print(f"Top-5 Accuracy: {correct_top5/total:.4f}")
+```
+
+### Common Issues and Solutions
+
+| Issue | Symptom | Solution |
+|-------|---------|----------|
+| Overfitting | High train accuracy, low test accuracy | More data augmentation, Dropout |
+| Unstable training | Loss fluctuates wildly | Lower learning rate, larger batch size |
+| Slow convergence | Accuracy plateaus | Adjust learning rate, check data |
+| Out of memory | OOM error | Smaller batch size, mixed precision |
+
+---
+
+## Animation Reference
+
+Core concepts covered in this article with animation numbers:
+
+| Number | Concept | Physics/Math Correspondence |
+|--------|---------|----------------------------|
+| Animation D3 | Supervised learning | Maximum likelihood estimation |
+| Animation D5 | Cross-entropy loss | KL divergence |
+| Animation D6 | Gradient descent | Optimization |
+| Animation A6 | Data preprocessing | Standardization |
+
+---
+
+## Further Reading
+
+- **Previous**: [CNN and Go](../cnn-and-go) - How CNNs process the board
+- **Next**: [Introduction to Reinforcement Learning](../reinforcement-intro) - The key to surpassing humans
+- **Related Topic**: [Policy Network Explained](../policy-network) - Network architecture details
+
+---
+
+## Key Takeaways
+
+1. **KGS game records are the training data source**: About 30 million high-quality positions
+2. **Cross-entropy loss drives learning**: Makes model increase probability of correct positions
+3. **57% accuracy is a major breakthrough**: 13 percentage points better than previous best
+4. **8-fold symmetry augmentation**: Effectively increases training data
+5. **Supervised learning has a ceiling**: Cannot surpass training data level
+
+Supervised learning is AlphaGo's "starting point" - it inherited thousands of years of human Go wisdom, laying the foundation for subsequent reinforcement learning.
+
+---
+
+## References
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. Maddison, C. J., et al. (2014). "Move Evaluation in Go Using Deep Convolutional Neural Networks." *arXiv:1412.6564*.
+3. Clark, C., & Storkey, A. (2015). "Training Deep Convolutional Neural Networks to Play Go." *ICML*.
+4. KGS Game Archives: [https://www.gokgs.com/archives.jsp](https://www.gokgs.com/archives.jsp)

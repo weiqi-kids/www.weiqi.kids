@@ -1,0 +1,631 @@
+---
+sidebar_position: 14
+title: Auto-juego
+description: Comprensión profunda de cómo AlphaGo superó los límites del nivel humano a través del auto-juego
+---
+
+import { EloChart } from '@site/src/components/D3Charts';
+
+# Auto-juego
+
+En el artículo anterior, presentamos los conceptos básicos del aprendizaje por refuerzo. Ahora, exploremos una de las claves del éxito de AlphaGo: el **auto-juego (Self-Play)**.
+
+Este es un concepto aparentemente contradictorio: **¿Cómo puede una IA volverse más fuerte jugando contra sí misma?**
+
+La respuesta es profunda y elegante, involucrando teoría de juegos, dinámica evolutiva y la naturaleza del aprendizaje.
+
+---
+
+## ¿Por qué funciona el auto-juego?
+
+### Explicación intuitiva
+
+Imagina que eres un principiante de Go, practicando solo en una isla desierta:
+
+1. Juegas una partida, jugando simultáneamente como negro y blanco
+2. Después de la partida, analizas qué movimientos fueron buenos y cuáles malos
+3. En la siguiente partida, intentas evitar los errores anteriores
+4. Repites este proceso millones de veces
+
+Intuitivamente, esto parece tener problemas:
+- Si tu nivel es muy bajo, ambos lados juegan mal, ¿qué se puede aprender?
+- ¿No caerás en un "equilibrio de errores" donde ambos lados juegan mal pero se cancelan mutuamente?
+
+Pero en realidad, el auto-juego puede producir progreso continuo. Aquí está el porqué:
+
+### Descubrimiento progresivo de debilidades
+
+La idea clave es: **incluso si ambos lados son la misma IA, el resultado de cada partida todavía contiene información**.
+
+```
+Posición A: la IA eligió el movimiento X, finalmente ganó
+Posición A: la IA eligió el movimiento Y, finalmente perdió
+
+→ Conclusión: en la posición A, X es mejor que Y
+```
+
+A través de estadísticas de muchas partidas, la IA puede aprender qué elecciones son mejores en cada posición. Esta es la esencia del **gradiente de política**: las buenas elecciones se refuerzan, las malas se suprimen.
+
+### Aprendizaje adversarial
+
+El auto-juego tiene una propiedad especial: **el oponente de entrenamiento se adapta automáticamente a tu nivel**.
+
+```
+Ciclo de entrenamiento 1: la IA descubre una táctica efectiva T
+Ciclo de entrenamiento 2: la IA como oponente aprende a defender contra T
+Ciclo de entrenamiento 3: la IA original se ve forzada a buscar una mejor táctica T'
+```
+
+Esto forma una **carrera armamentista (Arms Race)**, donde ambos lados continuamente descubren y superan las debilidades del otro.
+
+### Comparación con partidas humanas
+
+| Método de entrenamiento | Ventajas | Desventajas |
+|------------------------|----------|-------------|
+| **Partidas humanas** | Aprende la cristalización de la sabiduría humana | Limitado al nivel humano |
+| **Auto-juego** | Potencial de mejora ilimitado | Puede caer en óptimos locales |
+| **Ambos combinados** | Inicio rápido + mejora continua | Mejor estrategia |
+
+La versión original de AlphaGo primero usó aprendizaje supervisado con partidas humanas, luego aprendizaje por refuerzo con auto-juego. AlphaGo Zero demostró que solo con auto-juego también puede alcanzar nivel sobrehumano.
+
+---
+
+## Perspectiva de teoría de juegos
+
+### Equilibrio de Nash
+
+En teoría de juegos, el **equilibrio de Nash** es un estado estable: en este estado, ningún jugador tiene incentivo para cambiar unilateralmente su estrategia.
+
+Para **juegos de suma cero con información perfecta** como Go, el equilibrio de Nash tiene un significado especial:
+
+$$\pi^* = \arg\max_\pi \min_{\pi'} V(\pi, \pi')$$
+
+Donde $V(\pi, \pi')$ es el valor esperado cuando la estrategia $\pi$ juega contra la estrategia $\pi'$.
+
+Este es el famoso **principio Minimax**: la mejor estrategia es aquella que tiene el mejor rendimiento en el peor caso.
+
+### Auto-juego y equilibrio de Nash
+
+Teóricamente, si el auto-juego puede converger, debería converger al equilibrio de Nash. Para juegos deterministas como Go, el equilibrio de Nash es el **juego perfecto**.
+
+Pero el espacio de estados de Go es demasiado grande ($10^{170}$), no podemos encontrar el verdadero equilibrio de Nash. El auto-juego en realidad está **aproximando** este equilibrio.
+
+### Fictitious Play
+
+El auto-juego está relacionado con el concepto de **fictitious play** en teoría de juegos:
+
+1. Cada jugador observa el historial de estrategias del oponente
+2. Calcula la distribución promedio de las estrategias del oponente
+3. Elige la mejor respuesta contra esta distribución promedio
+
+Bajo ciertas condiciones, se puede probar que fictitious play converge al equilibrio de Nash.
+
+El auto-juego de AlphaGo puede verse como una implementación de red neuronal de este concepto.
+
+---
+
+## Mecanismo del auto-juego
+
+### Flujo básico
+
+El flujo de auto-juego de AlphaGo:
+
+```
+Algoritmo: Self-Play Training
+
+Inicialización: Policy Network π_θ (puede comenzar desde aprendizaje supervisado o inicialización aleatoria)
+
+Repetir los siguientes pasos hasta convergencia:
+
+1. Generar datos de partidas
+   Para i = 1 hasta N (en paralelo):
+     a. Realizar una partida de auto-juego con la política actual π_θ
+     b. Recopilar trayectoria: τ_i = (s_0, a_0, r_1, s_1, a_1, ...)
+     c. Registrar resultado final z_i ∈ {-1, +1}
+
+2. Actualizar política
+   a. Calcular gradiente de política:
+      ∇J = (1/N) Σ_i Σ_t ∇_θ log π_θ(a_t|s_t) · z_i
+   b. Actualizar parámetros: θ ← θ + α · ∇J
+
+3. Actualizar red de valor
+   a. Entrenar Value Network con pares (s, z)
+   b. Minimizar: L = E[(V_φ(s) - z)²]
+
+4. Opcional: Evaluar y guardar checkpoint
+   a. Hacer que la nueva política juegue contra versiones anteriores
+   b. Si tasa de victoria > 55%, actualizar el pool de oponentes
+```
+
+### Generación de datos de entrenamiento
+
+Cada partida de auto-juego produce una **trayectoria**:
+
+$$\tau = (s_0, a_0, s_1, a_1, \ldots, s_T, z)$$
+
+Donde:
+- $s_t$: estado del tablero en el paso de tiempo $t$
+- $a_t$: acción elegida en el paso de tiempo $t$
+- $z$: resultado final (+1 victoria, -1 derrota)
+
+Una partida de 200 movimientos produce 200 muestras de entrenamiento. Con cientos de miles de partidas de auto-juego por día, la cantidad de datos de entrenamiento es asombrosa.
+
+### Actualización de política
+
+Usando gradiente de política para actualizar la Policy Network:
+
+$$\theta \leftarrow \theta + \alpha \cdot \nabla_\theta \mathbb{E}\left[\sum_t \log \pi_\theta(a_t|s_t) \cdot z\right]$$
+
+El efecto de esta actualización:
+- Si finalmente gana ($z = +1$), aumentar la probabilidad de todos los movimientos
+- Si finalmente pierde ($z = -1$), disminuir la probabilidad de todos los movimientos
+
+Esto parece tosco: al ganar también puede haber malos movimientos, al perder también puede haber buenos movimientos. Pero a través de estadísticas de muchas partidas, este "ruido" se promedia, y los verdaderos buenos movimientos son identificados.
+
+### Entrenamiento de la red de valor
+
+La Value Network usa **regresión** para entrenar:
+
+$$\phi \leftarrow \phi - \beta \cdot \nabla_\phi \mathbb{E}\left[(V_\phi(s) - z)^2\right]$$
+
+Esto hace que la Value Network aprenda a predecir: ¿cuál es la probabilidad de ganar desde la posición actual?
+
+El papel de la Value Network es:
+1. Proporcionar evaluación de nodos hoja en MCTS
+2. Servir como línea base para el gradiente de política
+3. Usarse directamente para evaluación de posición
+
+---
+
+## Importancia de la aleatorización
+
+### Evitar ciclos deterministas
+
+Si el auto-juego es completamente determinista, puede caer en ciclos:
+
+```
+La política A siempre juega la misma apertura
+La política A vs la política A siempre produce la misma partida
+Solo una partida se aprende repetidamente
+La IA no puede explorar otras posibilidades
+```
+
+Por eso la **aleatorización** es crucial en el auto-juego.
+
+### Fuentes de aleatorización
+
+Formas en que AlphaGo introduce aleatorización en el auto-juego:
+
+**1. La red de política en sí es estocástica**
+
+La Policy Network produce una distribución de probabilidad, no una elección determinista:
+
+$$a \sim \pi_\theta(a|s)$$
+
+La misma posición puede elegir diferentes movimientos cada vez.
+
+**2. Parámetro de temperatura**
+
+Usar temperatura más alta durante el entrenamiento para aumentar diversidad:
+
+$$\pi_\tau(a|s) = \frac{\pi_\theta(a|s)^{1/\tau}}{\sum_{a'} \pi_\theta(a'|s)^{1/\tau}}$$
+
+- $\tau > 1$: más aleatorio, más exploración
+- $\tau < 1$: más determinista, más explotación
+- $\tau = 1$: distribución original
+
+**3. Ruido de Dirichlet (Dirichlet Noise)**
+
+AlphaGo Zero añade ruido de Dirichlet a la probabilidad a priori del nodo raíz durante el auto-juego:
+
+$$P(s, a) = (1 - \varepsilon) \cdot \pi_\theta(a|s) + \varepsilon \cdot \eta_a$$
+
+Donde $\eta \sim \text{Dir}(\alpha)$, $\varepsilon = 0.25$, $\alpha = 0.03$ (para las 361 acciones de Go).
+
+Esto asegura que incluso movimientos de muy baja probabilidad tengan oportunidad de ser explorados.
+
+### Método de pool de juego (Population)
+
+Otra forma de aumentar diversidad es mantener un **pool de juego**:
+
+```
+Pool de juego = [π_1, π_2, π_3, ..., π_k] (diferentes versiones de políticas)
+
+Cada partida:
+1. Elegir aleatoriamente un oponente del pool
+2. Jugar contra ese oponente
+3. Usar el resultado para actualizar la política actual
+4. Periódicamente añadir políticas mejoradas al pool
+```
+
+Beneficios de este método:
+- **Diversidad**: oponentes de diferentes estilos
+- **Estabilidad**: evitar sobreajuste a un oponente específico
+- **Robustez**: aprender a manejar varias estrategias
+
+Tanto AlphaGo original como AlphaGo Zero usaron técnicas similares.
+
+---
+
+## Curva de crecimiento de fuerza
+
+### Sistema de rating Elo
+
+Para rastrear los cambios en la fuerza de la IA, AlphaGo usa el **sistema de rating Elo**.
+
+Principio básico del sistema Elo:
+
+$$P(\text{A gana}) = \frac{1}{1 + 10^{(R_B - R_A)/400}}$$
+
+Donde $R_A$ y $R_B$ son los puntajes Elo de ambos jugadores.
+
+- Diferencia de 200: el más fuerte espera ganar 75%
+- Diferencia de 400: el más fuerte espera ganar 90%
+- Diferencia de 800: el más fuerte espera ganar 99%
+
+### Crecimiento de fuerza de AlphaGo
+
+Visualicemos el crecimiento de fuerza de las diferentes versiones de AlphaGo:
+
+<EloChart mode="zero" width={700} height={400} showMilestones={true} />
+
+### Análisis de velocidad de crecimiento
+
+De la curva podemos observar varios fenómenos interesantes:
+
+**1. Crecimiento rápido inicial**
+
+En las primeras horas de entrenamiento, la IA aprende reglas básicas y tácticas simples. Esta es la fase de **fruta fácil**: hay demasiados errores obvios por corregir.
+
+**2. Crecimiento estable en la fase media**
+
+A medida que se eliminan los errores básicos, la IA comienza a aprender tácticas más sutiles y joseki. La velocidad de crecimiento disminuye, pero sigue siendo estable.
+
+**3. Crecimiento desacelerado en la fase tardía**
+
+Cuando la IA ya es muy fuerte, la mejora adicional se vuelve difícil. Puede necesitar descubrir estrategias completamente nuevas, no solo corregir errores.
+
+### El momento de superar a los humanos
+
+Hitos clave en la curva de entrenamiento de AlphaGo:
+
+| Hito | Equivalente a | Tiempo alcanzado |
+|------|---------------|------------------|
+| Superar aficionados fuertes | Elo ~2700 | Aproximadamente 3 horas |
+| Superar a Fan Hui | Elo ~3500 | Aproximadamente 36 horas |
+| Superar a Lee Sedol | Elo ~4500 | Aproximadamente 60 horas |
+| Superar AlphaGo original | Elo ~5000 | Aproximadamente 72 horas |
+
+Estos números (de AlphaGo Zero) son asombrosos: **la IA superó miles de años de sabiduría humana del Go en 3 días partiendo desde cero**.
+
+---
+
+## Análisis de convergencia
+
+### ¿Converge el auto-juego?
+
+Esta es una pregunta teórica importante. La respuesta corta es: **bajo ciertas condiciones sí, pero Go es demasiado complejo para probarlo rigurosamente**.
+
+### Garantías teóricas
+
+Para juegos más simples (como tres en raya), se puede probar:
+
+1. **Existencia**: existe equilibrio de Nash (teorema Minimax)
+2. **Convergencia**: ciertos algoritmos (como fictitious play) convergen al equilibrio de Nash
+
+Para Go, no tenemos garantías rigurosas de convergencia, pero la evidencia experimental muestra:
+- La fuerza continúa mejorando
+- No aparecen oscilaciones o degradación obvias
+- La fuerza final supera a todos los humanos conocidos
+
+### Posibles modos de fallo
+
+Problemas que puede encontrar el auto-juego:
+
+**1. Ciclo de estrategias (Strategy Cycling)**
+
+```
+Estrategia A vence a estrategia B
+Estrategia B vence a estrategia C
+Estrategia C vence a estrategia A
+```
+
+Esto realmente ocurre en algunos juegos (como piedra-papel-tijera). Pero Go tiene suficiente complejidad, este tipo de ciclo puro parece no ocurrir.
+
+**2. Sobreajuste a sí mismo**
+
+La IA puede aprender estrategias que solo funcionan contra su propio estilo, y no puede manejar oponentes de otros estilos. Por eso AlphaGo juega contra diferentes versiones de sí mismo, y finalmente prueba contra jugadores humanos.
+
+**3. Óptimo local**
+
+La IA puede caer en un óptimo local: una estrategia "bastante buena pero no la mejor". La aleatorización y muchas partidas ayudan a evitar este problema.
+
+### Observaciones prácticas
+
+De las observaciones del proceso de entrenamiento de AlphaGo:
+
+1. **Progreso continuo**: el puntaje Elo continúa subiendo con el entrenamiento
+2. **Sin degradación**: no aparece una caída repentina de fuerza
+3. **Evolución de estilo**: el estilo de juego de la IA cambia gradualmente con el entrenamiento
+4. **Descubrimiento de nuevos joseki**: la IA descubre aperturas y tácticas que los humanos nunca han usado
+
+Estas observaciones indican que, aunque no tenemos garantías teóricas, el auto-juego realmente funciona en la práctica.
+
+---
+
+## Detalles de implementación
+
+### Auto-juego paralelo
+
+Para acelerar el entrenamiento, AlphaGo usa auto-juego paralelo a gran escala:
+
+```
+Arquitectura:
+
+    ┌────────────────────────────────────────────┐
+    │           Parameter Server                  │
+    │    (almacena el θ más reciente, recibe     │
+    │     actualizaciones de gradiente)          │
+    └────────────────────────────────────────────┘
+         ▲                              │
+         │ actualización de gradiente   │ parámetros más recientes
+         │                              ▼
+    ┌─────────┐  ┌─────────┐  ┌─────────┐
+    │ Worker 1 │  │ Worker 2 │  │ Worker N │
+    │ auto-juego│  │ auto-juego│  │ auto-juego│
+    │ recopilar │  │ recopilar │  │ recopilar │
+    │ trayectorias│ │ trayectorias│ │ trayectorias│
+    └─────────┘  └─────────┘  └─────────┘
+```
+
+**Decisiones de diseño clave**:
+
+- **Síncrono vs asíncrono**: AlphaGo usa actualizaciones asíncronas, los Workers no necesitan esperarse
+- **Frecuencia de actualización**: actualiza parámetros cada N partidas completadas
+- **Selección de oponente**: elige aleatoriamente una de las versiones recientes como oponente
+
+### Estrategia de checkpoint
+
+Guardar checkpoints del modelo periódicamente, para:
+
+1. **Pool de juego**: mantener oponentes de diferentes versiones
+2. **Evaluación**: rastrear cambios de fuerza
+3. **Recuperación de fallos**: puede recuperar si el entrenamiento se interrumpe
+
+```python
+# Pseudocódigo
+def training_loop():
+    for iteration in range(num_iterations):
+        # Generar datos de partidas
+        trajectories = parallel_self_play(current_policy, num_games=1000)
+
+        # Actualizar política
+        update_policy(trajectories)
+
+        # Evaluar y guardar periódicamente
+        if iteration % 100 == 0:
+            elo = evaluate_against_pool(current_policy)
+            save_checkpoint(current_policy, elo)
+
+            if elo > best_elo:
+                add_to_pool(current_policy)
+                best_elo = elo
+```
+
+### Requisitos de recursos de entrenamiento
+
+La escala de entrenamiento de AlphaGo es impresionante:
+
+| Versión | Hardware | Tiempo de entrenamiento | Partidas de auto-juego |
+|---------|----------|------------------------|------------------------|
+| AlphaGo Fan | 176 GPU | Varios meses | ~30M |
+| AlphaGo Lee | 48 TPU | Varias semanas | ~30M |
+| AlphaGo Zero | 4 TPU | 3 días | ~5M |
+| AlphaGo Zero (versión 40 días) | 4 TPU | 40 días | ~30M |
+
+Nota que AlphaGo Zero logró fuerza mayor con menos hardware y menos tiempo: esto es mejora en eficiencia del algoritmo.
+
+### Configuración de hiperparámetros
+
+Algunos hiperparámetros clave:
+
+```python
+# Configuración de auto-juego
+NUM_PARALLEL_GAMES = 5000      # Partidas simultáneas
+GAMES_PER_ITERATION = 25000    # Partidas por iteración
+MCTS_SIMULATIONS = 1600        # Simulaciones MCTS por movimiento
+
+# Configuración de entrenamiento
+BATCH_SIZE = 2048              # Tamaño de lote de entrenamiento
+LEARNING_RATE = 0.01           # Tasa de aprendizaje inicial
+L2_REGULARIZATION = 1e-4       # Decaimiento de pesos
+
+# Configuración de exploración
+TEMPERATURE = 1.0              # Temperatura para primeros 30 movimientos
+DIRICHLET_ALPHA = 0.03         # Parámetro de ruido Dirichlet
+EXPLORATION_FRACTION = 0.25    # Proporción de ruido
+```
+
+Estos hiperparámetros fueron ajustados a través de muchos experimentos, con impacto significativo en los resultados del entrenamiento.
+
+---
+
+## Variantes del auto-juego
+
+### AlphaGo original
+
+Flujo de entrenamiento de AlphaGo original:
+
+```
+1. Aprendizaje supervisado (SL): aprender de partidas humanas
+   → Produce SL Policy Network (π_SL)
+
+2. Aprendizaje por refuerzo (RL): auto-juego
+   Inicializar π_RL = π_SL
+   Pool de oponentes = [π_SL]
+
+   Repetir:
+     a. π_RL juega contra políticas del pool
+     b. Actualizar π_RL con gradiente de política
+     c. Si π_RL se vuelve más fuerte, añadir al pool
+
+   → Produce RL Policy Network (π_RL)
+
+3. Entrenamiento de red de valor:
+   Usar π_RL para auto-juego y generar posiciones
+   Entrenar V(s) para predecir tasa de victoria
+```
+
+### AlphaGo Zero
+
+AlphaGo Zero simplificó este flujo:
+
+```
+1. Auto-juego puro (sin datos humanos)
+   Inicializar red aleatoria f_θ
+
+   Repetir:
+     a. Usar MCTS + f_θ para auto-juego
+     b. Entrenar cabeza de política y cabeza de valor simultáneamente
+     c. Actualizar f_θ
+
+   → Una sola red produce política y valor
+```
+
+Mejoras clave:
+- **Sin datos humanos necesarios**: desde cero
+- **Red única**: política y valor comparten características
+- **Entrenamiento más simple**: aprendizaje de extremo a extremo
+
+### AlphaZero
+
+AlphaZero generalizó aún más:
+
+```
+Mismo algoritmo, diferentes juegos:
+- Go: alcanza nivel más allá de AlphaGo Zero
+- Ajedrez: supera a Stockfish
+- Shogi: supera a Elmo
+
+Única parte específica del juego: codificación de reglas
+```
+
+Esto demuestra que el auto-juego es un **paradigma de aprendizaje general**, no limitado a Go.
+
+---
+
+## ¿Qué aprendieron los humanos de esto?
+
+### Nuevos joseki descubiertos por la IA
+
+El auto-juego produjo muchos movimientos que los humanos nunca habían usado:
+
+**1. Innovaciones de apertura**
+
+Algunas aperturas preferidas por AlphaGo:
+- Invasión 3-3: invadir la esquina temprano
+- Movimientos altos: tradicionalmente considerados "inestables"
+- Variación de gran avalancha: los humanos consideran compleja de calcular
+
+**2. Nueva evaluación posicional**
+
+La evaluación de la IA de algunas posiciones difiere significativamente de los humanos:
+- Algunas formas aparentemente "delgadas" son en realidad sólidas
+- El valor de algunas "paredes gruesas" está sobreestimado
+- Reevaluación de "sente" y "gote"
+
+### Impacto en el Go humano
+
+Después de AlphaGo, el Go profesional cambió significativamente:
+
+1. **Diversificación de aperturas**: los profesionales comenzaron a usar nuevas aperturas descubiertas por la IA
+2. **Cambio en métodos de entrenamiento**: la IA se convirtió en la principal herramienta de entrenamiento para profesionales
+3. **Reconsideración de la teoría**: muchos "principios" tradicionales fueron cuestionados y corregidos
+4. **Nueva estética**: comenzar a apreciar el estilo de juego de la IA
+
+Ke Jie dijo después de perder contra AlphaGo:
+
+> "AlphaGo me hizo redescubrir el Go. Antes pensaba que los humanos entendíamos el Go, ahora sé que solo habíamos tocado la superficie."
+
+---
+
+## Reflexiones filosóficas
+
+### La naturaleza del aprendizaje
+
+El auto-juego plantea preguntas profundas sobre el aprendizaje:
+
+**¿De dónde viene el conocimiento?**
+
+- El aprendizaje humano depende de información externa (maestros, libros, experiencia)
+- La IA de auto-juego solo tiene reglas, no conocimiento externo
+- Pero aún puede "descubrir" conocimiento: ¿de dónde viene?
+
+La respuesta puede ser: **el conocimiento está implícito en las reglas y estructura del juego**. Las reglas de Go definen qué es un buen movimiento y qué es malo, el auto-juego simplemente revela estas estructuras implícitas.
+
+### Creatividad y descubrimiento
+
+Cuando la IA juega el "Movimiento 37" (Move 37), ¿es creación o descubrimiento?
+
+Una perspectiva es: ese movimiento siempre "existió" en las reglas de Go, la IA solo lo "descubrió".
+Otra perspectiva es: la IA "creó" ese movimiento, porque nadie (incluyendo la IA misma) lo conocía de antemano.
+
+Esta pregunta no tiene respuesta estándar, pero desafía nuestra comprensión tradicional de la creatividad.
+
+### El lugar de la inteligencia humana
+
+Si la IA puede partir de cero, a través del auto-juego superar miles de años de sabiduría humana, ¿qué significa esto para los humanos?
+
+Visión optimista:
+- La IA es una herramienta creada por humanos
+- Los descubrimientos de la IA pueden mejorar la comprensión humana
+- Los humanos pueden colaborar con la IA para alcanzar niveles más altos
+
+Visión cautelosa:
+- En ciertos dominios, la computación pura puede superar la intuición humana
+- Necesita reconsiderarse el valor de las "habilidades profesionales"
+- Los métodos de educación y entrenamiento pueden necesitar cambiar
+
+---
+
+## Correspondencia con animaciones
+
+Conceptos centrales de este artículo y números de animación:
+
+| Número | Concepto | Correspondencia física/matemática |
+|--------|----------|-----------------------------------|
+| E5 | Ciclo de auto-juego | Iteración de punto fijo |
+| E6 | Evolución de estrategia | Dinámica evolutiva |
+
+---
+
+## Resumen
+
+El auto-juego es una de las tecnologías clave del éxito de AlphaGo. Aprendimos:
+
+1. **Por qué funciona**: aprendizaje adversarial, descubrimiento progresivo de debilidades
+2. **Mecanismo**: recopilación de trayectorias, gradiente de política, entrenamiento de red de valor
+3. **Aleatorización**: parámetro de temperatura, ruido de Dirichlet, pool de juego
+4. **Crecimiento de fuerza**: sistema Elo, análisis de curva de crecimiento
+5. **Convergencia**: garantías teóricas y observaciones prácticas
+6. **Detalles de implementación**: entrenamiento paralelo, estrategia de checkpoint, hiperparámetros
+
+En el próximo artículo, exploraremos cómo AlphaGo combina redes neuronales con MCTS, aprovechando las fortalezas de ambos.
+
+---
+
+## Lecturas adicionales
+
+- **Siguiente artículo**: [Combinación de MCTS y redes neuronales](../mcts-neural-combo) — La perfecta combinación de intuición y razonamiento
+- **Artículo anterior**: [Introducción al aprendizaje por refuerzo](../reinforcement-intro) — Conceptos básicos del aprendizaje por refuerzo
+- **Relacionado**: [Descripción general de AlphaGo Zero](../alphago-zero) — El avance desde cero
+
+---
+
+## Referencias
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 550, 354-359.
+3. Silver, D., et al. (2018). "A general reinforcement learning algorithm that masters chess, shogi, and Go through self-play." *Science*, 362(6419), 1140-1144.
+4. Heinrich, J., & Silver, D. (2016). "Deep Reinforcement Learning from Self-Play in Imperfect-Information Games." *arXiv preprint*.
+5. Lanctot, M., et al. (2017). "A Unified Game-Theoretic Approach to Multiagent Reinforcement Learning." *NeurIPS*.

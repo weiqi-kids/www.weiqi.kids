@@ -1,0 +1,508 @@
+---
+sidebar_position: 3
+title: Revisiones de partidas clave
+description: Desde las partidas secretas de Fan Hui hasta las tres partidas contra Ke Jie, una revisión completa de cada partida importante de AlphaGo
+---
+
+# Revisiones de partidas clave
+
+La historia de AlphaGo está escrita a través de partidas que sacudieron al mundo. Desde las partidas secretas en Londres en octubre de 2015 hasta la actuación de despedida en Wuzhen en mayo de 2017, cada partida reescribió la comprensión humana del Go y la inteligencia artificial.
+
+Este artículo revisará completamente el trasfondo, el proceso y el significado de estas partidas clave.
+
+---
+
+## Partidas contra Fan Hui (octubre de 2015): Un 5:0 secreto
+
+### Antecedentes: ¿Por qué eligieron a Fan Hui?
+
+Antes de que AlphaGo desafiara a los mejores jugadores del mundo, DeepMind necesitaba un "campo de pruebas". Necesitaban un jugador profesional para verificar la verdadera fuerza de AlphaGo, pero este jugador debía cumplir varias condiciones:
+
+1. **Verdadero nivel profesional**: Los jugadores amateur no podían probar con precisión la fuerza de la IA
+2. **Dispuesto a mantener la confidencialidad**: No podía filtrar la información antes de la publicación del artículo
+3. **Ubicación geográfica conveniente**: Facilidad para realizar múltiples partidas oficiales
+4. **Mente abierta**: Dispuesto a tomar en serio a un oponente de IA
+
+**Fan Hui** cumplía perfectamente estas condiciones. Este jugador profesional nacido en Xi'an, China, se convirtió en profesional en 1996, ascendió a 2-dan en 2000, y luego se mudó a Francia donde se convirtió en campeón europeo de Go. Era el jugador profesional más fuerte de Europa en ese momento y también tenía una actitud abierta hacia la inteligencia artificial.
+
+### Arreglos de las partidas
+
+En octubre de 2015, Fan Hui fue invitado a la sede de DeepMind en Londres. Después de firmar un acuerdo de confidencialidad, jugó **5 partidas oficiales** contra AlphaGo.
+
+Condiciones de las partidas:
+- **Tiempo**: 1 hora por lado, 30 segundos por movimiento en byoyomi
+- **Reglas**: Reglas chinas, komi de 7.5 puntos
+- **Entorno**: Oficina de DeepMind, con Aja Huang colocando las piedras
+
+### El impactante 5:0
+
+El resultado sorprendió a todos: **AlphaGo ganó 5:0**.
+
+| Partida | Fecha | Resultado | Notas |
+|---------|-------|-----------|-------|
+| 1ra | 5 de octubre | AlphaGo gana por abandono | Fan Hui jugó negras |
+| 2da | 6 de octubre | AlphaGo gana por abandono | Fan Hui jugó blancas |
+| 3ra | 7 de octubre | AlphaGo gana por abandono | Fan Hui jugó negras |
+| 4ta | 8 de octubre | AlphaGo gana por 1.5 puntos | Fan Hui jugó blancas |
+| 5ta | 9 de octubre | AlphaGo gana por abandono | Fan Hui jugó negras |
+
+E1: Estas 5 partidas demostraron cómo la Policy Network guía la dirección de la búsqueda
+
+Fan Hui recordó más tarde:
+
+> "Perdí la primera partida, pensé que debí haber sido descuidado. Perdí la segunda y empecé a tomarla en serio. La tercera, cuarta y quinta las perdí todas. Supe que el problema no era yo—el Go había cambiado."
+
+### ¿Por qué mantenerlo en secreto?
+
+DeepMind eligió mantenerlo en secreto por varias razones:
+
+1. **Publicación académica**: El artículo necesitaba pasar por revisión de pares
+2. **Tiempo de verificación**: Se necesitaba tiempo para confirmar la reproducibilidad de los resultados
+3. **Estrategia comercial**: Elegir el mejor momento para anunciar la noticia
+4. **Proteger a Fan Hui**: Evitar que sufriera presión antes de la publicación
+
+Este secreto se mantuvo durante tres meses completos hasta que el artículo de *Nature* se publicó en enero de 2016.
+
+### La transformación de Fan Hui
+
+Después de perder estas 5 partidas, Fan Hui no se sintió deprimido. Por el contrario, se convirtió en miembro del equipo de AlphaGo, responsable de probar y mejorar el sistema.
+
+> "No fui derrotado por la IA, me convertí en parte del desarrollo de la IA. Es un honor, no una vergüenza."
+
+Esta actitud abierta se convirtió más tarde en un modelo para la comunidad del Go al enfrentar la IA.
+
+---
+
+## Partidas contra Lee Sedol (marzo de 2016): Cinco partidas que cambiaron el mundo
+
+### Preparación para el duelo del siglo
+
+El 27 de enero de 2016, después de la publicación del artículo en *Nature*, DeepMind anunció que desafiaría a un jugador de élite mundial. El objetivo: **Lee Sedol**.
+
+¿Por qué Lee Sedol?
+
+- **18 títulos de campeonato mundial**: Uno de los jugadores más exitosos de la última década
+- **El apodo de "Calculador Divino"**: Conocido por su cálculo preciso
+- **Estilo de lucha**: Le gustan las partidas complejas e intensas
+- **35 años en su mejor momento**: El mejor equilibrio entre experiencia y condición física
+
+E3: El estilo de Lee Sedol era perfecto para probar los límites de MCTS
+
+### Configuración del partido
+
+- **Lugar**: Hotel Four Seasons, Seúl, Corea del Sur
+- **Fecha**: 9-15 de marzo de 2016
+- **Premio**: 1 millón de dólares (para el ganador, dividido o donado a caridad)
+- **Reglas**: Reglas chinas, komi de 7.5 puntos
+- **Tiempo**: 2 horas por lado, 1 minuto por movimiento en byoyomi con 3 períodos
+
+La transmisión en vivo llegó a más de 200 países y regiones, con una audiencia estimada de más de **200 millones de personas**.
+
+### Primera partida: Un comienzo impactante
+
+**9 de marzo de 2016**
+
+Lee Sedol jugó negras y abrió primero. La fase de apertura fue bastante convencional para ambos lados. Pero en el medio juego, AlphaGo mostró una visión global asombrosa.
+
+En el movimiento 102, AlphaGo hizo un movimiento que parecía una concesión, cediendo territorio en el lado derecho. Los jugadores profesionales expresaron su confusión. Pero 20 movimientos después, la brillantez del movimiento se hizo evidente—AlphaGo usó las piedras sacrificadas para construir una influencia central y finalmente obtuvo ventaja en todo el tablero.
+
+**Resultado: AlphaGo gana por abandono**
+
+Después de la partida, Lee Sedol dijo:
+
+> "Estoy muy sorprendido. No esperaba perder, y mucho menos perder tan completamente."
+
+E5: Esta partida demostró la capacidad de la Value Network para evaluar la posición global
+
+### Segunda partida: El nacimiento de la "Jugada divina"
+
+**10 de marzo de 2016**
+
+Esta partida vio nacer lo que se llamó la "**Jugada divina**" en el movimiento 37. (Ver siguiente artículo: [Análisis profundo de la "Jugada divina"](../move-37))
+
+AlphaGo jugó un "ataque al hombro en quinta línea" en la esquina superior derecha—una posición que los humanos casi nunca considerarían. El comentarista dijo inmediatamente que era un "error", pero 50 movimientos después, se demostró que esta jugada fue clave para la victoria.
+
+**Resultado: AlphaGo gana por abandono**
+
+El comentarista coreano Kim Seong-ryong 9-dan dijo después de la partida:
+
+> "He jugado Go durante 50 años y nunca vi un Go así. AlphaGo me hizo repensar qué es el Go."
+
+E7: El movimiento 37 mostró cómo la IA puede descubrir estrategias desconocidas para los humanos
+
+### Tercera partida: El desesperante 3:0
+
+**12 de marzo de 2016**
+
+En esta partida, Lee Sedol intentó una apertura no convencional, esperando llevar a AlphaGo a territorio desconocido. Adoptó una variación de la apertura "Pequeño estilo chino", intentando ganar con luchas complejas.
+
+Pero la respuesta de AlphaGo siguió siendo serena. Mostró una capacidad de adaptación asombrosa—no importaba qué jugara el humano, siempre encontraba la mejor respuesta.
+
+**Resultado: AlphaGo gana por abandono**
+
+El marcador llegó a 3:0, el partido ya no tenía suspenso. Pero todos se preguntaban: ¿Podrían los humanos ganar una partida?
+
+### Cuarta partida: El contraataque humano
+
+**13 de marzo de 2016**
+
+Esta partida quedará en la historia—no por la magia de la IA, sino por el **contraataque humano**.
+
+Cuando la posición llegó al movimiento 78, Lee Sedol, en byoyomi, hizo un movimiento asombroso: **una jugada brillante en quinta línea**.
+
+Era un movimiento de "penetración" tesuji, aparentemente ordinario, pero puso a AlphaGo en caos. En los siguientes movimientos, la evaluación de probabilidad de victoria de AlphaGo fluctuó drásticamente, haciendo varios movimientos obviamente malos.
+
+E9: Esta partida expuso la debilidad de MCTS en posiciones específicas
+
+El equipo de DeepMind analizó más tarde que la evaluación de probabilidad de victoria de AlphaGo tuvo errores en esa posición. Subestimó el poder del movimiento de Lee Sedol, lo que llevó a errores en las respuestas subsiguientes.
+
+**Resultado: Lee Sedol gana por abandono**
+
+Esta fue la única derrota de AlphaGo en competición oficial. Lee Sedol dijo emocionado:
+
+> "Esta victoria no tiene precio. Demuestra que los jugadores humanos aún pueden derrotar a la IA—al menos en ciertas posiciones."
+
+El CEO de Google DeepMind, Demis Hassabis, tuiteó:
+
+> "Lee Sedol es una verdadera leyenda. Encontró la debilidad de AlphaGo y la explotó con precisión."
+
+### Quinta partida: El final
+
+**15 de marzo de 2016**
+
+Después de obtener una preciosa victoria, Lee Sedol entró en la quinta partida con una mentalidad más relajada. Adoptó una estrategia más agresiva, tratando de encontrar de nuevo las debilidades de AlphaGo.
+
+Pero el equipo de DeepMind hizo ajustes de emergencia después de la cuarta partida. Esta versión de AlphaGo parecía más estable, sin los errores de evaluación anteriores.
+
+**Resultado: AlphaGo gana por abandono**
+
+**Marcador final: AlphaGo 4:1 Lee Sedol**
+
+### El significado histórico de las partidas
+
+El impacto de este partido fue mucho más allá del mundo del Go:
+
+#### Para la inteligencia artificial
+
+- **Demostró el poder del aprendizaje profundo**: La IA puede superar a los humanos en tareas de decisión complejas
+- **Hito del aprendizaje por refuerzo**: El entrenamiento por auto-juego demostró ser efectivo
+- **Inspiró investigaciones posteriores**: Desencadenó una ola de inversión en el campo de la IA
+
+#### Para el mundo del Go
+
+- **Se desafiaron las teorías tradicionales**: Muchos "joseki" demostraron ser subóptimos
+- **Cambio en los métodos de entrenamiento**: Los jugadores profesionales comenzaron a usar IA para entrenar
+- **Nacimiento de nuevas jugadas**: La IA introdujo muchos movimientos innovadores
+
+#### Para el público
+
+- **Despertar de la conciencia sobre IA**: La gente común empezó a prestar atención a la inteligencia artificial
+- **Aumento de la cobertura tecnológica**: Los medios principales reportaron extensamente los avances en IA
+- **Películas y documentales**: Dio lugar al documental *AlphaGo*
+
+E11: Este partido marcó un momento de "transición de fase" en las capacidades de la IA
+
+---
+
+## Las 60 victorias consecutivas de Master (enero de 2017): El impacto del Go rápido en línea
+
+### La misteriosa cuenta "Master"
+
+El 29 de diciembre de 2016, una cuenta llamada "**Master**" apareció en los sitios de Go Yicheng y Tencent Yehu de China.
+
+El rendimiento de esta cuenta era increíble:
+- **Ganó a todos los oponentes**: Sin una sola derrota
+- **Todos los oponentes eran jugadores de élite**: Incluyendo campeones mundiales y jugadores 9-dan
+- **Tiempo extremadamente corto**: Cada movimiento era casi instantáneo
+
+Pronto, todo el mundo del Go estaba discutiendo: ¿Quién es realmente "Master"?
+
+### La hazaña de 60 victorias consecutivas
+
+Desde el 29 de diciembre hasta el 4 de enero de 2017, "Master" jugó 60 partidas rápidas, **ganándolas todas**.
+
+La lista de jugadores derrotados parecía un Salón de la Fama del Go mundial:
+
+| Ranking | Jugador | Récord |
+|---------|---------|--------|
+| N° 1 mundial | Ke Jie (China) | 0-3 |
+| N° 2 mundial | Park Junghwan (Corea del Sur) | 0-2 |
+| N° 3 mundial | Iyama Yuta (Japón) | 0-1 |
+| Leyenda | Nie Weiping (China) | 0-1 |
+| Leyenda | Gu Li (China) | 0-2 |
+| ... | ... | ... |
+
+En total, incluyó más de **50 jugadores profesionales 9-dan** de los tres principales países: China, Japón y Corea.
+
+E13: Las partidas rápidas mostraron la capacidad de decisión instantánea de la Policy Network
+
+### Revelación de identidad
+
+El 4 de enero de 2017, después de completar la victoria número 60, "Master" reveló su identidad en el chat:
+
+> "Soy el Dr. Huang de AlphaGo."
+
+El Dr. Huang es Aja Huang, un miembro central del equipo de AlphaGo.
+
+DeepMind confirmó oficialmente después: "Master" era una nueva versión de AlphaGo, y el propósito de esta prueba era verificar la estabilidad del sistema en un entorno en línea.
+
+### Reacciones de los jugadores profesionales
+
+El impacto de las 60 victorias consecutivas fue más profundo que el partido contra Lee Sedol, porque esta vez hubo más oponentes y un alcance más amplio.
+
+**Ke Jie** (perdió tres veces contra Master):
+
+> "La brecha entre humanos e IA es más grande de lo que imaginamos. Siempre pensamos que entendíamos el Go, pero Master me hace sentir que ni siquiera somos principiantes."
+
+**Nie Weiping** (Santo del Go chino):
+
+> "He jugado Go durante 60 años, y por primera vez me siento tan impotente. No es una brecha de técnica, es una brecha de dimensión."
+
+**Gu Li** (ocho campeonatos mundiales):
+
+> "Después de perder contra Master, empecé a pensar en cuál es el valor de los jugadores humanos. ¿Todavía necesitamos torneos profesionales?"
+
+### Análisis técnico
+
+Esta versión de AlphaGo (más tarde llamada **AlphaGo Master**) tuvo mejoras significativas en comparación con la versión del partido contra Lee Sedol:
+
+| Métrica | Versión Lee | Versión Master | Mejora |
+|---------|-------------|----------------|--------|
+| Puntuación Elo | ~3,600 | ~4,800 | +1,200 |
+| Tasa de victoria en auto-juego | - | 99%+ | - |
+| Precisión de Policy | ~57% | ~62% | +5% |
+| Tiempo de entrenamiento | Varios meses | Varios meses adicionales | - |
+
+E15: La mejora del Elo muestra el progreso exponencial del auto-juego
+
+---
+
+## Partidas contra Ke Jie (mayo de 2017): La despedida del rey
+
+### El último desafiante
+
+Después de las 60 victorias consecutivas de Master, pocas personas creían que los humanos tenían oportunidad de vencer a AlphaGo. Pero una persona aún anhelaba la batalla—**Ke Jie**.
+
+Ke Jie, de 19 años en ese momento, era el jugador número uno del mundo. Había declarado públicamente varias veces:
+
+> "No creo que AlphaGo pueda vencerme. Incluso si Master me ganó tres partidas rápidas, una competición oficial es diferente."
+
+Google aceptó el desafío.
+
+### La Cumbre de Go de Wuzhen
+
+En mayo de 2017, la "**Cumbre del Go del Futuro**" se celebró en Wuzhen, Zhejiang, China. Fue un evento grandioso centrado en AlphaGo, que incluía:
+
+1. **Tres partidas contra Ke Jie**: El humano más fuerte contra la IA más fuerte
+2. **Partida en parejas**: Humano + AlphaGo vs Humano + AlphaGo
+3. **Partida por equipos**: Cinco jugadores de élite chinos unidos contra AlphaGo
+
+### Tres partidas: El resultado 3:0
+
+**Primera partida (23 de mayo)**
+
+Ke Jie jugó negras y abrió primero, adoptando una apertura bastante sólida "Estilo chino". Esta fue una elección deliberada—Ke Jie esperaba evitar ser derrotado por la visión global de AlphaGo y en cambio buscar oportunidades en los detalles.
+
+Pero la respuesta de AlphaGo fue impecable. Encontró la jugada más precisa en cada momento clave, acumulando ventaja gradualmente.
+
+**Resultado: AlphaGo gana por 1/4 de punto (0.5 puntos)**
+
+Esta es la diferencia de victoria más pequeña posible en el Go. Ke Jie lloró después de la partida:
+
+> "He dado todo lo que tengo, pero aún faltó un poco."
+
+E17: La diferencia de 1/4 de punto muestra la capacidad de control preciso de la IA
+
+**Segunda partida (25 de mayo)**
+
+Ke Jie cambió de estrategia, adoptando un estilo de apertura que imitaba a AlphaGo. Usó la nueva técnica de "entrar directamente en el 3-3"—esta era precisamente la innovación que AlphaGo había traído al mundo del Go.
+
+> "Si tu forma de jugar es mejor, aprenderé tu forma de jugar."
+
+Pero AlphaGo no se inmutó. Continuó a su propio ritmo, mostrando una capacidad de cálculo asombrosa en las batallas del medio juego.
+
+**Resultado: AlphaGo gana por abandono**
+
+**Tercera partida (27 de mayo)**
+
+En la última partida, Ke Jie lo apostó todo. Adoptó un estilo de lucha extremadamente agresivo, tratando de arrastrar a AlphaGo a una lucha caótica.
+
+En la fase de apertura, Ke Jie creó algunas posiciones complejas. Pero la respuesta de AlphaGo siguió siendo precisa, sin darle a Ke Jie ninguna oportunidad de dar vuelta el marcador.
+
+**Resultado: AlphaGo gana por abandono**
+
+**Marcador final: AlphaGo 3:0 Ke Jie**
+
+E19: Las tres partidas mostraron el dominio absoluto de AlphaGo
+
+### Partidas en parejas y por equipos
+
+Además de las tres partidas de Ke Jie, la cumbre también tuvo dos formatos de competición innovadores:
+
+**Partida en parejas (26 de mayo)**
+
+Lian Xiao + AlphaGo vs Gu Li + AlphaGo
+
+Lo interesante de esta partida fue: ¿Qué pasa cuando el jugador humano y AlphaGo no están de acuerdo?
+
+El resultado mostró que: **El lado que siguió completamente las sugerencias de AlphaGo tuvo mejor desempeño**. Cuando los jugadores humanos intentaron "corregir" las jugadas de AlphaGo, a menudo empeoraron la posición.
+
+**Resultado: Lian Xiao + AlphaGo ganó**
+
+**Partida por equipos (26 de mayo)**
+
+Equipo chino (Zhou Ruiyang, Shi Yue, Tang Weixing, Chen Yaoye, Mi Yuting) vs AlphaGo
+
+Cinco jugadores de élite chinos colaboraron contra una IA. Podían discutir completamente y decidir juntos cada movimiento.
+
+Pero el resultado no fue una sorpresa: **AlphaGo ganó por abandono**.
+
+Esta partida demostró que incluso cuando los mejores jugadores humanos se unen, no pueden vencer a AlphaGo.
+
+### El anuncio de retiro de AlphaGo
+
+El 27 de mayo de 2017, después de que terminaran las tres partidas de Ke Jie, DeepMind emitió un comunicado importante:
+
+> "Esta es la última partida pública de AlphaGo. Creemos que AlphaGo ha completado su misión—demostrar que la IA puede alcanzar un nivel sobrehumano en el Go, la cúspide de la inteligencia humana.
+>
+> A partir de ahora, aplicaremos las técnicas aprendidas de AlphaGo a problemas más importantes: medicina, energía, ciencia de materiales. Este es el verdadero valor de la inteligencia artificial."
+
+También se anunció:
+
+1. **Herramienta de enseñanza de AlphaGo**: Se publicará el análisis de partidas de AlphaGo para que los jugadores estudien
+2. **50 registros de auto-juego**: Se harán públicos los registros de AlphaGo vs AlphaGo
+3. **Artículo técnico**: Se publicará la investigación de AlphaGo Zero en *Nature*
+
+E21: El retiro de AlphaGo marcó el fin de una era
+
+---
+
+## Posición histórica de las partidas
+
+### Hitos técnicos
+
+Las partidas de AlphaGo tienen un significado histórico en la historia de la inteligencia artificial:
+
+| Año | Evento | Significado |
+|-----|--------|-------------|
+| 1997 | Deep Blue derrota a Kasparov | Victoria de la búsqueda por fuerza bruta |
+| 2011 | Watson gana Jeopardy! | Avance en procesamiento de lenguaje natural |
+| **2016** | **AlphaGo derrota a Lee Sedol** | **Victoria del aprendizaje profundo + aprendizaje por refuerzo** |
+| 2017 | AlphaGo Zero 100:0 | Victoria del aprendizaje puramente autónomo |
+
+E23: Cada hito representa una evolución en la metodología de la IA
+
+### Impacto en el mundo del Go
+
+**Cambios en el estudio de partidas**
+
+Tradicionalmente, los jugadores profesionales estudiaban principalmente partidas humanas. Pero después de AlphaGo, las partidas de IA se convirtieron en lectura obligatoria.
+
+- **Apertura de entrada al 3-3**: AlphaGo demostró que entrar directamente en la esquina es una estrategia efectiva
+- **El uso del ataque al hombro**: El movimiento 37 cambió la percepción de este tesuji
+- **El valor de la influencia**: La IA mostró nuevas formas de convertir la influencia
+
+**Revolución en los métodos de entrenamiento**
+
+Los métodos de entrenamiento de los jugadores profesionales cambiaron fundamentalmente:
+
+| Forma tradicional | Forma de la era de la IA |
+|-------------------|--------------------------|
+| Estudiar partidas humanas | Estudiar partidas de IA |
+| Depender de la guía del maestro | Usar herramientas de análisis de IA |
+| Memorizar joseki | Entender la lógica de evaluación de la IA |
+| Práctica de partidas | Análisis de revisión con IA |
+
+**El ascenso de una nueva generación de jugadores**
+
+Los jugadores que crecieron después de 2016 se llaman "nativos de la IA". Su estilo de juego está claramente influenciado por la IA:
+
+- Más enfocados en la eficiencia que en la estética tradicional
+- Más dispuestos a intentar jugadas no convencionales
+- Más dependientes del cálculo preciso que de la intuición
+
+### Reflexiones filosóficas
+
+La victoria de AlphaGo provocó profundas discusiones filosóficas:
+
+**¿Cuál es la naturaleza de la inteligencia?**
+
+¿"Entiende" AlphaGo el Go? ¿O simplemente está realizando cálculos precisos? Esta pregunta aún no tiene respuesta definitiva.
+
+**¿Dónde está el valor de los humanos?**
+
+Cuando la IA supera a los humanos en el Go, ¿tienen sentido las competiciones de Go? Muchos jugadores reconsideraron el significado de su profesión.
+
+Curiosamente, después de AlphaGo, la atención global al Go en realidad aumentó. La gente se dio cuenta de que el Go no es solo competición, sino también arte y filosofía.
+
+**Dirección del desarrollo de la IA**
+
+El éxito de AlphaGo hizo que la gente tuviera expectativas y preocupaciones sobre la IA. La decisión de DeepMind de retirar a AlphaGo y enfocarse en resolver "problemas verdaderamente importantes" fue en sí misma una elección ética.
+
+E25: AlphaGo provocó una amplia discusión sobre la ética de la IA
+
+---
+
+## Perlas olvidadas: Otras partidas importantes
+
+### Enfrentamientos con otras IA
+
+Además de los torneos públicos, AlphaGo jugó muchas partidas contra otras IA de Go:
+
+| Oponente | Versión | Resultado |
+|----------|---------|-----------|
+| Crazy Stone | El programa de Go más fuerte de 2015 | Ganó todas |
+| Zen | La IA de Go más fuerte de Japón | Ganó todas |
+| Versiones anteriores de AlphaGo | Auto-juego entre versiones | - |
+
+### Pruebas internas
+
+El equipo de DeepMind realizó numerosas pruebas internas:
+
+- **AlphaGo Lee vs AlphaGo Master**: La versión Master tuvo una tasa de victoria superior al 99%
+- **AlphaGo Master vs AlphaGo Zero**: La versión Zero tuvo una tasa de victoria superior al 89%
+- **Partidas entre versiones con diferentes tiempos de entrenamiento**: Observando la curva de aprendizaje
+
+Estos datos de prueba se publicaron más tarde en artículos y se convirtieron en recursos importantes para investigar el aprendizaje de la IA.
+
+---
+
+## Correspondencia con animaciones
+
+Conceptos centrales de este artículo y sus números de animación:
+
+| N° | Concepto | Correspondencia física/matemática |
+|----|----------|----------------------------------|
+| E1 | Policy Network guía la búsqueda | Distribución de probabilidad |
+| E3 | Probar los límites de MCTS | Profundidad de búsqueda de árbol |
+| E5 | Evaluación global de Value Network | Función de valor |
+| E7 | Descubrir estrategias desconocidas | Exploración vs explotación |
+| E9 | Debilidades de MCTS | Condiciones de frontera |
+| E11 | "Transición de fase" de capacidades | Fenómeno crítico |
+| E13 | Capacidad de decisión instantánea | Velocidad de inferencia |
+| E15 | Progreso exponencial del auto-juego | Optimización iterativa |
+| E17 | Capacidad de control preciso | Estabilidad numérica |
+| E19 | Dominio absoluto | Convergencia al óptimo |
+| E21 | Fin de una era | Tarea completada |
+| E23 | Evolución metodológica | Cambio de paradigma |
+| E25 | Discusión sobre ética de la IA | Impacto social |
+
+---
+
+## Lecturas adicionales
+
+- **Artículo anterior**: [El nacimiento de AlphaGo](../birth-of-alphago) — Fundación de DeepMind, composición del equipo
+- **Siguiente artículo**: [Análisis profundo de la "Jugada divina"](../move-37) — Interpretación completa del movimiento 37
+- **Detalles técnicos**: [La combinación de MCTS y redes neuronales](../mcts-neural-combo) — Entendiendo la tecnología detrás de las partidas
+- **Desarrollos posteriores**: [El legado de AlphaGo](../legacy-and-impact) — Impacto a largo plazo en el Go y la IA
+
+---
+
+## Referencias
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 550, 354-359.
+3. Documental *AlphaGo* (2017), director Greg Kohs.
+4. Blog oficial de DeepMind: Serie de artículos sobre AlphaGo
+5. Registros oficiales de las partidas de Lee Sedol y comentarios (Asociación Coreana de Baduk)
+6. Registros oficiales de la Cumbre de Go de Wuzhen

@@ -1,0 +1,729 @@
+---
+sidebar_position: 16
+title: Explicación Detallada de la Fórmula PUCT
+description: Comprensión profunda del mecanismo de selección central de AlphaGo - Principios matemáticos de la fórmula PUCT y experiencia de ajuste de parámetros
+---
+
+import { MCTSTree } from '@site/src/components/D3Charts';
+
+# Explicación Detallada de la Fórmula PUCT
+
+En el artículo anterior, presentamos la combinación de MCTS y redes neuronales. Ahora, profundicemos en el núcleo de la fase de selección de MCTS: **la fórmula PUCT**.
+
+Esta fórmula parece simple, pero es una de las claves del éxito de AlphaGo. Equilibra elegantemente los dos objetivos aparentemente contradictorios de "explotar buenos movimientos conocidos" y "explorar movimientos potencialmente mejores".
+
+---
+
+## La Fórmula PUCT
+
+### Definición de la Fórmula
+
+La fórmula **PUCT (Predictor Upper Confidence Trees)** utilizada por AlphaGo:
+
+$$a^* = \arg\max_a \left[ Q(s,a) + U(s,a) \right]$$
+
+Donde:
+
+$$U(s,a) = c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)}$$
+
+Expansión completa:
+
+$$a^* = \arg\max_a \left[ Q(s,a) + c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)} \right]$$
+
+### Explicación de Símbolos
+
+| Símbolo | Significado | Fuente |
+|---------|-------------|--------|
+| $Q(s,a)$ | Valor promedio de la acción $a$ | Estadísticas MCTS |
+| $P(s,a)$ | Probabilidad a priori de la acción $a$ | Policy Network |
+| $N(s)$ | Conteo de visitas del nodo padre | Estadísticas MCTS |
+| $N(s,a)$ | Conteo de visitas del nodo hijo | Estadísticas MCTS |
+| $c_{\text{puct}}$ | Constante de exploración | Hiperparámetro |
+
+### Comprensión Intuitiva
+
+La fórmula PUCT se puede dividir en dos partes:
+
+```
+Puntuación Total = Q(s,a)        + U(s,a)
+                   ↓               ↓
+              Término de       Término de
+              Explotación      Exploración
+         "¿Qué tan bueno es   "¿Vale la pena
+           este movimiento?"   explorarlo más?"
+```
+
+**Término de Explotación Q(s,a)**:
+- Rendimiento promedio pasado de este movimiento
+- Más visitas = estimación más precisa
+- Fomenta seleccionar movimientos "conocidos como buenos"
+
+**Término de Exploración U(s,a)**:
+- Cuánto valor de exploración queda para este movimiento
+- Menos visitas = mayor recompensa de exploración
+- Fomenta probar movimientos "potencialmente buenos"
+
+---
+
+## Significado de Cada Término
+
+### Q(s,a): Valor Promedio
+
+$Q(s,a)$ es el resultado promedio de todas las simulaciones desde el nodo $(s,a)$:
+
+$$Q(s,a) = \frac{W(s,a)}{N(s,a)} = \frac{\sum_i z_i}{N(s,a)}$$
+
+Donde $z_i \in \{-1, +1\}$ es el resultado de la $i$-ésima simulación.
+
+**Características**:
+- Rango: $[-1, +1]$
+- Valor inicial: Indefinido (necesita al menos una visita)
+- Se estabiliza a medida que aumentan las visitas
+
+**Interpretación**:
+- $Q = 0.6$: La tasa de victoria de este movimiento es aproximadamente 80% (porque $Q = 2 \times \text{tasa de victoria} - 1$)
+- $Q = 0$: Victoria y derrota iguales
+- $Q = -0.3$: La tasa de victoria de este movimiento es aproximadamente 35%
+
+### P(s,a): Probabilidad a Priori
+
+$P(s,a)$ viene de la salida de Policy Network:
+
+$$P(s,a) = \pi_\theta(a|s)$$
+
+**Características**:
+- Rango: $[0, 1]$, y $\sum_a P(s,a) = 1$
+- Calculada cuando el nodo se expande por primera vez
+- Refleja el juicio de la red neuronal sobre "qué tan bueno es este movimiento"
+
+**Función**:
+- Acciones de alta probabilidad se exploran primero
+- Incluso con conteo de visitas 0, hay motivación para explorar
+- Guía la búsqueda para enfocarse en movimientos "que parecen razonables"
+
+### N(s) y N(s,a): Conteo de Visitas
+
+$N(s)$ es el conteo total de visitas del nodo padre:
+
+$$N(s) = \sum_a N(s,a)$$
+
+**Rol en el término de exploración**:
+
+$$\frac{\sqrt{N(s)}}{1 + N(s,a)}$$
+
+Comportamiento de esta fracción:
+- Cuando $N(s,a) = 0$, puntuación = $\sqrt{N(s)}$ (máxima motivación de exploración)
+- A medida que $N(s,a)$ aumenta, la puntuación disminuye
+- Cuando $N(s,a) \gg \sqrt{N(s)}$, la puntuación se acerca a 0
+
+Esto asegura:
+1. **Cada acción se explora al menos una vez** (si $P(s,a) > 0$)
+2. **La motivación de exploración disminuye con las visitas**
+3. **La selección final está dominada por el valor $Q$**
+
+### c_puct: Constante de Exploración
+
+$c_{\text{puct}}$ controla el equilibrio entre exploración y explotación:
+
+| Valor de $c_{\text{puct}}$ | Efecto |
+|---------------------------|--------|
+| Pequeño (como 0.5) | Más hacia explotación, enfoque rápido en buenos movimientos |
+| Moderado (como 1-2) | Equilibrio entre exploración y explotación |
+| Grande (como 5) | Más hacia exploración, probar más posibilidades |
+
+Valor usado por AlphaGo: $c_{\text{puct}} = 1.5$ (según el paper).
+
+---
+
+## Relación con UCB1
+
+### Revisión de la Fórmula UCB1
+
+La fórmula **UCB1** utilizada en MCTS tradicional:
+
+$$\text{UCB1}(s,a) = \bar{X}_{s,a} + c \sqrt{\frac{\ln N(s)}{N(s,a)}}$$
+
+Donde $\bar{X}_{s,a}$ es la recompensa promedio.
+
+### Comparación
+
+| Aspecto | UCB1 | PUCT |
+|---------|------|------|
+| Término de explotación | $\bar{X}_{s,a}$ (recompensa promedio) | $Q(s,a)$ (valor promedio) |
+| Término de exploración | $\sqrt{\frac{\ln N}{n}}$ (límite de confianza) | $P \cdot \frac{\sqrt{N}}{1+n}$ (guiado por prior) |
+| Información a priori | Ninguna | Usa Policy Network |
+| Decaimiento de exploración | Decaimiento logarítmico | Decaimiento lineal |
+
+### Ventajas de PUCT
+
+1. **Aprovecha conocimiento a priori**: El $P(s,a)$ proporcionado por Policy Network hace que la búsqueda se enfoque en movimientos razonables desde el principio
+
+2. **Convergencia más rápida**: El decaimiento lineal ($1/(1+n)$) hace que la búsqueda converja más rápido que el decaimiento logarítmico ($1/\sqrt{\ln N / n}$)
+
+3. **Exploración controlable**: $P(s,a)$ y $c_{\text{puct}}$ proporcionan más medios para controlar la exploración
+
+### Antecedentes Teóricos
+
+UCB1 tiene garantías teóricas estrictas (regret bound), pero estas garantías asumen:
+- Cada brazo (acción) es independiente
+- No hay información a priori
+
+En Go, tenemos priors fuertes (Policy Network), y PUCT puede utilizar mejor esta información.
+
+---
+
+## Derivación Matemática
+
+### Comenzando desde el Problema del Bandido Multi-brazo
+
+PUCT está inspirado en el problema del **Bandido Multi-brazo (Multi-Armed Bandit)**.
+
+Imagina que tienes $K$ máquinas tragamonedas frente a ti, cada una con diferente probabilidad de ganar pero desconocida. Tu objetivo es maximizar el número total de victorias. La estrategia es:
+- **Explotar**: Tirar de la que parece mejor
+- **Explorar**: Probar otras, podría encontrar una mejor
+
+UCB1 es la solución clásica para este problema, PUCT es su variante.
+
+### Base Teórica de UCB
+
+Para una variable aleatoria $X$, por la desigualdad de Hoeffding:
+
+$$P(|\bar{X}_n - \mu| \geq \epsilon) \leq 2 \exp(-2n\epsilon^2)$$
+
+Si queremos equivocarnos con probabilidad $1/t^4$, necesitamos:
+
+$$\epsilon = \sqrt{\frac{2 \ln t}{n}}$$
+
+Este es el origen del término de exploración de UCB1.
+
+### Modificaciones de PUCT
+
+PUCT hace varias modificaciones al UCB clásico:
+
+**1. Agregar probabilidad a priori**
+
+$$U(s,a) \propto P(s,a) \cdot (\text{término de exploración})$$
+
+Esto concentra la exploración en acciones de alta probabilidad.
+
+**2. Cambiar la forma del término de exploración**
+
+De $\sqrt{\frac{\ln N}{n}}$ a $\frac{\sqrt{N}}{1+n}$
+
+Esto acelera la convergencia:
+
+```
+Comparación (asumiendo N = 1000, n = 10):
+
+UCB1:  sqrt(ln(1000) / 10) = sqrt(0.69) ≈ 0.83
+PUCT:  sqrt(1000) / 11 ≈ 2.87
+
+PUCT da más recompensa de exploración, pero decae más rápido
+```
+
+**3. Prior aprendible**
+
+$P(s,a)$ viene de la red neuronal, que mejora con el entrenamiento. Esto crea un ciclo positivo entre MCTS y la red neuronal.
+
+### ¿Por Qué Esta Forma Funciona?
+
+Explicación intuitiva:
+
+$$U(s,a) = c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)}$$
+
+1. **$P(s,a)$**: "¿Qué tan bueno dice el experto que es este movimiento?"
+2. **$\sqrt{N(s)}$**: "¿Cuánto sabemos sobre esta posición?"
+3. **$1/(1 + N(s,a))$**: "¿Cuánto sabemos sobre este movimiento?"
+
+Combinado: **Cuando sabemos mucho sobre una posición, pero poco sobre un movimiento específico, y el experto piensa que el movimiento es bueno, deberíamos explorarlo**.
+
+---
+
+## Comprensión Visual
+
+### Cambio del Término de Exploración
+
+Visualicemos cómo cambia el término de exploración con el conteo de visitas:
+
+```
+U(s,a) = c_puct × P(s,a) × √N(s) / (1 + N(s,a))
+
+Asumiendo P(s,a) = 0.1, c_puct = 1.5, N(s) = 1600
+
+N(s,a)  |  U(s,a)
+--------|----------
+   0    |  6.00      ← No visitado, máxima recompensa de exploración
+   1    |  3.00
+   5    |  1.00
+  10    |  0.55
+  50    |  0.12
+ 100    |  0.06
+ 400    |  0.015     ← Después de muchas visitas, recompensa muy pequeña
+```
+
+### Impacto de Diferentes Probabilidades a Priori
+
+```
+Asumiendo c_puct = 1.5, N(s) = 1600, N(s,a) = 0
+
+P(s,a)  |  U(s,a)
+--------|----------
+  0.30  |  18.00     ← Acciones de alta probabilidad tienen más motivación
+  0.10  |   6.00
+  0.03  |   1.80
+  0.01  |   0.60
+  0.001 |   0.06     ← Acciones de baja probabilidad apenas se exploran
+```
+
+### Exploración Interactiva
+
+Intenta ajustar el parámetro $c_{\text{puct}}$ abajo y observa cómo afecta la selección de MCTS:
+
+<MCTSTree width={700} height={450} showPUCT={true} interactive={true} cPuct={1.5} />
+
+---
+
+## Implementación Específica en AlphaGo
+
+### Implementación de AlphaGo Fan/Lee
+
+El AlphaGo original usó una fórmula ligeramente diferente:
+
+$$U(s,a) = c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{\sum_b N(s,b)}}{1 + N(s,a)}$$
+
+Y el cálculo de $Q(s,a)$ consideraba la pérdida virtual:
+
+```python
+def get_ucb_score(node, action, c_puct=1.5):
+    Q = node.W[action] / (node.N[action] + 1)  # Evitar división por cero
+    P = node.prior[action]
+    N_parent = sum(node.N.values())
+    N_child = node.N[action]
+
+    U = c_puct * P * math.sqrt(N_parent) / (1 + N_child)
+
+    return Q + U
+```
+
+### Implementación de AlphaGo Zero
+
+AlphaGo Zero usa una implementación más simple:
+
+```python
+def select_action(node, c_puct=1.5):
+    """Seleccionar la acción con mayor puntuación PUCT"""
+    N_parent = sum(node.visit_count.values())
+
+    def puct_score(action):
+        Q = node.value_sum[action] / (node.visit_count[action] + 1)
+        P = node.prior[action]
+        U = c_puct * P * math.sqrt(N_parent) / (1 + node.visit_count[action])
+        return Q + U
+
+    return max(node.legal_actions, key=puct_score)
+```
+
+### Manejo de Nodos No Visitados
+
+Cuando $N(s,a) = 0$, $Q(s,a)$ está indefinido. Métodos comunes de manejo:
+
+**Método 1: Usar valor del nodo padre**
+```python
+Q = parent_value if N[action] == 0 else W[action] / N[action]
+```
+
+**Método 2: Usar valor inicial**
+```python
+Q = 0 if N[action] == 0 else W[action] / N[action]
+```
+
+**Método 3: Usar FPU (First Play Urgency)**
+```python
+# Nodos no visitados usan valor Q más bajo
+fpu_value = parent_Q - fpu_reduction
+Q = fpu_value if N[action] == 0 else W[action] / N[action]
+```
+
+AlphaGo Zero usa FPU, lo que hace que la búsqueda prefiera probar primero nodos visitados.
+
+---
+
+## Experiencia Práctica de Ajuste de Parámetros
+
+### Elección de c_puct
+
+$c_{\text{puct}}$ es el hiperparámetro más importante. Principios guía en la práctica:
+
+**1. Relacionado con la calidad de la red**
+- Red muy fuerte (alta precisión): Puede usar $c_{\text{puct}}$ más pequeño
+- Red más débil: Necesita $c_{\text{puct}}$ más grande para corregir errores
+
+**2. Relacionado con el presupuesto de búsqueda**
+- Muchas simulaciones: Puede usar $c_{\text{puct}}$ más grande (tiempo suficiente para explorar)
+- Pocas simulaciones: Usar $c_{\text{puct}}$ más pequeño (enfoque rápido)
+
+**3. Relacionado con características del juego**
+- Juegos muy tácticos: Pueden necesitar más exploración
+- Juegos más estratégicos: Pueden confiar más en priors
+
+### Valores Típicos
+
+| Proyecto | $c_{\text{puct}}$ |
+|----------|-------------------|
+| AlphaGo | 1.5 |
+| AlphaGo Zero | 1.0 - 2.0 |
+| AlphaZero | 1.25 |
+| KataGo | 0.5 - 1.0 (ajuste dinámico) |
+| Leela Zero | 1.5 - 2.0 |
+
+### Ajuste Dinámico
+
+Algunas implementaciones avanzadas usan $c_{\text{puct}}$ dinámico:
+
+```python
+def dynamic_cpuct(visit_count):
+    """Ajustar constante de exploración según conteo de visitas"""
+    base = 1.0
+    init = 1.5
+    log_base = 19652  # Parámetro de ajuste
+
+    return math.log((visit_count + log_base + 1) / log_base) + init
+```
+
+Esto hace que la búsqueda se incline hacia exploración al principio y explotación después.
+
+### Análisis de Sensibilidad
+
+Impacto de $c_{\text{puct}}$ en la fuerza de juego:
+
+```
+Experimento (condiciones fijas, variando c_puct):
+
+c_puct | Elo Relativo
+-------|----------
+  0.5  |   -50     ← Sobre-explotación, perdiendo buenos movimientos
+  1.0  |   +20
+  1.5  |    0      ← Línea base
+  2.0  |   -10
+  3.0  |   -30     ← Sobre-exploración, desperdiciando búsqueda
+  5.0  |   -80
+```
+
+El valor óptimo suele estar entre 1.0-2.0, pero depende de la calidad de la red y el presupuesto de búsqueda.
+
+---
+
+## Variantes Avanzadas
+
+### Variantes de PUCT
+
+**1. Polynomial PUCT (P-UCT)**
+
+$$U(s,a) = c \cdot P(s,a) \cdot \frac{N(s)^\alpha}{1 + N(s,a)}$$
+
+Donde $\alpha$ es un parámetro ajustable (típicamente $\alpha = 0.5$).
+
+**2. PUCT con Ruido**
+
+Agregar ruido Dirichlet en el nodo raíz:
+
+$$P'(s,a) = (1-\varepsilon) P(s,a) + \varepsilon \cdot \eta_a$$
+
+Donde $\eta \sim \text{Dir}(\alpha)$. Esto aumenta la diversidad de exploración.
+
+**3. PUCT tipo UCT**
+
+$$U(s,a) = c \cdot P(s,a) \cdot \sqrt{\frac{\ln(1 + N(s) + c_{\text{base}})}{1 + N(s,a)}}$$
+
+Esto combina la forma logarítmica de UCT con la guía a priori de PUCT.
+
+### Mejoras de KataGo
+
+KataGo hizo varias mejoras a PUCT:
+
+**1. $c_{\text{puct}}$ dinámico**
+Ajustado según la complejidad de la posición y el progreso de la búsqueda.
+
+**2. Incertidumbre en predicción de valor**
+Considera la confianza de las predicciones de Value Network.
+
+**3. Aprendizaje de objetivo de política**
+Aprende directamente la distribución de visitas de MCTS, no solo la salida de la cabeza de política.
+
+### Otras Fórmulas de Selección
+
+Además de PUCT, hay otras fórmulas de selección:
+
+**RAVE (Rapid Action Value Estimation)**
+
+$$Q_{\text{RAVE}}(s,a) = (1-\beta) Q(s,a) + \beta Q_{\text{AMAF}}(s,a)$$
+
+Usa estadísticas "All Moves As First" para acelerar el aprendizaje.
+
+**GRAVE (Generalized RAVE)**
+
+Variante de RAVE, usa estadísticas de nodos ancestros.
+
+---
+
+## Análisis Teórico
+
+### Convergencia
+
+¿PUCT garantiza convergencia a la solución óptima?
+
+**Estrictamente hablando**: No tiene garantías teóricas como UCB1.
+
+**En la práctica**: Con suficientes simulaciones, PUCT converge a soluciones de alta calidad porque:
+1. El término de exploración eventualmente se acerca a cero
+2. Todas las acciones eventualmente se visitan
+3. Los valores $Q$ convergen a valores verdaderos
+
+### Análisis de Complejidad
+
+**Complejidad temporal** (por simulación):
+- Selection: $O(\log N)$ (profundidad del árbol)
+- Expansion: $O(A)$ (número de acciones legales, requiere inferencia de red neuronal)
+- Evaluation: $O(1)$ (Value Network) o $O(T)$ (Rollout, $T$ es longitud del juego)
+- Backpropagation: $O(\log N)$
+
+**Complejidad espacial**:
+- Cada nodo: $O(A)$ (almacenar priors y estadísticas de visita)
+- Árbol completo: $O(N \cdot A)$ ($N$ es número de nodos)
+
+### Relación con Minimax
+
+Cuando $c_{\text{puct}} \to 0$ y número de simulaciones $\to \infty$, MCTS + PUCT aproxima la búsqueda Minimax.
+
+Pero con presupuesto limitado, PUCT suele ser más eficiente que Minimax + Alpha-Beta porque puede utilizar mejor el conocimiento a priori.
+
+---
+
+## Preguntas Frecuentes
+
+### P: ¿Por qué no usar directamente la salida de Policy Network como selección?
+
+**R: Policy Network puede cometer errores**. La búsqueda MCTS puede:
+1. Verificar los juicios de la red neuronal
+2. Descubrir buenos movimientos que la red neuronal ignoró
+3. Corregir sesgos sistemáticos de la red neuronal
+
+Los experimentos muestran que incluso con redes neuronales fuertes, agregar búsqueda aún mejora significativamente la fuerza de juego.
+
+### P: ¿En qué situaciones PUCT no funciona bien?
+
+1. **Probabilidades a priori completamente erróneas**: Si Policy Network califica buenos movimientos como baja probabilidad, PUCT necesita muchas simulaciones para corregir
+
+2. **Tácticas a largo plazo**: PUCT puede tener dificultades para descubrir secuencias tácticas largas que requieren cálculo preciso
+
+3. **Falta de modelo del oponente**: PUCT asume que el oponente también usa estrategia óptima, puede no ser óptimo contra oponentes irracionales
+
+### P: ¿Cómo manejar espacios de acción muy grandes?
+
+Algunas técnicas:
+1. **Filtrado por Policy Network**: Solo considerar acciones con $P(s,a) > \epsilon$
+2. **Ensanchamiento progresivo**: Expandir solo unas pocas acciones primero, expandir más cuando sea necesario
+3. **Poda dinámica**: Eliminar acciones obviamente malas
+
+---
+
+## Correspondencia con Animaciones
+
+Conceptos centrales cubiertos en este artículo y sus números de animación:
+
+| Número | Concepto | Correspondencia Física/Matemática |
+|--------|----------|----------------------------------|
+| E4 | Exploración y Explotación | Bandido Multi-brazo |
+| C3 | Selección PUCT | Límite de Confianza |
+
+---
+
+## Resumen
+
+La fórmula PUCT es el núcleo del MCTS de AlphaGo. Aprendimos:
+
+1. **Estructura de la fórmula**: $Q + U$, término de explotación más término de exploración
+2. **Significado de cada término**: $Q$ es valor de experiencia, $P$ es probabilidad a priori, $N$ controla el decaimiento de exploración
+3. **Relación con UCB1**: PUCT agrega priors y usa diferente forma de término de exploración
+4. **Derivación matemática**: Del bandido multi-brazo a la selección MCTS
+5. **Ajuste práctico de parámetros**: Elección e impacto de $c_{\text{puct}}$
+6. **Variantes avanzadas**: Ajuste dinámico, ruido, mejoras de KataGo
+
+La elegancia de PUCT radica en su simplicidad y efectividad -- con una sola fórmula equilibra exploración y explotación, e integra elegantemente el conocimiento a priori de redes neuronales.
+
+---
+
+## Lecturas Adicionales
+
+- **Siguiente artículo**: [Visión General de AlphaGo Zero](../alphago-zero) — El avance desde cero
+- **Artículo anterior**: [La Combinación de MCTS y Redes Neuronales](../mcts-neural-combo) — Arquitectura general
+- **Relacionado**: [Límites de los Métodos Tradicionales](../traditional-limits) — Por qué se necesitan nuevos métodos
+
+---
+
+## Referencias
+
+1. Rosin, C. D. (2011). "Multi-armed bandits with episode context." *Annals of Mathematics and Artificial Intelligence*, 61(3), 203-230.
+2. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+3. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 550, 354-359.
+4. Kocsis, L., & Szepesvari, C. (2006). "Bandit based Monte-Carlo Planning." *ECML*.
+5. Auer, P., Cesa-Bianchi, N., & Fischer, P. (2002). "Finite-time analysis of the multiarmed bandit problem." *Machine Learning*, 47(2), 235-256.
+6. Wu, D., et al. (2019). "Accelerating Self-Play Learning in Go." *arXiv preprint* (Informe técnico de KataGo).
+
+---
+
+## Apéndice: Ejemplo de Implementación Completa
+
+```python
+import math
+import numpy as np
+from typing import Dict, List, Optional
+
+class MCTSNode:
+    """Nodo MCTS"""
+    def __init__(self, prior: float = 0.0):
+        self.prior = prior          # P(s,a)
+        self.visit_count = 0        # N(s,a)
+        self.value_sum = 0.0        # W(s,a)
+        self.children: Dict[int, 'MCTSNode'] = {}
+
+    @property
+    def q_value(self) -> float:
+        """Calcular Q(s,a)"""
+        if self.visit_count == 0:
+            return 0.0
+        return self.value_sum / self.visit_count
+
+
+class MCTS:
+    """Buscador MCTS usando PUCT"""
+
+    def __init__(
+        self,
+        policy_network,
+        value_network,
+        c_puct: float = 1.5,
+        num_simulations: int = 800
+    ):
+        self.policy_network = policy_network
+        self.value_network = value_network
+        self.c_puct = c_puct
+        self.num_simulations = num_simulations
+
+    def search(self, root_state) -> Dict[int, float]:
+        """Ejecutar búsqueda MCTS, devolver distribución de visitas por acción"""
+        root = MCTSNode()
+
+        # Expandir nodo raíz
+        policy = self.policy_network(root_state)
+        for action, prob in enumerate(policy):
+            if is_legal(root_state, action):
+                root.children[action] = MCTSNode(prior=prob)
+
+        # Ejecutar simulaciones
+        for _ in range(self.num_simulations):
+            self._simulate(root, root_state)
+
+        # Devolver distribución de visitas
+        total_visits = sum(
+            child.visit_count for child in root.children.values()
+        )
+        return {
+            action: child.visit_count / total_visits
+            for action, child in root.children.items()
+        }
+
+    def _simulate(self, node: MCTSNode, state) -> float:
+        """Ejecutar una simulación"""
+
+        # Si es estado terminal
+        if is_terminal(state):
+            return get_result(state)
+
+        # Si es nodo hoja, expandir y evaluar
+        if not node.children:
+            policy = self.policy_network(state)
+            value = self.value_network(state)
+
+            for action, prob in enumerate(policy):
+                if is_legal(state, action):
+                    node.children[action] = MCTSNode(prior=prob)
+
+            return value
+
+        # Selection: seleccionar acción con mayor puntuación PUCT
+        action = self._select_action(node)
+        child = node.children[action]
+        next_state = apply_action(state, action)
+
+        # Simular recursivamente
+        value = -self._simulate(child, next_state)
+
+        # Backpropagation: actualizar estadísticas
+        child.visit_count += 1
+        child.value_sum += value
+
+        return value
+
+    def _select_action(self, node: MCTSNode) -> int:
+        """Usar fórmula PUCT para seleccionar acción"""
+        total_visits = sum(
+            child.visit_count for child in node.children.values()
+        )
+
+        def puct_score(action: int, child: MCTSNode) -> float:
+            # Q(s,a): valor promedio
+            q = child.q_value
+
+            # U(s,a): bonificación de exploración
+            u = (
+                self.c_puct
+                * child.prior
+                * math.sqrt(total_visits)
+                / (1 + child.visit_count)
+            )
+
+            return q + u
+
+        return max(
+            node.children.keys(),
+            key=lambda a: puct_score(a, node.children[a])
+        )
+
+
+# Ejemplo de uso
+def play_game():
+    policy_net = PolicyNetwork()
+    value_net = ValueNetwork()
+
+    mcts = MCTS(
+        policy_network=policy_net,
+        value_network=value_net,
+        c_puct=1.5,
+        num_simulations=1600
+    )
+
+    state = initial_state()
+
+    while not is_terminal(state):
+        # Ejecutar búsqueda MCTS
+        visit_distribution = mcts.search(state)
+
+        # Seleccionar acción con más visitas
+        action = max(visit_distribution.keys(),
+                     key=lambda a: visit_distribution[a])
+
+        # Ejecutar acción
+        state = apply_action(state, action)
+        print(f"Acción seleccionada {action} con ratio de visitas "
+              f"{visit_distribution[action]:.2%}")
+
+    print(f"Resultado del juego: {get_result(state)}")
+```
+
+Esta implementación muestra el rol central de la fórmula PUCT en MCTS. Las implementaciones reales de AlphaGo también incluyen:
+- Búsqueda paralela (pérdida virtual)
+- Evaluación de red neuronal por lotes
+- Reutilización de árbol
+- Ruido Dirichlet
+- Control de temperatura y otras funcionalidades

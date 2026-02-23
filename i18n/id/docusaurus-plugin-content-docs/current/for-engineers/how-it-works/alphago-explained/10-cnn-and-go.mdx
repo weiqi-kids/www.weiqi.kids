@@ -1,0 +1,636 @@
+---
+sidebar_position: 11
+title: CNN dan Permainan Go
+description: Eksplorasi mendalam mengapa Convolutional Neural Network sangat cocok untuk Go, dari receptive field hingga batch normalization
+---
+
+# CNN dan Permainan Go
+
+Ketika DeepMind memilih untuk menggunakan **Convolutional Neural Network (CNN)** untuk memproses Go, ini adalah keputusan desain yang jenius.
+
+CNN awalnya dirancang untuk pengenalan gambar. Mengapa CNN juga cocok untuk Go? Artikel ini akan mengeksplorasi secara mendalam cara kerja CNN dan kecocokannya yang sempurna dengan permainan Go.
+
+---
+
+## Mengapa CNN Cocok untuk Papan?
+
+### Papan adalah "Gambar"
+
+Dari sudut pandang tertentu, papan Go 19x19 adalah sebuah **gambar**:
+
+| Gambar | Papan Go |
+|--------|----------|
+| Piksel | Titik persimpangan |
+| Saluran RGB | Bidang fitur (hitam, putih, kosong...) |
+| 224x224 | 19x19 |
+| Mengenali kucing dan anjing | Menentukan langkah bagus atau buruk |
+
+Analogi ini bukan kebetulan. Alasan CNN unggul dalam gambar juga membuatnya unggul dalam papan.
+
+### Tiga Karakteristik Utama
+
+CNN memiliki tiga karakteristik yang membuatnya sangat cocok untuk data tipe papan:
+
+#### 1. Koneksi Lokal (Local Connectivity)
+
+Kernel konvolusi CNN hanya melihat area lokal, yang cocok sempurna dengan karakteristik Go:
+
+```
+Pengenalan gambar:         Go:
+Telinga kucing adalah      "Mata" adalah bentuk lokal
+fitur lokal
+Tidak perlu melihat        Tidak perlu melihat
+seluruh gambar             seluruh papan
+
+    Area 3x3                   Area 3x3
+   ┌───────┐                  ┌───────┐
+   │ ○ ● ○ │                  │ ○ ● ○ │
+   │ ● ○ ● │  ←  Posisi mata  │ ● · ● │
+   │ ○ ● ○ │                  │ ○ ● ○ │
+   └───────┘                  └───────┘
+```
+
+Banyak konsep Go yang bersifat "lokal":
+- **Mata**: Area 2x2 atau 3x3
+- **Atari**: Area 3x3
+- **Koneksi, pemutusan**: Area 2x2
+
+#### 2. Berbagi Bobot (Weight Sharing)
+
+Kernel konvolusi yang sama memindai seluruh papan, yang berarti:
+
+> **"Mata" di sudut kiri atas dan "mata" di sudut kanan bawah dikenali dengan cara yang sama**
+
+Ini masuk akal—aturan Go tidak berbeda berdasarkan posisi (kecuali tepi dan sudut, yang dapat ditangani dengan bidang fitur khusus).
+
+Berbagi bobot juga sangat mengurangi jumlah parameter:
+
+| Metode | Jumlah Parameter |
+|--------|------------------|
+| Jaringan fully connected | 361 x 361 x saluran = puluhan juta |
+| CNN | 3 x 3 x saluran x jumlah filter = jutaan |
+
+#### 3. Ekuivariansi Translasi (Translation Equivariance)
+
+Jika input ditranslasikan, output CNN juga akan ditranslasikan secara sesuai:
+
+```
+Input:                    Output (area probabilitas tinggi):
+  A B C D E                 A B C D E
+1 . . . . .              1  . . . . .
+2 . ● . . .   →          2  . * . . .
+3 . . . . .              3  . . . . .
+
+Input setelah translasi:  Output juga ditranslasikan:
+  A B C D E                 A B C D E
+1 . . . . .              1  . . . . .
+2 . . . . .   →          2  . . . . .
+3 . . ● . .              3  . . * . .
+```
+
+Ini penting untuk Go: bentuk batu lokal yang sama, di mana pun muncul di papan, harus memiliki evaluasi yang serupa.
+
+---
+
+## Operasi Konvolusi
+
+### Prinsip Dasar
+
+Operasi konvolusi adalah inti dari CNN. Ini adalah operasi "jendela geser":
+
+```
+Input (5x5):              Kernel (3x3):           Output (5x5, padding=same):
+┌───────────────┐       ┌─────────┐             ┌───────────────┐
+│ 1 0 1 0 0     │       │ 1 0 1   │             │ 2 1 3 1 2     │
+│ 0 1 1 1 0     │   *   │ 0 1 0   │    =        │ 1 4 3 3 1     │
+│ 1 1 1 1 1     │       │ 1 0 1   │             │ 3 3 5 3 3     │
+│ 0 0 1 1 0     │       └─────────┘             │ 1 3 3 4 1     │
+│ 0 1 0 0 1     │                               │ 2 1 3 1 2     │
+└───────────────┘                               └───────────────┘
+```
+
+Proses perhitungan (menggunakan titik tengah sebagai contoh):
+
+```
+Output[2,2] = 1×1 + 1×0 + 1×1 +
+              1×0 + 1×1 + 1×0 +
+              1×1 + 1×0 + 1×1
+            = 1 + 0 + 1 + 0 + 1 + 0 + 1 + 0 + 1
+            = 5
+```
+
+### Konvolusi Multi-saluran
+
+Ketika input memiliki beberapa saluran (seperti 48 bidang fitur), kernel konvolusi juga menjadi 3D:
+
+```
+Input: 19×19×48          Kernel: 3×3×48            Output: 19×19×1
+    ┌─────┐               ┌───┐                    ┌─────┐
+   ╱     ╱│              ╱   ╱│                   │     │
+  ╱     ╱ │   konvolusi ╱   ╱ │                   │     │
+ ╱     ╱  │   →        ╱   ╱  │    →              │     │
+┌─────┐   │           ┌───┐   │                   └─────┘
+│     │  ╱            │   │  ╱
+│     │ ╱             │   │╱
+└─────┘╱              └───┘
+48 lapisan            48 lapisan                  1 lapisan
+```
+
+Setiap kernel konvolusi menghitung di semua saluran input, menghasilkan satu saluran output.
+
+### Beberapa Filter
+
+AlphaGo menggunakan 192 filter, setiap filter mempelajari fitur yang berbeda:
+
+```
+Input: 19×19×48
+
+      ┌─────┐
+     ╱     ╱│
+    ╱     ╱ │     192 kernel 3×3×48
+   ╱     ╱  │     ────────────────────►
+  ┌─────┐   │
+  │     │  ╱
+  │     │ ╱
+  └─────┘╱
+
+Output: 19×19×192
+
+      ┌─────┐
+     ╱     ╱│
+    ╱     ╱ │
+   ╱     ╱  │
+  ┌─────┐   │
+  │     │  ╱
+  │     │ ╱
+  └─────┘╱
+```
+
+Setiap filter mungkin mempelajari bentuk batu yang berbeda:
+- Filter 1: Deteksi mata
+- Filter 2: Deteksi titik putus
+- Filter 3: Deteksi koneksi
+- ...
+- Filter 192: Pola kompleks tertentu
+
+---
+
+## Receptive Field
+
+### Apa itu Receptive Field?
+
+**Receptive Field** mengacu pada posisi mana di input yang mempengaruhi satu posisi di output.
+
+#### Konvolusi Satu Lapisan
+
+Dengan kernel 3x3, setiap posisi output hanya dipengaruhi oleh area 3x3 di input:
+
+```
+Input:                   Output:
+  ┌─────────────┐         ┌───────────┐
+  │ . . . . .   │         │ . . . .   │
+  │ . ● ● ● .   │  →      │ . ● . .   │
+  │ . ● ● ● .   │         │ . . . .   │
+  │ . ● ● ● .   │         │ . . . .   │
+  │ . . . . .   │         └───────────┘
+  └─────────────┘
+     Receptive field 3×3
+```
+
+#### Konvolusi Multi-lapisan
+
+Setelah menumpuk beberapa lapisan konvolusi, receptive field membesar:
+
+| Jumlah Lapisan | Receptive Field | Perhitungan |
+|----------------|-----------------|-------------|
+| 1 | 3×3 | 3 |
+| 2 | 5×5 | 3 + (3-1) = 5 |
+| 3 | 7×7 | 5 + (3-1) = 7 |
+| ... | ... | ... |
+| 12 | 25×25 | 3 + 11×2 = 25 |
+
+12 lapisan konvolusi AlphaGo memberikan **receptive field 25x25**, yang sudah melampaui papan 19x19!
+
+Ini berarti:
+- **Setiap posisi output dapat "melihat" seluruh papan**
+- Tetapi cara "melihat" berbeda: detail dekat jelas, jauh lebih umum
+- Ini mirip dengan cara berpikir pemain manusia
+
+### Receptive Field dan Go
+
+Konsep receptive field menjelaskan mengapa AlphaGo dapat menangani masalah "global":
+
+```
+Masalah lokal (receptive field 3×3):     Masalah global (receptive field 25×25):
+- Apakah ada mata di sini?                - Apakah kelompok ini memiliki ruang mata?
+- Bisakah saya atari?                     - Apakah tangkapan tangga menguntungkan?
+- Bisakah saya menghubungkan?             - Bagaimana situasi keseluruhan?
+```
+
+Lapisan dangkal memproses fitur lokal, lapisan dalam memproses fitur global.
+
+---
+
+## Fitur Lokal vs Global
+
+### Struktur Hierarki CNN
+
+CNN secara alami membentuk struktur hierarki:
+
+```
+Lapisan input:      Batu hitam, batu putih, titik kosong
+   ↓
+Dangkal (1-3):      Mata, koneksi, pemutusan, atari
+   ↓
+Tengah (4-8):       Bentuk, batu hidup, batu mati
+   ↓
+Dalam (9-12):       Pengaruh, ketebalan, titik besar
+   ↓
+Lapisan output:     Probabilitas langkah / tingkat kemenangan
+```
+
+Ini sangat mirip dengan proses manusia belajar Go:
+1. Pertama pelajari aturan (di mana ada batu)
+2. Kemudian pelajari taktik (cara menangkap batu)
+3. Lalu pelajari bentuk batu (apa itu bentuk bagus)
+4. Akhirnya pelajari visi besar (penilaian keseluruhan)
+
+### Visualisasi Lapisan Tersembunyi
+
+Peneliti menemukan bahwa lapisan tersembunyi CNN memang mempelajari fitur yang bermakna:
+
+#### Filter Lapisan Dangkal
+
+```
+Filter A (Deteksi mata):     Filter B (Deteksi atari):
+┌───────┐                    ┌───────┐
+│ + - + │                    │ + + + │
+│ - + - │                    │ + - - │
+│ + - + │                    │ + + + │
+└───────┘                    └───────┘
+```
+
+#### Filter Lapisan Dalam
+
+Filter lapisan dalam lebih abstrak dan sulit dijelaskan secara langsung, tetapi mereka menangkap pola bentuk batu yang kompleks.
+
+---
+
+## Pilihan Fungsi Aktivasi
+
+### ReLU: Sederhana namun Efektif
+
+AlphaGo menggunakan **ReLU (Rectified Linear Unit)** setelah semua lapisan konvolusi:
+
+```python
+def relu(x):
+    return max(0, x)
+```
+
+Ilustrasi:
+
+```
+Output
+  │
+  │    /
+  │   /
+  │  /
+  │ /
+──┼────── Input
+  │
+```
+
+### Mengapa Tidak Menggunakan Fungsi Lain?
+
+| Fungsi Aktivasi | Rumus | Kelebihan | Kekurangan |
+|-----------------|-------|-----------|------------|
+| ReLU | max(0, x) | Perhitungan cepat, gradien bagus | Kematian nilai negatif |
+| Sigmoid | 1/(1+e^-x) | Output terbatas | Vanishing gradient |
+| Tanh | (e^x-e^-x)/(e^x+e^-x) | Zero-centered | Vanishing gradient |
+| LeakyReLU | max(0.01x, x) | Mengatasi masalah kematian | Satu hyperparameter tambahan |
+
+Untuk jaringan dalam, keunggulan ReLU jelas:
+1. **Perhitungan sederhana**: Hanya perbandingan dan pengambilan maksimum
+2. **Gradien tidak menghilang**: Gradien konstan 1 di area positif
+3. **Aktivasi sparse**: Banyak neuron menghasilkan 0, meningkatkan efisiensi
+
+### Makna ReLU dalam Go
+
+Sifat sparse ReLU memiliki interpretasi menarik dalam Go:
+
+```
+Filter tertentu mendeteksi "titik putus":
+- Ada titik putus → Output positif (diaktifkan)
+- Tidak ada titik putus → Output nol (tidak diaktifkan)
+
+Ini seperti pemain hanya memperhatikan posisi yang "ada sesuatu"
+```
+
+---
+
+## Batch Normalization
+
+### Apa itu Batch Normalization?
+
+**Batch Normalization** adalah teknik yang menjaga output setiap lapisan tetap memiliki distribusi yang stabil:
+
+```python
+def batch_norm(x, gamma, beta):
+    # Hitung mean dan standar deviasi batch
+    mean = x.mean(axis=0)
+    std = x.std(axis=0)
+
+    # Normalisasi
+    x_norm = (x - mean) / (std + 1e-8)
+
+    # Skala dan geser
+    return gamma * x_norm + beta
+```
+
+### Mengapa Diperlukan?
+
+#### Internal Covariate Shift
+
+Ketika jaringan dilatih, distribusi input setiap lapisan berubah seiring dengan perubahan bobot lapisan sebelumnya. Ini disebut "internal covariate shift":
+
+```
+Bobot lapisan pertama diperbarui → Distribusi output lapisan pertama berubah
+                    ↓
+               Distribusi input lapisan kedua berubah → Lapisan kedua perlu beradaptasi kembali
+                                        ↓
+                                   ... (menyebar ke bawah)
+```
+
+Batch normalization menstabilkan pelatihan dengan memaksa input setiap lapisan memiliki distribusi tetap (mean 0, standar deviasi 1).
+
+### Penerapan di AlphaGo
+
+AlphaGo menggunakan batch normalization setelah setiap lapisan konvolusi, sebelum fungsi aktivasi:
+
+```
+Conv → BatchNorm → ReLU → Conv → BatchNorm → ReLU → ...
+```
+
+Manfaat:
+1. **Pelatihan lebih cepat**: Dapat menggunakan learning rate yang lebih besar
+2. **Lebih stabil**: Mengurangi sensitivitas terhadap inisialisasi
+3. **Efek regularisasi**: Memiliki efek dropout yang ringan
+
+### Penanganan saat Inferensi
+
+Saat pelatihan, menggunakan statistik batch saat ini. Saat inferensi, menggunakan statistik seluruh set pelatihan (moving average):
+
+```python
+# Saat pelatihan
+mean = batch_mean
+var = batch_var
+
+# Saat inferensi
+mean = running_mean  # Mean yang diakumulasi selama pelatihan
+var = running_var    # Varians yang diakumulasi selama pelatihan
+```
+
+---
+
+## Konfigurasi Spesifik AlphaGo
+
+### Arsitektur Lengkap
+
+```
+Input: 19×19×48
+
+Lapisan 1:
+  Conv2D(5×5, 192 filters, padding='same')
+  BatchNorm
+  ReLU
+  Output: 19×19×192
+
+Lapisan 2-12 (total 11 lapisan):
+  Conv2D(3×3, 192 filters, padding='same')
+  BatchNorm
+  ReLU
+  Output: 19×19×192
+
+Lapisan output (Policy):
+  Conv2D(1×1, 1 filter)
+  Flatten
+  Softmax
+  Output: probabilitas 361 dimensi
+
+Lapisan output (Value):
+  Conv2D(1×1, 1 filter)
+  Flatten
+  Dense(256)
+  ReLU
+  Dense(1)
+  Tanh
+  Output: nilai tunggal
+```
+
+### Konfigurasi Parameter
+
+| Parameter | Nilai | Deskripsi |
+|-----------|-------|-----------|
+| Saluran input | 48 | Jumlah bidang fitur |
+| Jumlah filter | 192 | Jumlah saluran per lapisan |
+| Ukuran kernel | 3×3 (lapisan pertama 5×5) | Receptive field |
+| Jumlah lapisan | 13 (termasuk lapisan output) | Kedalaman |
+| Fungsi aktivasi | ReLU | Non-linearitas |
+| Normalisasi | BatchNorm | Stabilisasi pelatihan |
+
+### Implementasi PyTorch
+
+```python
+import torch
+import torch.nn as nn
+
+class AlphaGoCNN(nn.Module):
+    def __init__(self, input_channels=48, num_filters=192, num_layers=12):
+        super().__init__()
+
+        # Lapisan pertama (konvolusi 5×5)
+        self.conv1 = nn.Sequential(
+            nn.Conv2d(input_channels, num_filters, kernel_size=5, padding=2),
+            nn.BatchNorm2d(num_filters),
+            nn.ReLU(inplace=True)
+        )
+
+        # Lapisan tengah (konvolusi 3×3)
+        self.conv_layers = nn.Sequential(*[
+            nn.Sequential(
+                nn.Conv2d(num_filters, num_filters, kernel_size=3, padding=1),
+                nn.BatchNorm2d(num_filters),
+                nn.ReLU(inplace=True)
+            )
+            for _ in range(num_layers - 1)
+        ])
+
+        # Head output Policy
+        self.policy_head = nn.Sequential(
+            nn.Conv2d(num_filters, 1, kernel_size=1),
+            nn.Flatten(),
+            nn.Softmax(dim=1)
+        )
+
+        # Head output Value
+        self.value_head = nn.Sequential(
+            nn.Conv2d(num_filters, 1, kernel_size=1),
+            nn.Flatten(),
+            nn.Linear(361, 256),
+            nn.ReLU(inplace=True),
+            nn.Linear(256, 1),
+            nn.Tanh()
+        )
+
+    def forward(self, x):
+        # Ekstraksi fitur bersama
+        x = self.conv1(x)
+        x = self.conv_layers(x)
+
+        # Output terpisah
+        policy = self.policy_head(x)
+        value = self.value_head(x)
+
+        return policy, value
+```
+
+---
+
+## Perbandingan dengan Arsitektur Lain
+
+### Jaringan Fully Connected
+
+Jika menggunakan jaringan fully connected untuk memproses Go:
+
+| Karakteristik | Fully Connected | CNN |
+|---------------|-----------------|-----|
+| Jumlah parameter | Sangat besar (ratusan juta) | Lebih kecil (jutaan) |
+| Invarian posisi | Tidak ada | Ada |
+| Fitur lokal | Sulit dipelajari | Ditangkap secara alami |
+| Efisiensi pelatihan | Rendah | Tinggi |
+
+Jaringan fully connected tidak dapat memanfaatkan struktur spasial papan, sangat tidak efisien.
+
+### Recurrent Neural Network (RNN)
+
+RNN cocok untuk data sekuensial (seperti riwayat permainan), tetapi:
+
+| Karakteristik | RNN | CNN |
+|---------------|-----|-----|
+| Pemrosesan spasial | Lemah | Kuat |
+| Pemrosesan sekuensial | Kuat | Lemah (perlu bidang riwayat) |
+| Paralelisasi | Sulit | Mudah |
+| Dependensi jarak jauh | Perlu LSTM | Lapisan dalam cukup |
+
+AlphaGo memilih CNN + bidang riwayat, bukan CNN + RNN.
+
+### Residual Network (ResNet)
+
+AlphaGo Zero diupgrade ke ResNet:
+
+```
+CNN biasa:               ResNet:
+  x                        x
+  ↓                        ↓
+ Conv                     Conv
+  ↓                        ↓
+ ReLU                    ReLU
+  ↓                        ↓
+ Conv                     Conv
+  ↓                        ↓
+  y                      y + x  ← Koneksi residual
+```
+
+Koneksi residual membuat gradien lebih mudah mengalir, memungkinkan pelatihan jaringan yang lebih dalam (40 lapisan vs 12 lapisan).
+
+Lihat detail di [Dual-Head Network dan Residual Network](../dual-head-resnet).
+
+---
+
+## Pemahaman Visual
+
+### Proses Konvolusi
+
+```
+Papan input (disederhanakan menjadi 5×5):
+
+   A B C D E
+1  . . . . .
+2  . ● . . .
+3  . . ○ . .
+4  . . . ● .
+5  . . . . .
+
+Filter tertentu (3×3, mendeteksi "bentuk silang"):
+┌───────┐
+│ 0 1 0 │
+│ 1 1 1 │
+│ 0 1 0 │
+└───────┘
+
+Output konvolusi:
+   A B C D E
+1  0 0 0 0 0
+2  0 0 0 0 0
+3  0 0 1 0 0   ← Respons kuat di tengah (bentuk silang cocok)
+4  0 0 0 0 0
+5  0 0 0 0 0
+```
+
+### Fitur Multi-lapisan
+
+```
+Output lapisan 1 (4 dari 192 saluran):
+
+Saluran 1 (mata):    Saluran 2 (garis tepi):    Saluran 3 (titik putus):    Saluran 4 (koneksi):
+┌─────────┐          ┌─────────┐                ┌─────────┐                 ┌─────────┐
+│ 0 0 0 0 │          │ 0.8 0 0 │                │ 0 0 0 0 │                 │ 0 0 0 0 │
+│ 0 0.9 0 │          │ 0.8 0 0 │                │ 0 0 0.7 │                 │ 0 0.5 0 │
+│ 0 0 0 0 │          │ 0.8 0 0 │                │ 0 0 0 0 │                 │ 0 0.8 0 │
+│ 0 0 0 0 │          │ 0.8 0 0 │                │ 0 0 0 0 │                 │ 0 0.5 0 │
+└─────────┘          └─────────┘                └─────────┘                 └─────────┘
+
+Fitur-fitur ini akan digabungkan menjadi konsep yang lebih kompleks di lapisan yang lebih dalam...
+```
+
+---
+
+## Korespondensi Animasi
+
+Konsep inti dalam artikel ini dan nomor animasi terkait:
+
+| Nomor | Konsep | Korespondensi Fisika/Matematika |
+|-------|--------|--------------------------------|
+| D9 | Operasi konvolusi | Respons filter |
+| D10 | Receptive field | Lokal→Global |
+| D11 | Batch normalization | Stabilisasi distribusi |
+| D1 | Input multi-saluran | Operasi tensor |
+
+---
+
+## Bacaan Lanjutan
+
+- **Artikel sebelumnya**: [Desain Fitur Input](../input-features) — Penjelasan detail 48 bidang fitur
+- **Artikel berikutnya**: [Tahap Supervised Learning](../supervised-learning) — Bagaimana belajar dari catatan permainan manusia
+- **Topik lanjutan**: [Dual-Head Network dan Residual Network](../dual-head-resnet) — Upgrade jaringan AlphaGo Zero
+
+---
+
+## Poin Penting
+
+1. **CNN secara alami cocok untuk papan**: Koneksi lokal, berbagi bobot, ekuivariansi translasi
+2. **Konvolusi mengekstrak fitur lokal**: Pengenalan pola area 3x3
+3. **Jaringan dalam mendapatkan pandangan global**: 12 lapisan → receptive field 25x25
+4. **ReLU cepat dan efektif**: Aktivasi non-linear sederhana
+5. **BatchNorm menstabilkan pelatihan**: Normalisasi output setiap lapisan
+
+CNN memungkinkan AlphaGo untuk "melihat" papan—sama alaminya seperti manusia melihat gambar dengan mata.
+
+---
+
+## Referensi
+
+1. LeCun, Y., Bengio, Y., & Hinton, G. (2015). "Deep learning." *Nature*, 521, 436-444.
+2. He, K., et al. (2015). "Deep Residual Learning for Image Recognition." *CVPR*.
+3. Ioffe, S., & Szegedy, C. (2015). "Batch Normalization: Accelerating Deep Network Training." *ICML*.
+4. Krizhevsky, A., Sutskever, I., & Hinton, G. E. (2012). "ImageNet Classification with Deep Convolutional Neural Networks." *NeurIPS*.

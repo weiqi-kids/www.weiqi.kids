@@ -1,0 +1,866 @@
+---
+sidebar_position: 7
+title: Representasi Status Papan
+description: Dari array dua dimensi hingga feature plane neural network, memahami bagaimana AI Go "melihat" papan
+keywords: [representasi papan, Zobrist Hashing, Union-Find, pengkodean fitur, feature plane AlphaGo]
+---
+
+import { GoBoard } from '@site/src/components/D3Charts';
+
+# Representasi Status Papan
+
+Sebelum merancang AI Go, pertama-tama kita harus memecahkan masalah dasar: **Bagaimana membuat komputer "memahami" papan?**
+
+Masalah ini terlihat sederhana, tetapi melibatkan struktur data, algoritma, dan desain input neural network pada berbagai level. Artikel ini akan dimulai dari array dua dimensi yang paling dasar, secara bertahap memperkenalkan berbagai metode representasi papan yang digunakan AI Go, dan akhirnya menjelaskan bagaimana AlphaGo mengkodekan papan menjadi format yang dapat diproses neural network.
+
+---
+
+## Representasi Array Dua Dimensi: Cara Paling Intuitif
+
+### Konsep Dasar
+
+Papan Go adalah jaringan kotak 19×19, cara representasi paling intuitif adalah menggunakan **array dua dimensi**:
+
+```python
+import numpy as np
+
+# Konstanta papan
+BOARD_SIZE = 19
+EMPTY = 0
+BLACK = 1
+WHITE = 2
+
+# Inisialisasi papan kosong
+board = np.zeros((BOARD_SIZE, BOARD_SIZE), dtype=np.int8)
+
+# Letakkan batu: Hitam di D4 (3, 3)
+board[3, 3] = BLACK
+
+# Letakkan batu: Putih di Q16 (15, 3)
+board[15, 3] = WHITE
+```
+
+### Sistem Koordinat
+
+Go menggunakan dua sistem koordinat yang umum:
+
+#### 1. Koordinat Numerik (untuk program)
+
+```
+    0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
+0   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+1   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+2   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+3   .  .  .  ●  .  .  .  .  .  +  .  .  .  .  .  ○  .  .  .
+...
+```
+
+#### 2. Koordinat Huruf-Angka (untuk catatan permainan)
+
+```
+    A  B  C  D  E  F  G  H  J  K  L  M  N  O  P  Q  R  S  T
+19  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+18  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+17  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+16  .  .  .  ●  .  .  .  .  .  +  .  .  .  .  .  ○  .  .  .
+...
+```
+
+Catatan: Koordinat huruf melewatkan "I" (untuk menghindari kebingungan dengan angka 1).
+
+### Fungsi Konversi Koordinat
+
+```python
+def coord_to_index(coord):
+    """
+    Konversi koordinat catatan permainan ke indeks array
+    Contoh: 'D4' -> (3, 15)
+    """
+    letters = 'ABCDEFGHJKLMNOPQRST'  # Melewatkan I
+    col = letters.index(coord[0].upper())
+    row = BOARD_SIZE - int(coord[1:])
+    return row, col
+
+
+def index_to_coord(row, col):
+    """
+    Konversi indeks array ke koordinat catatan permainan
+    Contoh: (3, 15) -> 'Q16'
+    """
+    letters = 'ABCDEFGHJKLMNOPQRST'
+    return f"{letters[col]}{BOARD_SIZE - row}"
+```
+
+### Analisis Kompleksitas Ruang
+
+Kompleksitas ruang representasi array dua dimensi:
+
+| Cara Representasi | Ukuran per Sel | Total Ruang |
+|-------------------|----------------|-------------|
+| `int8` | 1 byte | 361 bytes |
+| `int32` | 4 bytes | 1,4 KB |
+| `float64` | 8 bytes | 2,9 KB |
+
+Untuk komputer modern, memori ini sama sekali bukan masalah. Tetapi ketika perlu menyimpan banyak status papan (seperti pohon pencarian MCTS), menggunakan `int8` dapat secara signifikan mengurangi penggunaan memori.
+
+### Operasi Dasar
+
+```python
+class Board:
+    def __init__(self, size=19):
+        self.size = size
+        self.board = np.zeros((size, size), dtype=np.int8)
+        self.current_player = BLACK
+        self.ko_point = None  # Titik terlarang ko
+        self.move_history = []
+
+    def is_valid_move(self, row, col):
+        """Periksa apakah langkah legal"""
+        # 1. Posisi dalam papan
+        if not (0 <= row < self.size and 0 <= col < self.size):
+            return False
+
+        # 2. Posisi kosong
+        if self.board[row, col] != EMPTY:
+            return False
+
+        # 3. Bukan titik terlarang ko
+        if self.ko_point == (row, col):
+            return False
+
+        # 4. Bukan bunuh diri (kecuali bisa menangkap)
+        # ... membutuhkan pemeriksaan lebih kompleks
+
+        return True
+
+    def place_stone(self, row, col):
+        """Letakkan batu"""
+        if not self.is_valid_move(row, col):
+            return False
+
+        self.board[row, col] = self.current_player
+        self.move_history.append((row, col))
+
+        # Tangani penangkapan
+        captures = self._remove_captured_stones(row, col)
+
+        # Perbarui titik terlarang ko
+        self._update_ko(row, col, captures)
+
+        # Ganti pemain
+        self.current_player = WHITE if self.current_player == BLACK else BLACK
+
+        return True
+```
+
+---
+
+## Zobrist Hashing: Identifikasi Posisi Duplikat dengan Cepat
+
+### Latar Belakang Masalah
+
+Dalam AI Go, kita sering perlu menentukan "apakah dua posisi sama":
+
+1. **Aturan Ko**: Tidak boleh membuat posisi kembali ke status langkah sebelumnya
+2. **Triple Ko**: Penanganan aturan khusus
+3. **Transposition Table**: Mengingat posisi yang sudah dicari
+4. **Cache Neural Network**: Menghindari perhitungan berulang
+
+Jika membandingkan sel per sel setiap kali, dibutuhkan waktu O(361). Apakah ada cara yang lebih cepat?
+
+### Prinsip Zobrist Hashing
+
+**Zobrist Hashing** (juga disebut Zobrist Keys) adalah metode hashing yang cerdas, dikemukakan oleh Albert Zobrist pada tahun 1970. Ide intinya adalah:
+
+1. Pra-generate **bilangan acak** untuk setiap kombinasi "posisi × warna"
+2. Nilai hash papan = **XOR** dari semua bilangan acak posisi yang memiliki batu
+3. Meletakkan/menangkap batu hanya membutuhkan satu operasi XOR untuk memperbarui nilai hash
+
+### Tabel Bilangan Acak
+
+```python
+import numpy as np
+
+# Generate tabel bilangan acak
+# Gunakan seed tetap untuk reprodusibilitas
+np.random.seed(42)
+
+# Satu bilangan acak untuk setiap posisi dan setiap warna
+# zobrist[color][row][col]
+zobrist_table = np.random.randint(
+    0, 2**64,
+    size=(3, BOARD_SIZE, BOARD_SIZE),  # 3: EMPTY, BLACK, WHITE
+    dtype=np.uint64
+)
+
+# Bilangan acak untuk giliran siapa
+zobrist_player = np.random.randint(0, 2**64, dtype=np.uint64)
+```
+
+### Sifat Operasi XOR
+
+Operasi XOR (exclusive or) memiliki beberapa sifat penting yang membuatnya sangat cocok untuk aplikasi ini:
+
+1. **Reflexivity**: A ⊕ A = 0 (angka yang sama di-XOR sendiri sama dengan 0)
+2. **Reversibility**: A ⊕ B ⊕ B = A (XOR dua kali sama dengan tidak ada)
+3. **Komutatif**: A ⊕ B = B ⊕ A
+4. **Asosiatif**: (A ⊕ B) ⊕ C = A ⊕ (B ⊕ C)
+
+Ini berarti:
+- Meletakkan batu: `hash ^= zobrist[color][row][col]`
+- Menangkap batu: `hash ^= zobrist[color][row][col]` (operasi yang sama!)
+
+### Implementasi
+
+```python
+class ZobristBoard:
+    def __init__(self, size=19):
+        self.size = size
+        self.board = np.zeros((size, size), dtype=np.int8)
+        self.current_player = BLACK
+        self.hash = np.uint64(0)
+
+        # Inisialisasi tabel bilangan acak
+        self._init_zobrist_table()
+
+    def _init_zobrist_table(self):
+        np.random.seed(12345)
+        self.zobrist = np.random.randint(
+            0, 2**64,
+            size=(3, self.size, self.size),
+            dtype=np.uint64
+        )
+        self.zobrist_player = np.random.randint(0, 2**64, dtype=np.uint64)
+
+    def place_stone(self, row, col, color):
+        """Letakkan batu dan perbarui nilai hash"""
+        # Hapus status lama (jika ada batu)
+        old_color = self.board[row, col]
+        if old_color != EMPTY:
+            self.hash ^= self.zobrist[old_color, row, col]
+
+        # Tambah batu baru
+        self.board[row, col] = color
+        self.hash ^= self.zobrist[color, row, col]
+
+    def remove_stone(self, row, col):
+        """Tangkap batu dan perbarui nilai hash"""
+        color = self.board[row, col]
+        if color != EMPTY:
+            self.hash ^= self.zobrist[color, row, col]
+            self.board[row, col] = EMPTY
+
+    def switch_player(self):
+        """Ganti pemain dan perbarui nilai hash"""
+        self.hash ^= self.zobrist_player
+        self.current_player = WHITE if self.current_player == BLACK else BLACK
+
+    def get_hash(self):
+        """Dapatkan nilai hash posisi saat ini"""
+        return self.hash
+```
+
+### Keuntungan Pembaruan Inkremental
+
+Menggunakan Zobrist Hashing, memperbarui nilai hash hanya membutuhkan waktu O(1):
+
+| Operasi | Perbandingan Tradisional | Zobrist |
+|---------|-------------------------|---------|
+| Bandingkan dua posisi | O(361) | O(1) |
+| Perbarui setelah meletakkan batu | O(361) | O(1) |
+| Perbarui setelah menangkap batu | O(361) | O(k), k adalah jumlah batu yang ditangkap |
+
+### Probabilitas Tabrakan
+
+Menggunakan hash 64-bit, probabilitas tabrakan sangat rendah:
+
+**P(tabrakan) ≈ n² / 2^65**
+
+Di mana n adalah jumlah posisi yang berbeda. Bahkan dengan 1 miliar posisi, probabilitas tabrakan hanya sekitar 10^-3.
+
+Pada kenyataannya, banyak program Go menggunakan Zobrist Hashing 64-bit tanpa pemeriksaan tabrakan, karena probabilitas tabrakan cukup rendah untuk diabaikan.
+
+---
+
+## Representasi String (Union-Find): Masalah Konektivitas
+
+### Konsep String
+
+Dalam Go, **string** (String atau Chain) mengacu pada sekelompok batu berwarna sama yang terhubung. "Liberti" dari string menentukan hidup-matinya.
+
+<GoBoard
+  size={200}
+  stones={[
+    {x: 3, y: 3, color: 'black'},
+    {x: 4, y: 3, color: 'black'},
+    {x: 5, y: 3, color: 'black'},
+    {x: 4, y: 4, color: 'black'},
+    {x: 6, y: 3, color: 'white'},
+    {x: 6, y: 4, color: 'white'},
+  ]}
+  labels={[
+    {x: 4, y: 3, text: 'A'},
+  ]}
+/>
+
+Pada gambar di atas, empat batu hitam membentuk satu string, jumlah liberti string ini menentukan hidup-matinya.
+
+### Mengapa Perlu Manajemen String yang Efisien?
+
+Setiap langkah mungkin:
+1. **Membuat** string baru
+2. **Menggabungkan** beberapa string
+3. **Mengurangi** liberti string lawan
+4. **Menangkap** string tanpa liberti
+
+Operasi-operasi ini perlu dieksekusi secara efisien, karena dalam MCTS, mungkin perlu melakukan puluhan ribu simulasi langkah per detik.
+
+### Struktur Data Union-Find
+
+**Union-Find** (juga disebut Disjoint Set Union, DSU) adalah struktur data klasik untuk menangani masalah "konektivitas":
+
+```python
+class UnionFind:
+    def __init__(self, size):
+        # parent[i] menunjuk ke node induk dari i
+        # Jika parent[i] = i, maka i adalah node root
+        self.parent = list(range(size))
+        self.rank = [0] * size
+
+    def find(self, x):
+        """
+        Temukan node root dari himpunan yang berisi x (dengan path compression)
+        """
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])  # Path compression
+        return self.parent[x]
+
+    def union(self, x, y):
+        """
+        Gabungkan himpunan yang berisi x dan y (dengan union by rank)
+        """
+        root_x = self.find(x)
+        root_y = self.find(y)
+
+        if root_x == root_y:
+            return  # Sudah dalam himpunan yang sama
+
+        # Union by rank: hubungkan pohon yang lebih kecil ke pohon yang lebih besar
+        if self.rank[root_x] < self.rank[root_y]:
+            self.parent[root_x] = root_y
+        elif self.rank[root_x] > self.rank[root_y]:
+            self.parent[root_y] = root_x
+        else:
+            self.parent[root_y] = root_x
+            self.rank[root_x] += 1
+```
+
+### Kompleksitas Waktu
+
+Kompleksitas waktu Union-Find dinyatakan menggunakan **fungsi Ackermann terbalik** α(n):
+
+| Operasi | Kompleksitas Waktu |
+|---------|-------------------|
+| find | O(α(n)) ≈ O(1) |
+| union | O(α(n)) ≈ O(1) |
+
+α(n) tumbuh sangat lambat, untuk n praktis apapun, α(n) ≤ 4. Jadi dapat dianggap waktu konstan.
+
+### Aplikasi Union-Find dalam Go
+
+```python
+class GoStringManager:
+    def __init__(self, size=19):
+        self.size = size
+        num_points = size * size
+
+        # Struktur Union-Find
+        self.parent = list(range(num_points))
+        self.rank = [0] * num_points
+
+        # Liberti setiap string (diindeks dengan root)
+        self.liberties = [set() for _ in range(num_points)]
+
+        # Batu setiap string (diindeks dengan root)
+        self.stones = [set() for _ in range(num_points)]
+
+    def _index(self, row, col):
+        return row * self.size + col
+
+    def _neighbors(self, row, col):
+        """Dapatkan empat tetangga"""
+        neighbors = []
+        if row > 0: neighbors.append((row - 1, col))
+        if row < self.size - 1: neighbors.append((row + 1, col))
+        if col > 0: neighbors.append((row, col - 1))
+        if col < self.size - 1: neighbors.append((row, col + 1))
+        return neighbors
+
+    def find(self, idx):
+        if self.parent[idx] != idx:
+            self.parent[idx] = self.find(self.parent[idx])
+        return self.parent[idx]
+
+    def add_stone(self, row, col, color, board):
+        """
+        Tambah satu batu, tangani koneksi dan penangkapan
+        """
+        idx = self._index(row, col)
+
+        # Buat string baru
+        self.stones[idx] = {idx}
+        self.liberties[idx] = set()
+
+        # Hitung liberti batu ini
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == 0:  # Titik kosong adalah liberti
+                self.liberties[idx].add(nidx)
+
+        # Gabung dengan tetangga sewarna
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == color:
+                self._merge_strings(idx, nidx)
+
+        # Kurangi liberti string lawan
+        opponent = 3 - color  # BLACK=1, WHITE=2
+        captured = []
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == opponent:
+                root = self.find(nidx)
+                self.liberties[root].discard(idx)
+                if len(self.liberties[root]) == 0:
+                    captured.append(root)
+
+        return captured
+
+    def _merge_strings(self, idx1, idx2):
+        """Gabung dua string"""
+        root1 = self.find(idx1)
+        root2 = self.find(idx2)
+
+        if root1 == root2:
+            return
+
+        # Union by rank
+        if self.rank[root1] < self.rank[root2]:
+            root1, root2 = root2, root1
+
+        self.parent[root2] = root1
+        if self.rank[root1] == self.rank[root2]:
+            self.rank[root1] += 1
+
+        # Gabung himpunan liberti dan batu
+        self.liberties[root1] |= self.liberties[root2]
+        self.stones[root1] |= self.stones[root2]
+
+        # Hapus posisi sendiri dari liberti (diri sendiri bukan liberti sendiri)
+        for stone_idx in self.stones[root2]:
+            self.liberties[root1].discard(stone_idx)
+```
+
+### Perhitungan Liberti
+
+Menghitung jumlah liberti string adalah salah satu operasi paling umum dalam Go:
+
+```python
+def count_liberties(self, row, col, board):
+    """Hitung jumlah liberti string yang berisi batu tertentu"""
+    idx = self._index(row, col)
+    root = self.find(idx)
+    return len(self.liberties[root])
+```
+
+Menggunakan Union-Find, operasi ini adalah O(1) (dengan asumsi find adalah O(1)).
+
+---
+
+## Evolusi Pengkodean Fitur
+
+Dari fitur manual tradisional hingga fitur ringkas AlphaGo Zero, pengkodean fitur AI Go telah mengalami evolusi besar.
+
+### Fitur Manual GNU Go
+
+Program Go awal (seperti GNU Go) menggunakan banyak fitur yang dirancang secara manual:
+
+```python
+def extract_features_gnugo(board, point):
+    """
+    Ekstraksi fitur gaya GNU Go
+    """
+    features = {}
+
+    # 1. Pola bentuk (bentuk lokal yang telah ditentukan)
+    features['pattern'] = match_pattern(board, point)
+
+    # 2. Fitur taktis
+    features['can_capture'] = check_capture(board, point)
+    features['can_connect'] = check_connect(board, point)
+    features['creates_eye'] = check_eye_creation(board, point)
+
+    # 3. Fitur lokal
+    features['liberties_after'] = count_liberties_after_move(board, point)
+    features['enemy_liberties'] = count_enemy_liberties(board, point)
+
+    # 4. Fitur global
+    features['distance_to_edge'] = min(
+        point[0], point[1],
+        18 - point[0], 18 - point[1]
+    )
+
+    # ... lebih banyak fitur
+
+    return features
+```
+
+Masalah dengan pendekatan ini:
+- Membutuhkan banyak pengetahuan ahli manusia
+- Fitur mungkin tidak lengkap
+- Sulit menemukan pola baru
+
+### 48 Feature Plane AlphaGo
+
+AlphaGo (versi Nature 2016) menggunakan **48 feature plane** sebagai input neural network:
+
+```python
+def encode_alphago_features(board, player, history):
+    """
+    48 feature plane AlphaGo 2016
+
+    Returns:
+        Tensor (19, 19, 48)
+    """
+    features = np.zeros((19, 19, 48), dtype=np.float32)
+
+    # Plane 1: Posisi batu hitam
+    features[:, :, 0] = (board == BLACK)
+
+    # Plane 2: Posisi batu putih
+    features[:, :, 1] = (board == WHITE)
+
+    # Plane 3: Titik kosong
+    features[:, :, 2] = (board == EMPTY)
+
+    # Plane 4: Semua 1 (istilah bias)
+    features[:, :, 3] = 1
+
+    # Plane 5-12: Pengkodean jumlah liberti (satu plane untuk 1-8 liberti)
+    for i, num_libs in enumerate(range(1, 9)):
+        for r in range(19):
+            for c in range(19):
+                if board[r, c] != EMPTY:
+                    libs = count_liberties(board, r, c)
+                    if libs == num_libs:
+                        features[r, c, 4 + i] = 1
+
+    # Plane 13-20: Liberti lawan setelah penangkapan
+    # ...
+
+    # Plane 21-28: Liberti sendiri setelah meletakkan batu
+    # ...
+
+    # Plane 29-36: Sejarah 8 langkah terakhir (satu plane per langkah)
+    for i, (r, c) in enumerate(history[-8:]):
+        features[r, c, 28 + i] = 1
+
+    # Plane 37-44: Penentuan ladder
+    # ...
+
+    # Plane 45-48: Terkait simetri
+    # ...
+
+    # Plane 49: Giliran siapa (semua 1 untuk hitam, semua 0 untuk putih)
+    if player == BLACK:
+        features[:, :, 47] = 1
+
+    return features
+```
+
+### Klasifikasi 48 Plane
+
+| Kategori | Jumlah Plane | Deskripsi |
+|----------|--------------|-----------|
+| Posisi batu | 3 | Hitam, putih, kosong |
+| Konstanta | 1 | Semua 1 |
+| Jumlah liberti | 8 | 1-8 liberti |
+| Liberti setelah penangkapan | 8 | Liberti dengan asumsi setelah langkah |
+| Liberti setelah meletakkan | 8 | Liberti dengan asumsi setelah langkah |
+| Sejarah | 8 | 8 langkah terakhir |
+| Ladder | 8 | Analisis ladder kompleks |
+| Lainnya | 4 | Giliran, simetri, dll. |
+
+### 17 Feature Plane AlphaGo Zero
+
+AlphaGo Zero (2017) sangat menyederhanakan pengkodean fitur, hanya menggunakan **17 plane**:
+
+```python
+def encode_alphago_zero_features(board_history, player):
+    """
+    17 feature plane AlphaGo Zero
+
+    Args:
+        board_history: 8 posisi terakhir (termasuk saat ini)
+        player: Pemain saat ini
+
+    Returns:
+        Tensor (19, 19, 17)
+    """
+    features = np.zeros((19, 19, 17), dtype=np.float32)
+
+    # Plane 1-8: Sejarah batu hitam (8 langkah terakhir)
+    for i, board in enumerate(board_history[-8:]):
+        features[:, :, i] = (board == BLACK)
+
+    # Plane 9-16: Sejarah batu putih (8 langkah terakhir)
+    for i, board in enumerate(board_history[-8:]):
+        features[:, :, 8 + i] = (board == WHITE)
+
+    # Plane 17: Giliran siapa (semua 1 untuk hitam, semua 0 untuk putih)
+    if player == BLACK:
+        features[:, :, 16] = 1
+
+    return features
+```
+
+### Kesederhanaan 17 Plane
+
+| Kategori | Jumlah Plane | Deskripsi |
+|----------|--------------|-----------|
+| Sejarah batu hitam | 8 | Posisi batu hitam dari 8 time step terakhir |
+| Sejarah batu putih | 8 | Posisi batu putih dari 8 time step terakhir |
+| Pemain saat ini | 1 | Semua 1 atau semua 0 |
+
+Mengapa bisa sesederhana ini?
+
+> **Wawasan kunci: Biarkan neural network mempelajari fitur sendiri.**
+
+AlphaGo Zero membuktikan bahwa:
+- Tidak perlu menghitung jumlah liberti secara manual (network dapat menyimpulkan dari posisi batu)
+- Tidak perlu analisis ladder (network dapat belajar mengenali ladder)
+- Tidak perlu prediksi penangkapan yang kompleks (network dapat memahami konsekuensi langkah)
+
+Ini mewujudkan keunggulan inti deep learning: **pembelajaran end-to-end**.
+
+### Visualisasi Feature Plane
+
+Mari kita lihat seperti apa feature plane ini sebenarnya:
+
+```
+Papan asli:              Plane hitam:            Plane putih:
+. . . . . .            0 0 0 0 0 0            0 0 0 0 0 0
+. ● ○ . . .            0 1 0 0 0 0            0 0 1 0 0 0
+. . ● ○ . .    ->      0 0 1 0 0 0     +      0 0 0 1 0 0
+. . . ● . .            0 0 0 1 0 0            0 0 0 0 0 0
+. . . . . .            0 0 0 0 0 0            0 0 0 0 0 0
+```
+
+Setiap plane adalah matriks biner (0 atau 1), neural network dapat mengekstrak pola dari plane-plane ini melalui operasi konvolusi.
+
+---
+
+## Penanganan Simetri: 8 Transformasi
+
+### Simetri Go
+
+Papan Go memiliki **8 simetri**:
+
+1. **4 rotasi**: 0°, 90°, 180°, 270°
+2. **4 rotasi setelah flip**: Flip horizontal + 4 rotasi
+
+Ini membentuk **grup dihedral D4**.
+
+### Representasi Matematis
+
+Misalkan (x, y) adalah koordinat di papan (pusat di (9, 9)), 8 transformasi dapat dinyatakan sebagai:
+
+| Transformasi | Rumus |
+|--------------|-------|
+| Identitas | (x, y) |
+| Rotasi 90° | (-y, x) |
+| Rotasi 180° | (-x, -y) |
+| Rotasi 270° | (y, -x) |
+| Flip horizontal | (-x, y) |
+| Flip vertikal | (x, -y) |
+| Flip diagonal | (y, x) |
+| Flip anti-diagonal | (-y, -x) |
+
+### Implementasi Program
+
+```python
+def get_symmetries(board):
+    """
+    Dapatkan 8 transformasi simetri papan
+
+    Returns:
+        List dari 8 papan
+    """
+    symmetries = []
+
+    # Asli
+    symmetries.append(board.copy())
+
+    # Rotasi 90°
+    symmetries.append(np.rot90(board, k=1))
+
+    # Rotasi 180°
+    symmetries.append(np.rot90(board, k=2))
+
+    # Rotasi 270°
+    symmetries.append(np.rot90(board, k=3))
+
+    # Flip horizontal
+    symmetries.append(np.fliplr(board))
+
+    # Flip vertikal
+    symmetries.append(np.flipud(board))
+
+    # Flip diagonal
+    symmetries.append(board.T)
+
+    # Flip anti-diagonal
+    symmetries.append(np.rot90(board.T, k=2))
+
+    return symmetries
+
+
+def apply_symmetry(board, sym_index):
+    """
+    Terapkan transformasi simetri ke-sym_index
+    """
+    return get_symmetries(board)[sym_index]
+
+
+def inverse_symmetry(move, sym_index, board_size=19):
+    """
+    Konversi koordinat langkah yang ditransformasi kembali ke koordinat asli
+    """
+    row, col = move
+
+    if sym_index == 0:  # Identitas
+        return row, col
+    elif sym_index == 1:  # Rotasi 90°
+        return col, board_size - 1 - row
+    elif sym_index == 2:  # Rotasi 180°
+        return board_size - 1 - row, board_size - 1 - col
+    elif sym_index == 3:  # Rotasi 270°
+        return board_size - 1 - col, row
+    elif sym_index == 4:  # Flip horizontal
+        return row, board_size - 1 - col
+    elif sym_index == 5:  # Flip vertikal
+        return board_size - 1 - row, col
+    elif sym_index == 6:  # Flip diagonal
+        return col, row
+    elif sym_index == 7:  # Flip anti-diagonal
+        return board_size - 1 - col, board_size - 1 - row
+```
+
+### Augmentasi Data
+
+Saat melatih neural network, simetri dapat digunakan untuk **augmentasi data**:
+
+```python
+def augment_training_data(board, policy, value):
+    """
+    Perluas satu sampel pelatihan menjadi 8
+    """
+    augmented = []
+
+    for sym_index in range(8):
+        # Transformasi papan
+        aug_board = apply_symmetry(board, sym_index)
+
+        # Transformasi kebijakan (vektor 361 dimensi)
+        policy_2d = policy.reshape(19, 19)
+        aug_policy_2d = apply_symmetry(policy_2d, sym_index)
+        aug_policy = aug_policy_2d.flatten()
+
+        # Nilai tidak berubah
+        aug_value = value
+
+        augmented.append((aug_board, aug_policy, aug_value))
+
+    return augmented
+```
+
+Ini meningkatkan jumlah data pelatihan 8 kali lipat, dan sepenuhnya gratis (tidak perlu mengumpulkan data baru).
+
+### Pemanfaatan Simetri saat Inferensi
+
+AlphaGo juga memanfaatkan simetri dalam permainan sebenarnya:
+
+```python
+def predict_with_symmetry(model, board):
+    """
+    Tingkatkan prediksi menggunakan simetri
+    """
+    policies = []
+    values = []
+
+    for sym_index in range(8):
+        # Transformasi input
+        aug_board = apply_symmetry(board, sym_index)
+
+        # Prediksi neural network
+        policy, value = model.predict(aug_board)
+
+        # Transformasi kebijakan kembali ke sistem koordinat asli
+        policy_2d = policy.reshape(19, 19)
+        original_policy = inverse_symmetry_2d(policy_2d, sym_index)
+        policies.append(original_policy.flatten())
+
+        values.append(value)
+
+    # Rata-ratakan semua prediksi
+    avg_policy = np.mean(policies, axis=0)
+    avg_value = np.mean(values)
+
+    return avg_policy, avg_value
+```
+
+Pendekatan ini dapat sedikit meningkatkan akurasi dan stabilitas prediksi.
+
+---
+
+## Ringkasan Metode Representasi Papan
+
+| Metode | Kegunaan | Kompleksitas | Karakteristik |
+|--------|----------|--------------|---------------|
+| **Array 2D** | Penyimpanan dasar | Ruang O(361) | Sederhana dan intuitif |
+| **Zobrist Hashing** | Identifikasi posisi | Query O(1) | Hashing efisien |
+| **Union-Find** | Manajemen string | Operasi O(α(n)) | Menangani konektivitas |
+| **Feature Plane** | Input neural network | O(361×jumlah plane) | Mengkodekan informasi kaya |
+| **Transformasi Simetri** | Augmentasi data | 8× jumlah data | Augmentasi gratis |
+
+Teknik-teknik ini bekerja sama, membentuk infrastruktur AI Go modern.
+
+---
+
+## Korespondensi Animasi
+
+Konsep inti yang dibahas dalam artikel ini dan nomor animasi:
+
+| Nomor | Konsep | Korespondensi Fisika/Matematika |
+|-------|--------|--------------------------------|
+| A A1 | Representasi array 2D | Matriks, data sparse |
+| A A2 | Zobrist Hashing | Fungsi hash, operasi XOR |
+| A A8 | Pengkodean feature plane | Tensor, input multi-channel |
+| A A5 | Penanganan simetri | Teori grup, grup dihedral |
+
+---
+
+## Bacaan Lanjutan
+
+- **Artikel sebelumnya**: [Batas Metode Tradisional](../traditional-limits) - Minimax hingga MCTS
+- **Artikel selanjutnya**: [Penjelasan Detail Policy Network](../policy-network) - Bagaimana neural network memprediksi langkah
+- **Latihan praktis**: [Jalankan AI Go Pertama Anda dalam 30 Menit](../../../hands-on/) - Coba sendiri
+
+---
+
+## Referensi
+
+1. Zobrist, A. L. (1970). "A new hashing method with application for game playing." ICCA journal.
+2. Tarjan, R. E. (1975). "Efficiency of a Good But Not Linear Set Union Algorithm." Journal of the ACM, 22(2), 215-225.
+3. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." Nature, 529, 484-489. - 48 feature plane AlphaGo
+4. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." Nature, 550, 354-359. - 17 feature plane AlphaGo Zero

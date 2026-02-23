@@ -1,0 +1,493 @@
+---
+sidebar_position: 19
+title: Proses Pelatihan dari Nol
+description: Saksikan bagaimana AlphaGo Zero dalam tiga hari berevolusi dari bermain acak hingga melampaui manusia, menemukan kembali dan melampaui teori Go yang berusia ribuan tahun
+keywords: [AlphaGo Zero, proses pelatihan, self-play, pertumbuhan kekuatan bermain, AI Go, deep learning]
+---
+
+import { EloChart } from '@site/src/components/D3Charts';
+
+# Proses Pelatihan dari Nol
+
+Yang paling menakjubkan dari AlphaGo Zero bukan hanya kekuatan bermain akhirnya, tetapi **proses pertumbuhannya**—dimulai dari keadaan yang sepenuhnya acak, dalam hanya tiga hari ia menjalani akumulasi pengetahuan Go yang membutuhkan waktu ribuan tahun bagi manusia, lalu melampaui semua pemahaman manusia.
+
+Artikel ini akan membawa Anda menyaksikan proses transformasi yang menakjubkan ini langkah demi langkah.
+
+---
+
+## Kurva Pelatihan
+
+Pertama, mari kita lihat kurva pertumbuhan kekuatan bermain AlphaGo Zero:
+
+<EloChart mode="zero" width={700} height={400} />
+
+Kurva ini menunjukkan perubahan kekuatan bermain AlphaGo Zero dalam 72 jam. Perhatikan beberapa milestone penting:
+
+| Waktu | Rating ELO | Setara dengan |
+|-------|-----------|---------------|
+| 0 jam | 0 | Bermain acak |
+| 3 jam | ~1000 | Menemukan aturan dasar |
+| 12 jam | ~3000 | Menemukan joseki dan bentuk batu |
+| 36 jam | ~4500 | Melampaui AlphaGo versi Fan Hui |
+| 60 jam | ~5200 | Melampaui AlphaGo versi Lee Sedol |
+| 72 jam | ~5400 | Melampaui semua versi sebelumnya |
+
+**Tiga hari, dari nol hingga melampaui puncak kemampuan manusia.**
+
+---
+
+## Day 0: Awal yang Kacau
+
+### Keadaan Awal yang Sepenuhnya Acak
+
+Saat pelatihan dimulai, bobot neural network diinisialisasi secara acak. Ini berarti:
+
+- **Policy Head**: Output mendekati distribusi seragam, probabilitas bermain di setiap posisi sekitar 1/361
+- **Value Head**: Output mendekati 0, tidak dapat membedakan posisi baik dan buruk
+
+Pada saat ini, AlphaGo Zero bermain sepenuhnya secara acak—bahkan lebih buruk dari seseorang yang belum pernah melihat papan Go.
+
+### Pertandingan Self-play Pertama
+
+Bayangkan seperti apa pertandingan self-play pertama:
+
+```
+Hitam 1: Bermain acak di suatu tempat (mungkin tengen, mungkin di sudut, mungkin di baris pertama)
+Putih 2: Bermain acak di tempat lain
+Hitam 3: Acak...
+...
+Langkah ke-200: Papan dipenuhi batu-batu yang terisolasi, tanpa koneksi apapun
+Akhir: Kemenangan ditentukan oleh faktor acak
+```
+
+"Kualitas" permainan ini sangat rendah, tetapi mengandung informasi berharga: **siapa yang akhirnya menang**.
+
+### Sinyal Pelatihan Pertama
+
+Meskipun kedua belah pihak bermain secara acak, hasil menang/kalah sudah pasti. Neural network mulai belajar:
+
+> "Dalam posisi ini, akhirnya hitam menang. Meskipun saya tidak tahu mengapa, posisi ini mungkin lebih baik untuk hitam."
+
+Ini adalah sinyal yang sangat lemah, tetapi nyata. Setelah ribuan pertandingan "sampah" seperti ini, network mulai menemukan beberapa pola statistik.
+
+---
+
+## Jam 1-3: Menemukan Aturan Permainan
+
+### Kesadaran Aturan yang Muncul
+
+Setelah puluhan ribu pertandingan self-play, AlphaGo Zero mulai "menemukan" aturan dasar Go (meskipun aturan ini sudah tertanam dalam game engine):
+
+#### 1. Pentingnya Koneksi
+
+```
+Pengamatan: Ketika batu-batu terhubung, mereka lebih sulit ditangkap
+Pembelajaran: Mulai memprioritaskan bermain di sebelah batu yang sudah ada
+```
+
+Ini tidak diajarkan, tetapi dipelajari dari hasil menang/kalah. Batu-batu yang tersebar mudah dikalahkan satu per satu, batu-batu yang terhubung dalam kelompok lebih mudah bertahan.
+
+#### 2. Konsep Liberty
+
+```
+Pengamatan: Ketika semua titik yang berdekatan dengan batu diduduki, batu tersebut menghilang
+Pembelajaran: Mulai menghindari posisi dengan sedikit liberty, mulai menyerang batu lawan dengan sedikit liberty
+```
+
+Network belajar melacak jumlah liberty—meskipun tidak ada fitur "jumlah liberty" eksplisit dalam input, ini dapat disimpulkan dari riwayat keadaan papan.
+
+#### 3. Bentuk Awal Mata
+
+```
+Pengamatan: Bentuk-bentuk tertentu sangat sulit ditangkap
+Pembelajaran: Mulai membentuk bentuk dengan ruang di sudut dan sisi
+```
+
+Ini adalah bibit konsep hidup. Network menemukan bahwa kelompok batu dengan ruang internal lebih mudah bertahan.
+
+### Evaluasi Kekuatan Bermain
+
+Pada titik ini, AlphaGo Zero kira-kira:
+- **ELO**: ~1000
+- **Setara dengan**: Pemula yang baru belajar aturan
+- **Karakteristik**: Tahu untuk menghubungkan batu, tahu untuk menangkap batu lawan
+
+---
+
+## Jam 3-12: Menemukan Joseki dan Bentuk Batu
+
+### Kebangkitan Sudut
+
+Dengan lebih banyak pelatihan, network menemukan pentingnya sudut:
+
+```
+Pengamatan: Batu di sudut hanya membutuhkan 2 mata untuk hidup
+            Di sisi membutuhkan 2 mata lebih sulit
+            Di tengah membutuhkan 2 mata paling sulit
+Pembelajaran: Prioritaskan menduduki sudut di pembukaan
+```
+
+Ini adalah proses penemuan "sudut emas, sisi perak, perut rumput" dalam teori Go manusia. Network tidak diberitahu prinsip ini, melainkan menemukan sendiri dari ratusan ribu pertandingan.
+
+### Munculnya Joseki
+
+Yang lebih menakjubkan, network mulai "menciptakan" joseki—permainan standar kedua belah pihak di sudut:
+
+#### Fenomena yang Diamati
+
+```
+Awal pelatihan: Permainan sudut sangat beragam
+Pertengahan pelatihan: Beberapa permainan muncul berulang kali
+Akhir pelatihan: Terbentuk joseki sudut yang stabil
+```
+
+Joseki ini **sangat mirip** dengan joseki yang dikumpulkan manusia selama berabad-abad, memverifikasi bahwa joseki ini memang merupakan perkiraan solusi optimal untuk kedua belah pihak.
+
+### Joseki Tipikal yang Muncul
+
+Contoh joseki komoku:
+
+```
+  A B C D E F G H J
+9 . . . . . . . . .
+8 . . . . . . . . .
+7 . . . . . . . . .
+6 . . . ● . . . . .   ● = Hitam
+5 . . . . . . . . .   ○ = Putih
+4 . . . ○ . ● . . .
+3 . . . . . . . . .
+2 . . . . . . . . .
+1 . . . . . . . . .
+```
+
+Hitam menduduki komoku, putih melakukan kakari, hitam melakukan hasami—urutan ini muncul secara alami selama pelatihan.
+
+### Pengetahuan Bentuk Batu
+
+Selain joseki, network juga belajar membedakan bentuk baik dan buruk:
+
+| Bentuk | Evaluasi Manusia | Pembelajaran Zero |
+|--------|------------------|-------------------|
+| Empty triangle | Bentuk buruk | Secara bertahap menghindari |
+| Tiger's mouth | Bentuk baik | Secara bertahap lebih disukai |
+| Double wing | Bentuk serangan klasik | Ditemukan secara alami |
+| Knight's move cap | Serangan kuat | Ditemukan secara alami |
+
+### Evaluasi Kekuatan Bermain
+
+Pada titik ini AlphaGo Zero:
+- **ELO**: ~3000
+- **Setara dengan**: Dan tinggi amatir
+- **Karakteristik**: Memiliki pengetahuan joseki dasar, memahami bentuk batu dasar
+
+---
+
+## Jam 12-36: Pematangan Teori Go
+
+### Pembentukan Visi Whole-board
+
+Memasuki hari kedua, network mulai menunjukkan **visi whole-board**:
+
+#### Pengaruh dan Wilayah
+
+```
+Pengamatan: Mengepung ruang dapat menghasilkan poin
+            Tetapi pengaruh juga memiliki nilai—dapat digunakan untuk menyerang lawan
+Pembelajaran: Mencari keseimbangan antara mengambil wilayah dan mengambil pengaruh
+```
+
+Ini adalah salah satu konsep paling mendalam dalam Go. Network belajar mengevaluasi nilai "virtual" dan "riil".
+
+### Penilaian Tebal dan Tipis
+
+```
+Pengamatan: Batu "tebal" dapat mendukung pertempuran jarak jauh
+            Batu "tipis" perlu diperkuat, jika tidak akan diserang
+Pembelajaran: Secara aktif membangun ketebalan, menyerang kelemahan lawan
+```
+
+### Taktik Tengah Permainan
+
+Kemampuan pertempuran tengah permainan network meningkat signifikan:
+
+| Teknik | Deskripsi |
+|--------|-----------|
+| Menyerang batu lemah | Mengidentifikasi batu terisolasi lawan, melancarkan serangan |
+| Memanfaatkan ketebalan | Menggunakan ketebalan untuk mendukung serangan, memperoleh keuntungan |
+| Pertukaran | Melepaskan kerugian lokal, mendapatkan keuntungan whole-board |
+| Invasi | Menginvasi moyo lawan |
+
+### Teknik Endgame
+
+Perhitungan tepat dalam fase endgame juga meningkat:
+
+```
+Pengamatan: Nilai setiap langkah dalam endgame dapat dihitung dengan tepat
+Pembelajaran: Bermain endgame sesuai urutan nilai
+```
+
+Network mempelajari konsep endgame seperti "sente ganda", "sente tunggal", "gote".
+
+### Evaluasi Kekuatan Bermain
+
+Pada titik ini AlphaGo Zero:
+- **ELO**: ~4500
+- **Setara dengan**: Level pemain profesional
+- **Karakteristik**: Memiliki pemahaman Go yang lengkap, dapat memainkan pertandingan berkualitas tinggi
+
+---
+
+## Jam 36-72: Melampaui Manusia
+
+### Menembus Level Profesional
+
+Sekitar 36 jam, kekuatan bermain AlphaGo Zero mencapai level pemain profesional. Tetapi pelatihan tidak berhenti—ia terus self-play, terus meningkat.
+
+Yang terjadi selanjutnya lebih menarik: **ia mulai menemukan langkah-langkah yang tidak pernah terpikirkan manusia**.
+
+### Pembukaan yang Mengganggu
+
+Pembukaan Go tradisional memiliki banyak "pandangan tetap":
+
+| Pandangan Tradisional | Penemuan AlphaGo Zero |
+|----------------------|----------------------|
+| Pembukaan dulu menduduki sudut | Dalam situasi tertentu menduduki sisi lebih baik |
+| Komoku paling solid | Langsung menduduki san-san bisa dilakukan |
+| Joseki harus dihafalkan | Dapat secara aktif menyimpang dari joseki |
+| San-san terlalu awal itu serakah | Dalam posisi tertentu san-san benar |
+
+"Penemuan" ini setelah AlphaGo dipelajari secara luas oleh pemain profesional manusia, banyak yang telah dimasukkan ke dalam teori Go modern.
+
+### Bentuk Batu Kontra-intuitif
+
+AlphaGo Zero terkadang memainkan bentuk yang manusia anggap "tidak bagus":
+
+```
+Manusia: "Ini bentuk buruk, tidak mungkin langkah bagus"
+Zero: (memainkan langkah itu)
+Setelah analisis: "Ternyata ini lebih efisien"
+```
+
+Ini mengungkapkan keterbatasan teori Go manusia: beberapa "bentuk buruk" sebenarnya adalah solusi optimal dalam posisi tertentu.
+
+### Pengorbanan Agresif
+
+Zero lebih bersedia mengorbankan batu untuk keuntungan lain dibanding manusia:
+
+```
+Kerugian lokal 3 poin
+Mendapatkan inisiatif whole-board
+Akhirnya tingkat kemenangan meningkat
+```
+
+Pemain manusia sering terlalu peduli dengan keuntungan/kerugian lokal, sementara Zero selalu fokus pada tingkat kemenangan akhir.
+
+### Evaluasi Kekuatan Bermain
+
+Setelah 72 jam AlphaGo Zero:
+- **ELO**: ~5400
+- **Setara dengan**: Melampaui semua pemain manusia
+- **Karakteristik**: Menemukan langkah-langkah yang tidak diketahui manusia, menciptakan teori Go baru
+
+---
+
+## Menemukan Kembali Teori Go Manusia
+
+### Ribuan Tahun vs. Tiga Hari
+
+Go manusia berkembang selama ribuan tahun:
+- Berasal dari Tiongkok sekitar 2000 SM
+- Masuk ke Jepang pada Dinasti Tang, mengembangkan teori Go yang presisi
+- Sistem profesional muncul di abad ke-20, teori Go semakin dalam
+- 2016, manusia mengira sudah cukup memahami Go
+
+AlphaGo Zero menyelesaikan perjalanan ini dalam tiga hari. Yang lebih menakjubkan, teori Go yang ditemukannya **sangat konsisten** dengan teori manusia.
+
+### Verifikasi dan Melampaui
+
+| Pengetahuan Manusia | Sikap Zero |
+|--------------------|------------|
+| Sudut emas, sisi perak, perut rumput | Dikonfirmasi (sudut memang penting) |
+| Joseki dasar | Sebagian besar dikonfirmasi, beberapa diperbaiki |
+| Bentuk baik dan buruk | Sebagian besar dikonfirmasi, ada pengecualian |
+| Pengorbanan dan pertukaran | Lebih agresif dari manusia |
+| Penilaian tebal dan tipis | Secara umum konsisten, detail berbeda |
+
+Ini menunjukkan teori Go yang dikumpulkan manusia selama ribuan tahun **arah besarnya benar**. Tetapi ada beberapa area di mana pemahaman manusia perlu dikoreksi.
+
+### Inspirasi untuk Pembelajaran Manusia
+
+Proses pelatihan AlphaGo Zero memberikan inspirasi untuk pembelajaran manusia:
+
+1. **Mulai dari dasar**: Zero pertama belajar aturan, kemudian bentuk batu, akhirnya mengembangkan visi whole-board
+2. **Latihan intensif**: 4,9 juta pertandingan self-play setara dengan puluhan ribu tahun volume pertandingan manusia
+3. **Fokus pada menang/kalah**: Tidak mengejar "Go yang indah", hanya mengejar kemenangan
+4. **Tidak terikat tradisi**: Berani mencoba langkah-langkah "tidak mungkin"
+
+---
+
+## Detail Teknis Proses Pelatihan
+
+### Mekanisme Self-play
+
+Alur setiap pertandingan self-play:
+
+```
+Inisialisasi: Papan kosong
+↓
+Setiap langkah:
+  1. Gunakan neural network untuk mengevaluasi posisi saat ini
+  2. Jalankan pencarian MCTS (1600 simulasi)
+  3. Pilih langkah berdasarkan hasil pencarian
+  4. Catat (posisi, probabilitas MCTS, -)
+↓
+Permainan berakhir:
+  1. Tentukan hasil z ∈ {-1, +1}
+  2. Tambahkan hasil ke semua catatan (posisi, probabilitas MCTS, z)
+  3. Tambahkan data ke training pool
+```
+
+### Ritme Pelatihan
+
+Pelatihan AlphaGo Zero **berlangsung terus-menerus**:
+
+```
+Self-play Workers:       Terus menghasilkan data self-play
+Training Workers:        Terus mengambil sampel dari data pool untuk pelatihan
+Network Updates:         Secara berkala memperbarui network untuk self-play
+```
+
+Ketiga proses ini berjalan bersamaan, membentuk siklus perbaikan berkelanjutan.
+
+### Manajemen Data Pool
+
+Manajemen training data pool:
+
+| Parameter | Nilai |
+|-----------|-------|
+| Ukuran pool | 500.000 pertandingan terakhir |
+| Sampel per pertandingan | ~200 langkah |
+| Total sampel | ~100 juta |
+| Metode sampling | Acak seragam |
+
+Data lama digantikan oleh data baru, memastikan data pelatihan mencerminkan level network saat ini.
+
+### Strategi Pembaruan Network
+
+Network untuk self-play tidak diperbarui setiap langkah pelatihan. Melainkan:
+
+1. Setelah pelatihan untuk periode tertentu, hasilkan network kandidat
+2. Network kandidat melawan network saat ini (400 pertandingan)
+3. Jika tingkat kemenangan network kandidat > 55%, perbarui
+4. Jika tidak, lanjutkan pelatihan
+
+Ini memastikan self-play selalu menggunakan network yang **cukup kuat**.
+
+---
+
+## Analisis Kecepatan Pembelajaran
+
+### Mengapa Begitu Cepat?
+
+Alasan kecepatan pembelajaran AlphaGo Zero yang menakjubkan:
+
+#### 1. Sumber Daya Komputasi
+
+- 4 TPU, puluhan ribu inferensi per detik
+- Menghasilkan ratusan ribu pertandingan self-play per hari
+- Setara dengan ribuan tahun volume pertandingan manusia
+
+#### 2. Lawan Sempurna
+
+Self-play berarti:
+- Lawan selalu setara dengan diri sendiri
+- Tidak terlalu lemah (tidak bisa belajar) atau terlalu kuat (tidak bisa menang)
+- Ini adalah kondisi pembelajaran ideal
+
+#### 3. Tujuan Langsung
+
+Hanya satu tujuan: menang. Tidak ada:
+- Preferensi guru
+- Pengejaran gaya
+- Pertimbangan estetika
+
+#### 4. Representation Learning yang Efisien
+
+Residual network dapat mempelajari fitur papan yang sangat abstrak, lebih efektif daripada fitur yang dirancang manual.
+
+### Perbandingan dengan Manusia
+
+| Aspek | Manusia | AlphaGo Zero |
+|-------|---------|--------------|
+| Kecepatan belajar | ~10 pertandingan/hari | ~100.000 pertandingan/hari |
+| Retensi memori | Ada kelupaan | Retensi sempurna |
+| Batasan energi | Perlu istirahat | Beroperasi 24/7 |
+| Kemampuan inovasi | Terpengaruh tradisi | Tidak ada batasan preset |
+
+---
+
+## Fenomena Menarik dalam Proses Pelatihan
+
+### Stagnasi Bertahap
+
+Kurva pelatihan tidak sepenuhnya mulus, terkadang muncul **periode stagnasi**:
+
+```
+ELO: 2000 -----> 2000 -----> 2500 ---->
+          (stagnasi)    (terobosan)
+```
+
+Ini mungkin karena network sedang mempelajari konsep baru, membutuhkan waktu untuk "mencerna".
+
+### Munculnya dan Hilangnya Strategi
+
+Beberapa strategi muncul selama pelatihan, kemudian menghilang:
+
+```
+Tahap 1: Menemukan teknik serangan tertentu
+Tahap 2: Lawan belajar bertahan
+Tahap 3: Frekuensi penggunaan teknik tersebut menurun
+Tahap 4: Menemukan teknik serangan baru
+```
+
+Ini adalah miniatur perlombaan senjata.
+
+### "Menemukan Kembali Roda"
+
+Selama pelatihan, Zero "menemukan kembali" konsep-konsep yang sudah diketahui manusia:
+
+- **Ladder**: Menemukan bahwa atari berturut-turut dapat menangkap batu
+- **Snapback**: Menemukan bahwa bisa mengorbankan batu dulu kemudian menangkap balik
+- **Ko**: Menemukan cara memanfaatkan aturan penghindaran
+
+Urutan penemuan ini mirip dengan urutan manusia belajar Go.
+
+---
+
+## Korespondensi Animasi
+
+Konsep inti dalam artikel ini dan nomor animasi:
+
+| Nomor | Konsep | Korespondensi Fisika/Matematika |
+|-------|--------|--------------------------------|
+| 🎬 E12 | Kurva pertumbuhan kekuatan bermain | Pertumbuhan S (logistik) |
+| 🎬 E7 | Dari nol | Fenomena self-organization |
+| 🎬 E5 | Self-play | Konvergensi titik tetap |
+| 🎬 F8 | Kemampuan emergent | Transisi fase |
+
+---
+
+## Bacaan Lanjutan
+
+- **Artikel sebelumnya**: [Dual-head Network dan Residual Network](../dual-head-resnet) — Arsitektur neural network yang mendukung semua ini
+- **Artikel selanjutnya**: [Sistem Terdistribusi dan TPU](../distributed-systems) — Hardware yang membuat semua ini mungkin
+- **Artikel terkait**: [Self-play](../self-play) — Mengapa self-play begitu efektif
+
+---
+
+## Referensi
+
+1. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 550, 354-359.
+2. Silver, D., et al. (2017). "AlphaGo Zero: Starting from scratch." *DeepMind Blog*.
+3. DeepMind. (2017). "AlphaGo Zero: Learning from scratch." *YouTube*.
+4. Wang, F., et al. (2019). "A Survey on the Evolution of AlphaGo." *arXiv:1907.11180*.

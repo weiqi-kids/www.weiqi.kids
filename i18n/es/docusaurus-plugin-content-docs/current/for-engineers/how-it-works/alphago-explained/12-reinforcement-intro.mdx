@@ -1,0 +1,603 @@
+---
+sidebar_position: 13
+title: Introducción al aprendizaje por refuerzo
+description: Comprensión profunda de los conceptos centrales del aprendizaje por refuerzo - Agent, Environment, Reward, MDP, gradientes de política y funciones de valor
+---
+
+# Introducción al aprendizaje por refuerzo
+
+En los artículos anteriores, presentamos cómo AlphaGo usó el aprendizaje supervisado para aprender de partidas humanas. Pero el aprendizaje supervisado tiene una limitación fundamental: **solo puede imitar a los humanos, no superarlos**.
+
+Para que la IA supere a los humanos, necesitamos un método de aprendizaje diferente: **Aprendizaje por Refuerzo (Reinforcement Learning, RL)**.
+
+Este artículo te guiará para entender los conceptos centrales del aprendizaje por refuerzo desde cero, sentando las bases para el auto-juego y la integración con MCTS posteriores.
+
+---
+
+## ¿Qué es el aprendizaje por refuerzo?
+
+### Comparación con otros métodos de aprendizaje
+
+El aprendizaje automático tiene principalmente tres paradigmas:
+
+| Paradigma | Método de aprendizaje | Ejemplo |
+|-----------|----------------------|---------|
+| **Aprendizaje supervisado** | Aprende de datos etiquetados | Clasificación de imágenes, predicción del siguiente movimiento |
+| **Aprendizaje no supervisado** | Descubre estructuras en datos no etiquetados | Clustering, reducción de dimensionalidad |
+| **Aprendizaje por refuerzo** | Aprende de la experiencia de interacción | Jugar ajedrez, videojuegos, control de robots |
+
+Lo único del aprendizaje por refuerzo es: **nadie te dice cuál es la respuesta correcta, debes descubrirla tú mismo mediante prueba y error**.
+
+### Un ejemplo intuitivo
+
+Imagina que estás enseñando un nuevo truco a un perro:
+
+1. El perro hace una acción (posiblemente aleatoria)
+2. Si la acción es correcta, le das un premio (recompensa positiva)
+3. Si la acción es incorrecta, no le das premio o dices "no" suavemente (recompensa negativa o cero)
+4. Después de muchos intentos, el perro aprende qué acciones traen recompensas
+
+Esta es la esencia del aprendizaje por refuerzo: **aprender a actuar a través de señales de recompensa**.
+
+### Aplicación del aprendizaje por refuerzo en Go
+
+En Go:
+- Cada movimiento es una "acción"
+- Al final de la partida, ganar o perder es la "recompensa"
+- La IA necesita aprender: ¿qué movimientos llevan finalmente a la victoria?
+
+Pero aquí hay un enorme desafío: **recompensa retrasada**. Una partida puede tener más de 200 movimientos, pero solo al final sabes el resultado. ¿Cómo saber cuánto contribuyó un movimiento en el turno 50 al resultado final?
+
+Este es uno de los problemas más centrales del aprendizaje por refuerzo, llamado **Problema de Asignación de Crédito (Credit Assignment Problem)**.
+
+---
+
+## Conceptos centrales
+
+### Agent (agente) y Environment (entorno)
+
+La arquitectura básica del aprendizaje por refuerzo incluye dos protagonistas:
+
+```
+        ┌─────────────────────────────────────┐
+        │           Environment               │
+        │                                     │
+        │   ┌─────────┐      ┌─────────┐     │
+        │   │  State  │      │ Reward  │     │
+        │   │   s_t   │      │   r_t   │     │
+        │   └────┬────┘      └────┬────┘     │
+        │        │                │          │
+        └────────┼────────────────┼──────────┘
+                 │                │
+                 ▼                ▼
+        ┌─────────────────────────────────────┐
+        │            Agent                    │
+        │                                     │
+        │         ┌──────────┐               │
+        │         │  Policy  │               │
+        │         │   π(s)   │               │
+        │         └────┬─────┘               │
+        │              │                     │
+        │              ▼                     │
+        │         ┌──────────┐               │
+        │         │  Action  │               │
+        │         │   a_t    │───────────────┼───► Enviar al entorno
+        │         └──────────┘               │
+        └─────────────────────────────────────┘
+```
+
+**Agent (agente)**:
+- El sujeto que toma decisiones
+- En Go, es la IA que juega
+- Tiene una "política" (Policy), que determina qué acción tomar en qué estado
+
+**Environment (entorno)**:
+- El objeto con el que interactúa el Agent
+- En Go, es el tablero + el oponente
+- Recibe la acción del Agent, devuelve nuevo estado y recompensa
+
+### State (estado)
+
+**El estado s** es una descripción completa del entorno. En Go:
+- El estado incluye: posición actual del tablero, turno de quién, estado de ko, etc.
+- El espacio de estados es extremadamente grande: aproximadamente $10^{170}$ estados posibles
+
+El estado debe tener la **propiedad de Markov**: el futuro solo depende del estado actual, no del historial.
+
+### Action (acción)
+
+**La acción a** es el comportamiento que puede tomar el Agent. En Go:
+- Cada punto vacío es una posible acción
+- Incluyendo "pasar" (pass), hay $19 \times 19 + 1 = 362$ acciones posibles
+- Pero en realidad muchas posiciones son ilegales (como suicidio, ko)
+
+### Reward (recompensa)
+
+**La recompensa r** es la retroalimentación del entorno a la acción. En Go:
+- Victoria: $+1$
+- Derrota: $-1$
+- Durante la partida: $0$ (¡esta es la parte más desafiante!)
+
+La dispersión de la señal de recompensa es una de las principales dificultades del aprendizaje por refuerzo en Go.
+
+### Policy (política)
+
+**La política π** es la regla de comportamiento del Agent, le dice qué hacer en cada estado.
+
+La política puede ser:
+- **Política determinista**: $a = \pi(s)$, cada estado corresponde a una única acción
+- **Política estocástica**: $a \sim \pi(a|s)$, da una distribución de probabilidad sobre acciones
+
+En AlphaGo, la Policy Network es una política estocástica, que produce la probabilidad de jugar en cada posición.
+
+---
+
+## Proceso de Decisión de Markov (MDP)
+
+### Definición de MDP
+
+**El Proceso de Decisión de Markov (Markov Decision Process, MDP)** es el marco matemático del aprendizaje por refuerzo.
+
+Un MDP se define por la quíntupla $(S, A, P, R, \gamma)$:
+
+| Símbolo | Significado | Correspondencia en Go |
+|---------|-------------|----------------------|
+| $S$ | Espacio de estados | Todas las posiciones posibles del tablero |
+| $A$ | Espacio de acciones | Todas las posiciones legales para jugar |
+| $P(s'|s,a)$ | Probabilidad de transición | Cambio de posición después de un movimiento |
+| $R(s,a,s')$ | Función de recompensa | Resultado de victoria/derrota |
+| $\gamma$ | Factor de descuento | Importancia de recompensas futuras |
+
+### Propiedad de Markov
+
+La suposición central del MDP es la **propiedad de Markov**:
+
+$$P(s_{t+1}|s_t, a_t, s_{t-1}, a_{t-1}, \ldots, s_0) = P(s_{t+1}|s_t, a_t)$$
+
+En palabras simples: **el futuro solo depende del presente, no del pasado**.
+
+¿Cumple Go con esta propiedad?
+
+Superficialmente, sí: si conoces el estado actual del tablero, sabes todos los movimientos legales. Pero en realidad, Go tiene la **regla de ko**, que requiere recordar el estado del movimiento anterior. AlphaGo maneja esto codificando los últimos 8 movimientos en las características de entrada.
+
+### Go es un MDP determinista
+
+Go tiene una propiedad especial: **la transición es determinista**.
+
+En juegos de tablero, cuando haces un movimiento, el cambio de estado del tablero es completamente determinista (a diferencia de los juegos con dados que tienen aleatoriedad). Por lo tanto:
+
+$$P(s'|s,a) = \begin{cases} 1 & \text{si } s' \text{ es el estado después de ejecutar } a \\ 0 & \text{en caso contrario} \end{cases}$$
+
+Pero no olvides, Go es un **juego de dos jugadores**, los movimientos del oponente traen "incertidumbre". Esto convierte el problema en un **MDP adversarial**.
+
+### Diseño de recompensa
+
+El diseño de la función de recompensa es crucial para el aprendizaje por refuerzo. En Go, el diseño más natural es:
+
+$$R(s_T) = \begin{cases} +1 & \text{si la IA gana} \\ -1 & \text{si la IA pierde} \end{cases}$$
+
+Donde $T$ es el paso de tiempo cuando termina la partida.
+
+Esta **recompensa dispersa** trae enormes desafíos:
+- Una partida puede tener 200-300 movimientos
+- Solo el último paso revela el resultado
+- ¿Cómo juzgar si un movimiento intermedio fue bueno o malo?
+
+Algunas investigaciones intentan diseñar **recompensas densas**, como:
+- Recompensa por capturar piedras
+- Recompensa por estimación de territorio
+- Recompensa por evaluación de posición
+
+Pero el éxito de AlphaGo demuestra: **incluso usando solo el resultado final como recompensa, a través de suficiente auto-juego, la IA puede aprender tácticas sofisticadas de medio juego**.
+
+---
+
+## Función de valor
+
+### ¿Por qué necesitamos funciones de valor?
+
+El objetivo del aprendizaje por refuerzo es maximizar la **recompensa acumulada**. Pero la recompensa está retrasada, necesitamos una forma de evaluar "qué tan bueno es el estado actual".
+
+Ese es el papel de la **función de valor (Value Function)**.
+
+### Función de valor del estado V(s)
+
+**La función de valor del estado** $V^\pi(s)$ se define como: comenzando desde el estado $s$, siguiendo la política $\pi$, la recompensa acumulada esperada.
+
+$$V^\pi(s) = \mathbb{E}_\pi \left[ \sum_{t=0}^{\infty} \gamma^t r_{t+1} \mid s_0 = s \right]$$
+
+Donde:
+- $\mathbb{E}_\pi$ representa el valor esperado bajo la política $\pi$
+- $\gamma \in [0, 1]$ es el **factor de descuento**, hace que las recompensas cercanas sean más importantes que las lejanas
+- $r_{t+1}$ es la recompensa obtenida en el paso de tiempo $t+1$
+
+En Go, $V(s)$ puede interpretarse como: **la probabilidad de ganar desde la posición actual**. La Value Network de AlphaGo aprende esta función.
+
+### Función de valor de acción Q(s,a)
+
+**La función de valor de acción** $Q^\pi(s,a)$ va más allá, evaluando el valor de tomar la acción $a$ en el estado $s$:
+
+$$Q^\pi(s,a) = \mathbb{E}_\pi \left[ \sum_{t=0}^{\infty} \gamma^t r_{t+1} \mid s_0 = s, a_0 = a \right]$$
+
+$Q(s,a)$ puede interpretarse como: **la probabilidad de ganar finalmente si juegas este movimiento en la posición actual**.
+
+### Relación entre V y Q
+
+Estas dos funciones tienen una relación estrecha:
+
+$$V^\pi(s) = \sum_a \pi(a|s) Q^\pi(s,a)$$
+
+Es decir, valor del estado = promedio ponderado de todas las acciones posibles, los pesos son determinados por la política.
+
+Si conocemos la política óptima $\pi^*$:
+
+$$V^*(s) = \max_a Q^*(s,a)$$
+
+Valor óptimo del estado = valor Q de la mejor acción.
+
+### Ecuación de Bellman
+
+La función de valor satisface una elegante relación recursiva: la **ecuación de Bellman**:
+
+$$V^\pi(s) = \sum_a \pi(a|s) \sum_{s'} P(s'|s,a) \left[ R(s,a,s') + \gamma V^\pi(s') \right]$$
+
+En palabras simples: **valor del estado actual = recompensa inmediata + valor descontado del siguiente estado**.
+
+Esta ecuación es la base teórica de la programación dinámica y muchos algoritmos de aprendizaje por refuerzo.
+
+### Value Network de AlphaGo
+
+En AlphaGo, la Value Network aprende $V(s)$: evaluar la tasa de victoria de la posición actual.
+
+```
+Entrada: estado del tablero s (tensor de características 19×19×17)
+Salida: estimación de tasa de victoria V(s) ∈ [-1, 1] (usando activación tanh)
+```
+
+El objetivo de entrenamiento de la Value Network es predecir el resultado final:
+
+$$L = \mathbb{E} \left[ (V_\theta(s) - z)^2 \right]$$
+
+Donde $z \in \{-1, +1\}$ es el resultado real de la partida.
+
+---
+
+## Métodos de gradiente de política
+
+### De valor a política
+
+Los métodos tradicionales de aprendizaje por refuerzo (como Q-Learning) son "basados en valor": primero aprenden la función de valor, luego derivan la política de ella.
+
+Pero en problemas con espacio de acciones enorme como Go, aprender directamente la política puede ser más efectivo. Esta es la idea de los métodos de **gradiente de política (Policy Gradient)**.
+
+### Parametrización de la política
+
+Usamos una red neuronal para representar la política:
+
+$$\pi_\theta(a|s)$$
+
+Donde $\theta$ son los parámetros de la red. La red toma el estado $s$ como entrada y produce la probabilidad de cada acción.
+
+En AlphaGo, esta es la Policy Network:
+- Entrada: estado del tablero
+- Salida: probabilidad de jugar en 361 posiciones (más pass)
+
+### Teorema del gradiente de política
+
+Queremos encontrar los parámetros óptimos $\theta^*$ que maximicen la recompensa acumulada esperada:
+
+$$J(\theta) = \mathbb{E}_{\pi_\theta} \left[ \sum_t r_t \right]$$
+
+El **teorema del gradiente de política** nos dice cómo calcular el gradiente de $J$ respecto a $\theta$:
+
+$$\nabla_\theta J(\theta) = \mathbb{E}_{\pi_\theta} \left[ \sum_t \nabla_\theta \log \pi_\theta(a_t|s_t) \cdot G_t \right]$$
+
+Donde $G_t = \sum_{k=t}^{T} \gamma^{k-t} r_k$ es la recompensa acumulada desde el tiempo $t$.
+
+### Comprensión intuitiva
+
+Esta fórmula puede entenderse así:
+
+1. **$\nabla_\theta \log \pi_\theta(a_t|s_t)$**: cómo ajustar los parámetros para aumentar la probabilidad de la acción $a_t$
+2. **$G_t$**: el retorno total traído por esta acción
+
+Por lo tanto:
+- Si $G_t > 0$ (buen resultado), aumentar la probabilidad de esta acción
+- Si $G_t < 0$ (mal resultado), disminuir la probabilidad de esta acción
+
+¡Esta es una solución al problema de **asignación de crédito**!
+
+### Algoritmo REINFORCE
+
+**REINFORCE** es el algoritmo de gradiente de política más simple:
+
+```
+Algoritmo: REINFORCE
+
+1. Inicializar parámetros de red de política θ
+
+2. Repetir:
+   a. Completar una partida con la política actual π_θ, recopilar trayectoria:
+      τ = (s_0, a_0, r_1, s_1, a_1, r_2, ..., s_T)
+
+   b. Calcular retorno acumulado para cada paso:
+      G_t = r_{t+1} + γ·r_{t+2} + γ²·r_{t+3} + ...
+
+   c. Calcular gradiente de política:
+      ∇J = (1/T) Σ_t ∇_θ log π_θ(a_t|s_t) · G_t
+
+   d. Actualizar parámetros:
+      θ ← θ + α · ∇J
+```
+
+En Go, esto significa:
+1. Dejar que la IA juegue una partida
+2. Si gana finalmente ($G = +1$), aumentar la probabilidad de todos los movimientos jugados
+3. Si pierde finalmente ($G = -1$), disminuir la probabilidad de todos los movimientos jugados
+4. Repetir este proceso millones de veces
+
+### Línea base (Baseline)
+
+Un problema con REINFORCE es **alta varianza**. Imagina una partida ganada, puede que también haya algunos malos movimientos, pero sus probabilidades todas aumentarán.
+
+La solución es introducir una **línea base (baseline)**:
+
+$$\nabla_\theta J = \mathbb{E} \left[ \sum_t \nabla_\theta \log \pi_\theta(a_t|s_t) \cdot (G_t - b(s_t)) \right]$$
+
+Una elección común es $b(s_t) = V(s_t)$, esta es la **función de ventaja (Advantage Function)**:
+
+$$A(s_t, a_t) = G_t - V(s_t)$$
+
+La función de ventaja mide: "¿cuánto mejor es esta acción que el promedio?"
+
+- $A > 0$: esta acción es mejor que lo esperado, aumentar su probabilidad
+- $A < 0$: esta acción es peor que lo esperado, disminuir su probabilidad
+
+AlphaGo usa la Value Network para calcular la línea base, por eso necesita entrenar tanto la Policy Network como la Value Network.
+
+---
+
+## Exploración vs explotación
+
+### El dilema
+
+El aprendizaje por refuerzo enfrenta un clásico dilema: **Exploración vs Explotación**.
+
+- **Explotación**: basándose en el conocimiento actual, elegir la acción que parece mejor
+- **Exploración**: probar acciones inciertas, posiblemente descubrir mejores estrategias
+
+La explotación pura lleva a óptimos locales; la exploración pura desperdicia tiempo en movimientos obviamente malos.
+
+### El desafío en Go
+
+En Go, este problema es especialmente severo:
+
+1. **Espacio de acciones enorme**: 361 posibles movimientos
+2. **Recompensa dispersa**: solo al final sabes si fue bueno o malo
+3. **Impacto a largo plazo**: el impacto de un movimiento puede no verse hasta docenas de turnos después
+
+### Estrategia ε-Greedy
+
+El método de exploración más simple:
+
+$$\pi(a|s) = \begin{cases} 1 - \varepsilon + \frac{\varepsilon}{|A|} & \text{si } a = \arg\max Q(s,a) \\ \frac{\varepsilon}{|A|} & \text{en caso contrario} \end{cases}$$
+
+Con probabilidad $1-\varepsilon$ elige la mejor acción, con probabilidad $\varepsilon$ elige aleatoriamente.
+
+Pero esto es demasiado tosco para Go: elegir una posición al azar, la mayoría de las veces es un mal movimiento.
+
+### Exploración Softmax
+
+Un mejor método es usar la **distribución softmax**:
+
+$$\pi(a|s) = \frac{\exp(Q(s,a)/\tau)}{\sum_{a'} \exp(Q(s,a')/\tau)}$$
+
+Donde $\tau$ es el **parámetro de temperatura**:
+- $\tau \to 0$: cerca de política codiciosa (explotación pura)
+- $\tau \to \infty$: cerca de aleatorio uniforme (exploración pura)
+- $\tau = 1$: equilibrio entre exploración y explotación
+
+AlphaGo usa técnicas similares en el entrenamiento de auto-juego para aumentar la diversidad.
+
+### UCB y PUCT
+
+En MCTS, exploración y explotación se manejan con la fórmula **UCB (Upper Confidence Bound)**. AlphaGo usa su variante **PUCT**:
+
+$$\text{score}(s,a) = Q(s,a) + c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)}$$
+
+Esta fórmula se explicará en detalle en [Explicación detallada de la fórmula PUCT](../puct-formula).
+
+### Exploración intrínseca
+
+AlphaGo también tiene un mecanismo de exploración implícito: **el auto-juego en sí mismo es exploración**.
+
+Dado que la red neuronal produce una distribución de probabilidad en lugar de acciones deterministas, cada auto-juego produce diferentes partidas. Esto naturalmente trae:
+
+- **Diversidad táctica**: la misma posición puede probar diferentes movimientos
+- **Evolución de estilo**: a medida que avanza el entrenamiento, la IA puede "descubrir" joseki que los humanos nunca han probado
+- **Auto-corrección**: si cierto movimiento siempre pierde, su probabilidad disminuye gradualmente
+
+---
+
+## Particularidades del aprendizaje por refuerzo en Go
+
+### Comparación con otros dominios
+
+El aprendizaje por refuerzo en Go tiene algunas características únicas:
+
+| Característica | Go | Control de robots | Videojuegos |
+|----------------|-----|-------------------|-------------|
+| Espacio de estados | Discreto, extremadamente grande | Continuo | Discreto, medio |
+| Espacio de acciones | Discreto, grande | Continuo | Discreto, pequeño |
+| Transición | Determinista | Estocástica | Determinista o estocástica |
+| Recompensa | Extremadamente dispersa | Diseñable | Moderadamente densa |
+| Modelo del entorno | Conocido (reglas) | Desconocido | Parcialmente conocido |
+| Adversarial | Juego de información perfecta | Usualmente no | Posiblemente |
+
+### Transición determinista
+
+Las reglas de Go son completamente conocidas. Cuando haces un movimiento, el siguiente estado es determinado. Esto significa:
+
+- **Simulación exacta posible**: no necesita aprender modelo del entorno
+- **Retroceso perfecto posible**: MCTS puede buscar exactamente
+- **Sin aleatoriedad del entorno**: simplifica muchos problemas
+
+### Información perfecta
+
+Go es un **juego de información perfecta**: ambos jugadores pueden ver el tablero completo. Esto es diferente del póker (información oculta), haciendo el problema más simple en algunos aspectos:
+
+- No necesita manejar información oculta del oponente
+- Puede usar el marco Minimax
+- La representación del estado es más directa
+
+### Posibilidad de auto-juego
+
+Porque las reglas son conocidas y deterministas, la IA puede **jugar contra sí misma** sin necesitar un oponente real. Esto trae:
+
+- **Datos de entrenamiento ilimitados**: puede generar nuevas partidas en cualquier momento
+- **Nivel de oponente estable**: el oponente es uno mismo, nivel similar
+- **Mejora progresiva**: a medida que uno se vuelve más fuerte, el oponente también
+
+Esta es precisamente la clave del éxito de AlphaGo, que discutiremos en detalle en el próximo artículo [Auto-juego](../self-play).
+
+### Asignación de crédito a largo plazo
+
+La recompensa en Go es extremadamente dispersa (solo resultado final), y una partida puede tener 200-300 movimientos. Esto trae un severo **problema de asignación de crédito**:
+
+¿Un buen movimiento en el turno 50, cómo asignar correctamente el crédito cuando se gana en el turno 250?
+
+La solución de AlphaGo es combinar múltiples técnicas:
+1. **Value Network**: evalúa la tasa de victoria de posiciones intermedias, proporciona retroalimentación inmediata
+2. **MCTS**: búsqueda para verificar si cada movimiento es bueno o malo
+3. **Muchas partidas**: aprende asignación de crédito a través de estadísticas
+
+### Simetría
+
+El tablero de Go tiene 8 simetrías (4 rotaciones × 2 reflexiones). AlphaGo aprovecha esto para **aumento de datos**:
+
+- Cada posición de entrenamiento puede producir 8 variantes
+- Aumenta significativamente los datos de entrenamiento efectivos
+- Asegura que la red aprenda características invariantes a la simetría
+
+---
+
+## Comparación de algoritmos
+
+### Basado en valor vs basado en política
+
+| Método | Ventajas | Desventajas | Escenario adecuado |
+|--------|----------|-------------|-------------------|
+| **Basado en valor** (Q-Learning) | Alta eficiencia de muestras | Difícil con espacios de acción grandes | Espacio de acción pequeño |
+| **Basado en política** (REINFORCE) | Puede manejar espacios de acción grandes | Alta varianza, baja eficiencia de muestras | Espacio de acción grande |
+| **Actor-Critic** | Equilibra ambos | Necesita entrenar dos redes | Alta generalidad |
+
+### Elección de AlphaGo
+
+AlphaGo usa una variante de la arquitectura **Actor-Critic**:
+
+- **Policy Network** (Actor): produce directamente probabilidades de acción
+- **Value Network** (Critic): evalúa el valor del estado
+
+Pero no usa el método de actualización tradicional de Actor-Critic, sino:
+
+1. **Aprendizaje supervisado**: primero aprende Policy Network inicial de partidas humanas
+2. **Gradiente de política**: refuerza Policy Network a través de auto-juego
+3. **Aprendizaje de regresión**: entrena Value Network con datos de auto-juego
+4. **Integración con MCTS**: combina ambas redes en el juego real
+
+Este método híbrido combina las ventajas de múltiples técnicas, siendo una de las claves del éxito de AlphaGo.
+
+---
+
+## Consideraciones de implementación
+
+### Estabilidad del entrenamiento
+
+Los métodos de gradiente de política a veces pueden ser inestables. Técnicas comunes incluyen:
+
+**Recorte de gradiente (Gradient Clipping)**:
+```python
+# Limitar la norma del gradiente
+max_grad_norm = 0.5
+torch.nn.utils.clip_grad_norm_(policy_net.parameters(), max_grad_norm)
+```
+
+**Decaimiento de tasa de aprendizaje**:
+```python
+# Reducir tasa de aprendizaje durante el entrenamiento
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=100, gamma=0.9)
+```
+
+**Algoritmos avanzados como PPO/TRPO**:
+Limitan el cambio de política en cada actualización, previniendo el olvido catastrófico.
+
+### Gestión de memoria
+
+Las partidas de Go son largas, necesitan almacenar muchas trayectorias. Estrategias comunes:
+
+**Replay de experiencia (Experience Replay)**:
+```python
+# Almacenar experiencias pasadas
+replay_buffer = ReplayBuffer(max_size=1000000)
+
+# Muestreo aleatorio para entrenamiento
+batch = replay_buffer.sample(batch_size=256)
+```
+
+**Replay de experiencia priorizado**:
+Prioriza la repetición de experiencias "sorprendentes" (error TD grande).
+
+### Paralelización
+
+El aprendizaje por refuerzo puede ser altamente paralelizado:
+
+- **Multi-hilo de partidas**: múltiples partidas simultáneas
+- **Entrenamiento distribuido**: múltiples máquinas entrenando simultáneamente
+- **Actualizaciones asíncronas**: algoritmos como A3C
+
+El entrenamiento de AlphaGo usó cientos de GPU y TPU, realizando miles de auto-juegos simultáneamente.
+
+---
+
+## Correspondencia con animaciones
+
+Conceptos centrales de este artículo y números de animación:
+
+| Número | Concepto | Correspondencia física/matemática |
+|--------|----------|-----------------------------------|
+| H1 | Interacción Agent-Environment | Cadena de Markov |
+| H4 | Gradiente de política | Optimización estocástica |
+| H6 | Exploración y explotación | Multi-armed bandit |
+
+---
+
+## Resumen
+
+El aprendizaje por refuerzo es la tecnología clave para que AlphaGo supere a los humanos. Aprendimos:
+
+1. **Marco básico**: Agent, Environment, State, Action, Reward
+2. **MDP**: Proceso de Decisión de Markov, la base matemática del aprendizaje por refuerzo
+3. **Función de valor**: $V(s)$ y $Q(s,a)$, evaluar qué tan buenos son estados y acciones
+4. **Gradiente de política**: método para optimizar directamente la política, algoritmo REINFORCE
+5. **Exploración y explotación**: el equilibrio central en el proceso de aprendizaje
+6. **Características de Go**: determinismo, información perfecta, desafíos y oportunidades de recompensa dispersa
+
+En el próximo artículo, exploraremos en profundidad cómo AlphaGo usa el **auto-juego** para lograr una fuerza de juego más allá de los humanos.
+
+---
+
+## Lecturas adicionales
+
+- **Siguiente artículo**: [Auto-juego](../self-play) — Por qué la IA puede volverse más fuerte jugando consigo misma
+- **Relacionado**: [Detalles de la Value Network](../value-network) — Implementación de red neuronal de la función de valor
+- **Avanzado**: [Explicación detallada de la fórmula PUCT](../puct-formula) — Fórmula matemática de exploración y explotación
+
+---
+
+## Referencias
+
+1. Sutton, R. S., & Barto, A. G. (2018). *Reinforcement Learning: An Introduction* (2nd ed.). MIT Press.
+2. Silver, D. (2015). ["Lectures on Reinforcement Learning"](https://www.davidsilver.uk/teaching/). University College London.
+3. Schulman, J., et al. (2017). "Proximal Policy Optimization Algorithms." *arXiv preprint*.
+4. Williams, R. J. (1992). "Simple statistical gradient-following algorithms for connectionist reinforcement learning." *Machine Learning*, 8(3-4), 229-256.
+5. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.

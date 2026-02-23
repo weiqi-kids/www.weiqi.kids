@@ -1,0 +1,634 @@
+---
+sidebar_position: 11
+title: CNN y Go
+description: Un análisis profundo de por qué las redes neuronales convolucionales son especialmente adecuadas para el Go, desde el campo receptivo hasta la normalización por lotes
+---
+
+# CNN y Go
+
+Cuando DeepMind eligió usar **Redes Neuronales Convolucionales (CNN)** para procesar el Go, fue una decisión de diseño brillante.
+
+Las CNN fueron diseñadas originalmente para el reconocimiento de imágenes. ¿Por qué también son adecuadas para el Go? Este artículo explorará en profundidad cómo funcionan las CNN y su perfecta compatibilidad con el Go.
+
+---
+
+## ¿Por qué las CNN son adecuadas para el tablero?
+
+### El tablero es una "imagen"
+
+Desde cierta perspectiva, el tablero de Go de 19×19 es una **imagen**:
+
+| Imagen | Tablero de Go |
+|--------|---------------|
+| Píxeles | Intersecciones |
+| Canales RGB | Planos de características (negro, blanco, vacío...) |
+| 224×224 | 19×19 |
+| Identificar gatos y perros | Juzgar buenas y malas jugadas |
+
+Esta analogía no es accidental. Las razones por las que las CNN son buenas con las imágenes también las hacen buenas con los tableros.
+
+### Tres características clave
+
+Las CNN tienen tres características que las hacen especialmente adecuadas para datos tipo tablero:
+
+#### 1. Conectividad local (Local Connectivity)
+
+El kernel de convolución de las CNN solo observa regiones locales, lo cual coincide perfectamente con las características del Go:
+
+```
+Reconocimiento de imágenes:      Go:
+La oreja del gato es local       El "ojo" es una forma local
+No necesita ver toda la imagen   No necesita ver todo el tablero
+
+    Región 3×3                   Región 3×3
+   ┌───────┐                    ┌───────┐
+   │ ○ ● ○ │                    │ ○ ● ○ │
+   │ ● ○ ● │  ←  Posición       │ ● · ● │
+   │ ○ ● ○ │     del ojo        │ ○ ● ○ │
+   └───────┘                    └───────┘
+```
+
+Muchos conceptos del Go son "locales":
+- **Ojo**: región de 2×2 o 3×3
+- **Atari**: región de 3×3
+- **Conectar, cortar**: región de 2×2
+
+#### 2. Compartición de pesos (Weight Sharing)
+
+El mismo kernel de convolución escanea todo el tablero, lo que significa:
+
+> **Un "ojo" en la esquina superior izquierda y un "ojo" en la esquina inferior derecha se identifican de la misma manera**
+
+Esto es razonable: las reglas del Go no varían según la posición (excepto en esquinas y bordes, pero esto se puede manejar con planos de características especiales).
+
+La compartición de pesos también reduce drásticamente la cantidad de parámetros:
+
+| Método | Cantidad de parámetros |
+|--------|------------------------|
+| Red completamente conectada | 361 × 361 × canales = decenas de millones |
+| CNN | 3 × 3 × canales × filtros = millones |
+
+#### 3. Equivarianza traslacional (Translation Equivariance)
+
+Si la entrada se desplaza, la salida de la CNN también se desplaza correspondientemente:
+
+```
+Entrada:                     Salida (región de alta probabilidad):
+  A B C D E                    A B C D E
+1 . . . . .                 1  . . . . .
+2 . ● . . .   →             2  . * . . .
+3 . . . . .                 3  . . . . .
+
+Después de desplazar:        La salida también se desplaza:
+  A B C D E                    A B C D E
+1 . . . . .                 1  . . . . .
+2 . . . . .   →             2  . . . . .
+3 . . ● . .                 3  . . * . .
+```
+
+Esto es importante para el Go: la misma forma local, sin importar dónde aparezca en el tablero, debería tener una evaluación similar.
+
+---
+
+## Operación de convolución
+
+### Principio básico
+
+La operación de convolución es el núcleo de las CNN. Es una operación de "ventana deslizante":
+
+```
+Entrada (5×5):               Kernel (3×3):           Salida (5×5, padding=same):
+┌───────────────┐           ┌─────────┐             ┌───────────────┐
+│ 1 0 1 0 0     │           │ 1 0 1   │             │ 2 1 3 1 2     │
+│ 0 1 1 1 0     │   *       │ 0 1 0   │    =        │ 1 4 3 3 1     │
+│ 1 1 1 1 1     │           │ 1 0 1   │             │ 3 3 5 3 3     │
+│ 0 0 1 1 0     │           └─────────┘             │ 1 3 3 4 1     │
+│ 0 1 0 0 1     │                                   │ 2 1 3 1 2     │
+└───────────────┘                                   └───────────────┘
+```
+
+Proceso de cálculo (tomando el punto central como ejemplo):
+
+```
+Salida[2,2] = 1×1 + 1×0 + 1×1 +
+              1×0 + 1×1 + 1×0 +
+              1×1 + 1×0 + 1×1
+            = 1 + 0 + 1 + 0 + 1 + 0 + 1 + 0 + 1
+            = 5
+```
+
+### Convolución multicanal
+
+Cuando la entrada tiene múltiples canales (como 48 planos de características), el kernel de convolución también se vuelve 3D:
+
+```
+Entrada: 19×19×48          Kernel: 3×3×48            Salida: 19×19×1
+    ┌─────┐                   ┌───┐                    ┌─────┐
+   ╱     ╱│                  ╱   ╱│                   │     │
+  ╱     ╱ │   convolución   ╱   ╱ │                   │     │
+ ╱     ╱  │   →            ╱   ╱  │    →              │     │
+┌─────┐   │               ┌───┐   │                   └─────┘
+│     │  ╱                │   │  ╱
+│     │ ╱                 │   │╱
+└─────┘╱                  └───┘
+48 capas                  48 capas                  1 capa
+```
+
+Cada kernel de convolución calcula a través de todos los canales de entrada, produciendo un canal de salida.
+
+### Múltiples filtros
+
+AlphaGo usa 192 filtros, cada uno aprendiendo diferentes características:
+
+```
+Entrada: 19×19×48
+
+      ┌─────┐
+     ╱     ╱│
+    ╱     ╱ │     192 kernels de 3×3×48
+   ╱     ╱  │     ────────────────────►
+  ┌─────┐   │
+  │     │  ╱
+  │     │ ╱
+  └─────┘╱
+
+Salida: 19×19×192
+
+      ┌─────┐
+     ╱     ╱│
+    ╱     ╱ │
+   ╱     ╱  │
+  ┌─────┐   │
+  │     │  ╱
+  │     │ ╱
+  └─────┘╱
+```
+
+Cada filtro puede aprender diferentes formas:
+- Filtro 1: detección de ojos
+- Filtro 2: detección de puntos de corte
+- Filtro 3: detección de conexiones
+- ...
+- Filtro 192: algún patrón complejo
+
+---
+
+## Campo receptivo
+
+### ¿Qué es el campo receptivo?
+
+El **campo receptivo (Receptive Field)** se refiere a qué posiciones de la entrada afectan una posición de la salida.
+
+#### Convolución de una sola capa
+
+Al usar un kernel de convolución 3×3, cada posición de salida solo es afectada por una región 3×3 de la entrada:
+
+```
+Entrada:                    Salida:
+  ┌─────────────┐           ┌───────────┐
+  │ . . . . .   │           │ . . . .   │
+  │ . ● ● ● .   │  →        │ . ● . .   │
+  │ . ● ● ● .   │           │ . . . .   │
+  │ . ● ● ● .   │           │ . . . .   │
+  │ . . . . .   │           └───────────┘
+  └─────────────┘
+     Campo receptivo 3×3
+```
+
+#### Convolución multicapa
+
+Después de apilar múltiples capas de convolución, el campo receptivo se expande:
+
+| Capas | Campo receptivo | Cálculo |
+|-------|-----------------|---------|
+| 1 | 3×3 | 3 |
+| 2 | 5×5 | 3 + (3-1) = 5 |
+| 3 | 7×7 | 5 + (3-1) = 7 |
+| ... | ... | ... |
+| 12 | 25×25 | 3 + 11×2 = 25 |
+
+¡Las 12 capas de convolución de AlphaGo dan un **campo receptivo de 25×25**, que ya supera el tablero de 19×19!
+
+Esto significa:
+- **Cada posición de salida puede "ver" todo el tablero**
+- Pero la forma de "ver" es diferente: detalles claros de cerca, generalización de lejos
+- Esto es similar a cómo piensan los jugadores humanos
+
+### Campo receptivo y Go
+
+El concepto de campo receptivo explica por qué AlphaGo puede manejar problemas "globales":
+
+```
+Problemas locales (campo receptivo 3×3):    Problemas globales (campo receptivo 25×25):
+- ¿Hay un ojo aquí?                         - ¿Este grupo tiene espacio para ojos?
+- ¿Se puede hacer atari?                    - ¿La escalera es favorable?
+- ¿Se puede conectar?                       - ¿Cómo está la situación general?
+```
+
+Las capas superficiales procesan características locales, las capas profundas procesan características globales.
+
+---
+
+## Características locales vs globales
+
+### Estructura jerárquica de las CNN
+
+Las CNN forman naturalmente una estructura jerárquica:
+
+```
+Capa de entrada:     Piedras negras, piedras blancas, puntos vacíos
+   ↓
+Capas superficiales (1-3):    Ojos, conexiones, cortes, atari
+   ↓
+Capas intermedias (4-8):    Formas, grupos vivos, grupos muertos
+   ↓
+Capas profundas (9-12):   Influencia, espesor, puntos importantes
+   ↓
+Capa de salida:        Probabilidad de jugada / tasa de victoria
+```
+
+Esto es sorprendentemente similar al proceso de aprendizaje humano del Go:
+1. Primero aprender las reglas (dónde hay piedras)
+2. Luego aprender tácticas (cómo capturar piedras)
+3. Después aprender formas (qué es una buena forma)
+4. Finalmente aprender la visión global (juicio general)
+
+### Visualización de capas ocultas
+
+Los investigadores han descubierto que las capas ocultas de las CNN realmente aprenden características significativas:
+
+#### Filtros superficiales
+
+```
+Filtro A (detección de ojos):    Filtro B (detección de atari):
+┌───────┐                        ┌───────┐
+│ + - + │                        │ + + + │
+│ - + - │                        │ + - - │
+│ + - + │                        │ + + + │
+└───────┘                        └───────┘
+```
+
+#### Filtros profundos
+
+Los filtros de capas profundas son más abstractos, difíciles de interpretar directamente, pero capturan patrones de formas complejas.
+
+---
+
+## Elección de la función de activación
+
+### ReLU: simple pero efectiva
+
+AlphaGo usa **ReLU (Rectified Linear Unit)** después de todas las capas convolucionales:
+
+```python
+def relu(x):
+    return max(0, x)
+```
+
+Ilustración:
+
+```
+Salida
+  │
+  │    /
+  │   /
+  │  /
+  │ /
+──┼────── Entrada
+  │
+```
+
+### ¿Por qué no usar otras funciones?
+
+| Función de activación | Fórmula | Ventajas | Desventajas |
+|----------------------|---------|----------|-------------|
+| ReLU | max(0, x) | Cálculo rápido, buen gradiente | Neuronas muertas |
+| Sigmoid | 1/(1+e^-x) | Salida acotada | Desvanecimiento del gradiente |
+| Tanh | (e^x-e^-x)/(e^x+e^-x) | Centrada en cero | Desvanecimiento del gradiente |
+| LeakyReLU | max(0.01x, x) | Resuelve el problema de muerte | Un hiperparámetro extra |
+
+Para redes profundas, las ventajas de ReLU son claras:
+1. **Cálculo simple**: solo comparación y máximo
+2. **Sin desvanecimiento del gradiente**: gradiente constante de 1 en la región positiva
+3. **Activación dispersa**: muchas neuronas producen 0, mejorando la eficiencia
+
+### Significado de ReLU en Go
+
+La dispersión de ReLU tiene una interpretación interesante en Go:
+
+```
+Un filtro detecta "puntos de corte":
+- Hay punto de corte → salida positiva (activada)
+- No hay punto de corte → salida cero (no activada)
+
+Esto es como un jugador que solo se enfoca en posiciones "donde hay algo"
+```
+
+---
+
+## Normalización por lotes
+
+### ¿Qué es la normalización por lotes?
+
+**La normalización por lotes (Batch Normalization)** es una técnica que mantiene una distribución estable de la salida de cada capa:
+
+```python
+def batch_norm(x, gamma, beta):
+    # Calcular media y desviación estándar del lote
+    mean = x.mean(axis=0)
+    std = x.std(axis=0)
+
+    # Normalizar
+    x_norm = (x - mean) / (std + 1e-8)
+
+    # Escalar y desplazar
+    return gamma * x_norm + beta
+```
+
+### ¿Por qué es necesaria?
+
+#### Desplazamiento de covariables interno
+
+Cuando la red se entrena, la distribución de entrada de cada capa cambia a medida que cambian los pesos de las capas anteriores. Esto se llama "desplazamiento de covariables interno":
+
+```
+Actualización de pesos de la primera capa → Cambio en la distribución de salida de la primera capa
+                    ↓
+               Cambio en la distribución de entrada de la segunda capa → La segunda capa necesita readaptarse
+                                        ↓
+                                   ... (se propaga)
+```
+
+La normalización por lotes estabiliza el entrenamiento forzando que la entrada de cada capa tenga una distribución fija (media 0, desviación estándar 1).
+
+### Aplicación en AlphaGo
+
+AlphaGo usa normalización por lotes después de cada capa convolucional, antes de la función de activación:
+
+```
+Conv → BatchNorm → ReLU → Conv → BatchNorm → ReLU → ...
+```
+
+Beneficios:
+1. **Entrenamiento más rápido**: se pueden usar tasas de aprendizaje más altas
+2. **Más estable**: reduce la sensibilidad a la inicialización
+3. **Efecto de regularización**: tiene un ligero efecto de dropout
+
+### Procesamiento durante la inferencia
+
+Durante el entrenamiento, se usan las estadísticas del lote actual. Durante la inferencia, se usan las estadísticas de todo el conjunto de entrenamiento (promedio móvil):
+
+```python
+# Durante el entrenamiento
+mean = batch_mean
+var = batch_var
+
+# Durante la inferencia
+mean = running_mean  # Media acumulada durante el entrenamiento
+var = running_var    # Varianza acumulada durante el entrenamiento
+```
+
+---
+
+## Configuración específica de AlphaGo
+
+### Arquitectura completa
+
+```
+Entrada: 19×19×48
+
+Capa 1:
+  Conv2D(5×5, 192 filters, padding='same')
+  BatchNorm
+  ReLU
+  Salida: 19×19×192
+
+Capas 2-12 (11 capas en total):
+  Conv2D(3×3, 192 filters, padding='same')
+  BatchNorm
+  ReLU
+  Salida: 19×19×192
+
+Capa de salida (Policy):
+  Conv2D(1×1, 1 filter)
+  Flatten
+  Softmax
+  Salida: probabilidad de 361 dimensiones
+
+Capa de salida (Value):
+  Conv2D(1×1, 1 filter)
+  Flatten
+  Dense(256)
+  ReLU
+  Dense(1)
+  Tanh
+  Salida: un solo valor
+```
+
+### Configuración de parámetros
+
+| Parámetro | Valor | Descripción |
+|-----------|-------|-------------|
+| Canales de entrada | 48 | Número de planos de características |
+| Número de filtros | 192 | Canales por capa |
+| Tamaño del kernel | 3×3 (primera capa 5×5) | Campo receptivo |
+| Número de capas | 13 (incluyendo capa de salida) | Profundidad |
+| Función de activación | ReLU | No linealidad |
+| Normalización | BatchNorm | Estabilizar entrenamiento |
+
+### Implementación en PyTorch
+
+```python
+import torch
+import torch.nn as nn
+
+class AlphaGoCNN(nn.Module):
+    def __init__(self, input_channels=48, num_filters=192, num_layers=12):
+        super().__init__()
+
+        # Primera capa (convolución 5×5)
+        self.conv1 = nn.Sequential(
+            nn.Conv2d(input_channels, num_filters, kernel_size=5, padding=2),
+            nn.BatchNorm2d(num_filters),
+            nn.ReLU(inplace=True)
+        )
+
+        # Capas intermedias (convolución 3×3)
+        self.conv_layers = nn.Sequential(*[
+            nn.Sequential(
+                nn.Conv2d(num_filters, num_filters, kernel_size=3, padding=1),
+                nn.BatchNorm2d(num_filters),
+                nn.ReLU(inplace=True)
+            )
+            for _ in range(num_layers - 1)
+        ])
+
+        # Cabeza de Policy
+        self.policy_head = nn.Sequential(
+            nn.Conv2d(num_filters, 1, kernel_size=1),
+            nn.Flatten(),
+            nn.Softmax(dim=1)
+        )
+
+        # Cabeza de Value
+        self.value_head = nn.Sequential(
+            nn.Conv2d(num_filters, 1, kernel_size=1),
+            nn.Flatten(),
+            nn.Linear(361, 256),
+            nn.ReLU(inplace=True),
+            nn.Linear(256, 1),
+            nn.Tanh()
+        )
+
+    def forward(self, x):
+        # Extracción de características compartida
+        x = self.conv1(x)
+        x = self.conv_layers(x)
+
+        # Salidas separadas
+        policy = self.policy_head(x)
+        value = self.value_head(x)
+
+        return policy, value
+```
+
+---
+
+## Comparación con otras arquitecturas
+
+### Redes completamente conectadas
+
+Si usáramos una red completamente conectada para procesar Go:
+
+| Característica | Completamente conectada | CNN |
+|----------------|------------------------|-----|
+| Cantidad de parámetros | Enorme (cientos de millones) | Menor (millones) |
+| Invariancia posicional | No | Sí |
+| Características locales | Difícil de aprender | Captura natural |
+| Eficiencia de entrenamiento | Baja | Alta |
+
+Las redes completamente conectadas no pueden aprovechar la estructura espacial del tablero, siendo extremadamente ineficientes.
+
+### Redes neuronales recurrentes (RNN)
+
+Las RNN son adecuadas para datos secuenciales (como el historial de la partida), pero:
+
+| Característica | RNN | CNN |
+|----------------|-----|-----|
+| Procesamiento espacial | Débil | Fuerte |
+| Procesamiento secuencial | Fuerte | Débil (necesita planos de historial) |
+| Paralelización | Difícil | Fácil |
+| Dependencias de largo alcance | Necesita LSTM | Capas profundas son suficientes |
+
+AlphaGo eligió CNN + planos de historial, en lugar de CNN + RNN.
+
+### Redes residuales (ResNet)
+
+AlphaGo Zero se actualizó a ResNet:
+
+```
+CNN normal:               ResNet:
+  x                        x
+  ↓                        ↓
+ Conv                     Conv
+  ↓                        ↓
+ ReLU                    ReLU
+  ↓                        ↓
+ Conv                     Conv
+  ↓                        ↓
+  y                      y + x  ← conexión residual
+```
+
+Las conexiones residuales permiten que el gradiente fluya más fácilmente, pudiendo entrenar redes más profundas (40 capas vs 12 capas).
+
+Ver [Red de doble cabeza y redes residuales](../dual-head-resnet) para más detalles.
+
+---
+
+## Comprensión visual
+
+### Proceso de convolución
+
+```
+Tablero de entrada (simplificado a 5×5):
+
+   A B C D E
+1  . . . . .
+2  . ● . . .
+3  . . ○ . .
+4  . . . ● .
+5  . . . . .
+
+Un filtro (3×3, detecta "forma de cruz"):
+┌───────┐
+│ 0 1 0 │
+│ 1 1 1 │
+│ 0 1 0 │
+└───────┘
+
+Salida de convolución:
+   A B C D E
+1  0 0 0 0 0
+2  0 0 0 0 0
+3  0 0 1 0 0   ← Fuerte respuesta en el centro (coincide con forma de cruz)
+4  0 0 0 0 0
+5  0 0 0 0 0
+```
+
+### Características multicapa
+
+```
+Salida de la capa 1 (4 de 192 canales):
+
+Canal 1 (ojos):    Canal 2 (borde):    Canal 3 (cortes):    Canal 4 (conexiones):
+┌─────────┐        ┌─────────┐         ┌─────────┐          ┌─────────┐
+│ 0 0 0 0 │        │ 0.8 0 0 │         │ 0 0 0 0 │          │ 0 0 0 0 │
+│ 0 0.9 0 │        │ 0.8 0 0 │         │ 0 0 0.7 │          │ 0 0.5 0 │
+│ 0 0 0 0 │        │ 0.8 0 0 │         │ 0 0 0 0 │          │ 0 0.8 0 │
+│ 0 0 0 0 │        │ 0.8 0 0 │         │ 0 0 0 0 │          │ 0 0.5 0 │
+└─────────┘        └─────────┘         └─────────┘          └─────────┘
+
+Estas características se combinan en capas más profundas para formar conceptos más complejos...
+```
+
+---
+
+## Correspondencia con animaciones
+
+Conceptos centrales de este artículo y números de animación:
+
+| Número | Concepto | Correspondencia física/matemática |
+|--------|----------|-----------------------------------|
+| D9 | Operación de convolución | Respuesta del filtro |
+| D10 | Campo receptivo | Local → Global |
+| D11 | Normalización por lotes | Estabilidad de distribución |
+| D1 | Entrada multicanal | Operación tensorial |
+
+---
+
+## Lecturas adicionales
+
+- **Artículo anterior**: [Diseño de características de entrada](../input-features) — Explicación detallada de los 48 planos de características
+- **Siguiente artículo**: [Fase de aprendizaje supervisado](../supervised-learning) — Cómo aprender de partidas humanas
+- **Tema avanzado**: [Red de doble cabeza y redes residuales](../dual-head-resnet) — Actualización de la red de AlphaGo Zero
+
+---
+
+## Puntos clave
+
+1. **Las CNN son naturalmente adecuadas para tableros**: conectividad local, compartición de pesos, equivarianza traslacional
+2. **La convolución extrae características locales**: reconocimiento de patrones en regiones 3×3
+3. **Las redes profundas obtienen visión global**: 12 capas → campo receptivo de 25×25
+4. **ReLU es rápida y efectiva**: activación no lineal simple
+5. **BatchNorm estabiliza el entrenamiento**: normaliza la salida de cada capa
+
+Las CNN permiten que AlphaGo "vea" el tablero, tan naturalmente como los humanos ven imágenes con sus ojos.
+
+---
+
+## Referencias
+
+1. LeCun, Y., Bengio, Y., & Hinton, G. (2015). "Deep learning." *Nature*, 521, 436-444.
+2. He, K., et al. (2015). "Deep Residual Learning for Image Recognition." *CVPR*.
+3. Ioffe, S., & Szegedy, C. (2015). "Batch Normalization: Accelerating Deep Network Training." *ICML*.
+4. Krizhevsky, A., Sutskever, I., & Hinton, G. E. (2012). "ImageNet Classification with Deep Convolutional Neural Networks." *NeurIPS*.

@@ -1,0 +1,727 @@
+---
+sidebar_position: 16
+title: PUCT 公式詳解
+description: AlphaGo の核心的な選択メカニズムを深く理解する：PUCT 公式の数学原理とパラメータチューニングの経験
+---
+
+import { MCTSTree } from '@site/src/components/D3Charts';
+
+# PUCT 公式詳解
+
+前の記事では、MCTS とニューラルネットワークの融合について概説しました。ここでは、MCTS の Selection フェーズの核心である **PUCT 公式**を深く掘り下げていきましょう。
+
+この公式は一見シンプルに見えますが、AlphaGo 成功の鍵の一つです。「既知の良い手を活用する」ことと「より良い可能性のある手を探索する」という、一見矛盾する2つの目標をエレガントにバランスさせています。
+
+---
+
+## PUCT 公式
+
+### 公式の定義
+
+AlphaGo が使用する **PUCT（Predictor Upper Confidence Trees）** 公式：
+
+$$a^* = \arg\max_a \left[ Q(s,a) + U(s,a) \right]$$
+
+ここで：
+
+$$U(s,a) = c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)}$$
+
+完全に展開すると：
+
+$$a^* = \arg\max_a \left[ Q(s,a) + c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)} \right]$$
+
+### 記号の説明
+
+| 記号 | 意味 | 出典 |
+|------|------|------|
+| $Q(s,a)$ | 行動 $a$ の平均価値 | MCTS 統計 |
+| $P(s,a)$ | 行動 $a$ の事前確率 | Policy Network |
+| $N(s)$ | 親ノードの訪問回数 | MCTS 統計 |
+| $N(s,a)$ | 子ノードの訪問回数 | MCTS 統計 |
+| $c_{\text{puct}}$ | 探索定数 | ハイパーパラメータ |
+
+### 直感的な理解
+
+PUCT 公式は2つの部分に分けられます：
+
+```
+総スコア = Q(s,a)        + U(s,a)
+           ↓              ↓
+         活用項          探索項
+       「この手はどれくらい良い？」   「この手はさらに探索する価値がある？」
+```
+
+**活用項 Q(s,a)**：
+- この手の過去の平均パフォーマンス
+- 訪問が増えるほど、推定が正確に
+- 「既知の良い」手を選ぶことを奨励
+
+**探索項 U(s,a)**：
+- この手にまだどれだけの探索価値があるか
+- 訪問が少ないほど、探索ボーナスが高い
+- 「良いかもしれない」手を試すことを奨励
+
+---
+
+## 各項の意味
+
+### Q(s,a)：平均価値
+
+$Q(s,a)$ はノード $(s,a)$ から開始したすべてのシミュレーションの平均結果です：
+
+$$Q(s,a) = \frac{W(s,a)}{N(s,a)} = \frac{\sum_i z_i}{N(s,a)}$$
+
+ここで $z_i \in \{-1, +1\}$ は第 $i$ 回シミュレーションの結果です。
+
+**特性**：
+- 範囲：$[-1, +1]$
+- 初期値：未定義（少なくとも1回の訪問が必要）
+- 訪問回数が増えるにつれて安定に向かう
+
+**解釈**：
+- $Q = 0.6$：この手の勝率は約 80%（$Q = 2 \times \text{勝率} - 1$ なので）
+- $Q = 0$：勝敗五分
+- $Q = -0.3$：この手の勝率は約 35%
+
+### P(s,a)：事前確率
+
+$P(s,a)$ は Policy Network の出力から来ます：
+
+$$P(s,a) = \pi_\theta(a|s)$$
+
+**特性**：
+- 範囲：$[0, 1]$、かつ $\sum_a P(s,a) = 1$
+- ノードが最初に展開されるときに計算
+- ニューラルネットワークの「この手がどれくらい良いか」の判断を反映
+
+**役割**：
+- 高確率の行動が優先的に探索される
+- 訪問回数が0でも探索の動機がある
+- 「合理的に見える」手に探索を集中させる
+
+### N(s) と N(s,a)：訪問回数
+
+$N(s)$ は親ノードの総訪問回数：
+
+$$N(s) = \sum_a N(s,a)$$
+
+**探索項での役割**：
+
+$$\frac{\sqrt{N(s)}}{1 + N(s,a)}$$
+
+この分数の挙動：
+- $N(s,a) = 0$ のとき、スコア = $\sqrt{N(s)}$（最大の探索動機）
+- $N(s,a)$ が増えるにつれ、スコアは下がる
+- $N(s,a) \gg \sqrt{N(s)}$ のとき、スコアは0に近づく
+
+これにより以下が保証されます：
+1. **すべての行動が少なくとも1回は探索される**（$P(s,a) > 0$ の場合）
+2. **探索動機は訪問とともに減衰する**
+3. **最終的な選択は $Q$ 値が主導する**
+
+### c_puct：探索定数
+
+$c_{\text{puct}}$ は探索と活用のバランスを制御します：
+
+| $c_{\text{puct}}$ の値 | 効果 |
+|-------------------|------|
+| 小さい（例：0.5） | より活用寄り、良い手に素早く集中 |
+| 中程度（例：1-2） | 探索と活用のバランス |
+| 大きい（例：5） | より探索寄り、多くの可能性を試す |
+
+AlphaGo で使用された値：$c_{\text{puct}} = 1.5$（論文による）。
+
+---
+
+## UCB1 との関係
+
+### UCB1 公式の復習
+
+従来の MCTS で使用される **UCB1** 公式：
+
+$$\text{UCB1}(s,a) = \bar{X}_{s,a} + c \sqrt{\frac{\ln N(s)}{N(s,a)}}$$
+
+ここで $\bar{X}_{s,a}$ は平均報酬です。
+
+### 比較
+
+| 側面 | UCB1 | PUCT |
+|------|------|------|
+| 活用項 | $\bar{X}_{s,a}$（平均報酬） | $Q(s,a)$（平均価値） |
+| 探索項 | $\sqrt{\frac{\ln N}{n}}$（信頼限界） | $P \cdot \frac{\sqrt{N}}{1+n}$（事前ガイド） |
+| 事前情報 | なし | Policy Network を使用 |
+| 探索減衰 | 対数減衰 | 線形減衰 |
+
+### PUCT の利点
+
+1. **事前知識の活用**：Policy Network が提供する $P(s,a)$ により、探索は最初から合理的な手に集中
+
+2. **より速い収束**：線形減衰（$1/(1+n)$）は対数減衰（$1/\sqrt{\ln N / n}$）より速く探索を集中させる
+
+3. **制御可能な探索**：$P(s,a)$ と $c_{\text{puct}}$ により探索を制御する手段が増える
+
+### 理論的背景
+
+UCB1 には厳密な理論的保証（regret bound）がありますが、これらの保証は以下を仮定しています：
+- 各腕（行動）は独立している
+- 事前情報がない
+
+囲碁では強力な事前情報（Policy Network）があり、PUCT はこれらの情報をより良く活用できます。
+
+---
+
+## 数学的導出
+
+### 多腕バンディット問題から始める
+
+PUCT のインスピレーションは**多腕バンディット（Multi-Armed Bandit）**問題から来ています。
+
+あなたの前に $K$ 台のスロットマシンがあり、それぞれの当選確率は異なりますが未知です。目標は総当選回数を最大化することです。戦略は：
+- **活用**：最も良さそうなマシンを引く
+- **探索**：他のマシンを試し、より良いものを発見するかもしれない
+
+UCB1 はこの問題の古典的な解法で、PUCT はその変種です。
+
+### UCB の理論的基礎
+
+確率変数 $X$ に対して、Hoeffding の不等式により：
+
+$$P(|\bar{X}_n - \mu| \geq \epsilon) \leq 2 \exp(-2n\epsilon^2)$$
+
+$1/t^4$ の確率で間違えたい場合、以下が必要です：
+
+$$\epsilon = \sqrt{\frac{2 \ln t}{n}}$$
+
+これが UCB1 の探索項の由来です。
+
+### PUCT の修正
+
+PUCT は古典的な UCB にいくつかの修正を加えています：
+
+**1. 事前確率の追加**
+
+$$U(s,a) \propto P(s,a) \cdot (\text{探索項})$$
+
+これにより探索が高確率の行動に集中します。
+
+**2. 探索項の形式の変更**
+
+$\sqrt{\frac{\ln N}{n}}$ から $\frac{\sqrt{N}}{1+n}$ へ
+
+これにより収束が加速されます：
+
+```
+比較（N = 1000, n = 10 と仮定）：
+
+UCB1:  sqrt(ln(1000) / 10) = sqrt(0.69) ≈ 0.83
+PUCT:  sqrt(1000) / 11 ≈ 2.87
+
+PUCT はより多くの探索ボーナスを与えるが、減衰も速い
+```
+
+**3. 学習可能な事前情報**
+
+$P(s,a)$ はニューラルネットワークから来ており、訓練とともに改善されます。これにより MCTS とニューラルネットワークの正のフィードバックループが形成されます。
+
+### なぜこの形式が効果的なのか？
+
+直感的な説明：
+
+$$U(s,a) = c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)}$$
+
+1. **$P(s,a)$**：「専門家はこの手がどれくらい良いと言っているか」
+2. **$\sqrt{N(s)}$**：「この局面についてどれくらい理解しているか」
+3. **$1/(1 + N(s,a))$**：「この手についてどれくらい理解しているか」
+
+組み合わせると：**局面についてよく理解しているが、ある手についてあまり理解しておらず、かつ専門家がその手は悪くないと考えている場合、それを探索すべき**。
+
+---
+
+## 可視化による理解
+
+### 探索項の変化
+
+探索項が訪問回数とともにどう変化するか可視化してみましょう：
+
+```
+U(s,a) = c_puct × P(s,a) × √N(s) / (1 + N(s,a))
+
+P(s,a) = 0.1, c_puct = 1.5, N(s) = 1600 と仮定
+
+N(s,a)  |  U(s,a)
+--------|----------
+   0    |  6.00      ← 未訪問、最大の探索ボーナス
+   1    |  3.00
+   5    |  1.00
+  10    |  0.55
+  50    |  0.12
+ 100    |  0.06
+ 400    |  0.015     ← 多く訪問後、探索ボーナスは非常に小さい
+```
+
+### 異なる事前確率の影響
+
+```
+c_puct = 1.5, N(s) = 1600, N(s,a) = 0 と仮定
+
+P(s,a)  |  U(s,a)
+--------|----------
+  0.30  |  18.00     ← 高確率の行動はより多くの探索動機を持つ
+  0.10  |   6.00
+  0.03  |   1.80
+  0.01  |   0.60
+  0.001 |   0.06     ← 低確率の行動はほとんど探索されない
+```
+
+### インタラクティブな探索
+
+下の $c_{\text{puct}}$ パラメータを調整して、MCTS の選択にどのような影響を与えるか観察してみてください：
+
+<MCTSTree width={700} height={450} showPUCT={true} interactive={true} cPuct={1.5} />
+
+---
+
+## AlphaGo での具体的な実装
+
+### AlphaGo Fan/Lee の実装
+
+オリジナルの AlphaGo は少し異なる公式を使用しています：
+
+$$U(s,a) = c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{\sum_b N(s,b)}}{1 + N(s,a)}$$
+
+また、$Q(s,a)$ の計算では仮想損失を考慮しています：
+
+```python
+def get_ucb_score(node, action, c_puct=1.5):
+    Q = node.W[action] / (node.N[action] + 1)  # ゼロ除算を回避
+    P = node.prior[action]
+    N_parent = sum(node.N.values())
+    N_child = node.N[action]
+
+    U = c_puct * P * math.sqrt(N_parent) / (1 + N_child)
+
+    return Q + U
+```
+
+### AlphaGo Zero の実装
+
+AlphaGo Zero はよりシンプルな実装を使用しています：
+
+```python
+def select_action(node, c_puct=1.5):
+    """PUCT スコアが最も高い行動を選択"""
+    N_parent = sum(node.visit_count.values())
+
+    def puct_score(action):
+        Q = node.value_sum[action] / (node.visit_count[action] + 1)
+        P = node.prior[action]
+        U = c_puct * P * math.sqrt(N_parent) / (1 + node.visit_count[action])
+        return Q + U
+
+    return max(node.legal_actions, key=puct_score)
+```
+
+### 未訪問ノードの処理
+
+$N(s,a) = 0$ のとき、$Q(s,a)$ は未定義です。一般的な処理方法：
+
+**方法 1：親ノードの価値を使用**
+```python
+Q = parent_value if N[action] == 0 else W[action] / N[action]
+```
+
+**方法 2：初期値を使用**
+```python
+Q = 0 if N[action] == 0 else W[action] / N[action]
+```
+
+**方法 3：FPU（First Play Urgency）を使用**
+```python
+# 未訪問ノードにはより低い Q 値を使用
+fpu_value = parent_Q - fpu_reduction
+Q = fpu_value if N[action] == 0 else W[action] / N[action]
+```
+
+AlphaGo Zero は FPU を使用しており、これにより探索は既に訪問されたノードを先に試す傾向になります。
+
+---
+
+## 実践的なパラメータチューニングの経験
+
+### c_puct の選択
+
+$c_{\text{puct}}$ は最も重要なハイパーパラメータです。実践での指針：
+
+**1. ネットワークの品質との関連**
+- ネットワークが非常に強い（高精度）：より小さい $c_{\text{puct}}$ を使用可能
+- ネットワークが弱い：誤りを修正するためにより大きい $c_{\text{puct}}$ が必要
+
+**2. 探索予算との関連**
+- シミュレーション回数が多い：より大きい $c_{\text{puct}}$ を使用可能（探索する時間が十分）
+- シミュレーション回数が少ない：より小さい $c_{\text{puct}}$ を使用（素早く集中）
+
+**3. ゲームの特性との関連**
+- 戦術性が強いゲーム：より多くの探索が必要かもしれない
+- 戦略性が強いゲーム：事前情報をより信頼できる
+
+### 典型的な値
+
+| プロジェクト | $c_{\text{puct}}$ |
+|------|-------------------|
+| AlphaGo | 1.5 |
+| AlphaGo Zero | 1.0 - 2.0 |
+| AlphaZero | 1.25 |
+| KataGo | 0.5 - 1.0（動的調整） |
+| Leela Zero | 1.5 - 2.0 |
+
+### 動的調整
+
+一部の高度な実装では動的な $c_{\text{puct}}$ を使用しています：
+
+```python
+def dynamic_cpuct(visit_count):
+    """訪問回数に応じて探索定数を調整"""
+    base = 1.0
+    init = 1.5
+    log_base = 19652  # 調整パラメータ
+
+    return math.log((visit_count + log_base + 1) / log_base) + init
+```
+
+これにより探索は初期により探索寄りになり、後期により活用寄りになります。
+
+### 感度分析
+
+$c_{\text{puct}}$ が棋力に与える影響：
+
+```
+実験（他の条件を固定し、c_puct を変化）：
+
+c_puct | 相対 Elo
+-------|----------
+  0.5  |   -50     ← 過度の活用、良い手を見逃す
+  1.0  |   +20
+  1.5  |    0      ← 基準
+  2.0  |   -10
+  3.0  |   -30     ← 過度の探索、探索を浪費
+  5.0  |   -80
+```
+
+最適値は通常 1.0-2.0 の間ですが、具体的にはネットワーク品質と探索予算に依存します。
+
+---
+
+## 高度なバリエーション
+
+### PUCT のバリエーション
+
+**1. Polynomial PUCT (P-UCT)**
+
+$$U(s,a) = c \cdot P(s,a) \cdot \frac{N(s)^\alpha}{1 + N(s,a)}$$
+
+ここで $\alpha$ は調整可能なパラメータ（通常 $\alpha = 0.5$）。
+
+**2. ノイズ付き PUCT**
+
+ルートノードに Dirichlet ノイズを追加：
+
+$$P'(s,a) = (1-\varepsilon) P(s,a) + \varepsilon \cdot \eta_a$$
+
+ここで $\eta \sim \text{Dir}(\alpha)$。これにより探索の多様性が増加します。
+
+**3. UCT 風 PUCT**
+
+$$U(s,a) = c \cdot P(s,a) \cdot \sqrt{\frac{\ln(1 + N(s) + c_{\text{base}})}{1 + N(s,a)}}$$
+
+これは UCT の対数形式と PUCT の事前ガイドを組み合わせています。
+
+### KataGo の改善
+
+KataGo は PUCT に複数の改善を加えています：
+
+**1. 動的 $c_{\text{puct}}$**
+局面の複雑さと探索の進行に応じて調整。
+
+**2. 価値予測の不確実性**
+Value Network の予測信頼度を考慮。
+
+**3. 方策ターゲット学習**
+方策ヘッドの出力だけでなく、MCTS の訪問分布を直接学習。
+
+### 他の選択公式
+
+PUCT 以外にも他の選択公式があります：
+
+**RAVE（Rapid Action Value Estimation）**
+
+$$Q_{\text{RAVE}}(s,a) = (1-\beta) Q(s,a) + \beta Q_{\text{AMAF}}(s,a)$$
+
+「All Moves As First」統計を使用して学習を加速。
+
+**GRAVE（Generalized RAVE）**
+
+RAVE のバリエーションで、祖先ノードの統計情報を使用。
+
+---
+
+## 理論的分析
+
+### 収束性
+
+PUCT は最適解への収束を保証するか？
+
+**厳密には**：UCB1 のような理論的保証はありません。
+
+**実践では**：十分な数のシミュレーション後、PUCT は高品質の解に収束します。理由：
+1. 探索項は最終的にゼロに近づく
+2. すべての行動は最終的に訪問される
+3. $Q$ 値は真の価値に収束する
+
+### 計算量分析
+
+**時間計算量**（各シミュレーション）：
+- Selection：$O(\log N)$（木の深さ）
+- Expansion：$O(A)$（合法手の数、ニューラルネットワーク推論が必要）
+- Evaluation：$O(1)$（Value Network）または $O(T)$（Rollout、$T$ はゲームの長さ）
+- Backpropagation：$O(\log N)$
+
+**空間計算量**：
+- 各ノード：$O(A)$（事前確率と訪問統計を保存）
+- 木全体：$O(N \cdot A)$（$N$ はノード数）
+
+### Minimax との関係
+
+$c_{\text{puct}} \to 0$ かつシミュレーション数 $\to \infty$ のとき、MCTS + PUCT は Minimax 探索に近似します。
+
+しかし有限の予算では、PUCT は通常 Minimax + Alpha-Beta より効率的です。事前知識をより良く活用できるためです。
+
+---
+
+## よくある質問
+
+### Q：なぜ Policy Network の出力を直接選択に使わないのか？
+
+**A：Policy Network は間違える可能性があります**。MCTS の探索は以下を可能にします：
+1. ニューラルネットワークの判断を検証
+2. ニューラルネットワークが見逃した良い手を発見
+3. ニューラルネットワークの系統的偏りを修正
+
+実験では、ニューラルネットワークが非常に強い場合でも、探索を追加することで棋力が大幅に向上することが示されています。
+
+### Q：PUCT がうまく機能しない状況は？
+
+1. **事前確率が完全に間違っている**：Policy Network が良い手を低確率と評価した場合、PUCT は修正するために多くのシミュレーションが必要
+
+2. **長期的な戦術**：PUCT は正確な計算が必要な長いシーケンスの戦術を発見するのが難しい場合がある
+
+3. **相手モデルの欠如**：PUCT は相手も最適戦略を使うと仮定しており、不合理な相手に対しては最適でない可能性
+
+### Q：非常に大きな行動空間をどう処理するか？
+
+いくつかのテクニック：
+1. **Policy Network フィルタリング**：$P(s,a) > \epsilon$ の行動のみを考慮
+2. **段階的な幅広化**：最初は少数の行動のみを展開し、必要に応じて拡張
+3. **動的枝刈り**：明らかに悪い行動を除去
+
+---
+
+## アニメーション対応
+
+本記事で扱う核心概念とアニメーション番号：
+
+| 番号 | 概念 | 物理/数学対応 |
+|------|------|--------------|
+| 🎬 E4 | 探索と活用 | 多腕バンディット |
+| 🎬 C3 | PUCT 選択 | 信頼限界 |
+
+---
+
+## まとめ
+
+PUCT 公式は AlphaGo MCTS の核心であり、学んだ内容：
+
+1. **公式の構造**：$Q + U$、活用項と探索項
+2. **各項の意味**：$Q$ は経験価値、$P$ は事前確率、$N$ は探索減衰を制御
+3. **UCB1 との関係**：PUCT は事前情報を追加し、異なる探索項形式を使用
+4. **数学的導出**：多腕バンディットから MCTS 選択へ
+5. **実践的なパラメータチューニング**：$c_{\text{puct}}$ の選択と影響
+6. **高度なバリエーション**：動的調整、ノイズ、KataGo の改善
+
+PUCT のエレガンスは、そのシンプルさと効果にあります——1つの公式で探索と活用をバランスさせ、ニューラルネットワークの事前知識をエレガントに統合しています。
+
+---
+
+## 関連記事
+
+- **次の記事**：[AlphaGo Zero 概要](../alphago-zero) — ゼロからの飛躍
+- **前の記事**：[MCTS とニューラルネットワークの融合](../mcts-neural-combo) — 全体アーキテクチャ
+- **関連**：[従来手法の限界](../traditional-limits) — なぜ新しい手法が必要だったのか
+
+---
+
+## 参考文献
+
+1. Rosin, C. D. (2011). "Multi-armed bandits with episode context." *Annals of Mathematics and Artificial Intelligence*, 61(3), 203-230.
+2. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+3. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 550, 354-359.
+4. Kocsis, L., & Szepesvári, C. (2006). "Bandit based Monte-Carlo Planning." *ECML*.
+5. Auer, P., Cesa-Bianchi, N., & Fischer, P. (2002). "Finite-time analysis of the multiarmed bandit problem." *Machine Learning*, 47(2), 235-256.
+6. Wu, D., et al. (2019). "Accelerating Self-Play Learning in Go." *arXiv preprint* (KataGo 技術報告).
+
+---
+
+## 付録：完全な実装例
+
+```python
+import math
+import numpy as np
+from typing import Dict, List, Optional
+
+class MCTSNode:
+    """MCTS ノード"""
+    def __init__(self, prior: float = 0.0):
+        self.prior = prior          # P(s,a)
+        self.visit_count = 0        # N(s,a)
+        self.value_sum = 0.0        # W(s,a)
+        self.children: Dict[int, 'MCTSNode'] = {}
+
+    @property
+    def q_value(self) -> float:
+        """Q(s,a) を計算"""
+        if self.visit_count == 0:
+            return 0.0
+        return self.value_sum / self.visit_count
+
+
+class MCTS:
+    """PUCT を使用する MCTS 探索器"""
+
+    def __init__(
+        self,
+        policy_network,
+        value_network,
+        c_puct: float = 1.5,
+        num_simulations: int = 800
+    ):
+        self.policy_network = policy_network
+        self.value_network = value_network
+        self.c_puct = c_puct
+        self.num_simulations = num_simulations
+
+    def search(self, root_state) -> Dict[int, float]:
+        """MCTS 探索を実行し、行動の訪問分布を返す"""
+        root = MCTSNode()
+
+        # ルートノードを展開
+        policy = self.policy_network(root_state)
+        for action, prob in enumerate(policy):
+            if is_legal(root_state, action):
+                root.children[action] = MCTSNode(prior=prob)
+
+        # シミュレーションを実行
+        for _ in range(self.num_simulations):
+            self._simulate(root, root_state)
+
+        # 訪問分布を返す
+        total_visits = sum(
+            child.visit_count for child in root.children.values()
+        )
+        return {
+            action: child.visit_count / total_visits
+            for action, child in root.children.items()
+        }
+
+    def _simulate(self, node: MCTSNode, state) -> float:
+        """単一のシミュレーションを実行"""
+
+        # 終局状態の場合
+        if is_terminal(state):
+            return get_result(state)
+
+        # 葉ノードの場合、展開して評価
+        if not node.children:
+            policy = self.policy_network(state)
+            value = self.value_network(state)
+
+            for action, prob in enumerate(policy):
+                if is_legal(state, action):
+                    node.children[action] = MCTSNode(prior=prob)
+
+            return value
+
+        # Selection：PUCT スコアが最も高い行動を選択
+        action = self._select_action(node)
+        child = node.children[action]
+        next_state = apply_action(state, action)
+
+        # 再帰的にシミュレーション
+        value = -self._simulate(child, next_state)
+
+        # Backpropagation：統計を更新
+        child.visit_count += 1
+        child.value_sum += value
+
+        return value
+
+    def _select_action(self, node: MCTSNode) -> int:
+        """PUCT 公式を使用して行動を選択"""
+        total_visits = sum(
+            child.visit_count for child in node.children.values()
+        )
+
+        def puct_score(action: int, child: MCTSNode) -> float:
+            # Q(s,a)：平均価値
+            q = child.q_value
+
+            # U(s,a)：探索ボーナス
+            u = (
+                self.c_puct
+                * child.prior
+                * math.sqrt(total_visits)
+                / (1 + child.visit_count)
+            )
+
+            return q + u
+
+        return max(
+            node.children.keys(),
+            key=lambda a: puct_score(a, node.children[a])
+        )
+
+
+# 使用例
+def play_game():
+    policy_net = PolicyNetwork()
+    value_net = ValueNetwork()
+
+    mcts = MCTS(
+        policy_network=policy_net,
+        value_network=value_net,
+        c_puct=1.5,
+        num_simulations=1600
+    )
+
+    state = initial_state()
+
+    while not is_terminal(state):
+        # MCTS 探索を実行
+        visit_distribution = mcts.search(state)
+
+        # 訪問回数が最も多い行動を選択
+        action = max(visit_distribution.keys(),
+                     key=lambda a: visit_distribution[a])
+
+        # 行動を実行
+        state = apply_action(state, action)
+        print(f"Selected action {action} with visit ratio "
+              f"{visit_distribution[action]:.2%}")
+
+    print(f"Game result: {get_result(state)}")
+```
+
+この実装は PUCT 公式の MCTS における中核的な役割を示しています。実際の AlphaGo の実装には以下も含まれます：
+- 並列探索（仮想損失）
+- バッチニューラルネットワーク評価
+- 木の再利用
+- Dirichlet ノイズ
+- 温度制御などの機能

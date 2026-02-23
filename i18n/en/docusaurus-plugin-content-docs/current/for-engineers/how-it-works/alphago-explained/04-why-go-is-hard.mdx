@@ -1,0 +1,477 @@
+---
+sidebar_position: 5
+title: Why Is Go Hard?
+description: From state space explosion to long-term planning, an in-depth analysis of why Go was called the "Holy Grail of AI"
+keywords: [Go complexity, state space, branching factor, AI Holy Grail, Go AI difficulty]
+---
+
+import { GoBoard, PolicyHeatmap } from '@site/src/components/D3Charts';
+
+# Why Is Go Hard?
+
+Before AlphaGo, Go was considered the "last bastion" of artificial intelligence. For decades, researchers tried various methods but could never make computers reach the level of professional players.
+
+This wasn't because researchers weren't trying hard enough, but because Go is inherently an **extremely difficult computational problem**.
+
+This article will delve into: What exactly makes Go so difficult? Why was it called the "Holy Grail of AI"?
+
+---
+
+## State Space Explosion: The Meaning of 10^170
+
+### What Is State Space?
+
+In any board game, the **state space** refers to the total number of all possible board positions. This number determines the feasibility of brute-force search.
+
+For Go, this number is:
+
+$$
+\text{Go state space} \approx 10^{170}
+$$
+
+What does this mean? Let's make some comparisons.
+
+### Comparison with Atoms in the Universe
+
+According to physicists' estimates, the total number of atoms in the observable universe is approximately:
+
+$$
+\text{Atoms in universe} \approx 10^{80}
+$$
+
+This means:
+
+> **The number of possible Go positions is 10^90 times the number of atoms in the universe.**
+
+If you used every atom in the universe as a supercomputer, each processing 1 billion positions per second, from the Big Bang until now (about 13.8 billion years), you still couldn't enumerate all positions.
+
+### Intuitive Understanding of the Numbers
+
+| Number | Meaning |
+|--------|---------|
+| 10^9 | One billion, the order of magnitude of human population |
+| 10^12 | One trillion, the number of ants worldwide |
+| 10^23 | Avogadro's number, molecules in one mole |
+| 10^80 | Number of atoms in the universe |
+| 10^120 | Chess state space |
+| **10^170** | **Go state space** |
+
+### Why Is Go's State Space So Large?
+
+There are several reasons for Go's enormous state space:
+
+#### 1. Board Size
+
+Go uses a 19x19 board with **361 intersections**. In comparison:
+- Chess: 8x8 = 64 squares
+- Chinese Chess: 9x10 = 90 intersections
+- Gomoku: 15x15 = 225 intersections
+
+#### 2. Three States Per Point
+
+Each intersection can be:
+- Empty (no stone)
+- Black stone
+- White stone
+
+Rough estimate: possible combinations = 3^361 ≈ 10^172. Considering Go rules (ko, liberty restrictions), actual legal positions are about 10^170.
+
+#### 3. Stones Don't Move
+
+Unlike chess, Go stones once placed don't move (unless captured). This means each move **adds** a stone rather than **moves** an existing one, leading to more possible paths.
+
+### Code Example: State Space Estimation
+
+```python
+import math
+
+# Board size
+BOARD_SIZE = 19
+TOTAL_POINTS = BOARD_SIZE ** 2  # 361
+
+# Three states per point (empty, black, white)
+# Rough upper bound
+upper_bound = 3 ** TOTAL_POINTS
+print(f"Rough upper bound: 3^{TOTAL_POINTS} ≈ 10^{math.log10(upper_bound):.0f}")
+# Output: Rough upper bound: 3^361 ≈ 10^172
+
+# Actual estimate considering rule restrictions
+# Tromp-Taylor's precise calculation gives about 2.08 × 10^170
+actual_estimate = 2.08e170
+print(f"Actual estimate: {actual_estimate:.2e}")
+
+# Comparison with universe atoms
+universe_atoms = 1e80
+ratio = actual_estimate / universe_atoms
+print(f"Go positions / Universe atoms = 10^{math.log10(ratio):.0f}")
+# Output: Go positions / Universe atoms = 10^90
+```
+
+---
+
+## The Curse of Branching Factor: 250 Choices on Average
+
+### What Is Branching Factor?
+
+**Branching factor** refers to the average number of legal moves at any point in a game. This number determines the **width of the search tree**.
+
+| Game | Average Branching Factor |
+|------|-------------------------|
+| Tic-tac-toe | ~4 |
+| Chess | ~35 |
+| Chinese Chess | ~38 |
+| Othello | ~10 |
+| **Go** | **~250** |
+
+### Explosive Growth of Search Trees
+
+Suppose we want to use tree search to look N moves ahead. The number of positions to consider is approximately:
+
+$$
+\text{Number of nodes} \approx b^N
+$$
+
+Where b is the branching factor.
+
+Let's compare chess and Go:
+
+| Looking N moves | Chess (b=35) | Go (b=250) | Difference |
+|-----------------|--------------|------------|------------|
+| 1 move | 35 | 250 | 7x |
+| 2 moves | 1,225 | 62,500 | 51x |
+| 4 moves | 1.5 million | 3.9 billion | 2,600x |
+| 6 moves | 1.8 billion | 2.4×10^14 | 130 million x |
+| 10 moves | 2.8×10^15 | 9.5×10^23 | 340 million x |
+
+Looking 10 moves ahead, Go requires **340 million times** more positions to consider than chess.
+
+### Why Deep Blue's Method Failed in Go
+
+Deep Blue, which defeated Kasparov in 1997, used these core techniques:
+
+1. **Alpha-Beta pruning**: Reduce search nodes
+2. **Hardware acceleration**: Evaluate 200 million positions per second
+3. **Manual evaluation function**: Expert-designed position evaluation
+
+But even with the same methods:
+- Chess: Looking 12-14 moves requires evaluating about 10^18 nodes
+- Go: Looking 12 moves requires evaluating about 10^29 nodes
+
+**The gap is 100 billion trillion times**. No hardware can bridge this gap.
+
+### Opening Choices Are Astronomical
+
+In Go's opening phase, the branching factor is even higher:
+
+- Move 1: 361 choices
+- Move 2: 360 choices
+- Move 3: 359 choices
+- ...
+
+Even just looking at the first 10 moves:
+
+$$
+361 \times 360 \times 359 \times ... \times 352 \approx 5.5 \times 10^{25}
+$$
+
+This is why "opening joseki" are so important — human players need to memorize many opening variations because real-time calculation is impossible.
+
+---
+
+## Difficulty of Evaluation: No Simple Piece Values
+
+### Material Advantage in Chess
+
+In chess, evaluating a position is relatively intuitive:
+
+| Piece | Value (Traditional) |
+|-------|---------------------|
+| Pawn | 1 |
+| Knight | 3 |
+| Bishop | 3 |
+| Rook | 5 |
+| Queen | 9 |
+
+While actual evaluation is more complex (position, structure, etc.), "counting material" is a good starting point. Capturing the opponent's queen is almost always good.
+
+### Go: Every Stone Is Equal
+
+In Go, **every stone has exactly the same intrinsic value** — they're just stones.
+
+A stone's value depends entirely on:
+- Its position on the board
+- Its relationship with other stones
+- Its effect on the overall position
+
+This makes evaluation extremely difficult.
+
+### The Abstractness of Thickness and Influence
+
+Go has many abstract concepts:
+
+#### Thickness
+
+"Thickness" refers to a group of stones that is solid, stable, and influential. But "thickness" is hard to quantify:
+
+- How many points is a thick shape worth?
+- When should you use thickness to attack?
+- When does thickness become "overconcentration" (inefficient shape)?
+
+Top players might say: "This group is thick, probably worth about 15 points." But this is intuition from decades of experience, not precise calculation.
+
+#### Influence
+
+Go's "influence" refers to the potential control that stones have over surrounding space. This control is "virtual" — it might convert into territory, play a role in attack and defense, or ultimately amount to nothing.
+
+How do you evaluate "potential" value? This is extremely difficult for computers.
+
+#### Aji
+
+"Aji" (literally "taste" in Japanese) is one of Go's most abstract concepts. It refers to the **latent potential** at a position on the board.
+
+A "dead" group might have "utilization value" — although it can't be saved, it can interfere in future battles. This "latent potential" is nearly impossible to express numerically.
+
+### Why Manual Evaluation Functions Failed
+
+Before Deep Blue, computer chess used expert-designed evaluation functions:
+
+```
+Evaluation = Material score + Position score + King safety + Pawn structure + ...
+```
+
+These items could be quantified, weights adjusted, and it worked well.
+
+But what about Go?
+
+Researchers tried various features:
+- Controlled intersections
+- Stone "liberties"
+- Connection strength
+- Eye completeness
+- ...
+
+But combinations of these features never reached amateur high-dan level.
+
+**The core problem: Go position evaluation is a highly nonlinear, global problem.**
+
+A stone's value depends on the entire board state, not simple addition of local features.
+
+---
+
+## Need for Long-Term Planning: 150 Moves Per Game
+
+### Three Phases of Go
+
+A standard Go game typically goes through three phases:
+
+| Phase | Moves (approx.) | Characteristics |
+|-------|-----------------|-----------------|
+| **Opening** | 1-50 | Claiming territory, building frameworks, setting the overall direction |
+| **Middle game** | 50-200 | Fighting, attack and defense, balancing local and global |
+| **Endgame** | 200-300 | Finishing, calculation, precision |
+
+An average game has about **250-300 moves**, with the first 150 determining the outcome.
+
+### Opening: Planning 30 Moves Ahead
+
+Every move in the opening phase prepares for dozens or even hundreds of moves later.
+
+For example, a "three star" opening:
+
+```
+. . . . . . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . . . . . .
+. . . ● . . . . . ● . . . . . ● . . .
+. . . . . . . . . . . . . . . . . . .
+...
+```
+
+These three black stones form an "influence-style" opening, with the intention of:
+1. Not rushing to enclose territory
+2. Waiting for White to invade, then attack
+3. Gaining territory or influence through the attack
+4. Ultimately achieving advantage in the endgame
+
+This "plan" requires looking 50-100 moves ahead. No search algorithm can see this far.
+
+### Middle Game: Balancing Local and Global
+
+The middle game is the most complex part of Go. Players must consider at each move:
+
+1. **Local calculation**: Who will win this battle?
+2. **Global judgment**: Is it worth fighting here?
+3. **Move order**: What's the most efficient sequence?
+4. **Sacrifice decisions**: When to give up stones and turn elsewhere?
+
+A typical middle game decision:
+
+> "If I cut here, they'll counterattack, I'll need to make life for one group, which gives them sente to take a big point... In the end I lose about 5 points. But if I reinforce first then cut, I lose sente, but..."
+
+This multi-level, multi-dimensional thinking requires simultaneously handling local and global, short-term and long-term.
+
+### Endgame: Precise Calculation and Reversals
+
+The endgame phase seems simple — just finishing up. But actually:
+
+- Each move's "point value" needs precise calculation
+- Sente vs. gote differences can determine the outcome
+- "Ko fights" can completely change the position
+
+Professional players' endgame calculation precision can reach 0.5 points, and a game's outcome might be decided by 1 point.
+
+### Why Limited Foresight Is Fatal
+
+Let's do a simplified calculation:
+
+- An average game has 250 moves
+- To perfectly predict the result, theoretically we need to see all 250 moves
+- Even if the branching factor drops to 100 (endgame), the search space is 100^250 ≈ 10^500
+
+This far exceeds any computer's capability.
+
+**This is why Go AI must learn to "evaluate" positions, not just "calculate".**
+
+---
+
+## The Importance of Intuition: "This Move Feels Right"
+
+### How Human Players Think
+
+Top Go players describing their thinking process often use words like:
+
+> "This move **feels** right."
+>
+> "This shape is very **comfortable**."
+>
+> "That group has bad **aji**."
+>
+> "There's an inexplicable sense of **danger** here."
+
+This isn't poetic description but the actual cognitive process. Human players use **pattern recognition** and **intuitive judgment** to handle Go's complexity.
+
+### Pattern Recognition: Seeing the Key Points in One Second
+
+Experiments show that professional players looking at a board (less than 1 second) can:
+
+1. Identify key areas
+2. Spot possible "good moves"
+3. Sense the general position assessment
+
+This ability comes from accumulated experience of tens of thousands of games, forming "game sense."
+
+Before AlphaGo, computer Go's biggest difficulty was **the inability to replicate this intuition**.
+
+### Mathematical Description of Intuition
+
+From a machine learning perspective, human Go intuition can be understood as:
+
+$$
+P(\text{good move} | \text{board position})
+$$
+
+A well-trained brain can immediately output a probability distribution of each position being a "good move" based on the board position.
+
+This is exactly what **Policy Network** learns — and it requires deep neural networks.
+
+---
+
+## Why Called the "Holy Grail of AI"
+
+### Milestones in Board Games
+
+In AI history, board games have always been important milestones:
+
+| Year | Event | Significance |
+|------|-------|--------------|
+| 1951 | First checkers program | Earliest game AI |
+| 1997 | Deep Blue defeats Kasparov | Victory of brute-force search |
+| 2007 | Checkers completely solved | Limits of perfect information games |
+| **2016** | **AlphaGo defeats Lee Sedol** | **Victory of deep learning** |
+
+### Why Go Is Special
+
+Go was called the "Holy Grail of AI" because it combines all difficult characteristics:
+
+| Characteristic | Go | Chess |
+|----------------|-----|-------|
+| State space | 10^170 | 10^120 |
+| Branching factor | ~250 | ~35 |
+| Average moves | ~250 | ~40 |
+| Evaluation difficulty | Extremely high | Medium |
+| Intuition dependence | Very high | High |
+
+If AI could solve Go, it means:
+1. Can handle enormous search spaces
+2. Can learn abstract evaluation
+3. Can do long-term planning
+4. Can form "intuition"
+
+These abilities far exceed "playing games" and are core characteristics of **general intelligence**.
+
+### Academic Predictions
+
+Before 2016, academic predictions for "when AI can defeat human Go champions" were generally:
+
+> "At least **10-20 more years**."
+>
+> — Most AI researchers (2015)
+
+This prediction was based on the pace of technological progress at the time. Go programs improved about 1-2 stones per year, with an 18-stone gap to professional 9-dan level. At that pace, it would indeed take 10-20 years.
+
+No one anticipated deep learning would bring **a quantum leap**.
+
+---
+
+## Animation Reference
+
+Core concepts in this article and their animation numbers:
+
+| Number | Concept | Physics/Math Correspondence |
+|--------|---------|---------------------------|
+| B2 | State space explosion | Combinatorics, exponential growth |
+| B8 | Combinatorial explosion | Factorial growth, search tree |
+| A3 | Branching factor comparison | Graph theory, tree structure |
+| B5 | Evaluation function dilemma | Nonlinear mapping |
+
+---
+
+## Key Takeaways
+
+Go is called the "Holy Grail of AI" because it combines three major challenges:
+
+### 1. The Curse of Space
+- 10^170 possible positions, far exceeding universe atoms
+- Branching factor ~250, explosive search tree growth
+- Brute-force search is physically impossible
+
+### 2. Difficulty of Evaluation
+- Every stone has equal value, no material advantage
+- Abstract concepts like "thickness," "influence," "aji" are hard to quantify
+- Position evaluation is highly nonlinear and global
+
+### 3. The Challenge of Time
+- ~250 moves per game, requiring long-term planning
+- Opening decisions affect positions 50-100 moves later
+- Local battles and global balance must be considered simultaneously
+
+It's the combination of these challenges that made traditional AI methods (brute-force search + manual evaluation) completely fail in Go.
+
+AlphaGo's breakthrough came because it used **deep neural networks** to solve the evaluation problem, **Monte Carlo Tree Search** to solve the planning problem, and **reinforcement learning** to solve the problem of surpassing humans.
+
+---
+
+## Further Reading
+
+- **Next**: [Limits of Traditional Methods](../traditional-limits) — From Minimax to MCTS, why they weren't enough
+- **Technical Details**: [Policy Network Explained](../policy-network) — How AlphaGo learned "intuition"
+- **Back to Overview**: [AlphaGo Complete Analysis](../) — Series article navigation
+
+---
+
+## References
+
+1. Tromp, J. (2016). ["Number of legal Go positions."](https://tromp.github.io/go/legal.html) — Precise calculation of Go state space
+2. Allis, L.V. (1994). "Searching for Solutions in Games and Artificial Intelligence." PhD thesis, University of Limburg. — Theoretical analysis of game complexity
+3. Muller, M. (2002). "Computer Go." Artificial Intelligence, 134(1-2), 145-179. — Early computer Go research review
+4. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." Nature, 529, 484-489. — Original AlphaGo paper

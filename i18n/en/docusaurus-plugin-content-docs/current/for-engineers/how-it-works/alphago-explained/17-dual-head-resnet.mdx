@@ -1,0 +1,577 @@
+---
+sidebar_position: 18
+title: Dual-Head Network and Residual Network
+description: Deep dive into AlphaGo Zero's neural network architecture - shared backbone, Policy Head, Value Head, and 40-layer ResNet
+keywords: [dual-head network, residual network, ResNet, Policy Head, Value Head, deep learning, neural network architecture]
+---
+
+# Dual-Head Network and Residual Network
+
+One of AlphaGo Zero's most important architectural innovations is using a **Dual-Head Network** to replace the original AlphaGo's dual-network design. This seemingly simple change brought significant performance improvements and a more elegant learning process.
+
+This article will deeply analyze the design principles, mathematical foundations, and why this architecture is so effective.
+
+---
+
+## Dual-Head Network Design
+
+### Overall Architecture
+
+AlphaGo Zero's neural network can be divided into three parts:
+
+```
+Input (17 × 19 × 19)
+       ↓
+┌─────────────────────────────────────────┐
+│         Shared Backbone (ResNet)         │
+│      40 residual blocks, 256 channels    │
+└─────────────────────────────────────────┘
+       ↓                    ↓
+┌─────────────┐      ┌─────────────┐
+│  Policy Head │      │  Value Head  │
+│              │      │              │
+└─────────────┘      └─────────────┘
+       ↓                    ↓
+  19×19 probability      Win rate [-1, 1]
+  distribution
+  + 1 Pass probability
+```
+
+Let's analyze each part in detail.
+
+### Shared Backbone
+
+The shared backbone is a deep **Residual Network (ResNet)** responsible for extracting features from the board state.
+
+#### Architecture Details
+
+| Component | Specification |
+|-----------|---------------|
+| Input layer | 3×3 convolution, 256 channels |
+| Residual blocks | 40 (or 20 for compact version) |
+| Each residual block | 2 layers of 3×3 convolution, 256 channels |
+| Activation function | ReLU |
+| Normalization | Batch Normalization |
+
+#### Mathematical Representation
+
+Let input be x (dimension 17 × 19 × 19), the shared backbone output is:
+
+```
+f(x) = ResNet_40(Conv_3x3(x))
+```
+
+where f(x) (dimension 256 × 19 × 19) is a high-dimensional feature representation.
+
+### Policy Head
+
+The Policy Head is responsible for predicting the move probability for each position.
+
+#### Architecture Details
+
+```
+Shared backbone output (256 × 19 × 19)
+       ↓
+1×1 convolution (2 channels)
+       ↓
+Batch Normalization
+       ↓
+ReLU
+       ↓
+Flatten (2 × 19 × 19 = 722)
+       ↓
+Fully connected layer (362)
+       ↓
+Softmax
+       ↓
+Output: 362 probabilities (361 positions + Pass)
+```
+
+#### Mathematical Representation
+
+```
+π = Softmax(FC(Flatten(ReLU(BN(Conv_1x1(f(x)))))))
+```
+
+Output π is a 362-dimensional vector where all elements are non-negative and sum to 1.
+
+### Value Head
+
+The Value Head is responsible for predicting the win rate of the current position.
+
+#### Architecture Details
+
+```
+Shared backbone output (256 × 19 × 19)
+       ↓
+1×1 convolution (1 channel)
+       ↓
+Batch Normalization
+       ↓
+ReLU
+       ↓
+Flatten (1 × 19 × 19 = 361)
+       ↓
+Fully connected layer (256)
+       ↓
+ReLU
+       ↓
+Fully connected layer (1)
+       ↓
+Tanh
+       ↓
+Output: Win rate [-1, 1]
+```
+
+#### Mathematical Representation
+
+```
+v = Tanh(FC_1(ReLU(FC_2(Flatten(ReLU(BN(Conv_1x1(f(x)))))))))
+```
+
+Output v ranges from [-1, 1]:
+- v = 1: Current side will definitely win
+- v = -1: Current side will definitely lose
+- v = 0: Even game
+
+---
+
+## Why Share the Backbone?
+
+### Intuitive Understanding
+
+The two questions "where should the next move be" (Policy) and "who will win" (Value) actually require understanding the same board patterns:
+
+- **Shapes**: Which shapes are good, which are bad
+- **Influence**: Which side is bigger, where there's still space
+- **Life and death**: Which groups are alive, which are still in ko
+- **Fighting**: Where are the attacks, what's the local outcome
+
+If using two independent networks, these features need to be learned twice. A shared backbone lets these underlying features be learned once and used by both tasks.
+
+### Multi-task Learning Perspective
+
+From a machine learning perspective, this is a form of **Multi-task Learning**:
+
+```
+L = L_policy + L_value
+```
+
+Two tasks sharing the underlying representation brings several benefits:
+
+#### 1. Regularization Effect
+
+Shared parameters act as implicit regularization. If a feature is only useful for Policy but not Value (or vice versa), it's harder to be overly amplified.
+
+The effective parameter count is smaller than two independent networks.
+
+#### 2. Data Efficiency
+
+Each game simultaneously produces Policy labels (MCTS search probabilities) and Value labels (final outcome). The shared backbone uses both labels to train shared features, improving data utilization efficiency.
+
+#### 3. Rich Gradient Signal
+
+Gradients from both tasks flow to the shared backbone:
+
+```
+∂L/∂θ_shared = ∂L_policy/∂θ_shared + ∂L_value/∂θ_shared
+```
+
+This provides richer supervision signal, making shared features more robust.
+
+### Experimental Evidence
+
+DeepMind's ablation experiments showed that dual-head networks significantly outperform separate dual networks:
+
+| Configuration | ELO Rating | Relative Gap |
+|---------------|------------|--------------|
+| Separate Policy + Value networks | Baseline | - |
+| Dual-head network (shared backbone) | +300 ELO | ~65% win rate difference |
+
+A 300 ELO gap means the dual-head network has about 65% win rate against separated networks. This is a significant improvement.
+
+---
+
+## Residual Network Principles
+
+### The Deep Network Dilemma
+
+Before ResNet was invented, deep neural networks faced a paradox:
+
+> In theory, deeper networks should be at least as good as shallow networks (in the worst case, extra layers can learn identity mapping). But in practice, deeper networks often performed worse.
+
+This is the **Degradation Problem**:
+
+- Training error increases with depth (not overfitting, but optimization difficulty)
+- Gradients vanish during backpropagation (Vanishing Gradient)
+- Parameters in deep layers can hardly be effectively updated
+
+### Residual Block Design
+
+In 2015, Kaiming He and colleagues proposed a simple and elegant solution: **Skip Connection**.
+
+```
+Input x
+   ↓
+┌─────────────┐
+│  Conv layer │
+│  BN + ReLU  │
+│  Conv layer │
+│  BN         │
+└─────────────┘
+   ↓ F(x)
+   ↓←────────────── x (skip connection)
+   +
+   ↓
+ ReLU
+   ↓
+Output x + F(x)
+```
+
+#### Mathematical Representation
+
+Traditional network: Learn target mapping H(x)
+
+```
+y = H(x)
+```
+
+Residual network: Learn **residual mapping** F(x) = H(x) - x
+
+```
+y = F(x) + x
+```
+
+### Why Skip Connections Work?
+
+#### 1. Gradient Highway
+
+Consider the backpropagation gradient:
+
+```
+∂L/∂x = ∂L/∂y × ∂y/∂x = ∂L/∂y × (1 + ∂F(x)/∂x)
+```
+
+The key is that **+1**. Even if ∂F(x)/∂x is very small or zero, gradients can still flow directly back through +1.
+
+It's like building a "gradient highway" that lets gradients flow smoothly from output layer back to input layer.
+
+#### 2. Identity Mapping is Easier to Learn
+
+If the optimal solution is close to identity mapping (H(x) ≈ x), then:
+- Traditional network: Needs to learn H(x) = x, which can be difficult
+- Residual network: Just needs to learn F(x) ≈ 0, relatively easy
+
+Initializing weights to zero or near zero, residual blocks naturally tend toward identity mapping.
+
+#### 3. Ensemble Effect
+
+Deep ResNet can be viewed as an **implicit ensemble** of many shallow networks. With n residual blocks, information can flow through 2^n different paths.
+
+This ensemble effect increases model robustness.
+
+### ResNet's Breakthrough on ImageNet
+
+ResNet achieved stunning results in the 2015 ImageNet competition:
+
+| Depth | Top-5 Error Rate |
+|-------|------------------|
+| VGG-19 (no residual) | 7.3% |
+| ResNet-34 | 5.7% |
+| ResNet-152 | 4.5% |
+| Human level | ~5.1% |
+
+**152-layer** ResNet not only trains successfully but also performs much better than 19-layer VGG. This proves skip connections truly solve the deep network training problem.
+
+---
+
+## AlphaGo Zero's 40-Layer ResNet
+
+### Why Choose 40 Layers?
+
+DeepMind tested ResNets of different depths:
+
+| Residual Blocks | Total Layers | ELO Rating |
+|-----------------|--------------|------------|
+| 5 | 11 | Baseline |
+| 10 | 21 | +200 |
+| 20 | 41 | +400 |
+| 40 | 81 | +500 |
+
+Deeper networks are indeed stronger, but with diminishing returns. AlphaGo Zero uses 20 or 40 residual blocks:
+
+- **AlphaGo Zero (paper version)**: 40 residual blocks, 256 channels
+- **Compact version**: 20 residual blocks, 256 channels
+
+The 40-layer configuration achieves a good balance between playing strength and training cost.
+
+### Specific Configuration
+
+AlphaGo Zero's ResNet configuration:
+
+```
+Input: 17 × 19 × 19
+↓
+Conv layer: 3×3, 256 channels, BN, ReLU
+↓
+Residual block ×40:
+  ├─ Conv layer: 3×3, 256 channels, BN, ReLU
+  ├─ Conv layer: 3×3, 256 channels, BN
+  └─ Skip connection + ReLU
+↓
+Policy Head / Value Head
+```
+
+#### Parameter Count Estimate
+
+| Component | Parameters (approx.) |
+|-----------|---------------------|
+| Input convolution | 17 × 3 × 3 × 256 ≈ 39K |
+| Each residual block | 2 × 256 × 3 × 3 × 256 ≈ 1.2M |
+| 40 residual blocks | 40 × 1.2M ≈ 47M |
+| Policy Head | ~1M |
+| Value Head | ~0.2M |
+| **Total** | **~48M** |
+
+About 48 million parameters, a medium-sized neural network by modern standards.
+
+### Role of Batch Normalization
+
+Every convolutional layer is followed by **Batch Normalization (BN)**, which is crucial for training stability:
+
+#### 1. Normalize Activations
+
+BN normalizes each layer's activations to mean 0 and variance 1:
+
+```
+x_hat = (x - μ_B) / sqrt(σ_B² + ε)
+y = γ × x_hat + β
+```
+
+where γ and β are learnable parameters.
+
+#### 2. Mitigate Internal Covariate Shift
+
+In deep networks, each layer's input distribution changes as parameters in previous layers update. BN keeps each layer's input distribution stable, accelerating training convergence.
+
+#### 3. Regularization Effect
+
+BN uses mini-batch statistics during training, introducing randomness and providing a mild regularization effect.
+
+---
+
+## Comparison with Other Architectures
+
+### vs. Original AlphaGo's CNN
+
+| Feature | Original AlphaGo | AlphaGo Zero |
+|---------|------------------|--------------|
+| Architecture type | Standard CNN | ResNet |
+| Depth | 13 layers | 41-81 layers |
+| Skip connections | No | Yes |
+| Number of networks | 2 (separate) | 1 (shared) |
+| BN | No | Yes |
+
+### vs. VGG-style Networks
+
+VGG was the runner-up architecture in 2014 ImageNet, using stacked 3×3 convolutions:
+
+| Feature | VGG | ResNet |
+|---------|-----|--------|
+| Maximum trainable depth | ~19 layers | 152+ layers |
+| Gradient flow | Decreases layer by layer | Has highway |
+| Training difficulty | Deep is difficult | Deep is trainable |
+
+### vs. Inception / GoogLeNet
+
+Inception uses multi-scale convolutions in parallel:
+
+| Feature | Inception | ResNet |
+|---------|-----------|--------|
+| Characteristic | Multi-scale features | Deep stacking |
+| Complexity | Higher | Simple |
+| Go suitability | Average | Excellent |
+
+ResNet's simple design is more suitable for tasks like Go that require deep reasoning.
+
+### vs. Transformer
+
+The Transformer architecture proposed in 2017 achieved great success in NLP. Some have attempted to apply Transformers to Go:
+
+| Feature | ResNet | Transformer |
+|---------|--------|-------------|
+| Inductive bias | Locality (convolution) | Global attention |
+| Position encoding | Implicit (convolution) | Explicit |
+| Go performance | Excellent | Feasible but not better than ResNet |
+| Computational efficiency | Higher | Lower (O(n²)) |
+
+For problems with obvious spatial structure like Go, CNN/ResNet's inductive bias is more appropriate.
+
+---
+
+## Deep Analysis of Design Choices
+
+### Why Use 3×3 Convolutions?
+
+AlphaGo Zero uses 3×3 convolutions throughout, rather than larger kernels:
+
+1. **Parameter efficiency**: Two 3×3 convolutions have the same receptive field as one 5×5, but fewer parameters (18 vs 25)
+2. **Deeper networks**: Same parameter count allows stacking more layers
+3. **More nonlinearity**: ReLU between each layer increases expressiveness
+
+### Why Use 256 Channels?
+
+256 channels is an empirical choice:
+
+- **Too few** (like 64): Insufficient expressiveness, can't capture complex patterns
+- **Too many** (like 512): Parameter count doubles, training cost increases greatly, but strength improvement is limited
+
+Later KataGo experiments showed channel count can be adjusted based on training resources:
+- Low resources: 128 channels, 20 blocks
+- High resources: 256 channels, 40 blocks
+- Higher resources: 384 channels, 60 blocks
+
+### Why Does Policy Head Use Softmax, Value Head Use Tanh?
+
+#### Policy Head: Softmax
+
+Move selection is a **classification problem** - choosing one from 361 positions (plus Pass). Softmax output satisfies:
+- All probabilities non-negative: π_i >= 0
+- Probabilities sum to 1: Σπ_i = 1
+
+This matches the definition of a probability distribution.
+
+#### Value Head: Tanh
+
+Win rate is a **regression problem** - predicting a continuous value. Tanh output range is [-1, 1]:
+- Bounded: Won't produce extreme values
+- Symmetric: Treats wins and losses symmetrically
+- Differentiable: Convenient for gradient computation
+
+Using Tanh instead of unbounded output (like a linear layer) prevents training instability.
+
+---
+
+## Training Details
+
+### Loss Function
+
+AlphaGo Zero's total loss is the sum of three terms:
+
+```
+L = L_policy + L_value + L_reg
+```
+
+#### Policy Loss
+
+Uses **cross-entropy loss** to make network output approach MCTS search probabilities:
+
+```
+L_policy = -Σ π_MCTS(a) × log(π_net(a))
+```
+
+where:
+- π_MCTS(a) is MCTS search probability for action a
+- π_net(a) is network output probability
+
+#### Value Loss
+
+Uses **Mean Squared Error (MSE)** to make network output approach actual game outcome:
+
+```
+L_value = (v_net - z)²
+```
+
+where:
+- v_net is network predicted win rate
+- z is actual game result (+1 or -1)
+
+#### Regularization Loss
+
+Uses **L2 regularization** to prevent overfitting:
+
+```
+L_reg = c × ||θ||²
+```
+
+where c is regularization coefficient and θ is network parameters.
+
+### Optimizer Configuration
+
+| Parameter | Value |
+|-----------|-------|
+| Optimizer | SGD + Momentum |
+| Momentum | 0.9 |
+| Initial learning rate | 0.01 |
+| Learning rate decay | Halve every X steps |
+| Batch Size | 32 × 2048 = 64K (distributed) |
+| L2 regularization coefficient | 1e-4 |
+
+### Data Augmentation
+
+The Go board has 8-fold symmetry (4 rotations × 2 flips). During training, each position can produce 8 equivalent training samples.
+
+This increases effective training data 8-fold without additional self-play.
+
+---
+
+## Implementation Considerations
+
+### Memory Optimization
+
+Training a 40-layer ResNet requires substantial memory:
+- **Forward pass**: Need to store activations from each layer (for backpropagation)
+- **Backward pass**: Need to store gradients
+
+Optimization strategies:
+1. **Gradient Checkpointing**: Only store some activations, recompute when needed
+2. **Mixed precision training**: Use FP16 to reduce memory footprint
+3. **Distributed training**: Distribute batch across multiple GPUs/TPUs
+
+### Inference Optimization
+
+During inference, BN doesn't need mini-batch statistics; it can use moving averages accumulated during training:
+
+```
+x_hat = (x - μ_moving) / sqrt(σ_moving² + ε)
+```
+
+This makes inference faster and deterministic.
+
+### Quantization and Compression
+
+Networks can be further compressed for deployment:
+- **Weight quantization**: FP32 → INT8, 4× memory reduction
+- **Pruning**: Remove small weight connections
+- **Knowledge distillation**: Train small network using large network
+
+---
+
+## Animation Reference
+
+Core concepts covered in this article with animation numbers:
+
+| Number | Concept | Physics/Math Correspondence |
+|--------|---------|----------------------------|
+| Animation E3 | Dual-head network | Multi-task learning |
+| Animation D12 | Skip connections | Gradient highway |
+| Animation D8 | CNN | Local receptive field |
+| Animation D10 | Batch Normalization | Distribution normalization |
+
+---
+
+## Further Reading
+
+- **Previous**: [AlphaGo Zero Overview](../alphago-zero) - Why human game records aren't needed
+- **Next**: [Training from Scratch](../training-from-scratch) - Detailed Day 0-3 evolution
+- **Technical Deep Dive**: [CNN and Go](../cnn-and-go) - Why CNN suits the board
+
+---
+
+## References
+
+1. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 550, 354-359.
+2. He, K., et al. (2016). "Deep Residual Learning for Image Recognition." *CVPR 2016*.
+3. Ioffe, S., & Szegedy, C. (2015). "Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift." *ICML 2015*.
+4. Caruana, R. (1997). "Multitask Learning." *Machine Learning*, 28(1), 41-75.
+5. Veit, A., et al. (2016). "Residual Networks Behave Like Ensembles of Relatively Shallow Networks." *NeurIPS 2016*.

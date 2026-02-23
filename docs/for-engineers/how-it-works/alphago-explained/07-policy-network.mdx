@@ -1,0 +1,610 @@
+---
+sidebar_position: 8
+title: Policy Network 詳解
+description: 深入理解 AlphaGo 的策略網路架構、訓練方法與實際應用，從 13 層卷積到 Softmax 輸出
+---
+
+import { PolicyHeatmap } from '@site/src/components/D3Charts';
+
+# Policy Network 詳解
+
+在圍棋的任一局面，合法的下法平均有 250 種。如果讓電腦隨機選擇，它永遠不可能下出好棋。
+
+AlphaGo 的突破在於：它學會了「看一眼棋盤，就知道哪些位置值得考慮」。
+
+這個能力，來自 **Policy Network（策略網路）**。
+
+---
+
+## 什麼是 Policy Network？
+
+### 核心功能
+
+Policy Network 是一個深度卷積神經網路，它的任務是：
+
+> **給定當前棋盤狀態，輸出每個位置的落子機率**
+
+用數學表示：
+
+```
+p = f_θ(s)
+```
+
+其中：
+- `s`：當前棋盤狀態（19×19 的棋盤 + 其他特徵）
+- `f_θ`：Policy Network（θ 是網路參數）
+- `p`：361 個位置的機率分布（包含 pass）
+
+### 直覺理解
+
+想像你是一位職業棋手。當你看到一個局面，你的大腦會自動「亮起」幾個重要的位置——這些是你直覺認為值得考慮的點。
+
+Policy Network 就是在模擬這個過程。
+
+<PolicyHeatmap initialPosition="corner" size={400} />
+
+上面的熱力圖顯示了 Policy Network 的輸出。顏色越亮的位置，模型認為越值得下。
+
+### 為什麼需要 Policy Network？
+
+圍棋的搜索空間太大了。如果不加篩選地搜索所有可能的走法：
+
+| 策略 | 每步考慮的著法 | 搜索 10 步的節點數 |
+|------|--------------|------------------|
+| 全部考慮 | 361 | 361^10 ≈ 10^25 |
+| Policy Network 篩選 | ~20 | 20^10 ≈ 10^13 |
+
+Policy Network 將搜索空間縮小了 **10^12 倍**（一萬億倍）。
+
+---
+
+## 網路架構
+
+### 整體結構
+
+AlphaGo 的 Policy Network 採用深度卷積神經網路（CNN）架構：
+
+```
+輸入層 → 卷積層 ×12 → 輸出卷積層 → Softmax
+   ↓         ↓            ↓           ↓
+19×19×48   19×19×192   19×19×1     362 個機率
+```
+
+### 輸入層
+
+輸入是 **19×19×48** 的特徵張量：
+- **19×19**：棋盤大小
+- **48**：48 個特徵平面（詳見 [輸入特徵設計](../input-features)）
+
+這 48 個平面包含：
+- 黑子位置、白子位置
+- 近 8 手的歷史
+- 氣數、叫吃、征子等特徵
+- 合法性（哪些位置可以下）
+
+### 卷積層
+
+網路包含 **12 層卷積層**，每層的配置：
+
+| 參數 | 數值 | 說明 |
+|------|------|------|
+| 濾波器數量 | 192 | 每層輸出 192 個特徵圖 |
+| 卷積核大小 | 3×3（第一層 5×5） | 每次看 3×3 的區域 |
+| 填充方式 | same | 保持 19×19 的尺寸 |
+| 激活函數 | ReLU | max(0, x) |
+
+#### 為什麼是 192 個濾波器？
+
+這是一個經驗值。太少會限制模型容量，太多會增加計算量和過擬合風險。DeepMind 團隊通過實驗確定 192 是一個好的平衡點。
+
+#### 為什麼是 3×3 卷積核？
+
+3×3 是卷積神經網路中最常用的尺寸，原因：
+1. **足夠捕捉局部模式**：圍棋中的眼位、接、斷等都在 3×3 範圍內
+2. **計算效率高**：相比大卷積核，3×3 參數更少
+3. **可堆疊**：多層 3×3 卷積可以達到大感受野的效果
+
+#### 第一層為什麼用 5×5？
+
+第一層使用較大的 5×5 卷積核，是為了在輸入層就捕捉稍大範圍的模式（如小飛、跳）。這是一個設計選擇，後來的 AlphaGo Zero 統一使用 3×3。
+
+### ReLU 激活函數
+
+每個卷積層後接 ReLU（Rectified Linear Unit）激活函數：
+
+```
+ReLU(x) = max(0, x)
+```
+
+為什麼用 ReLU？
+
+1. **計算簡單**：只是取最大值，比 sigmoid 快很多
+2. **緩解梯度消失**：正區間梯度恆為 1
+3. **稀疏激活**：負值被歸零，產生稀疏表示
+
+### 輸出層
+
+最後一層是特殊的卷積層：
+
+```
+19×19×192 → 卷積(1×1, 1個濾波器) → 19×19×1 → 展平 → 362維向量 → Softmax
+```
+
+#### 1×1 卷積
+
+輸出層使用 1×1 卷積，將 192 個通道壓縮為 1 個。這等價於對每個位置的 192 維特徵做線性組合。
+
+#### Softmax 輸出
+
+362 維向量（361 個棋盤位置 + 1 個 pass）經過 Softmax 函數：
+
+```
+Softmax(z_i) = exp(z_i) / Σ_j exp(z_j)
+```
+
+Softmax 確保輸出是合法的機率分布：
+- 所有值在 0 到 1 之間
+- 所有值的和為 1
+
+### 參數數量
+
+讓我們計算網路的總參數量：
+
+| 層 | 計算 | 參數數量 |
+|---|------|---------|
+| 第一卷積層 | 5×5×48×192 + 192 | 230,592 |
+| 中間卷積層 ×11 | (3×3×192×192 + 192) × 11 | 3,633,792 |
+| 輸出卷積層 | 1×1×192×1 + 1 | 193 |
+| **總計** | | **~3.9M** |
+
+約 **390 萬個參數**，以今天的標準來看是一個小型網路。
+
+---
+
+## 訓練目標與方法
+
+### 訓練資料
+
+Policy Network 使用**監督學習**，從人類棋譜中學習。
+
+資料來源：
+- **KGS Go Server**：業餘和職業棋手的對局
+- **約 3000 萬局面**：從 16 萬局對局中取樣
+- **標籤**：每個局面對應的人類下一步
+
+### 交叉熵損失函數
+
+訓練目標是最大化預測人類著法的機率。用交叉熵損失函數：
+
+```
+L(θ) = -Σ log p_θ(a | s)
+```
+
+其中：
+- `s`：棋盤狀態
+- `a`：人類實際下的位置
+- `p_θ(a | s)`：模型預測該位置的機率
+
+#### 直覺理解
+
+交叉熵損失有一個簡單的含義：
+
+> **當模型預測正確位置的機率越高，損失越低**
+
+如果人類下在 K10，而模型給 K10 的機率是：
+- 0.9 → 損失 = -log(0.9) ≈ 0.1（很低，好）
+- 0.1 → 損失 = -log(0.1) ≈ 2.3（很高，差）
+- 0.01 → 損失 = -log(0.01) ≈ 4.6（非常高，很差）
+
+### 訓練過程
+
+```python
+# 偽代碼
+for epoch in range(num_epochs):
+    for batch in dataloader:
+        states, actions = batch
+
+        # 前向傳播
+        policy = network(states)  # 361 維機率向量
+
+        # 計算損失（交叉熵）
+        loss = cross_entropy(policy, actions)
+
+        # 反向傳播
+        loss.backward()
+        optimizer.step()
+```
+
+訓練細節：
+- **優化器**：SGD with momentum
+- **學習率**：初始 0.003，逐步衰減
+- **批次大小**：16
+- **訓練時間**：約 3 週（50 GPUs）
+
+### 資料增強
+
+圍棋棋盤有 8 重對稱性（4 個旋轉 × 2 個鏡像）。每個訓練樣本可以變換為 8 個等價樣本：
+
+```
+原始 → 旋轉90° → 旋轉180° → 旋轉270°
+  ↓       ↓         ↓          ↓
+水平翻轉 → ...
+```
+
+這讓有效訓練資料增加 8 倍，並確保模型學到的模式不依賴方向。
+
+---
+
+## 訓練結果
+
+### 57% 準確率
+
+經過訓練，Policy Network 達到了 **57% 的 top-1 準確率**。
+
+這意味著：給定任意局面，模型有 57% 的機會預測出人類專家實際下的那一步。
+
+#### 這個準確率高嗎？
+
+考慮到每個局面平均有 250 個合法著法，隨機猜測的準確率只有 0.4%。
+
+| 方法 | Top-1 準確率 |
+|------|-------------|
+| 隨機猜測 | 0.4% |
+| 之前最強的電腦圍棋 | ~44% |
+| AlphaGo Policy Network | **57%** |
+
+提升 13 個百分點，看起來不多，但意義重大。
+
+### 棋力提升
+
+純粹使用 Policy Network（不加搜索）下棋，可以達到什麼棋力？
+
+| 配置 | Elo 評分 | 大約等級 |
+|------|---------|---------|
+| 之前最強程式（Pachi） | 2,500 | 業餘 4-5 段 |
+| Policy Network alone | 2,800 | 業餘 6-7 段 |
+| + MCTS 1600 simulations | 3,200+ | 職業水平 |
+
+單獨的 Policy Network 就已經是業餘高段，加上 MCTS 後更是躍升到職業水平。
+
+### 為什麼只有 57%？
+
+人類棋譜存在以下特性，限制了準確率：
+
+#### 1. 多個好棋
+
+很多局面有多步都是好棋。例如「掛角」和「守角」可能都是正確選擇。模型選了另一步好棋，會被算作「錯誤」。
+
+#### 2. 風格差異
+
+不同棋手有不同風格。激進型棋手和穩健型棋手在同一局面可能下不同的棋。模型學到的是「平均」的風格。
+
+#### 3. 人類也會犯錯
+
+KGS 資料包含業餘棋手的對局，他們的選擇不一定是最佳的。模型學到一些「錯誤」是正常的。
+
+---
+
+## 在 MCTS 中的作用
+
+Policy Network 在 AlphaGo 的 MCTS 中扮演兩個關鍵角色：
+
+### 1. 引導搜索方向
+
+在 MCTS 的 **Selection** 階段，Policy Network 的輸出用於計算 UCB（Upper Confidence Bound）：
+
+```
+UCB(s, a) = Q(s, a) + c_puct × P(s, a) × √(N(s)) / (1 + N(s, a))
+```
+
+其中 `P(s, a)` 就是 Policy Network 給出的機率。
+
+這意味著：
+- **高機率的著法會被優先探索**
+- **低機率的著法也有機會被探索**（因為有探索項）
+
+### 2. 擴展節點的先驗
+
+當 MCTS 擴展一個新節點時，Policy Network 提供所有子節點的**先驗機率**。
+
+```
+展開節點 s：
+  for each action a:
+    child = Node()
+    child.prior = policy_network(s)[a]  # 先驗機率
+    child.value = 0
+    child.visits = 0
+```
+
+這些先驗機率讓 MCTS 「知道」哪些子節點更值得探索，即使它們還沒被訪問過。
+
+---
+
+## 輕量版 vs 完整版
+
+AlphaGo 實際上有兩個 Policy Network：
+
+### 完整版（SL Policy Network）
+
+- **架構**：13 層 CNN，192 filters
+- **準確率**：57%
+- **推理時間**：約 3 毫秒/局面
+- **用途**：MCTS 中的 Selection 和 Expansion
+
+### 輕量版（Rollout Policy Network）
+
+- **架構**：線性模型 + 手工特徵
+- **準確率**：24%
+- **推理時間**：約 2 微秒/局面（快 1500 倍）
+- **用途**：快速模擬（rollout）
+
+### 為什麼需要輕量版？
+
+在 MCTS 的 **Simulation** 階段，需要從當前節點一直下到遊戲結束，可能需要下 100+ 步。如果每步都用完整版 Policy Network，太慢了。
+
+輕量版雖然準確率只有 24%，但速度快 1500 倍。在 rollout 中，速度比精度更重要。
+
+### 輕量版的特徵
+
+輕量版使用手工設計的特徵，包括：
+
+| 特徵類型 | 範例 |
+|---------|------|
+| 局部模式 | 3×3 區域的棋子配置 |
+| 全局特徵 | 是否在邊角、大場 |
+| 戰術特徵 | 叫吃、征子、接應 |
+
+這些特徵被輸入一個線性模型（沒有隱藏層），計算速度極快。
+
+### AlphaGo Zero 的改進
+
+後來的 AlphaGo Zero 完全棄用了輕量版和 rollout。它直接用 Value Network 評估葉節點，不需要快速模擬。這是一個重大的簡化。
+
+---
+
+## 強化學習微調（RL Policy Network）
+
+### 監督學習的侷限
+
+監督學習訓練的 Policy Network 有一個根本問題：
+
+> **它學的是「模仿人類」，而非「贏棋」**
+
+這意味著它會學到人類的壞習慣，也會在人類從未遇過的局面表現不佳。
+
+### 自我對弈強化
+
+DeepMind 的解決方案是用**策略梯度**（Policy Gradient）方法進行強化學習：
+
+```
+1. 讓 Policy Network 自我對弈
+2. 記錄每盤棋的所有著法
+3. 根據勝負調整參數：
+   - 贏了 → 增加這些著法的機率
+   - 輸了 → 減少這些著法的機率
+```
+
+### REINFORCE 演算法
+
+具體使用 REINFORCE 演算法：
+
+```
+∇J(θ) = E[Σ_t ∇log π_θ(a_t | s_t) × z]
+```
+
+其中：
+- `z`：這盤棋的結果（+1 贏，-1 輸）
+- `π_θ(a_t | s_t)`：在狀態 `s_t` 選擇動作 `a_t` 的機率
+
+### 結果
+
+經過約 1 天的自我對弈訓練（128 萬盤），RL Policy Network：
+
+| 指標 | SL Policy | RL Policy |
+|------|-----------|-----------|
+| 對戰 SL Policy | 50% | **80%** |
+| Elo 提升 | - | +100 |
+
+準確率可能略有下降（因為它不再完全模仿人類），但實際對戰勝率大幅提升。
+
+### 從「模仿」到「創新」
+
+強化學習讓 Policy Network 學會了一些人類未曾想過的著法。這些著法在訓練資料中從未出現，但它們是有效的。
+
+這就是為什麼 AlphaGo 能下出「神之一手」——它不受人類經驗的限制。
+
+---
+
+## 視覺化分析
+
+### 不同局面的機率分布
+
+讓我們看看 Policy Network 在不同局面下的輸出：
+
+#### 開局（布局階段）
+
+<PolicyHeatmap initialPosition="opening" size={400} />
+
+開局時，機率主要集中在：
+- 角部（佔角）
+- 邊上（掛角、守角）
+- 「大場」位置
+
+這符合圍棋的基本原理：金角銀邊草肚皮。
+
+#### 戰鬥中的局面
+
+<PolicyHeatmap initialPosition="fighting" size={400} />
+
+戰鬥時，機率集中在：
+- 關鍵的切斷點
+- 叫吃、接應
+- 做眼、破眼
+
+這顯示模型學會了局部戰術。
+
+#### 收官階段
+
+<PolicyHeatmap initialPosition="endgame" size={400} />
+
+收官時，機率分散在各個官子點，需要精確計算目數。
+
+### 隱藏層學到什麼？
+
+通過視覺化卷積層的輸出，我們可以看到模型學到的「特徵」：
+
+- **低層**：基本形狀（眼、斷點）
+- **中層**：戰術模式（叫吃、征子）
+- **高層**：全局概念（勢力、厚薄）
+
+這與人類認知圍棋的層次結構非常相似。
+
+---
+
+## 實作要點
+
+### PyTorch 實現
+
+以下是一個簡化的 Policy Network 實現：
+
+```python
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class PolicyNetwork(nn.Module):
+    def __init__(self, input_channels=48, num_filters=192, num_layers=12):
+        super().__init__()
+
+        # 第一卷積層（5×5）
+        self.conv1 = nn.Conv2d(input_channels, num_filters,
+                               kernel_size=5, padding=2)
+
+        # 中間卷積層（3×3）×11
+        self.conv_layers = nn.ModuleList([
+            nn.Conv2d(num_filters, num_filters,
+                     kernel_size=3, padding=1)
+            for _ in range(num_layers - 1)
+        ])
+
+        # 輸出卷積層（1×1）
+        self.conv_out = nn.Conv2d(num_filters, 1, kernel_size=1)
+
+    def forward(self, x):
+        # x: (batch, 48, 19, 19)
+
+        # 第一層
+        x = F.relu(self.conv1(x))
+
+        # 中間層
+        for conv in self.conv_layers:
+            x = F.relu(conv(x))
+
+        # 輸出層
+        x = self.conv_out(x)  # (batch, 1, 19, 19)
+
+        # 展平 + Softmax
+        x = x.view(x.size(0), -1)  # (batch, 361)
+        x = F.softmax(x, dim=1)
+
+        return x
+```
+
+### 訓練循環
+
+```python
+def train_step(model, optimizer, states, actions):
+    """
+    states: (batch, 48, 19, 19) - 棋盤特徵
+    actions: (batch,) - 人類下的位置 (0-360)
+    """
+    # 前向傳播
+    policy = model(states)  # (batch, 361)
+
+    # 交叉熵損失
+    loss = F.cross_entropy(
+        torch.log(policy + 1e-8),  # 防止 log(0)
+        actions
+    )
+
+    # 反向傳播
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    # 計算準確率
+    predictions = policy.argmax(dim=1)
+    accuracy = (predictions == actions).float().mean()
+
+    return loss.item(), accuracy.item()
+```
+
+### 推理時的注意事項
+
+在實際對弈時，需要注意：
+
+1. **過濾非法著法**：將非法位置的機率設為 0，然後重新歸一化
+2. **溫度調節**：可以用溫度參數控制機率分布的「銳利度」
+3. **批次推理**：在 MCTS 中可以批次處理多個局面
+
+```python
+def get_move_probabilities(model, state, legal_moves, temperature=1.0):
+    """獲取合法著法的機率分布"""
+    policy = model(state)  # (361,)
+
+    # 只保留合法著法
+    mask = torch.zeros(361)
+    mask[legal_moves] = 1
+    policy = policy * mask
+
+    # 溫度調節
+    if temperature != 1.0:
+        policy = policy ** (1 / temperature)
+
+    # 重新歸一化
+    policy = policy / policy.sum()
+
+    return policy
+```
+
+---
+
+## 動畫對應
+
+本文涉及的核心概念與動畫編號：
+
+| 編號 | 概念 | 物理/數學對應 |
+|------|------|--------------|
+| 🎬 E1 | Policy Network | 機率場 |
+| 🎬 D9 | CNN 特徵提取 | 濾波器響應 |
+| 🎬 D3 | 監督學習 | 極大似然估計 |
+| 🎬 H4 | 策略梯度 | 隨機優化 |
+
+---
+
+## 延伸閱讀
+
+- **下一篇**：[Value Network 詳解](../value-network) — AlphaGo 如何評估局面
+- **相關主題**：[輸入特徵設計](../input-features) — 48 個特徵平面詳解
+- **深入原理**：[CNN 與圍棋的結合](../cnn-and-go) — 為什麼卷積神經網路適合棋盤
+
+---
+
+## 關鍵要點
+
+1. **Policy Network 是機率分布生成器**：輸入棋盤，輸出 361 個位置的機率
+2. **13 層 CNN + Softmax**：深度卷積提取特徵，Softmax 輸出機率
+3. **57% 準確率**：遠超之前的電腦圍棋程式
+4. **兩個版本**：完整版用於 MCTS 決策，輕量版用於快速模擬
+5. **強化學習微調**：從「模仿人類」進化到「追求勝利」
+
+Policy Network 是 AlphaGo 的「直覺」——它讓 AI 能夠像人類一樣，快速識別出值得考慮的著法。
+
+---
+
+## 參考資料
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. Maddison, C. J., et al. (2014). "Move Evaluation in Go Using Deep Convolutional Neural Networks." *arXiv:1412.6564*.
+3. Sutton, R. S., & Barto, A. G. (2018). *Reinforcement Learning: An Introduction*. MIT Press.
+4. LeCun, Y., Bengio, Y., & Hinton, G. (2015). "Deep learning." *Nature*, 521, 436-444.

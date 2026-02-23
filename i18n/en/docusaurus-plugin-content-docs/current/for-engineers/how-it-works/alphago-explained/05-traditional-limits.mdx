@@ -1,0 +1,745 @@
+---
+sidebar_position: 6
+title: Limits of Traditional Methods
+description: From Minimax to MCTS, understanding why traditional AI methods failed in Go
+keywords: [Minimax, Alpha-Beta pruning, MCTS, Monte Carlo Tree Search, computer Go history]
+---
+
+import { MCTSTree, GoBoard } from '@site/src/components/D3Charts';
+
+# Limits of Traditional Methods
+
+Before deep learning emerged, researchers spent decades trying to solve Go with "traditional" methods. From the Minimax algorithm to Monte Carlo Tree Search (MCTS), each advancement made computer Go slightly stronger, but never reached human professional level.
+
+This article will delve into the principles, pros and cons of these methods, and why they hit a bottleneck in Go.
+
+---
+
+## Minimax Algorithm: Foundation of Game Theory
+
+### Basic Principles
+
+The **Minimax algorithm** is a core concept of game theory, proposed by John von Neumann in 1928. The basic idea is:
+
+> In a zero-sum game, I should choose the option that gives me the best outcome even after my opponent's "best response."
+
+In other words:
+- **Me (Max)** wants to maximize the score
+- **Opponent (Min)** wants to minimize my score
+- I should assume the opponent always makes the best response
+
+### Mathematical Formalization
+
+Let V(s) be the value of position s, recursively defined as:
+
+```
+V(s) = eval(s)                        // if s is terminal
+V(s) = max{ V(result(s, a)) | a ∈ A(s) }  // if Max's turn
+V(s) = min{ V(result(s, a)) | a ∈ A(s) }  // if Min's turn
+```
+
+Where:
+- **A(s)**: All legal actions in position s
+- **result(s, a)**: Result of executing action a in position s
+- **eval(s)**: Evaluation of terminal position
+
+### Search Tree Diagram
+
+```
+                Max layer (me)
+                    │
+        ┌───────────┼───────────┐
+        │           │           │
+       -3          +5          +2
+        │           │           │
+    ─────────   ─────────   ─────────
+    Min layer (opponent)
+    │   │   │   │   │   │   │   │   │
+   -3  +7  +5 +5  -2  +9 +2  +1  +4
+```
+
+In this example:
+- Min layer chooses the worst value for me (minimum)
+- Max layer chooses the best value for me (maximum)
+- Ultimately, Max should choose the middle branch (+5)
+
+### Code Implementation
+
+```python
+def minimax(state, depth, is_max_turn):
+    """
+    Basic Minimax algorithm implementation
+
+    Args:
+        state: Current position
+        depth: Search depth
+        is_max_turn: Whether it's Max's turn
+
+    Returns:
+        (best value, best action)
+    """
+    # Termination condition: reached depth limit or game over
+    if depth == 0 or is_terminal(state):
+        return evaluate(state), None
+
+    legal_moves = get_legal_moves(state)
+    best_move = None
+
+    if is_max_turn:
+        best_value = float('-inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            value, _ = minimax(next_state, depth - 1, False)
+            if value > best_value:
+                best_value = value
+                best_move = move
+    else:
+        best_value = float('inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            value, _ = minimax(next_state, depth - 1, True)
+            if value < best_value:
+                best_value = value
+                best_move = move
+
+    return best_value, best_move
+```
+
+### Minimax Problems in Go
+
+#### 1. Search Space Explosion
+
+As discussed in the [previous article](../why-go-is-hard), Go's branching factor is about 250. To look N moves ahead:
+
+**Number of nodes ≈ 250^N**
+
+| Depth | Number of Nodes | At 1M nodes/second |
+|-------|-----------------|-------------------|
+| 2 | 62,500 | 0.06 seconds |
+| 4 | 3.9 billion | 65 minutes |
+| 6 | 2.4×10^14 | 7,600 years |
+| 8 | 1.5×10^19 | 480 million years |
+
+Looking 6 moves ahead takes 7,600 years, let alone a complete game.
+
+#### 2. Difficulty of Evaluation Function
+
+Even if we only look 4 moves ahead, we need an accurate **evaluation function** to judge non-terminal positions. But as discussed, Go position evaluation is extremely difficult.
+
+**Conclusion: Pure Minimax is completely infeasible for Go.**
+
+---
+
+## Alpha-Beta Pruning: Reducing Useless Search
+
+### Core Insight
+
+The core insight of Alpha-Beta pruning is: **we don't need to search every branch**.
+
+If we already know a branch is "definitely bad," we can skip it directly.
+
+### Pruning Principle
+
+```
+Max node A (current best α = +5)
+    │
+    ├── Branch 1: Already evaluated, value = +5
+    │
+    └── Branch 2: Min node B
+            │
+            ├── Child B1: value = +3
+            │
+            └── Child B2: ??? (can be skipped!)
+```
+
+In this example:
+- A already has an option worth +5
+- B's first child is +3, so B's final value ≤ +3
+- Since B ≤ +3 < +5, A won't choose B
+- **B2 doesn't need to be evaluated**
+
+This is **Beta pruning**. Similarly, there's **Alpha pruning**.
+
+### Mathematical Formalization
+
+Introduce two parameters:
+- **α (alpha)**: Min value Max can currently guarantee (lower bound)
+- **β (beta)**: Max value Min can currently guarantee (upper bound)
+
+Pruning conditions:
+- At Max node, if value ≥ β, prune (Beta pruning)
+- At Min node, if value ≤ α, prune (Alpha pruning)
+
+### Code Implementation
+
+```python
+def alpha_beta(state, depth, alpha, beta, is_max_turn):
+    """
+    Alpha-Beta pruning algorithm
+
+    Args:
+        state: Current position
+        depth: Search depth
+        alpha: Max's lower bound
+        beta: Min's upper bound
+        is_max_turn: Whether it's Max's turn
+
+    Returns:
+        (value, best action)
+    """
+    if depth == 0 or is_terminal(state):
+        return evaluate(state), None
+
+    legal_moves = get_legal_moves(state)
+    best_move = None
+
+    if is_max_turn:
+        value = float('-inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            child_value, _ = alpha_beta(next_state, depth - 1,
+                                        alpha, beta, False)
+            if child_value > value:
+                value = child_value
+                best_move = move
+            alpha = max(alpha, value)
+            if value >= beta:
+                break  # Beta pruning
+        return value, best_move
+    else:
+        value = float('inf')
+        for move in legal_moves:
+            next_state = apply_move(state, move)
+            child_value, _ = alpha_beta(next_state, depth - 1,
+                                        alpha, beta, True)
+            if child_value < value:
+                value = child_value
+                best_move = move
+            beta = min(beta, value)
+            if value <= alpha:
+                break  # Alpha pruning
+        return value, best_move
+
+# Usage
+value, best_move = alpha_beta(state, depth=4,
+                               alpha=float('-inf'),
+                               beta=float('inf'),
+                               is_max_turn=True)
+```
+
+### Pruning Efficiency
+
+In ideal conditions (perfect move ordering), Alpha-Beta can reduce the effective branching factor from b to √b:
+
+**Effective branching factor = b^0.5**
+
+This means:
+- Chess: from 35 reduced to ~6
+- Go: from 250 reduced to ~16
+
+| Depth | Original Nodes | Alpha-Beta (Ideal) | Speedup |
+|-------|----------------|-------------------|---------|
+| 4 | 3.9 billion | 65,000 | 60,000x |
+| 6 | 2.4×10^14 | 16 million | 1.5×10^7 x |
+| 8 | 1.5×10^19 | 4.2 billion | 3.6×10^9 x |
+
+### Why Still Not Enough
+
+Even with Alpha-Beta pruning, Go remains difficult to handle:
+
+#### 1. Ideal Pruning Requires Perfect Ordering
+
+To achieve ideal pruning efficiency, you need to search the "best" branch first. But knowing which branch is best requires searching... a chicken-and-egg problem.
+
+In practice, Go's pruning efficiency is far below ideal; effective branching factor may still be 50-100.
+
+#### 2. Depth Still Insufficient
+
+Even with effective branching factor reduced to 50, looking 10 moves ahead still requires 50^10 ≈ 10^17 nodes. This is still too many for computers.
+
+#### 3. Evaluation Function Bottleneck
+
+Alpha-Beta only solves "search efficiency," not "evaluation accuracy." A poor evaluation function, with any amount of fast searching, still produces poor results.
+
+**Conclusion: Alpha-Beta greatly improved chess AI but had limited help for Go.**
+
+---
+
+## Pure Monte Carlo Methods: The Power of Randomness
+
+### Abandoning Evaluation Functions
+
+In the 1990s, researchers began trying a radical idea: **don't use evaluation functions**.
+
+Instead, use **random playouts**:
+
+1. Start from the current position
+2. Both sides play randomly until game end
+3. Record the result (win/loss)
+4. Repeat N times, calculate win rate
+
+### Statistical Estimation Principle
+
+According to the Law of Large Numbers, when simulation count N is large enough:
+
+$$
+\hat{V}(s) = \frac{\text{Number of wins}}{N} \approx V(s)
+$$
+
+The standard error of this estimate is:
+
+$$
+\text{SE} = \sqrt{\frac{V(s)(1-V(s))}{N}} \approx \frac{1}{2\sqrt{N}}
+$$
+
+| Simulation Count | Standard Error |
+|-----------------|----------------|
+| 100 | 5% |
+| 1,000 | 1.6% |
+| 10,000 | 0.5% |
+| 100,000 | 0.16% |
+
+### Code Implementation
+
+```python
+import random
+
+def random_playout(state, player):
+    """
+    From current position, both sides play randomly until game end
+
+    Returns:
+        1 if player wins, 0 if loses
+    """
+    current = state.copy()
+    current_player = player
+
+    while not is_terminal(current):
+        legal_moves = get_legal_moves(current)
+        if not legal_moves:
+            current_player = opponent(current_player)
+            continue
+
+        # Choose randomly
+        move = random.choice(legal_moves)
+        current = apply_move(current, move)
+        current_player = opponent(current_player)
+
+    return 1 if get_winner(current) == player else 0
+
+
+def monte_carlo_move_selection(state, player, num_simulations=10000):
+    """
+    Use Monte Carlo method to select best move
+    """
+    legal_moves = get_legal_moves(state)
+
+    if len(legal_moves) == 0:
+        return None
+
+    # Allocate simulations to each legal move
+    sims_per_move = num_simulations // len(legal_moves)
+
+    best_move = None
+    best_win_rate = -1
+
+    for move in legal_moves:
+        next_state = apply_move(state, move)
+
+        wins = 0
+        for _ in range(sims_per_move):
+            wins += random_playout(next_state, opponent(player))
+
+        # Opponent win rate low = my win rate high
+        my_win_rate = 1 - (wins / sims_per_move)
+
+        if my_win_rate > best_win_rate:
+            best_win_rate = my_win_rate
+            best_move = move
+
+    return best_move, best_win_rate
+```
+
+### Advantages and Limitations
+
+#### Advantages
+
+1. **No evaluation function needed**: Completely relies on simulation
+2. **Works for any game**: Only need to know the rules
+3. **Gives probability estimates**: Knows "how certain"
+
+#### Limitations
+
+1. **Too much randomness**: Random play is very different from professional play
+2. **Requires many simulations**: Tens of thousands per move
+3. **Tactical blind spots**: Key tactics may be randomly missed
+
+### Pure Monte Carlo Performance in Go
+
+Using pure Monte Carlo methods, Go programs could reach approximately:
+
+> **Amateur 5-10 kyu** level
+
+This was better than previous pure Minimax + evaluation function programs, but still a huge gap from professional level.
+
+---
+
+## MCTS Breakthrough (2006)
+
+### Birth of UCT Algorithm
+
+In 2006, Remi Coulom proposed the **MCTS (Monte Carlo Tree Search)** algorithm, combining the advantages of tree search and Monte Carlo simulation. The same year, Levente Kocsis and Csaba Szepesvari proposed the **UCT (Upper Confidence Bounds for Trees)** algorithm, providing theoretical foundation for MCTS.
+
+This was a **milestone breakthrough** for computer Go.
+
+### UCB1 Formula
+
+The core of MCTS is the **UCB1 (Upper Confidence Bound)** formula:
+
+$$
+\text{UCB1}(s, a) = \bar{X}_{s,a} + C \sqrt{\frac{\ln N_s}{n_{s,a}}}
+$$
+
+Where:
+- $\bar{X}_{s,a}$: Average value (win rate) of taking action $a$ in state $s$
+- $N_s$: Total visits to state $s$
+- $n_{s,a}$: Times action $a$ was taken in state $s$
+- $C$: Exploration constant (usually $C = \sqrt{2}$)
+
+This formula cleverly balances **exploitation** (choosing known good) and **exploration** (trying unknown).
+
+### Four Phases of MCTS
+
+<MCTSTree showPUCT={true} width={700} height={450} />
+
+Each MCTS iteration contains four phases:
+
+#### 1. Selection
+
+Starting from the root, use UCB1 formula to select child nodes until reaching a leaf node.
+
+```python
+def select(node):
+    """Use UCB1 to select best child node"""
+    while node.is_fully_expanded():
+        node = max(node.children,
+                   key=lambda c: ucb1(c, node.visits))
+    return node
+
+def ucb1(child, parent_visits, C=1.414):
+    """UCB1 formula"""
+    if child.visits == 0:
+        return float('inf')  # Unvisited nodes have priority
+
+    exploitation = child.wins / child.visits
+    exploration = C * math.sqrt(math.log(parent_visits) / child.visits)
+
+    return exploitation + exploration
+```
+
+#### 2. Expansion
+
+Add one or more child nodes to the leaf node.
+
+```python
+def expand(node, state):
+    """Expand node"""
+    legal_moves = get_legal_moves(state)
+    untried = [m for m in legal_moves if m not in node.tried_moves]
+
+    if untried:
+        move = random.choice(untried)
+        new_state = apply_move(state, move)
+        child = Node(move=move, parent=node)
+        node.children.append(child)
+        node.tried_moves.add(move)
+        return child, new_state
+
+    return node, state
+```
+
+#### 3. Simulation
+
+From the new node, perform random simulation until game end.
+
+```python
+def simulate(state, player):
+    """Random simulation until game end"""
+    return random_playout(state, player)
+```
+
+#### 4. Backpropagation
+
+Propagate the simulation result back to all ancestor nodes.
+
+```python
+def backpropagate(node, result):
+    """Propagate result to all ancestors"""
+    while node is not None:
+        node.visits += 1
+        node.wins += result
+        result = 1 - result  # Switch perspective
+        node = node.parent
+```
+
+### Complete MCTS Implementation
+
+```python
+class MCTSNode:
+    def __init__(self, move=None, parent=None):
+        self.move = move
+        self.parent = parent
+        self.children = []
+        self.wins = 0
+        self.visits = 0
+        self.tried_moves = set()
+
+    def is_fully_expanded(self, legal_moves):
+        return len(self.tried_moves) == len(legal_moves)
+
+
+def mcts(root_state, player, num_iterations=10000):
+    """
+    MCTS main function
+
+    Args:
+        root_state: Initial position
+        player: Current player
+        num_iterations: Number of iterations
+
+    Returns:
+        Best action
+    """
+    root = MCTSNode()
+
+    for _ in range(num_iterations):
+        node = root
+        state = root_state.copy()
+        current_player = player
+
+        # 1. Selection
+        while node.children and node.is_fully_expanded(get_legal_moves(state)):
+            node = max(node.children,
+                      key=lambda c: ucb1(c, node.visits))
+            state = apply_move(state, node.move)
+            current_player = opponent(current_player)
+
+        # 2. Expansion
+        legal_moves = get_legal_moves(state)
+        if not node.is_fully_expanded(legal_moves) and not is_terminal(state):
+            move = random.choice([m for m in legal_moves
+                                  if m not in node.tried_moves])
+            state = apply_move(state, move)
+            child = MCTSNode(move=move, parent=node)
+            node.children.append(child)
+            node.tried_moves.add(move)
+            node = child
+            current_player = opponent(current_player)
+
+        # 3. Simulation
+        result = simulate(state, current_player)
+
+        # 4. Backpropagation
+        backpropagate(node, result)
+
+    # Select child with most visits
+    return max(root.children, key=lambda c: c.visits).move
+```
+
+### Why MCTS Works
+
+MCTS's success has several key factors:
+
+#### 1. Progressive Focus
+
+MCTS doesn't search all branches uniformly but invests more resources in promising branches. This allows it to "ignore" obviously bad moves.
+
+#### 2. Anytime Algorithm
+
+MCTS can stop at any time and give the current best answer. More time means better answers.
+
+#### 3. No Evaluation Function Needed
+
+MCTS estimates value through simulation, no need for manually designed evaluation functions.
+
+### 2006-2015: The MCTS Era
+
+MCTS brought computer Go into a new era:
+
+| Program | Year | Features | Strength |
+|---------|------|----------|----------|
+| **Crazy Stone** | 2006 | First MCTS Go program | Amateur high-dan |
+| **MoGo** | 2007 | Optimized MCTS | Amateur 5-dan |
+| **Zen** | 2009 | Added pattern recognition | Amateur 6-dan |
+| **Crazy Stone** | 2013 | Beat 9-dan with 4-stone handicap | Professional beginner (with handicap) |
+
+This was historic progress, but still a huge gap:
+
+> The strongest MCTS programs still couldn't beat professional players **without handicap**.
+
+---
+
+## Evaluation Function Bottleneck
+
+### Limitations of Manual Features
+
+Before MCTS, researchers tried designing various **manual features** to evaluate positions:
+
+#### Common Features
+
+```python
+def evaluate_position(state):
+    """Manually designed evaluation function"""
+    score = 0
+
+    # 1. Territory estimate
+    score += count_territory(state, BLACK) - count_territory(state, WHITE)
+
+    # 2. Stone liberties
+    score += sum(liberties(group) for group in groups(state, BLACK))
+    score -= sum(liberties(group) for group in groups(state, WHITE))
+
+    # 3. Eye count
+    score += count_eyes(state, BLACK) * 10
+    score -= count_eyes(state, WHITE) * 10
+
+    # 4. Connection strength
+    score += connectivity_score(state, BLACK)
+    score -= connectivity_score(state, WHITE)
+
+    # ... more features
+
+    return score
+```
+
+#### Problems
+
+1. **Incomplete features**: Many factors in human intuition are hard to describe in code
+2. **Difficult weight tuning**: How to determine relative importance of features?
+3. **Local vs. global**: Local calculation is easy, global judgment is hard
+4. **Interactions**: Feature interactions are hard to model
+
+### Simulation Quality in MCTS
+
+Even in MCTS without direct evaluation functions, **simulation quality** remains a key bottleneck.
+
+#### Problems with Random Simulation
+
+Random play produces many "unreasonable" positions, leading to inaccurate estimates:
+
+- Large groups dying needlessly
+- Failing to capture when possible
+- Missing simple kills
+
+#### Improvement Attempts
+
+Researchers tried adding **prior knowledge** to simulations:
+
+```python
+def simulation_policy(state, legal_moves):
+    """
+    Simulation policy with prior knowledge
+    """
+    # Prioritize:
+    # 1. Captures
+    # 2. Escapes
+    # 3. Connections
+    # 4. Big points
+    # ...
+
+    for move in legal_moves:
+        if is_capture(state, move):
+            return move
+        if saves_group(state, move):
+            return move
+
+    # Otherwise random
+    return random.choice(legal_moves)
+```
+
+But these heuristic rules:
+- Increase computational cost
+- May introduce bias
+- Still not precise enough
+
+### Why Neural Networks Were Needed
+
+The bottleneck of traditional methods is essentially a **representation learning** problem:
+
+> How to learn "good move" features from board pixels (361 point states)?
+
+This is exactly what **deep learning** excels at:
+- **Automatic feature learning**: No manual design needed
+- **Nonlinear mapping**: Can capture complex relationships
+- **End-to-end training**: Directly from input to output
+
+The 2012 deep learning breakthrough on ImageNet made researchers think:
+
+> If neural networks can "understand" photos, can they also "understand" boards?
+
+The answer to this question is AlphaGo.
+
+---
+
+## Summary of Traditional Method Limits
+
+| Method | Advantages | Problems in Go |
+|--------|------------|----------------|
+| **Minimax** | Theoretically complete, optimal solution | Branching factor too large, can't search deep |
+| **Alpha-Beta** | Greatly reduces search | Effective branching factor still too high |
+| **Pure Monte Carlo** | No evaluation function needed | Random simulation quality too poor |
+| **MCTS** | Intelligent focus search | Simulation still not good enough, reaches amateur high-dan |
+
+### Core Bottlenecks
+
+Fundamentally, traditional methods face two major bottlenecks:
+
+#### 1. Evaluation Problem
+- No good evaluation function
+- Can't quantify abstract concepts like "thickness," "influence"
+- Manual features lack expressiveness
+
+#### 2. Search Problem
+- Even with pruning, search space is too large
+- Can't see deep enough variations
+- Simulation quality affects estimation accuracy
+
+### AlphaGo's Solution
+
+AlphaGo used deep learning to solve both problems:
+
+1. **Policy Network**: Learn "where might be good moves," reduce effective branching factor
+2. **Value Network**: Learn "who's likely to win," replace manual evaluation function
+3. **MCTS Integration**: Use neural networks to guide search, use search to improve decisions
+
+This wasn't simply "replacing evaluation function with neural network," but an entirely new architecture.
+
+---
+
+## Animation Reference
+
+Core concepts in this article and their animation numbers:
+
+| Number | Concept | Physics/Math Correspondence |
+|--------|---------|---------------------------|
+| B3 | Minimax search | Game theory, zero-sum game |
+| C5 | MCTS four phases | Monte Carlo methods, UCB |
+| C2 | UCB1 formula | Multi-armed bandit, exploration-exploitation |
+| C4 | Search tree growth | Progressive expansion |
+
+---
+
+## Further Reading
+
+- **Previous**: [Why Is Go Hard?](../why-go-is-hard) — State space and evaluation difficulty
+- **Next**: [Board State Representation](../board-representation) — Zobrist Hashing, feature encoding
+- **Technical Deep Dive**: [MCTS and Neural Network Integration](../mcts-neural-combo) — AlphaGo's core architecture
+
+---
+
+## References
+
+1. Coulom, R. (2006). "Efficient Selectivity and Backup Operators in Monte-Carlo Tree Search." *Computers and Games*, 72-83. — Original MCTS paper
+2. Kocsis, L., & Szepesvari, C. (2006). "Bandit based Monte-Carlo Planning." *ECML*, 282-293. — UCT algorithm
+3. Browne, C., et al. (2012). "A Survey of Monte Carlo Tree Search Methods." *IEEE TCIAIG*, 4(1), 1-43. — MCTS survey
+4. Gelly, S., & Silver, D. (2011). "Monte-Carlo tree search and rapid action value estimation in computer Go." *Artificial Intelligence*, 175(11), 1856-1875. — MCTS application in Go
