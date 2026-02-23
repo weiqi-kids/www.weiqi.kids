@@ -79,7 +79,12 @@
       "timestamp": "2026-02-20T00:00:00Z",
       "count": 151,
       "uniques": 43
+    },
+    {
+      "timestamp": "2026-02-21T00:00:00Z",
+      "count": 294,
+      "uniques": 62
     }
   ],
-  "lastUpdated": "2026-02-22T00:59:12.406Z"
+  "lastUpdated": "2026-02-23T00:59:10.820Z"
 }
