@@ -26,18 +26,14 @@ MCTS의 핵심 아이디어는: **모든 가능한 수를 완전히 열거하는
 
 전통적인 MCTS는 네 단계를 반복적으로 수행합니다:
 
-```
-     ┌─────────────────────────────────────────────────────────────┐
-     │                        MCTS 순환                            │
-     │                                                             │
-     │   ┌───────────┐    ┌───────────┐    ┌───────────┐    ┌───────────┐
-     │   │ Selection │ →  │ Expansion │ →  │ Simulation│ →  │Backprop   │
-     │   │   선택     │    │   확장     │    │   시뮬레이션│    │  역전파    │
-     │   └───────────┘    └───────────┘    └───────────┘    └───────────┘
-     │        │                                                    │
-     │        └────────────────────────────────────────────────────┘
-     │                           N번 반복
-     └─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph MCTS["MCTS 순환 (N번 반복)"]
+        Selection["Selection<br/>선택"] --> Expansion["Expansion<br/>확장"]
+        Expansion --> Simulation["Simulation<br/>시뮬레이션"]
+        Simulation --> Backprop["Backprop<br/>역전파"]
+        Backprop -.-> Selection
+    end
 ```
 
 각 단계를 자세히 살펴보겠습니다:
@@ -65,15 +61,26 @@ $$\text{UCB1}(s, a) = \bar{X}_{s,a} + c \sqrt{\frac{\ln N_s}{N_{s,a}}}$$
 
 리프 노드에 도달하면 아직 탐색하지 않은 행동 하나를 선택하여 새로운 자식 노드를 생성합니다.
 
-```
-확장 전:                    확장 후:
-     ○ (루트)                     ○ (루트)
-    /│\                         /│\
-   ○ ○ ○                       ○ ○ ○
-  /│              →           /│
- ○ ○                         ○ ○
-   ↑                            \
-   리프 노드                       ● (새 노드)
+```mermaid
+flowchart TB
+    subgraph Before["확장 전"]
+        R1((루트)) --> A1((○))
+        R1 --> B1((○))
+        R1 --> C1((○))
+        A1 --> D1((○))
+        A1 --> E1[/"리프 노드"/]
+    end
+
+    subgraph After["확장 후"]
+        R2((루트)) --> A2((○))
+        R2 --> B2((○))
+        R2 --> C2((○))
+        A2 --> D2((○))
+        A2 --> E2((○))
+        E2 --> New((●<br/>새 노드))
+    end
+
+    Before -.->|"→"| After
 ```
 
 ### 3. Simulation(시뮬레이션/Rollout)
@@ -118,33 +125,35 @@ $$\text{UCB1}(s, a) = \bar{X}_{s,a} + c \sqrt{\frac{\ln N_s}{N_{s,a}}}$$
 
 AlphaGo는 두 개의 신경망을 MCTS에 통합합니다:
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    AlphaGo 탐색 아키텍처                      │
-│                                                             │
-│  ┌───────────────────────────────────────────────────────┐  │
-│  │                    MCTS                               │  │
-│  │                                                       │  │
-│  │   Selection    Expansion    Evaluation    Backup      │  │
-│  │       │            │            │            │        │  │
-│  │       ▼            ▼            ▼            ▼        │  │
-│  │    ┌─────┐    ┌─────┐    ┌─────────┐    ┌─────┐      │  │
-│  │    │PUCT │    │Policy│    │Value Net│    │업데이트│      │  │
-│  │    │공식 │    │Net   │    │+ Rollout│    │통계  │      │  │
-│  │    └─────┘    └─────┘    └─────────┘    └─────┘      │  │
-│  │       ↑            ↑            ↑                     │  │
-│  │       │            │            │                     │  │
-│  └───────┼────────────┼────────────┼─────────────────────┘  │
-│          │            │            │                        │
-│  ┌───────┴────────────┴────────────┴─────────────────────┐  │
-│  │                 Neural Networks                        │  │
-│  │  ┌─────────────────┐    ┌─────────────────┐           │  │
-│  │  │ Policy Network  │    │ Value Network   │           │  │
-│  │  │ π(a|s)          │    │ V(s)            │           │  │
-│  │  │ 출력: 행동 확률   │    │ 출력: 승률 추정   │           │  │
-│  │  └─────────────────┘    └─────────────────┘           │  │
-│  └────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph AlphaGo["AlphaGo 탐색 아키텍처"]
+        subgraph MCTS_Layer["MCTS"]
+            Selection["Selection"]
+            Expansion["Expansion"]
+            Evaluation["Evaluation"]
+            Backup["Backup"]
+
+            PUCT["PUCT 공식"]
+            PolicyUse["Policy Net"]
+            ValueUse["Value Net<br/>+ Rollout"]
+            Stats["업데이트 통계"]
+
+            Selection --> PUCT
+            Expansion --> PolicyUse
+            Evaluation --> ValueUse
+            Backup --> Stats
+        end
+
+        subgraph NN["Neural Networks"]
+            PolicyNet["Policy Network<br/>π(a|s)<br/>출력: 행동 확률"]
+            ValueNet["Value Network<br/>V(s)<br/>출력: 승률 추정"]
+        end
+
+        PUCT -.-> NN
+        PolicyUse -.-> NN
+        ValueUse -.-> NN
+    end
 ```
 
 ### Policy Network의 역할

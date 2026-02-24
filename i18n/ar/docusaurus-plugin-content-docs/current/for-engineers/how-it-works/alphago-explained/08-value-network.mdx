@@ -598,14 +598,18 @@ for epoch in range(max_epochs):
 
 في AlphaGo Zero، تم دمج هاتين الشبكتين في **شبكة برأسين**:
 
-```
-       طبقات استخراج الميزات المشتركة
-              |
-       ┌──────┴──────┐
-       ↓              ↓
-  رأس Policy     رأس Value
-       ↓              ↓
-  361 احتمال     قيمة واحدة
+```mermaid
+flowchart TB
+    Shared["طبقات استخراج الميزات المشتركة"]
+    PolicyHead["رأس Policy"]
+    ValueHead["رأس Value"]
+    PolicyOut["361 احتمال"]
+    ValueOut["قيمة واحدة"]
+
+    Shared --> PolicyHead
+    Shared --> ValueHead
+    PolicyHead --> PolicyOut
+    ValueHead --> ValueOut
 ```
 
 مزايا هذا التصميم:

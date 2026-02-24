@@ -211,22 +211,25 @@ Este es el **Problema de Degradación (Degradation Problem)**:
 
 He Kaiming et al. propusieron en 2015 una solución simple y elegante: **Conexiones Residuales (Skip Connection)**.
 
-```
-Entrada x
-   ↓
-┌─────────────┐
-│  Capa Conv  │
-│  BN + ReLU  │
-│  Capa Conv  │
-│  BN        │
-└─────────────┘
-   ↓ F(x)
-   ↓←────────────── x (conexión de salto)
-   +
-   ↓
- ReLU
-   ↓
-Salida x + F(x)
+```mermaid
+flowchart TB
+    Input["Entrada x"]
+    Conv1["Capa Conv"]
+    BN1["BN + ReLU"]
+    Conv2["Capa Conv"]
+    BN2["BN"]
+    Add((" + "))
+    ReLU["ReLU"]
+    Output["Salida x + F(x)"]
+
+    Input --> Conv1
+    Conv1 --> BN1
+    BN1 --> Conv2
+    Conv2 --> BN2
+    BN2 --> Add
+    Input -- "x (conexion de salto)" --> Add
+    Add --> ReLU
+    ReLU --> Output
 ```
 
 #### Representación Matemática

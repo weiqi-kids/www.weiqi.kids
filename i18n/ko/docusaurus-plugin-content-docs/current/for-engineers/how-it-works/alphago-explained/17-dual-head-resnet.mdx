@@ -19,21 +19,25 @@ AlphaGo Zero의 가장 중요한 아키텍처 혁신 중 하나는 원본 AlphaG
 
 AlphaGo Zero의 신경망은 세 부분으로 나눌 수 있습니다:
 
-```
-입력(17 × 19 × 19)
-       ↓
-┌─────────────────────────────────────────┐
-│            공유 백본(ResNet)              │
-│        40개 잔차 블록, 256 채널              │
-└─────────────────────────────────────────┘
-       ↓                    ↓
-┌─────────────┐      ┌─────────────┐
-│  Policy Head │      │  Value Head  │
-│  (정책 헤드)   │      │  (가치 헤드)   │
-└─────────────┘      └─────────────┘
-       ↓                    ↓
-  19×19 확률 분포          승률 [-1, 1]
-  + 1 Pass 확률
+```mermaid
+flowchart TB
+    Input["입력(17 × 19 × 19)"]
+
+    subgraph Backbone["공유 백본(ResNet)"]
+        ResNet["40개 잔차 블록, 256 채널"]
+    end
+
+    PolicyHead["Policy Head<br/>(정책 헤드)"]
+    ValueHead["Value Head<br/>(가치 헤드)"]
+
+    PolicyOut["19×19 확률 분포<br/>+ 1 Pass 확률"]
+    ValueOut["승률 [-1, 1]"]
+
+    Input --> Backbone
+    Backbone --> PolicyHead
+    Backbone --> ValueHead
+    PolicyHead --> PolicyOut
+    ValueHead --> ValueOut
 ```
 
 각 부분을 하나씩 분석해 보겠습니다.
@@ -68,22 +72,18 @@ Policy Head는 각 위치의 착점 확률을 예측하는 역할을 합니다.
 
 #### 아키텍처 세부사항
 
-```
-공유 백본 출력(256 × 19 × 19)
-       ↓
-1×1 컨볼루션(2 채널)
-       ↓
-Batch Normalization
-       ↓
-ReLU
-       ↓
-평탄화(2 × 19 × 19 = 722)
-       ↓
-완전 연결층(362)
-       ↓
-Softmax
-       ↓
-출력: 362개 확률(361개 위치 + Pass)
+```mermaid
+flowchart TB
+    Input["공유 백본 출력(256 × 19 × 19)"]
+    Conv["1×1 컨볼루션(2 채널)"]
+    BN["Batch Normalization"]
+    ReLU1["ReLU"]
+    Flatten["평탄화(2 × 19 × 19 = 722)"]
+    FC["완전 연결층(362)"]
+    Softmax["Softmax"]
+    Output["출력: 362개 확률(361개 위치 + Pass)"]
+
+    Input --> Conv --> BN --> ReLU1 --> Flatten --> FC --> Softmax --> Output
 ```
 
 #### 수학적 표현
@@ -100,26 +100,20 @@ Value Head는 현재 국면의 승률을 예측하는 역할을 합니다.
 
 #### 아키텍처 세부사항
 
-```
-공유 백본 출력(256 × 19 × 19)
-       ↓
-1×1 컨볼루션(1 채널)
-       ↓
-Batch Normalization
-       ↓
-ReLU
-       ↓
-평탄화(1 × 19 × 19 = 361)
-       ↓
-완전 연결층(256)
-       ↓
-ReLU
-       ↓
-완전 연결층(1)
-       ↓
-Tanh
-       ↓
-출력: 승률 [-1, 1]
+```mermaid
+flowchart TB
+    Input["공유 백본 출력(256 × 19 × 19)"]
+    Conv["1×1 컨볼루션(1 채널)"]
+    BN["Batch Normalization"]
+    ReLU1["ReLU"]
+    Flatten["평탄화(1 × 19 × 19 = 361)"]
+    FC1["완전 연결층(256)"]
+    ReLU2["ReLU"]
+    FC2["완전 연결층(1)"]
+    Tanh["Tanh"]
+    Output["출력: 승률 [-1, 1]"]
+
+    Input --> Conv --> BN --> ReLU1 --> Flatten --> FC1 --> ReLU2 --> FC2 --> Tanh --> Output
 ```
 
 #### 수학적 표현
@@ -209,22 +203,26 @@ ResNet 발명 전에 심층 신경망은 역설에 직면했습니다:
 
 허카이밍 등이 2015년에 간결하고 우아한 해결책을 제안했습니다: **잔차 연결(Skip Connection)**.
 
-```
-입력 x
-   ↓
-┌─────────────┐
-│  컨볼루션층   │
-│  BN + ReLU  │
-│  컨볼루션층   │
-│  BN        │
-└─────────────┘
-   ↓ F(x)
-   ↓←────────────── x(스킵 연결)
-   +
-   ↓
- ReLU
-   ↓
-출력 x + F(x)
+```mermaid
+flowchart TB
+    Input["입력 x"]
+
+    subgraph ResBlock["잔차 블록"]
+        Conv1["컨볼루션층"]
+        BN1["BN + ReLU"]
+        Conv2["컨볼루션층"]
+        BN2["BN"]
+    end
+
+    Add((" + "))
+    ReLU["ReLU"]
+    Output["출력 x + F(x)"]
+
+    Input --> Conv1
+    Conv1 --> BN1 --> Conv2 --> BN2
+    BN2 -->|"F(x)"| Add
+    Input -->|"x(스킵 연결)"| Add
+    Add --> ReLU --> Output
 ```
 
 #### 수학적 표현
@@ -308,17 +306,22 @@ DeepMind는 다른 깊이의 ResNet을 테스트했습니다:
 
 AlphaGo Zero의 ResNet 구성:
 
-```
-입력: 17 × 19 × 19
-↓
-컨볼루션층: 3×3, 256 채널, BN, ReLU
-↓
-잔차 블록 ×40:
-  ├─ 컨볼루션층: 3×3, 256 채널, BN, ReLU
-  ├─ 컨볼루션층: 3×3, 256 채널, BN
-  └─ 스킵 연결 + ReLU
-↓
-Policy Head / Value Head
+```mermaid
+flowchart TB
+    Input["입력: 17 × 19 × 19"]
+    InitConv["컨볼루션층: 3×3, 256 채널, BN, ReLU"]
+
+    subgraph ResBlocks["잔차 블록 ×40"]
+        direction TB
+        RB["컨볼루션층: 3×3, 256 채널, BN, ReLU<br/>↓<br/>컨볼루션층: 3×3, 256 채널, BN<br/>+ 스킵 연결 + ReLU"]
+    end
+
+    PolicyHead["Policy Head"]
+    ValueHead["Value Head"]
+
+    Input --> InitConv --> ResBlocks
+    ResBlocks --> PolicyHead
+    ResBlocks --> ValueHead
 ```
 
 #### 매개변수 양 추정

@@ -600,14 +600,18 @@ Policy Network y Value Network son complementarias en AlphaGo:
 
 En AlphaGo Zero, estas dos redes se fusionaron en una **red de dos cabezas**:
 
-```
-       Capas compartidas de extracción de características
-              |
-       ┌──────┴──────┐
-       ↓              ↓
-  Cabeza Policy  Cabeza Value
-       ↓              ↓
-  361 probabilidades  Un solo valor
+```mermaid
+flowchart TB
+    Shared["Capas compartidas de extraccion de caracteristicas"]
+    PolicyHead["Cabeza Policy"]
+    ValueHead["Cabeza Value"]
+    PolicyOut["361 probabilidades"]
+    ValueOut["Un solo valor"]
+
+    Shared --> PolicyHead
+    Shared --> ValueHead
+    PolicyHead --> PolicyOut
+    ValueHead --> ValueOut
 ```
 
 Ventajas de este diseño:

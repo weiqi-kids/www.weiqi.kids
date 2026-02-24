@@ -19,66 +19,35 @@ Este artigo analisará profundamente a arquitetura de sistemas por trás do Alph
 
 A arquitetura de treinamento do AlphaGo original (a versão que derrotou Lee Sedol) foi dividida em múltiplas fases, cada uma usando uma configuração de recursos diferente:
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Fase 1: Aprendizado Supervisionado        │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐      │
-│  │ Registros   │ →  │ Cluster de  │ →  │ Policy Net  │      │
-│  │ Humanos     │    │   GPU       │    │ (versão SL) │      │
-│  │ (30M jogos) │    │ (50 GPUs)   │    │             │      │
-│  └─────────────┘    └─────────────┘    └─────────────┘      │
-└─────────────────────────────────────────────────────────────┘
-                            ↓
-┌─────────────────────────────────────────────────────────────┐
-│                    Fase 2: Aprendizado por Reforço           │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐      │
-│  │ Auto-jogo   │ →  │ Cluster de  │ →  │ Policy Net  │      │
-│  │ (milhões    │    │   GPU       │    │ (versão RL) │      │
-│  │ de jogos)   │    │ (50 GPUs)   │    │             │      │
-│  └─────────────┘    └─────────────┘    └─────────────┘      │
-└─────────────────────────────────────────────────────────────┘
-                            ↓
-┌─────────────────────────────────────────────────────────────┐
-│                    Fase 3: Treinamento da Value Network      │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐      │
-│  │ Dados de    │ →  │ Cluster de  │ →  │ Value Net   │      │
-│  │ jogos RL    │    │   GPU       │    │             │      │
-│  │ (30M pos.)  │    │ (50 GPUs)   │    │             │      │
-│  └─────────────┘    └─────────────┘    └─────────────┘      │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Phase1["Fase 1: Aprendizado Supervisionado"]
+        A1["Registros Humanos<br/>(30M jogos)"] --> B1["Cluster de GPU<br/>(50 GPUs)"] --> C1["Policy Net<br/>(versão SL)"]
+    end
+
+    subgraph Phase2["Fase 2: Aprendizado por Reforço"]
+        A2["Auto-jogo<br/>(milhões de jogos)"] --> B2["Cluster de GPU<br/>(50 GPUs)"] --> C2["Policy Net<br/>(versão RL)"]
+    end
+
+    subgraph Phase3["Fase 3: Treinamento da Value Network"]
+        A3["Dados de jogos RL<br/>(30M pos.)"] --> B3["Cluster de GPU<br/>(50 GPUs)"] --> C3["Value Net"]
+    end
+
+    Phase1 --> Phase2 --> Phase3
 ```
 
 ### Arquitetura de Treinamento do AlphaGo Zero
 
 O AlphaGo Zero simplificou significativamente o processo de treinamento, usando um único ciclo de treinamento de ponta a ponta:
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                   Ciclo de Treinamento AlphaGo Zero          │
-│                                                              │
-│  ┌───────────────────┐                                      │
-│  │   Self-play       │  ← Rede mais recente                 │
-│  │   Workers         │                                      │
-│  │   (TPU × N)       │                                      │
-│  └─────────┬─────────┘                                      │
-│            ↓                                                 │
-│  ┌───────────────────┐                                      │
-│  │   Replay Buffer   │  (últimos 500K jogos)                │
-│  │   (RAM/SSD)       │                                      │
-│  └─────────┬─────────┘                                      │
-│            ↓                                                 │
-│  ┌───────────────────┐                                      │
-│  │   Training        │                                      │
-│  │   Workers         │                                      │
-│  │   (TPU × M)       │                                      │
-│  └─────────┬─────────┘                                      │
-│            ↓                                                 │
-│  ┌───────────────────┐                                      │
-│  │   Network         │  → Atualiza rede para Self-play      │
-│  │   Checkpoint      │                                      │
-│  └───────────────────┘                                      │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph ZeroCycle["Ciclo de Treinamento AlphaGo Zero"]
+        A["Self-play Workers<br/>(TPU × N)"] -->|"Gera dados"| B["Replay Buffer<br/>(RAM/SSD)<br/>últimos 500K jogos"]
+        B -->|"Amostra dados"| C["Training Workers<br/>(TPU × M)"]
+        C -->|"Salva pesos"| D["Network Checkpoint"]
+        D -->|"Atualiza rede"| A
+    end
 ```
 
 As vantagens desta arquitetura:
@@ -164,25 +133,19 @@ Os Training Workers são responsáveis por amostrar dados do Replay Buffer e tre
 
 O treinamento em larga escala usa **Paralelismo de Dados (Data Parallelism)**:
 
-```
-                    ┌─────────────┐
-                    │  Parameter  │
-                    │   Server    │
-                    └──────┬──────┘
-                           │
-         ┌─────────────────┼─────────────────┐
-         │                 │                 │
-    ┌────▼────┐      ┌────▼────┐      ┌────▼────┐
-    │  TPU 0  │      │  TPU 1  │      │  TPU 2  │
-    │ Batch 0 │      │ Batch 1 │      │ Batch 2 │
-    └────┬────┘      └────┬────┘      └────┬────┘
-         │                 │                 │
-         └─────────────────┼─────────────────┘
-                           │
-                    ┌──────▼──────┐
-                    │  Gradient   │
-                    │  Aggregation│
-                    └─────────────┘
+```mermaid
+flowchart TB
+    PS["Parameter Server"]
+
+    PS --> TPU0["TPU 0<br/>Batch 0"]
+    PS --> TPU1["TPU 1<br/>Batch 1"]
+    PS --> TPU2["TPU 2<br/>Batch 2"]
+
+    TPU0 --> GA["Gradient Aggregation"]
+    TPU1 --> GA
+    TPU2 --> GA
+
+    GA --> PS
 ```
 
 Cada TPU processa um mini-batch diferente, calcula o gradiente local e então agrega para atualizar os parâmetros globais.
@@ -215,19 +178,13 @@ O AlphaGo Zero usa **atualização síncrona** para garantir a estabilidade do t
 
 O núcleo da TPU é a **MXU (Matrix Multiply Unit)**:
 
-```
-┌─────────────────────────────────────────┐
-│              TPU v2/v3                  │
-│  ┌─────────────────────────────────┐    │
-│  │         MXU (128×128)           │    │
-│  │    Matrix Multiply Unit         │    │
-│  │    (128×128 = 16K MACs/ciclo)   │    │
-│  └─────────────────────────────────┘    │
-│  ┌──────────┐  ┌──────────────────┐     │
-│  │ Vector   │  │     HBM          │     │
-│  │ Unit     │  │   (16-32 GB)     │     │
-│  └──────────┘  └──────────────────┘     │
-└─────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph TPU["TPU v2/v3"]
+        MXU["MXU (128×128)<br/>Matrix Multiply Unit<br/>16K MACs/ciclo"]
+        VU["Vector Unit"]
+        HBM["HBM<br/>(16-32 GB)"]
+    end
 ```
 
 A MXU pode executar 16K operações de multiplicação-acumulação por ciclo, o que é crucial para a multiplicação de matrizes em redes neurais.
@@ -276,20 +233,18 @@ Mas a avaliação da rede neural é uma **operação em batch** amigável para G
 
 A forma mais simples de paralelização: executar múltiplas simulações completas simultaneamente, depois mesclar os resultados.
 
-```
-┌────────────┐
-│   Root     │
-└──────┬─────┘
-       ├──────────┬──────────┬──────────┐
-  ┌────▼────┐ ┌───▼────┐ ┌───▼────┐ ┌───▼────┐
-  │ Sim 1   │ │ Sim 2  │ │ Sim 3  │ │ Sim 4  │
-  │ (indep) │ │ (indep)│ │ (indep)│ │ (indep)│
-  └────┬────┘ └───┬────┘ └───┬────┘ └───┬────┘
-       └──────────┴──────────┴──────────┘
-                      │
-              ┌───────▼───────┐
-              │  Merge Trees  │
-              └───────────────┘
+```mermaid
+flowchart TB
+    Root["Root"]
+    Root --> S1["Sim 1<br/>(indep)"]
+    Root --> S2["Sim 2<br/>(indep)"]
+    Root --> S3["Sim 3<br/>(indep)"]
+    Root --> S4["Sim 4<br/>(indep)"]
+
+    S1 --> Merge["Merge Trees"]
+    S2 --> Merge
+    S3 --> Merge
+    S4 --> Merge
 ```
 
 Problema: Cada simulação começa da raiz, e pode explorar repetidamente os mesmos caminhos.
@@ -341,18 +296,22 @@ Tempo T3:
 
 Através da perda virtual, múltiplos nós folha a serem avaliados podem ser coletados para **inferência em batch**:
 
-```
-┌─────────────────────────────────────────┐
-│            Parallel MCTS                │
-│                                         │
-│  Thread 1 → Nó folha L1 ──┐             │
-│  Thread 2 → Nó folha L2 ──┼──→ Batch ─→ TPU
-│  Thread 3 → Nó folha L3 ──┤             │
-│  Thread 4 → Nó folha L4 ──┘             │
-│                                         │
-│  ← Obtém (P1,V1), (P2,V2), ... simultaneamente │
-│                                         │
-└─────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph PMCTS["Parallel MCTS"]
+        T1["Thread 1"] --> L1["Nó folha L1"]
+        T2["Thread 2"] --> L2["Nó folha L2"]
+        T3["Thread 3"] --> L3["Nó folha L3"]
+        T4["Thread 4"] --> L4["Nó folha L4"]
+    end
+
+    L1 --> Batch["Batch"]
+    L2 --> Batch
+    L3 --> Batch
+    L4 --> Batch
+
+    Batch --> TPU["TPU"]
+    TPU -->|"(P1,V1), (P2,V2), ..."| PMCTS
 ```
 
 A eficiência da inferência em batch da TPU é muito maior que a inferência individual, tornando o MCTS paralelo possível.
@@ -376,35 +335,23 @@ A arquitetura de inferência do AlphaGo durante partidas oficiais:
 
 Fluxo de inferência durante partidas (usando AlphaGo Lee como exemplo):
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Arquitetura de Inferência Distribuída     │
-│                                                              │
-│  ┌──────────────┐                                           │
-│  │   Nó Master  │ ← Recebe jogada do oponente, envia jogada │
-│  └──────┬───────┘   do AlphaGo                              │
-│         │                                                    │
-│         ↓                                                    │
-│  ┌──────────────────────────────────────────────────┐       │
-│  │              Controlador MCTS                     │       │
-│  │  Gerencia árvore de busca, distribui tarefas,     │       │
-│  │  coleta resultados                                │       │
-│  └──────────────────────────────────────────────────┘       │
-│         │                                                    │
-│         ↓                                                    │
-│  ┌──────────────────────────────────────────────────┐       │
-│  │              Cluster de TPU (48 TPUs)             │       │
-│  │                                                   │       │
-│  │   ┌────┐ ┌────┐ ┌────┐ ┌────┐ ┌────┐ ┌────┐     │       │
-│  │   │TPU │ │TPU │ │TPU │ │TPU │ │TPU │ │... │     │       │
-│  │   │ 1  │ │ 2  │ │ 3  │ │ 4  │ │ 5  │ │ 48 │     │       │
-│  │   └────┘ └────┘ └────┘ └────┘ └────┘ └────┘     │       │
-│  │                                                   │       │
-│  │   Processa requisições de inferência de rede     │       │
-│  │   neural em batch                                 │       │
-│  └──────────────────────────────────────────────────┘       │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Inference["Arquitetura de Inferência Distribuída"]
+        Master["Nó Master<br/>Recebe/envia jogadas"]
+        Master --> MCTS["Controlador MCTS<br/>Gerencia árvore, distribui tarefas"]
+
+        subgraph TPUCluster["Cluster de TPU (48 TPUs)"]
+            TPU1["TPU 1"]
+            TPU2["TPU 2"]
+            TPU3["TPU 3"]
+            TPU4["TPU 4"]
+            TPU5["TPU 5"]
+            TPU48["... TPU 48"]
+        end
+
+        MCTS --> TPUCluster
+    end
 ```
 
 ### Gerenciamento de Tempo de Reflexão

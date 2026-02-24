@@ -26,18 +26,14 @@ MCTS 嘅核心諗法係：**與其窮舉所有可能嘅著法，不如隨機模�
 
 傳統嘅 MCTS 包含四個階段，不斷重複：
 
-```
-     ┌─────────────────────────────────────────────────────────────┐
-     │                        MCTS 循環                            │
-     │                                                             │
-     │   ┌───────────┐    ┌───────────┐    ┌───────────┐    ┌───────────┐
-     │   │ Selection │ →  │ Expansion │ →  │ Simulation│ →  │Backprop   │
-     │   │   揀選     │    │   展開     │    │   模擬     │    │  反向傳播  │
-     │   └───────────┘    └───────────┘    └───────────┘    └───────────┘
-     │        │                                                    │
-     │        └────────────────────────────────────────────────────┘
-     │                           重複 N 次
-     └─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph MCTS["MCTS 循環（重複 N 次）"]
+        A["Selection<br/>揀選"] --> B["Expansion<br/>展開"]
+        B --> C["Simulation<br/>模擬"]
+        C --> D["Backprop<br/>反向傳播"]
+        D -.-> A
+    end
 ```
 
 等我哋詳細了解每個階段：
@@ -118,33 +114,23 @@ $$\text{UCB1}(s, a) = \bar{X}_{s,a} + c \sqrt{\frac{\ln N_s}{N_{s,a}}}$$
 
 AlphaGo 將兩個神經網絡整合落 MCTS：
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    AlphaGo 搜索架構                          │
-│                                                             │
-│  ┌───────────────────────────────────────────────────────┐  │
-│  │                    MCTS                               │  │
-│  │                                                       │  │
-│  │   Selection    Expansion    Evaluation    Backup      │  │
-│  │       │            │            │            │        │  │
-│  │       ▼            ▼            ▼            ▼        │  │
-│  │    ┌─────┐    ┌─────┐    ┌─────────┐    ┌─────┐      │  │
-│  │    │PUCT │    │Policy│    │Value Net│    │更新  │      │  │
-│  │    │公式 │    │Net   │    │+ Rollout│    │統計  │      │  │
-│  │    └─────┘    └─────┘    └─────────┘    └─────┘      │  │
-│  │       ↑            ↑            ↑                     │  │
-│  │       │            │            │                     │  │
-│  └───────┼────────────┼────────────┼─────────────────────┘  │
-│          │            │            │                        │
-│  ┌───────┴────────────┴────────────┴─────────────────────┐  │
-│  │                 Neural Networks                        │  │
-│  │  ┌─────────────────┐    ┌─────────────────┐           │  │
-│  │  │ Policy Network  │    │ Value Network   │           │  │
-│  │  │ π(a|s)          │    │ V(s)            │           │  │
-│  │  │ 輸出：動作機率    │    │ 輸出：勝率估計    │           │  │
-│  │  └─────────────────┘    └─────────────────┘           │  │
-│  └────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Architecture["AlphaGo 搜索架構"]
+        subgraph MCTS["MCTS"]
+            S["Selection"] --> P["PUCT 公式"]
+            E["Expansion"] --> PN["Policy Net"]
+            EV["Evaluation"] --> VN["Value Net<br/>+ Rollout"]
+            B["Backup"] --> U["更新統計"]
+        end
+        subgraph NN["Neural Networks"]
+            Policy["Policy Network<br/>π(a|s)<br/>輸出：動作機率"]
+            Value["Value Network<br/>V(s)<br/>輸出：勝率估計"]
+        end
+        PN -.-> Policy
+        VN -.-> Value
+        P -.-> Policy
+    end
 ```
 
 ### Policy Network 嘅角色
@@ -572,24 +558,12 @@ Policy + Value + MCTS：約 4500 Elo
 
 ### 演進總結
 
-```
-AlphaGo Fan (2015)
-    │
-    │ + 更大網絡、更多訓練
-    ▼
-AlphaGo Lee (2016)
-    │
-    │ + 更多自我對弈
-    ▼
-AlphaGo Master (2017)
-    │
-    │ + 移除人類資料、統一網絡、移除 Rollout
-    ▼
-AlphaGo Zero (2017)
-    │
-    │ + 泛化到其他遊戲
-    ▼
-AlphaZero (2018)
+```mermaid
+flowchart TB
+    A["AlphaGo Fan (2015)"] -->|"+ 更大網絡、更多訓練"| B["AlphaGo Lee (2016)"]
+    B -->|"+ 更多自我對弈"| C["AlphaGo Master (2017)"]
+    C -->|"+ 移除人類資料、統一網絡、移除 Rollout"| D["AlphaGo Zero (2017)"]
+    D -->|"+ 泛化到其他遊戲"| E["AlphaZero (2018)"]
 ```
 
 ---

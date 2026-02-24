@@ -26,18 +26,14 @@ A ideia central do MCTS é: **em vez de enumerar todas as jogadas possíveis, é
 
 O MCTS tradicional contém quatro fases que se repetem continuamente:
 
-```
-     ┌─────────────────────────────────────────────────────────────┐
-     │                        Ciclo MCTS                           │
-     │                                                             │
-     │   ┌───────────┐    ┌───────────┐    ┌───────────┐    ┌───────────┐
-     │   │ Selection │ →  │ Expansion │ →  │ Simulation│ →  │Backprop   │
-     │   │  Seleção  │    │  Expansão │    │  Simulação│    │  Retroprop│
-     │   └───────────┘    └───────────┘    └───────────┘    └───────────┘
-     │        │                                                    │
-     │        └────────────────────────────────────────────────────┘
-     │                           Repetir N vezes
-     └─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph MCTSCycle["Ciclo MCTS - Repetir N vezes"]
+        Selection["Selection<br/>Seleção"] --> Expansion["Expansion<br/>Expansão"]
+        Expansion --> Simulation["Simulation<br/>Simulação"]
+        Simulation --> Backprop["Backprop<br/>Retroprop"]
+        Backprop -.->|"Repetir"| Selection
+    end
 ```
 
 Vamos entender cada fase em detalhes:
@@ -118,34 +114,25 @@ Esses problemas foram elegantemente resolvidos no AlphaGo pelas redes neurais.
 
 O AlphaGo integra duas redes neurais no MCTS:
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Arquitetura de Busca AlphaGo              │
-│                                                             │
-│  ┌───────────────────────────────────────────────────────┐  │
-│  │                    MCTS                               │  │
-│  │                                                       │  │
-│  │   Selection    Expansion    Evaluation    Backup      │  │
-│  │       │            │            │            │        │  │
-│  │       ▼            ▼            ▼            ▼        │  │
-│  │    ┌─────┐    ┌─────┐    ┌─────────┐    ┌─────┐      │  │
-│  │    │PUCT │    │Policy│    │Value Net│    │Atualiz│    │  │
-│  │    │Fórm.│    │Net   │    │+ Rollout│    │Stats │    │  │
-│  │    └─────┘    └─────┘    └─────────┘    └─────┘      │  │
-│  │       ↑            ↑            ↑                     │  │
-│  │       │            │            │                     │  │
-│  └───────┼────────────┼────────────┼─────────────────────┘  │
-│          │            │            │                        │
-│  ┌───────┴────────────┴────────────┴─────────────────────┐  │
-│  │                 Neural Networks                        │  │
-│  │  ┌─────────────────┐    ┌─────────────────┐           │  │
-│  │  │ Policy Network  │    │ Value Network   │           │  │
-│  │  │ π(a|s)          │    │ V(s)            │           │  │
-│  │  │ Saída: prob. de │    │ Saída: estimativa│           │  │
-│  │  │ ação            │    │ de vitória      │           │  │
-│  │  └─────────────────┘    └─────────────────┘           │  │
-│  └────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph AlphaGoSearch["Arquitetura de Busca AlphaGo"]
+        subgraph MCTS["MCTS"]
+            Sel["Selection"] --> PUCT["PUCT Fórm."]
+            Exp["Expansion"] --> PolNet["Policy Net"]
+            Eval["Evaluation"] --> ValNet["Value Net<br/>+ Rollout"]
+            Back["Backup"] --> Stats["Atualiz Stats"]
+        end
+
+        subgraph NN["Neural Networks"]
+            PolicyNetwork["Policy Network<br/>π(a|s)<br/>Saída: prob. de ação"]
+            ValueNetwork["Value Network<br/>V(s)<br/>Saída: estimativa de vitória"]
+        end
+
+        PolicyNetwork -.-> PolNet
+        ValueNetwork -.-> ValNet
+        PolicyNetwork -.-> PUCT
+    end
 ```
 
 ### O Papel da Policy Network

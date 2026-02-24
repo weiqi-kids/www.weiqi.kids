@@ -359,23 +359,21 @@ Estas observações mostram que, embora não tenhamos garantia teórica, a autop
 
 Para acelerar o treinamento, o AlphaGo usa autopartida massivamente paralela:
 
-```
-Arquitetura:
+```mermaid
+flowchart TB
+    PS["Parameter Server<br/>(armazena θ mais recente,<br/>recebe atualizações de gradiente)"]
 
-    ┌────────────────────────────────────────────┐
-    │           Parameter Server                  │
-    │    (armazena θ mais recente, recebe        │
-    │     atualizações de gradiente)              │
-    └────────────────────────────────────────────┘
-         ▲                              │
-         │ atualizações de gradiente    │ parâmetros mais recentes
-         │                              ▼
-    ┌─────────┐  ┌─────────┐  ┌─────────┐
-    │ Worker 1 │  │ Worker 2 │  │ Worker N │
-    │ autopartida│ │ autopartida│ │ autopartida│
-    │ coletar   │  │ coletar   │  │ coletar   │
-    │ trajetórias│  │ trajetórias│  │ trajetórias│
-    └─────────┘  └─────────┘  └─────────┘
+    W1["Worker 1<br/>autopartida<br/>coletar trajetórias"]
+    W2["Worker 2<br/>autopartida<br/>coletar trajetórias"]
+    WN["Worker N<br/>autopartida<br/>coletar trajetórias"]
+
+    PS -->|"parâmetros mais recentes"| W1
+    PS -->|"parâmetros mais recentes"| W2
+    PS -->|"parâmetros mais recentes"| WN
+
+    W1 -->|"atualizações de gradiente"| PS
+    W2 -->|"atualizações de gradiente"| PS
+    WN -->|"atualizações de gradiente"| PS
 ```
 
 **Decisões de design chave**:

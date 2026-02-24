@@ -422,17 +422,11 @@ Q(s, a) = (1/N(s,a)) × Σ V(folha)
 
 Imagine um tabuleiro 3×3 simplificado. A Value Network aprende uma "superfície de valor":
 
-```
-        Posição da pedra branca
-       1   2   3
-    ┌───┬───┬───┐
-  1 │+0,3│-0,1│+0,2│
-Posição├───┼───┼───┤
-pedra  2 │-0,2│+0,5│-0,3│
-preta  ├───┼───┼───┤
-  3 │+0,1│-0,2│+0,4│
-    └───┴───┴───┘
-```
+| Posição pedra preta \ branca | 1 | 2 | 3 |
+|------------------------------|-----|-----|-----|
+| **1** | +0,3 | -0,1 | +0,2 |
+| **2** | -0,2 | +0,5 | -0,3 |
+| **3** | +0,1 | -0,2 | +0,4 |
 
 Esta superfície nos diz o valor de cada combinação de posições. Valores positivos favorecem preto, valores negativos favorecem branco.
 
@@ -604,14 +598,13 @@ Policy Network e Value Network são complementares no AlphaGo:
 
 No AlphaGo Zero, essas duas redes foram fundidas em uma **rede de cabeça dupla**:
 
-```
-       Camadas compartilhadas de extração de características
-              |
-       ┌──────┴──────┐
-       ↓              ↓
-  Cabeça Policy    Cabeça Value
-       ↓              ↓
-  361 probabilidades   Valor único
+```mermaid
+flowchart TB
+    Shared["Camadas compartilhadas de<br/>extração de características"]
+    Shared --> PolicyHead["Cabeça Policy"]
+    Shared --> ValueHead["Cabeça Value"]
+    PolicyHead --> PolicyOut["361 probabilidades"]
+    ValueHead --> ValueOut["Valor único"]
 ```
 
 Vantagens deste design:

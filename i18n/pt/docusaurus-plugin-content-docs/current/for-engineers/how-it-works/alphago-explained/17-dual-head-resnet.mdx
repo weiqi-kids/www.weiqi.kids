@@ -19,23 +19,21 @@ Este artigo analisará em profundidade os princípios de design desta arquitetur
 
 A rede neural do AlphaGo Zero pode ser dividida em três partes:
 
-```
-Entrada (17 × 19 × 19)
-       ↓
-┌─────────────────────────────────────────┐
-│          Backbone Compartilhado (ResNet)  │
-│        40 blocos residuais, 256 canais    │
-└─────────────────────────────────────────┘
-       ↓                    ↓
-┌─────────────┐      ┌─────────────┐
-│  Policy Head │      │  Value Head  │
-│ (Cabeça de   │      │ (Cabeça de   │
-│  Política)   │      │  Valor)      │
-└─────────────┘      └─────────────┘
-       ↓                    ↓
-  Distribuição de      Taxa de vitória
-  probabilidade        [-1, 1]
-  19×19 + 1 Pass
+```mermaid
+flowchart TB
+    Input["Entrada (17 × 19 × 19)"]
+
+    subgraph Backbone["Backbone Compartilhado (ResNet)"]
+        BB["40 blocos residuais, 256 canais"]
+    end
+
+    Input --> Backbone
+
+    Backbone --> PH["Policy Head<br/>(Cabeça de Política)"]
+    Backbone --> VH["Value Head<br/>(Cabeça de Valor)"]
+
+    PH --> POut["Distribuição de probabilidade<br/>19×19 + 1 Pass"]
+    VH --> VOut["Taxa de vitória<br/>[-1, 1]"]
 ```
 
 Vamos analisar cada parte uma a uma.
@@ -211,22 +209,17 @@ Este é o **Problema de Degradação (Degradation Problem)**:
 
 Kaiming He e colaboradores propuseram uma solução elegante e simples em 2015: **Conexão Residual (Skip Connection)**.
 
-```
-Entrada x
-   ↓
-┌─────────────┐
-│  Camada conv │
-│  BN + ReLU  │
-│  Camada conv │
-│  BN        │
-└─────────────┘
-   ↓ F(x)
-   ↓←────────────── x (skip connection)
-   +
-   ↓
- ReLU
-   ↓
-Saída x + F(x)
+```mermaid
+flowchart TB
+    X["Entrada x"]
+    X --> Conv["Camada conv<br/>BN + ReLU<br/>Camada conv<br/>BN"]
+    Conv --> FX["F(x)"]
+
+    X -->|"skip connection"| Add((" "))
+    FX --> Add
+
+    Add --> ReLU["ReLU"]
+    ReLU --> Out["Saída x + F(x)"]
 ```
 
 #### Representação Matemática
