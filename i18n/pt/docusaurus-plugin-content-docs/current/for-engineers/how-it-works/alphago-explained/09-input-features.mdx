@@ -39,24 +39,20 @@ Estado do tabuleiro:         Plano de caracteristicas (preto):
 
 Redes neurais precisam de varios tipos de informacao, entao empilhamos multiplos planos de caracteristicas:
 
+```mermaid
+block-beta
+    columns 1
+    block:tensor["Tensor de entrada: 19 × 19 × N"]
+        columns 1
+        p1["Plano 1 - Posicao de pedras pretas"]
+        p2["Plano 2 - Posicao de pedras brancas"]
+        p3["Plano 3 - Posicao de pontos vazios"]
+        p4["..."]
+        pn["Plano N - Outras caracteristicas"]
+    end
 ```
-Tensor de entrada: 19 x 19 x N
 
-    N planos
-    ↓
-┌───────────┐
-│ Plano 1   │ ← Posicao de pedras pretas
-├───────────┤
-│ Plano 2   │ ← Posicao de pedras brancas
-├───────────┤
-│ Plano 3   │ ← Posicao de pontos vazios
-├───────────┤
-│ ...       │
-├───────────┤
-│ Plano N   │ ← Outras caracteristicas
-└───────────┘
-    19x19
-```
+Cada plano tem tamanho 19x19.
 
 Isso e similar a como imagens coloridas tem canais R, G, B. A "imagem" de Go tem N canais.
 

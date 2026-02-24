@@ -98,15 +98,21 @@ Isso é importante para Go: a mesma forma local, onde quer que apareça no tabul
 
 A operação de convolução é o núcleo da CNN. É uma operação de "janela deslizante":
 
-```
-Entrada (5×5):               Kernel (3×3):            Saída (5×5, padding=same):
-┌───────────────┐           ┌─────────┐              ┌───────────────┐
-│ 1 0 1 0 0     │           │ 1 0 1   │              │ 2 1 3 1 2     │
-│ 0 1 1 1 0     │   *       │ 0 1 0   │    =         │ 1 4 3 3 1     │
-│ 1 1 1 1 1     │           │ 1 0 1   │              │ 3 3 5 3 3     │
-│ 0 0 1 1 0     │           └─────────┘              │ 1 3 3 4 1     │
-│ 0 1 0 0 1     │                                    │ 2 1 3 1 2     │
-└───────────────┘                                    └───────────────┘
+```mermaid
+flowchart LR
+    subgraph Input["Entrada 5×5"]
+        direction TB
+        I["1 0 1 0 0<br/>0 1 1 1 0<br/>1 1 1 1 1<br/>0 0 1 1 0<br/>0 1 0 0 1"]
+    end
+    subgraph Kernel["Kernel 3×3"]
+        direction TB
+        K["1 0 1<br/>0 1 0<br/>1 0 1"]
+    end
+    subgraph Output["Saida 5×5"]
+        direction TB
+        O["2 1 3 1 2<br/>1 4 3 3 1<br/>3 3 5 3 3<br/>1 3 3 4 1<br/>2 1 3 1 2"]
+    end
+    Input -->|"*"| Kernel -->|"="| Output
 ```
 
 Processo de cálculo (usando o ponto central como exemplo):
@@ -123,17 +129,18 @@ Saída[2,2] = 1×1 + 1×0 + 1×1 +
 
 Quando a entrada tem múltiplos canais (como 48 planos de características), o kernel de convolução também se torna 3D:
 
-```
-Entrada: 19×19×48        Kernel: 3×3×48              Saída: 19×19×1
-    ┌─────┐                 ┌───┐                    ┌─────┐
-   ╱     ╱│                ╱   ╱│                   │     │
-  ╱     ╱ │   convolução  ╱   ╱ │                   │     │
- ╱     ╱  │   →          ╱   ╱  │    →              │     │
-┌─────┐   │             ┌───┐   │                   └─────┘
-│     │  ╱              │   │  ╱
-│     │ ╱               │   │╱
-└─────┘╱                └───┘
-48 camadas              48 camadas                  1 camada
+```mermaid
+flowchart LR
+    subgraph Input["Entrada"]
+        I["19×19×48<br/>(48 camadas)"]
+    end
+    subgraph Kernel["Kernel"]
+        K["3×3×48<br/>(48 camadas)"]
+    end
+    subgraph Output["Saida"]
+        O["19×19×1<br/>(1 camada)"]
+    end
+    Input -->|convolucao| Kernel -->|=| Output
 ```
 
 Cada kernel de convolução calcula através de todos os canais de entrada, produzindo um canal de saída.
@@ -142,28 +149,18 @@ Cada kernel de convolução calcula através de todos os canais de entrada, prod
 
 AlphaGo usa 192 filtros, cada um aprendendo características diferentes:
 
-```
-Entrada: 19×19×48
-
-      ┌─────┐
-     ╱     ╱│
-    ╱     ╱ │     192 kernels 3×3×48
-   ╱     ╱  │     ────────────────────►
-  ┌─────┐   │
-  │     │  ╱
-  │     │ ╱
-  └─────┘╱
-
-Saída: 19×19×192
-
-      ┌─────┐
-     ╱     ╱│
-    ╱     ╱ │
-   ╱     ╱  │
-  ┌─────┐   │
-  │     │  ╱
-  │     │ ╱
-  └─────┘╱
+```mermaid
+flowchart LR
+    subgraph Input["Entrada"]
+        I["19×19×48"]
+    end
+    subgraph Filters["192 kernels"]
+        F["3×3×48 × 192"]
+    end
+    subgraph Output["Saida"]
+        O["19×19×192"]
+    end
+    Input --> Filters --> Output
 ```
 
 Cada filtro pode aprender formas de pedras diferentes:
@@ -185,16 +182,15 @@ Cada filtro pode aprender formas de pedras diferentes:
 
 Ao usar kernel de convolução 3×3, cada posição da saída é afetada apenas pela região 3×3 da entrada:
 
-```
-Entrada:                  Saída:
-  ┌─────────────┐        ┌───────────┐
-  │ . . . . .   │        │ . . . .   │
-  │ . ● ● ● .   │  →     │ . ● . .   │
-  │ . ● ● ● .   │        │ . . . .   │
-  │ . ● ● ● .   │        │ . . . .   │
-  │ . . . . .   │        └───────────┘
-  └─────────────┘
-     Campo receptivo 3×3
+```mermaid
+flowchart LR
+    subgraph Input["Entrada"]
+        I[". . . . .<br/>. X X X .<br/>. X X X .<br/>. X X X .<br/>. . . . ."]
+    end
+    subgraph Output["Saida"]
+        O[". . . .<br/>. X . .<br/>. . . .<br/>. . . ."]
+    end
+    Input -->|"Campo receptivo 3×3"| Output
 ```
 
 #### Convolução multicamada

@@ -170,16 +170,14 @@ def extract_features(board, history, current_player):
 
 O tabuleiro de Go tem **8 simetrias** (4 rotações × 2 reflexões). Cada amostra original pode se tornar 8:
 
+```mermaid
+flowchart LR
+    A["Original<br/>●··<br/>···<br/>···"] --> B["Rotacao 90°<br/>···<br/>···<br/>●··"]
+    B --> C["Rotacao 180°<br/>···<br/>···<br/>··●"]
+    C --> D["Rotacao 270°<br/>··●<br/>···<br/>···"]
 ```
-Original:     Rotação 90°:   Rotação 180°:  Rotação 270°:
-┌───┐         ┌───┐          ┌───┐          ┌───┐
-│ ● │         │   │          │   │          │   │
-│   │    →    │   │     →    │   │     →    │   │
-│   │         │ ● │          │ ● │          │ ● │
-└───┘         └───┘          └───┘          └───┘
 
 Cada um espelhado horizontalmente, obtendo 8 amostras de treinamento equivalentes
-```
 
 Isso aumenta os dados de treinamento efetivos em 8 vezes, garantindo que os padrões aprendidos pelo modelo não dependam de uma direção específica.
 
@@ -296,12 +294,10 @@ scheduler = torch.optim.lr_scheduler.StepLR(
 )
 ```
 
-```
-Taxa de aprendizado:
-0.003  ────────┐
-              └─────── 0.0003 ────────┐
-                                      └─────── 0.00003
-         80M passos    160M passos    240M passos
+```mermaid
+flowchart LR
+    A["0.003"] -->|"80M passos"| B["0.0003"]
+    B -->|"160M passos"| C["0.00003"]
 ```
 
 ### Loop de treinamento
@@ -343,17 +339,12 @@ def train_epoch(model, dataloader, optimizer):
 
 Processo de treinamento típico:
 
-```
-Precisão
-60% |                    ......**********
-    |              ......*
-50% |        ......*
-    |    ....*
-40% |  ..*
-    |..*
-30% |*
-    +───────────────────────────────────── Passos de treinamento
-    0       100M     200M     300M     340M
+```mermaid
+xychart-beta
+    title "Curva de treinamento"
+    x-axis ["0", "100M", "200M", "300M", "340M"]
+    y-axis "Precisao" 30 --> 60
+    line [30, 42, 52, 56, 57]
 ```
 
 Perda e precisão melhoram rapidamente, depois estabilizam.
