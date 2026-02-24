@@ -58,32 +58,21 @@ description: 深入理解强化学习的核心概念：Agent、Environment、Rew
 
 强化学习的基本架构包含两个主角：
 
-```
-        ┌─────────────────────────────────────┐
-        │           Environment               │
-        │                                     │
-        │   ┌─────────┐      ┌─────────┐     │
-        │   │  State  │      │ Reward  │     │
-        │   │   s_t   │      │   r_t   │     │
-        │   └────┬────┘      └────┬────┘     │
-        │        │                │          │
-        └────────┼────────────────┼──────────┘
-                 │                │
-                 ▼                ▼
-        ┌─────────────────────────────────────┐
-        │            Agent                    │
-        │                                     │
-        │         ┌──────────┐               │
-        │         │  Policy  │               │
-        │         │   π(s)   │               │
-        │         └────┬─────┘               │
-        │              │                     │
-        │              ▼                     │
-        │         ┌──────────┐               │
-        │         │  Action  │               │
-        │         │   a_t    │───────────────┼───► 送回环境
-        │         └──────────┘               │
-        └─────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Environment["Environment"]
+        State["State<br/>s_t"]
+        Reward["Reward<br/>r_t"]
+    end
+
+    subgraph Agent["Agent"]
+        Policy["Policy<br/>π(s)"]
+        Policy --> Action["Action<br/>a_t"]
+    end
+
+    State --> Policy
+    Reward --> Policy
+    Action -->|"送回环境"| Environment
 ```
 
 **Agent（智能体）**：

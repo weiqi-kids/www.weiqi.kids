@@ -26,18 +26,14 @@ MCTS 的核心思想是：**与其穷举所有可能的走法，不如随机模�
 
 传统的 MCTS 包含四个阶段，不断重复：
 
-```
-     ┌─────────────────────────────────────────────────────────────┐
-     │                        MCTS 循环                            │
-     │                                                             │
-     │   ┌───────────┐    ┌───────────┐    ┌───────────┐    ┌───────────┐
-     │   │ Selection │ →  │ Expansion │ →  │ Simulation│ →  │Backprop   │
-     │   │   选择     │    │   展开     │    │   模拟     │    │  反向传播  │
-     │   └───────────┘    └───────────┘    └───────────┘    └───────────┘
-     │        │                                                    │
-     │        └────────────────────────────────────────────────────┘
-     │                           重复 N 次
-     └─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph Loop["MCTS 循环（重复 N 次）"]
+        Selection["Selection<br/>选择"] --> Expansion["Expansion<br/>展开"]
+        Expansion --> Simulation["Simulation<br/>模拟"]
+        Simulation --> Backprop["Backprop<br/>反向传播"]
+        Backprop -->|"循环"| Selection
+    end
 ```
 
 让我们详细了解每个阶段：
@@ -118,33 +114,26 @@ $$\text{UCB1}(s, a) = \bar{X}_{s,a} + c \sqrt{\frac{\ln N_s}{N_{s,a}}}$$
 
 AlphaGo 将两个神经网络整合进 MCTS：
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    AlphaGo 搜索架构                          │
-│                                                             │
-│  ┌───────────────────────────────────────────────────────┐  │
-│  │                    MCTS                               │  │
-│  │                                                       │  │
-│  │   Selection    Expansion    Evaluation    Backup      │  │
-│  │       │            │            │            │        │  │
-│  │       ▼            ▼            ▼            ▼        │  │
-│  │    ┌─────┐    ┌─────┐    ┌─────────┐    ┌─────┐      │  │
-│  │    │PUCT │    │Policy│    │Value Net│    │更新  │      │  │
-│  │    │公式 │    │Net   │    │+ Rollout│    │统计  │      │  │
-│  │    └─────┘    └─────┘    └─────────┘    └─────┘      │  │
-│  │       ↑            ↑            ↑                     │  │
-│  │       │            │            │                     │  │
-│  └───────┼────────────┼────────────┼─────────────────────┘  │
-│          │            │            │                        │
-│  ┌───────┴────────────┴────────────┴─────────────────────┐  │
-│  │                 Neural Networks                        │  │
-│  │  ┌─────────────────┐    ┌─────────────────┐           │  │
-│  │  │ Policy Network  │    │ Value Network   │           │  │
-│  │  │ π(a|s)          │    │ V(s)            │           │  │
-│  │  │ 输出：动作概率    │    │ 输出：胜率估计    │           │  │
-│  │  └─────────────────┘    └─────────────────┘           │  │
-│  └────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph SearchArch["AlphaGo 搜索架构"]
+        subgraph MCTS["MCTS"]
+            direction LR
+            Selection_AG["Selection<br/>PUCT 公式"]
+            Expansion_AG["Expansion<br/>Policy Net"]
+            Evaluation_AG["Evaluation<br/>Value Net + Rollout"]
+            Backup_AG["Backup<br/>更新统计"]
+        end
+
+        subgraph NeuralNets["Neural Networks"]
+            PolicyNet["Policy Network<br/>π(a|s)<br/>输出：动作概率"]
+            ValueNet["Value Network<br/>V(s)<br/>输出：胜率估计"]
+        end
+
+        PolicyNet -.-> Selection_AG
+        PolicyNet -.-> Expansion_AG
+        ValueNet -.-> Evaluation_AG
+    end
 ```
 
 ### Policy Network 的角色
