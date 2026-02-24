@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="ja" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-for-engineers/how-it-works/alphago-explained/key-matches" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">重要対局の回顧 | 好棋寶寶協會 | Weiqi.Kids</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://www.weiqi.kids/ja/img/social-card.png"><meta data-rh="true" name="twitter:image" content="https://www.weiqi.kids/ja/img/social-card.png"><meta data-rh="true" property="og:url" content="https://www.weiqi.kids/ja/docs/for-engineers/how-it-works/alphago-explained/key-matches/"><meta data-rh="true" property="og:locale" content="ja"><meta data-rh="true" property="og:locale:alternate" content="zh_tw"><meta data-rh="true" property="og:locale:alternate" content="zh_cn"><meta data-rh="true" property="og:locale:alternate" content="zh_hk"><meta data-rh="true" property="og:locale:alternate" content="en"><meta data-rh="true" property="og:locale:alternate" content="ko"><meta data-rh="true" property="og:locale:alternate" content="es"><meta data-rh="true" property="og:locale:alternate" content="pt"><meta data-rh="true" property="og:locale:alternate" content="hi"><meta data-rh="true" property="og:locale:alternate" content="id"><meta data-rh="true" property="og:locale:alternate" content="ar"><meta data-rh="true" name="docusaurus_locale" content="ja"><meta data-rh="true" name="docsearch:language" content="ja"><meta data-rh="true" name="keywords" content="圍棋, Go, 好棋寶寶, AI, KataGo, AlphaGo, 圍棋教學, 圍棋入門"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="重要対局の回顧 | 好棋寶寶協會 | Weiqi.Kids"><meta data-rh="true" name="description" content="ファン・フイとの秘密対局から柯潔との三番勝負まで、AlphaGoの全ての重要対局を完全回顧"><meta data-rh="true" property="og:description" content="ファン・フイとの秘密対局から柯潔との三番勝負まで、AlphaGoの全ての重要対局を完全回顧"><link data-rh="true" rel="icon" href="/ja/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://www.weiqi.kids/ja/docs/for-engineers/how-it-works/alphago-explained/key-matches/"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="zh-tw"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/zh-cn/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="zh-cn"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/zh-hk/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="zh-hk"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/en/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="en"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/ja/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="ja"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/ko/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="ko"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/es/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="es"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/pt/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="pt"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/hi/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="hi"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/id/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="id"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/ar/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="ar"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.weiqi.kids#organization","name":"台灣好棋寶寶協會","alternateName":"Taiwan Good Go Baby Association","url":"https://www.weiqi.kids","logo":{"@type":"ImageObject","url":"https://www.weiqi.kids/img/logo.svg","width":200,"height":200},"sameAs":["https://mastodon.weiqi.kids/","https://peertube.weiqi.kids/"],"contactPoint":{"@type":"ContactPoint","contactType":"customer service","url":"https://www.weiqi.kids/docs/aboutus"},"description":"推動圍棋文化與 AI 研究的台灣非營利組織"},{"@type":"WebSite","@id":"https://www.weiqi.kids#website","name":"好棋寶寶協會官網","url":"https://www.weiqi.kids","publisher":{"@id":"https://www.weiqi.kids#organization"},"inLanguage":["zh-TW","zh-CN","zh-HK","en","ja","ko","es","pt","hi","id","ar"],"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://www.weiqi.kids/search?q={search_term_string}"},"query-input":"required name=search_term_string"}}]}</script><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"給工程師的圍棋 AI 指南","item":"https://www.weiqi.kids/ja/docs/for-engineers/"},{"@type":"ListItem","position":2,"name":"一篇文章搞懂圍棋 AI","item":"https://www.weiqi.kids/ja/docs/for-engineers/how-it-works/"},{"@type":"ListItem","position":3,"name":"AlphaGo 完整解析","item":"https://www.weiqi.kids/ja/docs/for-engineers/how-it-works/alphago-explained/"},{"@type":"ListItem","position":4,"name":"重要対局の回顧","item":"https://www.weiqi.kids/ja/docs/for-engineers/how-it-works/alphago-explained/key-matches"}]}</script><meta property="og:type" content="website">
+<meta property="og:site_name" content="好棋寶寶協會">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow">
+<meta name="author" content="台灣好棋寶寶協會">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css" integrity="sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM" crossorigin="anonymous"><link rel="stylesheet" href="/ja/assets/css/styles.f23bf74b.css">
+<script src="/ja/assets/js/runtime~main.5a8f2440.js" defer="defer"></script>
+<script src="/ja/assets/js/main.0ede01a4.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>document.documentElement.setAttribute("data-theme","light"),document.documentElement.setAttribute("data-theme-choice","light"),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/ja/img/logo.svg"><div role="region" aria-label="メインコンテンツまでスキップ"><a class="skipToContent_WWLT" href="#__docusaurus_skipToContent_fallback">メインコンテンツまでスキップ</a></div><nav aria-label="ナビゲーション" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="ナビゲーションバーを開く" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/ja/"><div class="navbar__logo"><img src="/ja/img/logo.svg" alt="好棋宝宝協会ロゴ" class="themedComponent_rBb5 themedComponent--light_t3c2"><img src="/ja/img/logo.svg" alt="好棋宝宝協会ロゴ" class="themedComponent_rBb5 themedComponent--dark_Z76H"></div><b class="navbar__title text--truncate">囲碁キッズ</b></a><a class="navbar__item navbar__link" href="/ja/docs/for-players/">囲碁プレイヤー向け</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/ja/docs/for-engineers/">エンジニア向け</a><a class="navbar__item navbar__link" href="/ja/docs/about/">協会について</a><a class="navbar__item navbar__link" href="/ja/docs/activities/">活動実績</a><a class="navbar__item navbar__link" href="/ja/docs/references/">参考資料</a><a class="navbar__item navbar__link" href="/ja/docs/sop/">標準作業手順</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href="#" aria-haspopup="true" aria-expanded="false" role="button" class="navbar__link navbar__item--compact"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class="iconLanguage_LXmZ"><path fill="currentColor" d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"></path></svg>日本語</a><ul class="dropdown__menu"><li><a href="/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="zh-tw">繁體中文</a></li><li><a href="/zh-cn/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="zh-cn">简体中文</a></li><li><a href="/zh-hk/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="zh-hk">粵語（香港）</a></li><li><a href="/en/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="en">English</a></li><li><a href="/ja/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang="ja">日本語</a></li><li><a href="/ko/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="ko">한국어</a></li><li><a href="/es/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="es">Español</a></li><li><a href="/pt/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="pt">Português</a></li><li><a href="/hi/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="hi">हिन्दी</a></li><li><a href="/id/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="id">Bahasa Indonesia</a></li><li><a href="/ar/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="ar">العربية</a></li></ul></div><a href="https://github.com/weiqi-kids/www.weiqi.kids" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link header-github-link navbar__item--compact" aria-label="GitHub"></a><div class="navbarSearchContainer_MDM0"><div class="navbar__search searchBarContainer_Qpyg" dir="ltr"><input placeholder="検索" aria-label="Search" class="navbar__search-input searchInput_KBva" value=""><div class="loadingRing_riNO searchBarLoadingRing_XquT"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_SQvo"><div class="docsWrapper_HjTU"><button aria-label="先頭へ戻る" class="clean-btn theme-back-to-top-button backToTopButton_91RE" type="button"></button><div class="docRoot_SzOB"><aside class="theme-doc-sidebar-container docSidebarContainer_Q0cb"><div class="sidebarViewport_TEb6"><div class="sidebar_LiQ3"><nav aria-label="ドキュメントのサイドバー" class="menu thin-scrollbar menu_iDgU"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/ja/docs/intro/"><span title="ご利用ガイド" class="linkLabel_REp1">ご利用ガイド</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/ja/docs/about/"><span title="關於協會" class="categoryLinkLabel_ezQx">關於協會</span></a><button aria-label="&#x27;關於協會&#x27;の目次を開く" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/ja/docs/activities/"><span title="活動實績" class="categoryLinkLabel_ezQx">活動實績</span></a><button aria-label="&#x27;活動實績&#x27;の目次を開く" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/ja/docs/for-players/"><span title="囲碁愛好家向け" class="categoryLinkLabel_ezQx">囲碁愛好家向け</span></a><button aria-label="&#x27;囲碁愛好家向け&#x27;の目次を開く" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/ja/docs/references/"><span title="參考資料" class="categoryLinkLabel_ezQx">參考資料</span></a><button aria-label="&#x27;參考資料&#x27;の目次を開く" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/ja/docs/sop/"><span title="標準作業流程" class="categoryLinkLabel_ezQx">標準作業流程</span></a><button aria-label="&#x27;標準作業流程&#x27;の目次を開く" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist menu__link--active" href="/ja/docs/for-engineers/"><span title="給工程師的圍棋 AI 指南" class="categoryLinkLabel_ezQx">給工程師的圍棋 AI 指南</span></a><button aria-label="&#x27;給工程師的圍棋 AI 指南&#x27;の目次を隠す" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" tabindex="0" href="/ja/docs/for-engineers/deep-dive/"><span title="深く研究したい方へ" class="categoryLinkLabel_ezQx">深く研究したい方へ</span></a><button aria-label="&#x27;深く研究したい方へ&#x27;の目次を開く" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" tabindex="0" href="/ja/docs/for-engineers/hands-on/"><span title="30 分鐘跑起第一個圍棋 AI" class="categoryLinkLabel_ezQx">30 分鐘跑起第一個圍棋 AI</span></a><button aria-label="&#x27;30 分鐘跑起第一個圍棋 AI&#x27;の目次を開く" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist menu__link--active" tabindex="0" href="/ja/docs/for-engineers/how-it-works/"><span title="一篇文章搞懂圍棋 AI" class="categoryLinkLabel_ezQx">一篇文章搞懂圍棋 AI</span></a><button aria-label="&#x27;一篇文章搞懂圍棋 AI&#x27;の目次を隠す" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-3 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist menu__link--active" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/"><span title="AlphaGo 完整解析" class="categoryLinkLabel_ezQx">AlphaGo 完整解析</span></a><button aria-label="&#x27;AlphaGo 完整解析&#x27;の目次を隠す" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/"><span title="AlphaGo の誕生" class="linkLabel_REp1">AlphaGo の誕生</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/key-matches/"><span title="重要対局の回顧" class="linkLabel_REp1">重要対局の回顧</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/move-37/"><span title="「神の一手」徹底分析" class="linkLabel_REp1">「神の一手」徹底分析</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/why-go-is-hard/"><span title="囲碁はなぜ難しいのか？" class="linkLabel_REp1">囲碁はなぜ難しいのか？</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/traditional-limits/"><span title="従来手法の限界" class="linkLabel_REp1">従来手法の限界</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/board-representation/"><span title="盤面状態の表現" class="linkLabel_REp1">盤面状態の表現</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/policy-network/"><span title="Policy Network 詳解" class="linkLabel_REp1">Policy Network 詳解</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/value-network/"><span title="Value Network 詳解" class="linkLabel_REp1">Value Network 詳解</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/input-features/"><span title="入力特徴量の設計" class="linkLabel_REp1">入力特徴量の設計</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/cnn-and-go/"><span title="CNNと囲碁の融合" class="linkLabel_REp1">CNNと囲碁の融合</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/supervised-learning/"><span title="教師あり学習フェーズ" class="linkLabel_REp1">教師あり学習フェーズ</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/reinforcement-intro/"><span title="強化学習入門" class="linkLabel_REp1">強化学習入門</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/self-play/"><span title="自己対局" class="linkLabel_REp1">自己対局</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/mcts-neural-combo/"><span title="MCTS とニューラルネットワークの融合" class="linkLabel_REp1">MCTS とニューラルネットワークの融合</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/puct-formula/"><span title="PUCT 公式詳解" class="linkLabel_REp1">PUCT 公式詳解</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/alphago-zero/"><span title="AlphaGo Zero 概要" class="linkLabel_REp1">AlphaGo Zero 概要</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/dual-head-resnet/"><span title="デュアルヘッドネットワークと残差ネットワーク" class="linkLabel_REp1">デュアルヘッドネットワークと残差ネットワーク</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/training-from-scratch/"><span title="ゼロからの学習過程" class="linkLabel_REp1">ゼロからの学習過程</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/distributed-systems/"><span title="分散システムと TPU" class="linkLabel_REp1">分散システムと TPU</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/alphago-explained/legacy-and-impact/"><span title="AlphaGo の遺産" class="linkLabel_REp1">AlphaGo の遺産</span></a></li></ul></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/katago-innovations/"><span title="KataGo 的關鍵創新" class="linkLabel_REp1">KataGo 的關鍵創新</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/ja/docs/for-engineers/how-it-works/concepts/"><span title="概念速查表" class="linkLabel_REp1">概念速查表</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" tabindex="0" href="/ja/docs/for-engineers/industry/"><span title="圍棋 AI 產業現況" class="categoryLinkLabel_ezQx">圍棋 AI 產業現況</span></a><button aria-label="&#x27;圍棋 AI 產業現況&#x27;の目次を開く" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" tabindex="0" href="/ja/docs/for-engineers/overview/"><span title="圍棋 AI 能做什麼？" class="categoryLinkLabel_ezQx">圍棋 AI 能做什麼？</span></a><button aria-label="&#x27;圍棋 AI 能做什麼？&#x27;の目次を開く" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></li></ul></nav></div></div></aside><main class="docMainContainer_C0wL"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_txwF"><div class="docItemContainer_FUEM"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_DlgT" aria-label="パンくずリストのナビゲーション"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="ホームページ" class="breadcrumbs__link" href="/ja/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_BMIH"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/ja/docs/for-engineers/"><span>給工程師的圍棋 AI 指南</span></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/ja/docs/for-engineers/how-it-works/"><span>一篇文章搞懂圍棋 AI</span></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/ja/docs/for-engineers/how-it-works/alphago-explained/"><span>AlphaGo 完整解析</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">重要対局の回顧</span></li></ul></nav><div class="tocCollapsible_LBsY theme-doc-toc-mobile tocMobile_eMWB"><button type="button" class="clean-btn tocCollapsibleButton_fVBn">このページの見出し</button></div><div class="theme-doc-markdown markdown"><header><h1>重要対局の回顧</h1></header>
+<p>AlphaGoの歴史は、世界を震撼させた対局によって綴られています。2015年10月のロンドンでの秘密対局から、2017年5月の烏鎮での最後の舞台まで、一局一局が人類の囲碁と人工知能に対する認識を書き換えてきました。</p>
+<p>本稿では、これらの重要対局の背景、経過、そして意義を完全に振り返ります。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="ファンフイ戦201510秘密裏に行われた50">ファン・フイ戦（2015.10）：秘密裏に行われた5:0<a href="#ファンフイ戦201510秘密裏に行われた50" class="hash-link" aria-label="ファン・フイ戦（2015.10）：秘密裏に行われた5:0 への直接リンク" title="ファン・フイ戦（2015.10）：秘密裏に行われた5:0 への直接リンク" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="背景なぜファンフイが選ばれたのか">背景：なぜファン・フイが選ばれたのか？<a href="#背景なぜファンフイが選ばれたのか" class="hash-link" aria-label="背景：なぜファン・フイが選ばれたのか？ への直接リンク" title="背景：なぜファン・フイが選ばれたのか？ への直接リンク" translate="no">​</a></h3>
+<p>AlphaGoが世界トップ棋士に挑戦する前に、DeepMindは「テストの場」を必要としていました。AlphaGoの真の実力を検証するためにプロ棋士が必要でしたが、その棋士はいくつかの条件を満たす必要がありました：</p>
+<ol>
+<li class=""><strong>真のプロレベル</strong>：アマチュア棋士ではAIの実力を正確にテストできない</li>
+<li class=""><strong>守秘義務を守れること</strong>：論文発表前に情報を漏らさないこと</li>
+<li class=""><strong>地理的に便利</strong>：複数の正式対局を行いやすい場所にいること</li>
+<li class=""><strong>オープンマインド</strong>：AI対戦相手を真剣に受け止める姿勢</li>
+</ol>
+<p><strong>ファン・フイ</strong>はこれらの条件に完璧に当てはまりました。中国西安出身のこのプロ棋士は、1996年に入段し、2000年に二段に昇段した後、フランスに移住してヨーロッパ囲碁チャンピオンとなりました。当時ヨーロッパ最強のプロ棋士であり、同時に人工知能に対してもオープンな姿勢を持っていました。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="対局の手配">対局の手配<a href="#対局の手配" class="hash-link" aria-label="対局の手配 への直接リンク" title="対局の手配 への直接リンク" translate="no">​</a></h3>
+<p>2015年10月、ファン・フイはロンドンのDeepMind本社に招かれました。秘密保持契約に署名した後、AlphaGoとの<strong>5局の正式対局</strong>が行われました。</p>
+<p>対局条件：</p>
+<ul>
+<li class=""><strong>持ち時間</strong>：各1時間、1手30秒の秒読み</li>
+<li class=""><strong>ルール</strong>：中国ルール、コミ7.5目</li>
+<li class=""><strong>環境</strong>：DeepMindオフィス、Aja Huangが代わりに着手</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="50の衝撃">5:0の衝撃<a href="#50の衝撃" class="hash-link" aria-label="5:0の衝撃 への直接リンク" title="5:0の衝撃 への直接リンク" translate="no">​</a></h3>
+<p>結果は全員を驚かせました：<strong>AlphaGoが5:0で完勝</strong>。</p>
+<table><thead><tr><th>局番</th><th>日付</th><th>結果</th><th>備考</th></tr></thead><tbody><tr><td>第1局</td><td>10月5日</td><td>AlphaGo 中押し勝ち</td><td>ファン・フイ黒番</td></tr><tr><td>第2局</td><td>10月6日</td><td>AlphaGo 中押し勝ち</td><td>ファン・フイ白番</td></tr><tr><td>第3局</td><td>10月7日</td><td>AlphaGo 中押し勝ち</td><td>ファン・フイ黒番</td></tr><tr><td>第4局</td><td>10月8日</td><td>AlphaGo 1.5目勝ち</td><td>ファン・フイ白番</td></tr><tr><td>第5局</td><td>10月9日</td><td>AlphaGo 中押し勝ち</td><td>ファン・フイ黒番</td></tr></tbody></table>
+<p>🎬 E1：この5局はPolicy Networkがいかに探索方向を導くかを示しています</p>
+<p>ファン・フイは後にこう回想しています：</p>
+<blockquote>
+<p>「第1局を負けて、油断したのだと思いました。第2局を負けて、真剣になりました。第3局、第4局、第5局と全て負けて、これは私の問題ではないと分かりました——囲碁そのものが変わったのです。」</p>
+</blockquote>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="なぜ秘密にされたのか">なぜ秘密にされたのか？<a href="#なぜ秘密にされたのか" class="hash-link" aria-label="なぜ秘密にされたのか？ への直接リンク" title="なぜ秘密にされたのか？ への直接リンク" translate="no">​</a></h3>
+<p>DeepMindが秘密を選んだ理由はいくつかありました：</p>
+<ol>
+<li class=""><strong>学術出版</strong>：論文は査読を経て発表する必要があった</li>
+<li class=""><strong>検証時間</strong>：結果の再現性を確認する時間が必要だった</li>
+<li class=""><strong>ビジネス戦略</strong>：ニュース公開の最適なタイミングを選ぶため</li>
+<li class=""><strong>ファン・フイの保護</strong>：情報公開前に彼がプレッシャーを受けないようにするため</li>
+</ol>
+<p>この秘密は丸々3ヶ月間守られ、2016年1月の『Nature』論文発表まで明かされませんでした。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="ファンフイの変化">ファン・フイの変化<a href="#ファンフイの変化" class="hash-link" aria-label="ファン・フイの変化 への直接リンク" title="ファン・フイの変化 への直接リンク" translate="no">​</a></h3>
+<p>この5局を負けた後、ファン・フイは落胆しませんでした。むしろ、AlphaGoチームの一員となり、システムのテストと改善を担当するようになりました。</p>
+<blockquote>
+<p>「私はAIに負けたのではありません。AIの発展の一部になったのです。これは恥辱ではなく、名誉なのです。」</p>
+</blockquote>
+<p>このオープンな姿勢は、後に囲碁界がAIに向き合う際の模範となりました。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="李世ドル戦201603世界を変えた五番勝負">李世ドル戦（2016.03）：世界を変えた五番勝負<a href="#李世ドル戦201603世界を変えた五番勝負" class="hash-link" aria-label="李世ドル戦（2016.03）：世界を変えた五番勝負 への直接リンク" title="李世ドル戦（2016.03）：世界を変えた五番勝負 への直接リンク" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="世紀の対決の準備">世紀の対決の準備<a href="#世紀の対決の準備" class="hash-link" aria-label="世紀の対決の準備 への直接リンク" title="世紀の対決の準備 への直接リンク" translate="no">​</a></h3>
+<p>2016年1月27日、『Nature』論文発表後、DeepMindは世界トップ棋士への挑戦を発表しました。ターゲット：<strong>李世ドル</strong>（Lee Sedol）。</p>
+<p>なぜ李世ドルなのか？</p>
+<ul>
+<li class=""><strong>18の世界タイトル</strong>：過去10年間で最も成功した棋士の一人</li>
+<li class=""><strong>「神算」の異名</strong>：精密な読みで知られる</li>
+<li class=""><strong>戦闘型スタイル</strong>：複雑で激しい対局を好む</li>
+<li class=""><strong>35歳で絶頂期</strong>：経験と体力の最良のバランス</li>
+</ul>
+<p>🎬 E3：李世ドルのスタイルはまさにMCTSの限界をテストするのに適していました</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="試合設定">試合設定<a href="#試合設定" class="hash-link" aria-label="試合設定 への直接リンク" title="試合設定 への直接リンク" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>場所</strong>：韓国ソウル フォーシーズンズホテル</li>
+<li class=""><strong>日程</strong>：2016年3月9日〜15日</li>
+<li class=""><strong>賞金</strong>：100万ドル（勝者総取り、引き分けまたは慈善寄付）</li>
+<li class=""><strong>ルール</strong>：中国ルール、コミ7.5目</li>
+<li class=""><strong>持ち時間</strong>：各2時間、1分秒読み3回</li>
+</ul>
+<p>世界200以上の国と地域で生中継され、視聴者は<strong>2億人</strong>を超えると予想されました。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="第1局衝撃の始まり">第1局：衝撃の始まり<a href="#第1局衝撃の始まり" class="hash-link" aria-label="第1局：衝撃の始まり への直接リンク" title="第1局：衝撃の始まり への直接リンク" translate="no">​</a></h3>
+<p><strong>2016年3月9日</strong></p>
+<p>李世ドルが黒番で先手。序盤は双方とも定石通り。しかし中盤に入ると、AlphaGoは驚くべき大局観を見せました。</p>
+<p>102手目で、AlphaGoは一見譲歩するような手を打ち、右辺の実利を譲りました。プロ棋士たちは困惑を表明しました。しかし20手後、この手の妙味が明らかになりました——AlphaGoは犠牲にした石で中央に厚みを築き、最終的に全局で優勢を得ました。</p>
+<p><strong>結果：AlphaGo 中押し勝ち</strong></p>
+<p>対局後、李世ドルは言いました：</p>
+<blockquote>
+<p>「とても衝撃を受けました。負けるとは思いませんでしたし、ましてやこれほど完敗するとは。」</p>
+</blockquote>
+<p>🎬 E5：この対局はValue Networkの全局評価能力を示しています</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="第2局神の一手の誕生">第2局：「神の一手」の誕生<a href="#第2局神の一手の誕生" class="hash-link" aria-label="第2局：「神の一手」の誕生 への直接リンク" title="第2局：「神の一手」の誕生 への直接リンク" translate="no">​</a></h3>
+<p><strong>2016年3月10日</strong></p>
+<p>この対局で「<strong>神の一手</strong>」と呼ばれる37手目が誕生しました。（詳細は次稿：<a class="" href="/ja/docs/for-engineers/how-it-works/alphago-explained/move-37/">「神の一手」徹底分析</a>）</p>
+<p>AlphaGoは右上隅で「五路のカタツキ」を打ちました——人間がほとんど考慮しない位置です。解説者はその場で「ミス」と言いました。しかし50手後、この手が勝利への鍵であることが証明されました。</p>
+<p><strong>結果：AlphaGo 中押し勝ち</strong></p>
+<p>韓国の解説者、金成龍九段は対局後にこう言いました：</p>
+<blockquote>
+<p>「50年間碁を打ってきましたが、このような碁は見たことがありません。AlphaGoは囲碁とは何かを私に再考させました。」</p>
+</blockquote>
+<p>🎬 E7：37手目はAIがいかに人間未知の戦略を発見するかを示しています</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="第3局絶望の30">第3局：絶望の3:0<a href="#第3局絶望の30" class="hash-link" aria-label="第3局：絶望の3:0 への直接リンク" title="第3局：絶望の3:0 への直接リンク" translate="no">​</a></h3>
+<p><strong>2016年3月12日</strong></p>
+<p>李世ドルはこの対局で非定石の序盤を試み、AlphaGoを未知の領域に引き込もうとしました。「小林流」布石の変形を採用し、複雑な戦いで勝利を目指しました。</p>
+<p>しかしAlphaGoの対応は依然として落ち着いていました。驚くべき適応能力を見せ——人間がどのような手を打っても、最善の応手を見つけました。</p>
+<p><strong>結果：AlphaGo 中押し勝ち</strong></p>
+<p>スコアは3:0となり、試合の結果は決まりました。しかし誰もが期待していました：人間は1局でも勝てるのか？</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="第4局人間の反撃">第4局：人間の反撃<a href="#第4局人間の反撃" class="hash-link" aria-label="第4局：人間の反撃 への直接リンク" title="第4局：人間の反撃 への直接リンク" translate="no">​</a></h3>
+<p><strong>2016年3月13日</strong></p>
+<p>この対局は永遠に歴史に刻まれることになります——AIの神業ではなく、<strong>人間の反撃</strong>のために。</p>
+<p>78手目の局面で、李世ドルは秒読みの中で驚天動地の一手を放ちました：<strong>五路の妙手</strong>。</p>
+<p>これは「ワリコミ」の手筋で、一見普通に見えますが、AlphaGoを混乱に陥れました。その後の数手で、AlphaGoの勝率評価は激しく変動し、明らかな悪手をいくつか打ちました。</p>
+<p>🎬 E9：この対局は特定の局面でのMCTSの弱点を露呈しました</p>
+<p>DeepMindチームは後に分析し、AlphaGoはその局面で勝率評価を誤ったことが分かりました。李世ドルのあの手の威力を過小評価し、その後の対応を誤りました。</p>
+<p><strong>結果：李世ドル 中押し勝ち</strong></p>
+<p>これがAlphaGoの公式戦での唯一の敗北です。李世ドルは興奮してこう言いました：</p>
+<blockquote>
+<p>「この勝利は価値がつけられません。人間の棋士がまだAIに勝てることを証明しました——少なくともある局面では。」</p>
+</blockquote>
+<p>Google DeepMind CEOのDemis Hassabisはツイートしました：</p>
+<blockquote>
+<p>「李世ドルは真のレジェンドです。彼はAlphaGoの弱点を見つけ、正確にそれを突きました。」</p>
+</blockquote>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="第5局最終結末">第5局：最終結末<a href="#第5局最終結末" class="hash-link" aria-label="第5局：最終結末 への直接リンク" title="第5局：最終結末 への直接リンク" translate="no">​</a></h3>
+<p><strong>2016年3月15日</strong></p>
+<p>貴重な1勝を得た後、李世ドルはより軽い気持ちで第5局に臨みました。より積極的な戦略を採用し、再びAlphaGoの弱点を見つけようとしました。</p>
+<p>しかしDeepMindチームは第4局後に緊急調整を行いました。このバージョンのAlphaGoはより堅実で、以前のような評価ミスは見られませんでした。</p>
+<p><strong>結果：AlphaGo 中押し勝ち</strong></p>
+<p><strong>最終スコア：AlphaGo 4:1 李世ドル</strong></p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="対局の歴史的意義">対局の歴史的意義<a href="#対局の歴史的意義" class="hash-link" aria-label="対局の歴史的意義 への直接リンク" title="対局の歴史的意義 への直接リンク" translate="no">​</a></h3>
+<p>この試合の影響は囲碁界を超えました：</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="人工知能への影響">人工知能への影響<a href="#人工知能への影響" class="hash-link" aria-label="人工知能への影響 への直接リンク" title="人工知能への影響 への直接リンク" translate="no">​</a></h4>
+<ul>
+<li class=""><strong>深層学習の威力を証明</strong>：AIは複雑な意思決定タスクで人間を超えられる</li>
+<li class=""><strong>強化学習のマイルストーン</strong>：自己対局訓練が有効であることが証明された</li>
+<li class=""><strong>後続研究の刺激</strong>：AI分野への投資ブームを引き起こした</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="囲碁界への影響">囲碁界への影響<a href="#囲碁界への影響" class="hash-link" aria-label="囲碁界への影響 への直接リンク" title="囲碁界への影響 への直接リンク" translate="no">​</a></h4>
+<ul>
+<li class=""><strong>伝統理論への挑戦</strong>：多くの「定石」が次善であることが証明された</li>
+<li class=""><strong>トレーニング方法の変化</strong>：プロ棋士がAIを使った訓練を始めた</li>
+<li class=""><strong>新しい打ち方の誕生</strong>：AIが多くの革新的な手法をもたらした</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="一般への影響">一般への影響<a href="#一般への影響" class="hash-link" aria-label="一般への影響 への直接リンク" title="一般への影響 への直接リンク" translate="no">​</a></h4>
+<ul>
+<li class=""><strong>AI意識の目覚め</strong>：一般の人々が人工知能に関心を持ち始めた</li>
+<li class=""><strong>科学報道の増加</strong>：主流メディアがAIの進歩を大々的に報道</li>
+<li class=""><strong>映画とドキュメンタリー</strong>：『AlphaGo』ドキュメンタリーの制作につながった</li>
+</ul>
+<p>🎬 E11：この試合はAI能力の「相転移」の瞬間を示しています</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="master-60連勝201701オンライン早碁の衝撃">Master 60連勝（2017.01）：オンライン早碁の衝撃<a href="#master-60連勝201701オンライン早碁の衝撃" class="hash-link" aria-label="Master 60連勝（2017.01）：オンライン早碁の衝撃 への直接リンク" title="Master 60連勝（2017.01）：オンライン早碁の衝撃 への直接リンク" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="謎のmasterアカウント">謎の「Master」アカウント<a href="#謎のmasterアカウント" class="hash-link" aria-label="謎の「Master」アカウント への直接リンク" title="謎の「Master」アカウント への直接リンク" translate="no">​</a></h3>
+<p>2016年12月29日、「<strong>Master</strong>」という名前のアカウントが中国の弈城囲碁と騰訊野狐囲碁サイトに現れました。</p>
+<p>このアカウントのパフォーマンスは信じがたいものでした：</p>
+<ul>
+<li class=""><strong>全対戦相手に連勝</strong>：無敗</li>
+<li class=""><strong>対戦相手は全てトップ棋士</strong>：世界チャンピオンや九段高段者を含む</li>
+<li class=""><strong>極めて短い持ち時間</strong>：ほぼ全ての手が即座に打たれた</li>
+</ul>
+<p>すぐに囲碁界全体が議論しました：「Master」は一体誰なのか？</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="60連勝の偉業">60連勝の偉業<a href="#60連勝の偉業" class="hash-link" aria-label="60連勝の偉業 への直接リンク" title="60連勝の偉業 への直接リンク" translate="no">​</a></h3>
+<p>12月29日から2017年1月4日まで、「Master」は60局の早碁を行い、<strong>全勝</strong>しました。</p>
+<p>敗れた棋士のリストは、まるで世界囲碁の殿堂のようでした：</p>
+<table><thead><tr><th>順位</th><th>棋士</th><th>戦績</th></tr></thead><tbody><tr><td>世界1位</td><td>柯潔（中国）</td><td>0-3</td></tr><tr><td>世界2位</td><td>朴廷桓（韓国）</td><td>0-2</td></tr><tr><td>世界3位</td><td>井山裕太（日本）</td><td>0-1</td></tr><tr><td>伝説的棋士</td><td>聶衛平（中国）</td><td>0-1</td></tr><tr><td>伝説的棋士</td><td>古力（中国）</td><td>0-2</td></tr><tr><td>...</td><td>...</td><td>...</td></tr></tbody></table>
+<p>合計で<strong>50人以上のプロ九段</strong>を含み、中日韓三国のトップ棋士を網羅しました。</p>
+<p>🎬 E13：早碁はPolicy Networkのリアルタイム意思決定能力を示しています</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="正体の判明">正体の判明<a href="#正体の判明" class="hash-link" aria-label="正体の判明 への直接リンク" title="正体の判明 への直接リンク" translate="no">​</a></h3>
+<p>2017年1月4日、60勝目を達成した後、「Master」はチャットルームで正体を明かしました：</p>
+<blockquote>
+<p>「私はAlphaGoの黄博士です。」</p>
+</blockquote>
+<p>黄博士とはAja Huang（黄士傑）のことで、AlphaGoチームの中心メンバーです。</p>
+<p>DeepMindはその後正式に確認しました：「Master」はAlphaGoの新バージョンであり、今回のテストの目的はオンライン環境でのシステムの安定性を検証することでした。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="プロ棋士の反応">プロ棋士の反応<a href="#プロ棋士の反応" class="hash-link" aria-label="プロ棋士の反応 への直接リンク" title="プロ棋士の反応 への直接リンク" translate="no">​</a></h3>
+<p>60連勝の衝撃は、李世ドル戦よりもさらに深いものでした。今回の対戦相手はより多く、範囲もより広かったからです。</p>
+<p><strong>柯潔</strong>（Masterに3度敗北）：</p>
+<blockquote>
+<p>「人間とAIの差は私たちが想像していたよりもはるかに大きい。私たちは囲碁を理解していると思っていましたが、Masterは私たちがまだ入門すらしていないと感じさせました。」</p>
+</blockquote>
+<p><strong>聶衛平</strong>（中国棋聖）：</p>
+<blockquote>
+<p>「60年間碁を打ってきましたが、初めてこれほど無力感を感じました。これは技術の差ではなく、次元の差です。」</p>
+</blockquote>
+<p><strong>古力</strong>（世界タイトル8回）：</p>
+<blockquote>
+<p>「Masterに負けた後、人間棋士の価値はどこにあるのかを考え始めました。私たちにはまだプロの試合が必要なのでしょうか？」</p>
+</blockquote>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="技術分析">技術分析<a href="#技術分析" class="hash-link" aria-label="技術分析 への直接リンク" title="技術分析 への直接リンク" translate="no">​</a></h3>
+<p>このバージョンのAlphaGo（後に<strong>AlphaGo Master</strong>と呼ばれる）は、李世ドル戦バージョンから大幅に向上していました：</p>
+<table><thead><tr><th>指標</th><th>Leeバージョン</th><th>Masterバージョン</th><th>向上</th></tr></thead><tbody><tr><td>Eloレーティング</td><td>約3,600</td><td>約4,800</td><td>+1,200</td></tr><tr><td>自己対局勝率</td><td>-</td><td>99%以上</td><td>-</td></tr><tr><td>Policy精度</td><td>約57%</td><td>約62%</td><td>+5%</td></tr><tr><td>訓練時間</td><td>数ヶ月</td><td>追加で数ヶ月</td><td>-</td></tr></tbody></table>
+<p>🎬 E15：Eloの向上は自己対局による指数関数的な進歩を示しています</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="柯潔戦201705王者の幕引き">柯潔戦（2017.05）：王者の幕引き<a href="#柯潔戦201705王者の幕引き" class="hash-link" aria-label="柯潔戦（2017.05）：王者の幕引き への直接リンク" title="柯潔戦（2017.05）：王者の幕引き への直接リンク" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="最後の挑戦者">最後の挑戦者<a href="#最後の挑戦者" class="hash-link" aria-label="最後の挑戦者 への直接リンク" title="最後の挑戦者 への直接リンク" translate="no">​</a></h3>
+<p>Master 60連勝後、人間がAlphaGoに勝てると信じる人はほとんどいませんでした。しかし一人の男がまだ戦いを望んでいました——<strong>柯潔</strong>。</p>
+<p>当時19歳の柯潔は、世界ランキング1位の棋士でした。彼は何度も公に表明していました：</p>
+<blockquote>
+<p>「AlphaGoが私を倒せるとは思いません。たとえMasterが早碁で私に3局勝ったとしても、正式な試合は違います。」</p>
+</blockquote>
+<p>Googleは挑戦を受け入れました。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="烏鎮囲碁サミット">烏鎮囲碁サミット<a href="#烏鎮囲碁サミット" class="hash-link" aria-label="烏鎮囲碁サミット への直接リンク" title="烏鎮囲碁サミット への直接リンク" translate="no">​</a></h3>
+<p>2017年5月、「<strong>未来囲碁サミット</strong>」が中国浙江省烏鎮で開催されました。これはAlphaGoを中心とした壮大なイベントで、以下を含みました：</p>
+<ol>
+<li class=""><strong>柯潔三番勝負</strong>：人類最強対AI最強</li>
+<li class=""><strong>ペア碁</strong>：人間＋AlphaGo vs 人間＋AlphaGo</li>
+<li class=""><strong>チーム戦</strong>：中国トップ5棋士がAlphaGoに挑戦</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="三番勝負30の結末">三番勝負：3:0の結末<a href="#三番勝負30の結末" class="hash-link" aria-label="三番勝負：3:0の結末 への直接リンク" title="三番勝負：3:0の結末 への直接リンク" translate="no">​</a></h3>
+<p><strong>第1局（5月23日）</strong></p>
+<p>柯潔が黒番で先手を取り、序盤は比較的堅実な「中国流」布石を採用しました。これは熟慮の末の選択でした——柯潔はAlphaGoの大局観に打ち負かされることを避け、細部で機会を探ることを望みました。</p>
+<p>しかしAlphaGoの対応は完璧でした。全ての重要な場面で最も正確な手を見つけ、徐々に優勢を積み重ねました。</p>
+<p><strong>結果：AlphaGoが1/4子（0.5目）差で勝利</strong></p>
+<p>これは囲碁で可能な最小の勝利差です。柯潔は対局後に涙を流しました：</p>
+<blockquote>
+<p>「全力を尽くしましたが、それでもほんの少し足りませんでした。」</p>
+</blockquote>
+<p>🎬 E17：1/4子の差はAIの精密な制御能力を示しています</p>
+<p><strong>第2局（5月25日）</strong></p>
+<p>柯潔は戦略を変え、AlphaGoの序盤を模倣する方式を採用しました。「三々直接入り」という新しい手法を使いました——これはまさにAlphaGoが囲碁界にもたらした革新でした。</p>
+<blockquote>
+<p>「あなたの打ち方がより良いなら、あなたの打ち方を学びます。」</p>
+</blockquote>
+<p>しかしAlphaGoは動じませんでした。自分のペースで進め続け、中盤の戦いで驚くべき計算能力を見せました。</p>
+<p><strong>結果：AlphaGo 中押し勝ち</strong></p>
+<p><strong>第3局（5月27日）</strong></p>
+<p>最終局、柯潔は一か八かの勝負に出ました。極めて積極的な戦闘スタイルを採用し、AlphaGoを乱戦に引き込もうとしました。</p>
+<p>序盤、柯潔は確かにいくつかの複雑な局面を作りました。しかしAlphaGoの対応は依然として正確で、柯潔に逆転の機会を与えませんでした。</p>
+<p><strong>結果：AlphaGo 中押し勝ち</strong></p>
+<p><strong>最終スコア：AlphaGo 3:0 柯潔</strong></p>
+<p>🎬 E19：三番勝負はAlphaGoの絶対的支配力を示しています</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="ペア碁とチーム戦">ペア碁とチーム戦<a href="#ペア碁とチーム戦" class="hash-link" aria-label="ペア碁とチーム戦 への直接リンク" title="ペア碁とチーム戦 への直接リンク" translate="no">​</a></h3>
+<p>柯潔三番勝負に加えて、サミットでは2つの革新的な対局形式が行われました：</p>
+<p><strong>ペア碁</strong>（5月26日）</p>
+<p>連笑＋AlphaGo vs 古力＋AlphaGo</p>
+<p>この試合の興味深い点は：人間棋士とAlphaGoの意見が異なる場合、何が起こるのか？</p>
+<p>結果は示しました：<strong>AlphaGoの提案に完全に従う側がより良いパフォーマンスを示しました</strong>。人間棋士がAlphaGoの手を「修正」しようとすると、局面は悪化する傾向がありました。</p>
+<p><strong>結果：連笑＋AlphaGo 勝利</strong></p>
+<p><strong>チーム戦</strong>（5月26日）</p>
+<p>中国チーム（周睿羊、時越、唐韋星、陳耀燁、芈昱廷） vs AlphaGo</p>
+<p>5人の中国トップ棋士が協力して1台のAIに挑みました。十分に議論し、各手を共同で決定できました。</p>
+<p>しかし結果は明白でした：<strong>AlphaGo 中押し勝ち</strong>。</p>
+<p>この試合は証明しました：人間のトップ棋士が力を合わせても、AlphaGoに勝てないことを。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="alphagoの引退宣言">AlphaGoの引退宣言<a href="#alphagoの引退宣言" class="hash-link" aria-label="AlphaGoの引退宣言 への直接リンク" title="AlphaGoの引退宣言 への直接リンク" translate="no">​</a></h3>
+<p>2017年5月27日、柯潔三番勝負終了後、DeepMindは重要な声明を発表しました：</p>
+<blockquote>
+<p>「これがAlphaGoの最後の公開対局です。AlphaGoはその使命を完了したと信じています——AIが人間の知恵の頂点である囲碁の分野で、人間を超えるレベルに達することができることを証明しました。</p>
+<p>今後、AlphaGoから学んだ技術をより重要な問題に適用します：医療、エネルギー、材料科学。これが人工知能の真の価値です。」</p>
+</blockquote>
+<p>同時に発表：</p>
+<ol>
+<li class=""><strong>AlphaGo教育ツール</strong>：棋士が学べるようAlphaGoの対局分析を公開</li>
+<li class=""><strong>50局の自己対局棋譜</strong>：AlphaGo vs AlphaGoの棋譜を公開</li>
+<li class=""><strong>技術論文</strong>：『Nature』にAlphaGo Zeroの研究成果を発表予定</li>
+</ol>
+<p>🎬 E21：AlphaGoの引退は一つの時代の終わりを示しています</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="対局の歴史的位置付け">対局の歴史的位置付け<a href="#対局の歴史的位置付け" class="hash-link" aria-label="対局の歴史的位置付け への直接リンク" title="対局の歴史的位置付け への直接リンク" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="技術的マイルストーン">技術的マイルストーン<a href="#技術的マイルストーン" class="hash-link" aria-label="技術的マイルストーン への直接リンク" title="技術的マイルストーン への直接リンク" translate="no">​</a></h3>
+<p>AlphaGoの対局は人工知能史上でマイルストーン的な意義を持っています：</p>
+<table><thead><tr><th>年</th><th>イベント</th><th>意義</th></tr></thead><tbody><tr><td>1997</td><td>ディープ・ブルーがカスパロフに勝利</td><td>力任せの探索の勝利</td></tr><tr><td>2011</td><td>Watsonが『Jeopardy!』で優勝</td><td>自然言語処理のブレイクスルー</td></tr><tr><td><strong>2016</strong></td><td><strong>AlphaGoが李世ドルに勝利</strong></td><td><strong>深層学習＋強化学習の勝利</strong></td></tr><tr><td>2017</td><td>AlphaGo Zero 100:0</td><td>純粋な自己学習の勝利</td></tr></tbody></table>
+<p>🎬 E23：各マイルストーンはAI方法論の進化を表しています</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="囲碁界への影響-1">囲碁界への影響<a href="#囲碁界への影響-1" class="hash-link" aria-label="囲碁界への影響 への直接リンク" title="囲碁界への影響 への直接リンク" translate="no">​</a></h3>
+<p><strong>棋譜研究の変化</strong></p>
+<p>伝統的に、プロ棋士は主に人間の棋譜を研究していました。しかしAlphaGo以降、AI棋譜は必修科目となりました。</p>
+<ul>
+<li class=""><strong>三々直接入り序盤</strong>：AlphaGoは直接隅に入るのが有効な戦略であることを証明</li>
+<li class=""><strong>カタツキの妙用</strong>：37手目が「カタツキ」という手筋に対する認識を変えた</li>
+<li class=""><strong>厚みの価値</strong>：AIは厚みの活用の新しい方法を示した</li>
+</ul>
+<p><strong>トレーニング方法の変革</strong></p>
+<p>プロ棋士のトレーニング方法は根本的に変わりました：</p>
+<table><thead><tr><th>伝統的方法</th><th>AI時代の方法</th></tr></thead><tbody><tr><td>人間の棋譜を研究</td><td>AI棋譜を研究</td></tr><tr><td>師匠の指導に頼る</td><td>AI分析ツールを使用</td></tr><tr><td>定石を暗記</td><td>AIの評価ロジックを理解</td></tr><tr><td>実戦練習</td><td>AI復習分析</td></tr></tbody></table>
+<p><strong>新世代棋士の台頭</strong></p>
+<p>2016年以降に成長した棋士は、「AIネイティブ」と呼ばれています。彼らの棋風は明らかにAIの影響を受けています：</p>
+<ul>
+<li class="">伝統的な美学よりも効率を重視</li>
+<li class="">非伝統的な手法を試みる意欲が高い</li>
+<li class="">直感よりも精密な計算に依存</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="哲学的考察">哲学的考察<a href="#哲学的考察" class="hash-link" aria-label="哲学的考察 への直接リンク" title="哲学的考察 への直接リンク" translate="no">​</a></h3>
+<p>AlphaGoの勝利は深い哲学的議論を引き起こしました：</p>
+<p><strong>知性の本質とは何か？</strong></p>
+<p>AlphaGoは囲碁を「理解」しているのでしょうか？それとも単に精密な計算を行っているだけなのでしょうか？この問いは今日まで結論が出ていません。</p>
+<p><strong>人間の価値はどこにあるのか？</strong></p>
+<p>AIが囲碁で人間を超えたとき、囲碁の試合にはまだ意味があるのでしょうか？多くの棋士が自分の職業の意義を再考しました。</p>
+<p>興味深いことに、AlphaGo以降、囲碁への世界的な関心はむしろ高まりました。人々は気づきました：囲碁は競技だけでなく、芸術であり哲学でもあると。</p>
+<p><strong>AIの発展方向</strong></p>
+<p>AlphaGoの成功は、AIに対する期待と懸念の両方を人々にもたらしました。DeepMindがAlphaGoを引退させ、「本当に重要な問題」の解決に向かったこと自体が、倫理的な選択でした。</p>
+<p>🎬 E25：AlphaGoはAI倫理に関する広範な議論を引き起こしました</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="補遺その他の重要対局">補遺：その他の重要対局<a href="#補遺その他の重要対局" class="hash-link" aria-label="補遺：その他の重要対局 への直接リンク" title="補遺：その他の重要対局 への直接リンク" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="他のaiとの対決">他のAIとの対決<a href="#他のaiとの対決" class="hash-link" aria-label="他のAIとの対決 への直接リンク" title="他のAIとの対決 への直接リンク" translate="no">​</a></h3>
+<p>公開戦以外に、AlphaGoは他の囲碁AIとも多くの対局を行いました：</p>
+<table><thead><tr><th>対戦相手</th><th>バージョン</th><th>結果</th></tr></thead><tbody><tr><td>Crazy Stone</td><td>2015年最強囲碁プログラム</td><td>全勝</td></tr><tr><td>Zen</td><td>日本最強囲碁AI</td><td>全勝</td></tr><tr><td>旧バージョンAlphaGo</td><td>各バージョン自己対局</td><td>-</td></tr></tbody></table>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="内部テスト">内部テスト<a href="#内部テスト" class="hash-link" aria-label="内部テスト への直接リンク" title="内部テスト への直接リンク" translate="no">​</a></h3>
+<p>DeepMindチームは大量の内部テストを行いました：</p>
+<ul>
+<li class=""><strong>AlphaGo Lee vs AlphaGo Master</strong>：Masterバージョンの勝率99%以上</li>
+<li class=""><strong>AlphaGo Master vs AlphaGo Zero</strong>：Zeroバージョンの勝率89%以上</li>
+<li class=""><strong>異なる訓練時間のバージョン対局</strong>：学習曲線の観察</li>
+</ul>
+<p>これらのテストデータは後に論文で公開され、AIの学習を研究する重要な資料となりました。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="アニメーション対応">アニメーション対応<a href="#アニメーション対応" class="hash-link" aria-label="アニメーション対応 への直接リンク" title="アニメーション対応 への直接リンク" translate="no">​</a></h2>
+<p>本稿で扱う核心概念とアニメーション番号：</p>
+<table><thead><tr><th>番号</th><th>概念</th><th>物理/数学的対応</th></tr></thead><tbody><tr><td>🎬 E1</td><td>Policy Networkが探索を導く</td><td>確率分布</td></tr><tr><td>🎬 E3</td><td>MCTSの限界をテスト</td><td>木探索の深さ</td></tr><tr><td>🎬 E5</td><td>Value Networkの全局評価</td><td>価値関数</td></tr><tr><td>🎬 E7</td><td>未知の戦略を発見</td><td>探索 vs 活用</td></tr><tr><td>🎬 E9</td><td>MCTSの弱点</td><td>境界条件</td></tr><tr><td>🎬 E11</td><td>能力の「相転移」</td><td>臨界現象</td></tr><tr><td>🎬 E13</td><td>リアルタイム意思決定能力</td><td>推論速度</td></tr><tr><td>🎬 E15</td><td>自己対局の指数関数的進歩</td><td>反復最適化</td></tr><tr><td>🎬 E17</td><td>精密制御能力</td><td>数値安定性</td></tr><tr><td>🎬 E19</td><td>絶対的支配力</td><td>最適解への収束</td></tr><tr><td>🎬 E21</td><td>時代の終わり</td><td>タスク完了</td></tr><tr><td>🎬 E23</td><td>方法論の進化</td><td>パラダイムシフト</td></tr><tr><td>🎬 E25</td><td>AI倫理の議論</td><td>社会的影響</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="関連記事">関連記事<a href="#関連記事" class="hash-link" aria-label="関連記事 への直接リンク" title="関連記事 への直接リンク" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>前の記事</strong>：<a class="" href="/ja/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/">AlphaGoの誕生</a> — DeepMindの設立、チーム構成</li>
+<li class=""><strong>次の記事</strong>：<a class="" href="/ja/docs/for-engineers/how-it-works/alphago-explained/move-37/">「神の一手」徹底分析</a> — 37手目の完全解読</li>
+<li class=""><strong>技術詳細</strong>：<a class="" href="/ja/docs/for-engineers/how-it-works/alphago-explained/mcts-neural-combo/">MCTSとニューラルネットワークの融合</a> — 対局の背後にある技術を理解する</li>
+<li class=""><strong>その後の展開</strong>：<a class="" href="/ja/docs/for-engineers/how-it-works/alphago-explained/legacy-and-impact/">AlphaGoの遺産</a> — 囲碁とAIへの長期的影響</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="参考資料">参考資料<a href="#参考資料" class="hash-link" aria-label="参考資料 への直接リンク" title="参考資料 への直接リンク" translate="no">​</a></h2>
+<ol>
+<li class="">Silver, D., et al. (2016). &quot;Mastering the game of Go with deep neural networks and tree search.&quot; <em>Nature</em>, 529, 484-489.</li>
+<li class="">Silver, D., et al. (2017). &quot;Mastering the game of Go without human knowledge.&quot; <em>Nature</em>, 550, 354-359.</li>
+<li class="">『AlphaGo』ドキュメンタリー (2017)、監督 Greg Kohs。</li>
+<li class="">DeepMind公式ブログ：AlphaGoシリーズ記事</li>
+<li class="">李世ドル戦公式棋譜と解説（韓国棋院）</li>
+<li class="">烏鎮囲碁サミット公式記録</li>
+</ol></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_YM8j"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/for-engineers/how-it-works/alphago-explained/02-key-matches.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_hRvp" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>このページを編集</a></div><div class="col lastUpdated_LNbR"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="ドキュメントページ"><a class="pagination-nav__link pagination-nav__link--prev" href="/ja/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/"><div class="pagination-nav__sublabel">前へ</div><div class="pagination-nav__label">AlphaGo の誕生</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/ja/docs/for-engineers/how-it-works/alphago-explained/move-37/"><div class="pagination-nav__sublabel">次へ</div><div class="pagination-nav__label">「神の一手」徹底分析</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_VU0O thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#ファンフイ戦201510秘密裏に行われた50" class="table-of-contents__link toc-highlight">ファン・フイ戦（2015.10）：秘密裏に行われた5:0</a><ul><li><a href="#背景なぜファンフイが選ばれたのか" class="table-of-contents__link toc-highlight">背景：なぜファン・フイが選ばれたのか？</a></li><li><a href="#対局の手配" class="table-of-contents__link toc-highlight">対局の手配</a></li><li><a href="#50の衝撃" class="table-of-contents__link toc-highlight">5:0の衝撃</a></li><li><a href="#なぜ秘密にされたのか" class="table-of-contents__link toc-highlight">なぜ秘密にされたのか？</a></li><li><a href="#ファンフイの変化" class="table-of-contents__link toc-highlight">ファン・フイの変化</a></li></ul></li><li><a href="#李世ドル戦201603世界を変えた五番勝負" class="table-of-contents__link toc-highlight">李世ドル戦（2016.03）：世界を変えた五番勝負</a><ul><li><a href="#世紀の対決の準備" class="table-of-contents__link toc-highlight">世紀の対決の準備</a></li><li><a href="#試合設定" class="table-of-contents__link toc-highlight">試合設定</a></li><li><a href="#第1局衝撃の始まり" class="table-of-contents__link toc-highlight">第1局：衝撃の始まり</a></li><li><a href="#第2局神の一手の誕生" class="table-of-contents__link toc-highlight">第2局：「神の一手」の誕生</a></li><li><a href="#第3局絶望の30" class="table-of-contents__link toc-highlight">第3局：絶望の3:0</a></li><li><a href="#第4局人間の反撃" class="table-of-contents__link toc-highlight">第4局：人間の反撃</a></li><li><a href="#第5局最終結末" class="table-of-contents__link toc-highlight">第5局：最終結末</a></li><li><a href="#対局の歴史的意義" class="table-of-contents__link toc-highlight">対局の歴史的意義</a></li></ul></li><li><a href="#master-60連勝201701オンライン早碁の衝撃" class="table-of-contents__link toc-highlight">Master 60連勝（2017.01）：オンライン早碁の衝撃</a><ul><li><a href="#謎のmasterアカウント" class="table-of-contents__link toc-highlight">謎の「Master」アカウント</a></li><li><a href="#60連勝の偉業" class="table-of-contents__link toc-highlight">60連勝の偉業</a></li><li><a href="#正体の判明" class="table-of-contents__link toc-highlight">正体の判明</a></li><li><a href="#プロ棋士の反応" class="table-of-contents__link toc-highlight">プロ棋士の反応</a></li><li><a href="#技術分析" class="table-of-contents__link toc-highlight">技術分析</a></li></ul></li><li><a href="#柯潔戦201705王者の幕引き" class="table-of-contents__link toc-highlight">柯潔戦（2017.05）：王者の幕引き</a><ul><li><a href="#最後の挑戦者" class="table-of-contents__link toc-highlight">最後の挑戦者</a></li><li><a href="#烏鎮囲碁サミット" class="table-of-contents__link toc-highlight">烏鎮囲碁サミット</a></li><li><a href="#三番勝負30の結末" class="table-of-contents__link toc-highlight">三番勝負：3:0の結末</a></li><li><a href="#ペア碁とチーム戦" class="table-of-contents__link toc-highlight">ペア碁とチーム戦</a></li><li><a href="#alphagoの引退宣言" class="table-of-contents__link toc-highlight">AlphaGoの引退宣言</a></li></ul></li><li><a href="#対局の歴史的位置付け" class="table-of-contents__link toc-highlight">対局の歴史的位置付け</a><ul><li><a href="#技術的マイルストーン" class="table-of-contents__link toc-highlight">技術的マイルストーン</a></li><li><a href="#囲碁界への影響-1" class="table-of-contents__link toc-highlight">囲碁界への影響</a></li><li><a href="#哲学的考察" class="table-of-contents__link toc-highlight">哲学的考察</a></li></ul></li><li><a href="#補遺その他の重要対局" class="table-of-contents__link toc-highlight">補遺：その他の重要対局</a><ul><li><a href="#他のaiとの対決" class="table-of-contents__link toc-highlight">他のAIとの対決</a></li><li><a href="#内部テスト" class="table-of-contents__link toc-highlight">内部テスト</a></li></ul></li><li><a href="#アニメーション対応" class="table-of-contents__link toc-highlight">アニメーション対応</a></li><li><a href="#関連記事" class="table-of-contents__link toc-highlight">関連記事</a></li><li><a href="#参考資料" class="table-of-contents__link toc-highlight">参考資料</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 Weiqi.Kids. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

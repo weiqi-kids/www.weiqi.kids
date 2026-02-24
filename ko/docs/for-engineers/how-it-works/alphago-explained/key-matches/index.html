@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="ko" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-for-engineers/how-it-works/alphago-explained/key-matches" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">주요 대국 리뷰 | 好棋寶寶協會 | Weiqi.Kids</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://www.weiqi.kids/ko/img/social-card.png"><meta data-rh="true" name="twitter:image" content="https://www.weiqi.kids/ko/img/social-card.png"><meta data-rh="true" property="og:url" content="https://www.weiqi.kids/ko/docs/for-engineers/how-it-works/alphago-explained/key-matches/"><meta data-rh="true" property="og:locale" content="ko"><meta data-rh="true" property="og:locale:alternate" content="zh_tw"><meta data-rh="true" property="og:locale:alternate" content="zh_cn"><meta data-rh="true" property="og:locale:alternate" content="zh_hk"><meta data-rh="true" property="og:locale:alternate" content="en"><meta data-rh="true" property="og:locale:alternate" content="ja"><meta data-rh="true" property="og:locale:alternate" content="es"><meta data-rh="true" property="og:locale:alternate" content="pt"><meta data-rh="true" property="og:locale:alternate" content="hi"><meta data-rh="true" property="og:locale:alternate" content="id"><meta data-rh="true" property="og:locale:alternate" content="ar"><meta data-rh="true" name="docusaurus_locale" content="ko"><meta data-rh="true" name="docsearch:language" content="ko"><meta data-rh="true" name="keywords" content="圍棋, Go, 好棋寶寶, AI, KataGo, AlphaGo, 圍棋教學, 圍棋入門"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="주요 대국 리뷰 | 好棋寶寶協會 | Weiqi.Kids"><meta data-rh="true" name="description" content="판후이와의 비밀 대국부터 커제와의 3번기까지, AlphaGo의 모든 중요한 대국을 완벽하게 리뷰합니다"><meta data-rh="true" property="og:description" content="판후이와의 비밀 대국부터 커제와의 3번기까지, AlphaGo의 모든 중요한 대국을 완벽하게 리뷰합니다"><link data-rh="true" rel="icon" href="/ko/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://www.weiqi.kids/ko/docs/for-engineers/how-it-works/alphago-explained/key-matches/"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="zh-tw"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/zh-cn/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="zh-cn"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/zh-hk/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="zh-hk"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/en/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="en"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/ja/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="ja"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/ko/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="ko"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/es/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="es"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/pt/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="pt"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/hi/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="hi"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/id/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="id"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/ar/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="ar"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/key-matches/" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.weiqi.kids#organization","name":"台灣好棋寶寶協會","alternateName":"Taiwan Good Go Baby Association","url":"https://www.weiqi.kids","logo":{"@type":"ImageObject","url":"https://www.weiqi.kids/img/logo.svg","width":200,"height":200},"sameAs":["https://mastodon.weiqi.kids/","https://peertube.weiqi.kids/"],"contactPoint":{"@type":"ContactPoint","contactType":"customer service","url":"https://www.weiqi.kids/docs/aboutus"},"description":"推動圍棋文化與 AI 研究的台灣非營利組織"},{"@type":"WebSite","@id":"https://www.weiqi.kids#website","name":"好棋寶寶協會官網","url":"https://www.weiqi.kids","publisher":{"@id":"https://www.weiqi.kids#organization"},"inLanguage":["zh-TW","zh-CN","zh-HK","en","ja","ko","es","pt","hi","id","ar"],"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://www.weiqi.kids/search?q={search_term_string}"},"query-input":"required name=search_term_string"}}]}</script><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"給工程師的圍棋 AI 指南","item":"https://www.weiqi.kids/ko/docs/for-engineers/"},{"@type":"ListItem","position":2,"name":"一篇文章搞懂圍棋 AI","item":"https://www.weiqi.kids/ko/docs/for-engineers/how-it-works/"},{"@type":"ListItem","position":3,"name":"AlphaGo 完整解析","item":"https://www.weiqi.kids/ko/docs/for-engineers/how-it-works/alphago-explained/"},{"@type":"ListItem","position":4,"name":"주요 대국 리뷰","item":"https://www.weiqi.kids/ko/docs/for-engineers/how-it-works/alphago-explained/key-matches"}]}</script><meta property="og:type" content="website">
+<meta property="og:site_name" content="好棋寶寶協會">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow">
+<meta name="author" content="台灣好棋寶寶協會">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css" integrity="sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM" crossorigin="anonymous"><link rel="stylesheet" href="/ko/assets/css/styles.f23bf74b.css">
+<script src="/ko/assets/js/runtime~main.b152227b.js" defer="defer"></script>
+<script src="/ko/assets/js/main.7cf510df.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>document.documentElement.setAttribute("data-theme","light"),document.documentElement.setAttribute("data-theme-choice","light"),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/ko/img/logo.svg"><div role="region" aria-label="본문으로 건너뛰기"><a class="skipToContent_WWLT" href="#__docusaurus_skipToContent_fallback">본문으로 건너뛰기</a></div><nav aria-label="메인" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="사이드바 펼치거나 접기" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/ko/"><div class="navbar__logo"><img src="/ko/img/logo.svg" alt="호기보보협회 로고" class="themedComponent_rBb5 themedComponent--light_t3c2"><img src="/ko/img/logo.svg" alt="호기보보협회 로고" class="themedComponent_rBb5 themedComponent--dark_Z76H"></div><b class="navbar__title text--truncate">바둑 키즈</b></a><a class="navbar__item navbar__link" href="/ko/docs/for-players/">바둑 플레이어</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/ko/docs/for-engineers/">엔지니어</a><a class="navbar__item navbar__link" href="/ko/docs/about/">협회 소개</a><a class="navbar__item navbar__link" href="/ko/docs/activities/">활동 실적</a><a class="navbar__item navbar__link" href="/ko/docs/references/">참고 자료</a><a class="navbar__item navbar__link" href="/ko/docs/sop/">표준 운영 절차</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href="#" aria-haspopup="true" aria-expanded="false" role="button" class="navbar__link navbar__item--compact"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class="iconLanguage_LXmZ"><path fill="currentColor" d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"></path></svg>한국어</a><ul class="dropdown__menu"><li><a href="/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="zh-tw">繁體中文</a></li><li><a href="/zh-cn/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="zh-cn">简体中文</a></li><li><a href="/zh-hk/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="zh-hk">粵語（香港）</a></li><li><a href="/en/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="en">English</a></li><li><a href="/ja/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="ja">日本語</a></li><li><a href="/ko/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang="ko">한국어</a></li><li><a href="/es/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="es">Español</a></li><li><a href="/pt/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="pt">Português</a></li><li><a href="/hi/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="hi">हिन्दी</a></li><li><a href="/id/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="id">Bahasa Indonesia</a></li><li><a href="/ar/docs/for-engineers/how-it-works/alphago-explained/key-matches/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="ar">العربية</a></li></ul></div><a href="https://github.com/weiqi-kids/www.weiqi.kids" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link header-github-link navbar__item--compact" aria-label="GitHub"></a><div class="navbarSearchContainer_MDM0"><div class="navbar__search searchBarContainer_Qpyg" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_KBva" value=""><div class="loadingRing_riNO searchBarLoadingRing_XquT"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_SQvo"><div class="docsWrapper_HjTU"><button aria-label="맨 위로 스크롤하기" class="clean-btn theme-back-to-top-button backToTopButton_91RE" type="button"></button><div class="docRoot_SzOB"><aside class="theme-doc-sidebar-container docSidebarContainer_Q0cb"><div class="sidebarViewport_TEb6"><div class="sidebar_LiQ3"><nav aria-label="문서 사이드바" class="menu thin-scrollbar menu_iDgU"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/ko/docs/intro/"><span title="이용 안내" class="linkLabel_REp1">이용 안내</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/ko/docs/about/"><span title="關於協會" class="categoryLinkLabel_ezQx">關於協會</span></a><button aria-label="사이드바 분류 &#x27;關於協會&#x27; 펼치기" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/ko/docs/activities/"><span title="活動實績" class="categoryLinkLabel_ezQx">活動實績</span></a><button aria-label="사이드바 분류 &#x27;活動實績&#x27; 펼치기" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/ko/docs/for-players/"><span title="바둑 기사를 위한 자료" class="categoryLinkLabel_ezQx">바둑 기사를 위한 자료</span></a><button aria-label="사이드바 분류 &#x27;바둑 기사를 위한 자료&#x27; 펼치기" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/ko/docs/references/"><span title="參考資料" class="categoryLinkLabel_ezQx">參考資料</span></a><button aria-label="사이드바 분류 &#x27;參考資料&#x27; 펼치기" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/ko/docs/sop/"><span title="標準作業流程" class="categoryLinkLabel_ezQx">標準作業流程</span></a><button aria-label="사이드바 분류 &#x27;標準作業流程&#x27; 펼치기" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist menu__link--active" href="/ko/docs/for-engineers/"><span title="給工程師的圍棋 AI 指南" class="categoryLinkLabel_ezQx">給工程師的圍棋 AI 指南</span></a><button aria-label="사이드바 분류 &#x27;給工程師的圍棋 AI 指南&#x27; 접기" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" tabindex="0" href="/ko/docs/for-engineers/deep-dive/"><span title="심층 연구를 원하는 분들을 위해" class="categoryLinkLabel_ezQx">심층 연구를 원하는 분들을 위해</span></a><button aria-label="사이드바 분류 &#x27;심층 연구를 원하는 분들을 위해&#x27; 펼치기" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" tabindex="0" href="/ko/docs/for-engineers/hands-on/"><span title="30 分鐘跑起第一個圍棋 AI" class="categoryLinkLabel_ezQx">30 分鐘跑起第一個圍棋 AI</span></a><button aria-label="사이드바 분류 &#x27;30 分鐘跑起第一個圍棋 AI&#x27; 펼치기" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist menu__link--active" tabindex="0" href="/ko/docs/for-engineers/how-it-works/"><span title="一篇文章搞懂圍棋 AI" class="categoryLinkLabel_ezQx">一篇文章搞懂圍棋 AI</span></a><button aria-label="사이드바 분류 &#x27;一篇文章搞懂圍棋 AI&#x27; 접기" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-3 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist menu__link--active" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/"><span title="AlphaGo 完整解析" class="categoryLinkLabel_ezQx">AlphaGo 完整解析</span></a><button aria-label="사이드바 분류 &#x27;AlphaGo 完整解析&#x27; 접기" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/"><span title="AlphaGo의 탄생" class="linkLabel_REp1">AlphaGo의 탄생</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/key-matches/"><span title="주요 대국 리뷰" class="linkLabel_REp1">주요 대국 리뷰</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/move-37/"><span title="&quot;신의 한 수&quot; 심층 분석" class="linkLabel_REp1">&quot;신의 한 수&quot; 심층 분석</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/why-go-is-hard/"><span title="바둑은 왜 어려운가?" class="linkLabel_REp1">바둑은 왜 어려운가?</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/traditional-limits/"><span title="전통적 방법의 한계" class="linkLabel_REp1">전통적 방법의 한계</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/board-representation/"><span title="바둑판 상태 표현" class="linkLabel_REp1">바둑판 상태 표현</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/policy-network/"><span title="Policy Network 상세 해설" class="linkLabel_REp1">Policy Network 상세 해설</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/value-network/"><span title="Value Network 상세 해설" class="linkLabel_REp1">Value Network 상세 해설</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/input-features/"><span title="입력 특성 설계" class="linkLabel_REp1">입력 특성 설계</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/cnn-and-go/"><span title="CNN과 바둑의 결합" class="linkLabel_REp1">CNN과 바둑의 결합</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/supervised-learning/"><span title="지도 학습 단계" class="linkLabel_REp1">지도 학습 단계</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/reinforcement-intro/"><span title="강화 학습 입문" class="linkLabel_REp1">강화 학습 입문</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/self-play/"><span title="자기 대국" class="linkLabel_REp1">자기 대국</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/mcts-neural-combo/"><span title="MCTS와 신경망의 결합" class="linkLabel_REp1">MCTS와 신경망의 결합</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/puct-formula/"><span title="PUCT 공식 상세" class="linkLabel_REp1">PUCT 공식 상세</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/alphago-zero/"><span title="AlphaGo Zero 개요" class="linkLabel_REp1">AlphaGo Zero 개요</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/dual-head-resnet/"><span title="이중 헤드 네트워크와 잔차 네트워크" class="linkLabel_REp1">이중 헤드 네트워크와 잔차 네트워크</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/training-from-scratch/"><span title="처음부터 훈련하는 과정" class="linkLabel_REp1">처음부터 훈련하는 과정</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/distributed-systems/"><span title="분산 시스템과 TPU" class="linkLabel_REp1">분산 시스템과 TPU</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/alphago-explained/legacy-and-impact/"><span title="AlphaGo의 유산" class="linkLabel_REp1">AlphaGo의 유산</span></a></li></ul></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/katago-innovations/"><span title="KataGo 的關鍵創新" class="linkLabel_REp1">KataGo 的關鍵創新</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/for-engineers/how-it-works/concepts/"><span title="概念速查表" class="linkLabel_REp1">概念速查表</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" tabindex="0" href="/ko/docs/for-engineers/industry/"><span title="圍棋 AI 產業現況" class="categoryLinkLabel_ezQx">圍棋 AI 產業現況</span></a><button aria-label="사이드바 분류 &#x27;圍棋 AI 產業現況&#x27; 펼치기" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" tabindex="0" href="/ko/docs/for-engineers/overview/"><span title="圍棋 AI 能做什麼？" class="categoryLinkLabel_ezQx">圍棋 AI 能做什麼？</span></a><button aria-label="사이드바 분류 &#x27;圍棋 AI 能做什麼？&#x27; 펼치기" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></li></ul></nav></div></div></aside><main class="docMainContainer_C0wL"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_txwF"><div class="docItemContainer_FUEM"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_DlgT" aria-label="탐색 경로"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="홈" class="breadcrumbs__link" href="/ko/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_BMIH"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/ko/docs/for-engineers/"><span>給工程師的圍棋 AI 指南</span></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/ko/docs/for-engineers/how-it-works/"><span>一篇文章搞懂圍棋 AI</span></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/ko/docs/for-engineers/how-it-works/alphago-explained/"><span>AlphaGo 完整解析</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">주요 대국 리뷰</span></li></ul></nav><div class="tocCollapsible_LBsY theme-doc-toc-mobile tocMobile_eMWB"><button type="button" class="clean-btn tocCollapsibleButton_fVBn">이 페이지에서</button></div><div class="theme-doc-markdown markdown"><header><h1>주요 대국 리뷰</h1></header>
+<p>AlphaGo의 역사는 세계를 놀라게 한 대국들로 쓰여졌습니다. 2015년 10월 런던에서의 비밀 대국부터 2017년 5월 우전에서의 고별 무대까지, 모든 대국이 인류의 바둑과 인공지능에 대한 인식을 새롭게 썼습니다.</p>
+<p>본 글에서는 이러한 주요 대국들의 배경, 과정 및 의미를 완벽하게 리뷰합니다.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="판후이-대국201510-비밀리에-진행된-50">판후이 대국(2015.10): 비밀리에 진행된 5:0<a href="#판후이-대국201510-비밀리에-진행된-50" class="hash-link" aria-label="판후이 대국(2015.10): 비밀리에 진행된 5:0에 대한 직접 링크" title="판후이 대국(2015.10): 비밀리에 진행된 5:0에 대한 직접 링크" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="배경-왜-판후이였는가">배경: 왜 판후이였는가?<a href="#배경-왜-판후이였는가" class="hash-link" aria-label="배경: 왜 판후이였는가?에 대한 직접 링크" title="배경: 왜 판후이였는가?에 대한 직접 링크" translate="no">​</a></h3>
+<p>AlphaGo가 세계 정상급 기사에게 도전하기 전에, DeepMind는 &quot;테스트 무대&quot;가 필요했습니다. AlphaGo의 실제 실력을 검증할 프로 기사가 필요했지만, 이 기사는 몇 가지 조건을 충족해야 했습니다:</p>
+<ol>
+<li class=""><strong>진정한 프로 수준</strong>: 아마추어 기사로는 AI 실력을 정확히 테스트할 수 없음</li>
+<li class=""><strong>비밀 유지 의지</strong>: 논문 발표 전까지 소식을 누설하지 않아야 함</li>
+<li class=""><strong>지리적 편의성</strong>: 여러 차례 공식 대국을 진행하기 편리해야 함</li>
+<li class=""><strong>열린 마음</strong>: AI 상대를 진지하게 대할 의지가 있어야 함</li>
+</ol>
+<p>**판후이(樊麾)**는 이러한 조건을 완벽하게 충족했습니다. 중국 시안 출신의 프로 기사로, 1996년 입단하여 2000년 이단으로 승단했고, 이후 프랑스로 이주하여 유럽 바둑 챔피언이 되었습니다. 그는 당시 유럽에서 가장 강한 프로 기사였으며, 동시에 인공지능에 대해 열린 태도를 가지고 있었습니다.</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="대국-준비">대국 준비<a href="#대국-준비" class="hash-link" aria-label="대국 준비에 대한 직접 링크" title="대국 준비에 대한 직접 링크" translate="no">​</a></h3>
+<p>2015년 10월, 판후이는 런던 DeepMind 본사로 초청받았습니다. 비밀유지 계약서에 서명한 후, 그는 AlphaGo와 <strong>5국의 공식 대국</strong>을 진행했습니다.</p>
+<p>대국 조건:</p>
+<ul>
+<li class=""><strong>제한 시간</strong>: 각 1시간, 초당 30초 초읽기</li>
+<li class=""><strong>규칙</strong>: 중국 규칙, 덤 7.5점</li>
+<li class=""><strong>환경</strong>: DeepMind 사무실, Aja Huang이 대리 착수</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="50의-충격">5:0의 충격<a href="#50의-충격" class="hash-link" aria-label="5:0의 충격에 대한 직접 링크" title="5:0의 충격에 대한 직접 링크" translate="no">​</a></h3>
+<p>결과는 모두를 충격에 빠뜨렸습니다: <strong>AlphaGo 5:0 완승</strong>.</p>
+<table><thead><tr><th>국수</th><th>날짜</th><th>결과</th><th>비고</th></tr></thead><tbody><tr><td>제1국</td><td>10월 5일</td><td>AlphaGo 불계승</td><td>판후이 흑</td></tr><tr><td>제2국</td><td>10월 6일</td><td>AlphaGo 불계승</td><td>판후이 백</td></tr><tr><td>제3국</td><td>10월 7일</td><td>AlphaGo 불계승</td><td>판후이 흑</td></tr><tr><td>제4국</td><td>10월 8일</td><td>AlphaGo 1.5목승</td><td>판후이 백</td></tr><tr><td>제5국</td><td>10월 9일</td><td>AlphaGo 불계승</td><td>판후이 흑</td></tr></tbody></table>
+<p>🎬 E1: 이 5국은 Policy Network가 어떻게 탐색 방향을 안내하는지 보여줍니다</p>
+<p>판후이는 나중에 회상했습니다:</p>
+<blockquote>
+<p>&quot;첫 번째 국에서 졌을 때, 내가 방심했나 싶었습니다. 두 번째 국에서 지자, 진지해지기 시작했습니다. 세 번째, 네 번째, 다섯 번째 국 모두 졌을 때, 이것이 내 문제가 아니라는 것을 알았습니다—바둑이 변한 것이었습니다.&quot;</p>
+</blockquote>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="왜-비밀로-했는가">왜 비밀로 했는가?<a href="#왜-비밀로-했는가" class="hash-link" aria-label="왜 비밀로 했는가?에 대한 직접 링크" title="왜 비밀로 했는가?에 대한 직접 링크" translate="no">​</a></h3>
+<p>DeepMind가 비밀을 유지한 데는 몇 가지 이유가 있었습니다:</p>
+<ol>
+<li class=""><strong>학술 발표</strong>: 논문은 동료 심사를 거쳐야 발표할 수 있음</li>
+<li class=""><strong>검증 시간</strong>: 결과의 재현성을 확인하는 데 시간이 필요</li>
+<li class=""><strong>비즈니스 전략</strong>: 최적의 시기에 소식을 발표</li>
+<li class=""><strong>판후이 보호</strong>: 소식 공개 전에 그가 압박을 받지 않도록 함</li>
+</ol>
+<p>이 비밀은 2016년 1월 《Nature》 논문이 발표될 때까지 꼬박 3개월간 유지되었습니다.</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="판후이의-변화">판후이의 변화<a href="#판후이의-변화" class="hash-link" aria-label="판후이의 변화에 대한 직접 링크" title="판후이의 변화에 대한 직접 링크" translate="no">​</a></h3>
+<p>이 5국을 패한 후, 판후이는 좌절하지 않았습니다. 오히려 그는 AlphaGo 팀의 일원이 되어 시스템 테스트와 개선을 담당했습니다.</p>
+<blockquote>
+<p>&quot;나는 AI에게 패배한 것이 아닙니다. AI 발전의 일부가 된 것입니다. 이것은 영광이지 수치가 아닙니다.&quot;</p>
+</blockquote>
+<p>이러한 열린 마음은 나중에 바둑계가 AI를 대하는 모범이 되었습니다.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="이세돌-대국201603-세계를-바꾼-5국">이세돌 대국(2016.03): 세계를 바꾼 5국<a href="#이세돌-대국201603-세계를-바꾼-5국" class="hash-link" aria-label="이세돌 대국(2016.03): 세계를 바꾼 5국에 대한 직접 링크" title="이세돌 대국(2016.03): 세계를 바꾼 5국에 대한 직접 링크" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="세기의-대결-준비">세기의 대결 준비<a href="#세기의-대결-준비" class="hash-link" aria-label="세기의 대결 준비에 대한 직접 링크" title="세기의 대결 준비에 대한 직접 링크" translate="no">​</a></h3>
+<p>2016년 1월 27일, 《Nature》 논문이 발표된 후, DeepMind는 세계 정상급 기사에게 도전하겠다고 발표했습니다. 목표 인물: <strong>이세돌(Lee Sedol)</strong>.</p>
+<p>왜 이세돌이었는가?</p>
+<ul>
+<li class=""><strong>18개 세계 타이틀</strong>: 지난 10년간 가장 성공적인 기사 중 한 명</li>
+<li class=""><strong>&quot;신산(神算)&quot;의 명성</strong>: 정밀한 계산력으로 유명</li>
+<li class=""><strong>전투형 스타일</strong>: 복잡하고 격렬한 대국을 선호</li>
+<li class=""><strong>35세 정점기</strong>: 경험과 체력의 최적 균형</li>
+</ul>
+<p>🎬 E3: 이세돌의 스타일은 MCTS의 한계를 테스트하기에 적합했습니다</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="경기-설정">경기 설정<a href="#경기-설정" class="hash-link" aria-label="경기 설정에 대한 직접 링크" title="경기 설정에 대한 직접 링크" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>장소</strong>: 한국 서울 포시즌스 호텔</li>
+<li class=""><strong>날짜</strong>: 2016년 3월 9-15일</li>
+<li class=""><strong>상금</strong>: 100만 달러(승자 독식, 또는 자선 기부)</li>
+<li class=""><strong>규칙</strong>: 중국 규칙, 덤 7.5점</li>
+<li class=""><strong>제한 시간</strong>: 각 2시간, 수당 1분 초읽기 3회</li>
+</ul>
+<p>전 세계 200여 개 국가와 지역에서 생중계되었으며, 예상 시청자는 <strong>2억 명</strong>을 넘었습니다.</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="제1국-충격적인-시작">제1국: 충격적인 시작<a href="#제1국-충격적인-시작" class="hash-link" aria-label="제1국: 충격적인 시작에 대한 직접 링크" title="제1국: 충격적인 시작에 대한 직접 링크" translate="no">​</a></h3>
+<p><strong>2016년 3월 9일</strong></p>
+<p>이세돌이 흑을 잡고 선행했습니다. 포석 단계에서 양측은 평범했습니다. 그러나 중반에 접어들자, AlphaGo는 놀라운 대국관을 보여주었습니다.</p>
+<p>102수에서 AlphaGo는 후퇴하는 듯한 수를 두어 오른쪽 실리를 내주었습니다. 프로 기사들은 모두 이해할 수 없다고 했습니다. 하지만 20수 후, 이 수의 묘미가 드러났습니다—AlphaGo는 희생한 돌로 중앙에 두터움을 구축했고, 결국 전체 판에서 우세를 차지했습니다.</p>
+<p><strong>결과: AlphaGo 불계승</strong></p>
+<p>대국 후, 이세돌은 말했습니다:</p>
+<blockquote>
+<p>&quot;충격받았습니다. 질 줄 몰랐고, 이렇게 완벽하게 질 줄은 더더욱 몰랐습니다.&quot;</p>
+</blockquote>
+<p>🎬 E5: 이 대국은 Value Network의 전체 국면 평가 능력을 보여줍니다</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="제2국-신의-한-수의-탄생">제2국: &quot;신의 한 수&quot;의 탄생<a href="#제2국-신의-한-수의-탄생" class="hash-link" aria-label="제2국: &quot;신의 한 수&quot;의 탄생에 대한 직접 링크" title="제2국: &quot;신의 한 수&quot;의 탄생에 대한 직접 링크" translate="no">​</a></h3>
+<p><strong>2016년 3월 10일</strong></p>
+<p>이 대국에서 &quot;<strong>신의 한 수</strong>&quot;라 불리는 37수가 탄생했습니다. (다음 글 참조: <a class="" href="/ko/docs/for-engineers/how-it-works/alphago-explained/move-37/">&quot;신의 한 수&quot; 심층 분석</a>)</p>
+<p>AlphaGo는 우상귀에서 &quot;오로 어깨짚기&quot;를 두었습니다—인간이라면 거의 고려하지 않을 위치였습니다. 해설자는 즉시 &quot;실수&quot;라고 말했지만, 50수 후 이 수가 승부를 결정짓는 관건임이 증명되었습니다.</p>
+<p><strong>결과: AlphaGo 불계승</strong></p>
+<p>한국 해설자 김성룡 9단은 대국 후 말했습니다:</p>
+<blockquote>
+<p>&quot;50년간 바둑을 두었지만, 이런 바둑은 처음 봅니다. AlphaGo가 바둑이 무엇인지 다시 생각하게 만들었습니다.&quot;</p>
+</blockquote>
+<p>🎬 E7: 37수는 AI가 어떻게 인류가 알지 못했던 전략을 발견하는지 보여줍니다</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="제3국-절망적인-30">제3국: 절망적인 3:0<a href="#제3국-절망적인-30" class="hash-link" aria-label="제3국: 절망적인 3:0에 대한 직접 링크" title="제3국: 절망적인 3:0에 대한 직접 링크" translate="no">​</a></h3>
+<p><strong>2016년 3월 12일</strong></p>
+<p>이세돌은 이 대국에서 비정규 포석을 시도하여 AlphaGo를 미지의 영역으로 끌어들이려 했습니다. 그는 &quot;소림류&quot; 포석의 변형을 채택하여 복잡한 전투로 승리하려 했습니다.</p>
+<p>하지만 AlphaGo의 대응은 여전히 여유로웠습니다. 인간이 어떻게 나오든, 최선의 응수를 찾아내는 놀라운 적응력을 보여주었습니다.</p>
+<p><strong>결과: AlphaGo 불계승</strong></p>
+<p>점수가 3:0이 되면서 경기는 이미 결과가 정해졌습니다. 하지만 모두가 기대하고 있었습니다: 인류가 한 판이라도 이길 수 있을까?</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="제4국-인류의-반격">제4국: 인류의 반격<a href="#제4국-인류의-반격" class="hash-link" aria-label="제4국: 인류의 반격에 대한 직접 링크" title="제4국: 인류의 반격에 대한 직접 링크" translate="no">​</a></h3>
+<p><strong>2016년 3월 13일</strong></p>
+<p>이 대국은 영원히 역사에 남을 것입니다—AI의 신기함 때문이 아니라, <strong>인류의 반격</strong> 때문입니다.</p>
+<p>국면이 78수까지 진행되었을 때, 이세돌은 초읽기 중에 경세지작(驚世之作)을 두었습니다: <strong>오로의 묘수</strong>.</p>
+<p>이것은 &quot;끼워넣기&quot; 맥으로, 평범해 보이지만 AlphaGo를 혼란에 빠뜨렸습니다. 이어지는 몇 수에서 AlphaGo의 승률 평가가 급격히 흔들렸고, 몇 가지 명백한 악수를 두었습니다.</p>
+<p>🎬 E9: 이 대국은 특정 국면에서 MCTS의 약점을 드러냈습니다</p>
+<p>DeepMind 팀은 나중에 분석하여, AlphaGo가 그 국면에서 승률 평가에 오류가 있었다고 밝혔습니다. 이세돌의 그 수의 위력을 과소평가하여 후속 대응에 실수가 생겼습니다.</p>
+<p><strong>결과: 이세돌 불계승</strong></p>
+<p>이것은 AlphaGo 공식 경기에서의 유일한 패배입니다. 이세돌은 감격에 차서 말했습니다:</p>
+<blockquote>
+<p>&quot;이 승리는 값을 매길 수 없습니다. 인간 기사가 여전히 AI를 이길 수 있다는 것을 증명했습니다—적어도 특정 국면에서는요.&quot;</p>
+</blockquote>
+<p>Google DeepMind CEO 데미스 하사비스가 트윗했습니다:</p>
+<blockquote>
+<p>&quot;이세돌은 진정한 레전드입니다. 그는 AlphaGo의 약점을 찾아내어 정확하게 활용했습니다.&quot;</p>
+</blockquote>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="제5국-최종-결말">제5국: 최종 결말<a href="#제5국-최종-결말" class="hash-link" aria-label="제5국: 최종 결말에 대한 직접 링크" title="제5국: 최종 결말에 대한 직접 링크" translate="no">​</a></h3>
+<p><strong>2016년 3월 15일</strong></p>
+<p>소중한 한 판 승리를 거둔 후, 이세돌은 더 편안한 마음으로 제5국에 임했습니다. 그는 더 공격적인 전략을 채택하여 다시 한번 AlphaGo의 약점을 찾으려 했습니다.</p>
+<p>하지만 DeepMind 팀은 제4국 이후 긴급 조정을 진행했습니다. 이 버전의 AlphaGo는 더 견고해 보였고, 이전의 평가 오류가 더 이상 나타나지 않았습니다.</p>
+<p><strong>결과: AlphaGo 불계승</strong></p>
+<p><strong>최종 점수: AlphaGo 4:1 이세돌</strong></p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="대국의-역사적-의의">대국의 역사적 의의<a href="#대국의-역사적-의의" class="hash-link" aria-label="대국의 역사적 의의에 대한 직접 링크" title="대국의 역사적 의의에 대한 직접 링크" translate="no">​</a></h3>
+<p>이 경기의 영향은 바둑계를 훨씬 넘어섰습니다:</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="인공지능에-대해">인공지능에 대해<a href="#인공지능에-대해" class="hash-link" aria-label="인공지능에 대해에 대한 직접 링크" title="인공지능에 대해에 대한 직접 링크" translate="no">​</a></h4>
+<ul>
+<li class=""><strong>딥러닝의 위력 증명</strong>: AI가 복잡한 의사결정 과제에서 인간을 능가할 수 있음</li>
+<li class=""><strong>강화학습의 이정표</strong>: 자기대국 훈련이 효과적임이 증명됨</li>
+<li class=""><strong>후속 연구 촉발</strong>: AI 분야에 대한 투자 열풍을 불러일으킴</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="바둑계에-대해">바둑계에 대해<a href="#바둑계에-대해" class="hash-link" aria-label="바둑계에 대해에 대한 직접 링크" title="바둑계에 대해에 대한 직접 링크" translate="no">​</a></h4>
+<ul>
+<li class=""><strong>전통 이론의 도전</strong>: 많은 &quot;정석&quot;이 차선임이 증명됨</li>
+<li class=""><strong>훈련 방식의 변화</strong>: 프로 기사들이 AI 보조 훈련을 시작</li>
+<li class=""><strong>새로운 착법의 탄생</strong>: AI가 많은 혁신적인 수법을 도입</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="대중에-대해">대중에 대해<a href="#대중에-대해" class="hash-link" aria-label="대중에 대해에 대한 직접 링크" title="대중에 대해에 대한 직접 링크" translate="no">​</a></h4>
+<ul>
+<li class=""><strong>AI 인식 각성</strong>: 일반인들이 인공지능에 관심을 갖기 시작</li>
+<li class=""><strong>과학기술 보도 증가</strong>: 주류 미디어가 AI 발전을 대대적으로 보도</li>
+<li class=""><strong>영화와 다큐멘터리</strong>: 《AlphaGo》 다큐멘터리 탄생</li>
+</ul>
+<p>🎬 E11: 이 경기는 AI 능력의 &quot;상전이&quot; 순간을 표시합니다</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="master-60연승201701-온라인-속기의-충격">Master 60연승(2017.01): 온라인 속기의 충격<a href="#master-60연승201701-온라인-속기의-충격" class="hash-link" aria-label="Master 60연승(2017.01): 온라인 속기의 충격에 대한 직접 링크" title="Master 60연승(2017.01): 온라인 속기의 충격에 대한 직접 링크" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="신비로운-master-계정">신비로운 &quot;Master&quot; 계정<a href="#신비로운-master-계정" class="hash-link" aria-label="신비로운 &quot;Master&quot; 계정에 대한 직접 링크" title="신비로운 &quot;Master&quot; 계정에 대한 직접 링크" translate="no">​</a></h3>
+<p>2016년 12월 29일, &quot;<strong>Master</strong>&quot;라는 계정이 중국 예성 바둑과 텐센트 야호 바둑 사이트에 나타났습니다.</p>
+<p>이 계정의 성적은 믿기 어려웠습니다:</p>
+<ul>
+<li class=""><strong>모든 상대에게 연승</strong>: 단 한 번의 패배도 없음</li>
+<li class=""><strong>상대 모두 정상급 기사</strong>: 세계 챔피언과 9단 고수 포함</li>
+<li class=""><strong>매우 짧은 시간 사용</strong>: 거의 매 수를 초단위로 착수</li>
+</ul>
+<p>곧, 바둑계 전체가 논의하고 있었습니다: &quot;Master&quot;는 도대체 누구인가?</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="60연승의-위업">60연승의 위업<a href="#60연승의-위업" class="hash-link" aria-label="60연승의 위업에 대한 직접 링크" title="60연승의 위업에 대한 직접 링크" translate="no">​</a></h3>
+<p>12월 29일부터 2017년 1월 4일까지, &quot;Master&quot;는 60국의 속기를 두었고, <strong>전부 승리</strong>했습니다.</p>
+<p>패배한 기사 명단은 마치 세계 바둑 명예의 전당과 같았습니다:</p>
+<table><thead><tr><th>순위</th><th>기사</th><th>전적</th></tr></thead><tbody><tr><td>세계 1위</td><td>커제(중국)</td><td>0-3</td></tr><tr><td>세계 2위</td><td>박정환(한국)</td><td>0-2</td></tr><tr><td>세계 3위</td><td>이야마 유타(일본)</td><td>0-1</td></tr><tr><td>전설의 기사</td><td>녜웨이핑(중국)</td><td>0-1</td></tr><tr><td>전설의 기사</td><td>구리(중국)</td><td>0-2</td></tr><tr><td>...</td><td>...</td><td>...</td></tr></tbody></table>
+<p>총 <strong>50명 이상의 프로 9단</strong>을 포함하여, 한중일 3국의 정상급 기사들을 망라했습니다.</p>
+<p>🎬 E13: 속기는 Policy Network의 즉각적 의사결정 능력을 보여줍니다</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="정체-공개">정체 공개<a href="#정체-공개" class="hash-link" aria-label="정체 공개에 대한 직접 링크" title="정체 공개에 대한 직접 링크" translate="no">​</a></h3>
+<p>2017년 1월 4일, 60승을 완료한 후, &quot;Master&quot;가 채팅방에서 정체를 밝혔습니다:</p>
+<blockquote>
+<p>&quot;저는 AlphaGo의 황 박사입니다.&quot;</p>
+</blockquote>
+<p>황 박사는 바로 Aja Huang(황스제)으로, AlphaGo 팀의 핵심 멤버입니다.</p>
+<p>DeepMind는 이후 공식 확인했습니다: &quot;Master&quot;는 AlphaGo의 새 버전이며, 이번 테스트의 목적은 시스템의 온라인 환경에서의 안정성을 검증하는 것이었습니다.</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="프로-기사들의-반응">프로 기사들의 반응<a href="#프로-기사들의-반응" class="hash-link" aria-label="프로 기사들의 반응에 대한 직접 링크" title="프로 기사들의 반응에 대한 직접 링크" translate="no">​</a></h3>
+<p>60연승의 충격은 이세돌 대국보다 더 깊었습니다. 이번에는 상대가 더 많고 범위가 더 넓었기 때문입니다.</p>
+<p><strong>커제</strong>(Master에게 세 번 패배):</p>
+<blockquote>
+<p>&quot;인간과 AI의 격차는 우리 상상보다 더 큽니다. 우리는 항상 바둑을 이해한다고 생각했지만, Master는 우리가 입문조차 못 했다고 느끼게 합니다.&quot;</p>
+</blockquote>
+<p><strong>녜웨이핑</strong>(중국 기성):</p>
+<blockquote>
+<p>&quot;60년간 바둑을 두었지만, 처음으로 이렇게 무력함을 느꼈습니다. 이것은 기술의 격차가 아닙니다. 차원의 격차입니다.&quot;</p>
+</blockquote>
+<p><strong>구리</strong>(8개 세계 타이틀):</p>
+<blockquote>
+<p>&quot;Master에게 진 후, 인간 기사의 가치가 어디에 있는지 생각하기 시작했습니다. 우리에게 아직 프로 경기가 필요할까요?&quot;</p>
+</blockquote>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="기술-분석">기술 분석<a href="#기술-분석" class="hash-link" aria-label="기술 분석에 대한 직접 링크" title="기술 분석에 대한 직접 링크" translate="no">​</a></h3>
+<p>이 버전의 AlphaGo(나중에 <strong>AlphaGo Master</strong>라고 불림)는 이세돌 대국 버전에 비해 현저히 향상되었습니다:</p>
+<table><thead><tr><th>지표</th><th>Lee 버전</th><th>Master 버전</th><th>향상</th></tr></thead><tbody><tr><td>Elo 등급</td><td>~3,600</td><td>~4,800</td><td>+1,200</td></tr><tr><td>자기대국 승률</td><td>-</td><td>99%+</td><td>-</td></tr><tr><td>Policy 정확도</td><td>~57%</td><td>~62%</td><td>+5%</td></tr><tr><td>훈련 시간</td><td>수개월</td><td>추가 수개월</td><td>-</td></tr></tbody></table>
+<p>🎬 E15: Elo의 향상은 자기대국의 기하급수적 진보를 보여줍니다</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="커제-대국201705-왕의-퇴장">커제 대국(2017.05): 왕의 퇴장<a href="#커제-대국201705-왕의-퇴장" class="hash-link" aria-label="커제 대국(2017.05): 왕의 퇴장에 대한 직접 링크" title="커제 대국(2017.05): 왕의 퇴장에 대한 직접 링크" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="마지막-도전자">마지막 도전자<a href="#마지막-도전자" class="hash-link" aria-label="마지막 도전자에 대한 직접 링크" title="마지막 도전자에 대한 직접 링크" translate="no">​</a></h3>
+<p>Master 60연승 이후, 인간이 AlphaGo를 이길 수 있다고 믿는 사람은 거의 없었습니다. 하지만 한 사람은 여전히 대결을 갈망했습니다—<strong>커제</strong>.</p>
+<p>당시 19세였던 커제는 세계 랭킹 1위 기사였습니다. 그는 여러 번 공개적으로 말했습니다:</p>
+<blockquote>
+<p>&quot;AlphaGo가 저를 이길 수 있다고 생각하지 않습니다. Master가 속기에서 저를 세 번 이겼더라도, 공식 경기는 다릅니다.&quot;</p>
+</blockquote>
+<p>Google은 도전을 받아들였습니다.</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="우전-바둑-정상회담">우전 바둑 정상회담<a href="#우전-바둑-정상회담" class="hash-link" aria-label="우전 바둑 정상회담에 대한 직접 링크" title="우전 바둑 정상회담에 대한 직접 링크" translate="no">​</a></h3>
+<p>2017년 5월, &quot;<strong>미래 바둑 정상회담</strong>&quot;이 중국 저장성 우전에서 개최되었습니다. 이것은 AlphaGo를 중심으로 한 성대한 행사로, 다음을 포함했습니다:</p>
+<ol>
+<li class=""><strong>커제 3번기</strong>: 인류 최강 대 AI 최강</li>
+<li class=""><strong>페어 매치</strong>: 인간 + AlphaGo vs 인간 + AlphaGo</li>
+<li class=""><strong>팀전</strong>: 5명의 중국 정상급 기사가 연합하여 AlphaGo에 대항</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="3번기-30의-결말">3번기: 3:0의 결말<a href="#3번기-30의-결말" class="hash-link" aria-label="3번기: 3:0의 결말에 대한 직접 링크" title="3번기: 3:0의 결말에 대한 직접 링크" translate="no">​</a></h3>
+<p><strong>제1국(5월 23일)</strong></p>
+<p>커제가 흑을 잡고 선행하여, 포석에서 비교적 안정적인 &quot;중국류&quot; 포석을 채택했습니다. 이것은 심사숙고한 선택이었습니다—커제는 AlphaGo의 대국관에 압도당하지 않고, 세부에서 기회를 찾으려 했습니다.</p>
+<p>하지만 AlphaGo의 대응은 완벽무결했습니다. 모든 핵심 순간에서 가장 정확한 착점을 찾아 점차 우세를 축적했습니다.</p>
+<p><strong>결과: AlphaGo 반집(0.5목) 승</strong></p>
+<p>이것은 바둑에서 가능한 가장 작은 승리 차이입니다. 커제는 대국 후 눈물을 흘렸습니다:</p>
+<blockquote>
+<p>&quot;전력을 다했지만, 여전히 조금 모자랐습니다.&quot;</p>
+</blockquote>
+<p>🎬 E17: 반집 차이는 AI의 정밀 제어 능력을 보여줍니다</p>
+<p><strong>제2국(5월 25일)</strong></p>
+<p>커제는 전략을 바꿔 AlphaGo의 포석 방식을 모방했습니다. 그는 &quot;삼삼 직접 진입&quot;의 새로운 수법을 사용했습니다—이것은 바로 AlphaGo가 바둑계에 가져온 혁신이었습니다.</p>
+<blockquote>
+<p>&quot;당신의 착법이 더 좋다면, 당신의 착법을 배우겠습니다.&quot;</p>
+</blockquote>
+<p>하지만 AlphaGo는 동요하지 않았습니다. 여전히 자신의 페이스대로 진행하며, 중반 전투에서 놀라운 계산 능력을 보여주었습니다.</p>
+<p><strong>결과: AlphaGo 불계승</strong></p>
+<p><strong>제3국(5월 27일)</strong></p>
+<p>마지막 대국에서 커제는 모든 것을 걸었습니다. 그는 극도로 공격적인 전투 스타일을 채택하여 AlphaGo를 혼전으로 끌어들이려 했습니다.</p>
+<p>포석 단계에서 커제는 확실히 몇 가지 복잡한 국면을 만들었습니다. 하지만 AlphaGo의 대응은 여전히 정확했고, 커제에게 어떤 역전의 기회도 주지 않았습니다.</p>
+<p><strong>결과: AlphaGo 불계승</strong></p>
+<p><strong>최종 점수: AlphaGo 3:0 커제</strong></p>
+<p>🎬 E19: 3번기는 AlphaGo의 절대적 지배력을 보여줍니다</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="페어-매치와-팀전">페어 매치와 팀전<a href="#페어-매치와-팀전" class="hash-link" aria-label="페어 매치와 팀전에 대한 직접 링크" title="페어 매치와 팀전에 대한 직접 링크" translate="no">​</a></h3>
+<p>커제 3번기 외에도, 정상회담에서는 두 가지 혁신적인 경기 방식이 진행되었습니다:</p>
+<p><strong>페어 매치</strong>(5월 26일)</p>
+<p>롄샤오 + AlphaGo vs 구리 + AlphaGo</p>
+<p>이 경기의 흥미로운 점은: 인간 기사와 AlphaGo의 의견이 다를 때 어떻게 되는가?</p>
+<p>결과는 보여주었습니다: <strong>AlphaGo의 제안을 완전히 따르는 쪽이 더 나은 성적을 냈습니다</strong>. 인간 기사가 AlphaGo의 착법을 &quot;수정&quot;하려 할 때, 오히려 국면이 악화되는 경우가 많았습니다.</p>
+<p><strong>결과: 롄샤오 + AlphaGo 승</strong></p>
+<p><strong>팀전</strong>(5월 26일)</p>
+<p>중국팀(저우루이양, 스위에, 탕웨이싱, 천야오예, 미위팅) vs AlphaGo</p>
+<p>5명의 중국 정상급 기사가 협력하여 하나의 AI에 대항했습니다. 그들은 충분히 논의하고 함께 매 수를 결정할 수 있었습니다.</p>
+<p>하지만 결과는 긴장감이 없었습니다: <strong>AlphaGo 불계승</strong>.</p>
+<p>이 경기는 증명했습니다: 인류 정상급 기사들이 연합해도 AlphaGo를 이길 수 없다는 것을.</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="alphago의-은퇴-선언">AlphaGo의 은퇴 선언<a href="#alphago의-은퇴-선언" class="hash-link" aria-label="AlphaGo의 은퇴 선언에 대한 직접 링크" title="AlphaGo의 은퇴 선언에 대한 직접 링크" translate="no">​</a></h3>
+<p>2017년 5월 27일, 커제 3번기가 끝난 후, DeepMind는 중요한 성명을 발표했습니다:</p>
+<blockquote>
+<p>&quot;이것이 AlphaGo의 마지막 공개 대국입니다. 우리는 AlphaGo가 그 사명을 완수했다고 믿습니다—AI가 인류 지혜의 정점인 바둑 분야에서 인간을 초월하는 수준에 도달할 수 있음을 증명했습니다.</p>
+<p>앞으로 우리는 AlphaGo에서 배운 기술을 더 중요한 문제에 적용할 것입니다: 의료, 에너지, 재료 과학. 이것이야말로 인공지능의 진정한 가치입니다.&quot;</p>
+</blockquote>
+<p>동시에 발표했습니다:</p>
+<ol>
+<li class=""><strong>AlphaGo 교육 도구</strong>: 기사들이 학습할 수 있도록 AlphaGo의 대국 분석 공개 예정</li>
+<li class=""><strong>50국 자기대국 기보</strong>: AlphaGo vs AlphaGo 기보 공개</li>
+<li class=""><strong>기술 논문</strong>: 《Nature》에 AlphaGo Zero 연구 성과 발표 예정</li>
+</ol>
+<p>🎬 E21: AlphaGo의 은퇴는 하나의 시대의 종말을 표시합니다</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="대국의-역사적-위치">대국의 역사적 위치<a href="#대국의-역사적-위치" class="hash-link" aria-label="대국의 역사적 위치에 대한 직접 링크" title="대국의 역사적 위치에 대한 직접 링크" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="기술적-이정표">기술적 이정표<a href="#기술적-이정표" class="hash-link" aria-label="기술적 이정표에 대한 직접 링크" title="기술적 이정표에 대한 직접 링크" translate="no">​</a></h3>
+<p>AlphaGo의 대국은 인공지능 역사에서 이정표적 의의를 가집니다:</p>
+<table><thead><tr><th>연도</th><th>사건</th><th>의의</th></tr></thead><tbody><tr><td>1997</td><td>딥 블루가 카스파로프를 이김</td><td>무차별 탐색의 승리</td></tr><tr><td>2011</td><td>Watson이 Jeopardy!에서 우승</td><td>자연어 처리의 돌파구</td></tr><tr><td><strong>2016</strong></td><td><strong>AlphaGo가 이세돌을 이김</strong></td><td><strong>딥러닝 + 강화학습의 승리</strong></td></tr><tr><td>2017</td><td>AlphaGo Zero 100:0</td><td>순수한 자기학습의 승리</td></tr></tbody></table>
+<p>🎬 E23: 각 이정표는 AI 방법론의 진화를 대표합니다</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="바둑계에-대한-영향">바둑계에 대한 영향<a href="#바둑계에-대한-영향" class="hash-link" aria-label="바둑계에 대한 영향에 대한 직접 링크" title="바둑계에 대한 영향에 대한 직접 링크" translate="no">​</a></h3>
+<p><strong>기보 연구의 변화</strong></p>
+<p>전통적으로 프로 기사들은 주로 인간 기보를 연구했습니다. 하지만 AlphaGo 이후, AI 기보가 필수 과목이 되었습니다.</p>
+<ul>
+<li class=""><strong>삼삼 포석</strong>: AlphaGo가 직접 귀 진입이 효과적인 전략임을 증명</li>
+<li class=""><strong>어깨짚기의 묘용</strong>: 37수가 &quot;어깨짚기&quot; 수법에 대한 인식을 바꿈</li>
+<li class=""><strong>두터움의 가치</strong>: AI가 두터움 전환의 새로운 방식을 보여줌</li>
+</ul>
+<p><strong>훈련 방식의 변혁</strong></p>
+<p>프로 기사들의 훈련 방식이 근본적으로 변했습니다:</p>
+<table><thead><tr><th>전통 방식</th><th>AI 시대 방식</th></tr></thead><tbody><tr><td>인간 기보 연구</td><td>AI 기보 연구</td></tr><tr><td>스승의 지도에 의존</td><td>AI 분석 도구 사용</td></tr><tr><td>정석 암기</td><td>AI의 평가 논리 이해</td></tr><tr><td>실전 연습</td><td>AI 복기 분석</td></tr></tbody></table>
+<p><strong>신세대 기사의 부상</strong></p>
+<p>2016년 이후 성장한 기사들은 &quot;AI 원주민&quot;이라고 불립니다. 그들의 기풍은 분명히 AI의 영향을 받았습니다:</p>
+<ul>
+<li class="">전통적 미학보다 효율성 중시</li>
+<li class="">비전통적 착법 시도에 더 적극적</li>
+<li class="">직관보다 정밀한 계산에 더 의존</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="철학적-성찰">철학적 성찰<a href="#철학적-성찰" class="hash-link" aria-label="철학적 성찰에 대한 직접 링크" title="철학적 성찰에 대한 직접 링크" translate="no">​</a></h3>
+<p>AlphaGo의 승리는 깊은 철학적 논의를 불러일으켰습니다:</p>
+<p><strong>지능의 본질은 무엇인가?</strong></p>
+<p>AlphaGo가 바둑을 &quot;이해&quot;하는가? 아니면 단지 정밀한 계산을 하는 것인가? 이 질문은 아직 정론이 없습니다.</p>
+<p><strong>인간의 가치는 어디에 있는가?</strong></p>
+<p>AI가 바둑에서 인간을 초월했을 때, 바둑 경기가 아직 의미가 있는가? 많은 기사들이 자신의 직업적 의미를 다시 생각했습니다.</p>
+<p>흥미롭게도, AlphaGo 이후 바둑에 대한 전 세계적 관심도가 오히려 높아졌습니다. 사람들은 깨달았습니다: 바둑은 단순한 경기가 아니라 예술이자 철학이기도 하다는 것을.</p>
+<p><strong>AI의 발전 방향</strong></p>
+<p>AlphaGo의 성공은 사람들이 AI에 대해 기대와 우려를 동시에 갖게 했습니다. DeepMind가 AlphaGo를 은퇴시키고 &quot;진정으로 중요한 문제&quot;를 해결하는 방향으로 전환한 것 자체가 윤리적 선택입니다.</p>
+<p>🎬 E25: AlphaGo는 AI 윤리에 관한 광범위한 논의를 불러일으켰습니다</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="번외-기타-중요한-대국들">번외: 기타 중요한 대국들<a href="#번외-기타-중요한-대국들" class="hash-link" aria-label="번외: 기타 중요한 대국들에 대한 직접 링크" title="번외: 기타 중요한 대국들에 대한 직접 링크" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="다른-ai와의-대결">다른 AI와의 대결<a href="#다른-ai와의-대결" class="hash-link" aria-label="다른 AI와의 대결에 대한 직접 링크" title="다른 AI와의 대결에 대한 직접 링크" translate="no">​</a></h3>
+<p>공개 경기 외에도, AlphaGo는 다른 바둑 AI와 수많은 대국을 진행했습니다:</p>
+<table><thead><tr><th>상대</th><th>버전</th><th>결과</th></tr></thead><tbody><tr><td>Crazy Stone</td><td>2015년 최강 바둑 프로그램</td><td>전승</td></tr><tr><td>Zen</td><td>일본 최강 바둑 AI</td><td>전승</td></tr><tr><td>구버전 AlphaGo</td><td>각 버전 자기대국</td><td>-</td></tr></tbody></table>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="내부-테스트">내부 테스트<a href="#내부-테스트" class="hash-link" aria-label="내부 테스트에 대한 직접 링크" title="내부 테스트에 대한 직접 링크" translate="no">​</a></h3>
+<p>DeepMind 팀은 수많은 내부 테스트를 진행했습니다:</p>
+<ul>
+<li class=""><strong>AlphaGo Lee vs AlphaGo Master</strong>: Master 버전 승률 99% 이상</li>
+<li class=""><strong>AlphaGo Master vs AlphaGo Zero</strong>: Zero 버전 승률 89% 이상</li>
+<li class=""><strong>다른 훈련 시간의 버전 대국</strong>: 학습 곡선 관찰</li>
+</ul>
+<p>이러한 테스트 데이터는 나중에 논문에서 모두 공개되어 AI 학습 연구의 중요한 자료가 되었습니다.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="애니메이션-대응">애니메이션 대응<a href="#애니메이션-대응" class="hash-link" aria-label="애니메이션 대응에 대한 직접 링크" title="애니메이션 대응에 대한 직접 링크" translate="no">​</a></h2>
+<p>본 글에서 다루는 핵심 개념과 애니메이션 번호:</p>
+<table><thead><tr><th>번호</th><th>개념</th><th>물리/수학 대응</th></tr></thead><tbody><tr><td>🎬 E1</td><td>Policy Network 탐색 안내</td><td>확률 분포</td></tr><tr><td>🎬 E3</td><td>MCTS의 한계 테스트</td><td>트리 탐색 깊이</td></tr><tr><td>🎬 E5</td><td>Value Network 전체 평가</td><td>가치 함수</td></tr><tr><td>🎬 E7</td><td>미지의 전략 발견</td><td>탐색 vs 이용</td></tr><tr><td>🎬 E9</td><td>MCTS의 약점</td><td>경계 조건</td></tr><tr><td>🎬 E11</td><td>능력의 &quot;상전이&quot;</td><td>임계 현상</td></tr><tr><td>🎬 E13</td><td>즉각적 의사결정 능력</td><td>추론 속도</td></tr><tr><td>🎬 E15</td><td>자기대국의 기하급수적 진보</td><td>반복 최적화</td></tr><tr><td>🎬 E17</td><td>정밀 제어 능력</td><td>수치 안정성</td></tr><tr><td>🎬 E19</td><td>절대적 지배력</td><td>최적으로의 수렴</td></tr><tr><td>🎬 E21</td><td>시대의 종말</td><td>임무 완료</td></tr><tr><td>🎬 E23</td><td>방법론 진화</td><td>패러다임 전환</td></tr><tr><td>🎬 E25</td><td>AI 윤리 논의</td><td>사회적 영향</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="추가-읽기">추가 읽기<a href="#추가-읽기" class="hash-link" aria-label="추가 읽기에 대한 직접 링크" title="추가 읽기에 대한 직접 링크" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>이전 글</strong>: <a class="" href="/ko/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/">AlphaGo의 탄생</a> — DeepMind 창립, 팀 구성</li>
+<li class=""><strong>다음 글</strong>: <a class="" href="/ko/docs/for-engineers/how-it-works/alphago-explained/move-37/">&quot;신의 한 수&quot; 심층 분석</a> — 37수의 완전한 해석</li>
+<li class=""><strong>기술 세부사항</strong>: <a class="" href="/ko/docs/for-engineers/how-it-works/alphago-explained/mcts-neural-combo/">MCTS와 신경망의 결합</a> — 대국 뒤의 기술 이해</li>
+<li class=""><strong>후속 발전</strong>: <a class="" href="/ko/docs/for-engineers/how-it-works/alphago-explained/legacy-and-impact/">AlphaGo의 유산</a> — 바둑과 AI에 대한 장기적 영향</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="참고-자료">참고 자료<a href="#참고-자료" class="hash-link" aria-label="참고 자료에 대한 직접 링크" title="참고 자료에 대한 직접 링크" translate="no">​</a></h2>
+<ol>
+<li class="">Silver, D., et al. (2016). &quot;Mastering the game of Go with deep neural networks and tree search.&quot; <em>Nature</em>, 529, 484-489.</li>
+<li class="">Silver, D., et al. (2017). &quot;Mastering the game of Go without human knowledge.&quot; <em>Nature</em>, 550, 354-359.</li>
+<li class="">《AlphaGo》 다큐멘터리 (2017), 감독 Greg Kohs.</li>
+<li class="">DeepMind 공식 Blog: AlphaGo 시리즈 글</li>
+<li class="">이세돌 대국 공식 기보 및 해설(한국기원)</li>
+<li class="">우전 바둑 정상회담 공식 기록</li>
+</ol></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_YM8j"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/for-engineers/how-it-works/alphago-explained/02-key-matches.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_hRvp" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>페이지 편집</a></div><div class="col lastUpdated_LNbR"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="문서 페이지"><a class="pagination-nav__link pagination-nav__link--prev" href="/ko/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/"><div class="pagination-nav__sublabel">이전</div><div class="pagination-nav__label">AlphaGo의 탄생</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/ko/docs/for-engineers/how-it-works/alphago-explained/move-37/"><div class="pagination-nav__sublabel">다음</div><div class="pagination-nav__label">&quot;신의 한 수&quot; 심층 분석</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_VU0O thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#판후이-대국201510-비밀리에-진행된-50" class="table-of-contents__link toc-highlight">판후이 대국(2015.10): 비밀리에 진행된 5:0</a><ul><li><a href="#배경-왜-판후이였는가" class="table-of-contents__link toc-highlight">배경: 왜 판후이였는가?</a></li><li><a href="#대국-준비" class="table-of-contents__link toc-highlight">대국 준비</a></li><li><a href="#50의-충격" class="table-of-contents__link toc-highlight">5:0의 충격</a></li><li><a href="#왜-비밀로-했는가" class="table-of-contents__link toc-highlight">왜 비밀로 했는가?</a></li><li><a href="#판후이의-변화" class="table-of-contents__link toc-highlight">판후이의 변화</a></li></ul></li><li><a href="#이세돌-대국201603-세계를-바꾼-5국" class="table-of-contents__link toc-highlight">이세돌 대국(2016.03): 세계를 바꾼 5국</a><ul><li><a href="#세기의-대결-준비" class="table-of-contents__link toc-highlight">세기의 대결 준비</a></li><li><a href="#경기-설정" class="table-of-contents__link toc-highlight">경기 설정</a></li><li><a href="#제1국-충격적인-시작" class="table-of-contents__link toc-highlight">제1국: 충격적인 시작</a></li><li><a href="#제2국-신의-한-수의-탄생" class="table-of-contents__link toc-highlight">제2국: &quot;신의 한 수&quot;의 탄생</a></li><li><a href="#제3국-절망적인-30" class="table-of-contents__link toc-highlight">제3국: 절망적인 3:0</a></li><li><a href="#제4국-인류의-반격" class="table-of-contents__link toc-highlight">제4국: 인류의 반격</a></li><li><a href="#제5국-최종-결말" class="table-of-contents__link toc-highlight">제5국: 최종 결말</a></li><li><a href="#대국의-역사적-의의" class="table-of-contents__link toc-highlight">대국의 역사적 의의</a></li></ul></li><li><a href="#master-60연승201701-온라인-속기의-충격" class="table-of-contents__link toc-highlight">Master 60연승(2017.01): 온라인 속기의 충격</a><ul><li><a href="#신비로운-master-계정" class="table-of-contents__link toc-highlight">신비로운 &quot;Master&quot; 계정</a></li><li><a href="#60연승의-위업" class="table-of-contents__link toc-highlight">60연승의 위업</a></li><li><a href="#정체-공개" class="table-of-contents__link toc-highlight">정체 공개</a></li><li><a href="#프로-기사들의-반응" class="table-of-contents__link toc-highlight">프로 기사들의 반응</a></li><li><a href="#기술-분석" class="table-of-contents__link toc-highlight">기술 분석</a></li></ul></li><li><a href="#커제-대국201705-왕의-퇴장" class="table-of-contents__link toc-highlight">커제 대국(2017.05): 왕의 퇴장</a><ul><li><a href="#마지막-도전자" class="table-of-contents__link toc-highlight">마지막 도전자</a></li><li><a href="#우전-바둑-정상회담" class="table-of-contents__link toc-highlight">우전 바둑 정상회담</a></li><li><a href="#3번기-30의-결말" class="table-of-contents__link toc-highlight">3번기: 3:0의 결말</a></li><li><a href="#페어-매치와-팀전" class="table-of-contents__link toc-highlight">페어 매치와 팀전</a></li><li><a href="#alphago의-은퇴-선언" class="table-of-contents__link toc-highlight">AlphaGo의 은퇴 선언</a></li></ul></li><li><a href="#대국의-역사적-위치" class="table-of-contents__link toc-highlight">대국의 역사적 위치</a><ul><li><a href="#기술적-이정표" class="table-of-contents__link toc-highlight">기술적 이정표</a></li><li><a href="#바둑계에-대한-영향" class="table-of-contents__link toc-highlight">바둑계에 대한 영향</a></li><li><a href="#철학적-성찰" class="table-of-contents__link toc-highlight">철학적 성찰</a></li></ul></li><li><a href="#번외-기타-중요한-대국들" class="table-of-contents__link toc-highlight">번외: 기타 중요한 대국들</a><ul><li><a href="#다른-ai와의-대결" class="table-of-contents__link toc-highlight">다른 AI와의 대결</a></li><li><a href="#내부-테스트" class="table-of-contents__link toc-highlight">내부 테스트</a></li></ul></li><li><a href="#애니메이션-대응" class="table-of-contents__link toc-highlight">애니메이션 대응</a></li><li><a href="#추가-읽기" class="table-of-contents__link toc-highlight">추가 읽기</a></li><li><a href="#참고-자료" class="table-of-contents__link toc-highlight">참고 자료</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 Weiqi.Kids. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="zh-tw" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-for-engineers/how-it-works/alphago-explained/birth-of-alphago" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">AlphaGo 的誕生 | 好棋寶寶協會 | Weiqi.Kids</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://www.weiqi.kids/img/social-card.png"><meta data-rh="true" name="twitter:image" content="https://www.weiqi.kids/img/social-card.png"><meta data-rh="true" property="og:url" content="https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/"><meta data-rh="true" property="og:locale" content="zh_tw"><meta data-rh="true" property="og:locale:alternate" content="zh_cn"><meta data-rh="true" property="og:locale:alternate" content="zh_hk"><meta data-rh="true" property="og:locale:alternate" content="en"><meta data-rh="true" property="og:locale:alternate" content="ja"><meta data-rh="true" property="og:locale:alternate" content="ko"><meta data-rh="true" property="og:locale:alternate" content="es"><meta data-rh="true" property="og:locale:alternate" content="pt"><meta data-rh="true" property="og:locale:alternate" content="hi"><meta data-rh="true" property="og:locale:alternate" content="id"><meta data-rh="true" property="og:locale:alternate" content="ar"><meta data-rh="true" name="docusaurus_locale" content="zh-tw"><meta data-rh="true" name="docsearch:language" content="zh-tw"><meta data-rh="true" name="keywords" content="圍棋, Go, 好棋寶寶, AI, KataGo, AlphaGo, 圍棋教學, 圍棋入門"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="AlphaGo 的誕生 | 好棋寶寶協會 | Weiqi.Kids"><meta data-rh="true" name="description" content="從 DeepMind 創立到 Google 收購，AlphaGo 如何從一個瘋狂的想法變成改變世界的 AI"><meta data-rh="true" property="og:description" content="從 DeepMind 創立到 Google 收購，AlphaGo 如何從一個瘋狂的想法變成改變世界的 AI"><link data-rh="true" rel="icon" href="/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" hreflang="zh-tw"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/zh-cn/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" hreflang="zh-cn"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/zh-hk/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" hreflang="zh-hk"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/en/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" hreflang="en"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/ja/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" hreflang="ja"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/ko/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" hreflang="ko"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/es/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" hreflang="es"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/pt/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" hreflang="pt"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/hi/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" hreflang="hi"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/id/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" hreflang="id"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/ar/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" hreflang="ar"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.weiqi.kids#organization","name":"台灣好棋寶寶協會","alternateName":"Taiwan Good Go Baby Association","url":"https://www.weiqi.kids","logo":{"@type":"ImageObject","url":"https://www.weiqi.kids/img/logo.svg","width":200,"height":200},"sameAs":["https://mastodon.weiqi.kids/","https://peertube.weiqi.kids/"],"contactPoint":{"@type":"ContactPoint","contactType":"customer service","url":"https://www.weiqi.kids/docs/aboutus"},"description":"推動圍棋文化與 AI 研究的台灣非營利組織"},{"@type":"WebSite","@id":"https://www.weiqi.kids#website","name":"好棋寶寶協會官網","url":"https://www.weiqi.kids","publisher":{"@id":"https://www.weiqi.kids#organization"},"inLanguage":["zh-TW","zh-CN","zh-HK","en","ja","ko","es","pt","hi","id","ar"],"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://www.weiqi.kids/search?q={search_term_string}"},"query-input":"required name=search_term_string"}}]}</script><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"給工程師的圍棋 AI 指南","item":"https://www.weiqi.kids/docs/for-engineers/"},{"@type":"ListItem","position":2,"name":"一篇文章搞懂圍棋 AI","item":"https://www.weiqi.kids/docs/for-engineers/how-it-works/"},{"@type":"ListItem","position":3,"name":"AlphaGo 完整解析","item":"https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/"},{"@type":"ListItem","position":4,"name":"AlphaGo 的誕生","item":"https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago"}]}</script><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/01-birth-of-alphago/#webpage","url":"https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/01-birth-of-alphago/","name":"AlphaGo 的誕生","description":"從 DeepMind 創立到 Google 收購，AlphaGo 如何從一個瘋狂的想法變成改變世界的 AI","inLanguage":"zh-TW","isPartOf":{"@id":"https://www.weiqi.kids#website"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://www.weiqi.kids/img/social-card.png"},"datePublished":"2024-01-15","dateModified":"2024-02-22","speakable":{"@type":"SpeakableSpecification","cssSelector":[".article-summary",".speakable-content",".key-takeaway",".key-answer",".expert-quote",".actionable-steps li",".faq-answer-content"]}},{"@type":"Article","@id":"https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/01-birth-of-alphago/#article","mainEntityOfPage":{"@id":"https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/01-birth-of-alphago/#webpage","significantLink":["https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/"]},"headline":"AlphaGo 的誕生","description":"從 DeepMind 創立到 Google 收購，AlphaGo 如何從一個瘋狂的想法變成改變世界的 AI","image":{"@type":"ImageObject","url":"https://www.weiqi.kids/img/social-card.png","width":1200,"height":630},"author":{"@id":"https://www.weiqi.kids/docs/about/#person"},"publisher":{"@id":"https://www.weiqi.kids#organization"},"datePublished":"2024-01-15","dateModified":"2024-02-22","articleSection":"AlphaGo 完整解析","keywords":"AlphaGo, DeepMind, Demis Hassabis, Google AI, 圍棋AI, 李世乭, 人工智慧歷史, 深度學習","wordCount":3200,"inLanguage":"zh-TW","isAccessibleForFree":true,"isPartOf":{"@type":"WebSite","@id":"https://www.weiqi.kids#website"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首頁","item":"https://www.weiqi.kids"},{"@type":"ListItem","position":2,"name":"給工程師","item":"https://www.weiqi.kids/docs/for-engineers/"},{"@type":"ListItem","position":3,"name":"技術原理","item":"https://www.weiqi.kids/docs/for-engineers/how-it-works/"},{"@type":"ListItem","position":4,"name":"AlphaGo 完整解析","item":"https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/"}]},{"@type":"Person","@id":"https://www.weiqi.kids/docs/about/#person","name":"好棋寶寶協會編輯團隊","url":"https://www.weiqi.kids/docs/about/","worksFor":{"@id":"https://www.weiqi.kids#organization"},"description":"專注於圍棋 AI 研究與教育推廣的技術團隊","knowsAbout":["圍棋 AI","AlphaGo","KataGo","機器學習","深度學習"],"hasCredential":[{"@type":"EducationalOccupationalCredential","name":"AI 圍棋研究專家","credentialCategory":"技術認證"}]},{"@type":"ImageObject","@id":"https://www.weiqi.kids/docs/for-engineers/how-it-works/alphago-explained/01-birth-of-alphago/#primaryimage","url":"https://www.weiqi.kids/img/social-card.png","width":1200,"height":630,"caption":"AlphaGo 的誕生 - 好棋寶寶協會","representativeOfPage":true,"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/","creditText":"台灣好棋寶寶協會"}]}</script><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"DeepMind 為什麼選擇圍棋作為 AI 研究目標？","acceptedAnswer":{"@type":"Answer","text":"圍棋被稱為「AI 的聖杯」，因為它的搜索空間（10^170）遠超宇宙原子數，且需要直覺判斷而非暴力計算。攻克圍棋代表 AI 在複雜決策問題上的重大突破。"}},{"@type":"Question","name":"AlphaGo 的核心創新是什麼？","acceptedAnswer":{"@type":"Answer","text":"AlphaGo 結合了三大創新：Policy Network（策略網路）預測下一步、Value Network（價值網路）評估局面勝率、以及將這兩個神經網路整合進蒙地卡羅樹搜索（MCTS）框架。"}},{"@type":"Question","name":"李世乭為什麼能在第四盤贏 AlphaGo？","acceptedAnswer":{"@type":"Answer","text":"李世乭下出了精妙的第 78 手「神之一手」，這步棋暴露了 AlphaGo 在特定複雜局面下的評估錯誤，導致它在後續幾步下出明顯的壞棋而認輸。"}}]}</script><meta property="og:type" content="website">
+<meta property="og:site_name" content="好棋寶寶協會">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow">
+<meta name="author" content="台灣好棋寶寶協會">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css" integrity="sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM" crossorigin="anonymous"><link rel="stylesheet" href="/assets/css/styles.f23bf74b.css">
+<script src="/assets/js/runtime~main.8112459a.js" defer="defer"></script>
+<script src="/assets/js/main.05ef375d.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>document.documentElement.setAttribute("data-theme","light"),document.documentElement.setAttribute("data-theme-choice","light"),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/img/logo.svg"><div role="region" aria-label="跳至主要内容"><a class="skipToContent_WWLT" href="#__docusaurus_skipToContent_fallback">跳至主要内容</a></div><nav aria-label="主導航" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="切換導覽列" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/"><div class="navbar__logo"><img src="/img/logo.svg" alt="好棋寶寶協會標誌" class="themedComponent_rBb5 themedComponent--light_t3c2"><img src="/img/logo.svg" alt="好棋寶寶協會標誌" class="themedComponent_rBb5 themedComponent--dark_Z76H"></div><b class="navbar__title text--truncate">好棋寶寶</b></a><a class="navbar__item navbar__link" href="/docs/for-players/">給棋友</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/docs/for-engineers/">給工程師</a><a class="navbar__item navbar__link" href="/docs/about/">關於協會</a><a class="navbar__item navbar__link" href="/docs/activities/">活動實績</a><a class="navbar__item navbar__link" href="/docs/references/">參考資料</a><a class="navbar__item navbar__link" href="/docs/sop/">標準作業流程</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href="#" aria-haspopup="true" aria-expanded="false" role="button" class="navbar__link navbar__item--compact"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class="iconLanguage_LXmZ"><path fill="currentColor" d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"></path></svg>繁體中文</a><ul class="dropdown__menu"><li><a href="/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" target="_self" rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang="zh-tw">繁體中文</a></li><li><a href="/zh-cn/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="zh-cn">简体中文</a></li><li><a href="/zh-hk/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="zh-hk">粵語（香港）</a></li><li><a href="/en/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="en">English</a></li><li><a href="/ja/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="ja">日本語</a></li><li><a href="/ko/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="ko">한국어</a></li><li><a href="/es/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="es">Español</a></li><li><a href="/pt/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="pt">Português</a></li><li><a href="/hi/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="hi">हिन्दी</a></li><li><a href="/id/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="id">Bahasa Indonesia</a></li><li><a href="/ar/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="ar">العربية</a></li></ul></div><a href="https://github.com/weiqi-kids/www.weiqi.kids" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link header-github-link navbar__item--compact" aria-label="GitHub"></a><div class="navbarSearchContainer_MDM0"><div class="navbar__search searchBarContainer_Qpyg" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_KBva" value=""><div class="loadingRing_riNO searchBarLoadingRing_XquT"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_SQvo"><div class="docsWrapper_HjTU"><button aria-label="回到頂部" class="clean-btn theme-back-to-top-button backToTopButton_91RE" type="button"></button><div class="docRoot_SzOB"><aside class="theme-doc-sidebar-container docSidebarContainer_Q0cb"><div class="sidebarViewport_TEb6"><div class="sidebar_LiQ3"><nav aria-label="文件側邊欄" class="menu thin-scrollbar menu_iDgU"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/docs/intro/"><span title="使用指南" class="linkLabel_REp1">使用指南</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/docs/about/"><span title="關於協會" class="categoryLinkLabel_ezQx">關於協會</span></a><button aria-label="展開側邊欄分類 &#x27;關於協會&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/docs/activities/"><span title="活動實績" class="categoryLinkLabel_ezQx">活動實績</span></a><button aria-label="展開側邊欄分類 &#x27;活動實績&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/docs/for-players/"><span title="給圍棋棋友" class="categoryLinkLabel_ezQx">給圍棋棋友</span></a><button aria-label="展開側邊欄分類 &#x27;給圍棋棋友&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/docs/references/"><span title="參考資料" class="categoryLinkLabel_ezQx">參考資料</span></a><button aria-label="展開側邊欄分類 &#x27;參考資料&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/docs/sop/"><span title="標準作業流程" class="categoryLinkLabel_ezQx">標準作業流程</span></a><button aria-label="展開側邊欄分類 &#x27;標準作業流程&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist menu__link--active" href="/docs/for-engineers/"><span title="給工程師的圍棋 AI 指南" class="categoryLinkLabel_ezQx">給工程師的圍棋 AI 指南</span></a><button aria-label="收起側邊欄分類 &#x27;給工程師的圍棋 AI 指南&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" tabindex="0" href="/docs/for-engineers/deep-dive/"><span title="給想深入研究的人" class="categoryLinkLabel_ezQx">給想深入研究的人</span></a><button aria-label="展開側邊欄分類 &#x27;給想深入研究的人&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" tabindex="0" href="/docs/for-engineers/hands-on/"><span title="30 分鐘跑起第一個圍棋 AI" class="categoryLinkLabel_ezQx">30 分鐘跑起第一個圍棋 AI</span></a><button aria-label="展開側邊欄分類 &#x27;30 分鐘跑起第一個圍棋 AI&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist menu__link--active" tabindex="0" href="/docs/for-engineers/how-it-works/"><span title="一篇文章搞懂圍棋 AI" class="categoryLinkLabel_ezQx">一篇文章搞懂圍棋 AI</span></a><button aria-label="收起側邊欄分類 &#x27;一篇文章搞懂圍棋 AI&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-3 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist menu__link--active" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/"><span title="AlphaGo 完整解析" class="categoryLinkLabel_ezQx">AlphaGo 完整解析</span></a><button aria-label="收起側邊欄分類 &#x27;AlphaGo 完整解析&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/birth-of-alphago/"><span title="AlphaGo 的誕生" class="linkLabel_REp1">AlphaGo 的誕生</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/key-matches/"><span title="關鍵對局回顧" class="linkLabel_REp1">關鍵對局回顧</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/move-37/"><span title="「神之一手」深度分析" class="linkLabel_REp1">「神之一手」深度分析</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/why-go-is-hard/"><span title="圍棋為什麼難？" class="linkLabel_REp1">圍棋為什麼難？</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/traditional-limits/"><span title="傳統方法的極限" class="linkLabel_REp1">傳統方法的極限</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/board-representation/"><span title="棋盤狀態表示" class="linkLabel_REp1">棋盤狀態表示</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/policy-network/"><span title="Policy Network 詳解" class="linkLabel_REp1">Policy Network 詳解</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/value-network/"><span title="Value Network 詳解" class="linkLabel_REp1">Value Network 詳解</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/input-features/"><span title="輸入特徵設計" class="linkLabel_REp1">輸入特徵設計</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/cnn-and-go/"><span title="CNN 與圍棋的結合" class="linkLabel_REp1">CNN 與圍棋的結合</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/supervised-learning/"><span title="監督學習階段" class="linkLabel_REp1">監督學習階段</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/reinforcement-intro/"><span title="強化學習入門" class="linkLabel_REp1">強化學習入門</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/self-play/"><span title="自我對弈" class="linkLabel_REp1">自我對弈</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/mcts-neural-combo/"><span title="MCTS 與神經網路的結合" class="linkLabel_REp1">MCTS 與神經網路的結合</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/puct-formula/"><span title="PUCT 公式詳解" class="linkLabel_REp1">PUCT 公式詳解</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/alphago-zero/"><span title="AlphaGo Zero 概述" class="linkLabel_REp1">AlphaGo Zero 概述</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/dual-head-resnet/"><span title="雙頭網路與殘差網路" class="linkLabel_REp1">雙頭網路與殘差網路</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/training-from-scratch/"><span title="從零訓練的過程" class="linkLabel_REp1">從零訓練的過程</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/distributed-systems/"><span title="分散式系統與 TPU" class="linkLabel_REp1">分散式系統與 TPU</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-4 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/alphago-explained/legacy-and-impact/"><span title="AlphaGo 的遺產" class="linkLabel_REp1">AlphaGo 的遺產</span></a></li></ul></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/katago-innovations/"><span title="KataGo 的關鍵創新" class="linkLabel_REp1">KataGo 的關鍵創新</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/for-engineers/how-it-works/concepts/"><span title="概念速查表" class="linkLabel_REp1">概念速查表</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" tabindex="0" href="/docs/for-engineers/industry/"><span title="圍棋 AI 產業現況" class="categoryLinkLabel_ezQx">圍棋 AI 產業現況</span></a><button aria-label="展開側邊欄分類 &#x27;圍棋 AI 產業現況&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" tabindex="0" href="/docs/for-engineers/overview/"><span title="圍棋 AI 能做什麼？" class="categoryLinkLabel_ezQx">圍棋 AI 能做什麼？</span></a><button aria-label="展開側邊欄分類 &#x27;圍棋 AI 能做什麼？&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></li></ul></nav></div></div></aside><main class="docMainContainer_C0wL"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_txwF"><div class="docItemContainer_FUEM"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_DlgT" aria-label="頁面路徑"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="主頁面" class="breadcrumbs__link" href="/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_BMIH"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/docs/for-engineers/"><span>給工程師的圍棋 AI 指南</span></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/docs/for-engineers/how-it-works/"><span>一篇文章搞懂圍棋 AI</span></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/docs/for-engineers/how-it-works/alphago-explained/"><span>AlphaGo 完整解析</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">AlphaGo 的誕生</span></li></ul></nav><div class="tocCollapsible_LBsY theme-doc-toc-mobile tocMobile_eMWB"><button type="button" class="clean-btn tocCollapsibleButton_fVBn">本頁導覽</button></div><div class="theme-doc-markdown markdown">
+<header><h1>AlphaGo 的誕生</h1></header>
+<p>2016 年 3 月，當 AlphaGo 以 4:1 擊敗李世乭時，全世界都在問：這個改變人工智慧歷史的程式，究竟是怎麼誕生的？</p>
+<p>答案要從一位西洋棋神童的夢想說起。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="deepmind-的創立">DeepMind 的創立<a href="#deepmind-的創立" class="hash-link" aria-label="DeepMind 的創立的直接連結" title="DeepMind 的創立的直接連結" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="demis-hassabis從神童到-ai-先驅">Demis Hassabis：從神童到 AI 先驅<a href="#demis-hassabis從神童到-ai-先驅" class="hash-link" aria-label="Demis Hassabis：從神童到 AI 先驅的直接連結" title="Demis Hassabis：從神童到 AI 先驅的直接連結" translate="no">​</a></h3>
+<p><strong>Demis Hassabis</strong> 是 DeepMind 的共同創辦人兼執行長。他的人生經歷，幾乎就是為創造 AlphaGo 而準備的。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="西洋棋神童">西洋棋神童<a href="#西洋棋神童" class="hash-link" aria-label="西洋棋神童的直接連結" title="西洋棋神童的直接連結" translate="no">​</a></h4>
+<p>1975 年出生於倫敦的 Hassabis，在 4 歲時學會下西洋棋，13 歲時達到西洋棋大師等級（Elo 2300+），是英國史上第二年輕達到此水平的棋手。</p>
+<p>這段經歷讓他深刻理解：</p>
+<ul>
+<li class=""><strong>棋類遊戲是智能的試金石</strong>：下棋需要規劃、直覺、模式識別</li>
+<li class=""><strong>人類智能的本質</strong>：棋手如何在龐大的可能性中找到好棋？</li>
+<li class=""><strong>電腦的侷限</strong>：1997 年深藍擊敗卡斯帕洛夫靠的是暴力搜索，而非真正的「理解」</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="遊戲設計師">遊戲設計師<a href="#遊戲設計師" class="hash-link" aria-label="遊戲設計師的直接連結" title="遊戲設計師的直接連結" translate="no">​</a></h4>
+<p>17 歲時，Hassabis 加入 Bullfrog Productions（由《上帝也瘋狂》創作者 Peter Molyneux 創立的遊戲公司），參與開發了經典遊戲《乾坤大挪移》（Theme Park）。這段經歷教會他：</p>
+<ul>
+<li class=""><strong>如何設計複雜系統</strong>：遊戲是模擬現實世界的簡化模型</li>
+<li class=""><strong>玩家行為預測</strong>：AI 需要理解人類的決策過程</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="認知神經科學家">認知神經科學家<a href="#認知神經科學家" class="hash-link" aria-label="認知神經科學家的直接連結" title="認知神經科學家的直接連結" translate="no">​</a></h4>
+<p>在劍橋大學取得電腦科學學位後，Hassabis 在倫敦大學學院（UCL）取得認知神經科學博士學位。他的研究主題是：<strong>海馬迴如何讓人類進行想像與規劃</strong>。</p>
+<p>這項研究發現：</p>
+<ul>
+<li class="">人類的記憶與想像使用相同的腦區</li>
+<li class="">我們透過「心理時間旅行」來規劃未來</li>
+<li class="">這種能力可能是智能的核心</li>
+</ul>
+<p>這些洞見直接影響了後來 AlphaGo 的設計——讓 AI 能夠「想像」未來的走法，並從中學習。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="共同創辦人">共同創辦人<a href="#共同創辦人" class="hash-link" aria-label="共同創辦人的直接連結" title="共同創辦人的直接連結" translate="no">​</a></h3>
+<p>2010 年，Hassabis 與兩位夥伴共同創立 DeepMind：</p>
+<table><thead><tr><th>創辦人</th><th>背景</th><th>貢獻</th></tr></thead><tbody><tr><td><strong>Demis Hassabis</strong></td><td>神經科學、遊戲設計</td><td>願景與策略</td></tr><tr><td><strong>Shane Legg</strong></td><td>機器學習博士</td><td>AGI 理論基礎</td></tr><tr><td><strong>Mustafa Suleyman</strong></td><td>社會企業家</td><td>商業與應用</td></tr></tbody></table>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="解決智能用智能解決一切">「解決智能，用智能解決一切」<a href="#解決智能用智能解決一切" class="hash-link" aria-label="「解決智能，用智能解決一切」的直接連結" title="「解決智能，用智能解決一切」的直接連結" translate="no">​</a></h3>
+<p>DeepMind 的使命宣言是：</p>
+<blockquote>
+<p><strong>&quot;Solve intelligence, and then use that to solve everything else.&quot;</strong></p>
+<p>「解決智能，然後用它來解決所有其他問題。」</p>
+</blockquote>
+<p>這不是一家普通的 AI 公司。他們的目標不是做產品，而是創造<strong>通用人工智慧（AGI）</strong>——一種能像人類一樣思考、學習、解決任何問題的 AI。</p>
+<p>為什麼要先「解決智能」？因為一旦我們有了 AGI，它就能幫助我們解決氣候變遷、疾病、能源等人類最大的挑戰。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="早期突破atari-遊戲">早期突破：Atari 遊戲<a href="#早期突破atari-遊戲" class="hash-link" aria-label="早期突破：Atari 遊戲的直接連結" title="早期突破：Atari 遊戲的直接連結" translate="no">​</a></h2>
+<p>在挑戰圍棋之前，DeepMind 首先證明了自己的能力——用 AI 玩 Atari 遊戲。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="dqn學會玩遊戲的-ai">DQN：學會玩遊戲的 AI<a href="#dqn學會玩遊戲的-ai" class="hash-link" aria-label="DQN：學會玩遊戲的 AI的直接連結" title="DQN：學會玩遊戲的 AI的直接連結" translate="no">​</a></h3>
+<p>2013 年，DeepMind 發表了 <strong>DQN（Deep Q-Network）</strong> 演算法。這個 AI 能夠：</p>
+<ol>
+<li class=""><strong>只看螢幕像素</strong>——不給它任何遊戲規則</li>
+<li class=""><strong>自己學會玩遊戲</strong>——透過嘗試錯誤</li>
+<li class=""><strong>達到人類水平</strong>——甚至在某些遊戲超越人類</li>
+</ol>
+<p>DQN 在《打磚塊》（Breakout）中學會了一個人類需要幾個小時才能發現的策略：<strong>挖隧道讓球跑到磚塊後面，一次消除一大片</strong>。</p>
+<p>這證明了深度學習 + 強化學習的組合，能夠發現人類未曾想過的策略。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="為什麼從遊戲開始">為什麼從遊戲開始？<a href="#為什麼從遊戲開始" class="hash-link" aria-label="為什麼從遊戲開始？的直接連結" title="為什麼從遊戲開始？的直接連結" translate="no">​</a></h3>
+<p>Hassabis 選擇遊戲作為研究平台，有幾個原因：</p>
+<ol>
+<li class=""><strong>環境可控</strong>：遊戲有明確的規則和目標</li>
+<li class=""><strong>可測量進步</strong>：有客觀的分數來評估 AI 能力</li>
+<li class=""><strong>人類基準</strong>：可以與人類玩家比較</li>
+<li class=""><strong>多樣性</strong>：不同遊戲測試不同能力</li>
+</ol>
+<p>這套方法論，後來也用在圍棋上。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="google-的收購">Google 的收購<a href="#google-的收購" class="hash-link" aria-label="Google 的收購的直接連結" title="Google 的收購的直接連結" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="5-億美元的賭注">5 億美元的賭注<a href="#5-億美元的賭注" class="hash-link" aria-label="5 億美元的賭注的直接連結" title="5 億美元的賭注的直接連結" translate="no">​</a></h3>
+<p>2014 年 1 月，Google 以約 <strong>5 億美元</strong>收購 DeepMind。這是當時 AI 領域最大的收購案之一。</p>
+<p>為什麼 Google 願意付這麼多錢買一家只有 75 人、還沒有產品的公司？</p>
+<p>答案在於 <strong>賽局理論</strong>：</p>
+<ul>
+<li class=""><strong>Facebook 也在競標</strong>：傳聞 Facebook 出價 4 億美元</li>
+<li class=""><strong>AI 是未來的關鍵技術</strong>：誰先掌握 AI，誰就掌握未來</li>
+<li class=""><strong>DeepMind 是最好的團隊</strong>：他們證明了深度強化學習的可行性</li>
+</ul>
+<p>Google 執行長 Larry Page 親自出面，才說服 Hassabis 選擇 Google 而非 Facebook。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="收購條件">收購條件<a href="#收購條件" class="hash-link" aria-label="收購條件的直接連結" title="收購條件的直接連結" translate="no">​</a></h3>
+<p>Hassabis 在談判中爭取到幾個關鍵條件：</p>
+<ol>
+<li class=""><strong>獨立運營</strong>：DeepMind 保持倫敦總部，獨立研發</li>
+<li class=""><strong>學術自由</strong>：可以發表論文，而非全部保密</li>
+<li class=""><strong>倫理委員會</strong>：成立 AI 倫理審查機制</li>
+<li class=""><strong>長期研究</strong>：不需要短期商業化壓力</li>
+</ol>
+<p>這些條件讓 DeepMind 能夠追求長期、高風險的研究——比如用 AI 征服圍棋。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="google-的-ai-戰略">Google 的 AI 戰略<a href="#google-的-ai-戰略" class="hash-link" aria-label="Google 的 AI 戰略的直接連結" title="Google 的 AI 戰略的直接連結" translate="no">​</a></h3>
+<p>收購 DeepMind 是 Google 「AI 優先」戰略的一部分：</p>
+<table><thead><tr><th>時間</th><th>事件</th></tr></thead><tbody><tr><td>2011</td><td>成立 Google Brain</td></tr><tr><td>2013</td><td>收購 DNNresearch（Hinton 團隊）</td></tr><tr><td>2014</td><td>收購 DeepMind</td></tr><tr><td>2015</td><td>TensorFlow 開源</td></tr><tr><td>2016</td><td>TPU 發表</td></tr></tbody></table>
+<p>Google 意識到：搜尋、廣告、翻譯、語音——所有核心業務都將被 AI 重塑。誰有最好的 AI，誰就是贏家。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="選擇圍棋作為目標">選擇圍棋作為目標<a href="#選擇圍棋作為目標" class="hash-link" aria-label="選擇圍棋作為目標的直接連結" title="選擇圍棋作為目標的直接連結" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="為什麼是圍棋">為什麼是圍棋？<a href="#為什麼是圍棋" class="hash-link" aria-label="為什麼是圍棋？的直接連結" title="為什麼是圍棋？的直接連結" translate="no">​</a></h3>
+<p>被 Google 收購後，DeepMind 有了更多資源。Hassabis 決定挑戰一個看似不可能的目標：<strong>用 AI 擊敗人類圍棋冠軍</strong>。</p>
+<p>為什麼選擇圍棋，而不是其他問題？</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="1-圍棋是ai-的聖杯">1. 圍棋是「AI 的聖杯」<a href="#1-圍棋是ai-的聖杯" class="hash-link" aria-label="1. 圍棋是「AI 的聖杯」的直接連結" title="1. 圍棋是「AI 的聖杯」的直接連結" translate="no">​</a></h4>
+<p>2016 年之前，專家普遍認為 AI 至少需要 10-20 年才能在圍棋上擊敗人類。圍棋被稱為「AI 最後的堡壘」。</p>
+<p>原因：</p>
+<ul>
+<li class=""><strong>搜索空間巨大</strong>：10^170 種可能的局面（宇宙原子數只有 10^80）</li>
+<li class=""><strong>評估困難</strong>：不像西洋棋有明確的棋子價值</li>
+<li class=""><strong>直覺依賴</strong>：頂尖棋手常說「這步棋感覺對」，卻無法解釋原因</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="2-深藍的啟示">2. 深藍的啟示<a href="#2-深藍的啟示" class="hash-link" aria-label="2. 深藍的啟示的直接連結" title="2. 深藍的啟示的直接連結" translate="no">​</a></h4>
+<p>1997 年，IBM 的深藍（Deep Blue）擊敗了西洋棋世界冠軍卡斯帕洛夫。但這個勝利有爭議：</p>
+<ul>
+<li class="">深藍靠的是<strong>暴力搜索</strong>（每秒評估 2 億個位置）</li>
+<li class="">使用<strong>人類專家設計的評估函數</strong></li>
+<li class="">這不是真正的「智能」，而是「計算力」</li>
+</ul>
+<p>Hassabis 想證明：AI 可以用<strong>學習</strong>而非暴力搜索來解決問題。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="3-可測量的目標">3. 可測量的目標<a href="#3-可測量的目標" class="hash-link" aria-label="3. 可測量的目標的直接連結" title="3. 可測量的目標的直接連結" translate="no">​</a></h4>
+<p>圍棋有國際排名系統（Elo rating）和職業棋手，提供了客觀的衡量標準。如果 AI 能擊敗世界冠軍，就是無可爭辯的成功。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="4-與神經科學的連結">4. 與神經科學的連結<a href="#4-與神經科學的連結" class="hash-link" aria-label="4. 與神經科學的連結的直接連結" title="4. 與神經科學的連結的直接連結" translate="no">​</a></h4>
+<p>人類棋手的直覺——看一眼棋盤就知道哪些位置重要——正是 Hassabis 想用 AI 複製的能力。圍棋是測試「機器直覺」的完美場景。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="alphago-團隊">AlphaGo 團隊<a href="#alphago-團隊" class="hash-link" aria-label="AlphaGo 團隊的直接連結" title="AlphaGo 團隊的直接連結" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="核心人物">核心人物<a href="#核心人物" class="hash-link" aria-label="核心人物的直接連結" title="核心人物的直接連結" translate="no">​</a></h3>
+<p>AlphaGo 的成功，來自一支多學科背景的團隊：</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="david-silver首席研究員">David Silver：首席研究員<a href="#david-silver首席研究員" class="hash-link" aria-label="David Silver：首席研究員的直接連結" title="David Silver：首席研究員的直接連結" translate="no">​</a></h4>
+<p><strong>David Silver</strong> 是 AlphaGo 論文的第一作者，也是強化學習領域的頂尖專家。</p>
+<ul>
+<li class=""><strong>背景</strong>：劍橋大學數學系畢業，阿爾伯塔大學 RL 博士</li>
+<li class=""><strong>導師</strong>：Richard Sutton（強化學習教父）</li>
+<li class=""><strong>專長</strong>：蒙地卡羅樹搜索、時序差分學習</li>
+</ul>
+<p>Silver 在博士論文中就研究過電腦圍棋，但當時的技術遠未成熟。加入 DeepMind 後，他終於有機會實現這個夢想。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="aja-huang圍棋專家">Aja Huang：圍棋專家<a href="#aja-huang圍棋專家" class="hash-link" aria-label="Aja Huang：圍棋專家的直接連結" title="Aja Huang：圍棋專家的直接連結" translate="no">​</a></h4>
+<p><strong>Aja Huang</strong>（黃士傑）是台灣人，業餘六段棋手，也是電腦圍棋領域的先驅。</p>
+<ul>
+<li class=""><strong>背景</strong>：國立台灣師範大學資工博士</li>
+<li class=""><strong>專長</strong>：電腦圍棋程式設計</li>
+<li class=""><strong>著名作品</strong>：Erica（早期電腦圍棋程式）</li>
+</ul>
+<p>Huang 在 AlphaGo 團隊中扮演關鍵角色：他不只理解圍棋，也理解 AI。在與李世乭的對局中，他是實際操作 AlphaGo 的人。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="其他關鍵成員">其他關鍵成員<a href="#其他關鍵成員" class="hash-link" aria-label="其他關鍵成員的直接連結" title="其他關鍵成員的直接連結" translate="no">​</a></h4>
+<table><thead><tr><th>成員</th><th>角色</th></tr></thead><tbody><tr><td>Chris J. Maddison</td><td>蒙地卡羅樹搜索專家</td></tr><tr><td>Arthur Guez</td><td>強化學習研究員</td></tr><tr><td>Laurent Sifre</td><td>深度學習工程師</td></tr><tr><td>George van den Driessche</td><td>分散式系統工程師</td></tr></tbody></table>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="跨領域合作">跨領域合作<a href="#跨領域合作" class="hash-link" aria-label="跨領域合作的直接連結" title="跨領域合作的直接連結" translate="no">​</a></h3>
+<p>AlphaGo 的成功證明了<strong>跨領域合作</strong>的力量：</p>
+<ul>
+<li class=""><strong>圍棋專家</strong>提供領域知識</li>
+<li class=""><strong>機器學習研究員</strong>設計演算法</li>
+<li class=""><strong>工程師</strong>實現大規模訓練系統</li>
+<li class=""><strong>神經科學家</strong>提供理論靈感</li>
+</ul>
+<p>這種團隊組成，後來成為 DeepMind 的標準模式。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="nature-論文發表">Nature 論文發表<a href="#nature-論文發表" class="hash-link" aria-label="Nature 論文發表的直接連結" title="Nature 論文發表的直接連結" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="秘密的驚喜">秘密的驚喜<a href="#秘密的驚喜" class="hash-link" aria-label="秘密的驚喜的直接連結" title="秘密的驚喜的直接連結" translate="no">​</a></h3>
+<p>2016 年 1 月 27 日，DeepMind 在頂級學術期刊《Nature》發表論文：</p>
+<blockquote>
+<p><strong>&quot;Mastering the game of Go with deep neural networks and tree search&quot;</strong></p>
+</blockquote>
+<p>論文宣布 AlphaGo 已經：</p>
+<ol>
+<li class="">擊敗了所有其他圍棋程式</li>
+<li class="">以 <strong>5:0</strong> 擊敗了歐洲冠軍 <strong>樊麾</strong>（職業二段）</li>
+</ol>
+<p>這個消息震驚了世界。在論文發表之前，沒有人知道 DeepMind 在研究圍棋。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="論文的核心貢獻">論文的核心貢獻<a href="#論文的核心貢獻" class="hash-link" aria-label="論文的核心貢獻的直接連結" title="論文的核心貢獻的直接連結" translate="no">​</a></h3>
+<p>《Nature》論文描述了 AlphaGo 的三大創新：</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="1-policy-network策略網路">1. Policy Network（策略網路）<a href="#1-policy-network策略網路" class="hash-link" aria-label="1. Policy Network（策略網路）的直接連結" title="1. Policy Network（策略網路）的直接連結" translate="no">​</a></h4>
+<p>用深度卷積神經網路預測人類棋手的下一步。訓練資料來自 <strong>3000 萬局</strong> 的人類棋譜。</p>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">準確率：57%（預測人類專家的下一步）</span><br></span></code></pre></div></div>
+<p>這比之前最好的電腦圍棋程式高出 10 個百分點以上。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="2-value-network價值網路">2. Value Network（價值網路）<a href="#2-value-network價值網路" class="hash-link" aria-label="2. Value Network（價值網路）的直接連結" title="2. Value Network（價值網路）的直接連結" translate="no">​</a></h4>
+<p>用另一個神經網路評估當前局面的勝率。這取代了傳統的隨機模擬（Monte Carlo rollout）。</p>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">精度：與 15000 次隨機模擬相當，但計算速度快 15000 倍</span><br></span></code></pre></div></div>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="3-蒙地卡羅樹搜索整合">3. 蒙地卡羅樹搜索整合<a href="#3-蒙地卡羅樹搜索整合" class="hash-link" aria-label="3. 蒙地卡羅樹搜索整合的直接連結" title="3. 蒙地卡羅樹搜索整合的直接連結" translate="no">​</a></h4>
+<p>將兩個神經網路整合進 MCTS 框架：</p>
+<ul>
+<li class="">Policy Network 引導搜索方向</li>
+<li class="">Value Network 評估葉節點</li>
+</ul>
+<p>這讓 AlphaGo 既有「直覺」（神經網路），又有「推理」（樹搜索）。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="學術界的反應">學術界的反應<a href="#學術界的反應" class="hash-link" aria-label="學術界的反應的直接連結" title="學術界的反應的直接連結" translate="no">​</a></h3>
+<p>論文發表後，學術界反應熱烈：</p>
+<blockquote>
+<p>&quot;這是人工智慧的登月時刻。&quot;
+— <strong>Stuart Russell</strong>，UC Berkeley 教授，AI 教科書作者</p>
+</blockquote>
+<blockquote>
+<p>&quot;我原本認為還要 10 年，沒想到這麼快。&quot;
+— <strong>Martin Müller</strong>，電腦圍棋專家</p>
+</blockquote>
+<p>但也有人持懷疑態度：</p>
+<blockquote>
+<p>&quot;樊麾只是職業二段，不是真正的頂尖棋手。讓 AlphaGo 和 Lee Sedol 下一場再說。&quot;</p>
+</blockquote>
+<p>DeepMind 接受了這個挑戰。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="挑戰李世乭">挑戰李世乭<a href="#挑戰李世乭" class="hash-link" aria-label="挑戰李世乭的直接連結" title="挑戰李世乭的直接連結" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="為什麼是李世乭">為什麼是李世乭？<a href="#為什麼是李世乭" class="hash-link" aria-label="為什麼是李世乭？的直接連結" title="為什麼是李世乭？的直接連結" translate="no">​</a></h3>
+<p><strong>李世乭</strong>（Lee Sedol）是韓國棋手，當時被認為是過去十年最強的棋手之一：</p>
+<table><thead><tr><th>指標</th><th>數據</th></tr></thead><tbody><tr><td>世界冠軍頭銜</td><td>18 個</td></tr><tr><td>國際賽冠軍</td><td>32 個</td></tr><tr><td>最高世界排名</td><td>第 1</td></tr><tr><td>風格</td><td>「天才」「神算」</td></tr></tbody></table>
+<p>選擇李世乭，DeepMind 是在挑戰最強的人類對手。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="1-百萬美元獎金">1 百萬美元獎金<a href="#1-百萬美元獎金" class="hash-link" aria-label="1 百萬美元獎金的直接連結" title="1 百萬美元獎金的直接連結" translate="no">​</a></h3>
+<p>Google 為這場比賽提供了 <strong>100 萬美元</strong> 獎金：</p>
+<ul>
+<li class="">如果李世乭獲勝：獎金歸李世乭</li>
+<li class="">如果 AlphaGo 獲勝：獎金捐給 UNICEF、STEM 教育等慈善機構</li>
+</ul>
+<p>這不只是一場技術展示，也是全球矚目的體育賽事。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="比賽前的預測">比賽前的預測<a href="#比賽前的預測" class="hash-link" aria-label="比賽前的預測的直接連結" title="比賽前的預測的直接連結" translate="no">​</a></h3>
+<p>比賽前，多數職業棋手預測李世乭會輕鬆獲勝：</p>
+<blockquote>
+<p>&quot;AlphaGo 可能贏一盤，但 5 盤比賽我會 5:0 獲勝。&quot;
+— <strong>李世乭</strong>，賽前訪談</p>
+</blockquote>
+<blockquote>
+<p>&quot;電腦下棋死板，頂尖棋手很容易找到弱點。&quot;
+— 某位職業九段</p>
+</blockquote>
+<p>但 DeepMind 團隊有不同的看法。David Silver 後來透露：</p>
+<blockquote>
+<p>&quot;我們在內部測試中，已經讓 AlphaGo 對陣樊麾的版本下了 500 盤。新版本贏了 499 盤。&quot;</p>
+</blockquote>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="2016-年-3-月改變世界的五盤棋">2016 年 3 月：改變世界的五盤棋<a href="#2016-年-3-月改變世界的五盤棋" class="hash-link" aria-label="2016 年 3 月：改變世界的五盤棋的直接連結" title="2016 年 3 月：改變世界的五盤棋的直接連結" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="第一盤震驚開始">第一盤：震驚開始<a href="#第一盤震驚開始" class="hash-link" aria-label="第一盤：震驚開始的直接連結" title="第一盤：震驚開始的直接連結" translate="no">​</a></h3>
+<p>2016 年 3 月 9 日，首爾四季酒店。</p>
+<p>李世乭執黑先行，AlphaGo 執白。經過 3 小時 28 分的對弈，AlphaGo 中盤勝出。</p>
+<p>這是人類頂尖棋手首次正式輸給 AI。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="第二盤神之一手">第二盤：神之一手<a href="#第二盤神之一手" class="hash-link" aria-label="第二盤：神之一手的直接連結" title="第二盤：神之一手的直接連結" translate="no">​</a></h3>
+<p>第二盤誕生了被稱為「<strong>神之一手</strong>」的第 37 手——AlphaGo 在五路下出一步肩衝，所有職業棋手都認為是失誤，結果證明是致勝關鍵。</p>
+<p>（詳見下一篇：<a class="" href="/docs/for-engineers/how-it-works/alphago-explained/move-37/">「神之一手」深度分析</a>）</p>
+<p>AlphaGo 再次獲勝。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="第三盤30">第三盤：3:0<a href="#第三盤30" class="hash-link" aria-label="第三盤：3:0的直接連結" title="第三盤：3:0的直接連結" translate="no">​</a></h3>
+<p>第三盤，李世乭嘗試了非傳統的開局，但 AlphaGo 應對自如。3:0。</p>
+<p>全世界開始意識到：這不是偶然，AI 真的超越了人類。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="第四盤人類的反擊">第四盤：人類的反擊<a href="#第四盤人類的反擊" class="hash-link" aria-label="第四盤：人類的反擊的直接連結" title="第四盤：人類的反擊的直接連結" translate="no">​</a></h3>
+<p>第四盤，李世乭下出了被稱為「<strong>神之一手</strong>」的第 78 手——一步精妙的挖，讓 AlphaGo 出現了混亂。</p>
+<p>AlphaGo 在接下來的幾步中下出明顯的壞棋，最終認輸。</p>
+<p>這場勝利證明：AI 也有弱點。李世乭找到了它。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="第五盤最終比數">第五盤：最終比數<a href="#第五盤最終比數" class="hash-link" aria-label="第五盤：最終比數的直接連結" title="第五盤：最終比數的直接連結" translate="no">​</a></h3>
+<p>第五盤，AlphaGo 恢復正常，以中盤勝結束比賽。</p>
+<p><strong>最終比數：AlphaGo 4:1 李世乭</strong></p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="影響與餘波">影響與餘波<a href="#影響與餘波" class="hash-link" aria-label="影響與餘波的直接連結" title="影響與餘波的直接連結" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="全球關注">全球關注<a href="#全球關注" class="hash-link" aria-label="全球關注的直接連結" title="全球關注的直接連結" translate="no">​</a></h3>
+<p>這場比賽的影響遠超圍棋界：</p>
+<ul>
+<li class=""><strong>全球 2 億人</strong> 觀看了直播</li>
+<li class="">《紐約時報》、《經濟學人》等主流媒體大篇幅報導</li>
+<li class="">Google 股價在比賽期間上漲</li>
+<li class="">「人工智慧」成為當年最熱門的科技話題</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="對圍棋界的影響">對圍棋界的影響<a href="#對圍棋界的影響" class="hash-link" aria-label="對圍棋界的影響的直接連結" title="對圍棋界的影響的直接連結" translate="no">​</a></h3>
+<p>比賽後，職業棋手的態度從「輕視」轉為「敬畏」：</p>
+<blockquote>
+<p>&quot;我們以前認為人類理解圍棋，現在發現我們只是懂一點皮毛。&quot;
+— <strong>柯潔</strong>，中國棋手，當時世界排名第一</p>
+</blockquote>
+<p>許多職業棋手開始使用 AI 來訓練，圍棋的下法也因此改變。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="對-ai-領域的影響">對 AI 領域的影響<a href="#對-ai-領域的影響" class="hash-link" aria-label="對 AI 領域的影響的直接連結" title="對 AI 領域的影響的直接連結" translate="no">​</a></h3>
+<p>AlphaGo 證明了幾件事：</p>
+<ol>
+<li class=""><strong>深度學習可以解決專家級問題</strong>：不只是識別貓狗，還能下圍棋</li>
+<li class=""><strong>強化學習可以超越人類</strong>：透過自我對弈，AI 可以發現人類未知的策略</li>
+<li class=""><strong>神經網路 + 搜索是強大的組合</strong>：直覺 + 推理 = 更強的智能</li>
+</ol>
+<p>這些洞見後來被應用到：</p>
+<ul>
+<li class=""><strong>AlphaFold</strong>：蛋白質結構預測（2020 諾貝爾獎級成就）</li>
+<li class=""><strong>AlphaZero</strong>：通用遊戲 AI</li>
+<li class=""><strong>MuZero</strong>：不需要規則的學習</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="動畫對應">動畫對應<a href="#動畫對應" class="hash-link" aria-label="動畫對應的直接連結" title="動畫對應的直接連結" translate="no">​</a></h2>
+<p>本文涉及的核心概念與動畫編號：</p>
+<table><thead><tr><th>編號</th><th>概念</th><th>物理/數學對應</th></tr></thead><tbody><tr><td>🎬 E7</td><td>從零開始</td><td>自組織</td></tr><tr><td>🎬 E5</td><td>自我對弈</td><td>不動點收斂</td></tr><tr><td>🎬 F8</td><td>湧現能力</td><td>相變</td></tr><tr><td>🎬 H4</td><td>策略梯度</td><td>隨機優化</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="延伸閱讀">延伸閱讀<a href="#延伸閱讀" class="hash-link" aria-label="延伸閱讀的直接連結" title="延伸閱讀的直接連結" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>下一篇</strong>：<a class="" href="/docs/for-engineers/how-it-works/alphago-explained/key-matches/">關鍵對局回顧</a> — 樊麾、李世乭、柯潔的完整對局分析</li>
+<li class=""><strong>技術細節</strong>：<a class="" href="/docs/for-engineers/how-it-works/alphago-explained/policy-network/">Policy Network 詳解</a> — AlphaGo 如何學會下棋</li>
+<li class=""><strong>動手實作</strong>：<a class="" href="/docs/for-engineers/hands-on/">30 分鐘跑起第一個圍棋 AI</a> — 親自體驗</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="參考資料">參考資料<a href="#參考資料" class="hash-link" aria-label="參考資料的直接連結" title="參考資料的直接連結" translate="no">​</a></h2>
+<ol>
+<li class="">Silver, D., et al. (2016). &quot;Mastering the game of Go with deep neural networks and tree search.&quot; <em>Nature</em>, 529, 484-489.</li>
+<li class="">Mnih, V., et al. (2015). &quot;Human-level control through deep reinforcement learning.&quot; <em>Nature</em>, 518, 529-533.</li>
+<li class="">Hassabis, D. (2017). &quot;Artificial Intelligence: Chess match of the century.&quot; <em>Nature</em>, 544, 413-414.</li>
+<li class="">《AlphaGo》紀錄片 (2017)，導演 Greg Kohs。</li>
+</ol>
+<hr>
+<div class="key-takeaway" style="background-color:var(--ifm-color-success-lightest);padding:1rem;border-radius:8px;border:1px solid var(--ifm-color-success);margin-bottom:1rem"><strong style="display:block;margin-bottom:0.5rem">📌 重點摘要</strong><p>本文重點：</p><ul>
+<li class="">DeepMind 由 Demis Hassabis 創立，結合神經科學、遊戲設計與機器學習背景，目標是創造通用人工智慧（AGI）</li>
+<li class="">AlphaGo 的成功來自跨領域團隊合作：圍棋專家（黃士傑）、強化學習專家（David Silver）與工程師的結合</li>
+<li class="">2016 年 AlphaGo 以 4:1 擊敗李世乭，證明深度學習與強化學習能解決傳統 AI 無法攻克的複雜問題</li>
+</ul></div>
+<div class="faq-section" style="margin-top:2rem"><h2>常見問題</h2><details style="margin-bottom:1rem;padding:1rem;background-color:var(--ifm-color-gray-100);border-radius:8px"><summary style="font-weight:bold;cursor:pointer;margin-bottom:0.5rem">DeepMind 為什麼選擇圍棋作為 AI 研究目標？</summary><p class="faq-answer-content" style="margin-top:0.5rem">圍棋被稱為「AI 的聖杯」，因為它的搜索空間（10^170）遠超宇宙原子數，且需要直覺判斷而非暴力計算。攻克圍棋代表 AI 在複雜決策問題上的重大突破。</p></details><details style="margin-bottom:1rem;padding:1rem;background-color:var(--ifm-color-gray-100);border-radius:8px"><summary style="font-weight:bold;cursor:pointer;margin-bottom:0.5rem">AlphaGo 的核心創新是什麼？</summary><p class="faq-answer-content" style="margin-top:0.5rem">AlphaGo 結合了三大創新：Policy Network（策略網路）預測下一步、Value Network（價值網路）評估局面勝率、以及將這兩個神經網路整合進蒙地卡羅樹搜索（MCTS）框架。</p></details><details style="margin-bottom:1rem;padding:1rem;background-color:var(--ifm-color-gray-100);border-radius:8px"><summary style="font-weight:bold;cursor:pointer;margin-bottom:0.5rem">李世乭為什麼能在第四盤贏 AlphaGo？</summary><p class="faq-answer-content" style="margin-top:0.5rem">李世乭下出了精妙的第 78 手「神之一手」，這步棋暴露了 AlphaGo 在特定複雜局面下的評估錯誤，導致它在後續幾步下出明顯的壞棋而認輸。</p></details></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_YM8j"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/for-engineers/how-it-works/alphago-explained/01-birth-of-alphago.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_hRvp" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>編輯此頁</a></div><div class="col lastUpdated_LNbR"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="文件選項卡"><a class="pagination-nav__link pagination-nav__link--prev" href="/docs/for-engineers/how-it-works/alphago-explained/"><div class="pagination-nav__sublabel">上一頁</div><div class="pagination-nav__label">AlphaGo 完整解析</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/docs/for-engineers/how-it-works/alphago-explained/key-matches/"><div class="pagination-nav__sublabel">下一頁</div><div class="pagination-nav__label">關鍵對局回顧</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_VU0O thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#deepmind-的創立" class="table-of-contents__link toc-highlight">DeepMind 的創立</a><ul><li><a href="#demis-hassabis從神童到-ai-先驅" class="table-of-contents__link toc-highlight">Demis Hassabis：從神童到 AI 先驅</a></li><li><a href="#共同創辦人" class="table-of-contents__link toc-highlight">共同創辦人</a></li><li><a href="#解決智能用智能解決一切" class="table-of-contents__link toc-highlight">「解決智能，用智能解決一切」</a></li></ul></li><li><a href="#早期突破atari-遊戲" class="table-of-contents__link toc-highlight">早期突破：Atari 遊戲</a><ul><li><a href="#dqn學會玩遊戲的-ai" class="table-of-contents__link toc-highlight">DQN：學會玩遊戲的 AI</a></li><li><a href="#為什麼從遊戲開始" class="table-of-contents__link toc-highlight">為什麼從遊戲開始？</a></li></ul></li><li><a href="#google-的收購" class="table-of-contents__link toc-highlight">Google 的收購</a><ul><li><a href="#5-億美元的賭注" class="table-of-contents__link toc-highlight">5 億美元的賭注</a></li><li><a href="#收購條件" class="table-of-contents__link toc-highlight">收購條件</a></li><li><a href="#google-的-ai-戰略" class="table-of-contents__link toc-highlight">Google 的 AI 戰略</a></li></ul></li><li><a href="#選擇圍棋作為目標" class="table-of-contents__link toc-highlight">選擇圍棋作為目標</a><ul><li><a href="#為什麼是圍棋" class="table-of-contents__link toc-highlight">為什麼是圍棋？</a></li></ul></li><li><a href="#alphago-團隊" class="table-of-contents__link toc-highlight">AlphaGo 團隊</a><ul><li><a href="#核心人物" class="table-of-contents__link toc-highlight">核心人物</a></li><li><a href="#跨領域合作" class="table-of-contents__link toc-highlight">跨領域合作</a></li></ul></li><li><a href="#nature-論文發表" class="table-of-contents__link toc-highlight">Nature 論文發表</a><ul><li><a href="#秘密的驚喜" class="table-of-contents__link toc-highlight">秘密的驚喜</a></li><li><a href="#論文的核心貢獻" class="table-of-contents__link toc-highlight">論文的核心貢獻</a></li><li><a href="#學術界的反應" class="table-of-contents__link toc-highlight">學術界的反應</a></li></ul></li><li><a href="#挑戰李世乭" class="table-of-contents__link toc-highlight">挑戰李世乭</a><ul><li><a href="#為什麼是李世乭" class="table-of-contents__link toc-highlight">為什麼是李世乭？</a></li><li><a href="#1-百萬美元獎金" class="table-of-contents__link toc-highlight">1 百萬美元獎金</a></li><li><a href="#比賽前的預測" class="table-of-contents__link toc-highlight">比賽前的預測</a></li></ul></li><li><a href="#2016-年-3-月改變世界的五盤棋" class="table-of-contents__link toc-highlight">2016 年 3 月：改變世界的五盤棋</a><ul><li><a href="#第一盤震驚開始" class="table-of-contents__link toc-highlight">第一盤：震驚開始</a></li><li><a href="#第二盤神之一手" class="table-of-contents__link toc-highlight">第二盤：神之一手</a></li><li><a href="#第三盤30" class="table-of-contents__link toc-highlight">第三盤：3:0</a></li><li><a href="#第四盤人類的反擊" class="table-of-contents__link toc-highlight">第四盤：人類的反擊</a></li><li><a href="#第五盤最終比數" class="table-of-contents__link toc-highlight">第五盤：最終比數</a></li></ul></li><li><a href="#影響與餘波" class="table-of-contents__link toc-highlight">影響與餘波</a><ul><li><a href="#全球關注" class="table-of-contents__link toc-highlight">全球關注</a></li><li><a href="#對圍棋界的影響" class="table-of-contents__link toc-highlight">對圍棋界的影響</a></li><li><a href="#對-ai-領域的影響" class="table-of-contents__link toc-highlight">對 AI 領域的影響</a></li></ul></li><li><a href="#動畫對應" class="table-of-contents__link toc-highlight">動畫對應</a></li><li><a href="#延伸閱讀" class="table-of-contents__link toc-highlight">延伸閱讀</a></li><li><a href="#參考資料" class="table-of-contents__link toc-highlight">參考資料</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 Weiqi.Kids. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>
