@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ko" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-tech/how-it-works/index" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">一篇文章搞懂圍棋 AI | 好棋寶寶協會 | Weiqi.Kids</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://www.weiqi.kids/ko/img/social-card.png"><meta data-rh="true" name="twitter:image" content="https://www.weiqi.kids/ko/img/social-card.png"><meta data-rh="true" property="og:url" content="https://www.weiqi.kids/ko/docs/tech/how-it-works/"><meta data-rh="true" property="og:locale" content="ko"><meta data-rh="true" property="og:locale:alternate" content="zh_tw"><meta data-rh="true" property="og:locale:alternate" content="zh_cn"><meta data-rh="true" property="og:locale:alternate" content="zh_hk"><meta data-rh="true" property="og:locale:alternate" content="en"><meta data-rh="true" property="og:locale:alternate" content="ja"><meta data-rh="true" property="og:locale:alternate" content="es"><meta data-rh="true" property="og:locale:alternate" content="pt"><meta data-rh="true" property="og:locale:alternate" content="hi"><meta data-rh="true" property="og:locale:alternate" content="id"><meta data-rh="true" property="og:locale:alternate" content="ar"><meta data-rh="true" name="docusaurus_locale" content="ko"><meta data-rh="true" name="docsearch:language" content="ko"><meta data-rh="true" name="keywords" content="圍棋, Go, 好棋寶寶, AI, KataGo, AlphaGo, 圍棋教學, 圍棋入門"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="一篇文章搞懂圍棋 AI | 好棋寶寶協會 | Weiqi.Kids"><meta data-rh="true" name="description" content="從 AlphaGo 到 KataGo，完整理解圍棋 AI 的運作原理"><meta data-rh="true" property="og:description" content="從 AlphaGo 到 KataGo，完整理解圍棋 AI 的運作原理"><link data-rh="true" rel="icon" href="/ko/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://www.weiqi.kids/ko/docs/tech/how-it-works/"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/docs/tech/how-it-works/" hreflang="zh-tw"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/zh-cn/docs/tech/how-it-works/" hreflang="zh-cn"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/zh-hk/docs/tech/how-it-works/" hreflang="zh-hk"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/en/docs/tech/how-it-works/" hreflang="en"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/ja/docs/tech/how-it-works/" hreflang="ja"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/ko/docs/tech/how-it-works/" hreflang="ko"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/es/docs/tech/how-it-works/" hreflang="es"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/pt/docs/tech/how-it-works/" hreflang="pt"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/hi/docs/tech/how-it-works/" hreflang="hi"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/id/docs/tech/how-it-works/" hreflang="id"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/ar/docs/tech/how-it-works/" hreflang="ar"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/docs/tech/how-it-works/" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.weiqi.kids#organization","name":"台灣好棋寶寶協會","alternateName":"Taiwan Good Go Baby Association","url":"https://www.weiqi.kids","logo":{"@type":"ImageObject","url":"https://www.weiqi.kids/img/logo.svg","width":200,"height":200},"sameAs":["https://mastodon.weiqi.kids/","https://peertube.weiqi.kids/"],"contactPoint":{"@type":"ContactPoint","contactType":"customer service","url":"https://www.weiqi.kids/docs/aboutus"},"description":"推動圍棋文化與 AI 研究的台灣非營利組織"},{"@type":"WebSite","@id":"https://www.weiqi.kids#website","name":"好棋寶寶協會官網","url":"https://www.weiqi.kids","publisher":{"@id":"https://www.weiqi.kids#organization"},"inLanguage":["zh-TW","zh-CN","zh-HK","en","ja","ko","es","pt","hi","id","ar"],"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://www.weiqi.kids/search?q={search_term_string}"},"query-input":"required name=search_term_string"}}]}</script><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"技術文件","item":"https://www.weiqi.kids/ko/docs/tech/"},{"@type":"ListItem","position":2,"name":"一篇文章搞懂圍棋 AI","item":"https://www.weiqi.kids/ko/docs/tech/how-it-works/"}]}</script><meta property="og:type" content="website">
+<meta property="og:site_name" content="好棋寶寶協會">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow">
+<meta name="author" content="台灣好棋寶寶協會">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css" integrity="sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM" crossorigin="anonymous"><link rel="stylesheet" href="/ko/assets/css/styles.f23bf74b.css">
+<script src="/ko/assets/js/runtime~main.931b30a6.js" defer="defer"></script>
+<script src="/ko/assets/js/main.1a9c975e.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>document.documentElement.setAttribute("data-theme","light"),document.documentElement.setAttribute("data-theme-choice","light"),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/ko/img/logo.svg"><div role="region" aria-label="본문으로 건너뛰기"><a class="skipToContent_WWLT" href="#__docusaurus_skipToContent_fallback">본문으로 건너뛰기</a></div><nav aria-label="메인" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="사이드바 펼치거나 접기" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/ko/"><div class="navbar__logo"><img src="/ko/img/logo.svg" alt="호기보보협회 로고" class="themedComponent_rBb5 themedComponent--light_t3c2"><img src="/ko/img/logo.svg" alt="호기보보협회 로고" class="themedComponent_rBb5 themedComponent--dark_Z76H"></div><b class="navbar__title text--truncate">바둑 키즈</b></a><a class="navbar__item navbar__link" href="/ko/docs/learn/">바둑 배우기</a><a class="navbar__item navbar__link" href="/ko/docs/alphago/">AlphaGo</a><a class="navbar__item navbar__link" href="/ko/docs/animations/">애니메이션 교실</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/ko/docs/tech/">기술 문서</a><a class="navbar__item navbar__link" href="/ko/docs/about/">소개</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href="#" aria-haspopup="true" aria-expanded="false" role="button" class="navbar__link navbar__item--compact"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class="iconLanguage_LXmZ"><path fill="currentColor" d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"></path></svg>한국어</a><ul class="dropdown__menu"><li><a href="/docs/tech/how-it-works/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="zh-tw">繁體中文</a></li><li><a href="/zh-cn/docs/tech/how-it-works/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="zh-cn">简体中文</a></li><li><a href="/zh-hk/docs/tech/how-it-works/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="zh-hk">粵語（香港）</a></li><li><a href="/en/docs/tech/how-it-works/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="en">English</a></li><li><a href="/ja/docs/tech/how-it-works/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="ja">日本語</a></li><li><a href="/ko/docs/tech/how-it-works/" target="_self" rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang="ko">한국어</a></li><li><a href="/es/docs/tech/how-it-works/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="es">Español</a></li><li><a href="/pt/docs/tech/how-it-works/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="pt">Português</a></li><li><a href="/hi/docs/tech/how-it-works/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="hi">हिन्दी</a></li><li><a href="/id/docs/tech/how-it-works/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="id">Bahasa Indonesia</a></li><li><a href="/ar/docs/tech/how-it-works/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="ar">العربية</a></li></ul></div><a href="https://github.com/weiqi-kids/www.weiqi.kids" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link header-github-link navbar__item--compact" aria-label="GitHub"></a><div class="navbarSearchContainer_MDM0"><div class="navbar__search searchBarContainer_Qpyg" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_KBva" value=""><div class="loadingRing_riNO searchBarLoadingRing_XquT"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_SQvo"><div class="docsWrapper_HjTU"><button aria-label="맨 위로 스크롤하기" class="clean-btn theme-back-to-top-button backToTopButton_91RE" type="button"></button><div class="docRoot_SzOB"><aside class="theme-doc-sidebar-container docSidebarContainer_Q0cb"><div class="sidebarViewport_TEb6"><div class="sidebar_LiQ3"><nav aria-label="문서 사이드바" class="menu thin-scrollbar menu_iDgU"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/ko/docs/intro/"><span title="이용 안내" class="linkLabel_REp1">이용 안내</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/ko/docs/learn/"><span title="學圍棋" class="categoryLinkLabel_ezQx">學圍棋</span></a><button aria-label="사이드바 분류 &#x27;學圍棋&#x27; 펼치기" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/ko/docs/alphago/"><span title="AlphaGo" class="categoryLinkLabel_ezQx">AlphaGo</span></a><button aria-label="사이드바 분류 &#x27;AlphaGo&#x27; 펼치기" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/ko/docs/animations/"><span title="動畫教室" class="linkLabel_REp1">動畫教室</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist menu__link--active" href="/ko/docs/tech/"><span title="技術文件" class="categoryLinkLabel_ezQx">技術文件</span></a><button aria-label="사이드바 분류 &#x27;技術文件&#x27; 접기" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" tabindex="0" href="/ko/docs/tech/deep-dive/"><span title="심층 연구를 원하는 분들을 위해" class="categoryLinkLabel_ezQx">심층 연구를 원하는 분들을 위해</span></a><button aria-label="사이드바 분류 &#x27;심층 연구를 원하는 분들을 위해&#x27; 펼치기" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" tabindex="0" href="/ko/docs/tech/hands-on/"><span title="30 分鐘跑起第一個圍棋 AI" class="categoryLinkLabel_ezQx">30 分鐘跑起第一個圍棋 AI</span></a><button aria-label="사이드바 분류 &#x27;30 分鐘跑起第一個圍棋 AI&#x27; 펼치기" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible menu__list-item-collapsible--active"><a class="categoryLink_nItb menu__link menu__link--sublist menu__link--active" aria-current="page" tabindex="0" href="/ko/docs/tech/how-it-works/"><span title="一篇文章搞懂圍棋 AI" class="categoryLinkLabel_ezQx">一篇文章搞懂圍棋 AI</span></a><button aria-label="사이드바 분류 &#x27;一篇文章搞懂圍棋 AI&#x27; 접기" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/tech/how-it-works/katago-innovations/"><span title="KataGo 的關鍵創新" class="linkLabel_REp1">KataGo 的關鍵創新</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/ko/docs/tech/how-it-works/concepts/"><span title="概念速查表" class="linkLabel_REp1">概念速查表</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" tabindex="0" href="/ko/docs/tech/industry/"><span title="圍棋 AI 產業現況" class="categoryLinkLabel_ezQx">圍棋 AI 產業現況</span></a><button aria-label="사이드바 분류 &#x27;圍棋 AI 產業現況&#x27; 펼치기" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" tabindex="0" href="/ko/docs/tech/overview/"><span title="圍棋 AI 能做什麼？" class="categoryLinkLabel_ezQx">圍棋 AI 能做什麼？</span></a><button aria-label="사이드바 분류 &#x27;圍棋 AI 能做什麼？&#x27; 펼치기" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/ko/docs/about/"><span title="關於我們" class="categoryLinkLabel_ezQx">關於我們</span></a><button aria-label="사이드바 분류 &#x27;關於我們&#x27; 펼치기" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></nav></div></div></aside><main class="docMainContainer_C0wL"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_txwF"><div class="docItemContainer_FUEM"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_DlgT" aria-label="탐색 경로"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="홈" class="breadcrumbs__link" href="/ko/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_BMIH"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/ko/docs/tech/"><span>技術文件</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">一篇文章搞懂圍棋 AI</span></li></ul></nav><div class="tocCollapsible_LBsY theme-doc-toc-mobile tocMobile_eMWB"><button type="button" class="clean-btn tocCollapsibleButton_fVBn">이 페이지에서</button></div><div class="theme-doc-markdown markdown"><header><h1>一篇文章搞懂圍棋 AI</h1></header>
+<p>讀完這篇文章，你將能夠：</p>
+<ul>
+<li class="">理解為什麼圍棋對 AI 來說特別困難</li>
+<li class="">解釋 AlphaGo 如何結合神經網路與樹搜索</li>
+<li class="">說明自我對弈訓練的運作原理</li>
+<li class="">了解 KataGo 相對於 AlphaGo 的改進</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="一圍棋為什麼難">一、圍棋為什麼難？<a href="#一圍棋為什麼難" class="hash-link" aria-label="一、圍棋為什麼難？에 대한 직접 링크" title="一、圍棋為什麼難？에 대한 직접 링크" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="搜索空間的詛咒">搜索空間的詛咒<a href="#搜索空間的詛咒" class="hash-link" aria-label="搜索空間的詛咒에 대한 직접 링크" title="搜索空間的詛咒에 대한 직접 링크" translate="no">​</a></h3>
+<p>圍棋的合法局面數約為 <strong>10^170</strong>。這是什麼概念？</p>
+<table><thead><tr><th>比較對象</th><th>數量級</th></tr></thead><tbody><tr><td>宇宙中的原子數</td><td>10^80</td></tr><tr><td>圍棋合法局面數</td><td>10^170</td></tr><tr><td>西洋棋合法局面數</td><td>10^47</td></tr></tbody></table>
+<p>每一步平均有約 250 個合法選擇，一盤棋約 150 手。傳統的窮舉搜索根本不可能。</p>
+<p><strong>動畫對應</strong>：</p>
+<ul>
+<li class="">🎬 B2：組合爆炸 ↔ 指數爆炸 — 棋步組合數如何爆炸性成長</li>
+<li class="">🎬 B8：分支因子爆炸 ↔ 指數爆炸 — 250^150 的不可能性</li>
+<li class="">🎬 F1：複雜度縮放 ↔ 狀態空間爆炸 — N×N 棋盤的分支因子</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="評估的困難">評估的困難<a href="#評估的困難" class="hash-link" aria-label="評估的困難에 대한 직접 링크" title="評估的困難에 대한 직접 링크" translate="no">​</a></h3>
+<p>西洋棋可以簡單計算棋子價值（皇后=9、車=5...），但圍棋不行：</p>
+<ul>
+<li class="">一顆棋子的價值取決於周圍的配置</li>
+<li class="">領地是「圍」出來的，邊界模糊</li>
+<li class="">厚勢、外勢等抽象概念難以量化</li>
+</ul>
+<p>這就是為什麼圍棋被稱為「AI 的聖杯」——在 2016 年之前，沒有人認為 AI 能在 10 年內擊敗人類冠軍。</p>
+<p><strong>動畫對應</strong>：</p>
+<ul>
+<li class="">🎬 A1：網格狀態 ↔ 離散網格 — 棋盤如何表示</li>
+<li class="">🎬 A8：狀態編碼 ↔ 三態系統 — <code>{空,黑,白}</code> 的編碼</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="二傳統方法的極限">二、傳統方法的極限<a href="#二傳統方法的極限" class="hash-link" aria-label="二、傳統方法的極限에 대한 직접 링크" title="二、傳統方法的極限에 대한 직접 링크" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="minimax--alpha-beta-剪枝">Minimax + Alpha-Beta 剪枝<a href="#minimax--alpha-beta-剪枝" class="hash-link" aria-label="Minimax + Alpha-Beta 剪枝에 대한 직접 링크" title="Minimax + Alpha-Beta 剪枝에 대한 직접 링크" translate="no">​</a></h3>
+<p>傳統棋類 AI 的核心演算法：</p>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">Minimax 思路：</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">- 我方：選擇對自己最有利的棋步（max）</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">- 對方：假設對手也會選最有利的棋步（min）</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">- 交替進行，建立遊戲樹</span><br></span></code></pre></div></div>
+<p><strong>問題</strong>：搜索深度受限。即使用 Alpha-Beta 剪枝減少計算量，圍棋的分支因子（~250）仍然太大。</p>
+<p><strong>動畫對應</strong>：</p>
+<ul>
+<li class="">🎬 B3：Minimax ↔ 鞍點 — 極大極小的數學意義</li>
+<li class="">🎬 B7：Alpha-Beta 剪枝 ↔ 相消干涉 — 如何減少無效搜索</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="純蒙地卡羅樹搜索mcts">純蒙地卡羅樹搜索（MCTS）<a href="#純蒙地卡羅樹搜索mcts" class="hash-link" aria-label="純蒙地卡羅樹搜索（MCTS）에 대한 직접 링크" title="純蒙地卡羅樹搜索（MCTS）에 대한 직접 링크" translate="no">​</a></h3>
+<p>2006 年的突破——不需要評估函數：</p>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">MCTS 四步驟：</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">1. Selection：選擇有希望的節點</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">2. Expansion：擴展新的子節點</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">3. Simulation：隨機模擬到終局</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">4. Backpropagation：回傳勝負結果</span><br></span></code></pre></div></div>
+<p><strong>進步</strong>：首次讓 AI 達到業餘段位水平。</p>
+<p><strong>問題</strong>：隨機模擬太不準確。需要大量模擬才能得到可靠的勝率估計。</p>
+<p><strong>動畫對應</strong>：</p>
+<ul>
+<li class="">🎬 C5：MCTS 四步驟 ↔ 樹的遍歷 — Select→Expand→Simulate→Backprop</li>
+<li class="">🎬 C1：隨機取樣 ↔ 蒙地卡羅積分 — random playout 的原理</li>
+<li class="">🎬 C3：探索 vs 利用 ↔ 自由能權衡 — UCB 公式的意義</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="三alphago-的突破">三、AlphaGo 的突破<a href="#三alphago-的突破" class="hash-link" aria-label="三、AlphaGo 的突破에 대한 직접 링크" title="三、AlphaGo 的突破에 대한 직접 링크" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="核心洞見">核心洞見<a href="#核心洞見" class="hash-link" aria-label="核心洞見에 대한 직접 링크" title="核心洞見에 대한 직접 링크" translate="no">​</a></h3>
+<p><strong>用神經網路取代 MCTS 中的隨機模擬</strong>。</p>
+<p>AlphaGo 訓練了兩個神經網路：</p>
+<table><thead><tr><th>網路</th><th>輸入</th><th>輸出</th><th>功能</th></tr></thead><tbody><tr><td><strong>Policy Network</strong></td><td>棋盤狀態</td><td>每個位置的落子機率</td><td>「下一步該下哪裡？」</td></tr><tr><td><strong>Value Network</strong></td><td>棋盤狀態</td><td>單一數值（-1 到 +1）</td><td>「這個局面誰贏？」</td></tr></tbody></table>
+<p><strong>動畫對應</strong>：</p>
+<ul>
+<li class="">🎬 E1：策略網路 ↔ 策略分布 — Policy Network 輸出什麼</li>
+<li class="">🎬 E2：價值網路 ↔ 價值函數 — Value Network 輸出什麼</li>
+<li class="">🎬 D9：卷積運算 ↔ 空間濾波 — CNN 如何處理棋盤</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="policy-network策略網路">Policy Network（策略網路）<a href="#policy-network策略網路" class="hash-link" aria-label="Policy Network（策略網路）에 대한 직접 링크" title="Policy Network（策略網路）에 대한 직접 링크" translate="no">​</a></h3>
+<p>輸入：19×19 棋盤，編碼為多個特徵平面（黑子位置、白子位置、氣、歷史...）</p>
+<p>輸出：361 個機率值，代表每個位置的落子可能性</p>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">棋盤狀態 → CNN → Softmax → [0.01, 0.02, ..., 0.15, ..., 0.01]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">                              ↑ 第 42 位置機率 15%</span><br></span></code></pre></div></div>
+<p><strong>作用</strong>：告訴 MCTS「哪些位置值得探索」，大幅減少搜索範圍。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="value-network價值網路">Value Network（價值網路）<a href="#value-network價值網路" class="hash-link" aria-label="Value Network（價值網路）에 대한 직접 링크" title="Value Network（價值網路）에 대한 직접 링크" translate="no">​</a></h3>
+<p>輸入：同樣的棋盤狀態</p>
+<p>輸出：單一數值，代表當前局面的勝率</p>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">棋盤狀態 → CNN → Tanh → 0.72（黑方勝率 72%）</span><br></span></code></pre></div></div>
+<p><strong>作用</strong>：直接評估局面好壞，不需要模擬到終局。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="神經網路--mcts-的結合">神經網路 + MCTS 的結合<a href="#神經網路--mcts-的結合" class="hash-link" aria-label="神經網路 + MCTS 的結合에 대한 직접 링크" title="神經網路 + MCTS 的結合에 대한 직접 링크" translate="no">​</a></h3>
+<p>AlphaGo 使用 <strong>PUCT</strong>（Predictor Upper Confidence Bounds applied to Trees）公式來選擇節點：</p>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">選擇分數 = Q(s,a) + c × P(s,a) × √(N(s)) / (1 + N(s,a))</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">其中：</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">- Q(s,a)：該動作的平均價值（來自 Value Network）</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">- P(s,a)：該動作的先驗機率（來自 Policy Network）</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">- N(s)：父節點訪問次數</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">- N(s,a)：該動作訪問次數</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">- c：探索常數</span><br></span></code></pre></div></div>
+<p><strong>直觀理解</strong>：</p>
+<ul>
+<li class="">Policy Network 說這步棋好 → P(s,a) 高 → 優先探索</li>
+<li class="">探索越少的節點 → N(s,a) 小 → 分數越高 → 鼓勵探索</li>
+<li class="">Value Network 評估好 → Q(s,a) 高 → 優先選擇</li>
+</ul>
+<p><strong>動畫對應</strong>：</p>
+<ul>
+<li class="">🎬 E4：PUCT 公式 ↔ 有偏擴散 — 策略引導搜尋的數學</li>
+<li class="">🎬 C3：探索 vs 利用 ↔ 自由能權衡 — 公式中的平衡</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="搜索過程圖解">搜索過程圖解<a href="#搜索過程圖解" class="hash-link" aria-label="搜索過程圖解에 대한 직접 링크" title="搜索過程圖解에 대한 직접 링크" translate="no">​</a></h3>
+<!-- -->
+<p><strong>搜索步驟</strong>：</p>
+<ol>
+<li class="">從根節點開始，用 PUCT 選擇子節點</li>
+<li class="">沿著樹向下，直到到達葉節點</li>
+<li class="">用 Value Network 評估葉節點</li>
+<li class="">將評估結果回傳更新路徑上所有節點的 Q 值</li>
+<li class="">重複數千次</li>
+<li class="">選擇訪問次數最多的動作</li>
+</ol>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="四訓練從人類棋譜到超越人類">四、訓練：從人類棋譜到超越人類<a href="#四訓練從人類棋譜到超越人類" class="hash-link" aria-label="四、訓練：從人類棋譜到超越人類에 대한 직접 링크" title="四、訓練：從人類棋譜到超越人類에 대한 직접 링크" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="階段一監督學習">階段一：監督學習<a href="#階段一監督學習" class="hash-link" aria-label="階段一：監督學習에 대한 직접 링크" title="階段一：監督學習에 대한 직접 링크" translate="no">​</a></h3>
+<p><strong>目標</strong>：學習人類專家的下法</p>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">訓練資料：3000 萬局人類職業棋譜</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">輸入：棋盤狀態</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">標籤：人類下一步的位置</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">損失函數：交叉熵</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Loss = -log(P(人類實際下的位置))</span><br></span></code></pre></div></div>
+<p>結果：Policy Network 能以 57% 的準確率預測人類棋手的下一步。</p>
+<p><strong>動畫對應</strong>：</p>
+<ul>
+<li class="">🎬 D3：前向傳播 ↔ 前饋網路</li>
+<li class="">🎬 D5：梯度下降 ↔ 球滾下山</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="階段二強化學習">階段二：強化學習<a href="#階段二強化學習" class="hash-link" aria-label="階段二：強化學習에 대한 직접 링크" title="階段二：強化學習에 대한 직접 링크" translate="no">​</a></h3>
+<p><strong>目標</strong>：超越人類水平</p>
+<p>監督學習只能學到人類的上限。要超越人類，需要<strong>自我對弈</strong>：</p>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">自我對弈訓練循環：</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">1. 用當前 Policy Network 控制黑白雙方</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">2. 進行完整對局，記錄每步棋</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">3. 根據最終勝負，更新 Policy Network</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   - 贏棋的一方：增加那些動作的機率</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   - 輸棋的一方：減少那些動作的機率</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">4. 重複數百萬局</span><br></span></code></pre></div></div>
+<p>這就是<strong>強化學習</strong>的核心：從結果（勝負）反推過程（每步棋的好壞）。</p>
+<p><strong>動畫對應</strong>：</p>
+<ul>
+<li class="">🎬 H4：策略梯度 ↔ 策略梯度法</li>
+<li class="">🎬 H5：經驗回放 ↔ 經驗緩衝區</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="階段三訓練-value-network">階段三：訓練 Value Network<a href="#階段三訓練-value-network" class="hash-link" aria-label="階段三：訓練 Value Network에 대한 직접 링크" title="階段三：訓練 Value Network에 대한 직접 링크" translate="no">​</a></h3>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">訓練資料：自我對弈產生的棋局</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">輸入：棋盤狀態</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">標籤：最終勝負（+1 或 -1）</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">損失函數：均方誤差</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Loss = (V(s) - 實際結果)²</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="自我對弈循環">自我對弈循環<a href="#自我對弈循環" class="hash-link" aria-label="自我對弈循環에 대한 직접 링크" title="自我對弈循環에 대한 직접 링크" translate="no">​</a></h3>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">初始模型 → 自我對弈 → 收集棋譜 → 訓練新模型 → 更強模型 → 重複</span><br></span></code></pre></div></div>
+<p><strong>動畫對應</strong>：</p>
+<ul>
+<li class="">🎬 E5：自我對弈 ↔ 不動點收斂 — 系統如何趨向穩定</li>
+<li class="">🎬 H1：MDP ↔ 馬可夫鏈 — 狀態轉移的數學模型</li>
+<li class="">🎬 E6：棋力曲線 ↔ S 曲線成長 — Elo 如何成長</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="五alphago-zero從零開始">五、AlphaGo Zero：從零開始<a href="#五alphago-zero從零開始" class="hash-link" aria-label="五、AlphaGo Zero：從零開始에 대한 직접 링크" title="五、AlphaGo Zero：從零開始에 대한 직접 링크" translate="no">​</a></h2>
+<p>2017 年，DeepMind 發布了 AlphaGo Zero，證明<strong>完全不需要人類棋譜</strong>。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="與原版-alphago-的差異">與原版 AlphaGo 的差異<a href="#與原版-alphago-的差異" class="hash-link" aria-label="與原版 AlphaGo 的差異에 대한 직접 링크" title="與原版 AlphaGo 的差異에 대한 직접 링크" translate="no">​</a></h3>
+<table><thead><tr><th>面向</th><th>AlphaGo</th><th>AlphaGo Zero</th></tr></thead><tbody><tr><td>人類棋譜</td><td>需要</td><td><strong>不需要</strong></td></tr><tr><td>網路架構</td><td>分離的 Policy + Value</td><td><strong>單一網路，雙頭輸出</strong></td></tr><tr><td>輸入特徵</td><td>48 個特徵平面</td><td><strong>17 個特徵平面</strong></td></tr><tr><td>訓練時間</td><td>數月</td><td><strong>3 天</strong></td></tr><tr><td>棋力</td><td>擊敗李世乭</td><td><strong>100:0 擊敗原版 AlphaGo</strong></td></tr></tbody></table>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="為什麼從零開始反而更強">為什麼從零開始反而更強？<a href="#為什麼從零開始反而更強" class="hash-link" aria-label="為什麼從零開始反而更強？에 대한 직접 링크" title="為什麼從零開始反而更強？에 대한 직접 링크" translate="no">​</a></h3>
+<ol>
+<li class=""><strong>人類棋譜是偏見</strong>：人類有盲點，AI 學習人類也會繼承這些盲點</li>
+<li class=""><strong>自我發現</strong>：從零開始，AI 能發現人類從未想過的下法</li>
+<li class=""><strong>更簡潔的架構</strong>：單一網路、更少特徵，訓練更高效</li>
+</ol>
+<p><strong>動畫對應</strong>：</p>
+<ul>
+<li class="">🎬 E7：從零開始 ↔ 自組織</li>
+<li class="">🎬 E3：雙頭網路 ↔ 多任務學習</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="訓練曲線的驚人之處">訓練曲線的驚人之處<a href="#訓練曲線的驚人之處" class="hash-link" aria-label="訓練曲線的驚人之處에 대한 직접 링크" title="訓練曲線的驚人之處에 대한 직접 링크" translate="no">​</a></h3>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">Day 0: 隨機亂下</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Day 1: 發現基本規則（吃子、做眼）</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Day 2: 發現定式（角部下法）</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Day 3: 超越所有人類</span><br></span></code></pre></div></div>
+<p>AlphaGo Zero 在 3 天內「重新發現」了人類數千年累積的棋理，然後超越了它。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="六katago更快更強更實用">六、KataGo：更快、更強、更實用<a href="#六katago更快更強更實用" class="hash-link" aria-label="六、KataGo：更快、更強、更實用에 대한 직접 링크" title="六、KataGo：更快、更強、更實用에 대한 직접 링크" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="為什麼需要-katago">為什麼需要 KataGo？<a href="#為什麼需要-katago" class="hash-link" aria-label="為什麼需要 KataGo？에 대한 직접 링크" title="為什麼需要 KataGo？에 대한 직접 링크" translate="no">​</a></h3>
+<p>AlphaGo 是閉源的，需要數千個 TPU 訓練。普通開發者無法使用。</p>
+<p>KataGo 是 <strong>David Wu</strong> 於 2019 年發布的開源專案，達到同等棋力只需要：</p>
+<table><thead><tr><th>資源</th><th>AlphaGo</th><th>KataGo</th></tr></thead><tbody><tr><td>硬體</td><td>數千 TPU</td><td><strong>30 GPU</strong></td></tr><tr><td>時間</td><td>數月</td><td><strong>19 天</strong></td></tr><tr><td>效率</td><td>基準</td><td><strong>提升 50 倍</strong></td></tr></tbody></table>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="alphago-vs-katago-對比">AlphaGo vs KataGo 對比<a href="#alphago-vs-katago-對比" class="hash-link" aria-label="AlphaGo vs KataGo 對比에 대한 직접 링크" title="AlphaGo vs KataGo 對比에 대한 직접 링크" translate="no">​</a></h3>
+<table><thead><tr><th>比較項目</th><th>AlphaGo</th><th>KataGo</th></tr></thead><tbody><tr><td>神經網路架構</td><td>分離式</td><td><strong>整合式多頭</strong></td></tr><tr><td>訓練資源</td><td>數千 TPU</td><td><strong>30 GPU</strong></td></tr><tr><td>效率</td><td>基準</td><td><strong>50 倍提升</strong></td></tr><tr><td>開源狀態</td><td>閉源</td><td><strong>完全開源</strong></td></tr><tr><td>輸出功能</td><td>策略+勝率</td><td>策略+勝率+<strong>目數+領地</strong></td></tr></tbody></table>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="katago-的關鍵創新">KataGo 的關鍵創新<a href="#katago-的關鍵創新" class="hash-link" aria-label="KataGo 的關鍵創新에 대한 직접 링크" title="KataGo 的關鍵創新에 대한 직접 링크" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="1-整合式多頭網路">1. 整合式多頭網路<a href="#1-整合式多頭網路" class="hash-link" aria-label="1. 整合式多頭網路에 대한 직접 링크" title="1. 整合式多頭網路에 대한 직접 링크" translate="no">​</a></h4>
+<p>AlphaGo 用兩個分離的網路（Policy + Value），KataGo 用<strong>單一網路，多個輸出頭</strong>：</p>
+<!-- -->
+<p><strong>好處</strong>：共享特徵提取，減少計算量，同時獲得更多資訊。</p>
+<p><strong>動畫對應</strong>：</p>
+<ul>
+<li class="">🎬 E3：雙頭網路 ↔ 多任務學習</li>
+<li class="">🎬 D12：殘差連接 ↔ 電路並聯</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="2-輔助訓練目標">2. 輔助訓練目標<a href="#2-輔助訓練目標" class="hash-link" aria-label="2. 輔助訓練目標에 대한 직접 링크" title="2. 輔助訓練目標에 대한 직접 링크" translate="no">​</a></h4>
+<p>KataGo 不只預測「誰贏」，還預測：</p>
+<ul>
+<li class=""><strong>Score</strong>：贏多少目</li>
+<li class=""><strong>Ownership</strong>：每個位置最終歸誰</li>
+</ul>
+<p>這些輔助目標讓神經網路更深刻理解局面，而不只是預測勝負。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="3-playout-cap-隨機化">3. Playout Cap 隨機化<a href="#3-playout-cap-隨機化" class="hash-link" aria-label="3. Playout Cap 隨機化에 대한 직접 링크" title="3. Playout Cap 隨機化에 대한 직접 링크" translate="no">​</a></h4>
+<p>傳統訓練：每局都用固定的搜索深度</p>
+<p>KataGo：<strong>隨機改變每局的搜索深度</strong></p>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">- 有時用 600 次 MCTS（深度搜索）</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">- 有時用 100 次 MCTS（快速搜索）</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">- 有時用 20 次 MCTS（幾乎純神經網路）</span><br></span></code></pre></div></div>
+<p><strong>好處</strong>：神經網路學會在各種搜索深度下都表現良好，提升泛化能力。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="4-全局池化global-pooling">4. 全局池化（Global Pooling）<a href="#4-全局池化global-pooling" class="hash-link" aria-label="4. 全局池化（Global Pooling）에 대한 직접 링크" title="4. 全局池化（Global Pooling）에 대한 직접 링크" translate="no">​</a></h4>
+<p>傳統 CNN 只看局部特徵。KataGo 加入全局池化層，讓網路能「綜觀全局」：</p>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">局部卷積特徵 → 全局平均池化 → 與局部特徵結合 → 更好的全局判斷</span><br></span></code></pre></div></div>
+<p><strong>動畫對應</strong>：</p>
+<ul>
+<li class="">🎬 G1：高維表示 ↔ 向量空間</li>
+<li class="">🎬 D11：池化 ↔ 降採樣</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="七總結一張圖看懂整個系統">七、總結：一張圖看懂整個系統<a href="#七總結一張圖看懂整個系統" class="hash-link" aria-label="七、總結：一張圖看懂整個系統에 대한 직접 링크" title="七、總結：一張圖看懂整個系統에 대한 직접 링크" translate="no">​</a></h2>
+<!-- -->
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="關鍵要點">關鍵要點<a href="#關鍵要點" class="hash-link" aria-label="關鍵要點에 대한 직접 링크" title="關鍵要點에 대한 직접 링크" translate="no">​</a></h3>
+<ol>
+<li class=""><strong>神經網路解決評估問題</strong>：不需要手工設計評估函數</li>
+<li class=""><strong>MCTS 解決搜索問題</strong>：在神經網路的引導下高效搜索</li>
+<li class=""><strong>自我對弈產生資料</strong>：不需要人類棋譜，從零開始學習</li>
+<li class=""><strong>強化學習持續改進</strong>：從勝負結果反推，不斷提升</li>
+</ol>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="延伸閱讀">延伸閱讀<a href="#延伸閱讀" class="hash-link" aria-label="延伸閱讀에 대한 직접 링크" title="延伸閱讀에 대한 직접 링크" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>想更深入 AlphaGo</strong>？→ <a class="" href="/ko/docs/alphago/explained/">AlphaGo 完整解析</a></li>
+<li class=""><strong>想了解 KataGo 細節</strong>？→ <a class="" href="/ko/docs/tech/how-it-works/katago-innovations/">KataGo 的關鍵創新</a></li>
+<li class=""><strong>想查特定概念</strong>？→ <a class="" href="/ko/docs/tech/how-it-works/concepts/">概念速查表</a></li>
+<li class=""><strong>想動手實作</strong>？→ <a class="" href="/ko/docs/tech/hands-on/">30 分鐘跑起第一個圍棋 AI</a></li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="參考資料">參考資料<a href="#參考資料" class="hash-link" aria-label="參考資料에 대한 직접 링크" title="參考資料에 대한 직접 링크" translate="no">​</a></h2>
+<ol>
+<li class="">Silver, D., et al. (2016). &quot;Mastering the game of Go with deep neural networks and tree search.&quot; <em>Nature</em>.</li>
+<li class="">Silver, D., et al. (2017). &quot;Mastering the game of Go without human knowledge.&quot; <em>Nature</em>.</li>
+<li class="">Wu, D. (2019). &quot;Accelerating Self-Play Learning in Go.&quot; <em>arXiv</em>.</li>
+<li class=""><a href="https://github.com/lightvector/KataGo" target="_blank" rel="noopener noreferrer" class="">KataGo GitHub</a></li>
+</ol></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_YM8j"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/tech/how-it-works/index.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_hRvp" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>페이지 편집</a></div><div class="col lastUpdated_LNbR"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="문서 페이지"><a class="pagination-nav__link pagination-nav__link--prev" href="/ko/docs/tech/hands-on/integration/"><div class="pagination-nav__sublabel">이전</div><div class="pagination-nav__label">整合到你的專案</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/ko/docs/tech/how-it-works/katago-innovations/"><div class="pagination-nav__sublabel">다음</div><div class="pagination-nav__label">KataGo 的關鍵創新</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_VU0O thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#一圍棋為什麼難" class="table-of-contents__link toc-highlight">一、圍棋為什麼難？</a><ul><li><a href="#搜索空間的詛咒" class="table-of-contents__link toc-highlight">搜索空間的詛咒</a></li><li><a href="#評估的困難" class="table-of-contents__link toc-highlight">評估的困難</a></li></ul></li><li><a href="#二傳統方法的極限" class="table-of-contents__link toc-highlight">二、傳統方法的極限</a><ul><li><a href="#minimax--alpha-beta-剪枝" class="table-of-contents__link toc-highlight">Minimax + Alpha-Beta 剪枝</a></li><li><a href="#純蒙地卡羅樹搜索mcts" class="table-of-contents__link toc-highlight">純蒙地卡羅樹搜索（MCTS）</a></li></ul></li><li><a href="#三alphago-的突破" class="table-of-contents__link toc-highlight">三、AlphaGo 的突破</a><ul><li><a href="#核心洞見" class="table-of-contents__link toc-highlight">核心洞見</a></li><li><a href="#policy-network策略網路" class="table-of-contents__link toc-highlight">Policy Network（策略網路）</a></li><li><a href="#value-network價值網路" class="table-of-contents__link toc-highlight">Value Network（價值網路）</a></li><li><a href="#神經網路--mcts-的結合" class="table-of-contents__link toc-highlight">神經網路 + MCTS 的結合</a></li><li><a href="#搜索過程圖解" class="table-of-contents__link toc-highlight">搜索過程圖解</a></li></ul></li><li><a href="#四訓練從人類棋譜到超越人類" class="table-of-contents__link toc-highlight">四、訓練：從人類棋譜到超越人類</a><ul><li><a href="#階段一監督學習" class="table-of-contents__link toc-highlight">階段一：監督學習</a></li><li><a href="#階段二強化學習" class="table-of-contents__link toc-highlight">階段二：強化學習</a></li><li><a href="#階段三訓練-value-network" class="table-of-contents__link toc-highlight">階段三：訓練 Value Network</a></li><li><a href="#自我對弈循環" class="table-of-contents__link toc-highlight">自我對弈循環</a></li></ul></li><li><a href="#五alphago-zero從零開始" class="table-of-contents__link toc-highlight">五、AlphaGo Zero：從零開始</a><ul><li><a href="#與原版-alphago-的差異" class="table-of-contents__link toc-highlight">與原版 AlphaGo 的差異</a></li><li><a href="#為什麼從零開始反而更強" class="table-of-contents__link toc-highlight">為什麼從零開始反而更強？</a></li><li><a href="#訓練曲線的驚人之處" class="table-of-contents__link toc-highlight">訓練曲線的驚人之處</a></li></ul></li><li><a href="#六katago更快更強更實用" class="table-of-contents__link toc-highlight">六、KataGo：更快、更強、更實用</a><ul><li><a href="#為什麼需要-katago" class="table-of-contents__link toc-highlight">為什麼需要 KataGo？</a></li><li><a href="#alphago-vs-katago-對比" class="table-of-contents__link toc-highlight">AlphaGo vs KataGo 對比</a></li><li><a href="#katago-的關鍵創新" class="table-of-contents__link toc-highlight">KataGo 的關鍵創新</a></li></ul></li><li><a href="#七總結一張圖看懂整個系統" class="table-of-contents__link toc-highlight">七、總結：一張圖看懂整個系統</a><ul><li><a href="#關鍵要點" class="table-of-contents__link toc-highlight">關鍵要點</a></li></ul></li><li><a href="#延伸閱讀" class="table-of-contents__link toc-highlight">延伸閱讀</a></li><li><a href="#參考資料" class="table-of-contents__link toc-highlight">參考資料</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 Weiqi.Kids. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

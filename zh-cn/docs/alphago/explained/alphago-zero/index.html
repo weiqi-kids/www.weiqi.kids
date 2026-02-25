@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="zh-cn" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-alphago/explained/alphago-zero" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">AlphaGo Zero 概述 | 好棋寶寶協會 | Weiqi.Kids</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://www.weiqi.kids/zh-cn/img/social-card.png"><meta data-rh="true" name="twitter:image" content="https://www.weiqi.kids/zh-cn/img/social-card.png"><meta data-rh="true" property="og:url" content="https://www.weiqi.kids/zh-cn/docs/alphago/explained/alphago-zero/"><meta data-rh="true" property="og:locale" content="zh_cn"><meta data-rh="true" property="og:locale:alternate" content="zh_tw"><meta data-rh="true" property="og:locale:alternate" content="zh_hk"><meta data-rh="true" property="og:locale:alternate" content="en"><meta data-rh="true" property="og:locale:alternate" content="ja"><meta data-rh="true" property="og:locale:alternate" content="ko"><meta data-rh="true" property="og:locale:alternate" content="es"><meta data-rh="true" property="og:locale:alternate" content="pt"><meta data-rh="true" property="og:locale:alternate" content="hi"><meta data-rh="true" property="og:locale:alternate" content="id"><meta data-rh="true" property="og:locale:alternate" content="ar"><meta data-rh="true" name="docusaurus_locale" content="zh-cn"><meta data-rh="true" name="docsearch:language" content="zh-cn"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="AlphaGo Zero 概述 | 好棋寶寶協會 | Weiqi.Kids"><meta data-rh="true" name="description" content="从零开始、完全自学，AlphaGo Zero 如何在没有人类棋谱的情况下超越所有前代版本"><meta data-rh="true" property="og:description" content="从零开始、完全自学，AlphaGo Zero 如何在没有人类棋谱的情况下超越所有前代版本"><meta data-rh="true" name="keywords" content="AlphaGo Zero,自我对弈,强化学习,深度学习,围棋 AI,无监督学习"><link data-rh="true" rel="icon" href="/zh-cn/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://www.weiqi.kids/zh-cn/docs/alphago/explained/alphago-zero/"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/docs/alphago/explained/alphago-zero/" hreflang="zh-tw"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/zh-cn/docs/alphago/explained/alphago-zero/" hreflang="zh-cn"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/zh-hk/docs/alphago/explained/alphago-zero/" hreflang="zh-hk"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/en/docs/alphago/explained/alphago-zero/" hreflang="en"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/ja/docs/alphago/explained/alphago-zero/" hreflang="ja"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/ko/docs/alphago/explained/alphago-zero/" hreflang="ko"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/es/docs/alphago/explained/alphago-zero/" hreflang="es"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/pt/docs/alphago/explained/alphago-zero/" hreflang="pt"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/hi/docs/alphago/explained/alphago-zero/" hreflang="hi"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/id/docs/alphago/explained/alphago-zero/" hreflang="id"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/ar/docs/alphago/explained/alphago-zero/" hreflang="ar"><link data-rh="true" rel="alternate" href="https://www.weiqi.kids/docs/alphago/explained/alphago-zero/" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.weiqi.kids#organization","name":"台灣好棋寶寶協會","alternateName":"Taiwan Good Go Baby Association","url":"https://www.weiqi.kids","logo":{"@type":"ImageObject","url":"https://www.weiqi.kids/img/logo.svg","width":200,"height":200},"sameAs":["https://mastodon.weiqi.kids/","https://peertube.weiqi.kids/"],"contactPoint":{"@type":"ContactPoint","contactType":"customer service","url":"https://www.weiqi.kids/docs/aboutus"},"description":"推動圍棋文化與 AI 研究的台灣非營利組織"},{"@type":"WebSite","@id":"https://www.weiqi.kids#website","name":"好棋寶寶協會官網","url":"https://www.weiqi.kids","publisher":{"@id":"https://www.weiqi.kids#organization"},"inLanguage":["zh-TW","zh-CN","zh-HK","en","ja","ko","es","pt","hi","id","ar"],"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://www.weiqi.kids/search?q={search_term_string}"},"query-input":"required name=search_term_string"}}]}</script><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AlphaGo","item":"https://www.weiqi.kids/zh-cn/docs/alphago/"},{"@type":"ListItem","position":2,"name":"完整解析","item":"https://www.weiqi.kids/zh-cn/docs/alphago/explained/"},{"@type":"ListItem","position":3,"name":"AlphaGo Zero 概述","item":"https://www.weiqi.kids/zh-cn/docs/alphago/explained/alphago-zero"}]}</script><meta property="og:type" content="website">
+<meta property="og:site_name" content="好棋寶寶協會">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow">
+<meta name="author" content="台灣好棋寶寶協會">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css" integrity="sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM" crossorigin="anonymous"><link rel="stylesheet" href="/zh-cn/assets/css/styles.f23bf74b.css">
+<script src="/zh-cn/assets/js/runtime~main.e14fb8f3.js" defer="defer"></script>
+<script src="/zh-cn/assets/js/main.0c339658.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>document.documentElement.setAttribute("data-theme","light"),document.documentElement.setAttribute("data-theme-choice","light"),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/zh-cn/img/logo.svg"><div role="region" aria-label="跳到主要内容"><a class="skipToContent_WWLT" href="#__docusaurus_skipToContent_fallback">跳到主要内容</a></div><nav aria-label="主导航" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="切换导航栏" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/zh-cn/"><div class="navbar__logo"><img src="/zh-cn/img/logo.svg" alt="好棋宝宝协会标志" class="themedComponent_rBb5 themedComponent--light_t3c2"><img src="/zh-cn/img/logo.svg" alt="好棋宝宝协会标志" class="themedComponent_rBb5 themedComponent--dark_Z76H"></div><b class="navbar__title text--truncate">围棋宝宝</b></a><a class="navbar__item navbar__link" href="/zh-cn/docs/learn/">学围棋</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/zh-cn/docs/alphago/">AlphaGo</a><a class="navbar__item navbar__link" href="/zh-cn/docs/animations/">动画教室</a><a class="navbar__item navbar__link" href="/zh-cn/docs/tech/">技术文档</a><a class="navbar__item navbar__link" href="/zh-cn/docs/about/">关于我们</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href="#" aria-haspopup="true" aria-expanded="false" role="button" class="navbar__link navbar__item--compact"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class="iconLanguage_LXmZ"><path fill="currentColor" d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"></path></svg>简体中文</a><ul class="dropdown__menu"><li><a href="/docs/alphago/explained/alphago-zero/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="zh-tw">繁體中文</a></li><li><a href="/zh-cn/docs/alphago/explained/alphago-zero/" target="_self" rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang="zh-cn">简体中文</a></li><li><a href="/zh-hk/docs/alphago/explained/alphago-zero/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="zh-hk">粵語（香港）</a></li><li><a href="/en/docs/alphago/explained/alphago-zero/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="en">English</a></li><li><a href="/ja/docs/alphago/explained/alphago-zero/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="ja">日本語</a></li><li><a href="/ko/docs/alphago/explained/alphago-zero/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="ko">한국어</a></li><li><a href="/es/docs/alphago/explained/alphago-zero/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="es">Español</a></li><li><a href="/pt/docs/alphago/explained/alphago-zero/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="pt">Português</a></li><li><a href="/hi/docs/alphago/explained/alphago-zero/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="hi">हिन्दी</a></li><li><a href="/id/docs/alphago/explained/alphago-zero/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="id">Bahasa Indonesia</a></li><li><a href="/ar/docs/alphago/explained/alphago-zero/" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="ar">العربية</a></li></ul></div><a href="https://github.com/weiqi-kids/www.weiqi.kids" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link header-github-link navbar__item--compact" aria-label="GitHub"></a><div class="navbarSearchContainer_MDM0"><div class="navbar__search searchBarContainer_Qpyg" dir="ltr"><input placeholder="搜索" aria-label="Search" class="navbar__search-input searchInput_KBva" value=""><div class="loadingRing_riNO searchBarLoadingRing_XquT"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_SQvo"><div class="docsWrapper_HjTU"><button aria-label="回到顶部" class="clean-btn theme-back-to-top-button backToTopButton_91RE" type="button"></button><div class="docRoot_SzOB"><aside class="theme-doc-sidebar-container docSidebarContainer_Q0cb"><div class="sidebarViewport_TEb6"><div class="sidebar_LiQ3"><nav aria-label="文档侧边栏" class="menu thin-scrollbar menu_iDgU"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/zh-cn/docs/intro/"><span title="使用指南" class="linkLabel_REp1">使用指南</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/zh-cn/docs/learn/"><span title="學圍棋" class="categoryLinkLabel_ezQx">學圍棋</span></a><button aria-label="展开侧边栏分类 &#x27;學圍棋&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist menu__link--active" href="/zh-cn/docs/alphago/"><span title="AlphaGo" class="categoryLinkLabel_ezQx">AlphaGo</span></a><button aria-label="折叠侧边栏分类 &#x27;AlphaGo&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist menu__link--active" tabindex="0" href="/zh-cn/docs/alphago/explained/"><span title="完整解析" class="categoryLinkLabel_ezQx">完整解析</span></a><button aria-label="折叠侧边栏分类 &#x27;完整解析&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/birth-of-alphago/"><span title="AlphaGo 的诞生" class="linkLabel_REp1">AlphaGo 的诞生</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/key-matches/"><span title="关键对局回顾" class="linkLabel_REp1">关键对局回顾</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/move-37/"><span title="「神之一手」深度分析" class="linkLabel_REp1">「神之一手」深度分析</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/why-go-is-hard/"><span title="围棋为什么难？" class="linkLabel_REp1">围棋为什么难？</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/traditional-limits/"><span title="传统方法的极限" class="linkLabel_REp1">传统方法的极限</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/board-representation/"><span title="棋盘状态表示" class="linkLabel_REp1">棋盘状态表示</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/policy-network/"><span title="Policy Network 详解" class="linkLabel_REp1">Policy Network 详解</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/value-network/"><span title="Value Network 详解" class="linkLabel_REp1">Value Network 详解</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/input-features/"><span title="输入特征设计" class="linkLabel_REp1">输入特征设计</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/cnn-and-go/"><span title="CNN 与围棋的结合" class="linkLabel_REp1">CNN 与围棋的结合</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/supervised-learning/"><span title="监督学习阶段" class="linkLabel_REp1">监督学习阶段</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/reinforcement-intro/"><span title="强化学习入门" class="linkLabel_REp1">强化学习入门</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/self-play/"><span title="自我对弈" class="linkLabel_REp1">自我对弈</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/mcts-neural-combo/"><span title="MCTS 与神经网络的结合" class="linkLabel_REp1">MCTS 与神经网络的结合</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/puct-formula/"><span title="PUCT 公式详解" class="linkLabel_REp1">PUCT 公式详解</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/zh-cn/docs/alphago/explained/alphago-zero/"><span title="AlphaGo Zero 概述" class="linkLabel_REp1">AlphaGo Zero 概述</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/dual-head-resnet/"><span title="双头网络与残差网络" class="linkLabel_REp1">双头网络与残差网络</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/training-from-scratch/"><span title="从零训练的过程" class="linkLabel_REp1">从零训练的过程</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/distributed-systems/"><span title="分布式系统与 TPU" class="linkLabel_REp1">分布式系统与 TPU</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/zh-cn/docs/alphago/explained/legacy-and-impact/"><span title="AlphaGo 的遗产" class="linkLabel_REp1">AlphaGo 的遗产</span></a></li></ul></li></ul></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/zh-cn/docs/animations/"><span title="動畫教室" class="linkLabel_REp1">動畫教室</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/zh-cn/docs/tech/"><span title="技術文件" class="categoryLinkLabel_ezQx">技術文件</span></a><button aria-label="展开侧边栏分类 &#x27;技術文件&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_nItb menu__link menu__link--sublist" href="/zh-cn/docs/about/"><span title="關於我們" class="categoryLinkLabel_ezQx">關於我們</span></a><button aria-label="展开侧边栏分类 &#x27;關於我們&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></nav></div></div></aside><main class="docMainContainer_C0wL"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_txwF"><div class="docItemContainer_FUEM"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_DlgT" aria-label="页面路径"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="主页面" class="breadcrumbs__link" href="/zh-cn/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_BMIH"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/zh-cn/docs/alphago/"><span>AlphaGo</span></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/zh-cn/docs/alphago/explained/"><span>完整解析</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">AlphaGo Zero 概述</span></li></ul></nav><div class="tocCollapsible_LBsY theme-doc-toc-mobile tocMobile_eMWB"><button type="button" class="clean-btn tocCollapsibleButton_fVBn">本页总览</button></div><div class="theme-doc-markdown markdown"><header><h1>AlphaGo Zero 概述</h1></header>
+<p>2017 年 10 月，DeepMind 发表了一个震惊 AI 界的成果：<strong>AlphaGo Zero</strong> 在没有使用任何人类棋谱的情况下，从完全随机的状态开始训练，仅仅三天就超越了击败李世石的原版 AlphaGo，并以 <strong>100:0</strong> 的比分完胜。</p>
+<p>这不只是数字上的进步。这代表一个全新的范式：<strong>AI 不需要人类知识，可以从零发现一切</strong>。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="为什么不需要人类棋谱">为什么不需要人类棋谱？<a href="#为什么不需要人类棋谱" class="hash-link" aria-label="为什么不需要人类棋谱？的直接链接" title="为什么不需要人类棋谱？的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="人类棋谱的限制">人类棋谱的限制<a href="#人类棋谱的限制" class="hash-link" aria-label="人类棋谱的限制的直接链接" title="人类棋谱的限制的直接链接" translate="no">​</a></h3>
+<p>原版 AlphaGo 的训练过程分为两个阶段：</p>
+<ol>
+<li class=""><strong>监督学习</strong>：用 3000 万局人类棋谱训练 Policy Network</li>
+<li class=""><strong>强化学习</strong>：通过自我对弈进一步提升</li>
+</ol>
+<p>这个方法有几个根本性的问题：</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="1-人类棋谱有上限">1. 人类棋谱有上限<a href="#1-人类棋谱有上限" class="hash-link" aria-label="1. 人类棋谱有上限的直接链接" title="1. 人类棋谱有上限的直接链接" translate="no">​</a></h4>
+<p>人类棋手的棋力有极限，棋谱中包含的是人类的理解，也包含人类的错误和偏见。当 AI 从人类棋谱学习时，它学到的是：</p>
+<ul>
+<li class="">人类认为好的下法（但不一定是最优的）</li>
+<li class="">人类的思维模式（但可能限制创新）</li>
+<li class="">人类的错误（会被当作正确的样本学习）</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="2-监督学习的瓶颈">2. 监督学习的瓶颈<a href="#2-监督学习的瓶颈" class="hash-link" aria-label="2. 监督学习的瓶颈的直接链接" title="2. 监督学习的瓶颈的直接链接" translate="no">​</a></h4>
+<p>监督学习的目标是「模仿人类」——预测人类棋手会下哪一步。这意味着 AI 的能力上限被人类棋手的能力所限制。</p>
+<p>就像一个学徒只能模仿师傅，永远无法超越师傅一样。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="3-数据收集成本">3. 数据收集成本<a href="#3-数据收集成本" class="hash-link" aria-label="3. 数据收集成本的直接链接" title="3. 数据收集成本的直接链接" translate="no">​</a></h4>
+<p>高品质的人类棋谱需要多年累积，而且只存在于围棋这类有悠久历史的游戏中。如果要将 AI 应用到新领域（如蛋白质结构预测），根本没有「人类专家棋谱」可用。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="zero-的突破">Zero 的突破<a href="#zero-的突破" class="hash-link" aria-label="Zero 的突破的直接链接" title="Zero 的突破的直接链接" translate="no">​</a></h3>
+<p>AlphaGo Zero 完全跳过监督学习阶段，直接从<strong>随机初始化</strong>开始自我对弈。这解决了上述所有问题：</p>
+<table><thead><tr><th>问题</th><th>原版 AlphaGo</th><th>AlphaGo Zero</th></tr></thead><tbody><tr><td>人类知识上限</td><td>受限于棋谱品质</td><td>无此限制</td></tr><tr><td>学习目标</td><td>模仿人类</td><td>最大化胜率</td></tr><tr><td>数据需求</td><td>3000 万局棋谱</td><td>0</td></tr><tr><td>可推广性</td><td>仅限围棋</td><td>可推广至其他领域</td></tr></tbody></table>
+<p>这是一个根本性的范式转变：从「学习人类知识」转向「从第一性原理发现知识」。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="与原版-alphago-的对比1000">与原版 AlphaGo 的对比：100:0<a href="#与原版-alphago-的对比1000" class="hash-link" aria-label="与原版 AlphaGo 的对比：100:0的直接链接" title="与原版 AlphaGo 的对比：100:0的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="碾压性的胜利">碾压性的胜利<a href="#碾压性的胜利" class="hash-link" aria-label="碾压性的胜利的直接链接" title="碾压性的胜利的直接链接" translate="no">​</a></h3>
+<p>DeepMind 让训练完成的 AlphaGo Zero 与各个版本的 AlphaGo 对弈：</p>
+<table><thead><tr><th>对手</th><th>AlphaGo Zero 战绩</th></tr></thead><tbody><tr><td>AlphaGo Fan（击败樊麾版本）</td><td>100:0</td></tr><tr><td>AlphaGo Lee（击败李世石版本）</td><td>100:0</td></tr><tr><td>AlphaGo Master（60 连胜版本）</td><td>89:11</td></tr></tbody></table>
+<p><strong>100:0</strong>——这意味着在 100 盘比赛中，原版 AlphaGo 连一盘都赢不了。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="更少的资源更强的棋力">更少的资源，更强的棋力<a href="#更少的资源更强的棋力" class="hash-link" aria-label="更少的资源，更强的棋力的直接链接" title="更少的资源，更强的棋力的直接链接" translate="no">​</a></h3>
+<p>不只是赢，AlphaGo Zero 还用更少的资源达成更强的棋力：</p>
+<table><thead><tr><th>指标</th><th>AlphaGo Lee</th><th>AlphaGo Zero</th></tr></thead><tbody><tr><td>训练时间</td><td>数月</td><td>40 天（3 天超越 AlphaGo Lee）</td></tr><tr><td>训练局数</td><td>3000 万人类棋谱 + 自我对弈</td><td>490 万局自我对弈</td></tr><tr><td>TPU 数量（训练）</td><td>50+</td><td>4</td></tr><tr><td>TPU 数量（推理）</td><td>48</td><td>4</td></tr><tr><td>输入特征</td><td>48 个平面</td><td>17 个平面</td></tr><tr><td>神经网络</td><td>SL + RL 双网络</td><td>单一双头网络</td></tr></tbody></table>
+<p>这是一个惊人的效率提升：<strong>资源减少 10 倍以上，棋力却大幅提升</strong>。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="为什么-zero-更强">为什么 Zero 更强？<a href="#为什么-zero-更强" class="hash-link" aria-label="为什么 Zero 更强？的直接链接" title="为什么 Zero 更强？的直接链接" translate="no">​</a></h3>
+<p>AlphaGo Zero 更强的原因可以从几个角度理解：</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="1-无偏见的学习">1. 无偏见的学习<a href="#1-无偏见的学习" class="hash-link" aria-label="1. 无偏见的学习的直接链接" title="1. 无偏见的学习的直接链接" translate="no">​</a></h4>
+<p>原版 AlphaGo 从人类棋谱学习，继承了人类的偏见。例如，人类棋手可能过度重视某些定式，或对某些局面有错误的评估。</p>
+<p>AlphaGo Zero 没有这些包袱。它从白纸开始，只通过胜负结果来学习什么是好棋。这让它能够发现人类从未想过的下法。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="2-一致的学习目标">2. 一致的学习目标<a href="#2-一致的学习目标" class="hash-link" aria-label="2. 一致的学习目标的直接链接" title="2. 一致的学习目标的直接链接" translate="no">​</a></h4>
+<p>原版 AlphaGo 的训练有两个不同的目标：</p>
+<ul>
+<li class="">监督学习：最大化对人类落子的预测准确率</li>
+<li class="">强化学习：最大化胜率</li>
+</ul>
+<p>这两个目标可能互相冲突。AlphaGo Zero 只有一个目标：<strong>胜率最大化</strong>。这让学习过程更加一致和有效。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="3-更简洁的架构">3. 更简洁的架构<a href="#3-更简洁的架构" class="hash-link" aria-label="3. 更简洁的架构的直接链接" title="3. 更简洁的架构的直接链接" translate="no">​</a></h4>
+<p>原版 AlphaGo 使用分离的 Policy Network 和 Value Network。AlphaGo Zero 使用单一的双头网络（详见下一篇），让特征表示能够被共享，提高了学习效率。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="简化的输入特征从-48-到-17">简化的输入特征：从 48 到 17<a href="#简化的输入特征从-48-到-17" class="hash-link" aria-label="简化的输入特征：从 48 到 17的直接链接" title="简化的输入特征：从 48 到 17的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="原版-alphago-的-48-个特征平面">原版 AlphaGo 的 48 个特征平面<a href="#原版-alphago-的-48-个特征平面" class="hash-link" aria-label="原版 AlphaGo 的 48 个特征平面的直接链接" title="原版 AlphaGo 的 48 个特征平面的直接链接" translate="no">​</a></h3>
+<p>原版 AlphaGo 的神经网络输入包含 48 个 19x19 的特征平面，编码了大量人类设计的特征：</p>
+<table><thead><tr><th>类别</th><th>特征数</th><th>内容</th></tr></thead><tbody><tr><td>棋子位置</td><td>3</td><td>黑子、白子、空点</td></tr><tr><td>气数</td><td>8</td><td>1-8 气的棋串</td></tr><tr><td>提子</td><td>8</td><td>能提 1-8 颗子</td></tr><tr><td>打劫</td><td>1</td><td>劫争位置</td></tr><tr><td>边线距离</td><td>4</td><td>一线到四线</td></tr><tr><td>落子合法性</td><td>1</td><td>哪些位置可以下</td></tr><tr><td>历史状态</td><td>8</td><td>过去 8 手的位置</td></tr><tr><td>轮次</td><td>1</td><td>黑方或白方</td></tr><tr><td>其他</td><td>14</td><td>征子、眼位等</td></tr></tbody></table>
+<p>这 48 个特征是围棋专家精心设计的，包含了大量领域知识。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="alphago-zero-的-17-个特征平面">AlphaGo Zero 的 17 个特征平面<a href="#alphago-zero-的-17-个特征平面" class="hash-link" aria-label="AlphaGo Zero 的 17 个特征平面的直接链接" title="AlphaGo Zero 的 17 个特征平面的直接链接" translate="no">​</a></h3>
+<p>AlphaGo Zero 大幅简化了输入，只使用 17 个特征平面：</p>
+<table><thead><tr><th>平面编号</th><th>内容</th><th>数量</th></tr></thead><tbody><tr><td>1-8</td><td>黑子位置（最近 8 步）</td><td>8</td></tr><tr><td>9-16</td><td>白子位置（最近 8 步）</td><td>8</td></tr><tr><td>17</td><td>当前轮次（全 1 或全 0）</td><td>1</td></tr></tbody></table>
+<p>这 17 个特征只包含：</p>
+<ul>
+<li class=""><strong>当前棋盘状态</strong>：每个位置有黑子、白子或空</li>
+<li class=""><strong>历史信息</strong>：过去 8 步的棋盘状态</li>
+<li class=""><strong>轮次信息</strong>：轮到谁下</li>
+</ul>
+<p>没有气数、没有征子判断、没有边线距离——所有这些「围棋知识」都让神经网络自己学习。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="为什么简化是好的">为什么简化是好的？<a href="#为什么简化是好的" class="hash-link" aria-label="为什么简化是好的？的直接链接" title="为什么简化是好的？的直接链接" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="1-让网络自己发现特征">1. 让网络自己发现特征<a href="#1-让网络自己发现特征" class="hash-link" aria-label="1. 让网络自己发现特征的直接链接" title="1. 让网络自己发现特征的直接链接" translate="no">​</a></h4>
+<p>复杂的手工特征可能遗漏重要信息，或编码错误的假设。让神经网络从原始数据学习，它可能发现更好的特征表示。</p>
+<p>事实证明，AlphaGo Zero 学会了人类设计的所有特征（气数、征子等），还学到了一些人类没有明确意识到的模式。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="2-更好的可推广性">2. 更好的可推广性<a href="#2-更好的可推广性" class="hash-link" aria-label="2. 更好的可推广性的直接链接" title="2. 更好的可推广性的直接链接" translate="no">​</a></h4>
+<p>48 个特征中的许多是围棋专用的（如征子、边线距离）。17 个简化特征则是通用的——任何棋盘游戏都可以用类似的方式编码。</p>
+<p>这为后来的 <strong>AlphaZero</strong>（通用游戏 AI）奠定了基础。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="3-减少人为错误">3. 减少人为错误<a href="#3-减少人为错误" class="hash-link" aria-label="3. 减少人为错误的直接链接" title="3. 减少人为错误的直接链接" translate="no">​</a></h4>
+<p>手工设计的特征可能包含错误或不完整的定义。简化输入消除了这类问题的可能性。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="单一网络架构">单一网络架构<a href="#单一网络架构" class="hash-link" aria-label="单一网络架构的直接链接" title="单一网络架构的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="原版的双网络设计">原版的双网络设计<a href="#原版的双网络设计" class="hash-link" aria-label="原版的双网络设计的直接链接" title="原版的双网络设计的直接链接" translate="no">​</a></h3>
+<p>原版 AlphaGo 使用两个独立的神经网络：</p>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">Policy Network:  输入 → CNN → 19x19 落子概率</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Value Network:   输入 → CNN → 胜率评估（-1 到 1）</span><br></span></code></pre></div></div>
+<p>这两个网络：</p>
+<ul>
+<li class="">有不同的架构（层数、通道数略有不同）</li>
+<li class="">独立训练（先训练 Policy，再训练 Value）</li>
+<li class="">不共享任何参数</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="zero-的双头网络">Zero 的双头网络<a href="#zero-的双头网络" class="hash-link" aria-label="Zero 的双头网络的直接链接" title="Zero 的双头网络的直接链接" translate="no">​</a></h3>
+<p>AlphaGo Zero 使用单一网络，但有两个输出头（heads）：</p>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">输入 → ResNet 共享主干 → Policy Head → 19x19 落子概率</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">                       → Value Head  → 胜率评估</span><br></span></code></pre></div></div>
+<p>两个 Head 共享同一个 ResNet 主干（详见<a class="" href="/zh-cn/docs/alphago/explained/dual-head-resnet/">下一篇：双头网络与残差网络</a>），这带来几个好处：</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="1-参数效率">1. 参数效率<a href="#1-参数效率" class="hash-link" aria-label="1. 参数效率的直接链接" title="1. 参数效率的直接链接" translate="no">​</a></h4>
+<p>共享主干意味着大部分参数被两个任务共用。这减少了总参数量，降低了过拟合风险。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="2-特征共享">2. 特征共享<a href="#2-特征共享" class="hash-link" aria-label="2. 特征共享的直接链接" title="2. 特征共享的直接链接" translate="no">​</a></h4>
+<p>「应该下哪里」（Policy）和「谁会赢」（Value）需要理解类似的棋盘模式。共享主干让这些特征能被两个任务同时学习和利用。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="3-训练稳定性">3. 训练稳定性<a href="#3-训练稳定性" class="hash-link" aria-label="3. 训练稳定性的直接链接" title="3. 训练稳定性的直接链接" translate="no">​</a></h4>
+<p>联合训练让梯度信号来自两个来源，提供了更丰富的监督信号，让训练更加稳定。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="残差网络的威力">残差网络的威力<a href="#残差网络的威力" class="hash-link" aria-label="残差网络的威力的直接链接" title="残差网络的威力的直接链接" translate="no">​</a></h3>
+<p>AlphaGo Zero 的主干使用 <strong>40 层残差网络（ResNet）</strong>，比原版 AlphaGo 的 13 层 CNN 深得多。</p>
+<p>残差连接（skip connections）让深层网络得以有效训练，避免了梯度消失问题。这是 2015 年 ImageNet 竞赛的突破性技术，被 AlphaGo Zero 成功应用到围棋领域。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="训练效率的提升">训练效率的提升<a href="#训练效率的提升" class="hash-link" aria-label="训练效率的提升的直接链接" title="训练效率的提升的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="自我对弈的指数增长">自我对弈的指数增长<a href="#自我对弈的指数增长" class="hash-link" aria-label="自我对弈的指数增长的直接链接" title="自我对弈的指数增长的直接链接" translate="no">​</a></h3>
+<p>AlphaGo Zero 的训练过程展示了令人惊叹的效率：</p>
+<table><thead><tr><th>训练时间</th><th>ELO 评分</th><th>相当于</th></tr></thead><tbody><tr><td>0 小时</td><td>0</td><td>随机乱下</td></tr><tr><td>3 小时</td><td>~1000</td><td>发现基本规则</td></tr><tr><td>12 小时</td><td>~3000</td><td>发现定式</td></tr><tr><td>36 小时</td><td>~4500</td><td>超越樊麾版</td></tr><tr><td>60 小时</td><td>~5200</td><td>超越李世石版</td></tr><tr><td>72 小时</td><td>~5400</td><td>超越原版 AlphaGo</td></tr><tr><td>40 天</td><td>~5600</td><td>最强版本</td></tr></tbody></table>
+<p><strong>三天超越人类、三天超越之前花费数月训练的 AI</strong>——这是指数级的效率提升。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="为什么这么快">为什么这么快？<a href="#为什么这么快" class="hash-link" aria-label="为什么这么快？的直接链接" title="为什么这么快？的直接链接" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="1-更强的搜索引导">1. 更强的搜索引导<a href="#1-更强的搜索引导" class="hash-link" aria-label="1. 更强的搜索引导的直接链接" title="1. 更强的搜索引导的直接链接" translate="no">​</a></h4>
+<p>AlphaGo Zero 的 MCTS 完全由神经网络引导，不再使用快速走子策略（rollout）。这让搜索更加高效和准确。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="2-更快的自我对弈">2. 更快的自我对弈<a href="#2-更快的自我对弈" class="hash-link" aria-label="2. 更快的自我对弈的直接链接" title="2. 更快的自我对弈的直接链接" translate="no">​</a></h4>
+<p>由于只需要一个网络（而非两个），每局自我对弈的计算成本降低。这意味着在相同时间内可以产生更多训练数据。</p>
+<h4 class="anchor anchorTargetStickyNavbar_l_sM" id="3-更有效的学习">3. 更有效的学习<a href="#3-更有效的学习" class="hash-link" aria-label="3. 更有效的学习的直接链接" title="3. 更有效的学习的直接链接" translate="no">​</a></h4>
+<p>双头网络的联合训练让每一局棋的信息被更有效地利用。Policy 和 Value 的梯度相互强化，加速了收敛。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="与人类学习的对比">与人类学习的对比<a href="#与人类学习的对比" class="hash-link" aria-label="与人类学习的对比的直接链接" title="与人类学习的对比的直接链接" translate="no">​</a></h3>
+<p>人类棋手需要多长时间达到不同水平？</p>
+<table><thead><tr><th>水平</th><th>人类所需时间</th><th>AlphaGo Zero</th></tr></thead><tbody><tr><td>入门</td><td>数周</td><td>几分钟</td></tr><tr><td>业余初段</td><td>数年</td><td>数小时</td></tr><tr><td>职业水平</td><td>10-20 年</td><td>1-2 天</td></tr><tr><td>世界冠军</td><td>20+ 年全职投入</td><td>3 天</td></tr><tr><td>超越人类</td><td>不可能</td><td>3 天</td></tr></tbody></table>
+<p>这个对比不是要贬低人类棋手——他们用的是生物神经元，而 AlphaGo Zero 用的是专门设计的 TPU 和几千瓦的电力。但它确实展示了正确的学习方法可以多么高效。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="通用性西洋棋将棋">通用性：西洋棋、将棋<a href="#通用性西洋棋将棋" class="hash-link" aria-label="通用性：西洋棋、将棋的直接链接" title="通用性：西洋棋、将棋的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="alphazero-的诞生">AlphaZero 的诞生<a href="#alphazero-的诞生" class="hash-link" aria-label="AlphaZero 的诞生的直接链接" title="AlphaZero 的诞生的直接链接" translate="no">​</a></h3>
+<p>2017 年 12 月，DeepMind 发表了 <strong>AlphaZero</strong>——AlphaGo Zero 的通用版本。同一套算法，只需修改游戏规则，就能在三种棋类游戏中达到世界顶级水平：</p>
+<table><thead><tr><th>游戏</th><th>训练时间</th><th>对手</th><th>战绩</th></tr></thead><tbody><tr><td>围棋</td><td>8 小时</td><td>AlphaGo Zero</td><td>60:40</td></tr><tr><td>西洋棋</td><td>4 小时</td><td>Stockfish 8</td><td>28 胜 72 和 0 负</td></tr><tr><td>将棋</td><td>2 小时</td><td>Elmo</td><td>90:8:2</td></tr></tbody></table>
+<p>注意这里的对手：</p>
+<ul>
+<li class=""><strong>Stockfish</strong> 是当时最强的西洋棋引擎，使用几十年人类知识和优化</li>
+<li class=""><strong>Elmo</strong> 是当时最强的将棋 AI</li>
+</ul>
+<p>AlphaZero 用几小时训练，就超越了这些耗费多年开发的专用系统。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="通用性的意义">通用性的意义<a href="#通用性的意义" class="hash-link" aria-label="通用性的意义的直接链接" title="通用性的意义的直接链接" translate="no">​</a></h3>
+<p>AlphaGo Zero / AlphaZero 证明了一件重要的事：</p>
+<blockquote>
+<p><strong>同一套学习算法，可以在不同领域达到超人水平。</strong></p>
+</blockquote>
+<p>这不是三个不同的 AI，而是一个通用的学习框架：</p>
+<ol>
+<li class=""><strong>自我对弈</strong>产生经验</li>
+<li class=""><strong>蒙特卡洛树搜索</strong>探索可能性</li>
+<li class=""><strong>神经网络</strong>学习策略和价值函数</li>
+<li class=""><strong>强化学习</strong>优化目标函数</li>
+</ol>
+<p>这个框架不依赖领域特定的知识，这为 AI 的通用化迈出了重要一步。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="对传统-ai-的冲击">对传统 AI 的冲击<a href="#对传统-ai-的冲击" class="hash-link" aria-label="对传统 AI 的冲击的直接链接" title="对传统 AI 的冲击的直接链接" translate="no">​</a></h3>
+<p>在 AlphaZero 之前，西洋棋和将棋的最强 AI 都是「专家系统」风格的：</p>
+<ul>
+<li class=""><strong>大量人类知识</strong>：开局库、残局库、评估函数</li>
+<li class=""><strong>数十年优化</strong>：无数棋手和工程师的心血</li>
+<li class=""><strong>极度专业化</strong>：Stockfish 不能下围棋，Elmo 不能下西洋棋</li>
+</ul>
+<p>AlphaZero 用一个通用算法在几小时内超越了这一切。这让许多 AI 研究者重新思考：</p>
+<blockquote>
+<p>我们应该投入更多精力在「通用学习算法」，还是「专家知识编码」？</p>
+</blockquote>
+<p>答案似乎越来越清楚：让机器自己学习，比教它知识更有效。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="alphago-zero-的下棋风格">AlphaGo Zero 的下棋风格<a href="#alphago-zero-的下棋风格" class="hash-link" aria-label="AlphaGo Zero 的下棋风格的直接链接" title="AlphaGo Zero 的下棋风格的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="超越人类的审美">超越人类的审美<a href="#超越人类的审美" class="hash-link" aria-label="超越人类的审美的直接链接" title="超越人类的审美的直接链接" translate="no">​</a></h3>
+<p>围棋界对 AlphaGo Zero 的下法有一个普遍评价：<strong>更加优美</strong>。</p>
+<p>AlphaGo Lee 的下法有时显得「怪异」——像第 37 手那样的落子，人类需要事后分析才能理解其妙处。但 AlphaGo Zero 的下法常常在事后被评价为「一眼就知道是好棋」。</p>
+<p>这可能是因为：</p>
+<ol>
+<li class=""><strong>更强的棋力</strong>：Zero 能看得更深，落子更加从容</li>
+<li class=""><strong>无人类偏见</strong>：不受传统定式的束缚</li>
+<li class=""><strong>一致的目标</strong>：只追求胜率，不模仿人类</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="重新发现人类棋理">重新发现人类棋理<a href="#重新发现人类棋理" class="hash-link" aria-label="重新发现人类棋理的直接链接" title="重新发现人类棋理的直接链接" translate="no">​</a></h3>
+<p>有趣的是，AlphaGo Zero 在训练过程中「重新发现」了人类数千年累积的围棋知识：</p>
+<ul>
+<li class=""><strong>定式</strong>：Zero 自己发现了许多常见定式，因为这些确实是双方最优解</li>
+<li class=""><strong>布局原则</strong>：角、边、中央的重要性顺序</li>
+<li class=""><strong>棋形知识</strong>：愚形与好形的区别</li>
+</ul>
+<p>这验证了人类棋理的合理性——这些知识不是偶然的，而是围棋本质的反映。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="超越人类的创新">超越人类的创新<a href="#超越人类的创新" class="hash-link" aria-label="超越人类的创新的直接链接" title="超越人类的创新的直接链接" translate="no">​</a></h3>
+<p>但 Zero 也发现了人类从未想过的下法：</p>
+<ul>
+<li class=""><strong>非常规开局</strong>：在传统开局基础上的变化</li>
+<li class=""><strong>激进的弃子</strong>：比人类更愿意放弃局部换取全局优势</li>
+<li class=""><strong>反直觉的形状</strong>：表面上的「坏形」其实是最优解</li>
+</ul>
+<p>这些创新正在改变人类对围棋的理解。许多职业棋手表示，研究 AlphaGo Zero 的棋谱让他们对围棋有了全新的认识。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="技术细节总结">技术细节总结<a href="#技术细节总结" class="hash-link" aria-label="技术细节总结的直接链接" title="技术细节总结的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="与原版-alphago-的完整对比">与原版 AlphaGo 的完整对比<a href="#与原版-alphago-的完整对比" class="hash-link" aria-label="与原版 AlphaGo 的完整对比的直接链接" title="与原版 AlphaGo 的完整对比的直接链接" translate="no">​</a></h3>
+<table><thead><tr><th>方面</th><th>AlphaGo（原版）</th><th>AlphaGo Zero</th></tr></thead><tbody><tr><td><strong>训练数据</strong></td><td>人类棋谱 + 自我对弈</td><td>纯自我对弈</td></tr><tr><td><strong>学习方法</strong></td><td>监督学习 + 强化学习</td><td>纯强化学习</td></tr><tr><td><strong>输入特征</strong></td><td>48 个平面</td><td>17 个平面</td></tr><tr><td><strong>网络架构</strong></td><td>分离的 Policy/Value</td><td>双头 ResNet</td></tr><tr><td><strong>网络深度</strong></td><td>13 层</td><td>40 层（或更多）</td></tr><tr><td><strong>MCTS 评估</strong></td><td>神经网络 + Rollout</td><td>纯神经网络</td></tr><tr><td><strong>搜索次数</strong></td><td>每步 ~100,000</td><td>每步 ~1,600</td></tr><tr><td><strong>训练 TPU</strong></td><td>50+</td><td>4</td></tr><tr><td><strong>推理 TPU</strong></td><td>48</td><td>4（可扩展）</td></tr></tbody></table>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="核心算法">核心算法<a href="#核心算法" class="hash-link" aria-label="核心算法的直接链接" title="核心算法的直接链接" translate="no">​</a></h3>
+<p>AlphaGo Zero 的训练循环非常简洁：</p>
+<div class="language-text codeBlockContainer_huE5 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_oko_"><pre tabindex="0" class="prism-code language-text codeBlock_BBgU thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_t9f9"><span class="token-line" style="color:#393A34"><span class="token plain">1. 自我对弈</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   - 用当前网络进行 MCTS</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   - 按 MCTS 搜索概率选择落子</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   - 记录每一步的 (局面, MCTS概率, 胜负结果)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">2. 训练网络</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   - 从经验池中取样</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   - Policy Head：最小化与 MCTS 概率的交叉熵</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   - Value Head：最小化与实际胜负的均方误差</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   - 联合优化两个目标</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">3. 更新网络</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   - 用新网络替换旧网络（通过对弈验证新网络更强）</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   - 回到步骤 1</span><br></span></code></pre></div></div>
+<p>这个循环持续运行，网络不断变强。没有人类数据、没有人类知识，只有游戏规则和胜负目标。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="对-ai-研究的启示">对 AI 研究的启示<a href="#对-ai-研究的启示" class="hash-link" aria-label="对 AI 研究的启示的直接链接" title="对 AI 研究的启示的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="第一性原理学习">第一性原理学习<a href="#第一性原理学习" class="hash-link" aria-label="第一性原理学习的直接链接" title="第一性原理学习的直接链接" translate="no">​</a></h3>
+<p>AlphaGo Zero 展示了一种「第一性原理」的学习方法：</p>
+<blockquote>
+<p>不要告诉 AI 怎么做，只告诉它目标是什么，让它自己发现方法。</p>
+</blockquote>
+<p>这与传统的专家系统方法形成鲜明对比。专家系统试图将人类知识编码进 AI，而 AlphaGo Zero 让 AI 自己发现知识。</p>
+<p>结果是：AI 发现的知识可能比人类知识更完整、更准确。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="自我对弈的威力">自我对弈的威力<a href="#自我对弈的威力" class="hash-link" aria-label="自我对弈的威力的直接链接" title="自我对弈的威力的直接链接" translate="no">​</a></h3>
+<p>AlphaGo Zero 证明了自我对弈可以产生无限的训练数据，而且这些数据的品质会随着网络的提升而提升。</p>
+<p>这是一个「正向循环」：</p>
+<ul>
+<li class="">更强的网络 → 更好的自我对弈数据</li>
+<li class="">更好的数据 → 更强的网络</li>
+</ul>
+<p>这个循环可以持续运行，直到达到游戏的理论上限（如果存在的话）。</p>
+<h3 class="anchor anchorTargetStickyNavbar_l_sM" id="简化的重要性">简化的重要性<a href="#简化的重要性" class="hash-link" aria-label="简化的重要性的直接链接" title="简化的重要性的直接链接" translate="no">​</a></h3>
+<p>AlphaGo Zero 的成功证明了「简化」的重要性：</p>
+<ul>
+<li class="">简化输入（48 → 17）</li>
+<li class="">简化架构（双网络 → 单网络）</li>
+<li class="">简化训练（监督 + 强化 → 纯强化）</li>
+</ul>
+<p>每一次简化都让系统更加强大。这告诉我们：复杂不等于好，最简单的解决方案往往是最好的。</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="动画对应">动画对应<a href="#动画对应" class="hash-link" aria-label="动画对应的直接链接" title="动画对应的直接链接" translate="no">​</a></h2>
+<p>本文涉及的核心概念与动画编号：</p>
+<table><thead><tr><th>编号</th><th>概念</th><th>物理/数学对应</th></tr></thead><tbody><tr><td>🎬 E7</td><td>从零开始训练</td><td>自组织现象</td></tr><tr><td>🎬 E5</td><td>自我对弈</td><td>不动点收敛</td></tr><tr><td>🎬 E12</td><td>棋力成长曲线</td><td>S 型增长</td></tr><tr><td>🎬 D12</td><td>残差网络</td><td>梯度高速公路</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="延伸阅读">延伸阅读<a href="#延伸阅读" class="hash-link" aria-label="延伸阅读的直接链接" title="延伸阅读的直接链接" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>下一篇</strong>：<a class="" href="/zh-cn/docs/alphago/explained/dual-head-resnet/">双头网络与残差网络</a> — 详解 AlphaGo Zero 的神经网络架构</li>
+<li class=""><strong>相关文章</strong>：<a class="" href="/zh-cn/docs/alphago/explained/self-play/">自我对弈</a> — 为什么自我对弈能产生超人水平</li>
+<li class=""><strong>技术深入</strong>：<a class="" href="/zh-cn/docs/alphago/explained/training-from-scratch/">从零训练的过程</a> — Day 0-3 的详细演进</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_l_sM" id="参考资料">参考资料<a href="#参考资料" class="hash-link" aria-label="参考资料的直接链接" title="参考资料的直接链接" translate="no">​</a></h2>
+<ol>
+<li class="">Silver, D., et al. (2017). &quot;Mastering the game of Go without human knowledge.&quot; <em>Nature</em>, 550, 354-359.</li>
+<li class="">Silver, D., et al. (2018). &quot;A general reinforcement learning algorithm that masters chess, shogi, and Go through self-play.&quot; <em>Science</em>, 362(6419), 1140-1144.</li>
+<li class="">DeepMind. (2017). &quot;AlphaGo Zero: Starting from scratch.&quot; <em>DeepMind Blog</em>.</li>
+<li class="">Schrittwieser, J., et al. (2020). &quot;Mastering Atari, Go, Chess and Shogi by Planning with a Learned Model.&quot; <em>Nature</em>, 588, 604-609.</li>
+</ol></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_YM8j"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/alphago/explained/16-alphago-zero.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_hRvp" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>编辑此页</a></div><div class="col lastUpdated_LNbR"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="文件选项卡"><a class="pagination-nav__link pagination-nav__link--prev" href="/zh-cn/docs/alphago/explained/puct-formula/"><div class="pagination-nav__sublabel">上一页</div><div class="pagination-nav__label">PUCT 公式详解</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/zh-cn/docs/alphago/explained/dual-head-resnet/"><div class="pagination-nav__sublabel">下一页</div><div class="pagination-nav__label">双头网络与残差网络</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_VU0O thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#为什么不需要人类棋谱" class="table-of-contents__link toc-highlight">为什么不需要人类棋谱？</a><ul><li><a href="#人类棋谱的限制" class="table-of-contents__link toc-highlight">人类棋谱的限制</a></li><li><a href="#zero-的突破" class="table-of-contents__link toc-highlight">Zero 的突破</a></li></ul></li><li><a href="#与原版-alphago-的对比1000" class="table-of-contents__link toc-highlight">与原版 AlphaGo 的对比：100:0</a><ul><li><a href="#碾压性的胜利" class="table-of-contents__link toc-highlight">碾压性的胜利</a></li><li><a href="#更少的资源更强的棋力" class="table-of-contents__link toc-highlight">更少的资源，更强的棋力</a></li><li><a href="#为什么-zero-更强" class="table-of-contents__link toc-highlight">为什么 Zero 更强？</a></li></ul></li><li><a href="#简化的输入特征从-48-到-17" class="table-of-contents__link toc-highlight">简化的输入特征：从 48 到 17</a><ul><li><a href="#原版-alphago-的-48-个特征平面" class="table-of-contents__link toc-highlight">原版 AlphaGo 的 48 个特征平面</a></li><li><a href="#alphago-zero-的-17-个特征平面" class="table-of-contents__link toc-highlight">AlphaGo Zero 的 17 个特征平面</a></li><li><a href="#为什么简化是好的" class="table-of-contents__link toc-highlight">为什么简化是好的？</a></li></ul></li><li><a href="#单一网络架构" class="table-of-contents__link toc-highlight">单一网络架构</a><ul><li><a href="#原版的双网络设计" class="table-of-contents__link toc-highlight">原版的双网络设计</a></li><li><a href="#zero-的双头网络" class="table-of-contents__link toc-highlight">Zero 的双头网络</a></li><li><a href="#残差网络的威力" class="table-of-contents__link toc-highlight">残差网络的威力</a></li></ul></li><li><a href="#训练效率的提升" class="table-of-contents__link toc-highlight">训练效率的提升</a><ul><li><a href="#自我对弈的指数增长" class="table-of-contents__link toc-highlight">自我对弈的指数增长</a></li><li><a href="#为什么这么快" class="table-of-contents__link toc-highlight">为什么这么快？</a></li><li><a href="#与人类学习的对比" class="table-of-contents__link toc-highlight">与人类学习的对比</a></li></ul></li><li><a href="#通用性西洋棋将棋" class="table-of-contents__link toc-highlight">通用性：西洋棋、将棋</a><ul><li><a href="#alphazero-的诞生" class="table-of-contents__link toc-highlight">AlphaZero 的诞生</a></li><li><a href="#通用性的意义" class="table-of-contents__link toc-highlight">通用性的意义</a></li><li><a href="#对传统-ai-的冲击" class="table-of-contents__link toc-highlight">对传统 AI 的冲击</a></li></ul></li><li><a href="#alphago-zero-的下棋风格" class="table-of-contents__link toc-highlight">AlphaGo Zero 的下棋风格</a><ul><li><a href="#超越人类的审美" class="table-of-contents__link toc-highlight">超越人类的审美</a></li><li><a href="#重新发现人类棋理" class="table-of-contents__link toc-highlight">重新发现人类棋理</a></li><li><a href="#超越人类的创新" class="table-of-contents__link toc-highlight">超越人类的创新</a></li></ul></li><li><a href="#技术细节总结" class="table-of-contents__link toc-highlight">技术细节总结</a><ul><li><a href="#与原版-alphago-的完整对比" class="table-of-contents__link toc-highlight">与原版 AlphaGo 的完整对比</a></li><li><a href="#核心算法" class="table-of-contents__link toc-highlight">核心算法</a></li></ul></li><li><a href="#对-ai-研究的启示" class="table-of-contents__link toc-highlight">对 AI 研究的启示</a><ul><li><a href="#第一性原理学习" class="table-of-contents__link toc-highlight">第一性原理学习</a></li><li><a href="#自我对弈的威力" class="table-of-contents__link toc-highlight">自我对弈的威力</a></li><li><a href="#简化的重要性" class="table-of-contents__link toc-highlight">简化的重要性</a></li></ul></li><li><a href="#动画对应" class="table-of-contents__link toc-highlight">动画对应</a></li><li><a href="#延伸阅读" class="table-of-contents__link toc-highlight">延伸阅读</a></li><li><a href="#参考资料" class="table-of-contents__link toc-highlight">参考资料</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 Weiqi.Kids. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>
