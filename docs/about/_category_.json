@@ -1,0 +1,8 @@
+{
+  "label": "關於我們",
+  "position": 6,
+  "link": {
+    "type": "doc",
+    "id": "about/index"
+  }
+}

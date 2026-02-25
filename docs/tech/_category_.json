@@ -1,0 +1,8 @@
+{
+  "label": "技術文件",
+  "position": 5,
+  "link": {
+    "type": "doc",
+    "id": "tech/index"
+  }
+}

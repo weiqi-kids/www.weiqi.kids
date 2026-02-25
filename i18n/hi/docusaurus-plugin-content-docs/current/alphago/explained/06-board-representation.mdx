@@ -1,0 +1,866 @@
+---
+sidebar_position: 7
+title: बोर्ड स्थिति प्रतिनिधित्व
+description: द्विविमीय सरणी से न्यूरल नेटवर्क फीचर प्लेन तक, गो AI बोर्ड को कैसे "देखता" है इसकी गहन समझ
+keywords: [बोर्ड प्रतिनिधित्व, Zobrist Hashing, Union-Find, फीचर एन्कोडिंग, AlphaGo फीचर प्लेन]
+---
+
+import { GoBoard } from '@site/src/components/D3Charts';
+
+# बोर्ड स्थिति प्रतिनिधित्व
+
+गो AI डिज़ाइन करने से पहले, एक बुनियादी समस्या हल करनी होगी: **कंप्यूटर को बोर्ड "समझाना" कैसे?**
+
+यह समस्या सरल लगती है, लेकिन इसमें डेटा संरचना, एल्गोरिथम, और न्यूरल नेटवर्क इनपुट डिज़ाइन जैसे कई स्तर शामिल हैं। यह लेख सबसे बुनियादी द्विविमीय सरणी से शुरू करके, गो AI में उपयोग की जाने वाली विभिन्न बोर्ड प्रतिनिधित्व विधियों का परिचय देगा, और अंत में बताएगा कि AlphaGo बोर्ड को न्यूरल नेटवर्क द्वारा प्रोसेस किए जाने योग्य फॉर्मेट में कैसे एन्कोड करता है।
+
+---
+
+## द्विविमीय सरणी प्रतिनिधित्व: सबसे सहज तरीका
+
+### मूल अवधारणा
+
+गो बोर्ड एक 19×19 ग्रिड नेटवर्क है, सबसे सहज प्रतिनिधित्व **द्विविमीय सरणी** है:
+
+```python
+import numpy as np
+
+# बोर्ड स्थिरांक
+BOARD_SIZE = 19
+EMPTY = 0
+BLACK = 1
+WHITE = 2
+
+# खाली बोर्ड आरंभ
+board = np.zeros((BOARD_SIZE, BOARD_SIZE), dtype=np.int8)
+
+# चाल: D4 (3, 3) पर काला पत्थर
+board[3, 3] = BLACK
+
+# चाल: Q16 (15, 3) पर सफेद पत्थर
+board[15, 3] = WHITE
+```
+
+### निर्देशांक प्रणाली
+
+गो में दो सामान्य निर्देशांक प्रणालियाँ हैं:
+
+#### 1. संख्यात्मक निर्देशांक (प्रोग्राम के लिए)
+
+```
+    0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
+0   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+1   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+2   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+3   .  .  .  ●  .  .  .  .  .  +  .  .  .  .  .  ○  .  .  .
+...
+```
+
+#### 2. अक्षर-संख्या निर्देशांक (किफू के लिए)
+
+```
+    A  B  C  D  E  F  G  H  J  K  L  M  N  O  P  Q  R  S  T
+19  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+18  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+17  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+16  .  .  .  ●  .  .  .  .  .  +  .  .  .  .  .  ○  .  .  .
+...
+```
+
+नोट: अक्षर निर्देशांक "I" को छोड़ देते हैं (संख्या 1 से भ्रम से बचने के लिए)।
+
+### निर्देशांक रूपांतरण फ़ंक्शन
+
+```python
+def coord_to_index(coord):
+    """
+    किफू निर्देशांक को सरणी इंडेक्स में बदलें
+    उदाहरण: 'D4' -> (3, 15)
+    """
+    letters = 'ABCDEFGHJKLMNOPQRST'  # I छोड़ें
+    col = letters.index(coord[0].upper())
+    row = BOARD_SIZE - int(coord[1:])
+    return row, col
+
+
+def index_to_coord(row, col):
+    """
+    सरणी इंडेक्स को किफू निर्देशांक में बदलें
+    उदाहरण: (3, 15) -> 'Q16'
+    """
+    letters = 'ABCDEFGHJKLMNOPQRST'
+    return f"{letters[col]}{BOARD_SIZE - row}"
+```
+
+### स्पेस जटिलता विश्लेषण
+
+द्विविमीय सरणी प्रतिनिधित्व की स्पेस जटिलता:
+
+| प्रतिनिधित्व विधि | प्रति ग्रिड आकार | कुल स्पेस |
+|---------|---------|--------|
+| `int8` | 1 byte | 361 bytes |
+| `int32` | 4 bytes | 1.4 KB |
+| `float64` | 8 bytes | 2.9 KB |
+
+आधुनिक कंप्यूटर के लिए, यह मेमोरी कोई समस्या नहीं है। लेकिन बड़ी संख्या में बोर्ड स्थितियाँ संग्रहित करते समय (जैसे MCTS सर्च ट्री में), `int8` का उपयोग मेमोरी उपयोग को काफी कम कर सकता है।
+
+### मूल संचालन
+
+```python
+class Board:
+    def __init__(self, size=19):
+        self.size = size
+        self.board = np.zeros((size, size), dtype=np.int8)
+        self.current_player = BLACK
+        self.ko_point = None  # को निषिद्ध बिंदु
+        self.move_history = []
+
+    def is_valid_move(self, row, col):
+        """जाँचें कि चाल वैध है या नहीं"""
+        # 1. स्थिति बोर्ड के अंदर है
+        if not (0 <= row < self.size and 0 <= col < self.size):
+            return False
+
+        # 2. स्थिति खाली है
+        if self.board[row, col] != EMPTY:
+            return False
+
+        # 3. को निषिद्ध बिंदु नहीं है
+        if self.ko_point == (row, col):
+            return False
+
+        # 4. आत्महत्या नहीं है (जब तक कैप्चर न हो)
+        # ... और जटिल जाँच की आवश्यकता
+
+        return True
+
+    def place_stone(self, row, col):
+        """पत्थर रखें"""
+        if not self.is_valid_move(row, col):
+            return False
+
+        self.board[row, col] = self.current_player
+        self.move_history.append((row, col))
+
+        # कैप्चर संभालें
+        captures = self._remove_captured_stones(row, col)
+
+        # को निषिद्ध बिंदु अपडेट करें
+        self._update_ko(row, col, captures)
+
+        # खिलाड़ी बदलें
+        self.current_player = WHITE if self.current_player == BLACK else BLACK
+
+        return True
+```
+
+---
+
+## Zobrist Hashing: दोहराव स्थिति की तेज़ पहचान
+
+### समस्या पृष्ठभूमि
+
+गो AI में, हमें अक्सर "दो स्थितियाँ समान हैं या नहीं" जाँचनी होती है:
+
+1. **को नियम**: स्थिति पिछली चाल पर वापस नहीं जा सकती
+2. **तीन को चक्र**: विशेष नियम हैंडलिंग
+3. **Transposition Table**: पहले सर्च की गई स्थितियाँ याद रखें
+4. **न्यूरल नेटवर्क कैश**: दोहरी गणना से बचें
+
+यदि हर बार ग्रिड-दर-ग्रिड तुलना करें, O(361) समय लगेगा। क्या कोई तेज़ तरीका है?
+
+### Zobrist Hashing सिद्धांत
+
+**Zobrist Hashing** (Zobrist Keys भी) एक चतुर हैशिंग विधि है, जिसे Albert Zobrist ने 1970 में प्रस्तुत किया। इसका मुख्य विचार है:
+
+1. प्रत्येक "स्थिति × रंग" संयोजन के लिए एक **यादृच्छिक संख्या** पूर्व-उत्पन्न करें
+2. बोर्ड का हैश मान = सभी पत्थर स्थितियों की यादृच्छिक संख्याओं का **XOR**
+3. पत्थर रखने/हटाने के लिए केवल एक XOR ऑपरेशन से हैश अपडेट
+
+### यादृच्छिक संख्या तालिका
+
+```python
+import numpy as np
+
+# यादृच्छिक संख्या तालिका उत्पन्न करें
+# पुनरुत्पादनीयता के लिए निश्चित बीज
+np.random.seed(42)
+
+# प्रत्येक स्थिति, प्रत्येक रंग के लिए एक यादृच्छिक संख्या
+# zobrist[color][row][col]
+zobrist_table = np.random.randint(
+    0, 2**64,
+    size=(3, BOARD_SIZE, BOARD_SIZE),  # 3: EMPTY, BLACK, WHITE
+    dtype=np.uint64
+)
+
+# किसकी बारी है के लिए यादृच्छिक संख्या
+zobrist_player = np.random.randint(0, 2**64, dtype=np.uint64)
+```
+
+### XOR ऑपरेशन की विशेषताएँ
+
+XOR (एक्सक्लूसिव ऑर) की कई महत्वपूर्ण विशेषताएँ इसे इस अनुप्रयोग के लिए उपयुक्त बनाती हैं:
+
+1. **स्व-प्रतिवर्ती**: A ⊕ A = 0 (कोई संख्या XOR स्वयं बराबर 0)
+2. **प्रतिवर्तनीय**: A ⊕ B ⊕ B = A (दो बार XOR बराबर कुछ नहीं)
+3. **क्रम विनिमेय**: A ⊕ B = B ⊕ A
+4. **साहचर्य**: (A ⊕ B) ⊕ C = A ⊕ (B ⊕ C)
+
+इसका मतलब:
+- पत्थर रखना: `hash ^= zobrist[color][row][col]`
+- पत्थर हटाना: `hash ^= zobrist[color][row][col]` (वही ऑपरेशन!)
+
+### कार्यान्वयन
+
+```python
+class ZobristBoard:
+    def __init__(self, size=19):
+        self.size = size
+        self.board = np.zeros((size, size), dtype=np.int8)
+        self.current_player = BLACK
+        self.hash = np.uint64(0)
+
+        # यादृच्छिक संख्या तालिका आरंभ
+        self._init_zobrist_table()
+
+    def _init_zobrist_table(self):
+        np.random.seed(12345)
+        self.zobrist = np.random.randint(
+            0, 2**64,
+            size=(3, self.size, self.size),
+            dtype=np.uint64
+        )
+        self.zobrist_player = np.random.randint(0, 2**64, dtype=np.uint64)
+
+    def place_stone(self, row, col, color):
+        """पत्थर रखें और हैश अपडेट करें"""
+        # पुरानी स्थिति हटाएँ (यदि पत्थर है)
+        old_color = self.board[row, col]
+        if old_color != EMPTY:
+            self.hash ^= self.zobrist[old_color, row, col]
+
+        # नया पत्थर जोड़ें
+        self.board[row, col] = color
+        self.hash ^= self.zobrist[color, row, col]
+
+    def remove_stone(self, row, col):
+        """पत्थर हटाएँ और हैश अपडेट करें"""
+        color = self.board[row, col]
+        if color != EMPTY:
+            self.hash ^= self.zobrist[color, row, col]
+            self.board[row, col] = EMPTY
+
+    def switch_player(self):
+        """खिलाड़ी बदलें और हैश अपडेट करें"""
+        self.hash ^= self.zobrist_player
+        self.current_player = WHITE if self.current_player == BLACK else BLACK
+
+    def get_hash(self):
+        """वर्तमान स्थिति का हैश प्राप्त करें"""
+        return self.hash
+```
+
+### इंक्रीमेंटल अपडेट का लाभ
+
+Zobrist Hashing से, हैश अपडेट केवल O(1) समय:
+
+| ऑपरेशन | पारंपरिक तुलना | Zobrist |
+|------|---------|---------|
+| दो स्थितियों की तुलना | O(361) | O(1) |
+| पत्थर रखने के बाद अपडेट | O(361) | O(1) |
+| पत्थर हटाने के बाद अपडेट | O(361) | O(k), k कैप्चर संख्या |
+
+### टक्कर संभावना
+
+64-बिट हैश से, टक्कर संभावना अत्यंत कम:
+
+**P(टक्कर) ≈ n² / 2^65**
+
+जहाँ n विभिन्न स्थितियों की संख्या है। 1 अरब स्थितियों के साथ भी, टक्कर संभावना केवल लगभग 10^-3 है।
+
+वास्तव में, कई गो प्रोग्राम 64-बिट Zobrist Hashing का उपयोग बिना टक्कर जाँच के करते हैं, क्योंकि टक्कर संभावना नगण्य है।
+
+---
+
+## स्ट्रिंग प्रतिनिधित्व (Union-Find): कनेक्टिविटी समस्या
+
+### स्ट्रिंग की अवधारणा
+
+गो में, **स्ट्रिंग** (String या Chain) जुड़े हुए समान रंग के पत्थरों का समूह है। स्ट्रिंग की "साँसें" इसकी जीवन-मृत्यु निर्धारित करती हैं।
+
+<GoBoard
+  size={200}
+  stones={[
+    {x: 3, y: 3, color: 'black'},
+    {x: 4, y: 3, color: 'black'},
+    {x: 5, y: 3, color: 'black'},
+    {x: 4, y: 4, color: 'black'},
+    {x: 6, y: 3, color: 'white'},
+    {x: 6, y: 4, color: 'white'},
+  ]}
+  labels={[
+    {x: 4, y: 3, text: 'A'},
+  ]}
+/>
+
+ऊपर के चित्र में, चार काले पत्थर एक स्ट्रिंग बनाते हैं, इस स्ट्रिंग की साँसों की संख्या इसकी जीवन-मृत्यु निर्धारित करती है।
+
+### कुशल स्ट्रिंग प्रबंधन क्यों आवश्यक?
+
+हर चाल से:
+1. नई स्ट्रिंग **बन** सकती है
+2. कई स्ट्रिंग **मिल** सकती हैं
+3. शत्रु स्ट्रिंग की साँसें **कम** हो सकती हैं
+4. बिना साँस वाली स्ट्रिंग **कैप्चर** हो सकती है
+
+ये ऑपरेशन कुशलता से होने चाहिए, क्योंकि MCTS में एक सेकंड में हज़ारों चाल सिमुलेशन हो सकते हैं।
+
+### Union-Find डेटा संरचना
+
+**Union-Find** (Disjoint Set Union, DSU भी) "कनेक्टिविटी" समस्याओं के लिए क्लासिक डेटा संरचना है:
+
+```python
+class UnionFind:
+    def __init__(self, size):
+        # parent[i] i के पैरेंट नोड को पॉइंट करता है
+        # यदि parent[i] = i, तो i रूट नोड है
+        self.parent = list(range(size))
+        self.rank = [0] * size
+
+    def find(self, x):
+        """
+        x के सेट का रूट नोड खोजें (पथ संपीड़न के साथ)
+        """
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])  # पथ संपीड़न
+        return self.parent[x]
+
+    def union(self, x, y):
+        """
+        x और y के सेट को मिलाएँ (रैंक द्वारा मिलान के साथ)
+        """
+        root_x = self.find(x)
+        root_y = self.find(y)
+
+        if root_x == root_y:
+            return  # पहले से एक ही सेट में
+
+        # रैंक द्वारा मिलान: छोटे पेड़ को बड़े से जोड़ें
+        if self.rank[root_x] < self.rank[root_y]:
+            self.parent[root_x] = root_y
+        elif self.rank[root_x] > self.rank[root_y]:
+            self.parent[root_y] = root_x
+        else:
+            self.parent[root_y] = root_x
+            self.rank[root_x] += 1
+```
+
+### समय जटिलता
+
+Union-Find की समय जटिलता **इनवर्स एकरमन फ़ंक्शन** α(n) से व्यक्त होती है:
+
+| ऑपरेशन | समय जटिलता |
+|------|-----------|
+| find | O(α(n)) ≈ O(1) |
+| union | O(α(n)) ≈ O(1) |
+
+α(n) बहुत धीरे बढ़ता है, किसी भी व्यावहारिक n के लिए, α(n) ≤ 4। इसलिए इसे स्थिर समय माना जा सकता है।
+
+### गो में Union-Find अनुप्रयोग
+
+```python
+class GoStringManager:
+    def __init__(self, size=19):
+        self.size = size
+        num_points = size * size
+
+        # Union-Find संरचना
+        self.parent = list(range(num_points))
+        self.rank = [0] * num_points
+
+        # प्रत्येक स्ट्रिंग की साँसें (रूट नोड इंडेक्स द्वारा)
+        self.liberties = [set() for _ in range(num_points)]
+
+        # प्रत्येक स्ट्रिंग के पत्थर (रूट नोड इंडेक्स द्वारा)
+        self.stones = [set() for _ in range(num_points)]
+
+    def _index(self, row, col):
+        return row * self.size + col
+
+    def _neighbors(self, row, col):
+        """चार पड़ोसी प्राप्त करें"""
+        neighbors = []
+        if row > 0: neighbors.append((row - 1, col))
+        if row < self.size - 1: neighbors.append((row + 1, col))
+        if col > 0: neighbors.append((row, col - 1))
+        if col < self.size - 1: neighbors.append((row, col + 1))
+        return neighbors
+
+    def find(self, idx):
+        if self.parent[idx] != idx:
+            self.parent[idx] = self.find(self.parent[idx])
+        return self.parent[idx]
+
+    def add_stone(self, row, col, color, board):
+        """
+        एक पत्थर जोड़ें, कनेक्शन और कैप्चर संभालें
+        """
+        idx = self._index(row, col)
+
+        # नई स्ट्रिंग बनाएँ
+        self.stones[idx] = {idx}
+        self.liberties[idx] = set()
+
+        # इस पत्थर की साँसें गिनें
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == 0:  # खाली बिंदु साँस है
+                self.liberties[idx].add(nidx)
+
+        # समान रंग के पड़ोसियों के साथ मिलाएँ
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == color:
+                self._merge_strings(idx, nidx)
+
+        # शत्रु स्ट्रिंग की साँसें कम करें
+        opponent = 3 - color  # BLACK=1, WHITE=2
+        captured = []
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == opponent:
+                root = self.find(nidx)
+                self.liberties[root].discard(idx)
+                if len(self.liberties[root]) == 0:
+                    captured.append(root)
+
+        return captured
+
+    def _merge_strings(self, idx1, idx2):
+        """दो स्ट्रिंग मिलाएँ"""
+        root1 = self.find(idx1)
+        root2 = self.find(idx2)
+
+        if root1 == root2:
+            return
+
+        # रैंक द्वारा मिलान
+        if self.rank[root1] < self.rank[root2]:
+            root1, root2 = root2, root1
+
+        self.parent[root2] = root1
+        if self.rank[root1] == self.rank[root2]:
+            self.rank[root1] += 1
+
+        # साँसें और पत्थर सेट मिलाएँ
+        self.liberties[root1] |= self.liberties[root2]
+        self.stones[root1] |= self.stones[root2]
+
+        # अपनी स्थिति की साँसें हटाएँ (खुद अपनी साँस नहीं)
+        for stone_idx in self.stones[root2]:
+            self.liberties[root1].discard(stone_idx)
+```
+
+### साँसों की गणना
+
+स्ट्रिंग की साँसों की गणना गो में सबसे आम ऑपरेशन है:
+
+```python
+def count_liberties(self, row, col, board):
+    """किसी पत्थर की स्ट्रिंग की साँसें गिनें"""
+    idx = self._index(row, col)
+    root = self.find(idx)
+    return len(self.liberties[root])
+```
+
+Union-Find से, यह ऑपरेशन O(1) है (मानते हुए find O(1) है)।
+
+---
+
+## फीचर एन्कोडिंग का विकास
+
+पारंपरिक हस्तनिर्मित फीचर से AlphaGo Zero के सरल फीचर तक, गो AI की फीचर एन्कोडिंग में महत्वपूर्ण विकास हुआ।
+
+### GNU Go के हस्तनिर्मित फीचर
+
+प्रारंभिक गो प्रोग्राम (जैसे GNU Go) बहुत सारे हस्तनिर्मित फीचर का उपयोग करते थे:
+
+```python
+def extract_features_gnugo(board, point):
+    """
+    GNU Go शैली के हस्तनिर्मित फीचर निकालना
+    """
+    features = {}
+
+    # 1. आकार पैटर्न (पूर्वनिर्धारित स्थानीय आकार)
+    features['pattern'] = match_pattern(board, point)
+
+    # 2. रणनीतिक फीचर
+    features['can_capture'] = check_capture(board, point)
+    features['can_connect'] = check_connect(board, point)
+    features['creates_eye'] = check_eye_creation(board, point)
+
+    # 3. स्थानीय फीचर
+    features['liberties_after'] = count_liberties_after_move(board, point)
+    features['enemy_liberties'] = count_enemy_liberties(board, point)
+
+    # 4. वैश्विक फीचर
+    features['distance_to_edge'] = min(
+        point[0], point[1],
+        18 - point[0], 18 - point[1]
+    )
+
+    # ... और फीचर
+
+    return features
+```
+
+इस विधि की समस्याएँ:
+- बहुत सारा मानव विशेषज्ञ ज्ञान चाहिए
+- फीचर अधूरे हो सकते हैं
+- नए पैटर्न खोजना कठिन
+
+### AlphaGo के 48 फीचर प्लेन
+
+AlphaGo (2016 Nature संस्करण) ने न्यूरल नेटवर्क इनपुट के रूप में **48 फीचर प्लेन** का उपयोग किया:
+
+```python
+def encode_alphago_features(board, player, history):
+    """
+    AlphaGo 2016 के 48 फीचर प्लेन
+
+    Returns:
+        (19, 19, 48) का टेंसर
+    """
+    features = np.zeros((19, 19, 48), dtype=np.float32)
+
+    # प्लेन 1: काले पत्थरों की स्थिति
+    features[:, :, 0] = (board == BLACK)
+
+    # प्लेन 2: सफेद पत्थरों की स्थिति
+    features[:, :, 1] = (board == WHITE)
+
+    # प्लेन 3: खाली बिंदु
+    features[:, :, 2] = (board == EMPTY)
+
+    # प्लेन 4: सभी 1 (बायस टर्म)
+    features[:, :, 3] = 1
+
+    # प्लेन 5-12: साँसों की एन्कोडिंग (1-8 साँसें प्रत्येक के लिए एक प्लेन)
+    for i, num_libs in enumerate(range(1, 9)):
+        for r in range(19):
+            for c in range(19):
+                if board[r, c] != EMPTY:
+                    libs = count_liberties(board, r, c)
+                    if libs == num_libs:
+                        features[r, c, 4 + i] = 1
+
+    # प्लेन 13-20: कैप्चर के बाद प्रतिद्वंद्वी की साँसें
+    # ...
+
+    # प्लेन 21-28: अपनी चाल के बाद साँसें
+    # ...
+
+    # प्लेन 29-36: पिछली 8 चालों का इतिहास (प्रत्येक चाल के लिए एक प्लेन)
+    for i, (r, c) in enumerate(history[-8:]):
+        features[r, c, 28 + i] = 1
+
+    # प्लेन 37-44: लैडर निर्णय
+    # ...
+
+    # प्लेन 45-48: समरूपता संबंधित
+    # ...
+
+    # प्लेन 49: किसकी बारी (सभी 1 काला, सभी 0 सफेद)
+    if player == BLACK:
+        features[:, :, 47] = 1
+
+    return features
+```
+
+### 48 प्लेन का वर्गीकरण
+
+| श्रेणी | प्लेन संख्या | विवरण |
+|------|--------|------|
+| पत्थर स्थिति | 3 | काला, सफेद, खाली |
+| स्थिरांक | 1 | सभी 1 |
+| साँसें | 8 | 1-8 साँसें |
+| कैप्चर के बाद साँसें | 8 | मान लें चाल के बाद साँसें |
+| चाल के बाद साँसें | 8 | मान लें चाल के बाद साँसें |
+| इतिहास | 8 | पिछली 8 चालें |
+| लैडर | 8 | जटिल लैडर विश्लेषण |
+| अन्य | 4 | बारी, समरूपता आदि |
+
+### AlphaGo Zero के 17 फीचर प्लेन
+
+AlphaGo Zero (2017) ने फीचर एन्कोडिंग को बहुत सरल किया, केवल **17 प्लेन** का उपयोग:
+
+```python
+def encode_alphago_zero_features(board_history, player):
+    """
+    AlphaGo Zero के 17 फीचर प्लेन
+
+    Args:
+        board_history: पिछली 8 स्थितियाँ (वर्तमान सहित)
+        player: वर्तमान खिलाड़ी
+
+    Returns:
+        (19, 19, 17) का टेंसर
+    """
+    features = np.zeros((19, 19, 17), dtype=np.float32)
+
+    # प्लेन 1-8: काले पत्थरों का इतिहास (हाल की 8 चालें)
+    for i, board in enumerate(board_history[-8:]):
+        features[:, :, i] = (board == BLACK)
+
+    # प्लेन 9-16: सफेद पत्थरों का इतिहास (हाल की 8 चालें)
+    for i, board in enumerate(board_history[-8:]):
+        features[:, :, 8 + i] = (board == WHITE)
+
+    # प्लेन 17: किसकी बारी (सभी 1 काला, सभी 0 सफेद)
+    if player == BLACK:
+        features[:, :, 16] = 1
+
+    return features
+```
+
+### 17 प्लेन की सरलता
+
+| श्रेणी | प्लेन संख्या | विवरण |
+|------|--------|------|
+| काले पत्थर इतिहास | 8 | पिछले 8 समय कदमों में काले पत्थर स्थिति |
+| सफेद पत्थर इतिहास | 8 | पिछले 8 समय कदमों में सफेद पत्थर स्थिति |
+| वर्तमान खिलाड़ी | 1 | सभी 1 या सभी 0 |
+
+इतना सरल क्यों?
+
+> **मुख्य अंतर्दृष्टि: न्यूरल नेटवर्क को स्वयं फीचर सीखने दें।**
+
+AlphaGo Zero ने साबित किया:
+- साँसें मैन्युअल गिनने की जरूरत नहीं (नेटवर्क पत्थर स्थिति से अनुमान लगा सकता है)
+- लैडर विश्लेषण की जरूरत नहीं (नेटवर्क लैडर पहचानना सीख सकता है)
+- जटिल कैप्चर भविष्यवाणी की जरूरत नहीं (नेटवर्क चाल के परिणाम समझ सकता है)
+
+यह डीप लर्निंग का मुख्य लाभ दर्शाता है: **एंड-टू-एंड लर्निंग**।
+
+### फीचर प्लेन का विज़ुअलाइज़ेशन
+
+आइए देखें ये फीचर प्लेन वास्तव में कैसे दिखते हैं:
+
+```
+मूल बोर्ड:              काला प्लेन:              सफेद प्लेन:
+. . . . . .            0 0 0 0 0 0            0 0 0 0 0 0
+. ● ○ . . .            0 1 0 0 0 0            0 0 1 0 0 0
+. . ● ○ . .    ->      0 0 1 0 0 0     +      0 0 0 1 0 0
+. . . ● . .            0 0 0 1 0 0            0 0 0 0 0 0
+. . . . . .            0 0 0 0 0 0            0 0 0 0 0 0
+```
+
+प्रत्येक प्लेन एक बाइनरी मैट्रिक्स (0 या 1) है, न्यूरल नेटवर्क कॉन्वोल्यूशन ऑपरेशन से इन प्लेन में पैटर्न निकाल सकता है।
+
+---
+
+## समरूपता हैंडलिंग: 8 परिवर्तन
+
+### गो की समरूपता
+
+गो बोर्ड में **8 प्रकार की समरूपता** है:
+
+1. **4 रोटेशन**: 0°, 90°, 180°, 270°
+2. **4 फ्लिप के बाद रोटेशन**: क्षैतिज फ्लिप + 4 रोटेशन
+
+यह एक **डायहेड्रल समूह D4** बनाता है।
+
+### गणितीय प्रतिनिधित्व
+
+मान लें (x, y) बोर्ड पर निर्देशांक है (केंद्र (9, 9) पर), 8 परिवर्तन इस प्रकार व्यक्त:
+
+| परिवर्तन | सूत्र |
+|------|------|
+| पहचान | (x, y) |
+| 90° रोटेशन | (-y, x) |
+| 180° रोटेशन | (-x, -y) |
+| 270° रोटेशन | (y, -x) |
+| क्षैतिज फ्लिप | (-x, y) |
+| ऊर्ध्वाधर फ्लिप | (x, -y) |
+| विकर्ण फ्लिप | (y, x) |
+| प्रति-विकर्ण फ्लिप | (-y, -x) |
+
+### कोड कार्यान्वयन
+
+```python
+def get_symmetries(board):
+    """
+    बोर्ड के 8 समरूपता परिवर्तन प्राप्त करें
+
+    Returns:
+        8 बोर्ड की सूची
+    """
+    symmetries = []
+
+    # मूल
+    symmetries.append(board.copy())
+
+    # 90° रोटेशन
+    symmetries.append(np.rot90(board, k=1))
+
+    # 180° रोटेशन
+    symmetries.append(np.rot90(board, k=2))
+
+    # 270° रोटेशन
+    symmetries.append(np.rot90(board, k=3))
+
+    # क्षैतिज फ्लिप
+    symmetries.append(np.fliplr(board))
+
+    # ऊर्ध्वाधर फ्लिप
+    symmetries.append(np.flipud(board))
+
+    # विकर्ण फ्लिप
+    symmetries.append(board.T)
+
+    # प्रति-विकर्ण फ्लिप
+    symmetries.append(np.rot90(board.T, k=2))
+
+    return symmetries
+
+
+def apply_symmetry(board, sym_index):
+    """
+    sym_index वाँ समरूपता परिवर्तन लागू करें
+    """
+    return get_symmetries(board)[sym_index]
+
+
+def inverse_symmetry(move, sym_index, board_size=19):
+    """
+    परिवर्तित चाल निर्देशांक को मूल में वापस बदलें
+    """
+    row, col = move
+
+    if sym_index == 0:  # पहचान
+        return row, col
+    elif sym_index == 1:  # 90° रोटेशन
+        return col, board_size - 1 - row
+    elif sym_index == 2:  # 180° रोटेशन
+        return board_size - 1 - row, board_size - 1 - col
+    elif sym_index == 3:  # 270° रोटेशन
+        return board_size - 1 - col, row
+    elif sym_index == 4:  # क्षैतिज फ्लिप
+        return row, board_size - 1 - col
+    elif sym_index == 5:  # ऊर्ध्वाधर फ्लिप
+        return board_size - 1 - row, col
+    elif sym_index == 6:  # विकर्ण फ्लिप
+        return col, row
+    elif sym_index == 7:  # प्रति-विकर्ण फ्लिप
+        return board_size - 1 - col, board_size - 1 - row
+```
+
+### डेटा संवर्धन
+
+न्यूरल नेटवर्क प्रशिक्षण में, समरूपता का उपयोग **डेटा संवर्धन** के लिए:
+
+```python
+def augment_training_data(board, policy, value):
+    """
+    एक प्रशिक्षण नमूने को 8 में विस्तारित करें
+    """
+    augmented = []
+
+    for sym_index in range(8):
+        # बोर्ड परिवर्तित करें
+        aug_board = apply_symmetry(board, sym_index)
+
+        # नीति परिवर्तित करें (361 आयामी वेक्टर)
+        policy_2d = policy.reshape(19, 19)
+        aug_policy_2d = apply_symmetry(policy_2d, sym_index)
+        aug_policy = aug_policy_2d.flatten()
+
+        # मान अपरिवर्तित
+        aug_value = value
+
+        augmented.append((aug_board, aug_policy, aug_value))
+
+    return augmented
+```
+
+इससे प्रशिक्षण डेटा 8 गुना बढ़ जाता है, और पूर्णतः मुफ्त (नया डेटा एकत्र करने की जरूरत नहीं)।
+
+### अनुमान समय में समरूपता का उपयोग
+
+AlphaGo वास्तविक खेल में भी समरूपता का उपयोग करता है:
+
+```python
+def predict_with_symmetry(model, board):
+    """
+    समरूपता से अनुमान बढ़ाएँ
+    """
+    policies = []
+    values = []
+
+    for sym_index in range(8):
+        # इनपुट परिवर्तित करें
+        aug_board = apply_symmetry(board, sym_index)
+
+        # न्यूरल नेटवर्क अनुमान
+        policy, value = model.predict(aug_board)
+
+        # नीति को मूल निर्देशांक प्रणाली में वापस परिवर्तित करें
+        policy_2d = policy.reshape(19, 19)
+        original_policy = inverse_symmetry_2d(policy_2d, sym_index)
+        policies.append(original_policy.flatten())
+
+        values.append(value)
+
+    # सभी अनुमानों का औसत
+    avg_policy = np.mean(policies, axis=0)
+    avg_value = np.mean(values)
+
+    return avg_policy, avg_value
+```
+
+इस दृष्टिकोण से अनुमान की सटीकता और स्थिरता थोड़ी बढ़ सकती है।
+
+---
+
+## बोर्ड प्रतिनिधित्व विधियों का सारांश
+
+| विधि | उपयोग | जटिलता | विशेषता |
+|------|------|--------|------|
+| **द्विविमीय सरणी** | मूल संग्रहण | O(361) स्पेस | सरल सहज |
+| **Zobrist Hashing** | स्थिति पहचान | O(1) क्वेरी | कुशल हैशिंग |
+| **Union-Find** | स्ट्रिंग प्रबंधन | O(α(n)) ऑपरेशन | कनेक्टिविटी हैंडलिंग |
+| **फीचर प्लेन** | न्यूरल नेटवर्क इनपुट | O(361×प्लेन संख्या) | समृद्ध जानकारी एन्कोड |
+| **समरूपता परिवर्तन** | डेटा संवर्धन | 8× डेटा मात्रा | मुफ्त विस्तार |
+
+ये तकनीकें मिलकर आधुनिक गो AI की नींव बनाती हैं।
+
+---
+
+## एनिमेशन संदर्भ
+
+इस लेख की मुख्य अवधारणाएँ और एनिमेशन नंबर:
+
+| नंबर | अवधारणा | भौतिकी/गणित संदर्भ |
+|------|------|--------------|
+| A A1 | द्विविमीय सरणी प्रतिनिधित्व | मैट्रिक्स, स्पार्स डेटा |
+| A A2 | Zobrist Hashing | हैश फ़ंक्शन, XOR ऑपरेशन |
+| A A8 | फीचर प्लेन एन्कोडिंग | टेंसर, मल्टी-चैनल इनपुट |
+| A A5 | समरूपता हैंडलिंग | समूह सिद्धांत, डायहेड्रल समूह |
+
+---
+
+## आगे पढ़ें
+
+- **पिछला लेख**: [पारंपरिक तरीकों की सीमाएँ](../traditional-limits) — Minimax से MCTS
+- **अगला लेख**: [Policy Network विस्तृत विश्लेषण](../policy-network) — न्यूरल नेटवर्क चाल कैसे भविष्यवाणी करता है
+- **व्यावहारिक अभ्यास**: [30 मिनट में पहला गो AI चलाएँ](/docs/tech/hands-on/) — स्वयं अनुभव करें
+
+---
+
+## संदर्भ
+
+1. Zobrist, A. L. (1970). "A new hashing method with application for game playing." ICCA journal.
+2. Tarjan, R. E. (1975). "Efficiency of a Good But Not Linear Set Union Algorithm." Journal of the ACM, 22(2), 215-225.
+3. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." Nature, 529, 484-489. — AlphaGo 48 फीचर प्लेन
+4. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." Nature, 550, 354-359. — AlphaGo Zero 17 फीचर प्लेन

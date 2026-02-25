@@ -1,0 +1,8 @@
+{
+  "label": "動畫教室",
+  "position": 4,
+  "link": {
+    "type": "doc",
+    "id": "animations/index"
+  }
+}

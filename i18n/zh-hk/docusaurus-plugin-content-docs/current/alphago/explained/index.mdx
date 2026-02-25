@@ -1,0 +1,132 @@
+---
+sidebar_position: 1
+title: AlphaGo 完整解析
+description: 從歷史背景到技術細節，20 篇文章帶你徹底了解 AlphaGo
+---
+
+import { PolicyHeatmap, EloChart } from '@site/src/components/D3Charts';
+
+# AlphaGo 完整解析
+
+2016 年 3 月，AlphaGo 以 4:1 擊敗世界冠軍李世乭，震驚全球。呢個唔單止係一場圍棋比賽嘅勝利，更加標誌住人工智能嘅重大突破。
+
+本系列 **20 篇深度文章**，將會帶你從歷史背景、技術原理、到實作細節，完整了解 AlphaGo 嘅一切。
+
+---
+
+## 系列導覽
+
+### 模組 1：歷史與突破
+
+| 文章 | 說明 |
+|------|------|
+| [AlphaGo 嘅誕生](./birth-of-alphago) | DeepMind 創立、Google 收購、團隊組成 |
+| [關鍵對局回顧](./key-matches) | 樊麾、李世乭、柯潔、Master 60連勝 |
+| [「神之一手」深度分析](./move-37) | 第 37 手嘅棋理與 AI 視角解讀 |
+
+### 模組 2：圍棋嘅挑戰
+
+| 文章 | 說明 |
+|------|------|
+| [圍棋點解咁難？](./why-go-is-hard) | 狀態空間 10^170、分支因子 ~250 |
+| [傳統方法嘅極限](./traditional-limits) | Minimax、Alpha-Beta、純 MCTS |
+| [棋盤狀態表示](./board-representation) | Zobrist Hashing、Union-Find、特徵編碼 |
+
+### 模組 3：神經網絡核心
+
+| 文章 | 說明 |
+|------|------|
+| [Policy Network 詳解](./policy-network) | 架構、Softmax 輸出、訓練目標 |
+| [Value Network 詳解](./value-network) | 架構、Tanh 輸出、避免過擬合 |
+| [輸入特徵設計](./input-features) | 48→17 個特徵平面嘅演進 |
+| [CNN 與圍棋嘅結合](./cnn-and-go) | 點解 CNN 適合棋盤 |
+| [監督學習階段](./supervised-learning) | KGS 資料集、57% 預測準確率 |
+
+### 模組 4：強化學習與搜索
+
+| 文章 | 說明 |
+|------|------|
+| [強化學習入門](./reinforcement-intro) | MDP、策略梯度、價值函數 |
+| [自我對弈](./self-play) | 點解有效、ELO 成長曲線 |
+| [MCTS 與神經網絡嘅結合](./mcts-neural-combo) | Selection→Expansion→Evaluation→Backup |
+| [PUCT 公式詳解](./puct-formula) | 數學推導、探索 vs 利用 |
+
+### 模組 5：AlphaGo Zero 演進
+
+| 文章 | 說明 |
+|------|------|
+| [AlphaGo Zero 概述](./alphago-zero) | 點解唔需要人類棋譜 |
+| [雙頭網絡與殘差網絡](./dual-head-resnet) | 共享表示、梯度流動、40 層 ResNet |
+| [從零訓練嘅過程](./training-from-scratch) | Day 0-3 嘅變化、3 天超越人類 |
+
+### 模組 6：技術細節與延伸
+
+| 文章 | 說明 |
+|------|------|
+| [分散式系統與 TPU](./distributed-systems) | 訓練架構、推理架構、並行 MCTS |
+| [AlphaGo 嘅遺產](./legacy-and-impact) | 對圍棋界影響、AlphaZero、MuZero、AlphaFold |
+
+---
+
+## 快速預覽
+
+### Policy Network 輸出示例
+
+Policy Network 會輸出每個位置嘅落子機率：
+
+<PolicyHeatmap initialPosition="corner" size={400} />
+
+### 訓練曲線
+
+AlphaGo Zero 喺 3 天內從零開始超越人類：
+
+<EloChart mode="zero" width={600} height={350} />
+
+---
+
+## 閱讀建議
+
+### 依背景揀起點
+
+| 你嘅背景 | 建議起點 |
+|---------|---------|
+| **完全新手** | 從 [AlphaGo 嘅誕生](./birth-of-alphago) 開始，按順序閱讀 |
+| **了解圍棋** | 從 [圍棋點解咁難？](./why-go-is-hard) 開始 |
+| **有機器學習基礎** | 從 [Policy Network 詳解](./policy-network) 開始 |
+| **想快速了解精華** | 閱讀 [MCTS 與神經網絡嘅結合](./mcts-neural-combo) |
+| **想了解 Zero 嘅突破** | 從 [AlphaGo Zero 概述](./alphago-zero) 開始 |
+
+### 預計閱讀時間
+
+- **完整閱讀**：約 8-10 小時
+- **快速瀏覽**：約 2-3 小時
+- **每篇文章**：約 15-25 分鐘
+
+---
+
+## 動畫對應
+
+本系列文章引用咗 [109 個動畫概念](/docs/tech/how-it-works/concepts/) 中嘅以下系列：
+
+| 系列 | 主題 | 相關文章 |
+|------|------|---------|
+| **C 系列** | 蒙地卡羅方法 | #5, #14, #15 |
+| **D 系列** | 神經網絡 | #7, #8, #10, #11 |
+| **E 系列** | AlphaGo 架構 | #13, #16, #17, #18 |
+| **H 系列** | 強化學習 | #12, #13 |
+
+---
+
+## 參考資料
+
+### 論文
+
+1. Silver, D., et al. (2016). ["Mastering the game of Go with deep neural networks and tree search."](https://www.nature.com/articles/nature16961) *Nature*.
+2. Silver, D., et al. (2017). ["Mastering the game of Go without human knowledge."](https://www.nature.com/articles/nature24270) *Nature*.
+3. Silver, D., et al. (2018). ["A general reinforcement learning algorithm that masters chess, shogi, and Go through self-play."](https://www.science.org/doi/10.1126/science.aar6404) *Science*.
+
+### 延伸閱讀
+
+- [KataGo 嘅關鍵創新](/docs/tech/how-it-works/katago-innovations) — 點樣用更少資源達到更強棋力
+- [概念速查表](/docs/tech/how-it-works/concepts/) — 109 個動畫概念嘅完整列表
+- [30 分鐘跑起第一個圍棋 AI](/docs/tech/hands-on/) — 動手實作

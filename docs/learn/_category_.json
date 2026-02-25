@@ -1,0 +1,8 @@
+{
+  "label": "學圍棋",
+  "position": 2,
+  "link": {
+    "type": "doc",
+    "id": "learn/index"
+  }
+}

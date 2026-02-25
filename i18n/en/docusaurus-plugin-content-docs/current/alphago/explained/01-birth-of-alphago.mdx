@@ -1,0 +1,430 @@
+---
+sidebar_position: 2
+title: The Birth of AlphaGo
+description: From the founding of DeepMind to the Google acquisition, how AlphaGo evolved from a crazy idea to world-changing AI
+---
+
+# The Birth of AlphaGo
+
+In March 2016, when AlphaGo defeated Lee Sedol 4:1, the whole world was asking: how exactly was this program that changed the history of artificial intelligence born?
+
+The answer begins with the dream of a chess prodigy.
+
+---
+
+## The Founding of DeepMind
+
+### Demis Hassabis: From Prodigy to AI Pioneer
+
+**Demis Hassabis** is the co-founder and CEO of DeepMind. His life experience seems almost tailor-made for creating AlphaGo.
+
+#### Chess Prodigy
+
+Born in London in 1975, Hassabis learned chess at age 4 and reached chess master level (Elo 2300+) by age 13, making him the second youngest person in British history to achieve this level.
+
+This experience gave him deep insights into:
+- **Board games as a test of intelligence**: Chess requires planning, intuition, and pattern recognition
+- **The nature of human intelligence**: How do chess players find good moves among vast possibilities?
+- **Computer limitations**: Deep Blue's 1997 victory over Kasparov relied on brute-force search, not true "understanding"
+
+#### Game Designer
+
+At 17, Hassabis joined Bullfrog Productions (the game company founded by Peter Molyneux, creator of *Populous*) and participated in developing the classic game *Theme Park*. This experience taught him:
+
+- **How to design complex systems**: Games are simplified models simulating the real world
+- **Player behavior prediction**: AI needs to understand human decision-making processes
+
+#### Cognitive Neuroscientist
+
+After obtaining a computer science degree from Cambridge University, Hassabis earned a PhD in cognitive neuroscience from University College London (UCL). His research focused on: **how the hippocampus enables humans to imagine and plan**.
+
+This research discovered:
+- Human memory and imagination use the same brain regions
+- We plan the future through "mental time travel"
+- This ability may be the core of intelligence
+
+These insights directly influenced AlphaGo's later design—enabling AI to "imagine" future moves and learn from them.
+
+### Co-founders
+
+In 2010, Hassabis co-founded DeepMind with two partners:
+
+| Founder | Background | Contribution |
+|---------|------------|--------------|
+| **Demis Hassabis** | Neuroscience, game design | Vision and strategy |
+| **Shane Legg** | Machine learning PhD | AGI theoretical foundation |
+| **Mustafa Suleyman** | Social entrepreneur | Business and applications |
+
+### "Solve Intelligence, Then Use It to Solve Everything Else"
+
+DeepMind's mission statement is:
+
+> **"Solve intelligence, and then use that to solve everything else."**
+
+This is not an ordinary AI company. Their goal is not to make products, but to create **Artificial General Intelligence (AGI)**—an AI that can think, learn, and solve any problem like humans.
+
+Why "solve intelligence" first? Because once we have AGI, it can help us solve humanity's greatest challenges: climate change, disease, energy, and more.
+
+---
+
+## Early Breakthrough: Atari Games
+
+Before challenging Go, DeepMind first proved its capabilities—using AI to play Atari games.
+
+### DQN: AI That Learned to Play Games
+
+In 2013, DeepMind published the **DQN (Deep Q-Network)** algorithm. This AI could:
+
+1. **Only see screen pixels**—no game rules provided
+2. **Learn to play games on its own**—through trial and error
+3. **Reach human level**—and even surpass humans in some games
+
+In *Breakout*, DQN learned a strategy that humans would take hours to discover: **dig a tunnel to let the ball get behind the bricks, clearing large sections at once**.
+
+This proved that the combination of deep learning + reinforcement learning could discover strategies humans had never thought of.
+
+### Why Start with Games?
+
+Hassabis chose games as a research platform for several reasons:
+
+1. **Controlled environment**: Games have clear rules and objectives
+2. **Measurable progress**: Objective scores to evaluate AI capability
+3. **Human baseline**: Can be compared with human players
+4. **Diversity**: Different games test different abilities
+
+This methodology was later applied to Go.
+
+---
+
+## Google's Acquisition
+
+### A $500 Million Bet
+
+In January 2014, Google acquired DeepMind for approximately **$500 million**. This was one of the largest acquisitions in the AI field at the time.
+
+Why was Google willing to pay so much for a company with only 75 people and no products?
+
+The answer lies in **game theory**:
+
+- **Facebook was also bidding**: Rumor had it that Facebook offered $400 million
+- **AI is the key technology of the future**: Whoever masters AI first controls the future
+- **DeepMind was the best team**: They had proven the feasibility of deep reinforcement learning
+
+Google CEO Larry Page personally intervened to convince Hassabis to choose Google over Facebook.
+
+### Acquisition Conditions
+
+Hassabis negotiated several key conditions:
+
+1. **Independent operation**: DeepMind maintains London headquarters, independent R&D
+2. **Academic freedom**: Can publish papers, not keep everything secret
+3. **Ethics committee**: Establish AI ethics review mechanism
+4. **Long-term research**: No short-term commercialization pressure
+
+These conditions allowed DeepMind to pursue long-term, high-risk research—like conquering Go with AI.
+
+### Google's AI Strategy
+
+The DeepMind acquisition was part of Google's "AI first" strategy:
+
+| Year | Event |
+|------|-------|
+| 2011 | Founded Google Brain |
+| 2013 | Acquired DNNresearch (Hinton's team) |
+| 2014 | Acquired DeepMind |
+| 2015 | TensorFlow open-sourced |
+| 2016 | TPU announced |
+
+Google realized: search, advertising, translation, voice—all core businesses would be reshaped by AI. Whoever has the best AI wins.
+
+---
+
+## Choosing Go as the Target
+
+### Why Go?
+
+After being acquired by Google, DeepMind had more resources. Hassabis decided to tackle a seemingly impossible goal: **use AI to defeat the human Go champion**.
+
+Why choose Go, not other problems?
+
+#### 1. Go Is the "Holy Grail of AI"
+
+Before 2016, experts generally believed AI would need at least 10-20 years to defeat humans at Go. Go was called "AI's last bastion."
+
+Reasons:
+- **Enormous search space**: 10^170 possible board positions (the number of atoms in the universe is only 10^80)
+- **Difficult evaluation**: Unlike chess, there are no clear piece values
+- **Intuition dependence**: Top players often say "this move feels right" without being able to explain why
+
+#### 2. The Deep Blue Revelation
+
+In 1997, IBM's Deep Blue defeated world chess champion Kasparov. But this victory was controversial:
+
+- Deep Blue relied on **brute-force search** (evaluating 200 million positions per second)
+- Used **evaluation functions designed by human experts**
+- This was not true "intelligence," but "computational power"
+
+Hassabis wanted to prove: AI can solve problems through **learning** rather than brute-force search.
+
+#### 3. Measurable Objective
+
+Go has an international ranking system (Elo rating) and professional players, providing objective measurement standards. If AI can defeat the world champion, it's an indisputable success.
+
+#### 4. Connection to Neuroscience
+
+Human players' intuition—knowing which positions are important at a glance—is exactly the ability Hassabis wanted AI to replicate. Go is the perfect scenario for testing "machine intuition."
+
+---
+
+## The AlphaGo Team
+
+### Key Figures
+
+AlphaGo's success came from a multidisciplinary team:
+
+#### David Silver: Lead Researcher
+
+**David Silver** is the first author of the AlphaGo paper and a top expert in reinforcement learning.
+
+- **Background**: Cambridge mathematics graduate, Alberta RL PhD
+- **Advisor**: Richard Sutton (father of reinforcement learning)
+- **Expertise**: Monte Carlo Tree Search, temporal difference learning
+
+Silver had researched computer Go in his doctoral thesis, but the technology was far from mature at the time. After joining DeepMind, he finally had the opportunity to realize this dream.
+
+#### Aja Huang: Go Expert
+
+**Aja Huang** is from Taiwan, an amateur 6-dan player, and a pioneer in computer Go.
+
+- **Background**: PhD in Computer Science from National Taiwan Normal University
+- **Expertise**: Computer Go programming
+- **Notable work**: Erica (early computer Go program)
+
+Huang played a key role in the AlphaGo team: he understood both Go and AI. In the matches against Lee Sedol, he was the person actually operating AlphaGo.
+
+#### Other Key Members
+
+| Member | Role |
+|--------|------|
+| Chris J. Maddison | Monte Carlo Tree Search expert |
+| Arthur Guez | Reinforcement learning researcher |
+| Laurent Sifre | Deep learning engineer |
+| George van den Driessche | Distributed systems engineer |
+
+### Cross-disciplinary Collaboration
+
+AlphaGo's success proved the power of **cross-disciplinary collaboration**:
+
+- **Go experts** provided domain knowledge
+- **Machine learning researchers** designed algorithms
+- **Engineers** implemented large-scale training systems
+- **Neuroscientists** provided theoretical inspiration
+
+This team composition later became DeepMind's standard model.
+
+---
+
+## Nature Paper Publication
+
+### A Secret Surprise
+
+On January 27, 2016, DeepMind published a paper in the top academic journal *Nature*:
+
+> **"Mastering the game of Go with deep neural networks and tree search"**
+
+The paper announced that AlphaGo had:
+1. Defeated all other Go programs
+2. Defeated European champion **Fan Hui** (professional 2-dan) **5:0**
+
+This news stunned the world. Before the paper's publication, no one knew DeepMind was researching Go.
+
+### Core Contributions of the Paper
+
+The *Nature* paper described AlphaGo's three major innovations:
+
+#### 1. Policy Network
+
+A deep convolutional neural network to predict human players' next moves. Training data came from **30 million games** of human game records.
+
+```
+Accuracy: 57% (predicting human expert's next move)
+```
+
+This was more than 10 percentage points higher than the best previous computer Go programs.
+
+#### 2. Value Network
+
+Another neural network to evaluate the win probability of the current position. This replaced traditional random simulations (Monte Carlo rollout).
+
+```
+Precision: Equivalent to 15,000 random simulations, but 15,000 times faster
+```
+
+#### 3. Monte Carlo Tree Search Integration
+
+Integrating both neural networks into the MCTS framework:
+- Policy Network guides search direction
+- Value Network evaluates leaf nodes
+
+This gave AlphaGo both "intuition" (neural networks) and "reasoning" (tree search).
+
+### Academic Response
+
+After the paper's publication, the academic community responded enthusiastically:
+
+> "This is AI's moonshot moment."
+> — **Stuart Russell**, UC Berkeley professor, AI textbook author
+
+> "I originally thought it would take another 10 years, didn't expect it so soon."
+> — **Martin Muller**, computer Go expert
+
+But some were skeptical:
+
+> "Fan Hui is only professional 2-dan, not a true top player. Let AlphaGo play Lee Sedol and we'll see."
+
+DeepMind accepted this challenge.
+
+---
+
+## Challenging Lee Sedol
+
+### Why Lee Sedol?
+
+**Lee Sedol** is a Korean player, considered one of the strongest players of the past decade:
+
+| Metric | Data |
+|--------|------|
+| World championship titles | 18 |
+| International tournament wins | 32 |
+| Highest world ranking | #1 |
+| Style | "Genius" "Divine calculator" |
+
+By choosing Lee Sedol, DeepMind was challenging the strongest human opponent.
+
+### $1 Million Prize
+
+Google provided a **$1 million** prize for this match:
+
+- If Lee Sedol wins: Prize goes to Lee Sedol
+- If AlphaGo wins: Prize donated to UNICEF, STEM education, and other charities
+
+This was not just a technology demonstration, but a globally watched sporting event.
+
+### Pre-match Predictions
+
+Before the match, most professional players predicted Lee Sedol would win easily:
+
+> "AlphaGo might win one game, but in a 5-game match I'll win 5:0."
+> — **Lee Sedol**, pre-match interview
+
+> "Computers play rigidly, top players can easily find weaknesses."
+> — A professional 9-dan
+
+But the DeepMind team had a different view. David Silver later revealed:
+
+> "In internal testing, we had the new AlphaGo play 500 games against the version that played Fan Hui. The new version won 499 games."
+
+---
+
+## March 2016: Five Games That Changed the World
+
+### Game 1: The Shock Begins
+
+March 9, 2016, Four Seasons Hotel, Seoul.
+
+Lee Sedol played black (first move), AlphaGo played white. After 3 hours and 28 minutes of play, AlphaGo won by resignation.
+
+This was the first time a top human player officially lost to AI.
+
+### Game 2: The Divine Move
+
+Game 2 produced what became known as "**Move 37**"—AlphaGo played a shoulder hit on the fifth line that all professional players thought was a mistake, but proved to be the key to victory.
+
+(See next article: [In-Depth Analysis of "Move 37"](../move-37))
+
+AlphaGo won again.
+
+### Game 3: 3-0
+
+In Game 3, Lee Sedol tried an unconventional opening, but AlphaGo responded calmly. 3:0.
+
+The world began to realize: this was not a fluke, AI had truly surpassed humans.
+
+### Game 4: Humanity Strikes Back
+
+In Game 4, Lee Sedol played what became known as his "**Divine Move**"—Move 78, a brilliant wedge that caused AlphaGo to malfunction.
+
+AlphaGo played several obviously bad moves in the following sequence and eventually resigned.
+
+This victory proved: AI also has weaknesses. Lee Sedol found it.
+
+### Game 5: Final Score
+
+In Game 5, AlphaGo recovered and ended the match with a resignation victory.
+
+**Final score: AlphaGo 4:1 Lee Sedol**
+
+---
+
+## Impact and Aftermath
+
+### Global Attention
+
+The impact of this match extended far beyond the Go community:
+
+- **200 million people worldwide** watched the live broadcast
+- *The New York Times*, *The Economist*, and other mainstream media provided extensive coverage
+- Google's stock price rose during the match
+- "Artificial intelligence" became the hottest tech topic of the year
+
+### Impact on the Go Community
+
+After the match, professional players' attitudes shifted from "dismissive" to "reverent":
+
+> "We used to think humans understood Go, now we realize we only know a little."
+> — **Ke Jie**, Chinese player, world #1 at the time
+
+Many professional players began using AI to train, and Go playing styles changed as a result.
+
+### Impact on the AI Field
+
+AlphaGo proved several things:
+
+1. **Deep learning can solve expert-level problems**: Not just recognizing cats and dogs, but playing Go
+2. **Reinforcement learning can surpass humans**: Through self-play, AI can discover strategies unknown to humans
+3. **Neural networks + search is a powerful combination**: Intuition + reasoning = stronger intelligence
+
+These insights were later applied to:
+- **AlphaFold**: Protein structure prediction (Nobel Prize-level achievement in 2020)
+- **AlphaZero**: General game AI
+- **MuZero**: Learning without rules
+
+---
+
+## Animation References
+
+Core concepts covered in this article and their animation numbers:
+
+| Number | Concept | Physics/Math Correspondence |
+|--------|---------|----------------------------|
+| E7 | From Scratch | Self-organization |
+| E5 | Self-Play | Fixed-point convergence |
+| F8 | Emergent Abilities | Phase transition |
+| H4 | Policy Gradient | Stochastic optimization |
+
+---
+
+## Further Reading
+
+- **Next Article**: [Key Matches Review](../key-matches) — Complete analysis of matches with Fan Hui, Lee Sedol, Ke Jie
+- **Technical Details**: [Policy Network Explained](../policy-network) — How AlphaGo learned to play Go
+- **Hands-on Practice**: [Run Your First Go AI in 30 Minutes](/docs/tech/hands-on/) — Experience it yourself
+
+---
+
+## References
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. Mnih, V., et al. (2015). "Human-level control through deep reinforcement learning." *Nature*, 518, 529-533.
+3. Hassabis, D. (2017). "Artificial Intelligence: Chess match of the century." *Nature*, 544, 413-414.
+4. *AlphaGo* documentary (2017), directed by Greg Kohs.

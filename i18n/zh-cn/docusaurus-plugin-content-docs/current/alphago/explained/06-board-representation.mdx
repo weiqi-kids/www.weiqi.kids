@@ -1,0 +1,866 @@
+---
+sidebar_position: 7
+title: 棋盘状态表示
+description: 从二维数组到神经网络特征平面，深入理解围棋 AI 如何「看」棋盘
+keywords: [棋盘表示, Zobrist Hashing, Union-Find, 特征编码, AlphaGo特征平面]
+---
+
+import { GoBoard } from '@site/src/components/D3Charts';
+
+# 棋盘状态表示
+
+在设计围棋 AI 之前，首先要解决一个基本问题：**如何让计算机「看懂」棋盘？**
+
+这个问题看似简单，却涉及到数据结构、算法、以及神经网络输入设计等多个层面。本文将从最基础的二维数组开始，逐步介绍围棋 AI 使用的各种棋盘表示方法，最终说明 AlphaGo 如何将棋盘编码成神经网络可以处理的格式。
+
+---
+
+## 二维数组表示：最直观的方式
+
+### 基本概念
+
+围棋棋盘是一个 19×19 的方格网络，最直观的表示方式就是使用**二维数组**：
+
+```python
+import numpy as np
+
+# 棋盘常数
+BOARD_SIZE = 19
+EMPTY = 0
+BLACK = 1
+WHITE = 2
+
+# 初始化空棋盘
+board = np.zeros((BOARD_SIZE, BOARD_SIZE), dtype=np.int8)
+
+# 落子：黑子在 D4 (3, 3)
+board[3, 3] = BLACK
+
+# 落子：白子在 Q16 (15, 3)
+board[15, 3] = WHITE
+```
+
+### 坐标系统
+
+围棋使用两种常见的坐标系统：
+
+#### 1. 数字坐标（程序用）
+
+```
+    0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
+0   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+1   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+2   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+3   .  .  .  ●  .  .  .  .  .  +  .  .  .  .  .  ○  .  .  .
+...
+```
+
+#### 2. 字母-数字坐标（棋谱用）
+
+```
+    A  B  C  D  E  F  G  H  J  K  L  M  N  O  P  Q  R  S  T
+19  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+18  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+17  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+16  .  .  .  ●  .  .  .  .  .  +  .  .  .  .  .  ○  .  .  .
+...
+```
+
+注意：字母坐标跳过 "I"（避免与数字 1 混淆）。
+
+### 坐标转换函数
+
+```python
+def coord_to_index(coord):
+    """
+    将棋谱坐标转换为数组索引
+    例如：'D4' -> (3, 15)
+    """
+    letters = 'ABCDEFGHJKLMNOPQRST'  # 跳过 I
+    col = letters.index(coord[0].upper())
+    row = BOARD_SIZE - int(coord[1:])
+    return row, col
+
+
+def index_to_coord(row, col):
+    """
+    将数组索引转换为棋谱坐标
+    例如：(3, 15) -> 'Q16'
+    """
+    letters = 'ABCDEFGHJKLMNOPQRST'
+    return f"{letters[col]}{BOARD_SIZE - row}"
+```
+
+### 空间复杂度分析
+
+二维数组表示的空间复杂度：
+
+| 表示方式 | 每格大小 | 总空间 |
+|---------|---------|--------|
+| `int8` | 1 byte | 361 bytes |
+| `int32` | 4 bytes | 1.4 KB |
+| `float64` | 8 bytes | 2.9 KB |
+
+对于现代计算机来说，这点内存完全不是问题。但在需要存储大量棋盘状态（如 MCTS 搜索树）时，使用 `int8` 可以显著减少内存使用。
+
+### 基本操作
+
+```python
+class Board:
+    def __init__(self, size=19):
+        self.size = size
+        self.board = np.zeros((size, size), dtype=np.int8)
+        self.current_player = BLACK
+        self.ko_point = None  # 打劫禁着点
+        self.move_history = []
+
+    def is_valid_move(self, row, col):
+        """检查落子是否合法"""
+        # 1. 位置在棋盘内
+        if not (0 <= row < self.size and 0 <= col < self.size):
+            return False
+
+        # 2. 位置是空的
+        if self.board[row, col] != EMPTY:
+            return False
+
+        # 3. 不是打劫禁着点
+        if self.ko_point == (row, col):
+            return False
+
+        # 4. 不是自杀（除非能提子）
+        # ... 需要更复杂的检查
+
+        return True
+
+    def place_stone(self, row, col):
+        """落子"""
+        if not self.is_valid_move(row, col):
+            return False
+
+        self.board[row, col] = self.current_player
+        self.move_history.append((row, col))
+
+        # 处理提子
+        captures = self._remove_captured_stones(row, col)
+
+        # 更新打劫禁着点
+        self._update_ko(row, col, captures)
+
+        # 切换玩家
+        self.current_player = WHITE if self.current_player == BLACK else BLACK
+
+        return True
+```
+
+---
+
+## Zobrist Hashing：快速识别重复局面
+
+### 问题背景
+
+在围棋 AI 中，我们经常需要判断「两个局面是否相同」：
+
+1. **打劫规则**：不能让局面回到上一手的状态
+2. **三劫循环**：特殊规则处理
+3. **Transposition Table**：记忆已搜索过的局面
+4. **神经网络缓存**：避免重复计算
+
+如果每次都逐格比较，需要 O(361) 的时间。有没有更快的方法？
+
+### Zobrist Hashing 原理
+
+**Zobrist Hashing**（又称 Zobrist Keys）是一种巧妙的哈希方法，由 Albert Zobrist 在 1970 年提出。其核心思想是：
+
+1. 为每个「位置 × 颜色」的组合预先生成一个**随机数**
+2. 棋盘的哈希值 = 所有有棋子位置的随机数的 **XOR**
+3. 落子/提子只需要一次 XOR 运算即可更新哈希值
+
+### 随机数表
+
+```python
+import numpy as np
+
+# 生成随机数表
+# 使用固定种子确保可重复性
+np.random.seed(42)
+
+# 每个位置、每种颜色各一个随机数
+# zobrist[color][row][col]
+zobrist_table = np.random.randint(
+    0, 2**64,
+    size=(3, BOARD_SIZE, BOARD_SIZE),  # 3: EMPTY, BLACK, WHITE
+    dtype=np.uint64
+)
+
+# 轮到谁下棋的随机数
+zobrist_player = np.random.randint(0, 2**64, dtype=np.uint64)
+```
+
+### XOR 运算的特性
+
+XOR（异或）运算有几个重要特性使它非常适合这个应用：
+
+1. **自反性**：A ⊕ A = 0（同一个数 XOR 自己等于 0）
+2. **可逆性**：A ⊕ B ⊕ B = A（XOR 两次等于没有）
+3. **交换律**：A ⊕ B = B ⊕ A
+4. **结合律**：(A ⊕ B) ⊕ C = A ⊕ (B ⊕ C)
+
+这意味着：
+- 落子：`hash ^= zobrist[color][row][col]`
+- 提子：`hash ^= zobrist[color][row][col]`（同样的操作！）
+
+### 实现
+
+```python
+class ZobristBoard:
+    def __init__(self, size=19):
+        self.size = size
+        self.board = np.zeros((size, size), dtype=np.int8)
+        self.current_player = BLACK
+        self.hash = np.uint64(0)
+
+        # 初始化随机数表
+        self._init_zobrist_table()
+
+    def _init_zobrist_table(self):
+        np.random.seed(12345)
+        self.zobrist = np.random.randint(
+            0, 2**64,
+            size=(3, self.size, self.size),
+            dtype=np.uint64
+        )
+        self.zobrist_player = np.random.randint(0, 2**64, dtype=np.uint64)
+
+    def place_stone(self, row, col, color):
+        """落子并更新哈希值"""
+        # 移除旧状态（如果有棋子）
+        old_color = self.board[row, col]
+        if old_color != EMPTY:
+            self.hash ^= self.zobrist[old_color, row, col]
+
+        # 添加新棋子
+        self.board[row, col] = color
+        self.hash ^= self.zobrist[color, row, col]
+
+    def remove_stone(self, row, col):
+        """提子并更新哈希值"""
+        color = self.board[row, col]
+        if color != EMPTY:
+            self.hash ^= self.zobrist[color, row, col]
+            self.board[row, col] = EMPTY
+
+    def switch_player(self):
+        """切换玩家并更新哈希值"""
+        self.hash ^= self.zobrist_player
+        self.current_player = WHITE if self.current_player == BLACK else BLACK
+
+    def get_hash(self):
+        """获取当前局面的哈希值"""
+        return self.hash
+```
+
+### 增量更新的优势
+
+使用 Zobrist Hashing，更新哈希值只需要 O(1) 时间：
+
+| 操作 | 传统比较 | Zobrist |
+|------|---------|---------|
+| 比较两个局面 | O(361) | O(1) |
+| 落子后更新 | O(361) | O(1) |
+| 提子后更新 | O(361) | O(k)，k 是提子数 |
+
+### 碰撞概率
+
+使用 64 位哈希，碰撞概率极低：
+
+**P(碰撞) ≈ n² / 2^65**
+
+其中 n 是不同局面的数量。即使有 10 亿个局面，碰撞概率也只有约 10^-3。
+
+实际上，许多围棋程序使用 64 位 Zobrist Hashing 而不做碰撞检查，因为碰撞概率低到可以忽略。
+
+---
+
+## 棋串表示（Union-Find）：连通性问题
+
+### 棋串的概念
+
+在围棋中，**棋串**（String 或 Chain）是指一组相连的同色棋子。棋串的「气」决定了它的死活。
+
+<GoBoard
+  size={200}
+  stones={[
+    {x: 3, y: 3, color: 'black'},
+    {x: 4, y: 3, color: 'black'},
+    {x: 5, y: 3, color: 'black'},
+    {x: 4, y: 4, color: 'black'},
+    {x: 6, y: 3, color: 'white'},
+    {x: 6, y: 4, color: 'white'},
+  ]}
+  labels={[
+    {x: 4, y: 3, text: 'A'},
+  ]}
+/>
+
+在上图中，四颗黑子形成一个棋串，这个棋串的气数决定了它的生死。
+
+### 为什么需要高效的棋串管理？
+
+每次落子都可能：
+1. **创建**新棋串
+2. **合并**多个棋串
+3. **减少**敌方棋串的气
+4. **提掉**没有气的棋串
+
+这些操作需要高效执行，因为在 MCTS 中，一秒钟可能需要进行数万次落子模拟。
+
+### Union-Find 数据结构
+
+**Union-Find**（又称 Disjoint Set Union, DSU）是处理「连通性」问题的经典数据结构：
+
+```python
+class UnionFind:
+    def __init__(self, size):
+        # parent[i] 指向 i 的父节点
+        # 如果 parent[i] = i，则 i 是根节点
+        self.parent = list(range(size))
+        self.rank = [0] * size
+
+    def find(self, x):
+        """
+        找到 x 所属集合的根节点（带路径压缩）
+        """
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])  # 路径压缩
+        return self.parent[x]
+
+    def union(self, x, y):
+        """
+        合并 x 和 y 所属的集合（带按秩合并）
+        """
+        root_x = self.find(x)
+        root_y = self.find(y)
+
+        if root_x == root_y:
+            return  # 已经在同一集合
+
+        # 按秩合并：将较小的树连到较大的树
+        if self.rank[root_x] < self.rank[root_y]:
+            self.parent[root_x] = root_y
+        elif self.rank[root_x] > self.rank[root_y]:
+            self.parent[root_y] = root_x
+        else:
+            self.parent[root_y] = root_x
+            self.rank[root_x] += 1
+```
+
+### 时间复杂度
+
+Union-Find 的时间复杂度使用**反阿克曼函数** α(n) 来表示：
+
+| 操作 | 时间复杂度 |
+|------|-----------|
+| find | O(α(n)) ≈ O(1) |
+| union | O(α(n)) ≈ O(1) |
+
+α(n) 增长极慢，对于任何实际的 n，α(n) ≤ 4。因此可以认为是常数时间。
+
+### 围棋中的 Union-Find 应用
+
+```python
+class GoStringManager:
+    def __init__(self, size=19):
+        self.size = size
+        num_points = size * size
+
+        # Union-Find 结构
+        self.parent = list(range(num_points))
+        self.rank = [0] * num_points
+
+        # 每个棋串的气（用根节点索引）
+        self.liberties = [set() for _ in range(num_points)]
+
+        # 每个棋串的棋子（用根节点索引）
+        self.stones = [set() for _ in range(num_points)]
+
+    def _index(self, row, col):
+        return row * self.size + col
+
+    def _neighbors(self, row, col):
+        """获取四邻"""
+        neighbors = []
+        if row > 0: neighbors.append((row - 1, col))
+        if row < self.size - 1: neighbors.append((row + 1, col))
+        if col > 0: neighbors.append((row, col - 1))
+        if col < self.size - 1: neighbors.append((row, col + 1))
+        return neighbors
+
+    def find(self, idx):
+        if self.parent[idx] != idx:
+            self.parent[idx] = self.find(self.parent[idx])
+        return self.parent[idx]
+
+    def add_stone(self, row, col, color, board):
+        """
+        添加一颗棋子，处理连接和提子
+        """
+        idx = self._index(row, col)
+
+        # 创建新棋串
+        self.stones[idx] = {idx}
+        self.liberties[idx] = set()
+
+        # 计算这颗棋子的气
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == 0:  # 空点是气
+                self.liberties[idx].add(nidx)
+
+        # 与同色邻居合并
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == color:
+                self._merge_strings(idx, nidx)
+
+        # 减少敌方棋串的气
+        opponent = 3 - color  # BLACK=1, WHITE=2
+        captured = []
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == opponent:
+                root = self.find(nidx)
+                self.liberties[root].discard(idx)
+                if len(self.liberties[root]) == 0:
+                    captured.append(root)
+
+        return captured
+
+    def _merge_strings(self, idx1, idx2):
+        """合并两个棋串"""
+        root1 = self.find(idx1)
+        root2 = self.find(idx2)
+
+        if root1 == root2:
+            return
+
+        # 按秩合并
+        if self.rank[root1] < self.rank[root2]:
+            root1, root2 = root2, root1
+
+        self.parent[root2] = root1
+        if self.rank[root1] == self.rank[root2]:
+            self.rank[root1] += 1
+
+        # 合并气和棋子集合
+        self.liberties[root1] |= self.liberties[root2]
+        self.stones[root1] |= self.stones[root2]
+
+        # 移除自己位置的气（自己不是自己的气）
+        for stone_idx in self.stones[root2]:
+            self.liberties[root1].discard(stone_idx)
+```
+
+### 气的计算
+
+计算棋串的气数是围棋中最常见的操作之一：
+
+```python
+def count_liberties(self, row, col, board):
+    """计算某颗棋子所属棋串的气数"""
+    idx = self._index(row, col)
+    root = self.find(idx)
+    return len(self.liberties[root])
+```
+
+使用 Union-Find，这个操作是 O(1) 的（假设 find 是 O(1)）。
+
+---
+
+## 特征编码的演进
+
+从传统的手工特征到 AlphaGo Zero 的简洁特征，围棋 AI 的特征编码经历了重大演进。
+
+### GNU Go 的手工特征
+
+早期的围棋程序（如 GNU Go）使用大量手工设计的特征：
+
+```python
+def extract_features_gnugo(board, point):
+    """
+    GNU Go 风格的手工特征提取
+    """
+    features = {}
+
+    # 1. 棋形模式（预定义的局部形状）
+    features['pattern'] = match_pattern(board, point)
+
+    # 2. 战术特征
+    features['can_capture'] = check_capture(board, point)
+    features['can_connect'] = check_connect(board, point)
+    features['creates_eye'] = check_eye_creation(board, point)
+
+    # 3. 局部特征
+    features['liberties_after'] = count_liberties_after_move(board, point)
+    features['enemy_liberties'] = count_enemy_liberties(board, point)
+
+    # 4. 全局特征
+    features['distance_to_edge'] = min(
+        point[0], point[1],
+        18 - point[0], 18 - point[1]
+    )
+
+    # ... 更多特征
+
+    return features
+```
+
+这种方法的问题：
+- 需要大量人类专家知识
+- 特征可能不完整
+- 难以发现新的模式
+
+### AlphaGo 的 48 个特征平面
+
+AlphaGo（2016 Nature 版本）使用了 **48 个特征平面**作为神经网络的输入：
+
+```python
+def encode_alphago_features(board, player, history):
+    """
+    AlphaGo 2016 的 48 个特征平面
+
+    Returns:
+        (19, 19, 48) 的张量
+    """
+    features = np.zeros((19, 19, 48), dtype=np.float32)
+
+    # 平面 1: 黑子位置
+    features[:, :, 0] = (board == BLACK)
+
+    # 平面 2: 白子位置
+    features[:, :, 1] = (board == WHITE)
+
+    # 平面 3: 空点
+    features[:, :, 2] = (board == EMPTY)
+
+    # 平面 4: 全 1（偏置项）
+    features[:, :, 3] = 1
+
+    # 平面 5-12: 气数编码（1-8气各一个平面）
+    for i, num_libs in enumerate(range(1, 9)):
+        for r in range(19):
+            for c in range(19):
+                if board[r, c] != EMPTY:
+                    libs = count_liberties(board, r, c)
+                    if libs == num_libs:
+                        features[r, c, 4 + i] = 1
+
+    # 平面 13-20: 提子后对方气数
+    # ...
+
+    # 平面 21-28: 自己落子后的气数
+    # ...
+
+    # 平面 29-36: 过去 8 步的历史（每步一个平面）
+    for i, (r, c) in enumerate(history[-8:]):
+        features[r, c, 28 + i] = 1
+
+    # 平面 37-44: 征子判断
+    # ...
+
+    # 平面 45-48: 对称性相关
+    # ...
+
+    # 平面 49: 轮到谁下（全 1 表示黑，全 0 表示白）
+    if player == BLACK:
+        features[:, :, 47] = 1
+
+    return features
+```
+
+### 48 个平面的分类
+
+| 类别 | 平面数 | 说明 |
+|------|--------|------|
+| 棋子位置 | 3 | 黑子、白子、空点 |
+| 常数 | 1 | 全 1 |
+| 气数 | 8 | 1-8 气 |
+| 提子后气数 | 8 | 假设落子后的气数 |
+| 落子后气数 | 8 | 假设落子后的气数 |
+| 历史 | 8 | 过去 8 步 |
+| 征子 | 8 | 复杂的征子分析 |
+| 其他 | 4 | 轮次、对称性等 |
+
+### AlphaGo Zero 的 17 个特征平面
+
+AlphaGo Zero（2017）大幅简化了特征编码，只使用 **17 个平面**：
+
+```python
+def encode_alphago_zero_features(board_history, player):
+    """
+    AlphaGo Zero 的 17 个特征平面
+
+    Args:
+        board_history: 过去 8 个局面（包括当前）
+        player: 当前玩家
+
+    Returns:
+        (19, 19, 17) 的张量
+    """
+    features = np.zeros((19, 19, 17), dtype=np.float32)
+
+    # 平面 1-8: 黑子历史（最近 8 步）
+    for i, board in enumerate(board_history[-8:]):
+        features[:, :, i] = (board == BLACK)
+
+    # 平面 9-16: 白子历史（最近 8 步）
+    for i, board in enumerate(board_history[-8:]):
+        features[:, :, 8 + i] = (board == WHITE)
+
+    # 平面 17: 轮到谁下（全 1 表示黑，全 0 表示白）
+    if player == BLACK:
+        features[:, :, 16] = 1
+
+    return features
+```
+
+### 17 个平面的简洁性
+
+| 类别 | 平面数 | 说明 |
+|------|--------|------|
+| 黑子历史 | 8 | 过去 8 个时间步的黑子位置 |
+| 白子历史 | 8 | 过去 8 个时间步的白子位置 |
+| 当前玩家 | 1 | 全 1 或全 0 |
+
+为什么可以这么简洁？
+
+> **关键洞见：让神经网络自己学习特征。**
+
+AlphaGo Zero 证明了：
+- 不需要手工计算气数（网络可以从棋子位置推断）
+- 不需要征子分析（网络可以学会识别征子）
+- 不需要复杂的提子预测（网络可以理解落子后果）
+
+这体现了深度学习的核心优势：**端到端学习**。
+
+### 特征平面的可视化
+
+让我们看一下这些特征平面实际长什么样：
+
+```
+原始棋盘：              黑子平面：              白子平面：
+. . . . . .            0 0 0 0 0 0            0 0 0 0 0 0
+. ● ○ . . .            0 1 0 0 0 0            0 0 1 0 0 0
+. . ● ○ . .    ->      0 0 1 0 0 0     +      0 0 0 1 0 0
+. . . ● . .            0 0 0 1 0 0            0 0 0 0 0 0
+. . . . . .            0 0 0 0 0 0            0 0 0 0 0 0
+```
+
+每个平面都是一个二元矩阵（0 或 1），神经网络可以通过卷积操作来提取这些平面中的模式。
+
+---
+
+## 对称性处理：8 种变换
+
+### 围棋的对称性
+
+围棋棋盘具有 **8 种对称性**：
+
+1. **4 种旋转**：0°、90°、180°、270°
+2. **4 种翻转后旋转**：水平翻转 + 4 种旋转
+
+这形成了一个 **二面体群 D4**。
+
+### 数学表示
+
+设 (x, y) 为棋盘上的坐标（中心在 (9, 9)），8 种变换可以表示为：
+
+| 变换 | 公式 |
+|------|------|
+| 恒等 | (x, y) |
+| 旋转 90° | (-y, x) |
+| 旋转 180° | (-x, -y) |
+| 旋转 270° | (y, -x) |
+| 水平翻转 | (-x, y) |
+| 垂直翻转 | (x, -y) |
+| 对角翻转 | (y, x) |
+| 反对角翻转 | (-y, -x) |
+
+### 程序实现
+
+```python
+def get_symmetries(board):
+    """
+    获取棋盘的 8 种对称变换
+
+    Returns:
+        8 个棋盘的列表
+    """
+    symmetries = []
+
+    # 原始
+    symmetries.append(board.copy())
+
+    # 旋转 90°
+    symmetries.append(np.rot90(board, k=1))
+
+    # 旋转 180°
+    symmetries.append(np.rot90(board, k=2))
+
+    # 旋转 270°
+    symmetries.append(np.rot90(board, k=3))
+
+    # 水平翻转
+    symmetries.append(np.fliplr(board))
+
+    # 垂直翻转
+    symmetries.append(np.flipud(board))
+
+    # 对角翻转
+    symmetries.append(board.T)
+
+    # 反对角翻转
+    symmetries.append(np.rot90(board.T, k=2))
+
+    return symmetries
+
+
+def apply_symmetry(board, sym_index):
+    """
+    应用第 sym_index 种对称变换
+    """
+    return get_symmetries(board)[sym_index]
+
+
+def inverse_symmetry(move, sym_index, board_size=19):
+    """
+    将变换后的落子坐标转回原始坐标
+    """
+    row, col = move
+
+    if sym_index == 0:  # 恒等
+        return row, col
+    elif sym_index == 1:  # 旋转 90°
+        return col, board_size - 1 - row
+    elif sym_index == 2:  # 旋转 180°
+        return board_size - 1 - row, board_size - 1 - col
+    elif sym_index == 3:  # 旋转 270°
+        return board_size - 1 - col, row
+    elif sym_index == 4:  # 水平翻转
+        return row, board_size - 1 - col
+    elif sym_index == 5:  # 垂直翻转
+        return board_size - 1 - row, col
+    elif sym_index == 6:  # 对角翻转
+        return col, row
+    elif sym_index == 7:  # 反对角翻转
+        return board_size - 1 - col, board_size - 1 - row
+```
+
+### 数据增强
+
+在训练神经网络时，可以利用对称性进行**数据增强**：
+
+```python
+def augment_training_data(board, policy, value):
+    """
+    将一个训练样本扩展为 8 个
+    """
+    augmented = []
+
+    for sym_index in range(8):
+        # 变换棋盘
+        aug_board = apply_symmetry(board, sym_index)
+
+        # 变换策略（361 维向量）
+        policy_2d = policy.reshape(19, 19)
+        aug_policy_2d = apply_symmetry(policy_2d, sym_index)
+        aug_policy = aug_policy_2d.flatten()
+
+        # 价值不变
+        aug_value = value
+
+        augmented.append((aug_board, aug_policy, aug_value))
+
+    return augmented
+```
+
+这让训练数据量增加 8 倍，且完全免费（不需要收集新数据）。
+
+### 推理时的对称性利用
+
+AlphaGo 在实际对弈时也利用对称性：
+
+```python
+def predict_with_symmetry(model, board):
+    """
+    利用对称性增强预测
+    """
+    policies = []
+    values = []
+
+    for sym_index in range(8):
+        # 变换输入
+        aug_board = apply_symmetry(board, sym_index)
+
+        # 神经网络预测
+        policy, value = model.predict(aug_board)
+
+        # 将策略变换回原始坐标系
+        policy_2d = policy.reshape(19, 19)
+        original_policy = inverse_symmetry_2d(policy_2d, sym_index)
+        policies.append(original_policy.flatten())
+
+        values.append(value)
+
+    # 平均所有预测
+    avg_policy = np.mean(policies, axis=0)
+    avg_value = np.mean(values)
+
+    return avg_policy, avg_value
+```
+
+这种做法可以稍微提高预测的准确性和稳定性。
+
+---
+
+## 棋盘表示方法总结
+
+| 方法 | 用途 | 复杂度 | 特点 |
+|------|------|--------|------|
+| **二维数组** | 基本存储 | O(361) 空间 | 简单直观 |
+| **Zobrist Hashing** | 局面识别 | O(1) 查询 | 高效哈希 |
+| **Union-Find** | 棋串管理 | O(α(n)) 操作 | 处理连通性 |
+| **特征平面** | 神经网络输入 | O(361×平面数) | 编码丰富信息 |
+| **对称性变换** | 数据增强 | 8× 数据量 | 免费扩增 |
+
+这些技术相互配合，构成了现代围棋 AI 的基础设施。
+
+---
+
+## 动画对应
+
+本文涉及的核心概念与动画编号：
+
+| 编号 | 概念 | 物理/数学对应 |
+|------|------|--------------|
+| A-A1 | 二维数组表示 | 矩阵、稀疏数据 |
+| A-A2 | Zobrist Hashing | 哈希函数、XOR 运算 |
+| A-A8 | 特征平面编码 | 张量、多通道输入 |
+| A-A5 | 对称性处理 | 群论、二面体群 |
+
+---
+
+## 延伸阅读
+
+- **上一篇**：[传统方法的极限](../traditional-limits) — Minimax 到 MCTS
+- **下一篇**：[Policy Network 详解](../policy-network) — 神经网络如何预测落子
+- **实作练习**：[30 分钟跑起第一个围棋 AI](/docs/tech/hands-on/) — 亲自动手体验
+
+---
+
+## 参考资料
+
+1. Zobrist, A. L. (1970). "A new hashing method with application for game playing." ICCA journal.
+2. Tarjan, R. E. (1975). "Efficiency of a Good But Not Linear Set Union Algorithm." Journal of the ACM, 22(2), 215-225.
+3. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." Nature, 529, 484-489. — AlphaGo 48 个特征平面
+4. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." Nature, 550, 354-359. — AlphaGo Zero 17 个特征平面

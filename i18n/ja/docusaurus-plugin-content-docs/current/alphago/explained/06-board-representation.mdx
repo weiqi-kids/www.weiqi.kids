@@ -1,0 +1,866 @@
+---
+sidebar_position: 7
+title: 盤面状態の表現
+description: 二次元配列からニューラルネットワーク特徴量プレーンまで、囲碁AIがどのように盤面を「見る」かを深く理解する
+keywords: [盤面表現, Zobrist Hashing, Union-Find, 特徴量エンコーディング, AlphaGo特徴量プレーン]
+---
+
+import { GoBoard } from '@site/src/components/D3Charts';
+
+# 盤面状態の表現
+
+囲碁AIを設計する前に、まず基本的な問題を解決する必要があります：**コンピュータにどうやって盤面を「理解」させるか？**
+
+この問題は一見単純に見えますが、データ構造、アルゴリズム、そしてニューラルネットワークの入力設計など、複数のレイヤーに関わります。本記事では、最も基本的な二次元配列から始めて、囲碁AIが使用する様々な盤面表現方法を段階的に紹介し、最終的にAlphaGoがどのように盤面をニューラルネットワークが処理できる形式にエンコードしているかを説明します。
+
+---
+
+## 二次元配列表現：最も直感的な方法
+
+### 基本概念
+
+囲碁盤は19×19のグリッドネットワークであり、最も直感的な表現方法は**二次元配列**を使用することです：
+
+```python
+import numpy as np
+
+# 盤面定数
+BOARD_SIZE = 19
+EMPTY = 0
+BLACK = 1
+WHITE = 2
+
+# 空の盤面を初期化
+board = np.zeros((BOARD_SIZE, BOARD_SIZE), dtype=np.int8)
+
+# 着手：黒石を D4 (3, 3) に
+board[3, 3] = BLACK
+
+# 着手：白石を Q16 (15, 3) に
+board[15, 3] = WHITE
+```
+
+### 座標系
+
+囲碁では2種類の一般的な座標系が使用されます：
+
+#### 1. 数値座標（プログラム用）
+
+```
+    0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
+0   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+1   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+2   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+3   .  .  .  ●  .  .  .  .  .  +  .  .  .  .  .  ○  .  .  .
+...
+```
+
+#### 2. 英数字座標（棋譜用）
+
+```
+    A  B  C  D  E  F  G  H  J  K  L  M  N  O  P  Q  R  S  T
+19  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+18  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+17  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+16  .  .  .  ●  .  .  .  .  .  +  .  .  .  .  .  ○  .  .  .
+...
+```
+
+注意：英字座標では「I」をスキップしています（数字の1との混同を避けるため）。
+
+### 座標変換関数
+
+```python
+def coord_to_index(coord):
+    """
+    棋譜座標を配列インデックスに変換
+    例：'D4' -> (3, 15)
+    """
+    letters = 'ABCDEFGHJKLMNOPQRST'  # Iをスキップ
+    col = letters.index(coord[0].upper())
+    row = BOARD_SIZE - int(coord[1:])
+    return row, col
+
+
+def index_to_coord(row, col):
+    """
+    配列インデックスを棋譜座標に変換
+    例：(3, 15) -> 'Q16'
+    """
+    letters = 'ABCDEFGHJKLMNOPQRST'
+    return f"{letters[col]}{BOARD_SIZE - row}"
+```
+
+### 空間計算量分析
+
+二次元配列表現の空間計算量：
+
+| 表現方法 | 1マスあたり | 総空間 |
+|---------|---------|--------|
+| `int8` | 1 byte | 361 bytes |
+| `int32` | 4 bytes | 1.4 KB |
+| `float64` | 8 bytes | 2.9 KB |
+
+現代のコンピュータにとって、このメモリ量は全く問題ありません。しかし、大量の盤面状態を保存する必要がある場合（MCTS探索木など）、`int8` を使用することでメモリ使用量を大幅に削減できます。
+
+### 基本操作
+
+```python
+class Board:
+    def __init__(self, size=19):
+        self.size = size
+        self.board = np.zeros((size, size), dtype=np.int8)
+        self.current_player = BLACK
+        self.ko_point = None  # コウの禁止点
+        self.move_history = []
+
+    def is_valid_move(self, row, col):
+        """着手が合法かどうかをチェック"""
+        # 1. 位置が盤面内にある
+        if not (0 <= row < self.size and 0 <= col < self.size):
+            return False
+
+        # 2. 位置が空である
+        if self.board[row, col] != EMPTY:
+            return False
+
+        # 3. コウの禁止点でない
+        if self.ko_point == (row, col):
+            return False
+
+        # 4. 自殺手でない（取れる場合を除く）
+        # ... より複雑なチェックが必要
+
+        return True
+
+    def place_stone(self, row, col):
+        """着手する"""
+        if not self.is_valid_move(row, col):
+            return False
+
+        self.board[row, col] = self.current_player
+        self.move_history.append((row, col))
+
+        # 取り上げ処理
+        captures = self._remove_captured_stones(row, col)
+
+        # コウの禁止点を更新
+        self._update_ko(row, col, captures)
+
+        # プレイヤーを交代
+        self.current_player = WHITE if self.current_player == BLACK else BLACK
+
+        return True
+```
+
+---
+
+## Zobrist Hashing：局面の高速識別
+
+### 問題背景
+
+囲碁AIでは、「2つの局面が同じかどうか」を頻繁に判断する必要があります：
+
+1. **コウルール**：前の手の状態に戻ることはできない
+2. **三コウループ**：特殊ルールの処理
+3. **Transposition Table**：既に探索した局面を記憶
+4. **ニューラルネットワークキャッシュ**：重複計算を避ける
+
+毎回マス目ごとに比較すると、O(361) の時間がかかります。もっと速い方法はないでしょうか？
+
+### Zobrist Hashingの原理
+
+**Zobrist Hashing**（Zobrist Keysとも呼ばれる）は、1970年にAlbert Zobristによって提案された巧妙なハッシュ方法です。その核心的なアイデアは：
+
+1. 各「位置 × 色」の組み合わせに対して、事前に**乱数**を生成
+2. 盤面のハッシュ値 = すべての石がある位置の乱数の **XOR**
+3. 着手/取り上げは1回のXOR演算でハッシュ値を更新できる
+
+### 乱数テーブル
+
+```python
+import numpy as np
+
+# 乱数テーブルを生成
+# 固定シードで再現性を確保
+np.random.seed(42)
+
+# 各位置、各色に1つの乱数
+# zobrist[color][row][col]
+zobrist_table = np.random.randint(
+    0, 2**64,
+    size=(3, BOARD_SIZE, BOARD_SIZE),  # 3: EMPTY, BLACK, WHITE
+    dtype=np.uint64
+)
+
+# 手番の乱数
+zobrist_player = np.random.randint(0, 2**64, dtype=np.uint64)
+```
+
+### XOR演算の特性
+
+XOR（排他的論理和）演算には、この用途に非常に適したいくつかの重要な特性があります：
+
+1. **自己反転性**：A ⊕ A = 0（同じ数をXORすると0になる）
+2. **可逆性**：A ⊕ B ⊕ B = A（2回XORすると元に戻る）
+3. **交換法則**：A ⊕ B = B ⊕ A
+4. **結合法則**：(A ⊕ B) ⊕ C = A ⊕ (B ⊕ C)
+
+これは以下を意味します：
+- 着手：`hash ^= zobrist[color][row][col]`
+- 取り上げ：`hash ^= zobrist[color][row][col]`（同じ操作！）
+
+### 実装
+
+```python
+class ZobristBoard:
+    def __init__(self, size=19):
+        self.size = size
+        self.board = np.zeros((size, size), dtype=np.int8)
+        self.current_player = BLACK
+        self.hash = np.uint64(0)
+
+        # 乱数テーブルを初期化
+        self._init_zobrist_table()
+
+    def _init_zobrist_table(self):
+        np.random.seed(12345)
+        self.zobrist = np.random.randint(
+            0, 2**64,
+            size=(3, self.size, self.size),
+            dtype=np.uint64
+        )
+        self.zobrist_player = np.random.randint(0, 2**64, dtype=np.uint64)
+
+    def place_stone(self, row, col, color):
+        """着手してハッシュ値を更新"""
+        # 古い状態を削除（石がある場合）
+        old_color = self.board[row, col]
+        if old_color != EMPTY:
+            self.hash ^= self.zobrist[old_color, row, col]
+
+        # 新しい石を追加
+        self.board[row, col] = color
+        self.hash ^= self.zobrist[color, row, col]
+
+    def remove_stone(self, row, col):
+        """取り上げてハッシュ値を更新"""
+        color = self.board[row, col]
+        if color != EMPTY:
+            self.hash ^= self.zobrist[color, row, col]
+            self.board[row, col] = EMPTY
+
+    def switch_player(self):
+        """プレイヤーを交代してハッシュ値を更新"""
+        self.hash ^= self.zobrist_player
+        self.current_player = WHITE if self.current_player == BLACK else BLACK
+
+    def get_hash(self):
+        """現在の局面のハッシュ値を取得"""
+        return self.hash
+```
+
+### 増分更新の利点
+
+Zobrist Hashingを使用すると、ハッシュ値の更新はO(1)時間で済みます：
+
+| 操作 | 従来の比較 | Zobrist |
+|------|---------|---------|
+| 2つの局面を比較 | O(361) | O(1) |
+| 着手後の更新 | O(361) | O(1) |
+| 取り上げ後の更新 | O(361) | O(k)、kは取り上げ数 |
+
+### 衝突確率
+
+64ビットハッシュを使用すると、衝突確率は極めて低くなります：
+
+**P(衝突) ≈ n² / 2^65**
+
+ここでnは異なる局面の数です。10億個の局面があっても、衝突確率は約10^-3程度です。
+
+実際には、多くの囲碁プログラムは64ビットZobrist Hashingを使用し、衝突チェックを行いません。衝突確率が無視できるほど低いためです。
+
+---
+
+## 石の連（Union-Find）：連結性の問題
+
+### 石の連の概念
+
+囲碁において、**石の連**（StringまたはChain）は、連結した同色の石のグループを指します。石の連の「ダメ」がその生死を決定します。
+
+<GoBoard
+  size={200}
+  stones={[
+    {x: 3, y: 3, color: 'black'},
+    {x: 4, y: 3, color: 'black'},
+    {x: 5, y: 3, color: 'black'},
+    {x: 4, y: 4, color: 'black'},
+    {x: 6, y: 3, color: 'white'},
+    {x: 6, y: 4, color: 'white'},
+  ]}
+  labels={[
+    {x: 4, y: 3, text: 'A'},
+  ]}
+/>
+
+上の図では、4つの黒石が1つの連を形成しており、この連のダメの数がその生死を決定します。
+
+### なぜ効率的な石の連管理が必要なのか？
+
+着手するたびに以下のことが起こる可能性があります：
+1. 新しい連を**作成**
+2. 複数の連を**マージ**
+3. 敵の連のダメを**減らす**
+4. ダメのない連を**取り上げる**
+
+MCTSでは1秒間に数万回の着手シミュレーションが必要になる可能性があるため、これらの操作を効率的に実行する必要があります。
+
+### Union-Findデータ構造
+
+**Union-Find**（Disjoint Set Union, DSUとも呼ばれる）は、「連結性」問題を処理する古典的なデータ構造です：
+
+```python
+class UnionFind:
+    def __init__(self, size):
+        # parent[i] は i の親ノードを指す
+        # parent[i] = i の場合、i はルートノード
+        self.parent = list(range(size))
+        self.rank = [0] * size
+
+    def find(self, x):
+        """
+        xが属する集合のルートノードを見つける（パス圧縮付き）
+        """
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])  # パス圧縮
+        return self.parent[x]
+
+    def union(self, x, y):
+        """
+        xとyが属する集合をマージする（ランクによるマージ）
+        """
+        root_x = self.find(x)
+        root_y = self.find(y)
+
+        if root_x == root_y:
+            return  # 既に同じ集合
+
+        # ランクによるマージ：小さい木を大きい木に接続
+        if self.rank[root_x] < self.rank[root_y]:
+            self.parent[root_x] = root_y
+        elif self.rank[root_x] > self.rank[root_y]:
+            self.parent[root_y] = root_x
+        else:
+            self.parent[root_y] = root_x
+            self.rank[root_x] += 1
+```
+
+### 時間計算量
+
+Union-Findの時間計算量は**逆アッカーマン関数** α(n) で表されます：
+
+| 操作 | 時間計算量 |
+|------|-----------|
+| find | O(α(n)) ≈ O(1) |
+| union | O(α(n)) ≈ O(1) |
+
+α(n) の増加は極めて遅く、実用的などんなnに対しても α(n) ≤ 4 です。したがって、定数時間と見なせます。
+
+### 囲碁でのUnion-Findの応用
+
+```python
+class GoStringManager:
+    def __init__(self, size=19):
+        self.size = size
+        num_points = size * size
+
+        # Union-Find構造
+        self.parent = list(range(num_points))
+        self.rank = [0] * num_points
+
+        # 各連のダメ（ルートノードインデックスで管理）
+        self.liberties = [set() for _ in range(num_points)]
+
+        # 各連の石（ルートノードインデックスで管理）
+        self.stones = [set() for _ in range(num_points)]
+
+    def _index(self, row, col):
+        return row * self.size + col
+
+    def _neighbors(self, row, col):
+        """四方の隣接点を取得"""
+        neighbors = []
+        if row > 0: neighbors.append((row - 1, col))
+        if row < self.size - 1: neighbors.append((row + 1, col))
+        if col > 0: neighbors.append((row, col - 1))
+        if col < self.size - 1: neighbors.append((row, col + 1))
+        return neighbors
+
+    def find(self, idx):
+        if self.parent[idx] != idx:
+            self.parent[idx] = self.find(self.parent[idx])
+        return self.parent[idx]
+
+    def add_stone(self, row, col, color, board):
+        """
+        石を1つ追加し、連結と取り上げを処理
+        """
+        idx = self._index(row, col)
+
+        # 新しい連を作成
+        self.stones[idx] = {idx}
+        self.liberties[idx] = set()
+
+        # この石のダメを計算
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == 0:  # 空点はダメ
+                self.liberties[idx].add(nidx)
+
+        # 同色の隣接石とマージ
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == color:
+                self._merge_strings(idx, nidx)
+
+        # 敵の連のダメを減らす
+        opponent = 3 - color  # BLACK=1, WHITE=2
+        captured = []
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == opponent:
+                root = self.find(nidx)
+                self.liberties[root].discard(idx)
+                if len(self.liberties[root]) == 0:
+                    captured.append(root)
+
+        return captured
+
+    def _merge_strings(self, idx1, idx2):
+        """2つの連をマージ"""
+        root1 = self.find(idx1)
+        root2 = self.find(idx2)
+
+        if root1 == root2:
+            return
+
+        # ランクによるマージ
+        if self.rank[root1] < self.rank[root2]:
+            root1, root2 = root2, root1
+
+        self.parent[root2] = root1
+        if self.rank[root1] == self.rank[root2]:
+            self.rank[root1] += 1
+
+        # ダメと石の集合をマージ
+        self.liberties[root1] |= self.liberties[root2]
+        self.stones[root1] |= self.stones[root2]
+
+        # 自分の位置のダメを削除（自分は自分のダメではない）
+        for stone_idx in self.stones[root2]:
+            self.liberties[root1].discard(stone_idx)
+```
+
+### ダメの計算
+
+石の連のダメ数を計算することは、囲碁で最も一般的な操作の1つです：
+
+```python
+def count_liberties(self, row, col, board):
+    """ある石が属する連のダメ数を計算"""
+    idx = self._index(row, col)
+    root = self.find(idx)
+    return len(self.liberties[root])
+```
+
+Union-Findを使用すると、この操作はO(1)です（findがO(1)と仮定）。
+
+---
+
+## 特徴量エンコーディングの進化
+
+従来の手作り特徴量からAlphaGo Zeroの簡潔な特徴量まで、囲碁AIの特徴量エンコーディングは大きな進化を遂げました。
+
+### GNU Goの手作り特徴量
+
+初期の囲碁プログラム（GNU Goなど）は、大量の手作り特徴量を使用していました：
+
+```python
+def extract_features_gnugo(board, point):
+    """
+    GNU Goスタイルの手作り特徴量抽出
+    """
+    features = {}
+
+    # 1. 石の形パターン（事前定義された局所形状）
+    features['pattern'] = match_pattern(board, point)
+
+    # 2. 戦術特徴量
+    features['can_capture'] = check_capture(board, point)
+    features['can_connect'] = check_connect(board, point)
+    features['creates_eye'] = check_eye_creation(board, point)
+
+    # 3. 局所特徴量
+    features['liberties_after'] = count_liberties_after_move(board, point)
+    features['enemy_liberties'] = count_enemy_liberties(board, point)
+
+    # 4. 大域特徴量
+    features['distance_to_edge'] = min(
+        point[0], point[1],
+        18 - point[0], 18 - point[1]
+    )
+
+    # ... さらに多くの特徴量
+
+    return features
+```
+
+このアプローチの問題点：
+- 大量の人間の専門知識が必要
+- 特徴量が不完全な可能性
+- 新しいパターンを発見するのが困難
+
+### AlphaGoの48特徴量プレーン
+
+AlphaGo（2016年Nature版）は、ニューラルネットワークの入力として**48個の特徴量プレーン**を使用しました：
+
+```python
+def encode_alphago_features(board, player, history):
+    """
+    AlphaGo 2016の48特徴量プレーン
+
+    Returns:
+        (19, 19, 48) のテンソル
+    """
+    features = np.zeros((19, 19, 48), dtype=np.float32)
+
+    # プレーン1: 黒石の位置
+    features[:, :, 0] = (board == BLACK)
+
+    # プレーン2: 白石の位置
+    features[:, :, 1] = (board == WHITE)
+
+    # プレーン3: 空点
+    features[:, :, 2] = (board == EMPTY)
+
+    # プレーン4: 全て1（バイアス項）
+    features[:, :, 3] = 1
+
+    # プレーン5-12: ダメ数エンコーディング（1-8ダメ各1プレーン）
+    for i, num_libs in enumerate(range(1, 9)):
+        for r in range(19):
+            for c in range(19):
+                if board[r, c] != EMPTY:
+                    libs = count_liberties(board, r, c)
+                    if libs == num_libs:
+                        features[r, c, 4 + i] = 1
+
+    # プレーン13-20: 取り上げ後の相手のダメ数
+    # ...
+
+    # プレーン21-28: 自分が着手した後のダメ数
+    # ...
+
+    # プレーン29-36: 過去8手の履歴（各手1プレーン）
+    for i, (r, c) in enumerate(history[-8:]):
+        features[r, c, 28 + i] = 1
+
+    # プレーン37-44: シチョウ判断
+    # ...
+
+    # プレーン45-48: 対称性関連
+    # ...
+
+    # プレーン49: 手番（全て1は黒番、全て0は白番）
+    if player == BLACK:
+        features[:, :, 47] = 1
+
+    return features
+```
+
+### 48プレーンの分類
+
+| カテゴリ | プレーン数 | 説明 |
+|------|--------|------|
+| 石の位置 | 3 | 黒石、白石、空点 |
+| 定数 | 1 | 全て1 |
+| ダメ数 | 8 | 1-8ダメ |
+| 取り上げ後のダメ数 | 8 | 着手後のダメ数を仮定 |
+| 着手後のダメ数 | 8 | 着手後のダメ数を仮定 |
+| 履歴 | 8 | 過去8手 |
+| シチョウ | 8 | 複雑なシチョウ分析 |
+| その他 | 4 | 手番、対称性など |
+
+### AlphaGo Zeroの17特徴量プレーン
+
+AlphaGo Zero（2017年）は特徴量エンコーディングを大幅に簡略化し、**17個のプレーン**のみを使用しました：
+
+```python
+def encode_alphago_zero_features(board_history, player):
+    """
+    AlphaGo Zeroの17特徴量プレーン
+
+    Args:
+        board_history: 過去8局面（現在を含む）
+        player: 現在のプレイヤー
+
+    Returns:
+        (19, 19, 17) のテンソル
+    """
+    features = np.zeros((19, 19, 17), dtype=np.float32)
+
+    # プレーン1-8: 黒石の履歴（直近8手）
+    for i, board in enumerate(board_history[-8:]):
+        features[:, :, i] = (board == BLACK)
+
+    # プレーン9-16: 白石の履歴（直近8手）
+    for i, board in enumerate(board_history[-8:]):
+        features[:, :, 8 + i] = (board == WHITE)
+
+    # プレーン17: 手番（全て1は黒番、全て0は白番）
+    if player == BLACK:
+        features[:, :, 16] = 1
+
+    return features
+```
+
+### 17プレーンの簡潔さ
+
+| カテゴリ | プレーン数 | 説明 |
+|------|--------|------|
+| 黒石の履歴 | 8 | 過去8タイムステップの黒石位置 |
+| 白石の履歴 | 8 | 過去8タイムステップの白石位置 |
+| 現在のプレイヤー | 1 | 全て1または全て0 |
+
+なぜこれほど簡潔にできるのでしょうか？
+
+> **重要な洞察：ニューラルネットワークに特徴量を自分で学習させる。**
+
+AlphaGo Zeroは以下を証明しました：
+- ダメ数を手動で計算する必要はない（ネットワークは石の位置から推論できる）
+- シチョウ分析は不要（ネットワークはシチョウを認識することを学習できる）
+- 複雑な取り上げ予測は不要（ネットワークは着手の結果を理解できる）
+
+これはディープラーニングの核心的な強みを体現しています：**エンドツーエンド学習**。
+
+### 特徴量プレーンの可視化
+
+これらの特徴量プレーンが実際にどのように見えるか見てみましょう：
+
+```
+元の盤面：              黒石プレーン：          白石プレーン：
+. . . . . .            0 0 0 0 0 0            0 0 0 0 0 0
+. ● ○ . . .            0 1 0 0 0 0            0 0 1 0 0 0
+. . ● ○ . .    ->      0 0 1 0 0 0     +      0 0 0 1 0 0
+. . . ● . .            0 0 0 1 0 0            0 0 0 0 0 0
+. . . . . .            0 0 0 0 0 0            0 0 0 0 0 0
+```
+
+各プレーンは二値行列（0または1）であり、ニューラルネットワークは畳み込み操作を通じてこれらのプレーン内のパターンを抽出できます。
+
+---
+
+## 対称性処理：8種類の変換
+
+### 囲碁の対称性
+
+囲碁盤には **8種類の対称性** があります：
+
+1. **4種類の回転**：0°、90°、180°、270°
+2. **4種類の反転後回転**：水平反転 + 4種類の回転
+
+これは **二面体群 D4** を形成します。
+
+### 数学的表現
+
+(x, y) を盤面上の座標（中心を (9, 9) とする）とすると、8種類の変換は以下のように表されます：
+
+| 変換 | 公式 |
+|------|------|
+| 恒等 | (x, y) |
+| 90°回転 | (-y, x) |
+| 180°回転 | (-x, -y) |
+| 270°回転 | (y, -x) |
+| 水平反転 | (-x, y) |
+| 垂直反転 | (x, -y) |
+| 対角反転 | (y, x) |
+| 反対角反転 | (-y, -x) |
+
+### プログラム実装
+
+```python
+def get_symmetries(board):
+    """
+    盤面の8種類の対称変換を取得
+
+    Returns:
+        8つの盤面のリスト
+    """
+    symmetries = []
+
+    # 元の盤面
+    symmetries.append(board.copy())
+
+    # 90°回転
+    symmetries.append(np.rot90(board, k=1))
+
+    # 180°回転
+    symmetries.append(np.rot90(board, k=2))
+
+    # 270°回転
+    symmetries.append(np.rot90(board, k=3))
+
+    # 水平反転
+    symmetries.append(np.fliplr(board))
+
+    # 垂直反転
+    symmetries.append(np.flipud(board))
+
+    # 対角反転
+    symmetries.append(board.T)
+
+    # 反対角反転
+    symmetries.append(np.rot90(board.T, k=2))
+
+    return symmetries
+
+
+def apply_symmetry(board, sym_index):
+    """
+    sym_index番目の対称変換を適用
+    """
+    return get_symmetries(board)[sym_index]
+
+
+def inverse_symmetry(move, sym_index, board_size=19):
+    """
+    変換後の着手座標を元の座標に戻す
+    """
+    row, col = move
+
+    if sym_index == 0:  # 恒等
+        return row, col
+    elif sym_index == 1:  # 90°回転
+        return col, board_size - 1 - row
+    elif sym_index == 2:  # 180°回転
+        return board_size - 1 - row, board_size - 1 - col
+    elif sym_index == 3:  # 270°回転
+        return board_size - 1 - col, row
+    elif sym_index == 4:  # 水平反転
+        return row, board_size - 1 - col
+    elif sym_index == 5:  # 垂直反転
+        return board_size - 1 - row, col
+    elif sym_index == 6:  # 対角反転
+        return col, row
+    elif sym_index == 7:  # 反対角反転
+        return board_size - 1 - col, board_size - 1 - row
+```
+
+### データ拡張
+
+ニューラルネットワークを訓練する際、対称性を利用して**データ拡張**ができます：
+
+```python
+def augment_training_data(board, policy, value):
+    """
+    1つの訓練サンプルを8つに拡張
+    """
+    augmented = []
+
+    for sym_index in range(8):
+        # 盤面を変換
+        aug_board = apply_symmetry(board, sym_index)
+
+        # ポリシーを変換（361次元ベクトル）
+        policy_2d = policy.reshape(19, 19)
+        aug_policy_2d = apply_symmetry(policy_2d, sym_index)
+        aug_policy = aug_policy_2d.flatten()
+
+        # 価値は変わらない
+        aug_value = value
+
+        augmented.append((aug_board, aug_policy, aug_value))
+
+    return augmented
+```
+
+これにより訓練データ量が8倍に増加し、完全に無料です（新しいデータを収集する必要がありません）。
+
+### 推論時の対称性利用
+
+AlphaGoは実際の対局でも対称性を利用しています：
+
+```python
+def predict_with_symmetry(model, board):
+    """
+    対称性を利用して予測を強化
+    """
+    policies = []
+    values = []
+
+    for sym_index in range(8):
+        # 入力を変換
+        aug_board = apply_symmetry(board, sym_index)
+
+        # ニューラルネットワークで予測
+        policy, value = model.predict(aug_board)
+
+        # ポリシーを元の座標系に変換
+        policy_2d = policy.reshape(19, 19)
+        original_policy = inverse_symmetry_2d(policy_2d, sym_index)
+        policies.append(original_policy.flatten())
+
+        values.append(value)
+
+    # すべての予測を平均
+    avg_policy = np.mean(policies, axis=0)
+    avg_value = np.mean(values)
+
+    return avg_policy, avg_value
+```
+
+この手法により、予測の精度と安定性をわずかに向上させることができます。
+
+---
+
+## 盤面表現方法のまとめ
+
+| 方法 | 用途 | 計算量 | 特徴 |
+|------|------|--------|------|
+| **二次元配列** | 基本的な保存 | O(361) 空間 | シンプルで直感的 |
+| **Zobrist Hashing** | 局面識別 | O(1) クエリ | 高効率ハッシュ |
+| **Union-Find** | 石の連管理 | O(α(n)) 操作 | 連結性処理 |
+| **特徴量プレーン** | ニューラルネットワーク入力 | O(361×プレーン数) | 豊富な情報をエンコード |
+| **対称性変換** | データ拡張 | 8× データ量 | 無料で増加 |
+
+これらの技術は互いに連携し、現代の囲碁AIの基盤インフラを構成しています。
+
+---
+
+## アニメーション対応
+
+本記事で扱う核心概念とアニメーション番号：
+
+| 番号 | 概念 | 物理/数学対応 |
+|------|------|--------------|
+| 🎬 A1 | 二次元配列表現 | 行列、疎データ |
+| 🎬 A2 | Zobrist Hashing | ハッシュ関数、XOR演算 |
+| 🎬 A8 | 特徴量プレーンエンコーディング | テンソル、マルチチャネル入力 |
+| 🎬 A5 | 対称性処理 | 群論、二面体群 |
+
+---
+
+## 関連記事
+
+- **前回**：[従来手法の限界](../traditional-limits) — MinimaxからMCTSまで
+- **次回**：[Policy Network詳解](../policy-network) — ニューラルネットワークによる着手予測
+- **実践練習**：[30分で動かす初めての囲碁AI](/docs/tech/hands-on/) — 実際に手を動かして体験
+
+---
+
+## 参考文献
+
+1. Zobrist, A. L. (1970). "A new hashing method with application for game playing." ICCA journal.
+2. Tarjan, R. E. (1975). "Efficiency of a Good But Not Linear Set Union Algorithm." Journal of the ACM, 22(2), 215-225.
+3. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." Nature, 529, 484-489. — AlphaGo 48特徴量プレーン
+4. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." Nature, 550, 354-359. — AlphaGo Zero 17特徴量プレーン

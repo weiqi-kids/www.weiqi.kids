@@ -213,12 +213,11 @@ const config = {
           src: 'img/logo.svg',
         },
         items: [
-          { to: '/docs/for-players', label: '給棋友', position: 'left' },
-          { to: '/docs/for-engineers', label: '給工程師', position: 'left' },
-          { to: '/docs/about', label: '關於協會', position: 'left' },
-          { to: '/docs/activities', label: '活動實績', position: 'left' },
-          { to: '/docs/references', label: '參考資料', position: 'left' },
-          { to: '/docs/sop', label: '標準作業流程', position: 'left' },
+          { to: '/docs/learn', label: '學圍棋', position: 'left' },
+          { to: '/docs/alphago', label: 'AlphaGo', position: 'left' },
+          { to: '/docs/animations', label: '動畫教室', position: 'left' },
+          { to: '/docs/tech', label: '技術文件', position: 'left' },
+          { to: '/docs/about', label: '關於我們', position: 'left' },
           {
             type: 'localeDropdown',
             position: 'right',

@@ -7,32 +7,24 @@
     "message": "호기보보협회 로고",
     "description": "The alt text of navbar logo"
   },
-  "item.label.給棋友": {
-    "message": "바둑 플레이어",
-    "description": "Navbar item with label 給棋友"
+  "item.label.學圍棋": {
+    "message": "바둑 배우기",
+    "description": "Navbar item with label 學圍棋"
   },
-  "item.label.給工程師": {
-    "message": "엔지니어",
-    "description": "Navbar item with label 給工程師"
+  "item.label.AlphaGo": {
+    "message": "AlphaGo",
+    "description": "Navbar item with label AlphaGo"
   },
-  "item.label.關於協會": {
-    "message": "협회 소개",
-    "description": "Navbar item with label 關於協會"
+  "item.label.動畫教室": {
+    "message": "애니메이션 교실",
+    "description": "Navbar item with label 動畫教室"
   },
-  "item.label.活動實績": {
-    "message": "활동 실적",
-    "description": "Navbar item with label 活動實績"
+  "item.label.技術文件": {
+    "message": "기술 문서",
+    "description": "Navbar item with label 技術文件"
   },
-  "item.label.參考資料": {
-    "message": "참고 자료",
-    "description": "Navbar item with label 參考資料"
-  },
-  "item.label.標準作業流程": {
-    "message": "표준 운영 절차",
-    "description": "Navbar item with label 標準作業流程"
-  },
-  "item.label.GitHub": {
-    "message": "GitHub",
-    "description": "Navbar item with label GitHub"
+  "item.label.關於我們": {
+    "message": "소개",
+    "description": "Navbar item with label 關於我們"
   }
 }

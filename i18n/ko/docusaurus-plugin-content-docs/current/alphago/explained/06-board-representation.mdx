@@ -1,0 +1,866 @@
+---
+sidebar_position: 7
+title: 바둑판 상태 표현
+description: 2차원 배열부터 신경망 특징 평면까지, 바둑 AI가 바둑판을 어떻게 '보는지' 심층 이해
+keywords: [바둑판표현, Zobrist Hashing, Union-Find, 특징인코딩, AlphaGo특징평면]
+---
+
+import { GoBoard } from '@site/src/components/D3Charts';
+
+# 바둑판 상태 표현
+
+바둑 AI를 설계하기 전에, 먼저 기본적인 문제를 해결해야 합니다: **컴퓨터가 바둑판을 어떻게 '이해'하게 할 것인가?**
+
+이 문제는 단순해 보이지만, 자료구조, 알고리즘, 그리고 신경망 입력 설계 등 여러 층면을 포함합니다. 이 글에서는 가장 기본적인 2차원 배열부터 시작하여, 바둑 AI가 사용하는 다양한 바둑판 표현 방법을 단계적으로 소개하고, 최종적으로 AlphaGo가 바둑판을 신경망이 처리할 수 있는 형식으로 어떻게 인코딩하는지 설명합니다.
+
+---
+
+## 2차원 배열 표현: 가장 직관적인 방식
+
+### 기본 개념
+
+바둑판은 19×19의 격자 네트워크로, 가장 직관적인 표현 방식은 **2차원 배열**을 사용하는 것입니다:
+
+```python
+import numpy as np
+
+# 바둑판 상수
+BOARD_SIZE = 19
+EMPTY = 0
+BLACK = 1
+WHITE = 2
+
+# 빈 바둑판 초기화
+board = np.zeros((BOARD_SIZE, BOARD_SIZE), dtype=np.int8)
+
+# 착점: 흑돌 D4 (3, 3)
+board[3, 3] = BLACK
+
+# 착점: 백돌 Q16 (15, 3)
+board[15, 3] = WHITE
+```
+
+### 좌표 시스템
+
+바둑은 두 가지 일반적인 좌표 시스템을 사용합니다:
+
+#### 1. 숫자 좌표 (프로그램용)
+
+```
+    0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
+0   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+1   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+2   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+3   .  .  .  ●  .  .  .  .  .  +  .  .  .  .  .  ○  .  .  .
+...
+```
+
+#### 2. 문자-숫자 좌표 (기보용)
+
+```
+    A  B  C  D  E  F  G  H  J  K  L  M  N  O  P  Q  R  S  T
+19  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+18  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+17  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+16  .  .  .  ●  .  .  .  .  .  +  .  .  .  .  .  ○  .  .  .
+...
+```
+
+참고: 문자 좌표는 "I"를 건너뜁니다(숫자 1과의 혼동 방지).
+
+### 좌표 변환 함수
+
+```python
+def coord_to_index(coord):
+    """
+    기보 좌표를 배열 인덱스로 변환
+    예: 'D4' -> (3, 15)
+    """
+    letters = 'ABCDEFGHJKLMNOPQRST'  # I 건너뜀
+    col = letters.index(coord[0].upper())
+    row = BOARD_SIZE - int(coord[1:])
+    return row, col
+
+
+def index_to_coord(row, col):
+    """
+    배열 인덱스를 기보 좌표로 변환
+    예: (3, 15) -> 'Q16'
+    """
+    letters = 'ABCDEFGHJKLMNOPQRST'
+    return f"{letters[col]}{BOARD_SIZE - row}"
+```
+
+### 공간 복잡도 분석
+
+2차원 배열 표현의 공간 복잡도:
+
+| 표현 방식 | 격자당 크기 | 총 공간 |
+|---------|---------|--------|
+| `int8` | 1 byte | 361 bytes |
+| `int32` | 4 bytes | 1.4 KB |
+| `float64` | 8 bytes | 2.9 KB |
+
+현대 컴퓨터에서 이 정도 메모리는 전혀 문제가 되지 않습니다. 하지만 대량의 바둑판 상태를 저장해야 할 때(예: MCTS 검색 트리), `int8`을 사용하면 메모리 사용량을 상당히 줄일 수 있습니다.
+
+### 기본 연산
+
+```python
+class Board:
+    def __init__(self, size=19):
+        self.size = size
+        self.board = np.zeros((size, size), dtype=np.int8)
+        self.current_player = BLACK
+        self.ko_point = None  # 패 금지점
+        self.move_history = []
+
+    def is_valid_move(self, row, col):
+        """착점이 합법적인지 확인"""
+        # 1. 위치가 바둑판 내에 있음
+        if not (0 <= row < self.size and 0 <= col < self.size):
+            return False
+
+        # 2. 위치가 비어있음
+        if self.board[row, col] != EMPTY:
+            return False
+
+        # 3. 패 금지점이 아님
+        if self.ko_point == (row, col):
+            return False
+
+        # 4. 자살이 아님 (따낼 수 있는 경우 제외)
+        # ... 더 복잡한 검사 필요
+
+        return True
+
+    def place_stone(self, row, col):
+        """착점"""
+        if not self.is_valid_move(row, col):
+            return False
+
+        self.board[row, col] = self.current_player
+        self.move_history.append((row, col))
+
+        # 따냄 처리
+        captures = self._remove_captured_stones(row, col)
+
+        # 패 금지점 업데이트
+        self._update_ko(row, col, captures)
+
+        # 플레이어 전환
+        self.current_player = WHITE if self.current_player == BLACK else BLACK
+
+        return True
+```
+
+---
+
+## Zobrist Hashing: 중복 국면의 빠른 식별
+
+### 문제 배경
+
+바둑 AI에서는 '두 국면이 동일한지' 자주 판단해야 합니다:
+
+1. **패 규칙**: 국면이 직전 상태로 돌아갈 수 없음
+2. **삼패**: 특별 규칙 처리
+3. **Transposition Table**: 이미 검색한 국면 기억
+4. **신경망 캐시**: 중복 계산 방지
+
+매번 격자별로 비교하면 O(361) 시간이 필요합니다. 더 빠른 방법이 있을까요?
+
+### Zobrist Hashing 원리
+
+**Zobrist Hashing**(또는 Zobrist Keys)은 Albert Zobrist가 1970년에 제안한 교묘한 해시 방법입니다. 핵심 아이디어는:
+
+1. 각 "위치 × 색상" 조합에 대해 **난수**를 미리 생성
+2. 바둑판의 해시값 = 돌이 있는 모든 위치의 난수들의 **XOR**
+3. 착점/따냄은 한 번의 XOR 연산으로 해시값 업데이트 가능
+
+### 난수 테이블
+
+```python
+import numpy as np
+
+# 난수 테이블 생성
+# 재현성을 위해 고정 시드 사용
+np.random.seed(42)
+
+# 각 위치, 각 색상마다 하나의 난수
+# zobrist[color][row][col]
+zobrist_table = np.random.randint(
+    0, 2**64,
+    size=(3, BOARD_SIZE, BOARD_SIZE),  # 3: EMPTY, BLACK, WHITE
+    dtype=np.uint64
+)
+
+# 누구 차례인지를 위한 난수
+zobrist_player = np.random.randint(0, 2**64, dtype=np.uint64)
+```
+
+### XOR 연산의 특성
+
+XOR(배타적 논리합) 연산은 이 응용에 매우 적합한 몇 가지 중요한 특성을 가집니다:
+
+1. **자기 반사성**: A ⊕ A = 0 (같은 수를 XOR하면 0)
+2. **가역성**: A ⊕ B ⊕ B = A (두 번 XOR하면 원래대로)
+3. **교환 법칙**: A ⊕ B = B ⊕ A
+4. **결합 법칙**: (A ⊕ B) ⊕ C = A ⊕ (B ⊕ C)
+
+이는 다음을 의미합니다:
+- 착점: `hash ^= zobrist[color][row][col]`
+- 따냄: `hash ^= zobrist[color][row][col]` (같은 연산!)
+
+### 구현
+
+```python
+class ZobristBoard:
+    def __init__(self, size=19):
+        self.size = size
+        self.board = np.zeros((size, size), dtype=np.int8)
+        self.current_player = BLACK
+        self.hash = np.uint64(0)
+
+        # 난수 테이블 초기화
+        self._init_zobrist_table()
+
+    def _init_zobrist_table(self):
+        np.random.seed(12345)
+        self.zobrist = np.random.randint(
+            0, 2**64,
+            size=(3, self.size, self.size),
+            dtype=np.uint64
+        )
+        self.zobrist_player = np.random.randint(0, 2**64, dtype=np.uint64)
+
+    def place_stone(self, row, col, color):
+        """착점 및 해시값 업데이트"""
+        # 이전 상태 제거 (돌이 있는 경우)
+        old_color = self.board[row, col]
+        if old_color != EMPTY:
+            self.hash ^= self.zobrist[old_color, row, col]
+
+        # 새 돌 추가
+        self.board[row, col] = color
+        self.hash ^= self.zobrist[color, row, col]
+
+    def remove_stone(self, row, col):
+        """따냄 및 해시값 업데이트"""
+        color = self.board[row, col]
+        if color != EMPTY:
+            self.hash ^= self.zobrist[color, row, col]
+            self.board[row, col] = EMPTY
+
+    def switch_player(self):
+        """플레이어 전환 및 해시값 업데이트"""
+        self.hash ^= self.zobrist_player
+        self.current_player = WHITE if self.current_player == BLACK else BLACK
+
+    def get_hash(self):
+        """현재 국면의 해시값 가져오기"""
+        return self.hash
+```
+
+### 증분 업데이트의 장점
+
+Zobrist Hashing을 사용하면 해시값 업데이트에 O(1) 시간만 필요합니다:
+
+| 연산 | 전통적 비교 | Zobrist |
+|------|---------|---------|
+| 두 국면 비교 | O(361) | O(1) |
+| 착점 후 업데이트 | O(361) | O(1) |
+| 따냄 후 업데이트 | O(361) | O(k), k는 따낸 돌 수 |
+
+### 충돌 확률
+
+64비트 해시를 사용하면 충돌 확률이 극히 낮습니다:
+
+**P(충돌) ≈ n² / 2^65**
+
+여기서 n은 서로 다른 국면의 수입니다. 10억 개의 국면이 있어도 충돌 확률은 약 10^-3에 불과합니다.
+
+실제로 많은 바둑 프로그램은 충돌 검사 없이 64비트 Zobrist Hashing을 사용하는데, 충돌 확률이 무시해도 될 정도로 낮기 때문입니다.
+
+---
+
+## 돌 그룹 표현 (Union-Find): 연결성 문제
+
+### 돌 그룹의 개념
+
+바둑에서 **돌 그룹**(String 또는 Chain)은 연결된 같은 색 돌의 집합을 의미합니다. 돌 그룹의 '활로'가 생사를 결정합니다.
+
+<GoBoard
+  size={200}
+  stones={[
+    {x: 3, y: 3, color: 'black'},
+    {x: 4, y: 3, color: 'black'},
+    {x: 5, y: 3, color: 'black'},
+    {x: 4, y: 4, color: 'black'},
+    {x: 6, y: 3, color: 'white'},
+    {x: 6, y: 4, color: 'white'},
+  ]}
+  labels={[
+    {x: 4, y: 3, text: 'A'},
+  ]}
+/>
+
+위 그림에서 네 개의 흑돌이 하나의 돌 그룹을 형성하며, 이 돌 그룹의 활로 수가 생사를 결정합니다.
+
+### 왜 효율적인 돌 그룹 관리가 필요한가?
+
+매 착점마다 다음이 발생할 수 있습니다:
+1. 새 돌 그룹 **생성**
+2. 여러 돌 그룹 **병합**
+3. 상대 돌 그룹의 활로 **감소**
+4. 활로가 없는 돌 그룹 **따냄**
+
+이러한 연산은 효율적으로 수행되어야 합니다. MCTS에서는 1초에 수만 번의 착점 시뮬레이션이 필요할 수 있기 때문입니다.
+
+### Union-Find 자료구조
+
+**Union-Find**(또는 Disjoint Set Union, DSU)는 '연결성' 문제를 처리하는 고전적인 자료구조입니다:
+
+```python
+class UnionFind:
+    def __init__(self, size):
+        # parent[i]는 i의 부모 노드를 가리킴
+        # parent[i] = i이면 i가 루트 노드
+        self.parent = list(range(size))
+        self.rank = [0] * size
+
+    def find(self, x):
+        """
+        x가 속한 집합의 루트 노드 찾기 (경로 압축 포함)
+        """
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])  # 경로 압축
+        return self.parent[x]
+
+    def union(self, x, y):
+        """
+        x와 y가 속한 집합 병합 (랭크 기반 병합 포함)
+        """
+        root_x = self.find(x)
+        root_y = self.find(y)
+
+        if root_x == root_y:
+            return  # 이미 같은 집합
+
+        # 랭크 기반 병합: 작은 트리를 큰 트리에 연결
+        if self.rank[root_x] < self.rank[root_y]:
+            self.parent[root_x] = root_y
+        elif self.rank[root_x] > self.rank[root_y]:
+            self.parent[root_y] = root_x
+        else:
+            self.parent[root_y] = root_x
+            self.rank[root_x] += 1
+```
+
+### 시간 복잡도
+
+Union-Find의 시간 복잡도는 **역 아커만 함수** α(n)으로 표현됩니다:
+
+| 연산 | 시간 복잡도 |
+|------|-----------|
+| find | O(α(n)) ≈ O(1) |
+| union | O(α(n)) ≈ O(1) |
+
+α(n)은 매우 느리게 증가하여, 실제 어떤 n에 대해서도 α(n) ≤ 4입니다. 따라서 상수 시간으로 간주할 수 있습니다.
+
+### 바둑에서의 Union-Find 적용
+
+```python
+class GoStringManager:
+    def __init__(self, size=19):
+        self.size = size
+        num_points = size * size
+
+        # Union-Find 구조
+        self.parent = list(range(num_points))
+        self.rank = [0] * num_points
+
+        # 각 돌 그룹의 활로 (루트 노드 인덱스 사용)
+        self.liberties = [set() for _ in range(num_points)]
+
+        # 각 돌 그룹의 돌들 (루트 노드 인덱스 사용)
+        self.stones = [set() for _ in range(num_points)]
+
+    def _index(self, row, col):
+        return row * self.size + col
+
+    def _neighbors(self, row, col):
+        """4방향 이웃 가져오기"""
+        neighbors = []
+        if row > 0: neighbors.append((row - 1, col))
+        if row < self.size - 1: neighbors.append((row + 1, col))
+        if col > 0: neighbors.append((row, col - 1))
+        if col < self.size - 1: neighbors.append((row, col + 1))
+        return neighbors
+
+    def find(self, idx):
+        if self.parent[idx] != idx:
+            self.parent[idx] = self.find(self.parent[idx])
+        return self.parent[idx]
+
+    def add_stone(self, row, col, color, board):
+        """
+        돌 추가, 연결 및 따냄 처리
+        """
+        idx = self._index(row, col)
+
+        # 새 돌 그룹 생성
+        self.stones[idx] = {idx}
+        self.liberties[idx] = set()
+
+        # 이 돌의 활로 계산
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == 0:  # 빈 점이 활로
+                self.liberties[idx].add(nidx)
+
+        # 같은 색 이웃과 병합
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == color:
+                self._merge_strings(idx, nidx)
+
+        # 상대 돌 그룹의 활로 감소
+        opponent = 3 - color  # BLACK=1, WHITE=2
+        captured = []
+        for nr, nc in self._neighbors(row, col):
+            nidx = self._index(nr, nc)
+            if board[nr, nc] == opponent:
+                root = self.find(nidx)
+                self.liberties[root].discard(idx)
+                if len(self.liberties[root]) == 0:
+                    captured.append(root)
+
+        return captured
+
+    def _merge_strings(self, idx1, idx2):
+        """두 돌 그룹 병합"""
+        root1 = self.find(idx1)
+        root2 = self.find(idx2)
+
+        if root1 == root2:
+            return
+
+        # 랭크 기반 병합
+        if self.rank[root1] < self.rank[root2]:
+            root1, root2 = root2, root1
+
+        self.parent[root2] = root1
+        if self.rank[root1] == self.rank[root2]:
+            self.rank[root1] += 1
+
+        # 활로와 돌 집합 병합
+        self.liberties[root1] |= self.liberties[root2]
+        self.stones[root1] |= self.stones[root2]
+
+        # 자신의 위치를 활로에서 제거 (자신은 자신의 활로가 아님)
+        for stone_idx in self.stones[root2]:
+            self.liberties[root1].discard(stone_idx)
+```
+
+### 활로 계산
+
+돌 그룹의 활로 수 계산은 바둑에서 가장 흔한 연산 중 하나입니다:
+
+```python
+def count_liberties(self, row, col, board):
+    """특정 돌이 속한 돌 그룹의 활로 수 계산"""
+    idx = self._index(row, col)
+    root = self.find(idx)
+    return len(self.liberties[root])
+```
+
+Union-Find를 사용하면 이 연산은 O(1)입니다(find가 O(1)이라고 가정).
+
+---
+
+## 특징 인코딩의 진화
+
+전통적인 수작업 특징에서 AlphaGo Zero의 간결한 특징까지, 바둑 AI의 특징 인코딩은 중대한 진화를 겪었습니다.
+
+### GNU Go의 수작업 특징
+
+초기 바둑 프로그램(예: GNU Go)은 대량의 수작업으로 설계된 특징을 사용했습니다:
+
+```python
+def extract_features_gnugo(board, point):
+    """
+    GNU Go 스타일의 수작업 특징 추출
+    """
+    features = {}
+
+    # 1. 모양 패턴 (미리 정의된 지역 형태)
+    features['pattern'] = match_pattern(board, point)
+
+    # 2. 전술 특징
+    features['can_capture'] = check_capture(board, point)
+    features['can_connect'] = check_connect(board, point)
+    features['creates_eye'] = check_eye_creation(board, point)
+
+    # 3. 지역 특징
+    features['liberties_after'] = count_liberties_after_move(board, point)
+    features['enemy_liberties'] = count_enemy_liberties(board, point)
+
+    # 4. 전역 특징
+    features['distance_to_edge'] = min(
+        point[0], point[1],
+        18 - point[0], 18 - point[1]
+    )
+
+    # ... 더 많은 특징
+
+    return features
+```
+
+이 방법의 문제점:
+- 대량의 인간 전문가 지식 필요
+- 특징이 불완전할 수 있음
+- 새로운 패턴을 발견하기 어려움
+
+### AlphaGo의 48개 특징 평면
+
+AlphaGo(2016 Nature 버전)는 신경망 입력으로 **48개 특징 평면**을 사용했습니다:
+
+```python
+def encode_alphago_features(board, player, history):
+    """
+    AlphaGo 2016의 48개 특징 평면
+
+    Returns:
+        (19, 19, 48) 텐서
+    """
+    features = np.zeros((19, 19, 48), dtype=np.float32)
+
+    # 평면 1: 흑돌 위치
+    features[:, :, 0] = (board == BLACK)
+
+    # 평면 2: 백돌 위치
+    features[:, :, 1] = (board == WHITE)
+
+    # 평면 3: 빈 점
+    features[:, :, 2] = (board == EMPTY)
+
+    # 평면 4: 전체 1 (바이어스 항)
+    features[:, :, 3] = 1
+
+    # 평면 5-12: 활로 수 인코딩 (1-8 활로 각각 하나의 평면)
+    for i, num_libs in enumerate(range(1, 9)):
+        for r in range(19):
+            for c in range(19):
+                if board[r, c] != EMPTY:
+                    libs = count_liberties(board, r, c)
+                    if libs == num_libs:
+                        features[r, c, 4 + i] = 1
+
+    # 평면 13-20: 따낸 후 상대 활로 수
+    # ...
+
+    # 평면 21-28: 착점 후 자신의 활로 수
+    # ...
+
+    # 평면 29-36: 과거 8수의 기록 (각 수마다 하나의 평면)
+    for i, (r, c) in enumerate(history[-8:]):
+        features[r, c, 28 + i] = 1
+
+    # 평면 37-44: 축머리 판단
+    # ...
+
+    # 평면 45-48: 대칭성 관련
+    # ...
+
+    # 평면 49: 누구 차례인지 (전체 1은 흑, 전체 0은 백)
+    if player == BLACK:
+        features[:, :, 47] = 1
+
+    return features
+```
+
+### 48개 평면의 분류
+
+| 카테고리 | 평면 수 | 설명 |
+|------|--------|------|
+| 돌 위치 | 3 | 흑돌, 백돌, 빈 점 |
+| 상수 | 1 | 전체 1 |
+| 활로 수 | 8 | 1-8 활로 |
+| 따낸 후 활로 수 | 8 | 착점 후 가정 활로 수 |
+| 착점 후 활로 수 | 8 | 착점 후 가정 활로 수 |
+| 기록 | 8 | 과거 8수 |
+| 축머리 | 8 | 복잡한 축머리 분석 |
+| 기타 | 4 | 차례, 대칭성 등 |
+
+### AlphaGo Zero의 17개 특징 평면
+
+AlphaGo Zero(2017)는 특징 인코딩을 대폭 간소화하여, **17개 평면**만 사용했습니다:
+
+```python
+def encode_alphago_zero_features(board_history, player):
+    """
+    AlphaGo Zero의 17개 특징 평면
+
+    Args:
+        board_history: 과거 8개 국면 (현재 포함)
+        player: 현재 플레이어
+
+    Returns:
+        (19, 19, 17) 텐서
+    """
+    features = np.zeros((19, 19, 17), dtype=np.float32)
+
+    # 평면 1-8: 흑돌 기록 (최근 8수)
+    for i, board in enumerate(board_history[-8:]):
+        features[:, :, i] = (board == BLACK)
+
+    # 평면 9-16: 백돌 기록 (최근 8수)
+    for i, board in enumerate(board_history[-8:]):
+        features[:, :, 8 + i] = (board == WHITE)
+
+    # 평면 17: 누구 차례인지 (전체 1은 흑, 전체 0은 백)
+    if player == BLACK:
+        features[:, :, 16] = 1
+
+    return features
+```
+
+### 17개 평면의 간결함
+
+| 카테고리 | 평면 수 | 설명 |
+|------|--------|------|
+| 흑돌 기록 | 8 | 과거 8개 타임스텝의 흑돌 위치 |
+| 백돌 기록 | 8 | 과거 8개 타임스텝의 백돌 위치 |
+| 현재 플레이어 | 1 | 전체 1 또는 전체 0 |
+
+왜 이렇게 간결할 수 있을까요?
+
+> **핵심 통찰: 신경망이 스스로 특징을 학습하게 합니다.**
+
+AlphaGo Zero는 다음을 증명했습니다:
+- 활로 수를 수작업으로 계산할 필요 없음 (네트워크가 돌 위치에서 추론 가능)
+- 축머리 분석이 필요 없음 (네트워크가 축머리 인식 학습 가능)
+- 복잡한 따냄 예측이 필요 없음 (네트워크가 착점 결과 이해 가능)
+
+이는 딥러닝의 핵심 장점을 보여줍니다: **종단간 학습**.
+
+### 특징 평면의 시각화
+
+이러한 특징 평면이 실제로 어떻게 생겼는지 살펴봅시다:
+
+```
+원본 바둑판:              흑돌 평면:              백돌 평면:
+. . . . . .            0 0 0 0 0 0            0 0 0 0 0 0
+. ● ○ . . .            0 1 0 0 0 0            0 0 1 0 0 0
+. . ● ○ . .    ->      0 0 1 0 0 0     +      0 0 0 1 0 0
+. . . ● . .            0 0 0 1 0 0            0 0 0 0 0 0
+. . . . . .            0 0 0 0 0 0            0 0 0 0 0 0
+```
+
+각 평면은 이진 행렬(0 또는 1)이며, 신경망은 컨볼루션 연산을 통해 이러한 평면의 패턴을 추출할 수 있습니다.
+
+---
+
+## 대칭성 처리: 8가지 변환
+
+### 바둑의 대칭성
+
+바둑판은 **8가지 대칭성**을 가집니다:
+
+1. **4가지 회전**: 0°, 90°, 180°, 270°
+2. **4가지 뒤집기 후 회전**: 수평 뒤집기 + 4가지 회전
+
+이것은 **이면체 군 D4**를 형성합니다.
+
+### 수학적 표현
+
+(x, y)를 바둑판의 좌표(중심은 (9, 9))라 하면, 8가지 변환은 다음과 같이 표현됩니다:
+
+| 변환 | 공식 |
+|------|------|
+| 항등 | (x, y) |
+| 90° 회전 | (-y, x) |
+| 180° 회전 | (-x, -y) |
+| 270° 회전 | (y, -x) |
+| 수평 뒤집기 | (-x, y) |
+| 수직 뒤집기 | (x, -y) |
+| 대각 뒤집기 | (y, x) |
+| 반대각 뒤집기 | (-y, -x) |
+
+### 프로그램 구현
+
+```python
+def get_symmetries(board):
+    """
+    바둑판의 8가지 대칭 변환 가져오기
+
+    Returns:
+        8개 바둑판의 리스트
+    """
+    symmetries = []
+
+    # 원본
+    symmetries.append(board.copy())
+
+    # 90° 회전
+    symmetries.append(np.rot90(board, k=1))
+
+    # 180° 회전
+    symmetries.append(np.rot90(board, k=2))
+
+    # 270° 회전
+    symmetries.append(np.rot90(board, k=3))
+
+    # 수평 뒤집기
+    symmetries.append(np.fliplr(board))
+
+    # 수직 뒤집기
+    symmetries.append(np.flipud(board))
+
+    # 대각 뒤집기
+    symmetries.append(board.T)
+
+    # 반대각 뒤집기
+    symmetries.append(np.rot90(board.T, k=2))
+
+    return symmetries
+
+
+def apply_symmetry(board, sym_index):
+    """
+    sym_index번째 대칭 변환 적용
+    """
+    return get_symmetries(board)[sym_index]
+
+
+def inverse_symmetry(move, sym_index, board_size=19):
+    """
+    변환된 착점 좌표를 원래 좌표로 변환
+    """
+    row, col = move
+
+    if sym_index == 0:  # 항등
+        return row, col
+    elif sym_index == 1:  # 90° 회전
+        return col, board_size - 1 - row
+    elif sym_index == 2:  # 180° 회전
+        return board_size - 1 - row, board_size - 1 - col
+    elif sym_index == 3:  # 270° 회전
+        return board_size - 1 - col, row
+    elif sym_index == 4:  # 수평 뒤집기
+        return row, board_size - 1 - col
+    elif sym_index == 5:  # 수직 뒤집기
+        return board_size - 1 - row, col
+    elif sym_index == 6:  # 대각 뒤집기
+        return col, row
+    elif sym_index == 7:  # 반대각 뒤집기
+        return board_size - 1 - col, board_size - 1 - row
+```
+
+### 데이터 증강
+
+신경망 학습 시, 대칭성을 활용하여 **데이터 증강**을 수행할 수 있습니다:
+
+```python
+def augment_training_data(board, policy, value):
+    """
+    하나의 학습 샘플을 8개로 확장
+    """
+    augmented = []
+
+    for sym_index in range(8):
+        # 바둑판 변환
+        aug_board = apply_symmetry(board, sym_index)
+
+        # 정책 변환 (361차원 벡터)
+        policy_2d = policy.reshape(19, 19)
+        aug_policy_2d = apply_symmetry(policy_2d, sym_index)
+        aug_policy = aug_policy_2d.flatten()
+
+        # 가치는 변하지 않음
+        aug_value = value
+
+        augmented.append((aug_board, aug_policy, aug_value))
+
+    return augmented
+```
+
+이를 통해 학습 데이터량이 8배 증가하며, 완전히 무료입니다(새 데이터를 수집할 필요 없음).
+
+### 추론 시 대칭성 활용
+
+AlphaGo는 실제 대국에서도 대칭성을 활용합니다:
+
+```python
+def predict_with_symmetry(model, board):
+    """
+    대칭성을 활용한 향상된 예측
+    """
+    policies = []
+    values = []
+
+    for sym_index in range(8):
+        # 입력 변환
+        aug_board = apply_symmetry(board, sym_index)
+
+        # 신경망 예측
+        policy, value = model.predict(aug_board)
+
+        # 정책을 원래 좌표계로 변환
+        policy_2d = policy.reshape(19, 19)
+        original_policy = inverse_symmetry_2d(policy_2d, sym_index)
+        policies.append(original_policy.flatten())
+
+        values.append(value)
+
+    # 모든 예측의 평균
+    avg_policy = np.mean(policies, axis=0)
+    avg_value = np.mean(values)
+
+    return avg_policy, avg_value
+```
+
+이 방법은 예측의 정확도와 안정성을 약간 향상시킬 수 있습니다.
+
+---
+
+## 바둑판 표현 방법 요약
+
+| 방법 | 용도 | 복잡도 | 특징 |
+|------|------|--------|------|
+| **2차원 배열** | 기본 저장 | O(361) 공간 | 단순 직관적 |
+| **Zobrist Hashing** | 국면 식별 | O(1) 조회 | 고효율 해시 |
+| **Union-Find** | 돌 그룹 관리 | O(α(n)) 연산 | 연결성 처리 |
+| **특징 평면** | 신경망 입력 | O(361×평면 수) | 풍부한 정보 인코딩 |
+| **대칭성 변환** | 데이터 증강 | 8× 데이터량 | 무료 확장 |
+
+이러한 기술들이 상호 협력하여 현대 바둑 AI의 기반 인프라를 구성합니다.
+
+---
+
+## 애니메이션 대응
+
+이 글에서 다루는 핵심 개념과 애니메이션 번호:
+
+| 번호 | 개념 | 물리/수학 대응 |
+|------|------|--------------|
+| 🎬 A1 | 2차원 배열 표현 | 행렬, 희소 데이터 |
+| 🎬 A2 | Zobrist Hashing | 해시 함수, XOR 연산 |
+| 🎬 A8 | 특징 평면 인코딩 | 텐서, 다채널 입력 |
+| 🎬 A5 | 대칭성 처리 | 군론, 이면체 군 |
+
+---
+
+## 추가 읽기
+
+- **이전 글**: [전통적 방법의 한계](../traditional-limits) — Minimax에서 MCTS까지
+- **다음 글**: [Policy Network 상세 설명](../policy-network) — 신경망이 착점을 어떻게 예측하는가
+- **실습**: [30분 만에 첫 바둑 AI 실행하기](/docs/tech/hands-on/) — 직접 체험해보기
+
+---
+
+## 참고 자료
+
+1. Zobrist, A. L. (1970). "A new hashing method with application for game playing." ICCA journal.
+2. Tarjan, R. E. (1975). "Efficiency of a Good But Not Linear Set Union Algorithm." Journal of the ACM, 22(2), 215-225.
+3. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." Nature, 529, 484-489. — AlphaGo 48개 특징 평면
+4. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." Nature, 550, 354-359. — AlphaGo Zero 17개 특징 평면

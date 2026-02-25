@@ -7,32 +7,24 @@
     "message": "Good Go Baby Association Logo",
     "description": "The alt text of navbar logo"
   },
-  "item.label.給棋友": {
-    "message": "For Go Players",
-    "description": "Navbar item with label 給棋友"
+  "item.label.學圍棋": {
+    "message": "Learn Go",
+    "description": "Navbar item with label 學圍棋"
   },
-  "item.label.給工程師": {
-    "message": "For Engineers",
-    "description": "Navbar item with label 給工程師"
+  "item.label.AlphaGo": {
+    "message": "AlphaGo",
+    "description": "Navbar item with label AlphaGo"
   },
-  "item.label.關於協會": {
+  "item.label.動畫教室": {
+    "message": "Animation Studio",
+    "description": "Navbar item with label 動畫教室"
+  },
+  "item.label.技術文件": {
+    "message": "Technical Docs",
+    "description": "Navbar item with label 技術文件"
+  },
+  "item.label.關於我們": {
     "message": "About Us",
-    "description": "Navbar item with label 關於協會"
-  },
-  "item.label.活動實績": {
-    "message": "Activities",
-    "description": "Navbar item with label 活動實績"
-  },
-  "item.label.參考資料": {
-    "message": "References",
-    "description": "Navbar item with label 參考資料"
-  },
-  "item.label.標準作業流程": {
-    "message": "Standard Procedures",
-    "description": "Navbar item with label 標準作業流程"
-  },
-  "item.label.GitHub": {
-    "message": "GitHub",
-    "description": "Navbar item with label GitHub"
+    "description": "Navbar item with label 關於我們"
   }
 }

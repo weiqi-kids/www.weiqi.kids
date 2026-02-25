@@ -1,0 +1,132 @@
+---
+sidebar_position: 1
+title: AlphaGo In-Depth
+description: From historical background to technical details, 20 articles to help you fully understand AlphaGo
+---
+
+import { PolicyHeatmap, EloChart } from '@site/src/components/D3Charts';
+
+# AlphaGo In-Depth
+
+In March 2016, AlphaGo defeated world champion Lee Sedol 4:1, stunning the world. This was not just a victory in a Go match, but also marked a major breakthrough in artificial intelligence.
+
+This series of **20 in-depth articles** will take you through the historical background, technical principles, and implementation details to fully understand everything about AlphaGo.
+
+---
+
+## Series Navigation
+
+### Module 1: History and Breakthroughs
+
+| Article | Description |
+|---------|-------------|
+| [The Birth of AlphaGo](./birth-of-alphago) | DeepMind founding, Google acquisition, team composition |
+| [Key Matches Review](./key-matches) | Fan Hui, Lee Sedol, Ke Jie, Master's 60-game winning streak |
+| [In-Depth Analysis of "Move 37"](./move-37) | Go theory and AI perspective interpretation of Move 37 |
+
+### Module 2: The Challenge of Go
+
+| Article | Description |
+|---------|-------------|
+| [Why Is Go Difficult?](./why-go-is-hard) | State space of 10^170, branching factor ~250 |
+| [Limits of Traditional Methods](./traditional-limits) | Minimax, Alpha-Beta, pure MCTS |
+| [Board State Representation](./board-representation) | Zobrist Hashing, Union-Find, feature encoding |
+
+### Module 3: Neural Network Core
+
+| Article | Description |
+|---------|-------------|
+| [Policy Network Explained](./policy-network) | Architecture, Softmax output, training objectives |
+| [Value Network Explained](./value-network) | Architecture, Tanh output, avoiding overfitting |
+| [Input Feature Design](./input-features) | Evolution from 48 to 17 feature planes |
+| [CNN and Go](./cnn-and-go) | Why CNN is suitable for the board |
+| [Supervised Learning Phase](./supervised-learning) | KGS dataset, 57% prediction accuracy |
+
+### Module 4: Reinforcement Learning and Search
+
+| Article | Description |
+|---------|-------------|
+| [Introduction to Reinforcement Learning](./reinforcement-intro) | MDP, policy gradient, value function |
+| [Self-Play](./self-play) | Why it works, ELO growth curve |
+| [Combining MCTS with Neural Networks](./mcts-neural-combo) | Selection->Expansion->Evaluation->Backup |
+| [PUCT Formula Explained](./puct-formula) | Mathematical derivation, exploration vs exploitation |
+
+### Module 5: AlphaGo Zero Evolution
+
+| Article | Description |
+|---------|-------------|
+| [AlphaGo Zero Overview](./alphago-zero) | Why human game records are not needed |
+| [Dual-Head Network and Residual Network](./dual-head-resnet) | Shared representation, gradient flow, 40-layer ResNet |
+| [Training from Scratch](./training-from-scratch) | Changes from Day 0-3, surpassing humans in 3 days |
+
+### Module 6: Technical Details and Extensions
+
+| Article | Description |
+|---------|-------------|
+| [Distributed Systems and TPU](./distributed-systems) | Training architecture, inference architecture, parallel MCTS |
+| [AlphaGo's Legacy](./legacy-and-impact) | Impact on Go community, AlphaZero, MuZero, AlphaFold |
+
+---
+
+## Quick Preview
+
+### Policy Network Output Example
+
+The Policy Network outputs the probability of playing at each position:
+
+<PolicyHeatmap initialPosition="corner" size={400} />
+
+### Training Curve
+
+AlphaGo Zero surpassed humans from scratch in 3 days:
+
+<EloChart mode="zero" width={600} height={350} />
+
+---
+
+## Reading Recommendations
+
+### Choose Your Starting Point Based on Background
+
+| Your Background | Recommended Starting Point |
+|-----------------|---------------------------|
+| **Complete Beginner** | Start with [The Birth of AlphaGo](./birth-of-alphago), read in order |
+| **Familiar with Go** | Start with [Why Is Go Difficult?](./why-go-is-hard) |
+| **Machine Learning Background** | Start with [Policy Network Explained](./policy-network) |
+| **Quick Overview** | Read [Combining MCTS with Neural Networks](./mcts-neural-combo) |
+| **Understanding Zero's Breakthrough** | Start with [AlphaGo Zero Overview](./alphago-zero) |
+
+### Estimated Reading Time
+
+- **Complete Reading**: About 8-10 hours
+- **Quick Browse**: About 2-3 hours
+- **Each Article**: About 15-25 minutes
+
+---
+
+## Animation References
+
+This article series references the following series from [109 Animation Concepts](/docs/tech/how-it-works/concepts/):
+
+| Series | Topic | Related Articles |
+|--------|-------|-----------------|
+| **C Series** | Monte Carlo Methods | #5, #14, #15 |
+| **D Series** | Neural Networks | #7, #8, #10, #11 |
+| **E Series** | AlphaGo Architecture | #13, #16, #17, #18 |
+| **H Series** | Reinforcement Learning | #12, #13 |
+
+---
+
+## References
+
+### Papers
+
+1. Silver, D., et al. (2016). ["Mastering the game of Go with deep neural networks and tree search."](https://www.nature.com/articles/nature16961) *Nature*.
+2. Silver, D., et al. (2017). ["Mastering the game of Go without human knowledge."](https://www.nature.com/articles/nature24270) *Nature*.
+3. Silver, D., et al. (2018). ["A general reinforcement learning algorithm that masters chess, shogi, and Go through self-play."](https://www.science.org/doi/10.1126/science.aar6404) *Science*.
+
+### Further Reading
+
+- [KataGo's Key Innovations](/docs/tech/how-it-works/katago-innovations) — How to achieve stronger play with fewer resources
+- [Concept Quick Reference](/docs/tech/how-it-works/concepts/) — Complete list of 109 animation concepts
+- [Run Your First Go AI in 30 Minutes](/docs/tech/hands-on/) — Hands-on practice

@@ -7,32 +7,24 @@
     "message": "好棋寶寶協會標誌",
     "description": "The alt text of navbar logo"
   },
-  "item.label.給棋友": {
-    "message": "畀棋友",
-    "description": "Navbar item with label 給棋友"
+  "item.label.學圍棋": {
+    "message": "學圍棋",
+    "description": "Navbar item with label 學圍棋"
   },
-  "item.label.給工程師": {
-    "message": "畀工程師",
-    "description": "Navbar item with label 給工程師"
+  "item.label.AlphaGo": {
+    "message": "AlphaGo",
+    "description": "Navbar item with label AlphaGo"
   },
-  "item.label.關於協會": {
-    "message": "關於協會",
-    "description": "Navbar item with label 關於協會"
+  "item.label.動畫教室": {
+    "message": "動畫教室",
+    "description": "Navbar item with label 動畫教室"
   },
-  "item.label.活動實績": {
-    "message": "活動實績",
-    "description": "Navbar item with label 活動實績"
+  "item.label.技術文件": {
+    "message": "技術文件",
+    "description": "Navbar item with label 技術文件"
   },
-  "item.label.參考資料": {
-    "message": "參考資料",
-    "description": "Navbar item with label 參考資料"
-  },
-  "item.label.標準作業流程": {
-    "message": "標準作業流程",
-    "description": "Navbar item with label 標準作業流程"
-  },
-  "item.label.GitHub": {
-    "message": "GitHub",
-    "description": "Navbar item with label GitHub"
+  "item.label.關於我們": {
+    "message": "關於我哋",
+    "description": "Navbar item with label 關於我們"
   }
 }

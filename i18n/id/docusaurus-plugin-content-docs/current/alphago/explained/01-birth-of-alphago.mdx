@@ -1,0 +1,432 @@
+---
+sidebar_position: 2
+title: Kelahiran AlphaGo
+description: Dari pendirian DeepMind hingga akuisisi Google, bagaimana AlphaGo berubah dari ide gila menjadi AI yang mengubah dunia
+---
+
+# Kelahiran AlphaGo
+
+Pada Maret 2016, ketika AlphaGo mengalahkan Lee Sedol dengan skor 4:1, seluruh dunia bertanya: bagaimana program yang mengubah sejarah kecerdasan buatan ini lahir?
+
+Jawabannya dimulai dari mimpi seorang prodigy catur.
+
+---
+
+## Pendirian DeepMind
+
+### Demis Hassabis: Dari Prodigy ke Pelopor AI
+
+**Demis Hassabis** adalah co-founder dan CEO DeepMind. Pengalaman hidupnya seolah-olah disiapkan untuk menciptakan AlphaGo.
+
+#### Prodigy Catur
+
+Lahir di London pada 1975, Hassabis belajar bermain catur pada usia 4 tahun dan mencapai level master catur (Elo 2300+) pada usia 13 tahun, menjadi orang termuda kedua yang mencapai level ini dalam sejarah Inggris.
+
+Pengalaman ini memberinya pemahaman mendalam:
+- **Permainan papan adalah ujian kecerdasan**: Bermain catur membutuhkan perencanaan, intuisi, dan pengenalan pola
+- **Esensi kecerdasan manusia**: Bagaimana pemain menemukan langkah bagus di antara kemungkinan yang sangat banyak?
+- **Keterbatasan komputer**: Kemenangan Deep Blue atas Kasparov pada 1997 berdasarkan brute force search, bukan "pemahaman" yang sebenarnya
+
+#### Game Designer
+
+Pada usia 17, Hassabis bergabung dengan Bullfrog Productions (perusahaan game yang didirikan oleh Peter Molyneux, pencipta "Populous"), berpartisipasi dalam pengembangan game klasik "Theme Park". Pengalaman ini mengajarinya:
+
+- **Cara mendesain sistem kompleks**: Game adalah model yang disederhanakan yang mensimulasikan dunia nyata
+- **Prediksi perilaku pemain**: AI perlu memahami proses pengambilan keputusan manusia
+
+#### Neuroscientist Kognitif
+
+Setelah mendapatkan gelar Ilmu Komputer dari Cambridge, Hassabis mendapatkan gelar PhD dalam Cognitive Neuroscience dari University College London (UCL). Topik penelitiannya adalah: **bagaimana hippocampus memungkinkan manusia berimajinasi dan merencanakan**.
+
+Penelitian ini menemukan:
+- Memori dan imajinasi manusia menggunakan area otak yang sama
+- Kita merencanakan masa depan melalui "perjalanan waktu mental"
+- Kemampuan ini mungkin merupakan inti dari kecerdasan
+
+Wawasan ini secara langsung mempengaruhi desain AlphaGo nantinya — memungkinkan AI untuk "membayangkan" langkah-langkah masa depan dan belajar darinya.
+
+### Co-founder
+
+Pada 2010, Hassabis mendirikan DeepMind bersama dua mitra:
+
+| Pendiri | Latar Belakang | Kontribusi |
+|---------|----------------|------------|
+| **Demis Hassabis** | Neuroscience, Game Design | Visi dan Strategi |
+| **Shane Legg** | PhD Machine Learning | Dasar Teoretis AGI |
+| **Mustafa Suleyman** | Pengusaha Sosial | Bisnis dan Aplikasi |
+
+### "Selesaikan Kecerdasan, Gunakan Kecerdasan untuk Menyelesaikan Segalanya"
+
+Pernyataan misi DeepMind adalah:
+
+> **"Solve intelligence, and then use that to solve everything else."**
+>
+> "Selesaikan kecerdasan, dan kemudian gunakan itu untuk menyelesaikan segala hal lainnya."
+
+Ini bukan perusahaan AI biasa. Tujuan mereka bukan membuat produk, tetapi menciptakan **Artificial General Intelligence (AGI)** — AI yang dapat berpikir, belajar, dan memecahkan masalah apa pun seperti manusia.
+
+Mengapa "menyelesaikan kecerdasan" dulu? Karena begitu kita memiliki AGI, AGI dapat membantu kita menyelesaikan tantangan terbesar umat manusia: perubahan iklim, penyakit, energi.
+
+---
+
+## Terobosan Awal: Game Atari
+
+Sebelum menantang Go, DeepMind pertama-tama membuktikan kemampuannya — menggunakan AI untuk bermain game Atari.
+
+### DQN: AI yang Belajar Bermain Game
+
+Pada 2013, DeepMind mempublikasikan algoritma **DQN (Deep Q-Network)**. AI ini mampu:
+
+1. **Hanya melihat piksel layar** — tidak diberi aturan game apa pun
+2. **Belajar bermain sendiri** — melalui trial and error
+3. **Mencapai level manusia** — dan bahkan melampaui manusia di beberapa game
+
+Di Breakout, DQN mempelajari strategi yang butuh berjam-jam bagi manusia untuk menemukannya: **menggali terowongan untuk membiarkan bola melewati batu bata, menghilangkan banyak sekaligus**.
+
+Ini membuktikan bahwa kombinasi deep learning + reinforcement learning dapat menemukan strategi yang tidak pernah terpikirkan oleh manusia.
+
+### Mengapa Mulai dari Game?
+
+Hassabis memilih game sebagai platform penelitian karena beberapa alasan:
+
+1. **Lingkungan terkontrol**: Game memiliki aturan dan tujuan yang jelas
+2. **Kemajuan terukur**: Ada skor objektif untuk mengevaluasi kemampuan AI
+3. **Benchmark manusia**: Dapat dibandingkan dengan pemain manusia
+4. **Keragaman**: Game yang berbeda menguji kemampuan yang berbeda
+
+Metodologi ini kemudian diterapkan pada Go.
+
+---
+
+## Akuisisi oleh Google
+
+### Taruhan 500 Juta Dolar
+
+Pada Januari 2014, Google mengakuisisi DeepMind senilai sekitar **500 juta dolar**. Ini adalah salah satu akuisisi terbesar di bidang AI pada saat itu.
+
+Mengapa Google bersedia membayar begitu banyak untuk perusahaan dengan hanya 75 orang dan tanpa produk?
+
+Jawabannya ada di **game theory**:
+
+- **Facebook juga ikut menawar**: Rumor mengatakan Facebook menawarkan 400 juta dolar
+- **AI adalah teknologi kunci masa depan**: Siapa yang menguasai AI lebih dulu, akan menguasai masa depan
+- **DeepMind adalah tim terbaik**: Mereka telah membuktikan kelayakan deep reinforcement learning
+
+CEO Google Larry Page turun tangan langsung untuk meyakinkan Hassabis memilih Google daripada Facebook.
+
+### Syarat Akuisisi
+
+Hassabis menegosiasikan beberapa syarat penting:
+
+1. **Operasi independen**: DeepMind mempertahankan kantor pusat London, R&D independen
+2. **Kebebasan akademis**: Dapat mempublikasikan paper, bukan merahasiakan semuanya
+3. **Komite etika**: Pembentukan mekanisme review etika AI
+4. **Penelitian jangka panjang**: Tidak ada tekanan komersialisasi jangka pendek
+
+Syarat-syarat ini memungkinkan DeepMind mengejar penelitian jangka panjang, berisiko tinggi — seperti menaklukkan Go dengan AI.
+
+### Strategi AI Google
+
+Akuisisi DeepMind adalah bagian dari strategi "AI first" Google:
+
+| Tahun | Peristiwa |
+|-------|-----------|
+| 2011 | Pendirian Google Brain |
+| 2013 | Akuisisi DNNresearch (tim Hinton) |
+| 2014 | Akuisisi DeepMind |
+| 2015 | TensorFlow open source |
+| 2016 | Peluncuran TPU |
+
+Google menyadari: pencarian, iklan, terjemahan, suara — semua bisnis inti akan dibentuk ulang oleh AI. Siapa yang memiliki AI terbaik akan menjadi pemenang.
+
+---
+
+## Memilih Go sebagai Target
+
+### Mengapa Go?
+
+Setelah diakuisisi Google, DeepMind memiliki lebih banyak sumber daya. Hassabis memutuskan untuk menantang target yang tampaknya mustahil: **menggunakan AI untuk mengalahkan juara dunia Go manusia**.
+
+Mengapa memilih Go, dan bukan masalah lain?
+
+#### 1. Go adalah "Holy Grail AI"
+
+Sebelum 2016, para ahli umumnya percaya AI membutuhkan setidaknya 10-20 tahun untuk mengalahkan manusia di Go. Go disebut "benteng terakhir AI".
+
+Alasannya:
+- **Ruang pencarian sangat besar**: 10^170 posisi yang mungkin (jumlah atom di alam semesta hanya 10^80)
+- **Evaluasi sulit**: Tidak seperti catur, tidak ada nilai bidak yang jelas
+- **Ketergantungan pada intuisi**: Pemain top sering mengatakan "langkah ini terasa benar", tapi tidak bisa menjelaskan mengapa
+
+#### 2. Pelajaran dari Deep Blue
+
+Pada 1997, Deep Blue IBM mengalahkan juara dunia catur Kasparov. Tapi kemenangan ini kontroversial:
+
+- Deep Blue mengandalkan **brute force search** (mengevaluasi 200 juta posisi per detik)
+- Menggunakan **fungsi evaluasi yang dirancang oleh ahli manusia**
+- Ini bukan "kecerdasan" yang sebenarnya, tapi "kekuatan komputasi"
+
+Hassabis ingin membuktikan: AI dapat memecahkan masalah melalui **pembelajaran**, bukan brute force.
+
+#### 3. Target Terukur
+
+Go memiliki sistem peringkat internasional (Elo rating) dan pemain profesional, memberikan standar pengukuran objektif. Jika AI bisa mengalahkan juara dunia, itu akan menjadi keberhasilan yang tidak terbantahkan.
+
+#### 4. Koneksi dengan Neuroscience
+
+Intuisi pemain manusia — melihat papan dan langsung tahu posisi mana yang penting — adalah kemampuan yang ingin Hassabis replikasi dengan AI. Go adalah skenario sempurna untuk menguji "intuisi mesin".
+
+---
+
+## Tim AlphaGo
+
+### Tokoh Kunci
+
+Keberhasilan AlphaGo berasal dari tim dengan latar belakang multidisipliner:
+
+#### David Silver: Peneliti Utama
+
+**David Silver** adalah penulis pertama paper AlphaGo dan ahli terkemuka di bidang reinforcement learning.
+
+- **Latar Belakang**: Lulusan Matematika Cambridge, PhD RL dari University of Alberta
+- **Pembimbing**: Richard Sutton (bapak reinforcement learning)
+- **Spesialisasi**: Monte Carlo Tree Search, temporal difference learning
+
+Silver meneliti computer Go dalam tesis PhD-nya, tapi teknologi saat itu belum matang. Setelah bergabung dengan DeepMind, ia akhirnya mendapat kesempatan mewujudkan mimpi ini.
+
+#### Aja Huang: Ahli Go
+
+**Aja Huang** (Huang Shih-Chieh) adalah orang Taiwan, pemain amatir 6 dan, dan juga pelopor di bidang computer Go.
+
+- **Latar Belakang**: PhD Ilmu Komputer dari National Taiwan Normal University
+- **Spesialisasi**: Pemrograman computer Go
+- **Karya terkenal**: Erica (program computer Go awal)
+
+Huang memainkan peran kunci dalam tim AlphaGo: ia tidak hanya memahami Go, tapi juga AI. Dalam pertandingan melawan Lee Sedol, dialah yang mengoperasikan AlphaGo.
+
+#### Anggota Kunci Lainnya
+
+| Anggota | Peran |
+|---------|-------|
+| Chris J. Maddison | Ahli Monte Carlo Tree Search |
+| Arthur Guez | Peneliti Reinforcement Learning |
+| Laurent Sifre | Insinyur Deep Learning |
+| George van den Driessche | Insinyur Sistem Terdistribusi |
+
+### Kolaborasi Interdisipliner
+
+Keberhasilan AlphaGo membuktikan kekuatan **kolaborasi interdisipliner**:
+
+- **Ahli Go** memberikan pengetahuan domain
+- **Peneliti machine learning** mendesain algoritma
+- **Insinyur** mengimplementasikan sistem pelatihan skala besar
+- **Neuroscientist** memberikan inspirasi teoretis
+
+Komposisi tim ini kemudian menjadi standar DeepMind.
+
+---
+
+## Publikasi di Nature
+
+### Kejutan Rahasia
+
+Pada 27 Januari 2016, DeepMind mempublikasikan paper di jurnal akademis top *Nature*:
+
+> **"Mastering the game of Go with deep neural networks and tree search"**
+
+Paper mengumumkan bahwa AlphaGo telah:
+1. Mengalahkan semua program Go lainnya
+2. Mengalahkan juara Eropa **Fan Hui** (profesional 2 dan) dengan skor **5:0**
+
+Berita ini mengejutkan dunia. Sebelum publikasi paper, tidak ada yang tahu DeepMind sedang meneliti Go.
+
+### Kontribusi Utama Paper
+
+Paper *Nature* menjelaskan tiga inovasi besar AlphaGo:
+
+#### 1. Policy Network
+
+Menggunakan deep convolutional neural network untuk memprediksi langkah selanjutnya pemain manusia. Data pelatihan berasal dari **30 juta partai** manusia.
+
+```
+Akurasi: 57% (memprediksi langkah selanjutnya ahli manusia)
+```
+
+Ini lebih dari 10 poin persentase lebih tinggi dari program computer Go terbaik sebelumnya.
+
+#### 2. Value Network
+
+Menggunakan neural network lain untuk mengevaluasi tingkat kemenangan posisi saat ini. Ini menggantikan simulasi acak tradisional (Monte Carlo rollout).
+
+```
+Presisi: Setara dengan 15.000 simulasi acak, tapi 15.000 kali lebih cepat
+```
+
+#### 3. Integrasi Monte Carlo Tree Search
+
+Mengintegrasikan kedua neural network ke dalam framework MCTS:
+- Policy Network memandu arah pencarian
+- Value Network mengevaluasi leaf node
+
+Ini memberi AlphaGo baik "intuisi" (neural network) maupun "penalaran" (tree search).
+
+### Reaksi Komunitas Akademis
+
+Setelah publikasi paper, komunitas akademis bereaksi dengan antusias:
+
+> "Ini adalah momen pendaratan di bulan bagi kecerdasan buatan."
+> — **Stuart Russell**, Profesor UC Berkeley, penulis buku teks AI
+
+> "Saya awalnya berpikir masih butuh 10 tahun lagi, tidak menyangka secepat ini."
+> — **Martin Müller**, ahli computer Go
+
+Tapi ada juga yang skeptis:
+
+> "Fan Hui hanya profesional 2 dan, bukan pemain top yang sebenarnya. Biarkan AlphaGo bermain melawan Lee Sedol dulu."
+
+DeepMind menerima tantangan ini.
+
+---
+
+## Menantang Lee Sedol
+
+### Mengapa Lee Sedol?
+
+**Lee Sedol** adalah pemain Korea, dianggap sebagai salah satu pemain terkuat dalam dekade terakhir:
+
+| Metrik | Data |
+|--------|------|
+| Gelar Juara Dunia | 18 |
+| Juara Internasional | 32 |
+| Peringkat Dunia Tertinggi | #1 |
+| Gaya | "Jenius" "Kalkulator Ilahi" |
+
+Dengan memilih Lee Sedol, DeepMind menantang lawan manusia terkuat.
+
+### Hadiah 1 Juta Dolar
+
+Google menyediakan hadiah **1 juta dolar** untuk pertandingan ini:
+
+- Jika Lee Sedol menang: Hadiah untuk Lee Sedol
+- Jika AlphaGo menang: Hadiah disumbangkan ke UNICEF, pendidikan STEM, dan badan amal lainnya
+
+Ini bukan hanya demonstrasi teknis, tapi juga acara olahraga yang menarik perhatian global.
+
+### Prediksi Sebelum Pertandingan
+
+Sebelum pertandingan, sebagian besar pemain profesional memprediksi Lee Sedol akan menang dengan mudah:
+
+> "AlphaGo mungkin menang satu game, tapi dalam 5 game saya akan menang 5:0."
+> — **Lee Sedol**, wawancara pra-pertandingan
+
+> "Komputer bermain kaku, pemain top bisa dengan mudah menemukan kelemahan."
+> — Seorang profesional 9 dan
+
+Tapi tim DeepMind punya pandangan berbeda. David Silver kemudian mengungkapkan:
+
+> "Dalam tes internal kami, kami sudah membuat AlphaGo bermain 500 game melawan versi yang menghadapi Fan Hui. Versi baru menang 499."
+
+---
+
+## Maret 2016: Lima Game yang Mengubah Dunia
+
+### Game Pertama: Kejutan Dimulai
+
+9 Maret 2016, Hotel Four Seasons, Seoul.
+
+Lee Sedol bermain hitam lebih dulu, AlphaGo bermain putih. Setelah 3 jam 28 menit permainan, AlphaGo menang dengan resign di tengah game.
+
+Ini adalah pertama kalinya pemain elite manusia secara resmi kalah dari AI.
+
+### Game Kedua: Langkah Ilahi
+
+Game kedua melahirkan apa yang dikenal sebagai "**Langkah Ilahi**" pada langkah ke-37 — AlphaGo membuat shoulder hit di baris kelima yang semua pemain profesional pikir adalah kesalahan, tapi terbukti menjadi kunci kemenangan.
+
+(Lihat detail di artikel berikutnya: [Analisis Mendalam "Langkah Ilahi"](../move-37))
+
+AlphaGo menang lagi.
+
+### Game Ketiga: 3:0
+
+Di game ketiga, Lee Sedol mencoba pembukaan non-tradisional, tapi AlphaGo merespons dengan mudah. 3:0.
+
+Dunia mulai menyadari: ini bukan kebetulan, AI benar-benar telah melampaui manusia.
+
+### Game Keempat: Serangan Balik Manusia
+
+Di game keempat, Lee Sedol membuat apa yang dikenal sebagai "**Langkah Ilahi**" pada langkah ke-78 — wedge brilian yang menyebabkan kebingungan pada AlphaGo.
+
+AlphaGo membuat langkah buruk yang jelas dalam beberapa langkah berikutnya dan akhirnya resign.
+
+Kemenangan ini membuktikan: AI juga punya kelemahan. Lee Sedol menemukannya.
+
+### Game Kelima: Skor Akhir
+
+Di game kelima, AlphaGo kembali normal dan mengakhiri pertandingan dengan kemenangan resign di tengah game.
+
+**Skor akhir: AlphaGo 4:1 Lee Sedol**
+
+---
+
+## Dampak dan Akibat
+
+### Perhatian Global
+
+Dampak pertandingan ini jauh melampaui dunia Go:
+
+- **200 juta orang** di seluruh dunia menonton siaran langsung
+- *The New York Times*, *The Economist* dan media mainstream lainnya memberikan liputan luas
+- Harga saham Google naik selama pertandingan
+- "Kecerdasan Buatan" menjadi topik teknologi terpanas tahun itu
+
+### Dampak pada Dunia Go
+
+Setelah pertandingan, sikap pemain profesional berubah dari "meremehkan" menjadi "menghormati":
+
+> "Kami dulu berpikir manusia memahami Go, sekarang kami menemukan kami hanya tahu sedikit."
+> — **Ke Jie**, pemain Tiongkok, #1 dunia saat itu
+
+Banyak pemain profesional mulai menggunakan AI untuk berlatih, dan cara bermain Go juga berubah sebagai hasilnya.
+
+### Dampak pada Bidang AI
+
+AlphaGo membuktikan beberapa hal:
+
+1. **Deep learning dapat memecahkan masalah level ahli**: Tidak hanya mengenali kucing dan anjing, tapi juga bermain Go
+2. **Reinforcement learning dapat melampaui manusia**: Melalui self-play, AI dapat menemukan strategi yang tidak diketahui manusia
+3. **Neural network + pencarian adalah kombinasi yang kuat**: Intuisi + penalaran = kecerdasan yang lebih kuat
+
+Wawasan ini kemudian diterapkan pada:
+- **AlphaFold**: Prediksi struktur protein (pencapaian level Nobel Prize 2020)
+- **AlphaZero**: AI game umum
+- **MuZero**: Belajar tanpa aturan
+
+---
+
+## Korespondensi Animasi
+
+Konsep utama yang dibahas dalam artikel ini dan nomor animasi:
+
+| Nomor | Konsep | Korespondensi Fisika/Matematika |
+|-------|--------|--------------------------------|
+| E7 | Dari Nol | Self-organization |
+| E5 | Self-Play | Fixed point convergence |
+| F8 | Kemampuan Emergent | Phase transition |
+| H4 | Policy Gradient | Stochastic optimization |
+
+---
+
+## Bacaan Lanjutan
+
+- **Artikel berikutnya**: [Tinjauan Pertandingan Kunci](../key-matches) — Analisis lengkap pertandingan Fan Hui, Lee Sedol, Ke Jie
+- **Detail teknis**: [Policy Network Detail](../policy-network) — Bagaimana AlphaGo belajar bermain
+- **Praktik langsung**: [Jalankan AI Go Pertama Anda dalam 30 Menit](/docs/tech/hands-on/) — Rasakan sendiri
+
+---
+
+## Referensi
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. Mnih, V., et al. (2015). "Human-level control through deep reinforcement learning." *Nature*, 518, 529-533.
+3. Hassabis, D. (2017). "Artificial Intelligence: Chess match of the century." *Nature*, 544, 413-414.
+4. Dokumenter *AlphaGo* (2017), Sutradara Greg Kohs.

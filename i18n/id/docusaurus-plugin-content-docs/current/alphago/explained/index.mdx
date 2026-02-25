@@ -1,0 +1,132 @@
+---
+sidebar_position: 1
+title: Analisis Lengkap AlphaGo
+description: Dari latar belakang sejarah hingga detail teknis, 20 artikel untuk memahami AlphaGo secara menyeluruh
+---
+
+import { PolicyHeatmap, EloChart } from '@site/src/components/D3Charts';
+
+# Analisis Lengkap AlphaGo
+
+Pada Maret 2016, AlphaGo mengalahkan juara dunia Lee Sedol dengan skor 4:1, mengejutkan seluruh dunia. Ini bukan hanya kemenangan dalam permainan Go, tetapi juga menandai terobosan besar dalam kecerdasan buatan.
+
+Seri ini terdiri dari **20 artikel mendalam** yang akan membawa Anda memahami AlphaGo secara menyeluruh, mulai dari latar belakang sejarah, prinsip teknis, hingga detail implementasi.
+
+---
+
+## Navigasi Seri
+
+### Modul 1: Sejarah dan Terobosan
+
+| Artikel | Deskripsi |
+|---------|-----------|
+| [Kelahiran AlphaGo](./birth-of-alphago) | Pendirian DeepMind, akuisisi Google, komposisi tim |
+| [Tinjauan Pertandingan Kunci](./key-matches) | Fan Hui, Lee Sedol, Ke Jie, 60 kemenangan beruntun Master |
+| [Analisis Mendalam "Langkah Ilahi"](./move-37) | Logika permainan dan interpretasi AI dari langkah ke-37 |
+
+### Modul 2: Tantangan Go
+
+| Artikel | Deskripsi |
+|---------|-----------|
+| [Mengapa Go Sulit?](./why-go-is-hard) | State space 10^170, branching factor ~250 |
+| [Batas Metode Tradisional](./traditional-limits) | Minimax, Alpha-Beta, MCTS murni |
+| [Representasi State Papan](./board-representation) | Zobrist Hashing, Union-Find, encoding fitur |
+
+### Modul 3: Inti Neural Network
+
+| Artikel | Deskripsi |
+|---------|-----------|
+| [Policy Network Detail](./policy-network) | Arsitektur, output Softmax, tujuan pelatihan |
+| [Value Network Detail](./value-network) | Arsitektur, output Tanh, menghindari overfitting |
+| [Desain Fitur Input](./input-features) | Evolusi dari 48 ke 17 feature plane |
+| [CNN dan Go](./cnn-and-go) | Mengapa CNN cocok untuk papan |
+| [Fase Supervised Learning](./supervised-learning) | Dataset KGS, akurasi prediksi 57% |
+
+### Modul 4: Reinforcement Learning dan Pencarian
+
+| Artikel | Deskripsi |
+|---------|-----------|
+| [Pengantar Reinforcement Learning](./reinforcement-intro) | MDP, policy gradient, value function |
+| [Self-Play](./self-play) | Mengapa efektif, kurva pertumbuhan ELO |
+| [Kombinasi MCTS dan Neural Network](./mcts-neural-combo) | Selection→Expansion→Evaluation→Backup |
+| [Formula PUCT Detail](./puct-formula) | Derivasi matematis, eksplorasi vs eksploitasi |
+
+### Modul 5: Evolusi AlphaGo Zero
+
+| Artikel | Deskripsi |
+|---------|-----------|
+| [Gambaran AlphaGo Zero](./alphago-zero) | Mengapa tidak butuh permainan manusia |
+| [Dual-Head Network dan ResNet](./dual-head-resnet) | Representasi bersama, aliran gradien, ResNet 40 layer |
+| [Proses Pelatihan dari Nol](./training-from-scratch) | Perubahan Hari 0-3, melampaui manusia dalam 3 hari |
+
+### Modul 6: Detail Teknis dan Ekstensi
+
+| Artikel | Deskripsi |
+|---------|-----------|
+| [Sistem Terdistribusi dan TPU](./distributed-systems) | Arsitektur pelatihan, arsitektur inferensi, MCTS paralel |
+| [Warisan AlphaGo](./legacy-and-impact) | Dampak pada dunia Go, AlphaZero, MuZero, AlphaFold |
+
+---
+
+## Pratinjau Cepat
+
+### Contoh Output Policy Network
+
+Policy Network menghasilkan probabilitas langkah untuk setiap posisi:
+
+<PolicyHeatmap initialPosition="corner" size={400} />
+
+### Kurva Pelatihan
+
+AlphaGo Zero melampaui manusia dalam 3 hari mulai dari nol:
+
+<EloChart mode="zero" width={600} height={350} />
+
+---
+
+## Saran Membaca
+
+### Pilih Titik Awal Berdasarkan Latar Belakang Anda
+
+| Latar Belakang Anda | Titik Awal yang Disarankan |
+|---------------------|---------------------------|
+| **Pemula total** | Mulai dari [Kelahiran AlphaGo](./birth-of-alphago), baca berurutan |
+| **Mengenal Go** | Mulai dari [Mengapa Go Sulit?](./why-go-is-hard) |
+| **Punya dasar machine learning** | Mulai dari [Policy Network Detail](./policy-network) |
+| **Ingin memahami esensi dengan cepat** | Baca [Kombinasi MCTS dan Neural Network](./mcts-neural-combo) |
+| **Ingin memahami terobosan Zero** | Mulai dari [Gambaran AlphaGo Zero](./alphago-zero) |
+
+### Perkiraan Waktu Membaca
+
+- **Membaca lengkap**: Sekitar 8-10 jam
+- **Membaca cepat**: Sekitar 2-3 jam
+- **Setiap artikel**: Sekitar 15-25 menit
+
+---
+
+## Korespondensi Animasi
+
+Seri artikel ini mereferensikan seri berikut dari [109 konsep animasi](/docs/tech/how-it-works/concepts/):
+
+| Seri | Tema | Artikel Terkait |
+|------|------|-----------------|
+| **Seri C** | Metode Monte Carlo | #5, #14, #15 |
+| **Seri D** | Neural Network | #7, #8, #10, #11 |
+| **Seri E** | Arsitektur AlphaGo | #13, #16, #17, #18 |
+| **Seri H** | Reinforcement Learning | #12, #13 |
+
+---
+
+## Referensi
+
+### Paper
+
+1. Silver, D., et al. (2016). ["Mastering the game of Go with deep neural networks and tree search."](https://www.nature.com/articles/nature16961) *Nature*.
+2. Silver, D., et al. (2017). ["Mastering the game of Go without human knowledge."](https://www.nature.com/articles/nature24270) *Nature*.
+3. Silver, D., et al. (2018). ["A general reinforcement learning algorithm that masters chess, shogi, and Go through self-play."](https://www.science.org/doi/10.1126/science.aar6404) *Science*.
+
+### Bacaan Lanjutan
+
+- [Inovasi Kunci KataGo](/docs/tech/how-it-works/katago-innovations) — Cara mencapai kekuatan bermain yang lebih tinggi dengan sumber daya lebih sedikit
+- [Tabel Referensi Cepat Konsep](/docs/tech/how-it-works/concepts/) — Daftar lengkap 109 konsep animasi
+- [Jalankan AI Go Pertama Anda dalam 30 Menit](/docs/tech/hands-on/) — Praktik langsung

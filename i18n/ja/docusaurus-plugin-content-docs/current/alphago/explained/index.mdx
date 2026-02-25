@@ -1,0 +1,132 @@
+---
+sidebar_position: 1
+title: AlphaGo 完全解析
+description: 歴史的背景から技術詳細まで、20 本の記事で AlphaGo を徹底理解
+---
+
+import { PolicyHeatmap, EloChart } from '@site/src/components/D3Charts';
+
+# AlphaGo 完全解析
+
+2016 年 3 月、AlphaGo は 4:1 で世界チャンピオンのイ・セドルを破り、世界に衝撃を与えました。これは単なる囲碁の勝利ではなく、人工知能の重大な突破を意味しています。
+
+本シリーズ **20 本の深掘り記事** では、歴史的背景、技術原理、実装詳細まで、AlphaGo のすべてを徹底的に解説します。
+
+---
+
+## シリーズガイド
+
+### モジュール 1：歴史と突破
+
+| 記事 | 説明 |
+|------|------|
+| [AlphaGo の誕生](./birth-of-alphago) | DeepMind 創立、Google 買収、チーム構成 |
+| [重要な対局の振り返り](./key-matches) | ファン・フイ、イ・セドル、柯潔、Master 60連勝 |
+| [「神の一手」の深層分析](./move-37) | 37手目の棋理と AI 視点からの解読 |
+
+### モジュール 2：囲碁の挑戦
+
+| 記事 | 説明 |
+|------|------|
+| [なぜ囲碁は難しいのか？](./why-go-is-hard) | 状態空間 10^170、分岐因子 ~250 |
+| [従来手法の限界](./traditional-limits) | Minimax、Alpha-Beta、純粋 MCTS |
+| [盤面状態の表現](./board-representation) | Zobrist Hashing、Union-Find、特徴エンコーディング |
+
+### モジュール 3：ニューラルネットワークの核心
+
+| 記事 | 説明 |
+|------|------|
+| [ポリシーネットワーク詳解](./policy-network) | アーキテクチャ、Softmax 出力、学習目標 |
+| [バリューネットワーク詳解](./value-network) | アーキテクチャ、Tanh 出力、過学習の回避 |
+| [入力特徴の設計](./input-features) | 48→17 個の特徴プレーンの進化 |
+| [CNN と囲碁の融合](./cnn-and-go) | なぜ CNN が盤面に適しているか |
+| [教師あり学習フェーズ](./supervised-learning) | KGS データセット、57% の予測精度 |
+
+### モジュール 4：強化学習と探索
+
+| 記事 | 説明 |
+|------|------|
+| [強化学習入門](./reinforcement-intro) | MDP、ポリシー勾配、価値関数 |
+| [自己対戦](./self-play) | なぜ効果的か、ELO 成長曲線 |
+| [MCTS とニューラルネットワークの統合](./mcts-neural-combo) | Selection→Expansion→Evaluation→Backup |
+| [PUCT 公式詳解](./puct-formula) | 数学的導出、探索 vs 活用 |
+
+### モジュール 5：AlphaGo Zero の進化
+
+| 記事 | 説明 |
+|------|------|
+| [AlphaGo Zero 概要](./alphago-zero) | なぜ人間の棋譜が不要か |
+| [デュアルヘッドネットワークと残差ネットワーク](./dual-head-resnet) | 共有表現、勾配の流れ、40 層 ResNet |
+| [ゼロからの学習プロセス](./training-from-scratch) | 0-3 日目の変化、3 日で人類を超える |
+
+### モジュール 6：技術詳細と発展
+
+| 記事 | 説明 |
+|------|------|
+| [分散システムと TPU](./distributed-systems) | 学習アーキテクチャ、推論アーキテクチャ、並列 MCTS |
+| [AlphaGo の遺産](./legacy-and-impact) | 囲碁界への影響、AlphaZero、MuZero、AlphaFold |
+
+---
+
+## クイックプレビュー
+
+### ポリシーネットワーク出力例
+
+ポリシーネットワークは各位置への着手確率を出力します：
+
+<PolicyHeatmap initialPosition="corner" size={400} />
+
+### 学習曲線
+
+AlphaGo Zero は 3 日でゼロから人類を超えました：
+
+<EloChart mode="zero" width={600} height={350} />
+
+---
+
+## 読み進め方のご提案
+
+### 背景に応じた開始点
+
+| あなたの背景 | おすすめの開始点 |
+|---------|---------|
+| **完全な初心者** | [AlphaGo の誕生](./birth-of-alphago) から順番に読む |
+| **囲碁を理解している** | [なぜ囲碁は難しいのか？](./why-go-is-hard) から始める |
+| **機械学習の基礎がある** | [ポリシーネットワーク詳解](./policy-network) から始める |
+| **エッセンスを素早く理解したい** | [MCTS とニューラルネットワークの統合](./mcts-neural-combo) を読む |
+| **Zero の突破を理解したい** | [AlphaGo Zero 概要](./alphago-zero) から始める |
+
+### 想定読了時間
+
+- **完全読破**：約 8-10 時間
+- **クイック概観**：約 2-3 時間
+- **各記事**：約 15-25 分
+
+---
+
+## アニメーション対応表
+
+本シリーズの記事は [109 個のアニメーション概念](/docs/tech/how-it-works/concepts/) の以下のシリーズを引用しています：
+
+| シリーズ | テーマ | 関連記事 |
+|------|------|---------|
+| **C シリーズ** | モンテカルロ法 | #5, #14, #15 |
+| **D シリーズ** | ニューラルネットワーク | #7, #8, #10, #11 |
+| **E シリーズ** | AlphaGo アーキテクチャ | #13, #16, #17, #18 |
+| **H シリーズ** | 強化学習 | #12, #13 |
+
+---
+
+## 参考資料
+
+### 論文
+
+1. Silver, D., et al. (2016). ["Mastering the game of Go with deep neural networks and tree search."](https://www.nature.com/articles/nature16961) *Nature*.
+2. Silver, D., et al. (2017). ["Mastering the game of Go without human knowledge."](https://www.nature.com/articles/nature24270) *Nature*.
+3. Silver, D., et al. (2018). ["A general reinforcement learning algorithm that masters chess, shogi, and Go through self-play."](https://www.science.org/doi/10.1126/science.aar6404) *Science*.
+
+### 関連読み物
+
+- [KataGo の重要なイノベーション](/docs/tech/how-it-works/katago-innovations) — より少ないリソースでより強い棋力を実現する方法
+- [概念クイックリファレンス](/docs/tech/how-it-works/concepts/) — 109 個のアニメーション概念の完全リスト
+- [30 分で初めての囲碁 AI を動かす](/docs/tech/hands-on/) — ハンズオン実践
