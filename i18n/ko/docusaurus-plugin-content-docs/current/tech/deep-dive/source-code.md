@@ -421,4 +421,4 @@ if(node->visits > 1000) {
 
 - [KataGo 학습 메커니즘 분석](../training) — 전체 학습 프로세스
 - [오픈소스 커뮤니티 참여](../contributing) — 기여 가이드
-- [개념 빠른 참조표](../../how-it-works/concepts/) — 109개 개념 대조
+- [개념 빠른 참조표](/docs/animations/) — 109개 개념 대조

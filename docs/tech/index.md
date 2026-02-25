@@ -109,7 +109,7 @@ description: 從 AlphaGo 到 KataGo，完整學習圍棋 AI 的技術原理與�
 | E | 13 | AlphaGo 架構 |
 | F-L | 46 | 縮放、維度、強化學習、博弈論、資訊理論、優化、泛化 |
 
-完整清單請見 [概念速查表](./how-it-works/concepts/)。
+完整清單請見 [概念速查表](/docs/animations/)。
 
 ## 延伸資源
 

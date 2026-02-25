@@ -346,7 +346,7 @@ KataGo 的 Analysis Engine 提供豐富的 JSON API：
 
 ## 延伸閱讀
 
-- [概念速查表](../concepts/) — 109 個動畫概念
+- [概念速查表](/docs/animations/) — 109 個動畫概念
 - [30 分鐘跑起第一個圍棋 AI](../../hands-on/) — 動手安裝 KataGo
 - [KataGo 原始碼導讀](../../deep-dive/source-code) — 深入程式碼
 - [KataGo 訓練機制解析](../../deep-dive/training) — 自我對弈訓練原理

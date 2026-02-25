@@ -421,4 +421,4 @@ if(node->visits > 1000) {
 
 - [KataGo Training Mechanism](../training) — Complete training process
 - [Contributing to Open Source](../contributing) — Contribution guide
-- [Concept Quick Reference](../../how-it-works/concepts/) — 109 concept mappings
+- [Concept Quick Reference](/docs/animations/) — 109 concept mappings

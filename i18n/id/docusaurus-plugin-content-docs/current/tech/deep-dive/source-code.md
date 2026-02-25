@@ -421,4 +421,4 @@ if(node->visits > 1000) {
 
 - [Analisis Mekanisme Pelatihan KataGo](../training) — Alur pelatihan lengkap
 - [Berkontribusi ke Komunitas Open Source](../contributing) — Panduan kontribusi
-- [Lembar Referensi Konsep](../../how-it-works/concepts/) — Padanan 109 konsep
+- [Lembar Referensi Konsep](/docs/animations/) — Padanan 109 konsep

@@ -421,4 +421,4 @@ if(node->visits > 1000) {
 
 - [Analise do Mecanismo de Treinamento do KataGo](../training) — Fluxo completo de treinamento
 - [Participando da Comunidade Open Source](../contributing) — Guia de contribuicao
-- [Tabela de Referencia de Conceitos](../../how-it-works/concepts/) — Comparacao de 109 conceitos
+- [Tabela de Referencia de Conceitos](/docs/animations/) — Comparacao de 109 conceitos

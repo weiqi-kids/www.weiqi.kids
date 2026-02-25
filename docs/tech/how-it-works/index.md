@@ -396,9 +396,9 @@ flowchart TB
 
 ## 延伸閱讀
 
-- **想更深入 AlphaGo**？→ [AlphaGo 完整解析](/docs/alphago/explained/)
+- **想更深入 AlphaGo**？→ [AlphaGo 完整解析](/docs/alphago/)
 - **想了解 KataGo 細節**？→ [KataGo 的關鍵創新](./katago-innovations)
-- **想查特定概念**？→ [概念速查表](./concepts/)
+- **想查特定概念**？→ [概念速查表](/docs/animations/)
 - **想動手實作**？→ [30 分鐘跑起第一個圍棋 AI](../hands-on/)
 
 ---

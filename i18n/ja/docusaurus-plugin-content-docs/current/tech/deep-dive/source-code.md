@@ -421,4 +421,4 @@ if(node->visits > 1000) {
 
 - [KataGo訓練メカニズム解析](../training) — 完全な訓練フロー
 - [オープンソースコミュニティへの参加](../contributing) — 貢献ガイド
-- [概念クイックリファレンス](../../how-it-works/concepts/) — 109の概念対照
+- [概念クイックリファレンス](/docs/animations/) — 109の概念対照

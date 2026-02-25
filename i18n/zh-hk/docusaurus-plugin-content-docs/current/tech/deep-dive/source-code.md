@@ -421,4 +421,4 @@ if(node->visits > 1000) {
 
 - [KataGo 訓練機制解析](../training) — 完整訓練流程
 - [參與開源社群](../contributing) — 貢獻指南
-- [概念速查表](../../how-it-works/concepts/) — 109 個概念對照
+- [概念速查表](/docs/animations/) — 109 個概念對照
