@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Pre-commit hook: 檢查 Docusaurus build（僅預設語系以加快速度）
+# 若要跳過：git commit --no-verify
+
+echo "🔍 Running pre-commit build check (default locale only)..."
+
+# 只建置預設語系來加快檢查速度
+pnpm build --locale zh-tw
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ Build failed! Please fix the errors before committing."
+  echo "   Common issues:"
+  echo "   - Broken links (check file paths)"
+  echo "   - Invalid Markdown syntax"
+  echo "   - Missing frontmatter"
+  echo ""
+  exit 1
+fi
+
+echo "✅ Build check passed!"
