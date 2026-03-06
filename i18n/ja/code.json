@@ -19,10 +19,10 @@
     "message": "世界唯一の11言語対応の囲碁学習プラットフォーム。繁体字中国語、簡体字中国語、広東語、英語、日本語、韓国語、スペイン語、ポルトガル語、ヒンディー語、インドネシア語、アラビア語に対応。"
   },
   "homepage.feature.katago.title": {
-    "message": "中国語KataGoドキュメント"
+    "message": "日本語KataGoドキュメント"
   },
   "homepage.feature.katago.desc": {
-    "message": "唯一の繁体字中国語KataGo技術ドキュメント。台湾のエンジニアに包括的な囲碁AI開発リソースを提供。"
+    "message": "日本語のKataGo技術ドキュメント。エンジニアに包括的な囲碁AI開発リソースを提供し、入門のハードルを下げます。"
   },
   "homepage.feature.free.title": {
     "message": "無料＆オープン"

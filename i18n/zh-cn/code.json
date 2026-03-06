@@ -19,10 +19,10 @@
     "message": "全球唯一支援 11 种语言的围棋学习平台，包含繁中、简中、粤语、英、日、韩、西、葡、印地、印尼、阿拉伯语，让围棋文化无国界传播。"
   },
   "homepage.feature.katago.title": {
-    "message": "繁中 KataGo 文档"
+    "message": "简中 KataGo 文档"
   },
   "homepage.feature.katago.desc": {
-    "message": "全网唯一繁体中文 KataGo 技术文档，为台湾工程师提供完整的围棋 AI 开发资源，降低入门门槛。"
+    "message": "完整的简体中文 KataGo 技术文档，为工程师提供围棋 AI 开发资源，降低入门门槛。"
   },
   "homepage.feature.free.title": {
     "message": "免费公开"

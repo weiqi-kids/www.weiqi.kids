@@ -19,10 +19,10 @@
     "message": "A única plataforma de aprendizado de Go do mundo que suporta 11 idiomas, incluindo chinês tradicional, chinês simplificado, cantonês, inglês, japonês, coreano, espanhol, português, hindi, indonésio e árabe."
   },
   "homepage.feature.katago.title": {
-    "message": "Documentação KataGo em Chinês"
+    "message": "Documentação KataGo em Português"
   },
   "homepage.feature.katago.desc": {
-    "message": "A única documentação técnica do KataGo em chinês tradicional, fornecendo aos engenheiros taiwaneses recursos abrangentes de desenvolvimento de IA de Go."
+    "message": "Documentação técnica completa do KataGo em português, fornecendo aos engenheiros recursos abrangentes de desenvolvimento de IA de Go."
   },
   "homepage.feature.free.title": {
     "message": "Gratuito e Aberto"
