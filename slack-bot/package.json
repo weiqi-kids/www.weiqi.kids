@@ -1,0 +1,20 @@
+{
+  "name": "weiqi-kids-slack-bot",
+  "version": "1.0.0",
+  "description": "Slack Bot for Weiqi.Kids website maintenance via Claude CLI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "@slack/bolt": "^3.17.0",
+    "proper-lockfile": "^4.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
