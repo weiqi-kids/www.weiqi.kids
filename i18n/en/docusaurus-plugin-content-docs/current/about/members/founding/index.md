@@ -9,7 +9,7 @@ The Taiwan Good Go Baby Association was founded by a group of passionate Go enth
 
 ## Chairman
 
-- [Lightman Chang](./lightman-chang) - Goer Technology Co., Ltd.
+- [Lightman Chang](./lightman-chang) - Taiwan Good Go Baby Association
 
 ## Founding Members
 

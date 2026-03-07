@@ -17,7 +17,7 @@ Lightman Chang is the founder and Chairman of the Taiwan Good Go Baby Associatio
 
 - Chairman, Taiwan Good Go Baby Association
 - Shareholder, Goer Technology Co., Ltd.
-- CTO, Medicine Reminder Co., Ltd.
+- CTO, Medicine Reminder Technology Co., Ltd.
 
 ## Contact
 

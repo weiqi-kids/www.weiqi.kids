@@ -9,7 +9,7 @@ A Associação Taiwan Good Go Baby foi fundada por um grupo de profissionais de 
 
 ## Presidente
 
-- [Zhang Raohui](./lightman-chang) - Weiqi Ren Technology Co., Ltd.
+- [Zhang Raohui](./lightman-chang) - Taiwan Good Go Baby Association
 
 ## Membros Fundadores
 

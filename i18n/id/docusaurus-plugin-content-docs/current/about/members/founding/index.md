@@ -9,7 +9,7 @@ Asosiasi Taiwan Good Go Baby didirikan oleh sekelompok profesional dari berbagai
 
 ## Ketua
 
-- [Zhang Raohui](./lightman-chang) - Weiqi Ren Technology Co., Ltd.
+- [Zhang Raohui](./lightman-chang) - Taiwan Good Go Baby Association
 
 ## Anggota Pendiri
 
