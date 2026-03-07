@@ -5,8 +5,6 @@ title: 张饶辉
 
 # 张饶辉 Lightman Chang
 
-![张饶辉](/img/members/lightman-chang.png)
-
 **台湾好棋宝宝协会 理事长**
 
 ## 关于

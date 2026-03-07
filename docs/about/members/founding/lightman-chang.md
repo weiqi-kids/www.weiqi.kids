@@ -5,8 +5,6 @@ title: 張饒輝
 
 # 張饒輝 Lightman Chang
 
-![張饒輝](/img/members/lightman-chang.png)
-
 **台灣好棋寶寶協會 理事長**
 
 ## 關於

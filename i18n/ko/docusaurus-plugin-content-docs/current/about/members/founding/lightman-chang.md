@@ -5,8 +5,6 @@ title: 장라오후이
 
 # 장라오후이 Lightman Chang
 
-![장라오후이](/img/members/lightman-chang.png)
-
 **대만호치베이비협회 이사장**
 
 ## 소개

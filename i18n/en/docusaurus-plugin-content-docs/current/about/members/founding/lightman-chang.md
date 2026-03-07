@@ -5,8 +5,6 @@ title: Lightman Chang
 
 # Lightman Chang
 
-![Lightman Chang](/img/members/lightman-chang.png)
-
 **Chairman, Taiwan Good Go Baby Association**
 
 ## About
