@@ -11,12 +11,13 @@ title: Lightman Chang
 
 ## About
 
-Lightman Chang is the founder and Chairman of the Taiwan Good Go Baby Association, as well as the head of Goer Technology Co., Ltd. He is dedicated to promoting Go culture through innovation, combining technology with traditional board game artistry to make Go accessible to more people.
+Lightman Chang is the founder and Chairman of the Taiwan Good Go Baby Association. He is dedicated to promoting Go culture through innovation, combining technology with traditional board game artistry to make Go accessible to more people.
 
 ## Current Positions
 
 - Chairman, Taiwan Good Go Baby Association
-- CEO, Goer Technology Co., Ltd.
+- Shareholder, Goer Technology Co., Ltd.
+- CTO, Medicine Reminder Co., Ltd.
 
 ## Contact
 
