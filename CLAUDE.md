@@ -348,3 +348,37 @@ cat analytics/history/daily-views.json | jq '.views[-7:]'
 - `revamp/4-strategy/CLAUDE.md` - 改版策略
 - `revamp/5-content-spec/CLAUDE.md` - 內容規格
 - `revamp/final-review/CLAUDE.md` - 最終驗收
+
+---
+
+## 緊急修正 SOP
+
+> **重要**：涉及人名、職稱、公司名稱等敏感資訊的修正，可能造成名譽損害或法律問題，必須最高優先級處理。
+
+### 執行流程
+
+1. **修改檔案後立即部署**
+   - 不能只 push 到 main 分支
+   - 必須同時部署到 GitHub Pages
+
+2. **標準部署指令**
+   ```bash
+   GIT_USER=weiqi-kids pnpm run deploy
+   ```
+
+3. **部署失敗時的快速替代方案**
+   - 如果標準部署失敗或網路不穩定，直接推送已編譯的 build 目錄：
+   ```bash
+   cd build && git init && git remote add origin https://github.com/weiqi-kids/www.weiqi.kids.git && git add -A && git commit -m "Deploy" && git push -f origin HEAD:gh-pages
+   ```
+
+4. **部署完成後立即驗證**
+   - 開啟線上網站確認內容已更新
+   - 如有快取問題，按 Ctrl+Shift+R 強制刷新
+   - 確認無誤才能回報完成
+
+### 禁止事項
+
+- ❌ 只 push 到 main 而不部署
+- ❌ 部署失敗後反覆重新編譯（浪費時間）
+- ❌ 未驗證線上內容就回報完成
