@@ -379,7 +379,12 @@
       "timestamp": "2026-04-21T00:00:00Z",
       "count": 7,
       "uniques": 4
+    },
+    {
+      "timestamp": "2026-04-22T00:00:00Z",
+      "count": 32,
+      "uniques": 10
     }
   ],
-  "lastUpdated": "2026-04-23T01:17:09.454Z"
+  "lastUpdated": "2026-04-24T01:16:48.315Z"
 }
