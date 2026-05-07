@@ -1,7 +1,47 @@
 {
   "homepage.tagline": {
-    "message": "台湾グッド囲碁ベビー協会｜囲碁文化の前進を推し進める手助け",
+    "message": "オープンソース研究コミュニティ・囲碁から始まる",
     "description": "Site subtitle"
+  },
+  "homepage.hero.stats": {
+    "message": "創設メンバー 11 名 · 公益プロジェクト 38 件 · オープンソース · 毎日自動更新",
+    "description": "Hero stats line"
+  },
+  "homepage.cta.about": {
+    "message": "協会について"
+  },
+  "homepage.cta.research": {
+    "message": "研究成果"
+  },
+  "homepage.origin.badge": {
+    "message": "起源の記念碑"
+  },
+  "homepage.origin.title": {
+    "message": "なぜ囲碁から？"
+  },
+  "homepage.origin.lead": {
+    "message": "AI の波が最初に押し寄せたのは、囲碁界でした。"
+  },
+  "homepage.origin.body": {
+    "message": "2016 年に AlphaGo がイ・セドルを破って以来、囲碁人は AI に最も早く洗礼を受け、最も早く AI を受け入れた人々です。今日、私たちはその経験をヘルスケア、産業、教育、公共政策などの分野に広げ、より多くの人がこの技術の波を活かせるよう取り組んでいます。"
+  },
+  "homepage.origin.cta.learn": {
+    "message": "囲碁学習リソース →"
+  },
+  "homepage.origin.cta.alphago": {
+    "message": "AlphaGo 進化の整理 →"
+  },
+  "homepage.members.title": {
+    "message": "創設メンバー"
+  },
+  "homepage.members.desc": {
+    "message": "囲碁、医療、法律、マーケティング、教育の各分野から集まった 11 名の専門家が、台湾グッド囲碁ベビー協会を共同設立しました。"
+  },
+  "homepage.members.disclosure": {
+    "message": "現在、すべての研究およびツールプロジェクトは理事長 CΛ / Lightman が主導して実行しており、創設メンバーは各分野のコンサルティングとレビューを提供しています。次の段階に深く関わってくださる新しいメンバーや外部協力者を心より歓迎します。"
+  },
+  "homepage.members.cta": {
+    "message": "全メンバーを見る"
   },
   "homepage.quickStart": {
     "message": "1分でクイックスタート ⏱️"
@@ -502,5 +542,140 @@
   },
   "item.label.協會介紹": {
     "message": "協会について"
+  },
+  "apps.meta.description": {
+    "message": "好棋寶寶協會的 10 個 AI 應用工具：消費購物、健康教育、資安疫情、貿易聲量、政策追蹤。免費公開供大眾使用。"
+  },
+  "apps.meta.title": {
+    "message": "AI 應用工具 — 好棋寶寶協會"
+  },
+  "apps.hero.title": {
+    "message": "AI 應用工具"
+  },
+  "apps.hero.desc": {
+    "message": "運用人工智慧技術，深入分析各領域情報，提供即時洞察與決策支援。所有工具免費公開。"
+  },
+  "homepage.alphaGo": {
+    "message": "AlphaGo"
+  },
+  "intel.meta.title": {
+    "message": "產業供應鏈情報 — 好棋寶寶協會"
+  },
+  "intel.hero.title": {
+    "message": "產業供應鏈情報"
+  },
+  "intel.hero.desc": {
+    "message": "{sites} 條供應鏈，{companies}+ 家公司，每日自動抓取新聞、財報、產業數據。每條鏈都對標代表性 ETF 作為市場基線。"
+  },
+  "research.meta.description": {
+    "message": "好棋寶寶協會發表的學術論文：圍棋理論、機器學習理論、數學研究。每篇皆含互動視覺化網頁與完整數學證明。"
+  },
+  "research.meta.title": {
+    "message": "學術研究 — 好棋寶寶協會"
+  },
+  "research.hero.title": {
+    "message": "學術研究發表"
+  },
+  "research.hero.desc": {
+    "message": "我們發表的論文，每篇都是完整數學證明 + 互動視覺化網頁 + GitHub 開源。涵蓋圍棋理論、機器學習，以及經典數學問題。"
+  },
+  "homepage.pillar.cta": {
+    "message": "查看全部 →"
+  },
+  "homepage.pillars.title": {
+    "message": "三大研究軸線"
+  },
+  "homepage.pillars.desc": {
+    "message": "學術論文、產業情報、AI 工具，三條主軸並行推動圍棋文化與資訊公益。"
+  },
+  "homepage.pillar.research.count": {
+    "message": "篇論文"
+  },
+  "homepage.pillar.intel.count": {
+    "message": "條供應鏈"
+  },
+  "homepage.pillar.apps.count": {
+    "message": "個工具"
+  },
+  "homepage.friends.title": {
+    "message": "媒體聯播網"
+  },
+  "homepage.friends.desc": {
+    "message": "合作夥伴媒體，提供醫療健康領域的專業內容。"
+  },
+  "homepage.friends.link.web": {
+    "message": "官網"
+  },
+  "homepage.friends.link.social": {
+    "message": "社群"
+  },
+  "homepage.friends.link.video": {
+    "message": "影音"
+  },
+  "homepage.research.all": {
+    "message": "查看全部論文"
+  },
+  "homepage.intel.all": {
+    "message": "查看全部 23 條供應鏈"
+  },
+  "homepage.apps.all": {
+    "message": "查看全部 10 個工具"
+  },
+  "intel.metric.companies": {
+    "message": "公司"
+  },
+  "intel.metric.structure": {
+    "message": "上 · 中 · 下"
+  },
+  "intel.metric.baseline": {
+    "message": "基線 ETF"
+  },
+  "intel.topics.label": {
+    "message": "追蹤主題"
+  },
+  "intel.cta": {
+    "message": "前往儀表板 →"
+  },
+  "research.action.read": {
+    "message": "閱讀互動論文 →"
+  },
+  "theme.IconExternalLink.ariaLabel": {
+    "message": "(opens in new tab)",
+    "description": "The ARIA label for the external link icon"
+  },
+  "theme.SearchPage.existingResultsTitle": {
+    "message": "検索：{query}",
+    "description": "The search page title for non-empty query"
+  },
+  "theme.SearchPage.emptyResultsTitle": {
+    "message": "検索したい語句を入力してください。",
+    "description": "The search page title for empty query"
+  },
+  "theme.SearchPage.searchContext.everywhere": {
+    "message": "すべての場所"
+  },
+  "theme.SearchPage.documentsFound.plurals": {
+    "message": "検索数：{count}件",
+    "description": "Pluralized label for \"{count} documents found\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.SearchPage.noResultsText": {
+    "message": "結果が見つかりません。",
+    "description": "The paragraph for empty search result"
+  },
+  "theme.SearchBar.noResultsText": {
+    "message": "結果が見つかりません。"
+  },
+  "theme.SearchBar.seeAllOutsideContext": {
+    "message": "「{context}」以外のすべての結果を見る"
+  },
+  "theme.SearchBar.searchInContext": {
+    "message": "「{context}」のすべての結果を見る"
+  },
+  "theme.SearchBar.seeAll": {
+    "message": "すべての結果を見る"
+  },
+  "theme.SearchBar.label": {
+    "message": "検索",
+    "description": "The ARIA label and placeholder for search button"
   }
 }

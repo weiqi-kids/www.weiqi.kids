@@ -358,5 +358,140 @@
   "homepage.tagline": {
     "message": "台灣好棋寶寶協會｜致力於圍棋文化前進的推手",
     "description": "Site subtitle"
+  },
+  "apps.meta.description": {
+    "message": "好棋寶寶協會的 10 個 AI 應用工具：消費購物、健康教育、資安疫情、貿易聲量、政策追蹤。免費公開供大眾使用。"
+  },
+  "apps.meta.title": {
+    "message": "AI 應用工具 — 好棋寶寶協會"
+  },
+  "apps.hero.title": {
+    "message": "AI 應用工具"
+  },
+  "apps.hero.desc": {
+    "message": "運用人工智慧技術，深入分析各領域情報，提供即時洞察與決策支援。所有工具免費公開。"
+  },
+  "homepage.alphaGo": {
+    "message": "AlphaGo"
+  },
+  "intel.meta.title": {
+    "message": "產業供應鏈情報 — 好棋寶寶協會"
+  },
+  "intel.hero.title": {
+    "message": "產業供應鏈情報"
+  },
+  "intel.hero.desc": {
+    "message": "{sites} 條供應鏈，{companies}+ 家公司，每日自動抓取新聞、財報、產業數據。每條鏈都對標代表性 ETF 作為市場基線。"
+  },
+  "research.meta.description": {
+    "message": "好棋寶寶協會發表的學術論文：圍棋理論、機器學習理論、數學研究。每篇皆含互動視覺化網頁與完整數學證明。"
+  },
+  "research.meta.title": {
+    "message": "學術研究 — 好棋寶寶協會"
+  },
+  "research.hero.title": {
+    "message": "學術研究發表"
+  },
+  "research.hero.desc": {
+    "message": "我們發表的論文，每篇都是完整數學證明 + 互動視覺化網頁 + GitHub 開源。涵蓋圍棋理論、機器學習，以及經典數學問題。"
+  },
+  "homepage.pillar.cta": {
+    "message": "查看全部 →"
+  },
+  "homepage.pillars.title": {
+    "message": "三大研究軸線"
+  },
+  "homepage.pillars.desc": {
+    "message": "學術論文、產業情報、AI 工具，三條主軸並行推動圍棋文化與資訊公益。"
+  },
+  "homepage.pillar.research.count": {
+    "message": "篇論文"
+  },
+  "homepage.pillar.intel.count": {
+    "message": "條供應鏈"
+  },
+  "homepage.pillar.apps.count": {
+    "message": "個工具"
+  },
+  "homepage.friends.title": {
+    "message": "媒體聯播網"
+  },
+  "homepage.friends.desc": {
+    "message": "合作夥伴媒體，提供醫療健康領域的專業內容。"
+  },
+  "homepage.friends.link.web": {
+    "message": "官網"
+  },
+  "homepage.friends.link.social": {
+    "message": "社群"
+  },
+  "homepage.friends.link.video": {
+    "message": "影音"
+  },
+  "homepage.research.all": {
+    "message": "查看全部論文"
+  },
+  "homepage.intel.all": {
+    "message": "查看全部 23 條供應鏈"
+  },
+  "homepage.apps.all": {
+    "message": "查看全部 10 個工具"
+  },
+  "intel.metric.companies": {
+    "message": "公司"
+  },
+  "intel.metric.structure": {
+    "message": "上 · 中 · 下"
+  },
+  "intel.metric.baseline": {
+    "message": "基線 ETF"
+  },
+  "intel.topics.label": {
+    "message": "追蹤主題"
+  },
+  "intel.cta": {
+    "message": "前往儀表板 →"
+  },
+  "research.action.read": {
+    "message": "閱讀互動論文 →"
+  },
+  "theme.IconExternalLink.ariaLabel": {
+    "message": "(opens in new tab)",
+    "description": "The ARIA label for the external link icon"
+  },
+  "theme.SearchBar.noResultsText": {
+    "message": "No results"
+  },
+  "theme.SearchBar.seeAllOutsideContext": {
+    "message": "See all results outside \"{context}\""
+  },
+  "theme.SearchBar.searchInContext": {
+    "message": "See all results within \"{context}\""
+  },
+  "theme.SearchBar.seeAll": {
+    "message": "See all results"
+  },
+  "theme.SearchBar.label": {
+    "message": "Search",
+    "description": "The ARIA label and placeholder for search button"
+  },
+  "theme.SearchPage.existingResultsTitle": {
+    "message": "Search results for \"{query}\"",
+    "description": "The search page title for non-empty query"
+  },
+  "theme.SearchPage.emptyResultsTitle": {
+    "message": "Search the documentation",
+    "description": "The search page title for empty query"
+  },
+  "theme.SearchPage.searchContext.everywhere": {
+    "message": "Everywhere"
+  },
+  "theme.SearchPage.documentsFound.plurals": {
+    "message": "1 document found|{count} documents found",
+    "description": "Pluralized label for \"{count} documents found\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.SearchPage.noResultsText": {
+    "message": "No documents were found",
+    "description": "The paragraph for empty search result"
   }
 }

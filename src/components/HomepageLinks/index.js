@@ -1,194 +1,262 @@
 import clsx from 'clsx';
+import Link from '@docusaurus/Link';
 import Heading from '@theme/Heading';
 import Translate, {translate} from '@docusaurus/Translate';
+
+import IntelCard from '@site/src/components/IntelCard';
+import PaperCard from '@site/src/components/PaperCard';
+import AppCard from '@site/src/components/AppCard';
+
+import {officialLinks} from '@site/src/data/links/official';
+import {researchPapers} from '@site/src/data/links/research';
+import {intelLinks} from '@site/src/data/links/intel';
+import {appLinks} from '@site/src/data/links/apps';
+import {friendSites} from '@site/src/data/links/friends';
+import {founders} from '@site/src/data/members';
+
 import styles from './styles.module.css';
 
-// SVG imports
-import StatusSvg from '@site/static/img/links/status.svg';
-import SocialSvg from '@site/static/img/links/social.svg';
-import VideoSvg from '@site/static/img/links/video.svg';
-import EcommerceSvg from '@site/static/img/links/ecommerce.svg';
-import SecuritySvg from '@site/static/img/links/security.svg';
-import HealthSvg from '@site/static/img/links/health.svg';
-import SupplementSvg from '@site/static/img/links/supplement.svg';
-import LawSvg from '@site/static/img/links/law.svg';
-import TradeSvg from '@site/static/img/links/trade.svg';
-import JobSvg from '@site/static/img/links/job.svg';
-import EducationSvg from '@site/static/img/links/education.svg';
-import PolicySvg from '@site/static/img/links/policy.svg';
-import ListeningSvg from '@site/static/img/links/listening.svg';
-import NewsSvg from '@site/static/img/links/news.svg';
-import TlsrNewsSvg from '@site/static/img/links/tlsr-news.svg';
-import TlsrSocialSvg from '@site/static/img/links/tlsr-social.svg';
-import TlsrVideoSvg from '@site/static/img/links/tlsr-video.svg';
+const appIcons = {
+  ecommerce: '🛒', supplement: '💊', education: '📚', job: '💼',
+  security: '🛡️', health: '🦠', law: '⚖️', trade: '🌐',
+  listening: '📊', policy: '📜',
+};
 
-// 官方 - 3 個
-function getOfficialLinks() {
-  return [
-    {
-      title: translate({id: 'homepage.links.official.status.title', message: '網站狀態列'}),
-      href: 'https://status.weiqi.kids/',
-      Svg: StatusSvg,
-      description: translate({id: 'homepage.links.official.status.desc', message: '即時監控所有好棋寶寶服務的運作狀態，確保服務品質與穩定性。'}),
-    },
-    {
-      title: translate({id: 'homepage.links.official.social.title', message: '社群'}),
-      href: 'https://mastodon.weiqi.kids/',
-      Svg: SocialSvg,
-      description: translate({id: 'homepage.links.official.social.desc', message: '加入好棋寶寶 Mastodon 社群，與圍棋愛好者交流互動。'}),
-    },
-    {
-      title: translate({id: 'homepage.links.official.video.title', message: '影音'}),
-      href: 'https://peertube.weiqi.kids/',
-      Svg: VideoSvg,
-      description: translate({id: 'homepage.links.official.video.desc', message: '觀看好棋寶寶 PeerTube 影音頻道，學習圍棋知識與技巧。'}),
-    },
-  ];
-}
+const officialIcons = { status: '🟢', social: '💬', video: '🎬' };
 
-// AI 研究 - 9 個
-function getAIResearchLinks() {
-  return [
-    {
-      title: translate({id: 'homepage.links.ai.ecommerce.title', message: '電商產品研究'}),
-      href: 'https://ecommerce.weiqi.kids/',
-      Svg: EcommerceSvg,
-      description: translate({id: 'homepage.links.ai.ecommerce.desc', message: '買前必看！AI 驅動的電商產品深度研究與分析。'}),
-    },
-    {
-      title: translate({id: 'homepage.links.ai.security.title', message: '資安威脅情報中心'}),
-      href: 'https://security.weiqi.kids/',
-      Svg: SecuritySvg,
-      description: translate({id: 'homepage.links.ai.security.desc', message: '即時掌握全球資安威脅動態，保護數位資產安全。'}),
-    },
-    {
-      title: translate({id: 'homepage.links.ai.health.title', message: 'EpiAlert 疫情快訊'}),
-      href: 'https://epialert.weiqi.kids/',
-      Svg: HealthSvg,
-      description: translate({id: 'homepage.links.ai.health.desc', message: '全球疫情即時監測與預警，守護公共衛生安全。'}),
-    },
-    {
-      title: translate({id: 'homepage.links.ai.supplement.title', message: '保健食品產品情報'}),
-      href: 'https://supplement.weiqi.kids/',
-      Svg: SupplementSvg,
-      description: translate({id: 'homepage.links.ai.supplement.desc', message: '保健食品深度分析，提供科學化的產品評估資訊。'}),
-    },
-    {
-      title: translate({id: 'homepage.links.ai.law.title', message: '全球框架法規變動'}),
-      href: 'https://risk.weiqi.kids/',
-      Svg: LawSvg,
-      description: translate({id: 'homepage.links.ai.law.desc', message: '追蹤全球框架、法規與產業規則的最新變動。'}),
-    },
-    {
-      title: translate({id: 'homepage.links.ai.trade.title', message: '全球貿易情報分析'}),
-      href: 'https://trade.weiqi.kids/',
-      Svg: TradeSvg,
-      description: translate({id: 'homepage.links.ai.trade.desc', message: '深入分析全球貿易動態，掌握國際市場脈動。'}),
-    },
-    {
-      title: translate({id: 'homepage.links.ai.job.title', message: '求職技能需求觀測站'}),
-      href: 'https://skills.weiqi.kids/',
-      Svg: JobSvg,
-      description: translate({id: 'homepage.links.ai.job.desc', message: '觀測就業市場技能需求變化，規劃職涯發展方向。'}),
-    },
-    {
-      title: translate({id: 'homepage.links.ai.education.title', message: '學生學習地圖'}),
-      href: 'https://learn.weiqi.kids/',
-      Svg: EducationSvg,
-      description: translate({id: 'homepage.links.ai.education.desc', message: '為學生規劃最適合的學習路徑，提升學習效率。'}),
-    },
-    {
-      title: translate({id: 'homepage.links.ai.policy.title', message: '政策承諾追蹤'}),
-      href: 'https://lightchang.github.io/brighterarc/',
-      Svg: PolicySvg,
-      description: translate({id: 'homepage.links.ai.policy.desc', message: '追蹤政府與政治人物的政策承諾，促進政治透明與責任。'}),
-    },
-    {
-      title: translate({id: 'homepage.links.ai.listening.title', message: '聲量監測'}),
-      href: 'https://listening.weiqi.kids/',
-      Svg: ListeningSvg,
-      description: translate({id: 'homepage.links.ai.listening.desc', message: '即時監測網路輿情與聲量變化，掌握社群討論趨勢與品牌口碑。'}),
-    },
-  ];
-}
+// 從 intelLinks 挑選首頁精選 6 條（橫跨大類別）
+const intelHighlightIds = ['memory', 'auto', 'solar', 'housing', 'pharma', 'defense'];
+const intelHighlights = intelHighlightIds
+  .map((id) => intelLinks.find((s) => s.id === id))
+  .filter(Boolean);
 
-// 友站 - 亞太醫頭條 3 個
-function getAPPILinks() {
-  return [
-    {
-      title: translate({id: 'homepage.links.appi.news.title', message: '亞太醫頭條官網'}),
-      href: 'https://appi.news/',
-      Svg: NewsSvg,
-      description: translate({id: 'homepage.links.appi.news.desc', message: '亞太地區醫療健康新聞的專業媒體平台。'}),
-    },
-    {
-      title: translate({id: 'homepage.links.appi.social.title', message: '亞太醫頭條社群'}),
-      href: 'https://mastodon.appi.news/',
-      Svg: SocialSvg,
-      description: translate({id: 'homepage.links.appi.social.desc', message: '加入亞太醫頭條 Mastodon 社群，討論醫療健康議題。'}),
-    },
-    {
-      title: translate({id: 'homepage.links.appi.video.title', message: '亞太醫頭條影音'}),
-      href: 'https://peertube.appi.news/',
-      Svg: VideoSvg,
-      description: translate({id: 'homepage.links.appi.video.desc', message: '觀看亞太醫頭條影音內容，掌握醫療健康資訊。'}),
-    },
-  ];
-}
+// 論文全部 5 篇（量少全顯）
+const paperHighlights = researchPapers;
 
-// 友站 - 銅蛇醫報 3 個
-function getTLSRLinks() {
-  return [
-    {
-      title: translate({id: 'homepage.links.tlsr.news.title', message: '銅蛇醫報官網'}),
-      href: 'https://tlsr.news/',
-      Svg: TlsrNewsSvg,
-      description: translate({id: 'homepage.links.tlsr.news.desc', message: '銅蛇醫報官方網站，提供專業醫療資訊與報導。'}),
-    },
-    {
-      title: translate({id: 'homepage.links.tlsr.social.title', message: '銅蛇醫報社群'}),
-      href: 'https://mastodon.tlsr.news/',
-      Svg: TlsrSocialSvg,
-      description: translate({id: 'homepage.links.tlsr.social.desc', message: '加入銅蛇醫報 Mastodon 社群，交流醫療見解。'}),
-    },
-    {
-      title: translate({id: 'homepage.links.tlsr.video.title', message: '銅蛇醫報影音'}),
-      href: 'https://peertube.tlsr.news/',
-      Svg: TlsrVideoSvg,
-      description: translate({id: 'homepage.links.tlsr.video.desc', message: '觀看銅蛇醫報影音頻道，學習醫療保健知識。'}),
-    },
-  ];
-}
+// AI 工具精選 6 個
+const appHighlightIds = ['ecommerce', 'education', 'security', 'health', 'listening', 'policy'];
+const appHighlights = appHighlightIds
+  .map((id) => appLinks.find((a) => a.id === id))
+  .filter(Boolean);
 
-function LinkCard({ Svg, title, description, href }) {
+// ─── 三大支柱入口卡 ───
+function PillarCard({to, icon, titleKey, titleDefault, descKey, descDefault, count, countLabel}) {
   return (
-    <div className={clsx('col col--4')}>
-      <a href={href} target="_blank" rel="noopener noreferrer" className={styles.cardLink}>
-        <div className={styles.card}>
-          <div className="text--center">
-            <Svg className={styles.featureSvg} role="img" />
-          </div>
-          <div className="text--center padding-horiz--md">
-            <Heading as="h3">{title}</Heading>
-            <p>{description}</p>
-          </div>
-        </div>
-      </a>
-    </div>
+    <Link to={to} className={styles.pillarCard}>
+      <div className={styles.pillarIcon}>{icon}</div>
+      <Heading as="h3" className={styles.pillarTitle}>
+        <Translate id={titleKey}>{titleDefault}</Translate>
+      </Heading>
+      <p className={styles.pillarDesc}>
+        <Translate id={descKey}>{descDefault}</Translate>
+      </p>
+      <div className={styles.pillarStat}>
+        <span className={styles.pillarCount}>{count}</span>
+        <span className={styles.pillarCountLabel}>{countLabel}</span>
+      </div>
+      <div className={styles.pillarCta}>
+        <Translate id="homepage.pillar.cta">查看全部 →</Translate>
+      </div>
+    </Link>
   );
 }
 
-function LinkSection({ title, description, links }) {
+function PillarSection() {
   return (
     <section className={styles.section}>
       <div className="container">
         <div className={styles.sectionHeader}>
-          <Heading as="h2">{title}</Heading>
-          {description && <p className={styles.sectionDescription}>{description}</p>}
+          <Heading as="h2">
+            <Translate id="homepage.pillars.title">三大研究軸線</Translate>
+          </Heading>
+          <p className={styles.sectionDescription}>
+            <Translate id="homepage.pillars.desc">
+              學術論文、產業情報、AI 工具，三條主軸並行推動圍棋文化與資訊公益。
+            </Translate>
+          </p>
         </div>
-        <div className="row">
-          {links.map((props, idx) => (
-            <LinkCard key={idx} {...props} />
+        <div className={styles.pillarGrid}>
+          <PillarCard
+            to="/research/"
+            icon="📐"
+            titleKey="homepage.pillar.research.title"
+            titleDefault="學術研究"
+            descKey="homepage.pillar.research.desc"
+            descDefault="圍棋理論、機器學習、數學研究，每篇含互動視覺化與完整證明。"
+            count={researchPapers.length}
+            countLabel={translate({id: 'homepage.pillar.research.count', message: '篇論文'})}
+          />
+          <PillarCard
+            to="/intel/"
+            icon="📊"
+            titleKey="homepage.pillar.intel.title"
+            titleDefault="產業供應鏈情報"
+            descKey="homepage.pillar.intel.desc"
+            descDefault="23 條供應鏈、上中下游公司、每日自動更新，對標 ETF 基線。"
+            count={intelLinks.length}
+            countLabel={translate({id: 'homepage.pillar.intel.count', message: '條供應鏈'})}
+          />
+          <PillarCard
+            to="/apps/"
+            icon="🤖"
+            titleKey="homepage.pillar.apps.title"
+            titleDefault="AI 應用工具"
+            descKey="homepage.pillar.apps.desc"
+            descDefault="消費、健康、教育、資安、貿易等 AI 工具，免費公開供大眾使用。"
+            count={appLinks.length}
+            countLabel={translate({id: 'homepage.pillar.apps.count', message: '個工具'})}
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── 通用區塊 ───
+function HighlightSection({titleKey, titleDefault, descKey, descDefault, allHref, allLabel, children, columns = 3, alt = false}) {
+  return (
+    <section className={clsx(styles.section, alt && styles.sectionAlt)}>
+      <div className="container">
+        <div className={styles.sectionHeader}>
+          <Heading as="h2">
+            <Translate id={titleKey}>{titleDefault}</Translate>
+          </Heading>
+          <p className={styles.sectionDescription}>
+            <Translate id={descKey}>{descDefault}</Translate>
+          </p>
+        </div>
+        <div className={clsx(styles.cardGrid, columns === 2 && styles.cardGridTwo)}>
+          {children}
+        </div>
+        {allHref && (
+          <div className={styles.viewAll}>
+            <Link to={allHref} className={styles.viewAllLink}>
+              {allLabel} →
+            </Link>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+// ─── 圍棋源起紀念碑 ───
+function WeiqiOriginSection() {
+  return (
+    <section className={clsx(styles.section, styles.originSection)}>
+      <div className="container">
+        <div className={styles.originContent}>
+          <span className={styles.originBadge}>
+            <Translate id="homepage.origin.badge">源起紀念碑</Translate>
+          </span>
+          <Heading as="h2" className={styles.originTitle}>
+            <Translate id="homepage.origin.title">為什麼是圍棋？</Translate>
+          </Heading>
+          <p className={styles.originLead}>
+            <Translate id="homepage.origin.lead">
+              AI 浪潮第一個席捲的是圍棋界。
+            </Translate>
+          </p>
+          <p className={styles.originBody}>
+            <Translate id="homepage.origin.body">
+              2016 年 AlphaGo 擊敗李世乭，圍棋人是最早被 AI 洗禮、也最早擁抱 AI 的一群人。今天，我們把這份經驗帶到健康、產業、教育、公共政策等各領域，讓更多人能夠善用這股技術浪潮。
+            </Translate>
+          </p>
+          <div className={styles.originLinks}>
+            <Link to="/docs/learn/" className={styles.originLink}>
+              <Translate id="homepage.origin.cta.learn">圍棋學習資源 →</Translate>
+            </Link>
+            <Link to="/docs/alphago/" className={styles.originLink}>
+              <Translate id="homepage.origin.cta.alphago">AlphaGo 演進整理 →</Translate>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── 創始會員 ───
+function MembersSection() {
+  return (
+    <section className={clsx(styles.section, styles.membersSection)}>
+      <div className="container">
+        <div className={styles.sectionHeader}>
+          <Heading as="h2">
+            <Translate id="homepage.members.title">創始會員</Translate>
+          </Heading>
+          <p className={styles.sectionDescription}>
+            <Translate id="homepage.members.desc">
+              11 位來自圍棋、醫療、法律、行銷、教育的專業人士，共同創立台灣好棋寶寶協會。
+            </Translate>
+          </p>
+        </div>
+        <div className={styles.membersGrid}>
+          {founders.map((m) => (
+            <Link
+              key={m.slug}
+              to={`/docs/about/members/founding/${m.slug}`}
+              className={styles.memberCard}
+              title={m.name}>
+              <div
+                className={styles.memberAvatar}
+                style={{background: m.avatarColor}}
+                aria-hidden="true">
+                {m.name.slice(-1)}
+              </div>
+              <div className={styles.memberName}>{m.name}</div>
+              <div className={styles.memberTitle}>{m.title}</div>
+            </Link>
+          ))}
+        </div>
+        <div className={styles.disclosureBox}>
+          <p className={styles.disclosureText}>
+            <Translate id="homepage.members.disclosure">
+              目前所有研究與工具專案由理事長 CΛ / Lightman 主導執行，創始會員提供跨領域諮詢與審閱，誠邀更多會員與外部合作者深度參與下一階段。
+            </Translate>
+          </p>
+        </div>
+        <div className={styles.viewAll}>
+          <Link to="/docs/about/members/" className={styles.viewAllLink}>
+            <Translate id="homepage.members.cta">認識所有會員</Translate> →
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── 友站區塊（簡潔小卡） ───
+function FriendsSection() {
+  return (
+    <section className={clsx(styles.section, styles.friendsSection)}>
+      <div className="container">
+        <div className={styles.sectionHeader}>
+          <Heading as="h2">
+            <Translate id="homepage.friends.title">媒體聯播網</Translate>
+          </Heading>
+          <p className={styles.sectionDescription}>
+            <Translate id="homepage.friends.desc">合作夥伴媒體，提供醫療健康領域的專業內容。</Translate>
+          </p>
+        </div>
+        <div className={styles.friendsGrid}>
+          {friendSites.map((f) => (
+            <div key={f.id} className={styles.friendCard}>
+              <div className={styles.friendName}>{f.name}</div>
+              <div className={styles.friendLinks}>
+                <a href={f.href} target="_blank" rel="noopener noreferrer" className={styles.friendLink}>
+                  <Translate id="homepage.friends.link.web">官網</Translate>
+                </a>
+                <span className={styles.friendDot}>·</span>
+                <a href={f.socialHref} target="_blank" rel="noopener noreferrer" className={styles.friendLink}>
+                  <Translate id="homepage.friends.link.social">社群</Translate>
+                </a>
+                <span className={styles.friendDot}>·</span>
+                <a href={f.videoHref} target="_blank" rel="noopener noreferrer" className={styles.friendLink}>
+                  <Translate id="homepage.friends.link.video">影音</Translate>
+                </a>
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -196,40 +264,76 @@ function LinkSection({ title, description, links }) {
   );
 }
 
-// 友站區塊已開放顯示
-function shouldShowFriendSites() {
-  return true;
-}
-
 export default function HomepageLinks() {
-  const showFriendSites = shouldShowFriendSites();
-
   return (
     <>
-      <LinkSection
-        title={<Translate id="homepage.links.official.section.title">官方</Translate>}
-        description={<Translate id="homepage.links.official.section.desc">好棋寶寶協會官方平台，提供服務狀態監控、社群互動與影音內容。</Translate>}
-        links={getOfficialLinks()}
-      />
-      <LinkSection
-        title={<Translate id="homepage.links.ai.section.title">AI 研究</Translate>}
-        description={<Translate id="homepage.links.ai.section.desc">運用人工智慧技術，深入分析各領域情報，提供即時洞察與決策支援。</Translate>}
-        links={getAIResearchLinks()}
-      />
-      {showFriendSites && (
-        <>
-          <LinkSection
-            title={<Translate id="homepage.links.appi.section.title">友站 - 亞太醫頭條</Translate>}
-            description={<Translate id="homepage.links.appi.section.desc">亞太地區醫療健康領域的專業媒體夥伴。</Translate>}
-            links={getAPPILinks()}
-          />
-          <LinkSection
-            title={<Translate id="homepage.links.tlsr.section.title">友站 - 銅蛇醫報</Translate>}
-            description={<Translate id="homepage.links.tlsr.section.desc">專注於醫療保健資訊的合作媒體。</Translate>}
-            links={getTLSRLinks()}
-          />
-        </>
-      )}
+      <PillarSection />
+
+      {/* 學術研究精選 */}
+      <HighlightSection
+        titleKey="homepage.research.title"
+        titleDefault="學術研究精選"
+        descKey="homepage.research.desc"
+        descDefault="從圍棋次佳手公式到深度網路泛化,每篇論文都有完整證明 + 互動視覺化。"
+        allHref="/research/"
+        allLabel={translate({id: 'homepage.research.all', message: '查看全部論文'})}
+        columns={3}
+        alt>
+        {paperHighlights.slice(0, 3).map((p) => (
+          <PaperCard key={p.id} {...p} />
+        ))}
+      </HighlightSection>
+
+      {/* 產業情報精選 */}
+      <HighlightSection
+        titleKey="homepage.intel.title"
+        titleDefault="產業情報精選"
+        descKey="homepage.intel.desc"
+        descDefault="精選 6 條主要產業供應鏈,每日掌握上中下游動態與基線 ETF 表現。"
+        allHref="/intel/"
+        allLabel={translate({id: 'homepage.intel.all', message: '查看全部 23 條供應鏈'})}
+        columns={3}>
+        {intelHighlights.map((s) => (
+          <IntelCard key={s.id} {...s} />
+        ))}
+      </HighlightSection>
+
+      {/* AI 工具精選 */}
+      <HighlightSection
+        titleKey="homepage.apps.title"
+        titleDefault="AI 工具精選"
+        descKey="homepage.apps.desc"
+        descDefault="消費、健康、教育、資安、貿易等領域的 AI 工具,免費公開使用。"
+        allHref="/apps/"
+        allLabel={translate({id: 'homepage.apps.all', message: '查看全部 10 個工具'})}
+        columns={3}
+        alt>
+        {appHighlights.map((a) => (
+          <AppCard key={a.id} {...a} icon={appIcons[a.icon] || '🔧'} />
+        ))}
+      </HighlightSection>
+
+      {/* 圍棋源起紀念碑 */}
+      <WeiqiOriginSection />
+
+      {/* 創始會員 */}
+      <MembersSection />
+
+      {/* 官方平台 */}
+      <HighlightSection
+        titleKey="homepage.official.title"
+        titleDefault="官方平台"
+        descKey="homepage.official.desc"
+        descDefault="好棋寶寶協會官方服務 — 狀態監控、Mastodon 社群、PeerTube 影音。"
+        columns={3}
+        alt>
+        {officialLinks.map((o) => (
+          <AppCard key={o.id} {...o} icon={officialIcons[o.icon] || '🔗'} />
+        ))}
+      </HighlightSection>
+
+      {/* 友站聯播 */}
+      <FriendsSection />
     </>
   );
 }

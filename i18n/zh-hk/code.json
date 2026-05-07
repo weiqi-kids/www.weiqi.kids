@@ -1,7 +1,46 @@
 {
   "homepage.tagline": {
-    "message": "台灣好棋寶寶協會｜致力於圍棋文化前進的推手",
+    "message": "開源研究社群．從圍棋出發",
     "description": "Site subtitle"
+  },
+  "homepage.hero.stats": {
+    "message": "11 位創始會員 · 38 個公益專案 · 全部開源 · 每日自動更新"
+  },
+  "homepage.cta.about": {
+    "message": "認識協會"
+  },
+  "homepage.cta.research": {
+    "message": "研究成果"
+  },
+  "homepage.origin.badge": {
+    "message": "源起紀念碑"
+  },
+  "homepage.origin.title": {
+    "message": "點解係圍棋？"
+  },
+  "homepage.origin.lead": {
+    "message": "AI 浪潮第一個席捲嘅係圍棋界。"
+  },
+  "homepage.origin.body": {
+    "message": "2016 年 AlphaGo 擊敗李世乭，圍棋人係最早被 AI 洗禮、亦最早擁抱 AI 嘅一群人。今日，我哋將呢份經驗帶到健康、產業、教育、公共政策等各領域，讓更多人能夠善用呢股技術浪潮。"
+  },
+  "homepage.origin.cta.learn": {
+    "message": "圍棋學習資源 →"
+  },
+  "homepage.origin.cta.alphago": {
+    "message": "AlphaGo 演進整理 →"
+  },
+  "homepage.members.title": {
+    "message": "創始會員"
+  },
+  "homepage.members.desc": {
+    "message": "11 位來自圍棋、醫療、法律、行銷、教育嘅專業人士，共同創立台灣好棋寶寶協會。"
+  },
+  "homepage.members.disclosure": {
+    "message": "目前所有研究與工具專案由理事長 CΛ / Lightman 主導執行，創始會員提供跨領域諮詢與審閱，誠邀更多會員與外部合作者深度參與下一階段。"
+  },
+  "homepage.members.cta": {
+    "message": "認識所有會員"
   },
   "homepage.quickStart": {
     "message": "1分鐘快速了解 ⏱️"
@@ -502,5 +541,140 @@
   },
   "item.label.協會介紹": {
     "message": "協會介紹"
+  },
+  "apps.meta.description": {
+    "message": "好棋寶寶協會的 10 個 AI 應用工具：消費購物、健康教育、資安疫情、貿易聲量、政策追蹤。免費公開供大眾使用。"
+  },
+  "apps.meta.title": {
+    "message": "AI 應用工具 — 好棋寶寶協會"
+  },
+  "apps.hero.title": {
+    "message": "AI 應用工具"
+  },
+  "apps.hero.desc": {
+    "message": "運用人工智慧技術，深入分析各領域情報，提供即時洞察與決策支援。所有工具免費公開。"
+  },
+  "homepage.alphaGo": {
+    "message": "AlphaGo"
+  },
+  "intel.meta.title": {
+    "message": "產業供應鏈情報 — 好棋寶寶協會"
+  },
+  "intel.hero.title": {
+    "message": "產業供應鏈情報"
+  },
+  "intel.hero.desc": {
+    "message": "{sites} 條供應鏈，{companies}+ 家公司，每日自動抓取新聞、財報、產業數據。每條鏈都對標代表性 ETF 作為市場基線。"
+  },
+  "research.meta.description": {
+    "message": "好棋寶寶協會發表的學術論文：圍棋理論、機器學習理論、數學研究。每篇皆含互動視覺化網頁與完整數學證明。"
+  },
+  "research.meta.title": {
+    "message": "學術研究 — 好棋寶寶協會"
+  },
+  "research.hero.title": {
+    "message": "學術研究發表"
+  },
+  "research.hero.desc": {
+    "message": "我們發表的論文，每篇都是完整數學證明 + 互動視覺化網頁 + GitHub 開源。涵蓋圍棋理論、機器學習，以及經典數學問題。"
+  },
+  "homepage.pillar.cta": {
+    "message": "查看全部 →"
+  },
+  "homepage.pillars.title": {
+    "message": "三大研究軸線"
+  },
+  "homepage.pillars.desc": {
+    "message": "學術論文、產業情報、AI 工具，三條主軸並行推動圍棋文化與資訊公益。"
+  },
+  "homepage.pillar.research.count": {
+    "message": "篇論文"
+  },
+  "homepage.pillar.intel.count": {
+    "message": "條供應鏈"
+  },
+  "homepage.pillar.apps.count": {
+    "message": "個工具"
+  },
+  "homepage.friends.title": {
+    "message": "媒體聯播網"
+  },
+  "homepage.friends.desc": {
+    "message": "合作夥伴媒體，提供醫療健康領域的專業內容。"
+  },
+  "homepage.friends.link.web": {
+    "message": "官網"
+  },
+  "homepage.friends.link.social": {
+    "message": "社群"
+  },
+  "homepage.friends.link.video": {
+    "message": "影音"
+  },
+  "homepage.research.all": {
+    "message": "查看全部論文"
+  },
+  "homepage.intel.all": {
+    "message": "查看全部 23 條供應鏈"
+  },
+  "homepage.apps.all": {
+    "message": "查看全部 10 個工具"
+  },
+  "intel.metric.companies": {
+    "message": "公司"
+  },
+  "intel.metric.structure": {
+    "message": "上 · 中 · 下"
+  },
+  "intel.metric.baseline": {
+    "message": "基線 ETF"
+  },
+  "intel.topics.label": {
+    "message": "追蹤主題"
+  },
+  "intel.cta": {
+    "message": "前往儀表板 →"
+  },
+  "research.action.read": {
+    "message": "閱讀互動論文 →"
+  },
+  "theme.IconExternalLink.ariaLabel": {
+    "message": "(opens in new tab)",
+    "description": "The ARIA label for the external link icon"
+  },
+  "theme.SearchPage.existingResultsTitle": {
+    "message": "Search results for \"{query}\"",
+    "description": "The search page title for non-empty query"
+  },
+  "theme.SearchPage.emptyResultsTitle": {
+    "message": "Search the documentation",
+    "description": "The search page title for empty query"
+  },
+  "theme.SearchPage.searchContext.everywhere": {
+    "message": "Everywhere"
+  },
+  "theme.SearchPage.documentsFound.plurals": {
+    "message": "1 document found|{count} documents found",
+    "description": "Pluralized label for \"{count} documents found\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.SearchPage.noResultsText": {
+    "message": "No documents were found",
+    "description": "The paragraph for empty search result"
+  },
+  "theme.SearchBar.noResultsText": {
+    "message": "No results"
+  },
+  "theme.SearchBar.seeAllOutsideContext": {
+    "message": "See all results outside \"{context}\""
+  },
+  "theme.SearchBar.searchInContext": {
+    "message": "See all results within \"{context}\""
+  },
+  "theme.SearchBar.seeAll": {
+    "message": "See all results"
+  },
+  "theme.SearchBar.label": {
+    "message": "Search",
+    "description": "The ARIA label and placeholder for search button"
   }
 }

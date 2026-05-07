@@ -3,7 +3,6 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import Translate, {translate} from '@docusaurus/Translate';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import HomepageLinks from '@site/src/components/HomepageLinks';
 
 import Heading from '@theme/Heading';
@@ -19,31 +18,24 @@ function HomepageHeader() {
         </Heading>
         <p className="hero__subtitle">
           <Translate id="homepage.tagline" description="Site subtitle">
-            台灣好棋寶寶協會｜致力於圍棋文化前進的推手
+            開源研究社群．從圍棋出發
+          </Translate>
+        </p>
+        <p className={styles.heroStats}>
+          <Translate id="homepage.hero.stats" description="Hero stats line">
+            11 位創始會員 · 38 個公益專案 · 全部開源 · 每日自動更新
           </Translate>
         </p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/learn/">
-            <Translate id="homepage.forPlayers">學圍棋</Translate>
+            to="/docs/about/">
+            <Translate id="homepage.cta.about">認識協會</Translate>
           </Link>
           <Link
-            className="button button--secondary button--lg"
-            to="/docs/alphago/">
-            <Translate id="homepage.alphaGo">AlphaGo</Translate>
-          </Link>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/tech/">
-            <Translate id="homepage.forEngineers">技術文件</Translate>
-          </Link>
-        </div>
-        <div className={styles.buttons} style={{marginTop: '1rem'}}>
-          <Link
-            className="button button--outline button--secondary"
-            to="/docs/intro">
-            <Translate id="homepage.quickStart">1分鐘快速了解</Translate>
+            className="button button--outline button--secondary button--lg"
+            to="/research/">
+            <Translate id="homepage.cta.research">研究成果</Translate>
           </Link>
         </div>
       </div>
@@ -59,7 +51,6 @@ export default function Home() {
       description={translate({id: 'homepage.meta.description', message: '台灣好棋寶寶協會官網 - 提供圍棋教學、AI 研究資源，推動圍棋文化發展'})}>
       <HomepageHeader />
       <main>
-        <HomepageFeatures />
         <HomepageLinks />
       </main>
     </Layout>

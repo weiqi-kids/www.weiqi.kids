@@ -16,6 +16,13 @@
   }
 }
 
+.heroStats {
+  font-size: 0.95rem;
+  opacity: 0.92;
+  margin: 0.5rem 0 1.5rem;
+  line-height: 1.6;
+}
+
 .buttons {
   display: flex;
   align-items: center;

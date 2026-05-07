@@ -1,7 +1,47 @@
 {
   "homepage.tagline": {
-    "message": "台湾好棋宝宝协会｜致力于围棋文化前进的推手",
+    "message": "开源研究社群．从围棋出发",
     "description": "Site subtitle"
+  },
+  "homepage.hero.stats": {
+    "message": "11 位创始会员 · 38 个公益专案 · 全部开源 · 每日自动更新",
+    "description": "Hero stats line"
+  },
+  "homepage.cta.about": {
+    "message": "认识协会"
+  },
+  "homepage.cta.research": {
+    "message": "研究成果"
+  },
+  "homepage.origin.badge": {
+    "message": "源起纪念碑"
+  },
+  "homepage.origin.title": {
+    "message": "为什么是围棋？"
+  },
+  "homepage.origin.lead": {
+    "message": "AI 浪潮第一个席卷的是围棋界。"
+  },
+  "homepage.origin.body": {
+    "message": "2016 年 AlphaGo 击败李世石，围棋人是最早被 AI 洗礼、也最早拥抱 AI 的一群人。今天，我们把这份经验带到健康、产业、教育、公共政策等各领域，让更多人能够善用这股技术浪潮。"
+  },
+  "homepage.origin.cta.learn": {
+    "message": "围棋学习资源 →"
+  },
+  "homepage.origin.cta.alphago": {
+    "message": "AlphaGo 演进整理 →"
+  },
+  "homepage.members.title": {
+    "message": "创始会员"
+  },
+  "homepage.members.desc": {
+    "message": "11 位来自围棋、医疗、法律、行销、教育的专业人士，共同创立台湾好棋宝宝协会。"
+  },
+  "homepage.members.disclosure": {
+    "message": "目前所有研究与工具专案由理事长 CΛ / Lightman 主导执行，创始会员提供跨领域咨询与审阅，诚邀更多会员与外部合作者深度参与下一阶段。"
+  },
+  "homepage.members.cta": {
+    "message": "认识所有会员"
   },
   "homepage.quickStart": {
     "message": "1分钟快速了解 ⏱️"
@@ -502,5 +542,140 @@
   },
   "item.label.協會介紹": {
     "message": "协会介绍"
+  },
+  "apps.meta.description": {
+    "message": "好棋寶寶協會的 10 個 AI 應用工具：消費購物、健康教育、資安疫情、貿易聲量、政策追蹤。免費公開供大眾使用。"
+  },
+  "apps.meta.title": {
+    "message": "AI 應用工具 — 好棋寶寶協會"
+  },
+  "apps.hero.title": {
+    "message": "AI 應用工具"
+  },
+  "apps.hero.desc": {
+    "message": "運用人工智慧技術，深入分析各領域情報，提供即時洞察與決策支援。所有工具免費公開。"
+  },
+  "homepage.alphaGo": {
+    "message": "AlphaGo"
+  },
+  "intel.meta.title": {
+    "message": "產業供應鏈情報 — 好棋寶寶協會"
+  },
+  "intel.hero.title": {
+    "message": "產業供應鏈情報"
+  },
+  "intel.hero.desc": {
+    "message": "{sites} 條供應鏈，{companies}+ 家公司，每日自動抓取新聞、財報、產業數據。每條鏈都對標代表性 ETF 作為市場基線。"
+  },
+  "research.meta.description": {
+    "message": "好棋寶寶協會發表的學術論文：圍棋理論、機器學習理論、數學研究。每篇皆含互動視覺化網頁與完整數學證明。"
+  },
+  "research.meta.title": {
+    "message": "學術研究 — 好棋寶寶協會"
+  },
+  "research.hero.title": {
+    "message": "學術研究發表"
+  },
+  "research.hero.desc": {
+    "message": "我們發表的論文，每篇都是完整數學證明 + 互動視覺化網頁 + GitHub 開源。涵蓋圍棋理論、機器學習，以及經典數學問題。"
+  },
+  "homepage.pillar.cta": {
+    "message": "查看全部 →"
+  },
+  "homepage.pillars.title": {
+    "message": "三大研究軸線"
+  },
+  "homepage.pillars.desc": {
+    "message": "學術論文、產業情報、AI 工具，三條主軸並行推動圍棋文化與資訊公益。"
+  },
+  "homepage.pillar.research.count": {
+    "message": "篇論文"
+  },
+  "homepage.pillar.intel.count": {
+    "message": "條供應鏈"
+  },
+  "homepage.pillar.apps.count": {
+    "message": "個工具"
+  },
+  "homepage.friends.title": {
+    "message": "媒體聯播網"
+  },
+  "homepage.friends.desc": {
+    "message": "合作夥伴媒體，提供醫療健康領域的專業內容。"
+  },
+  "homepage.friends.link.web": {
+    "message": "官網"
+  },
+  "homepage.friends.link.social": {
+    "message": "社群"
+  },
+  "homepage.friends.link.video": {
+    "message": "影音"
+  },
+  "homepage.research.all": {
+    "message": "查看全部論文"
+  },
+  "homepage.intel.all": {
+    "message": "查看全部 23 條供應鏈"
+  },
+  "homepage.apps.all": {
+    "message": "查看全部 10 個工具"
+  },
+  "intel.metric.companies": {
+    "message": "公司"
+  },
+  "intel.metric.structure": {
+    "message": "上 · 中 · 下"
+  },
+  "intel.metric.baseline": {
+    "message": "基線 ETF"
+  },
+  "intel.topics.label": {
+    "message": "追蹤主題"
+  },
+  "intel.cta": {
+    "message": "前往儀表板 →"
+  },
+  "research.action.read": {
+    "message": "閱讀互動論文 →"
+  },
+  "theme.IconExternalLink.ariaLabel": {
+    "message": "(opens in new tab)",
+    "description": "The ARIA label for the external link icon"
+  },
+  "theme.SearchBar.noResultsText": {
+    "message": "没有找到任何文档"
+  },
+  "theme.SearchBar.seeAllOutsideContext": {
+    "message": "查看“{context}”以外的全部结果"
+  },
+  "theme.SearchBar.searchInContext": {
+    "message": "查看“{context}”以内的全部结果"
+  },
+  "theme.SearchBar.seeAll": {
+    "message": "查看全部结果"
+  },
+  "theme.SearchBar.label": {
+    "message": "搜索",
+    "description": "The ARIA label and placeholder for search button"
+  },
+  "theme.SearchPage.existingResultsTitle": {
+    "message": "“{query}”的搜索结果",
+    "description": "The search page title for non-empty query"
+  },
+  "theme.SearchPage.emptyResultsTitle": {
+    "message": "搜索文档",
+    "description": "The search page title for empty query"
+  },
+  "theme.SearchPage.searchContext.everywhere": {
+    "message": "所有"
+  },
+  "theme.SearchPage.documentsFound.plurals": {
+    "message": "共找到 {count} 篇文档",
+    "description": "Pluralized label for \"{count} documents found\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.SearchPage.noResultsText": {
+    "message": "没有找到任何文档",
+    "description": "The paragraph for empty search result"
   }
 }

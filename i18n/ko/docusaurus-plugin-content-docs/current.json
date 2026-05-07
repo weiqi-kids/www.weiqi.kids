@@ -18,5 +18,89 @@
   "sidebar.tutorialSidebar.category.for-players": {
     "message": "for-players",
     "description": "The label for category for-players in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.AlphaGo": {
+    "message": "AlphaGo",
+    "description": "The label for category 'AlphaGo' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.學圍棋": {
+    "message": "學圍棋",
+    "description": "The label for category '學圍棋' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.입문편": {
+    "message": "입문편",
+    "description": "The label for category '입문편' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.바둑 AI 발전 정리": {
+    "message": "바둑 AI 발전 정리",
+    "description": "The label for category '바둑 AI 발전 정리' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.인류 바둑 발전사": {
+    "message": "인류 바둑 발전사",
+    "description": "The label for category '인류 바둑 발전사' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.AI 바둑 발전사": {
+    "message": "AI 바둑 발전사",
+    "description": "The label for category 'AI 바둑 발전사' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.AI 시대": {
+    "message": "AI 시대",
+    "description": "The label for category 'AI 시대' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.技術文件": {
+    "message": "技術文件",
+    "description": "The label for category '技術文件' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.심층 연구를 원하는 분들을 위해": {
+    "message": "심층 연구를 원하는 분들을 위해",
+    "description": "The label for category '심층 연구를 원하는 분들을 위해' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.30 分鐘跑起第一個圍棋 AI": {
+    "message": "30 分鐘跑起第一個圍棋 AI",
+    "description": "The label for category '30 分鐘跑起第一個圍棋 AI' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.一篇文章搞懂圍棋 AI": {
+    "message": "一篇文章搞懂圍棋 AI",
+    "description": "The label for category '一篇文章搞懂圍棋 AI' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.圍棋 AI 產業現況": {
+    "message": "圍棋 AI 產業現況",
+    "description": "The label for category '圍棋 AI 產業現況' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.圍棋 AI 能做什麼？": {
+    "message": "圍棋 AI 能做什麼？",
+    "description": "The label for category '圍棋 AI 能做什麼？' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.關於我們": {
+    "message": "關於我們",
+    "description": "The label for category '關於我們' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.會員介紹": {
+    "message": "會員介紹",
+    "description": "The label for category '會員介紹' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.創始會員": {
+    "message": "創始會員",
+    "description": "The label for category '創始會員' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.圍棋據點": {
+    "message": "圍棋據點",
+    "description": "The label for category '圍棋據點' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.活動實績": {
+    "message": "活動實績",
+    "description": "The label for category '活動實績' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.合作夥伴": {
+    "message": "合作夥伴",
+    "description": "The label for category '合作夥伴' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.內部文件": {
+    "message": "內部文件",
+    "description": "The label for category '內部文件' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.標準作業流程": {
+    "message": "標準作業流程",
+    "description": "The label for category '標準作業流程' in sidebar 'tutorialSidebar'"
   }
 }

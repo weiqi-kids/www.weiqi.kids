@@ -1,0 +1,160 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--ifm-card-background-color, #ffffff);
+  border: 1px solid var(--ifm-color-emphasis-200, #e0e4e8);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-color: var(--ifm-color-primary, #2e8555);
+  text-decoration: none;
+  color: inherit;
+}
+
+[data-theme='dark'] .card {
+  background: #2a2a2d;
+  border-color: #444;
+}
+
+[data-theme='dark'] .card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200, #e0e4e8);
+  margin-bottom: 1rem;
+}
+
+[data-theme='dark'] .header {
+  border-bottom-color: #444;
+}
+
+.icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.titleBlock {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.repoName {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ifm-color-primary, #2e8555);
+}
+
+.divider {
+  color: var(--ifm-color-emphasis-500, #8a8a8a);
+  font-size: 0.95rem;
+}
+
+.industryName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-900, #1a1a2e);
+}
+
+[data-theme='dark'] .industryName {
+  color: #f0f0f0;
+}
+
+/* ── 三大數字塊 ── */
+.metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+  padding: 1rem 0;
+}
+
+.metricsTwoCol {
+  grid-template-columns: 1fr 1fr;
+  max-width: 70%;
+  margin: 0 auto;
+}
+
+.metric {
+  text-align: center;
+  min-width: 0;
+}
+
+.metricValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ifm-color-emphasis-900, #1a1a2e);
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  word-break: break-word;
+}
+
+[data-theme='dark'] .metricValue {
+  color: #f0f0f0;
+}
+
+.metricLabel {
+  font-size: 0.75rem;
+  color: var(--ifm-color-emphasis-600, #666);
+  margin-top: 0.25rem;
+  letter-spacing: 0.5px;
+}
+
+/* ── 追蹤主題 ── */
+.topics {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200, #e0e4e8);
+  margin-top: auto;
+}
+
+[data-theme='dark'] .topics {
+  border-top-color: #444;
+}
+
+.topicsLabel {
+  color: var(--ifm-color-emphasis-600, #666);
+  margin-right: 0.5rem;
+}
+
+.topicsValue {
+  color: var(--ifm-color-emphasis-800, #333);
+}
+
+[data-theme='dark'] .topicsValue {
+  color: #ccc;
+}
+
+/* ── 行動按鈕 ── */
+.cta {
+  margin-top: 0.75rem;
+  text-align: right;
+  font-size: 0.85rem;
+  color: var(--ifm-color-primary, #2e8555);
+  font-weight: 500;
+}
+
+@media (max-width: 480px) {
+  .metricValue {
+    font-size: 1.25rem;
+  }
+  .metrics {
+    gap: 0.4rem;
+  }
+}

@@ -22,3 +22,6 @@ The Taiwan Good Go Baby Association was founded by a group of passionate Go enth
 | [Ian Kuo](./ian-kuo) | Music Production | Plus One Guitar |
 | [Bo-Yang Cheng](./bo-yang-cheng) | Physical Therapy | Cheng Osteopathic Center |
 | [Tien-Chien Pan](./tien-chien-pan) | Integrative Medicine | Chin-An Clinic |
+| [Yang Luo](./yang-luo) | Health Education | Supplement R&D & Education |
+| [Zi-Yan Huang](./zi-yan-huang) | TCM Wellness | GCM Preventive Medicine Association |
+| [Zhen Zhao](./zhen-zhao) | TCM Clinical Practice | Shenzhen Wuwei TCM Clinic |

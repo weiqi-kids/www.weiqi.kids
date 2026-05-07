@@ -34,5 +34,25 @@
   "item.label.GitHub": {
     "message": "GitHub",
     "description": "Navbar item with label GitHub"
+  },
+  "item.label.學圍棋": {
+    "message": "學圍棋",
+    "description": "Navbar item with label 學圍棋"
+  },
+  "item.label.AlphaGo": {
+    "message": "AlphaGo",
+    "description": "Navbar item with label AlphaGo"
+  },
+  "item.label.動畫教室": {
+    "message": "動畫教室",
+    "description": "Navbar item with label 動畫教室"
+  },
+  "item.label.技術文件": {
+    "message": "技術文件",
+    "description": "Navbar item with label 技術文件"
+  },
+  "item.label.關於我們": {
+    "message": "關於我們",
+    "description": "Navbar item with label 關於我們"
   }
 }

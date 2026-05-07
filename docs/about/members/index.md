@@ -19,6 +19,9 @@ title: 會員介紹
 - **[郭尚諺](./founding/ian-kuo)** - 音樂創作
 - **[鄭博陽](./founding/bo-yang-cheng)** - 整復健身
 - **[潘天健](./founding/tien-chien-pan)** - 整合醫學
+- **[羅揚](./founding/yang-luo)** - 健康教育內容創作者
+- **[黃子彥](./founding/zi-yan-huang)** - 草本上膳醫廚／GCM 預防醫學
+- **[趙珍](./founding/zhen-zhao)** - 中醫科主治醫師
 
 👉 [查看全部創始會員](./founding/)
 
