@@ -356,8 +356,48 @@
     "message": "台灣好棋寶寶協會官網 - 提供圍棋教學、AI 研究資源，推動圍棋文化發展"
   },
   "homepage.tagline": {
-    "message": "台灣好棋寶寶協會｜致力於圍棋文化前進的推手",
+    "message": "開源研究社群．從圍棋出發",
     "description": "Site subtitle"
+  },
+  "homepage.hero.stats": {
+    "message": "11 位創始會員 · 40 個公益專案 · 全部開源 · 每日自動更新",
+    "description": "Hero stats line"
+  },
+  "homepage.cta.about": {
+    "message": "認識協會"
+  },
+  "homepage.cta.research": {
+    "message": "研究成果"
+  },
+  "homepage.origin.badge": {
+    "message": "源起紀念碑"
+  },
+  "homepage.origin.title": {
+    "message": "為什麼是圍棋？"
+  },
+  "homepage.origin.lead": {
+    "message": "AI 浪潮第一個席捲的是圍棋界。"
+  },
+  "homepage.origin.body": {
+    "message": "2016 年 AlphaGo 擊敗李世乭，圍棋人是最早被 AI 洗禮、也最早擁抱 AI 的一群人。今天，我們把這份經驗帶到健康、產業、教育、公共政策等各領域，讓更多人能夠善用這股技術浪潮。"
+  },
+  "homepage.origin.cta.learn": {
+    "message": "圍棋學習資源 →"
+  },
+  "homepage.origin.cta.alphago": {
+    "message": "AlphaGo 演進整理 →"
+  },
+  "homepage.members.title": {
+    "message": "創始會員"
+  },
+  "homepage.members.desc": {
+    "message": "11 位來自圍棋、醫療、法律、行銷、教育的專業人士，共同創立台灣好棋寶寶協會。"
+  },
+  "homepage.members.disclosure": {
+    "message": "目前所有研究與工具專案由理事長 CΛ / Lightman 主導執行，創始會員提供跨領域諮詢與審閱，誠邀更多會員與外部合作者深度參與下一階段。"
+  },
+  "homepage.members.cta": {
+    "message": "認識所有會員"
   },
   "apps.meta.description": {
     "message": "好棋寶寶協會的 10 個 AI 應用工具：消費購物、健康教育、資安疫情、貿易聲量、政策追蹤。免費公開供大眾使用。"
