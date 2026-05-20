@@ -1,18 +1,27 @@
 {
+  "homepage.hero.title": {
+    "message": "商界伙伴 × AI × 围棋",
+    "description": "Hero H1 title"
+  },
   "homepage.tagline": {
-    "message": "开源研究社群．从围棋出发",
-    "description": "Site subtitle"
+    "message": "把产业 know-how 变成开源 AI 工具",
+    "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "11 位创始会员 · 41 个公益专案 · 全部开源 · 每日自动更新",
+    "message": "11 位跨域伙伴 · 41+ 开源 AI 工具 · 全部免费 · 每日自动更新",
     "description": "Hero stats line"
   },
-  "homepage.cta.about": {
-    "message": "认识协会"
-  },
-  "homepage.cta.research": {
-    "message": "研究成果"
-  },
+  "homepage.cta.proposal": { "message": "合作提案" },
+  "homepage.cta.meet": { "message": "先见面聊聊" },
+  "homepage.cta.members": { "message": "认识伙伴" },
+  "homepage.usp.title": { "message": "我们不收费，全部开源" },
+  "homepage.usp.lead": { "message": "完全免费、无会员费、全部开源（CC-BY 4.0）。我们不做付费培训、不收引荐费、不卖会员制。" },
+  "homepage.usp.not1.label": { "message": "不是纯围棋协会" },
+  "homepage.usp.not1.desc": { "message": "我们把围棋当纽带不当目的" },
+  "homepage.usp.not2.label": { "message": "不是纯 AI 推广" },
+  "homepage.usp.not2.desc": { "message": "我们有真正自产的开源工具" },
+  "homepage.usp.not3.label": { "message": "不是纯商务人脉" },
+  "homepage.usp.not3.desc": { "message": "我们有共同开源产出当证据" },
   "homepage.origin.badge": {
     "message": "源起纪念碑"
   },
@@ -32,10 +41,10 @@
     "message": "AlphaGo 演进整理 →"
   },
   "homepage.members.title": {
-    "message": "创始会员"
+    "message": "11 位来自不同领域的伙伴"
   },
   "homepage.members.desc": {
-    "message": "11 位来自围棋、医疗、法律、行销、教育的专业人士，共同创立台湾好棋宝宝协会。"
+    "message": "律师、会计、ISO 顾问、中医、整合医学、健康教育、整复、行销、活动企划、音乐创作、AI 工程。每位都是「AI 整合者 × 领域专家」模式的活范例。"
   },
   "homepage.members.disclosure": {
     "message": "目前所有研究与工具专案由理事长 CΛ / Lightman 主导执行，创始会员提供跨领域咨询与审阅，诚邀更多会员与外部合作者深度参与下一阶段。"
@@ -74,7 +83,7 @@
     "message": "首页"
   },
   "homepage.meta.description": {
-    "message": "台湾好棋宝宝协会官网 - 提供围棋教学、AI 研究资源，推动围棋文化发展"
+    "message": "11 位来自律师、ISO、技术、医疗等领域的伙伴，把产业 know-how 变成 41+ 个全部免费开源的 AI 工具。欢迎跨域合作。"
   },
   "theme.ErrorPageContent.title": {
     "message": "页面已崩溃。",
@@ -583,10 +592,10 @@
     "message": "查看全部 →"
   },
   "homepage.pillars.title": {
-    "message": "三大研究軸線"
+    "message": "三大合作面向"
   },
   "homepage.pillars.desc": {
-    "message": "學術論文、產業情報、AI 工具，三條主軸並行推動圍棋文化與資訊公益。"
+    "message": "伙伴提供领域知识，理事长负责 AI 整合。产出三类成果：AI 工具、产业情报、学术论文，全部开源。"
   },
   "homepage.pillar.research.count": {
     "message": "篇論文"

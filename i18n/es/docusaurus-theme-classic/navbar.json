@@ -1,30 +1,16 @@
 {
-  "title": {
-    "message": "Weiqi.Kids",
-    "description": "The title in the navbar"
-  },
-  "logo.alt": {
-    "message": "Logo de la Asociación Weiqi Kids",
-    "description": "The alt text of navbar logo"
-  },
-  "item.label.學圍棋": {
-    "message": "Aprender Go",
-    "description": "Navbar item with label 學圍棋"
-  },
-  "item.label.AlphaGo": {
-    "message": "AlphaGo",
-    "description": "Navbar item with label AlphaGo"
-  },
-  "item.label.動畫教室": {
-    "message": "Estudio de Animación",
-    "description": "Navbar item with label 動畫教室"
-  },
-  "item.label.技術文件": {
-    "message": "Documentación Técnica",
-    "description": "Navbar item with label 技術文件"
-  },
-  "item.label.關於我們": {
-    "message": "Sobre Nosotros",
-    "description": "Navbar item with label 關於我們"
-  }
+  "title": { "message": "Weiqi.Kids" },
+  "logo.alt": { "message": "Logo de la Asociación Weiqi Kids" },
+  "item.label.夥伴": { "message": "Socios" },
+  "item.label.認識夥伴": { "message": "Conoce a los socios" },
+  "item.label.關於協會": { "message": "Sobre la asociación" },
+  "item.label.合作提案": { "message": "Proponer" },
+  "item.label.AI 工具": { "message": "Herramientas IA" },
+  "item.label.論文": { "message": "Investigación" },
+  "item.label.產業情報": { "message": "Inteligencia industrial" },
+  "item.label.圍棋資源": { "message": "Recursos de Go" },
+  "item.label.學圍棋": { "message": "Aprender Go" },
+  "item.label.AlphaGo": { "message": "AlphaGo" },
+  "item.label.動畫教室": { "message": "Animaciones" },
+  "item.label.技術文件": { "message": "Documentación técnica" }
 }

@@ -353,22 +353,41 @@
     "message": "首頁"
   },
   "homepage.meta.description": {
-    "message": "台灣好棋寶寶協會官網 - 提供圍棋教學、AI 研究資源，推動圍棋文化發展"
+    "message": "11 位來自律師、ISO、技術、醫療等領域的夥伴，把產業 know-how 變成 41+ 個全部免費開源的 AI 工具。歡迎跨域合作。"
+  },
+  "homepage.hero.title": {
+    "message": "商界夥伴 × AI × 圍棋",
+    "description": "Hero H1 title"
   },
   "homepage.tagline": {
-    "message": "開源研究社群．從圍棋出發",
-    "description": "Site subtitle"
+    "message": "把產業 know-how 變成開源 AI 工具",
+    "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "11 位創始會員 · 41 個公益專案 · 全部開源 · 每日自動更新",
+    "message": "11 位跨域夥伴 · 41+ 開源 AI 工具 · 全部免費 · 每日自動更新",
     "description": "Hero stats line"
   },
-  "homepage.cta.about": {
-    "message": "認識協會"
+  "homepage.cta.proposal": {
+    "message": "合作提案"
   },
-  "homepage.cta.research": {
-    "message": "研究成果"
+  "homepage.cta.meet": {
+    "message": "先見面聊聊"
   },
+  "homepage.cta.members": {
+    "message": "認識夥伴"
+  },
+  "homepage.usp.title": {
+    "message": "我們不收費，全部開源"
+  },
+  "homepage.usp.lead": {
+    "message": "完全免費、無會員費、全部開源（CC-BY 4.0）。我們不做付費培訓、不收引薦費、不賣會員制。"
+  },
+  "homepage.usp.not1.label": { "message": "不是純圍棋協會" },
+  "homepage.usp.not1.desc": { "message": "我們把圍棋當紐帶不當目的" },
+  "homepage.usp.not2.label": { "message": "不是純 AI 推廣" },
+  "homepage.usp.not2.desc": { "message": "我們有真正自產的開源工具" },
+  "homepage.usp.not3.label": { "message": "不是純商務人脈" },
+  "homepage.usp.not3.desc": { "message": "我們有共同開源產出當證據" },
   "homepage.origin.badge": {
     "message": "源起紀念碑"
   },
@@ -388,10 +407,10 @@
     "message": "AlphaGo 演進整理 →"
   },
   "homepage.members.title": {
-    "message": "創始會員"
+    "message": "11 位來自不同領域的夥伴"
   },
   "homepage.members.desc": {
-    "message": "11 位來自圍棋、醫療、法律、行銷、教育的專業人士，共同創立台灣好棋寶寶協會。"
+    "message": "律師、會計、ISO 顧問、中醫、整合醫學、健康教育、整復、行銷、活動企劃、音樂創作、AI 工程。每位都是「AI 整合者 × 領域專家」模式的活範例。"
   },
   "homepage.members.disclosure": {
     "message": "目前所有研究與工具專案由理事長 CΛ / Lightman 主導執行，創始會員提供跨領域諮詢與審閱，誠邀更多會員與外部合作者深度參與下一階段。"
@@ -439,10 +458,10 @@
     "message": "查看全部 →"
   },
   "homepage.pillars.title": {
-    "message": "三大研究軸線"
+    "message": "三大合作面向"
   },
   "homepage.pillars.desc": {
-    "message": "學術論文、產業情報、AI 工具，三條主軸並行推動圍棋文化與資訊公益。"
+    "message": "夥伴提供領域知識，理事長負責 AI 整合。產出三類成果：AI 工具、產業情報、學術論文，全部開源。"
   },
   "homepage.pillar.research.count": {
     "message": "篇論文"

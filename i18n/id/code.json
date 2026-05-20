@@ -1,17 +1,26 @@
 {
+  "homepage.hero.title": {
+    "message": "Mitra Bisnis × AI × Go",
+    "description": "Hero H1 title"
+  },
   "homepage.tagline": {
-    "message": "Komunitas Riset Open-Source · Lahir dari Go",
-    "description": "Site subtitle"
+    "message": "Mengubah pengetahuan industri menjadi alat AI sumber terbuka",
+    "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "11 Anggota Pendiri · 41 Proyek Kepentingan Publik · Sepenuhnya Open-Source · Diperbarui Otomatis Setiap Hari"
+    "message": "11 mitra lintas-domain · 41+ alat AI sumber terbuka · 100% gratis · Diperbarui otomatis setiap hari"
   },
-  "homepage.cta.about": {
-    "message": "Kenali Asosiasi"
-  },
-  "homepage.cta.research": {
-    "message": "Hasil Penelitian"
-  },
+  "homepage.cta.proposal": { "message": "Ajukan kolaborasi" },
+  "homepage.cta.meet": { "message": "Mari bertemu dulu" },
+  "homepage.cta.members": { "message": "Kenali mitra kami" },
+  "homepage.usp.title": { "message": "Kami gratis, sepenuhnya sumber terbuka" },
+  "homepage.usp.lead": { "message": "Sepenuhnya gratis, tanpa biaya keanggotaan, semua sumber terbuka (CC-BY 4.0). Kami tidak menjual pelatihan berbayar, tidak memungut biaya rujukan, dan tidak mengelola keanggotaan." },
+  "homepage.usp.not1.label": { "message": "Bukan sekadar asosiasi Go" },
+  "homepage.usp.not1.desc": { "message": "Go sebagai pengikat, bukan tujuan" },
+  "homepage.usp.not2.label": { "message": "Bukan sekadar promosi AI" },
+  "homepage.usp.not2.desc": { "message": "Kami punya alat sumber terbuka buatan sendiri" },
+  "homepage.usp.not3.label": { "message": "Bukan sekadar jaringan bisnis" },
+  "homepage.usp.not3.desc": { "message": "Output sumber terbuka bersama adalah buktinya" },
   "homepage.origin.badge": {
     "message": "Monumen Asal-Usul"
   },
@@ -31,10 +40,10 @@
     "message": "Evolusi AlphaGo →"
   },
   "homepage.members.title": {
-    "message": "Anggota Pendiri"
+    "message": "11 mitra dari berbagai bidang"
   },
   "homepage.members.desc": {
-    "message": "11 profesional dari bidang Go, kesehatan, hukum, pemasaran, dan pendidikan bersama-sama mendirikan Asosiasi Good Go Baby Taiwan."
+    "message": "Pengacara, akuntan, konsultan ISO, pengobatan Tiongkok, kedokteran integratif, edukasi kesehatan, rehabilitasi, pemasaran, event planning, musik, teknik AI. Setiap orang adalah contoh hidup model 'integrator AI × pakar domain'."
   },
   "homepage.members.disclosure": {
     "message": "Saat ini, semua proyek penelitian dan alat dipimpin oleh Ketua CΛ / Lightman, dengan anggota pendiri memberikan konsultasi dan tinjauan lintas bidang. Kami dengan hangat mengundang lebih banyak anggota dan kolaborator eksternal untuk terlibat lebih dalam pada tahap berikutnya."
@@ -73,7 +82,7 @@
     "message": "Beranda"
   },
   "homepage.meta.description": {
-    "message": "Situs resmi Asosiasi Taiwan Good Go Baby - Menyediakan sumber daya pendidikan Go dan penelitian AI, mempromosikan perkembangan budaya Go"
+    "message": "11 mitra dari hukum, ISO, teknologi, kesehatan, dll. Mengubah pengetahuan industri menjadi 41+ alat AI sumber terbuka, semua gratis. Kolaborasi lintas-domain disambut."
   },
   "theme.ErrorPageContent.title": {
     "message": "Terjadi kesalahan.",
@@ -582,10 +591,10 @@
     "message": "查看全部 →"
   },
   "homepage.pillars.title": {
-    "message": "三大研究軸線"
+    "message": "Tiga arah kolaborasi"
   },
   "homepage.pillars.desc": {
-    "message": "學術論文、產業情報、AI 工具，三條主軸並行推動圍棋文化與資訊公益。"
+    "message": "Mitra menyumbang pengetahuan domain; ketua menangani integrasi AI. Tiga hasil: alat AI, intelijen industri, makalah akademis — semua sumber terbuka."
   },
   "homepage.pillar.research.count": {
     "message": "篇論文"

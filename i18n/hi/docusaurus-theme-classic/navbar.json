@@ -1,30 +1,16 @@
 {
-  "title": {
-    "message": "वेइकी किड्स",
-    "description": "The title in the navbar"
-  },
-  "logo.alt": {
-    "message": "वेइकी किड्स एसोसिएशन लोगो",
-    "description": "The alt text of navbar logo"
-  },
-  "item.label.學圍棋": {
-    "message": "गो सीखें",
-    "description": "Navbar item with label 學圍棋"
-  },
-  "item.label.AlphaGo": {
-    "message": "AlphaGo",
-    "description": "Navbar item with label AlphaGo"
-  },
-  "item.label.動畫教室": {
-    "message": "एनिमेशन स्टूडियो",
-    "description": "Navbar item with label 動畫教室"
-  },
-  "item.label.技術文件": {
-    "message": "तकनीकी दस्तावेज़",
-    "description": "Navbar item with label 技術文件"
-  },
-  "item.label.關於我們": {
-    "message": "हमारे बारे में",
-    "description": "Navbar item with label 關於我們"
-  }
+  "title": { "message": "वेइकी किड्स" },
+  "logo.alt": { "message": "वेइकी किड्स एसोसिएशन लोगो" },
+  "item.label.夥伴": { "message": "भागीदार" },
+  "item.label.認識夥伴": { "message": "भागीदारों से मिलें" },
+  "item.label.關於協會": { "message": "संगठन के बारे में" },
+  "item.label.合作提案": { "message": "सहयोग प्रस्ताव" },
+  "item.label.AI 工具": { "message": "AI टूल्स" },
+  "item.label.論文": { "message": "शोध" },
+  "item.label.產業情報": { "message": "उद्योग खुफिया" },
+  "item.label.圍棋資源": { "message": "गो संसाधन" },
+  "item.label.學圍棋": { "message": "गो सीखें" },
+  "item.label.AlphaGo": { "message": "AlphaGo" },
+  "item.label.動畫教室": { "message": "एनिमेशन" },
+  "item.label.技術文件": { "message": "तकनीकी दस्तावेज़" }
 }

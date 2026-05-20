@@ -1,17 +1,26 @@
 {
+  "homepage.hero.title": {
+    "message": "Socios Empresariales × IA × Go",
+    "description": "Hero H1 title"
+  },
   "homepage.tagline": {
-    "message": "Comunidad de investigación de código abierto · Nacida del Go",
-    "description": "Site subtitle"
+    "message": "Convertir el know-how industrial en herramientas IA de código abierto",
+    "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "11 miembros fundadores · 41 proyectos de interés público · Completamente de código abierto · Actualización diaria automática"
+    "message": "11 socios interdisciplinarios · 41+ herramientas IA de código abierto · 100% gratis · Actualización diaria"
   },
-  "homepage.cta.about": {
-    "message": "Conocer la Asociación"
-  },
-  "homepage.cta.research": {
-    "message": "Resultados de investigación"
-  },
+  "homepage.cta.proposal": { "message": "Proponer colaboración" },
+  "homepage.cta.meet": { "message": "Conozcámonos primero" },
+  "homepage.cta.members": { "message": "Conoce a los socios" },
+  "homepage.usp.title": { "message": "Sin costo, totalmente de código abierto" },
+  "homepage.usp.lead": { "message": "Completamente gratis, sin cuotas de membresía, todo de código abierto (CC-BY 4.0). No vendemos formación de pago, ni cobramos por referidos, ni manejamos membresías." },
+  "homepage.usp.not1.label": { "message": "No solo una asociación de Go" },
+  "homepage.usp.not1.desc": { "message": "Usamos el Go como vínculo, no como fin" },
+  "homepage.usp.not2.label": { "message": "No solo promoción de IA" },
+  "homepage.usp.not2.desc": { "message": "Producimos nuestras propias herramientas open-source" },
+  "homepage.usp.not3.label": { "message": "No solo redes de negocios" },
+  "homepage.usp.not3.desc": { "message": "La producción open-source compartida es la prueba" },
   "homepage.origin.badge": {
     "message": "Monumento al origen"
   },
@@ -31,10 +40,10 @@
     "message": "Evolución de AlphaGo →"
   },
   "homepage.members.title": {
-    "message": "Miembros fundadores"
+    "message": "11 socios de campos diferentes"
   },
   "homepage.members.desc": {
-    "message": "11 profesionales de Go, salud, derecho, marketing y educación co-fundaron la Asociación Taiwanesa Good Go Baby."
+    "message": "Abogados, contadores, consultores ISO, medicina china, medicina integrativa, educación en salud, rehabilitación, marketing, planificación de eventos, música, ingeniería IA. Cada uno es un ejemplo vivo del modelo «integrador IA × experto de dominio»."
   },
   "homepage.members.disclosure": {
     "message": "Actualmente, todos los proyectos de investigación y herramientas son liderados por el Presidente CΛ / Lightman, con los miembros fundadores aportando consultoría y revisión interdisciplinaria. Invitamos cálidamente a más miembros y colaboradores externos a participar profundamente en la próxima etapa."
@@ -73,7 +82,7 @@
     "message": "Inicio"
   },
   "homepage.meta.description": {
-    "message": "Sitio web oficial de la Asociación Taiwan Good Go Baby - Recursos de educación de Go e investigación de IA, promoviendo el desarrollo de la cultura del Go"
+    "message": "11 socios de derecho, ISO, tecnología, salud y más. Convirtiendo know-how industrial en 41+ herramientas IA de código abierto, todas gratis. Bienvenida la colaboración interdisciplinaria."
   },
   "theme.ErrorPageContent.title": {
     "message": "Esta página ha fallado.",
@@ -582,10 +591,10 @@
     "message": "查看全部 →"
   },
   "homepage.pillars.title": {
-    "message": "三大研究軸線"
+    "message": "Tres direcciones de colaboración"
   },
   "homepage.pillars.desc": {
-    "message": "學術論文、產業情報、AI 工具，三條主軸並行推動圍棋文化與資訊公益。"
+    "message": "Los socios aportan conocimiento de dominio; el presidente gestiona la integración IA. Tres productos: herramientas IA, inteligencia industrial, artículos académicos — todo de código abierto."
   },
   "homepage.pillar.research.count": {
     "message": "篇論文"

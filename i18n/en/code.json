@@ -1,18 +1,27 @@
 {
+  "homepage.hero.title": {
+    "message": "Business Partners × AI × Go",
+    "description": "Hero H1 title"
+  },
   "homepage.tagline": {
-    "message": "Open-Source Research Community · Born from Go",
-    "description": "Site subtitle"
+    "message": "Turning industry know-how into open-source AI tools",
+    "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "11 Founding Members · 41 Public-Interest Projects · Fully Open-Source · Updated Daily",
+    "message": "11 cross-domain partners · 41+ open-source AI tools · 100% free · Updated daily",
     "description": "Hero stats line"
   },
-  "homepage.cta.about": {
-    "message": "About the Association"
-  },
-  "homepage.cta.research": {
-    "message": "Our Work"
-  },
+  "homepage.cta.proposal": { "message": "Propose a collaboration" },
+  "homepage.cta.meet": { "message": "Let's meet first" },
+  "homepage.cta.members": { "message": "Meet the partners" },
+  "homepage.usp.title": { "message": "Free for all, fully open-source" },
+  "homepage.usp.lead": { "message": "Completely free, no membership fees, all open-source (CC-BY 4.0). We don't sell paid training, referral fees, or memberships." },
+  "homepage.usp.not1.label": { "message": "Not just a Go association" },
+  "homepage.usp.not1.desc": { "message": "We use Go as a tie, not the goal" },
+  "homepage.usp.not2.label": { "message": "Not just AI promotion" },
+  "homepage.usp.not2.desc": { "message": "We produce our own open-source tools" },
+  "homepage.usp.not3.label": { "message": "Not just business networking" },
+  "homepage.usp.not3.desc": { "message": "Shared open-source output is the proof" },
   "homepage.origin.badge": {
     "message": "Origin Story"
   },
@@ -32,10 +41,10 @@
     "message": "AlphaGo Evolution →"
   },
   "homepage.members.title": {
-    "message": "Founding Members"
+    "message": "11 Partners from Different Fields"
   },
   "homepage.members.desc": {
-    "message": "Eleven professionals from Go, healthcare, law, marketing, and education co-founded the Taiwan Good Go Baby Association."
+    "message": "Lawyers, accountants, ISO consultants, TCM practitioners, integrative medicine, health educators, physical rehab, marketing, event planning, music, AI engineering. Each is a living example of the \"AI integrator × domain expert\" model."
   },
   "homepage.members.disclosure": {
     "message": "All current research and tool projects are led by Chairman CΛ / Lightman, with founding members providing cross-domain consultation and review. We warmly invite more members and external collaborators to join the next phase."
@@ -74,7 +83,7 @@
     "message": "Home"
   },
   "homepage.meta.description": {
-    "message": "Taiwan Good Go Baby Association - Providing Go education and AI research resources, promoting Go culture development"
+    "message": "11 partners from law, ISO, tech, healthcare and more. Turning industry know-how into 41+ open-source AI tools, all completely free. Cross-domain collaboration welcome."
   },
   "theme.ErrorPageContent.title": {
     "message": "This page crashed.",
@@ -583,10 +592,10 @@
     "message": "查看全部 →"
   },
   "homepage.pillars.title": {
-    "message": "三大研究軸線"
+    "message": "Three Collaboration Directions"
   },
   "homepage.pillars.desc": {
-    "message": "學術論文、產業情報、AI 工具，三條主軸並行推動圍棋文化與資訊公益。"
+    "message": "Partners contribute domain knowledge; the chairman handles AI integration. Three outputs: AI tools, industry intelligence, academic papers — all open-source."
   },
   "homepage.pillar.research.count": {
     "message": "篇論文"

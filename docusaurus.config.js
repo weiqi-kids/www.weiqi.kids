@@ -202,7 +202,7 @@ const config = {
       image: 'img/social-card.png',
       metadata: [
         { name: 'keywords', content: '圍棋, Go, 好棋寶寶, AI, KataGo, AlphaGo, 圍棋教學, 圍棋入門' },
-        { name: 'description', content: '台灣好棋寶寶協會官網 - 提供圍棋教學、AI 研究資源，推動圍棋文化發展' },
+        { name: 'description', content: '11 位來自律師、ISO、技術、醫療等領域的夥伴，把產業 know-how 變成 41+ 個全部免費開源的 AI 工具。歡迎跨域合作。' },
       ],
       navbar: {
         title: 'Weiqi.Kids',
@@ -211,11 +211,30 @@ const config = {
           src: 'img/logo.svg',
         },
         items: [
-          { to: '/docs/learn', label: '學圍棋', position: 'left' },
-          { to: '/docs/alphago', label: 'AlphaGo', position: 'left' },
-          { to: '/docs/animations', label: '動畫教室', position: 'left' },
-          { to: '/docs/tech', label: '技術文件', position: 'left' },
-          { to: '/docs/about', label: '關於我們', position: 'left' },
+          {
+            type: 'dropdown',
+            label: '夥伴',
+            position: 'left',
+            items: [
+              { to: '/docs/about/members/founding/', label: '認識夥伴' },
+              { to: '/docs/about', label: '關於協會' },
+              { href: 'mailto:lightman.chang@gmail.com?subject=%E3%80%90%E5%90%88%E4%BD%9C%E6%8F%90%E6%A1%88%E3%80%91', label: '合作提案' },
+            ],
+          },
+          { to: '/apps/', label: 'AI 工具', position: 'left' },
+          { to: '/research/', label: '論文', position: 'left' },
+          { to: '/intel/', label: '產業情報', position: 'left' },
+          {
+            type: 'dropdown',
+            label: '圍棋資源',
+            position: 'left',
+            items: [
+              { to: '/docs/learn', label: '學圍棋' },
+              { to: '/docs/alphago', label: 'AlphaGo' },
+              { to: '/docs/animations', label: '動畫教室' },
+              { to: '/docs/tech', label: '技術文件' },
+            ],
+          },
           {
             type: 'localeDropdown',
             position: 'right',

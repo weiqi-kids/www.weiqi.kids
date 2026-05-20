@@ -1,30 +1,16 @@
 {
-  "title": {
-    "message": "圍棋寶寶",
-    "description": "The title in the navbar"
-  },
-  "logo.alt": {
-    "message": "好棋寶寶協會標誌",
-    "description": "The alt text of navbar logo"
-  },
-  "item.label.學圍棋": {
-    "message": "學圍棋",
-    "description": "Navbar item with label 學圍棋"
-  },
-  "item.label.AlphaGo": {
-    "message": "AlphaGo",
-    "description": "Navbar item with label AlphaGo"
-  },
-  "item.label.動畫教室": {
-    "message": "動畫教室",
-    "description": "Navbar item with label 動畫教室"
-  },
-  "item.label.技術文件": {
-    "message": "技術文件",
-    "description": "Navbar item with label 技術文件"
-  },
-  "item.label.關於我們": {
-    "message": "關於我哋",
-    "description": "Navbar item with label 關於我們"
-  }
+  "title": { "message": "好棋寶寶" },
+  "logo.alt": { "message": "好棋寶寶協會標誌" },
+  "item.label.夥伴": { "message": "夥伴" },
+  "item.label.認識夥伴": { "message": "認識夥伴" },
+  "item.label.關於協會": { "message": "關於協會" },
+  "item.label.合作提案": { "message": "合作提案" },
+  "item.label.AI 工具": { "message": "AI 工具" },
+  "item.label.論文": { "message": "論文" },
+  "item.label.產業情報": { "message": "產業情報" },
+  "item.label.圍棋資源": { "message": "圍棋資源" },
+  "item.label.學圍棋": { "message": "學圍棋" },
+  "item.label.AlphaGo": { "message": "AlphaGo" },
+  "item.label.動畫教室": { "message": "動畫教室" },
+  "item.label.技術文件": { "message": "技術文件" }
 }

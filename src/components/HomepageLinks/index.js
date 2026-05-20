@@ -39,6 +39,58 @@ const appHighlights = appHighlightIds
   .map((id) => appLinks.find((a) => a.id === id))
   .filter(Boolean);
 
+// ─── USP 宣告區塊（不收費 + 三條「不是什麼」）───
+function USPSection() {
+  return (
+    <section className={clsx(styles.section, styles.uspSection)}>
+      <div className="container">
+        <div className={styles.sectionHeader}>
+          <Heading as="h2">
+            <Translate id="homepage.usp.title">我們不收費，全部開源</Translate>
+          </Heading>
+          <p className={styles.sectionDescription}>
+            <Translate id="homepage.usp.lead">
+              完全免費、無會員費、全部開源（CC-BY 4.0）。我們不做付費培訓、不收引薦費、不賣會員制。
+            </Translate>
+          </p>
+        </div>
+        <div className={styles.uspGrid}>
+          <div className={styles.uspItem}>
+            <div className={styles.uspNot}>
+              <Translate id="homepage.usp.not1.label">不是純圍棋協會</Translate>
+            </div>
+            <p className={styles.uspExplain}>
+              <Translate id="homepage.usp.not1.desc">
+                我們把圍棋當紐帶不當目的
+              </Translate>
+            </p>
+          </div>
+          <div className={styles.uspItem}>
+            <div className={styles.uspNot}>
+              <Translate id="homepage.usp.not2.label">不是純 AI 推廣</Translate>
+            </div>
+            <p className={styles.uspExplain}>
+              <Translate id="homepage.usp.not2.desc">
+                我們有真正自產的開源工具
+              </Translate>
+            </p>
+          </div>
+          <div className={styles.uspItem}>
+            <div className={styles.uspNot}>
+              <Translate id="homepage.usp.not3.label">不是純商務人脈</Translate>
+            </div>
+            <p className={styles.uspExplain}>
+              <Translate id="homepage.usp.not3.desc">
+                我們有共同開源產出當證據
+              </Translate>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ─── 三大支柱入口卡 ───
 function PillarCard({to, icon, titleKey, titleDefault, descKey, descDefault, count, countLabel}) {
   return (
@@ -67,11 +119,11 @@ function PillarSection() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <Heading as="h2">
-            <Translate id="homepage.pillars.title">三大研究軸線</Translate>
+            <Translate id="homepage.pillars.title">三大合作面向</Translate>
           </Heading>
           <p className={styles.sectionDescription}>
             <Translate id="homepage.pillars.desc">
-              學術論文、產業情報、AI 工具，三條主軸並行推動圍棋文化與資訊公益。
+              夥伴提供領域知識，理事長負責 AI 整合。產出三類成果：AI 工具、產業情報、學術論文，全部開源。
             </Translate>
           </p>
         </div>
@@ -183,11 +235,11 @@ function MembersSection() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <Heading as="h2">
-            <Translate id="homepage.members.title">創始會員</Translate>
+            <Translate id="homepage.members.title">11 位來自不同領域的夥伴</Translate>
           </Heading>
           <p className={styles.sectionDescription}>
             <Translate id="homepage.members.desc">
-              11 位來自圍棋、醫療、法律、行銷、教育的專業人士，共同創立台灣好棋寶寶協會。
+              律師、會計、ISO 顧問、中醫、整合醫學、健康教育、整復、行銷、活動企劃、音樂創作、AI 工程。每位都是「AI 整合者 × 領域專家」模式的活範例。
             </Translate>
           </p>
         </div>
@@ -267,6 +319,7 @@ function FriendsSection() {
 export default function HomepageLinks() {
   return (
     <>
+      <USPSection />
       <PillarSection />
 
       {/* 學術研究精選 */}

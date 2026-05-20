@@ -2,6 +2,56 @@
   padding: 3rem 0;
 }
 
+/* ─── USP 宣告區塊 ─── */
+.uspSection {
+  background: linear-gradient(135deg, var(--ifm-color-primary-lightest, #fff4e6) 0%, var(--ifm-background-color, #fff) 100%);
+  padding: 2.5rem 0;
+}
+
+[data-theme='dark'] .uspSection {
+  background: linear-gradient(135deg, #2a1f15 0%, #1f1f21 100%);
+}
+
+.uspGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .uspGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.uspItem {
+  text-align: center;
+  padding: 1.25rem 1rem;
+  background: var(--ifm-background-color, #fff);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+[data-theme='dark'] .uspItem {
+  background: #2a2a2c;
+}
+
+.uspNot {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--ifm-color-primary, #d97706);
+}
+
+.uspExplain {
+  font-size: 0.95rem;
+  color: var(--ifm-color-emphasis-700, #555);
+  margin: 0;
+  line-height: 1.5;
+}
+
 .sectionAlt {
   background: var(--ifm-color-emphasis-100, #f8f9fa);
 }

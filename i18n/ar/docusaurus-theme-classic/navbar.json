@@ -1,30 +1,16 @@
 {
-  "title": {
-    "message": "ويكي كيدز",
-    "description": "The title in the navbar"
-  },
-  "logo.alt": {
-    "message": "شعار جمعية ويكي كيدز",
-    "description": "The alt text of navbar logo"
-  },
-  "item.label.學圍棋": {
-    "message": "تعلم غو",
-    "description": "Navbar item with label 學圍棋"
-  },
-  "item.label.AlphaGo": {
-    "message": "AlphaGo",
-    "description": "Navbar item with label AlphaGo"
-  },
-  "item.label.動畫教室": {
-    "message": "استوديو الرسوم المتحركة",
-    "description": "Navbar item with label 動畫教室"
-  },
-  "item.label.技術文件": {
-    "message": "الوثائق التقنية",
-    "description": "Navbar item with label 技術文件"
-  },
-  "item.label.關於我們": {
-    "message": "من نحن",
-    "description": "Navbar item with label 關於我們"
-  }
+  "title": { "message": "ويكي كيدز" },
+  "logo.alt": { "message": "شعار جمعية ويكي كيدز" },
+  "item.label.夥伴": { "message": "شركاء" },
+  "item.label.認識夥伴": { "message": "تعرف على الشركاء" },
+  "item.label.關於協會": { "message": "عن الجمعية" },
+  "item.label.合作提案": { "message": "اقتراح تعاون" },
+  "item.label.AI 工具": { "message": "أدوات الذكاء الاصطناعي" },
+  "item.label.論文": { "message": "أبحاث" },
+  "item.label.產業情報": { "message": "استخبارات صناعية" },
+  "item.label.圍棋資源": { "message": "موارد الغو" },
+  "item.label.學圍棋": { "message": "تعلم الغو" },
+  "item.label.AlphaGo": { "message": "AlphaGo" },
+  "item.label.動畫教室": { "message": "دروس متحركة" },
+  "item.label.技術文件": { "message": "وثائق تقنية" }
 }

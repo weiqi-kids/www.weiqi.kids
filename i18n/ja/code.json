@@ -1,18 +1,27 @@
 {
+  "homepage.hero.title": {
+    "message": "ビジネスパートナー × AI × 囲碁",
+    "description": "Hero H1 title"
+  },
   "homepage.tagline": {
-    "message": "オープンソース研究コミュニティ・囲碁から始まる",
-    "description": "Site subtitle"
+    "message": "産業の知見をオープンソース AI ツールに",
+    "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "創設メンバー 11 名 · 公益プロジェクト 41 件 · オープンソース · 毎日自動更新",
+    "message": "11 名のクロスドメインパートナー · 41+ オープンソース AI ツール · 完全無料 · 毎日自動更新",
     "description": "Hero stats line"
   },
-  "homepage.cta.about": {
-    "message": "協会について"
-  },
-  "homepage.cta.research": {
-    "message": "研究成果"
-  },
+  "homepage.cta.proposal": { "message": "コラボを提案" },
+  "homepage.cta.meet": { "message": "まず会ってお話" },
+  "homepage.cta.members": { "message": "パートナー紹介" },
+  "homepage.usp.title": { "message": "私たちは無料、完全オープンソース" },
+  "homepage.usp.lead": { "message": "完全無料、会員費なし、すべてオープンソース（CC-BY 4.0）。有料研修・紹介手数料・会員制は行いません。" },
+  "homepage.usp.not1.label": { "message": "純粋な囲碁協会ではない" },
+  "homepage.usp.not1.desc": { "message": "囲碁は目的ではなく絆" },
+  "homepage.usp.not2.label": { "message": "純粋な AI 推進団体ではない" },
+  "homepage.usp.not2.desc": { "message": "私たち自身が作るオープンソースツール" },
+  "homepage.usp.not3.label": { "message": "純粋なビジネスネットワークではない" },
+  "homepage.usp.not3.desc": { "message": "共同のオープンソース成果が証拠" },
   "homepage.origin.badge": {
     "message": "起源の記念碑"
   },
@@ -32,10 +41,10 @@
     "message": "AlphaGo 進化の整理 →"
   },
   "homepage.members.title": {
-    "message": "創設メンバー"
+    "message": "異分野からの 11 名のパートナー"
   },
   "homepage.members.desc": {
-    "message": "囲碁、医療、法律、マーケティング、教育の各分野から集まった 11 名の専門家が、台湾グッド囲碁ベビー協会を共同設立しました。"
+    "message": "弁護士、会計士、ISO コンサル、漢方、統合医療、健康教育、整復、マーケティング、イベント企画、音楽創作、AI 工学。各メンバーが「AI 統合者 × 領域専門家」モデルの体現者。"
   },
   "homepage.members.disclosure": {
     "message": "現在、すべての研究およびツールプロジェクトは理事長 CΛ / Lightman が主導して実行しており、創設メンバーは各分野のコンサルティングとレビューを提供しています。次の段階に深く関わってくださる新しいメンバーや外部協力者を心より歓迎します。"
@@ -74,7 +83,7 @@
     "message": "ホーム"
   },
   "homepage.meta.description": {
-    "message": "台湾好棋ベビー協会公式サイト - 囲碁教育とAI研究リソースを提供し、囲碁文化の発展を推進"
+    "message": "弁護士、ISO、技術、医療など各分野の 11 名のパートナーが、産業知見を 41+ の完全無料・オープンソース AI ツールに。クロスドメイン協力歓迎。"
   },
   "theme.ErrorPageContent.title": {
     "message": "エラーが発生しました",
@@ -583,10 +592,10 @@
     "message": "查看全部 →"
   },
   "homepage.pillars.title": {
-    "message": "三大研究軸線"
+    "message": "三つの協力方向"
   },
   "homepage.pillars.desc": {
-    "message": "學術論文、產業情報、AI 工具，三條主軸並行推動圍棋文化與資訊公益。"
+    "message": "パートナーが領域知識を、理事長が AI 統合を担当。AI ツール、業界情報、学術論文の三つの成果、すべてオープンソース。"
   },
   "homepage.pillar.research.count": {
     "message": "篇論文"

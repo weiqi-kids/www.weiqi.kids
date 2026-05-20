@@ -1,30 +1,16 @@
 {
-  "title": {
-    "message": "Weiqi.Kids",
-    "description": "The title in the navbar"
-  },
-  "logo.alt": {
-    "message": "Good Go Baby Association Logo",
-    "description": "The alt text of navbar logo"
-  },
-  "item.label.學圍棋": {
-    "message": "Learn Go",
-    "description": "Navbar item with label 學圍棋"
-  },
-  "item.label.AlphaGo": {
-    "message": "AlphaGo",
-    "description": "Navbar item with label AlphaGo"
-  },
-  "item.label.動畫教室": {
-    "message": "Animation Studio",
-    "description": "Navbar item with label 動畫教室"
-  },
-  "item.label.技術文件": {
-    "message": "Technical Docs",
-    "description": "Navbar item with label 技術文件"
-  },
-  "item.label.關於我們": {
-    "message": "About Us",
-    "description": "Navbar item with label 關於我們"
-  }
+  "title": { "message": "Weiqi.Kids" },
+  "logo.alt": { "message": "Good Go Baby Association Logo" },
+  "item.label.夥伴": { "message": "Partners" },
+  "item.label.認識夥伴": { "message": "Meet the partners" },
+  "item.label.關於協會": { "message": "About" },
+  "item.label.合作提案": { "message": "Propose" },
+  "item.label.AI 工具": { "message": "AI Tools" },
+  "item.label.論文": { "message": "Research" },
+  "item.label.產業情報": { "message": "Industry Intel" },
+  "item.label.圍棋資源": { "message": "Go Resources" },
+  "item.label.學圍棋": { "message": "Learn Go" },
+  "item.label.AlphaGo": { "message": "AlphaGo" },
+  "item.label.動畫教室": { "message": "Animations" },
+  "item.label.技術文件": { "message": "Technical Docs" }
 }

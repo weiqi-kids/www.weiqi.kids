@@ -1,18 +1,27 @@
 {
+  "homepage.hero.title": {
+    "message": "비즈니스 파트너 × AI × 바둑",
+    "description": "Hero H1 title"
+  },
   "homepage.tagline": {
-    "message": "오픈 소스 연구 커뮤니티 · 바둑에서 시작되다",
-    "description": "Site subtitle"
+    "message": "산업 노하우를 오픈소스 AI 도구로",
+    "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "창립 회원 11명 · 공익 프로젝트 41개 · 전체 오픈 소스 · 매일 자동 업데이트",
+    "message": "11명의 크로스도메인 파트너 · 41+ 오픈소스 AI 도구 · 전부 무료 · 매일 자동 업데이트",
     "description": "Hero stats line"
   },
-  "homepage.cta.about": {
-    "message": "협회 소개"
-  },
-  "homepage.cta.research": {
-    "message": "연구 성과"
-  },
+  "homepage.cta.proposal": { "message": "협력 제안" },
+  "homepage.cta.meet": { "message": "먼저 만나서 얘기" },
+  "homepage.cta.members": { "message": "파트너 만나기" },
+  "homepage.usp.title": { "message": "전부 무료, 완전 오픈소스" },
+  "homepage.usp.lead": { "message": "완전 무료, 회비 없음, 전부 오픈소스(CC-BY 4.0). 유료 교육·소개비·회원제는 하지 않습니다." },
+  "homepage.usp.not1.label": { "message": "순수 바둑 협회가 아닙니다" },
+  "homepage.usp.not1.desc": { "message": "바둑은 목적이 아닌 연결고리" },
+  "homepage.usp.not2.label": { "message": "순수 AI 추진 단체가 아닙니다" },
+  "homepage.usp.not2.desc": { "message": "직접 만든 오픈소스 도구가 있습니다" },
+  "homepage.usp.not3.label": { "message": "순수 비즈니스 네트워크가 아닙니다" },
+  "homepage.usp.not3.desc": { "message": "공동 오픈소스 성과가 증거" },
   "homepage.origin.badge": {
     "message": "기원의 기념비"
   },
@@ -32,10 +41,10 @@
     "message": "AlphaGo 진화 정리 →"
   },
   "homepage.members.title": {
-    "message": "창립 회원"
+    "message": "다양한 분야의 11명 파트너"
   },
   "homepage.members.desc": {
-    "message": "바둑, 의료, 법률, 마케팅, 교육 분야의 전문가 11명이 함께 대만 바둑 베이비 협회를 설립했습니다."
+    "message": "변호사, 회계사, ISO 컨설턴트, 한의학, 통합의학, 건강교육, 정복, 마케팅, 이벤트 기획, 음악 창작, AI 공학. 모두 'AI 통합자 × 영역 전문가' 모델의 실례."
   },
   "homepage.members.disclosure": {
     "message": "현재 모든 연구 및 도구 프로젝트는 이사장 CΛ / Lightman이 주도하여 실행하고 있으며, 창립 회원은 각 분야에 대한 컨설팅과 검토를 제공합니다. 다음 단계에 깊이 참여해 주실 새로운 회원과 외부 협력자를 진심으로 환영합니다."
@@ -74,7 +83,7 @@
     "message": "홈"
   },
   "homepage.meta.description": {
-    "message": "대만 호치베이비협회 공식 웹사이트 - 바둑 교육 및 AI 연구 자료 제공, 바둑 문화 발전 추진"
+    "message": "변호사, ISO, 기술, 의료 등 다양한 분야의 11명 파트너가 산업 노하우를 41+ 개 무료 오픈소스 AI 도구로. 크로스도메인 협력 환영."
   },
   "theme.ErrorPageContent.title": {
     "message": "페이지에 오류가 발생하였습니다.",
@@ -583,10 +592,10 @@
     "message": "查看全部 →"
   },
   "homepage.pillars.title": {
-    "message": "三大研究軸線"
+    "message": "세 가지 협력 방향"
   },
   "homepage.pillars.desc": {
-    "message": "學術論文、產業情報、AI 工具，三條主軸並行推動圍棋文化與資訊公益。"
+    "message": "파트너가 영역 지식, 이사장이 AI 통합. AI 도구·산업 정보·학술 논문 세 가지 산출물, 모두 오픈소스."
   },
   "homepage.pillar.research.count": {
     "message": "篇論文"
