@@ -23,7 +23,7 @@ function HomepageHeader() {
         </p>
         <p className={styles.heroStats}>
           <Translate id="homepage.hero.stats" description="Hero stats line">
-            11 位創始會員 · 40 個公益專案 · 全部開源 · 每日自動更新
+            11 位創始會員 · 41 個公益專案 · 全部開源 · 每日自動更新
           </Translate>
         </p>
         <div className={styles.buttons}>

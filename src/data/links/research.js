@@ -117,4 +117,16 @@ export const researchPapers = [
     repoHref: 'https://github.com/weiqi-kids/four-color-structural-proof',
     icon: '🎨',
   },
+  {
+    id: 'optimal-golomb-ruler',
+    repo: 'optimal-golomb-ruler',
+    category: 'mathematics',
+    titleKey: 'research.paper.optimal-golomb-ruler.title',
+    titleDefault: 'Erdős–Sidon 攻擊報告',
+    descKey: 'research.paper.optimal-golomb-ruler.desc',
+    descDefault: '94 輪 LLM sub-agent 群攻擊 Erdős–Sidon 猜想：未撼動 1969 年 Lindström 上界，卻意外發現 49 年前 Bloom–Golomb 例子的新性質、命名兩個 LLM-數學失敗模式，產出三篇可發表 paper。',
+    href: 'https://optimal-golomb-ruler.proof.weiqi.kids/',
+    repoHref: 'https://github.com/weiqi-kids/optimal-golomb-ruler',
+    icon: '📏',
+  },
 ];
