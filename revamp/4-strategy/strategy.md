@@ -32,7 +32,7 @@ based_on:
 
 | 類型 | 數量 | 頁面／檔案列表 |
 |------|------|--------------|
-| **新增** | 2 | (a) `/about/cooperation`（合作邀請＋棋會邀請流程說明）；(b) `/impact-report/2026/`（年度開源成果報告 / 一頁式 + PDF） |
+| **新增** | 2 | (a) `/about/cooperation`（合作邀請；§9 無棋會分支：雙主旨 mailto + 未來棋會意向徵詢）；(b) `/impact-report/2026/`（年度開源成果報告 / 一頁式 + PDF） |
 | **大改** | 1 | `src/pages/index.js` 首頁（Hero / Stats / 三大軸線 / 案例敘事 / USP 宣告） |
 | **修改** | 11 | `docs/about/members/*.md` 11 位會員實績卡（本業＋協會貢獻＋對應 AI 工具雙向連結） |
 | **優化** | 4 | (a) `src/pages/research.js`、(b) `apps.js`、(c) `intel.js`（加產業標籤 + 「主要貢獻會員」欄）；(d) `docs/about/intro.md`（補使命／願景／歷程） |
@@ -62,7 +62,7 @@ based_on:
 | G4 | 「不收費」USP 宣告 | 高 | 低 | **Quick Win** | P0a |
 | Meta description 更新 | 高 | 低 | **Quick Win** | P0a |
 | navbar 重設計（加「合作」「夥伴」入口）| 高 | 中（11 語系翻譯）| **Quick Win** | P0a |
-| G7 | 實體棋會公開（含 G2 棋會邀請 CTA）| 高（Persona B 決策依賴）| 中（需用戶確認實際狀況）| **Major** | P0a |
+| ~~G7~~ → G7' | ~~實體棋會公開~~ → 棋會意向徵詢 mailto 主旨（**§9 已調整**）| 低（棋會啟動後可回升）| 低（單一 mailto 選項） | **Fill In** | P1 後補 |
 | G2 | 11 位會員實績卡 | 高 | **高**（11 × 內容生產）| **Major** | P0b |
 | G3 | 會員 ↔ 工具雙向連結 | 高（網狀結構效益）| 中（每個專案頁加 1 欄位）| **Major** | P0b |
 | G8 | 首頁合作案例敘事區（3-5 個案例卡）| 高 | 中（理事長主筆）| **Major** | P0b |
@@ -82,7 +82,7 @@ based_on:
 |----|------|------|------|
 | **G6** | Umami 追蹤碼注入（先做）| 不做則本計劃所有 KPI 量測失效 | 1-discovery §6 第 1 項；3-analysis G6 |
 | **G5** | Hero 重寫為「商界夥伴 × AI × 圍棋」 | 主敘事與新定位對齊；意識階段第一印象 | 3-analysis G5 |
-| **G1** | 首頁主 CTA「合作提案」mailto + 次級 CTA「實體棋會邀請」| Persona A/B 雙路徑入口 | 2-competitive 可借鏡 P0a；3-analysis 三大關鍵發現 #3 |
+| **G1** | 首頁主 CTA「合作提案」mailto +「先見面聊聊」mailto 雙主旨（**§9 調整**：移除實體棋會 CTA）| Persona A/B 雙路徑入口（無棋會分支設計）| 2-competitive 可借鏡 P0a；3-analysis 三大關鍵發現 #3；§9 無棋會分支 |
 | **G4** | 「完全免費、無會員費、全部開源」USP 宣告（首頁第二屏）| 反向護城河 / 對 BNI/TAIA/YPO 差異化 | 2-competitive USP；3-analysis 4.2 |
 | **Meta-desc** | Meta description 全站更新 | SEO 對齊新定位 | positioning §6 P0a |
 | **navbar** | navbar 加「合作」「夥伴／實績」入口；移除 L3 平行擠占 | 主受眾入口缺失 | positioning §6 P1；3-analysis G12 |
@@ -95,7 +95,7 @@ based_on:
 | **G3** | 會員頁 ↔ AI 工具頁雙向連結 | 結構性高槓桿點 | 3-analysis Reviewer 觀察 #1 |
 | **G8** | 首頁合作案例敘事區（3-5 個案例卡）| 「夥伴提供問題 → AI 整合 → 開源產出」具體故事 | positioning §6 P0b；3-analysis G8 |
 | **G11** | 11 位會員 testimonial 引言（每人 1-2 句）| 人格化敘事 | 2-competitive 可借鏡；3-analysis G11 |
-| **G7** | 實體棋會時間／地點／頻率公開 | Persona B 決策依賴 | positioning 待補；3-analysis G7 |
+| ~~**G7**~~ → **G7'** | ~~實體棋會時間／地點／頻率公開~~ → **棋會意向徵詢**（mailto 主旨選項）（**§9 調整**）| 替代 Persona B 決策依賴；棋會啟動後可回升 P0b | §9 無棋會分支；降為 P1 後補 |
 | **about/intro** | `docs/about/intro.md` 補使命／願景／歷程 | 「考慮」階段內容缺失 | 1-discovery §2.2 |
 
 #### P1 — 差異化護城河（Phase 3）
@@ -133,7 +133,7 @@ based_on:
 | G6 | Umami 注入（先做、單獨 commit）| 修改設定 | 1 |
 | G5 | Hero 重寫 | 大改首頁 | 2 |
 | G4 | 「不收費」USP 宣告 | 大改首頁 | 2（與 G5 同 commit）|
-| G1 | mailto + 棋會邀請雙 CTA | 大改首頁 | 3 |
+| G1 | mailto 雙主旨（合作提案 / 先見面聊聊）— **§9 無棋會分支** | 大改首頁 | 3 |
 | navbar | 加「合作」「夥伴」入口（先英中兩語）| 修改 navbar | 4 |
 | Meta-desc | 全站 Meta description 更新 | 修改設定 | 5 |
 | **驗收** | 11 語系翻譯 + 線上部署 + Umami 後台確認 | — | 6 |
@@ -155,7 +155,7 @@ based_on:
 | G2 + G11 | 11 位會員實績卡（含 testimonial）| 修改 × 11 | 11 × 2h = 22h（含 11 位會員回饋等待）|
 | G3 | 5 個旗艦專案頁加「貢獻會員」+ 11 位會員頁加「對應 AI 工具」| 修改 × 16 | 8h |
 | G8 | 首頁 3-5 個案例卡（理事長主筆）| 新區塊 | 6h |
-| G7 | 棋會頻率／時間公開 | 修改 activities/ | 2h（前提：用戶確認實際情況）|
+| ~~G7~~ | ~~棋會頻率／時間公開~~ — **§9 已刪除**（協會無定期棋會），改 G7' 棋會意向徵詢納入 `/about/cooperation` 第 1 區塊| — | 0h |
 | about/intro | 使命／願景／歷程補齊 | 修改 1 篇 | 4h |
 
 #### 5 個旗艦專案選擇（按已知會員-專案 mapping 推測，需用戶確認）
@@ -222,8 +222,9 @@ based_on:
 | 頁面目標 | 5 秒讓主受眾判斷「值得花時間了解」；30 秒讓他們點 CTA |
 | 目標受眾 | Persona A（二代接班型）為主、Persona B（退休專業型）次之 |
 | 關鍵訊息 | 1. 11 位跨域夥伴 × 40+ 開源 AI 工具<br>2. 完全免費、無會員費、全部開源<br>3. 商界 × AI × 圍棋三位一體 |
-| 主要 CTA | 「合作提案」`mailto:lightman.chang@gmail.com?subject=...` |
-| 次要 CTA | 「實體棋會邀請」（連結到 `/about/cooperation` 或 `/about/activities/`）|
+| 主要 CTA | 「合作提案」`mailto:lightman.chang@gmail.com?subject=【合作提案】...` |
+| 次要 CTA | 「先見面聊聊」`mailto:lightman.chang@gmail.com?subject=【先聊聊】...`（**§9 無棋會分支**，取代原「實體棋會邀請」）|
+| 第三 CTA | 「認識夥伴」`/about/members/` |
 
 #### 內容大綱
 
@@ -232,7 +233,7 @@ based_on:
    - 標題：商界夥伴 × AI × 圍棋（一句話定位待定稿）
    - Subtitle：把產業 know-how 變成開源 AI 工具
    - Stats：「11 位跨域夥伴 · 41+ 開源 AI 工具 · 全部免費」
-   - 主 CTA：合作提案 / 次 CTA：棋會邀請、認識夥伴
+   - 主 CTA：合作提案【合作提案】 / 次 CTA：先見面聊聊【先聊聊】 / 第三 CTA：認識夥伴（§9 無棋會分支）
 
 2. USP 宣告區（第二屏）
    - 「完全免費、無會員費、全部開源（CC-BY 4.0）」一行明確宣告
@@ -279,16 +280,16 @@ based_on:
 |------|------|
 | 頁面目標 | 把首頁 CTA 點擊接住，明確「下一步」 |
 | 目標受眾 | Persona A/B |
-| 關鍵訊息 | 1. 兩條合作路徑（mailto / 棋會）<br>2. 期待回信時程（3 個工作日內）<br>3. 「我們會這樣分工」（理事長 AI 整合 × 夥伴領域知識） |
-| 主要 CTA | mailto 直連 |
+| 關鍵訊息 | 1. 兩種合作目的（立即提案 / 先見面聊聊；**§9 無棋會分支**）<br>2. 期待回信時程（3 個工作日內）<br>3. 「我們會這樣分工」（理事長 AI 整合 × 夥伴領域知識） |
+| 主要 CTA | mailto 直連（雙主旨選項）|
 | 次要 CTA | 看會員（如果還沒看）/ 看案例 |
 
 #### 內容大綱
 
 ```
-1. 「兩條路徑」說明
-   - A 路徑：mailto 寫信給理事長（適合主動類型）
-   - B 路徑：實體棋會見面（適合先看人再說）
+1. 「兩種合作目的」說明（§9 無棋會分支）
+   - 目的 A：「我已經有合作想法」→ mailto subject「【合作提案】...」（適合 Persona A 主動類型）
+   - 目的 B：「我想先見面認識」→ mailto subject「【先聊聊】...」（適合 Persona B 偏好先見面類型；理事長 1:1 安排咖啡 / 線上對談）
 
 2. 期待回信時程：3 個工作日內
 
@@ -299,7 +300,7 @@ based_on:
 
 4. 已合作會員的 1-2 句感受（從 G11 testimonial 抽出 2-3 則）
 
-5. mailto / 棋會時間表（再次強調 CTA）
+5. mailto 雙主旨再次強調 + 「未來棋會通知」訂閱選項（§9 G7' 意向徵詢）
 ```
 
 ---
@@ -344,8 +345,8 @@ ai_tools: [專案 slug 列表]
 > [1-2 句個人理念或合作感受]
 
 ## 聯繫方式
-- 圍棋棋會見面（推薦）
-- 透過理事長轉介：[mailto]
+- 透過理事長轉介合作提案：[mailto subject「【合作提案】」]
+- 先見面聊聊：[mailto subject「【先聊聊】」]（§9 無棋會分支）
 ```
 
 ---
@@ -419,7 +420,7 @@ ai_tools: [專案 slug 列表]
 - [ ] 至少 5 個旗艦 AI 工具頁有「主要貢獻會員」連結
 - [ ] 首頁案例敘事區有 ≥ 3 個案例卡
 - [ ] about/intro.md 不再有「待補充」
-- [ ] 棋會頻率／時間／地點明確公開於 activities/index.md
+- [ ] ~~棋會頻率／時間／地點明確公開於 activities/index.md~~ → **§9 已刪除**（協會無定期棋會）；改為 `/about/cooperation` 加「未來棋會意向徵詢」mailto 主旨選項
 
 #### Phase 3 驗收（差異化護城河）
 
@@ -437,7 +438,9 @@ ai_tools: [專案 slug 列表]
 | 風險 | 影響 | 緩解措施 |
 |------|------|----------|
 | Phase 2 內容生產仰賴 11 位會員回饋，可能延遲 | Phase 2 拖延 | 預設「先做 3-5 位高貢獻會員 + 對應 5 個旗艦專案」作為最小可上線範圍；其餘等回饋 |
-| 「棋會」實際頻率與定位文件假設不符 | Persona B 雙 CTA 失效 | 4-strategy 完成前必須由用戶確認；若無實體棋會，棋會邀請 CTA 改為「未來活動 - 訂閱通知」 |
+| ~~「棋會」實際頻率與定位文件假設不符~~ **→ 已實現**（2026-05-20 用戶確認無棋會）| Persona B 決策路徑需替代 | **已套用 §9「無棋會分支」**：mailto 雙主旨「合作提案／先聊聊」取代實體棋會邀請；G7' 意向徵詢納入 `/about/cooperation` |
+| 「先見面聊聊」mailto 主旨選項是未驗證的 Persona B 替代設計 | Persona B 轉化路徑可能弱於預期 | Phase 1 上線後 30 天觀察 mailto 主旨分布；若「【先聊聊】」主旨佔比 < 10%，重新檢視 Persona B 假設 |
+| positioning §3「圍棋對局形成的長期信任」當前無實證支撐 | 差異化軸線弱化 | 短期主打「不收費 + CC-BY 4.0」可驗證的差異化；長期保留「圍棋作為信任場域」作為協會願景；首頁文案避免暗示「已有定期棋會」 |
 | Persona A/B 假設可能在 Umami 啟用後被推翻 | 內容方向需大調整 | Phase 1 上線後 30 天先觀察流量結構再開始 Phase 2 大幅內容生產 |
 | 41 個專案的具體 mapping 不完整（誰主筆誰提供知識）| G3 雙向連結缺資料 | 5-content-spec 階段做 1 次 mapping 表 review；缺資料的工具標「尋找夥伴中」 |
 | Meta description 變更影響既有 SEO 排名 | 短期搜尋流量波動 | 用 GSC 監測；保留舊關鍵字字串作為 ranking 緩衝（如「圍棋」「AI」） |
@@ -459,13 +462,13 @@ ai_tools: [專案 slug 列表]
 |----------|----------|---------------|------|
 | G6 Umami 注入 | 1-discovery | §6 第 1 項 P0 | discovery 已給 docusaurus.config.js patch |
 | G5 Hero 重寫 | 0-positioning + 3-analysis | positioning §6 P0a / analysis G5 | 主敘事與新定位對齊 |
-| G1 mailto + 棋會雙 CTA | 0-positioning + 2-competitive + 3-analysis | positioning §6 P0a / competitive 可借鏡 / analysis #3 | 雙 Persona 雙路徑 |
+| G1 mailto 雙主旨「合作提案／先聊聊」（**§9 取代原 mailto + 棋會雙 CTA**）| 0-positioning + 2-competitive + 3-analysis + §9 | positioning §6 P0a / competitive 可借鏡 / analysis #3 / §9 無棋會分支 | 雙 Persona 雙路徑（無棋會替代設計）|
 | G4 「不收費」USP | 2-competitive + 3-analysis | competitive USP / analysis 4.2 | 反向護城河對 BNI/TAIA/YPO |
 | navbar 重設計 | 0-positioning | §6 P1 | 從「給棋友／工程師」改為「夥伴／實績／工具／圍棋」 |
 | G2 + G11 11 位會員實績卡 | 0-positioning + 3-analysis | positioning §6 P0b / analysis G2 G11 | 從簡介型升級 |
 | G3 會員 ↔ 工具雙向連結 | 3-analysis Reviewer | 3-analysis review 觀察 #1 | 結構性高槓桿點 |
 | G8 案例敘事區 | 0-positioning + 3-analysis | positioning §6 P0b / analysis G8 | 由理事長主筆 |
-| G7 棋會公開 | 1-discovery + 3-analysis | discovery §6 第 4 項 / analysis G7 | Persona B 決策依賴 |
+| ~~G7 棋會公開~~ → G7' 棋會意向徵詢（**§9 已調整**）| 1-discovery + 3-analysis + §9 | discovery §6 第 4 項 / analysis G7 / §9 無棋會分支 | 降為 P1 後補；mailto 主旨選項即可 |
 | G9 議題化分類 | 2-competitive + 3-analysis | competitive 可借鏡 / analysis G9 | YPO 5 大主題範式 |
 | G10 年度成果報告 | 2-competitive Reviewer + 3-analysis | competitive review 觀察 #2 / analysis G10 | YPO Global Impact Report |
 
@@ -473,10 +476,85 @@ ai_tools: [專案 slug 列表]
 
 ## 8. 待用戶確認事項（4-strategy 完成前必答）
 
-| # | 事項 | 影響 | 急迫性 |
-|---|------|------|--------|
-| 1 | 協會目前是否有定期實體棋會？頻率／地點？ | 棋會邀請 CTA 是否可用（G1 次級 CTA + G7） | 🔴 高（Phase 1 範圍）|
-| 2 | 11 位會員中，5 位旗艦專案的明確 mapping | Phase 2 §3.5 旗艦專案-會員對照 | 🟡 中（Phase 2 開始前）|
-| 3 | 是否要把「合作提案」信箱從個人 gmail 升級為協會專屬信箱（如 hi@weiqi.kids）？| 信箱品牌一致性 | 🟢 低（Phase 1 可先用 gmail，後續升級）|
-| 4 | Phase 2 是否先做 3-5 位高貢獻會員，其餘隨後？ | Phase 2 範圍縮減 | 🟡 中 |
-| 5 | 年度成果報告（G10）是否在 Phase 3 啟動，或延到本次改版後？ | Phase 3 範圍 | 🟢 低（可彈性）|
+| # | 事項 | 答覆 / 影響 | 狀態 |
+|---|------|-----------|------|
+| 1 | 協會目前是否有定期實體棋會？頻率／地點？ | **✅ 用戶確認 2026-05-20：目前無定期實體棋會** → 啟動 §9「無棋會分支」調整 | **已答** |
+| 2 | 11 位會員中，5 位旗艦專案的明確 mapping | Phase 2 §3.5 旗艦專案-會員對照 | 🟡 待答（Phase 2 開始前）|
+| 3 | 是否要把「合作提案」信箱從個人 gmail 升級為協會專屬信箱（如 hi@weiqi.kids）？| 信箱品牌一致性 | 🟢 待答（Phase 1 可先用 gmail，後續升級）|
+| 4 | Phase 2 是否先做 3-5 位高貢獻會員，其餘隨後？ | Phase 2 範圍縮減 | 🟡 待答 |
+| 5 | 年度成果報告（G10）是否在 Phase 3 啟動，或延到本次改版後？ | Phase 3 範圍 | 🟢 待答（可彈性）|
+
+---
+
+## 9. 「無棋會分支」調整（2026-05-20 加入）
+
+> 因 §8 第 1 項答案為「目前無定期實體棋會」，原計劃中所有依賴實體棋會的設計需切換到替代方案。本節記錄全部受影響項目與調整後的處理。
+
+### 9.1 受影響項目對照表
+
+| ID | 原計劃 | 「無棋會分支」調整 |
+|----|--------|------------------|
+| **G1** 次級 CTA「實體棋會邀請」 | 首頁主 CTA mailto + 次級 CTA「實體棋會邀請」 | **改為單 CTA mailto + 兩個主旨建議**：(a) 「合作提案」（適合 Persona A 主動類型）/ (b)「想先見面聊聊（咖啡 / 線上）」（適合 Persona B 偏好先見面類型） |
+| **G7** 實體棋會公開 | 棋會頻率／時間／地點公開於 activities/ | **改為 G7'「棋會意向徵詢」**：在 `/about/cooperation` 加「未來若舉辦棋會請通知我」的 mailto 主旨選項；不再列為 Phase 2 必做項目，降為 P1 後補（Phase 3 或之後） |
+| **§4.1 首頁 §4 案例敘事區** | 不受影響 | 維持 |
+| **§4.2 合作邀請頁「兩條路徑」說明** | A 路徑 mailto / B 路徑 實體棋會 | **改為「兩種合作目的」**：(a) 立即提案／合作（mailto subject「合作提案」）/ (b) 先見面認識（mailto subject「想先聊聊」） |
+| **positioning §3「圍棋對局形成的長期信任」** | 列為差異化獨特優勢之一 | **重新定位為「aspirational」**：是協會的長期願景與承諾，不是現有證據；首頁文案避免暗示「我們已有定期棋會」。**競爭優勢列表中保留**「圍棋作為信任紐帶的可能性」但改為「未來將透過棋會建立的長期信任場域」 |
+| **Persona B 旅程「決策」階段** | 依賴實體棋會見面 | **改為依賴「先見面聊聊」**：mailto 主旨選項 (b) 提供低承諾入口；理事長收到後 1:1 安排咖啡／線上對談 |
+| **competitive.md §4.2 差異化機會「圍棋對局信任 + 棋會邀請流程」** | 列為「無對等競品」差異化機會 | **改為兩段論述**：(a) 短期：「不收費 + CC-BY 4.0」是現有可驗證的差異化；(b) 長期：「圍棋作為信任場域」是規劃中的差異化，未來啟動棋會時再強化 |
+
+### 9.2 風險與機會
+
+**風險**：
+- positioning §3 一條重要差異化軸線當前無實證 → Persona B 的轉化路徑可能比預期弱
+- 「先見面聊聊」mailto 主旨選項是個未驗證的替代設計，可能不被 Persona B 採用（他們可能期望「先看到既有實體場域再說」）
+
+**機會**：
+- **棋會啟動可以反過來變成 Phase 4 或下次改版的「重大里程碑」**：當協會真的啟動定期棋會時，可作為主動發新聞、會員見面、邀請媒體報導的事件
+- Phase 2 因此**減少 ~2-4h 工時**（G7 公開 + 棋會詳細頁不需做）
+- **「先見面聊聊」CTA 比實體棋會邀請更普世**：適合不在台灣的 Persona B（如美國／日本退休專業人士），間接擴大可觸及受眾範圍
+
+### 9.3 文案調整重點
+
+**首頁 hero CTA 區塊**（取代 §4.1 原 CTA）：
+
+```
+主 CTA：合作提案 → mailto:lightman.chang@gmail.com?subject=【合作提案】我想合作的方向
+次 CTA：先見面聊聊 → mailto:lightman.chang@gmail.com?subject=【先聊聊】我想先見面認識
+第三 CTA（弱）：認識夥伴 → /about/members/
+```
+
+**`/about/cooperation` 頁第 1 區塊**（取代 §4.2 原「兩條路徑」說明）：
+
+```
+標題：兩種合作目的，都歡迎來信
+
+(a) 「我已經有合作想法」
+→ mailto subject「【合作提案】...」
+→ 期待回信時程：3 個工作日內
+
+(b) 「我想先見面認識」
+→ mailto subject「【先聊聊】...」
+→ 理事長收到後 1:1 安排咖啡 / 線上對談
+→ 期待回信時程：3 個工作日內
+
+> 註：協會未來計劃舉辦定期實體棋會作為長期信任場域。若您有興趣未來收到棋會邀請，可在來信中註明，我們會在棋會啟動時主動通知。
+```
+
+### 9.4 觸發條件：何時可重啟「棋會」相關設計
+
+當以下條件達成時，可回頭啟用 G7 與相關 CTA：
+
+- [ ] 協會內部決定啟動定期棋會（頻率、地點、頻率 ≥ 1 次／季）
+- [ ] 第一次棋會實際舉辦完成（有照片 / 出席紀錄 / 對局記錄）
+- [ ] 棋會有穩定主辦人（不依賴理事長個人時間）
+
+達成上述條件後，按 G7 原規劃公開棋會資訊、首頁 CTA 加回「實體棋會邀請」、`/about/cooperation` 改回「兩條路徑」設計。
+
+---
+
+## 10. 變更歷史
+
+| 日期 | 版本 | 變更 | 觸發 |
+|------|------|------|------|
+| 2026-05-20 | v1.0 | 初版 | — |
+| 2026-05-20 | v1.1 | 加入 §9「無棋會分支」調整 | §8 第 1 項答案：協會目前無定期實體棋會 |
