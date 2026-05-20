@@ -16,16 +16,14 @@ const config = {
   tagline: '台灣好棋寶寶協會｜致力於圍棋文化前進的推手',
   favicon: 'img/favicon.ico',
 
-  // Plausible Analytics (隱私友好的流量分析)
-  // 取消註解以下區塊啟用 Plausible Analytics
-  // 選項 A: Plausible Cloud (https://plausible.io/)
-  // 選項 B: Self-hosted Plausible
+  // Umami Analytics（共用 weiqikids Umami 實例）
+  // Website ID 對應 www.weiqi.kids，見 /root/CLAUDE.md「Umami Website IDs」
   scripts: [
-    // {
-    //   src: 'https://plausible.io/js/script.js',
-    //   defer: true,
-    //   'data-domain': 'www.weiqi.kids',
-    // },
+    {
+      src: 'https://analytics.weiqi.kids/script.js',
+      defer: true,
+      'data-website-id': 'a4b64b22-906d-4918-934a-7da72b5aced9',
+    },
   ],
 
   // KaTeX 數學公式樣式
