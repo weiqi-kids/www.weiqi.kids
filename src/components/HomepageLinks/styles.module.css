@@ -1,21 +1,22 @@
+/**
+ * HomepageLinks styles — uses design-tokens.css throughout (oklch + type scale).
+ * Do not introduce raw hex / rem values; add new tokens to design-tokens.css instead.
+ */
+
 .section {
-  padding: 3rem 0;
+  padding: var(--space-12) 0;
 }
 
 /* ─── USP 宣告區塊 ─── */
 .uspSection {
-  background: linear-gradient(135deg, var(--ifm-color-primary-lightest, #fff4e6) 0%, var(--ifm-background-color, #fff) 100%);
-  padding: 2.5rem 0;
-}
-
-[data-theme='dark'] .uspSection {
-  background: linear-gradient(135deg, #2a1f15 0%, #1f1f21 100%);
+  background: linear-gradient(135deg, var(--color-accent-warm-soft) 0%, var(--color-surface) 100%);
+  padding: var(--space-10) 0;
 }
 
 .uspGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
+  gap: var(--space-5);
   max-width: 960px;
   margin: 0 auto;
 }
@@ -28,67 +29,56 @@
 
 .uspItem {
   text-align: center;
-  padding: 1.25rem 1rem;
-  background: var(--ifm-background-color, #fff);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-[data-theme='dark'] .uspItem {
-  background: #2a2a2c;
+  padding: var(--space-5) var(--space-4);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .uspNot {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: var(--ifm-color-primary, #d97706);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-2);
+  color: var(--color-accent-warm);
 }
 
 .uspExplain {
-  font-size: 0.95rem;
-  color: var(--ifm-color-emphasis-700, #555);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
   margin: 0;
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
+/* ─── Section 通用 ─── */
 .sectionAlt {
-  background: var(--ifm-color-emphasis-100, #f8f9fa);
-}
-
-[data-theme='dark'] .sectionAlt {
-  background: #1f1f21;
+  background: var(--color-surface-elevated);
 }
 
 .sectionHeader {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-8);
   max-width: 720px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .sectionHeader h2 {
-  font-size: 1.85rem;
-  margin-bottom: 0.5rem;
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--space-2);
 }
 
 .sectionDescription {
-  color: var(--ifm-color-emphasis-700, #555);
-  font-size: 1rem;
-  line-height: 1.6;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-loose);
   margin: 0;
 }
 
-[data-theme='dark'] .sectionDescription {
-  color: #bbb;
-}
-
-/* ── 三大支柱 ── */
+/* ─── 三大支柱 ─── */
 .pillarGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  gap: var(--space-6);
 }
 
 .pillarCard {
@@ -96,10 +86,10 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: var(--ifm-card-background-color, #ffffff);
-  border: 2px solid var(--ifm-color-emphasis-200, #e0e4e8);
-  border-radius: 16px;
-  padding: 2rem 1.5rem;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8) var(--space-6);
   text-decoration: none;
   color: inherit;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -107,70 +97,61 @@
 
 .pillarCard:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
-  border-color: var(--ifm-color-primary, #2e8555);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-brand);
   text-decoration: none;
   color: inherit;
 }
 
-[data-theme='dark'] .pillarCard {
-  background: #2a2a2d;
-  border-color: #444;
-}
-
 .pillarIcon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: var(--font-size-4xl);
+  margin-bottom: var(--space-4);
   line-height: 1;
 }
 
 .pillarTitle {
-  font-size: 1.4rem;
-  margin-bottom: 0.5rem;
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--space-2);
 }
 
 .pillarDesc {
-  color: var(--ifm-color-emphasis-700, #555);
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 1.25rem;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-loose);
+  margin-bottom: var(--space-5);
   flex: 1;
-}
-
-[data-theme='dark'] .pillarDesc {
-  color: #bbb;
 }
 
 .pillarStat {
   display: flex;
   align-items: baseline;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
 }
 
 .pillarCount {
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: var(--ifm-color-primary, #2e8555);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-brand);
   line-height: 1;
 }
 
 .pillarCountLabel {
-  font-size: 0.95rem;
-  color: var(--ifm-color-emphasis-600, #666);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
 }
 
 .pillarCta {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--ifm-color-primary, #2e8555);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-brand);
 }
 
-/* ── 卡片網格 ── */
+/* ─── 卡片網格 ─── */
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
+  gap: var(--space-5);
 }
 
 .cardGridTwo {
@@ -192,38 +173,38 @@
   }
 }
 
-/* ── 查看全部連結 ── */
+/* ─── 查看全部連結 ─── */
 .viewAll {
   text-align: center;
-  margin-top: 2rem;
+  margin-top: var(--space-8);
 }
 
 .viewAllLink {
   display: inline-block;
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--ifm-color-primary, #2e8555);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-brand);
   text-decoration: none;
-  padding: 0.6rem 1.4rem;
-  border: 1.5px solid var(--ifm-color-primary, #2e8555);
-  border-radius: 8px;
+  padding: var(--space-3) var(--space-6);
+  border: 1.5px solid var(--color-brand);
+  border-radius: var(--radius-md);
   transition: all 0.2s ease;
 }
 
 .viewAllLink:hover {
-  background: var(--ifm-color-primary, #2e8555);
-  color: white;
+  background: var(--color-brand);
+  color: var(--color-text-inverse);
   text-decoration: none;
 }
 
-/* ── 圍棋源起紀念碑 ── */
+/* ─── 圍棋源起紀念碑 ─── */
 .originSection {
-  background: linear-gradient(135deg, #f5f3ee 0%, #ede9df 100%);
-  padding: 4rem 0;
+  background: linear-gradient(135deg, var(--color-gray-100) 0%, var(--color-gray-200) 100%);
+  padding: var(--space-16) 0;
 }
 
 [data-theme='dark'] .originSection {
-  background: linear-gradient(135deg, #2a2820 0%, #1f1d18 100%);
+  background: linear-gradient(135deg, var(--color-surface-elevated) 0%, var(--color-surface-alt) 100%);
 }
 
 .originContent {
@@ -234,55 +215,47 @@
 
 .originBadge {
   display: inline-block;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   letter-spacing: 0.1em;
-  color: var(--ifm-color-primary, #2e8555);
-  background: rgba(46, 133, 85, 0.08);
-  padding: 0.3rem 0.9rem;
-  border-radius: 999px;
-  margin-bottom: 1rem;
+  color: var(--color-brand);
+  background: oklch(50% 0.10 152 / 0.08);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  margin-bottom: var(--space-4);
 }
 
 .originTitle {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--space-4);
 }
 
 .originLead {
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: var(--ifm-color-emphasis-900, #222);
-  margin-bottom: 1rem;
-  line-height: 1.6;
-}
-
-[data-theme='dark'] .originLead {
-  color: #e6e6e6;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-4);
+  line-height: var(--line-height-loose);
 }
 
 .originBody {
-  font-size: 1rem;
-  line-height: 1.8;
-  color: var(--ifm-color-emphasis-700, #555);
-  margin-bottom: 1.75rem;
-}
-
-[data-theme='dark'] .originBody {
-  color: #bbb;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-loose);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
 }
 
 .originLinks {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: var(--space-6);
   flex-wrap: wrap;
 }
 
 .originLink {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--ifm-color-primary, #2e8555);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-brand);
   text-decoration: none;
 }
 
@@ -290,16 +263,16 @@
   text-decoration: underline;
 }
 
-/* ── 創始會員 ── */
+/* ─── 創始會員 ─── */
 .membersSection {
-  padding: 3rem 0;
+  padding: var(--space-12) 0;
 }
 
 .membersGrid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
 }
 
 .memberCard {
@@ -307,22 +280,18 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 1rem 0.5rem;
+  padding: var(--space-4) var(--space-2);
   text-decoration: none;
   color: inherit;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .memberCard:hover {
-  background: var(--ifm-color-emphasis-100, #f5f5f5);
+  background: var(--color-surface-elevated);
   text-decoration: none;
   color: inherit;
   transform: translateY(-2px);
-}
-
-[data-theme='dark'] .memberCard:hover {
-  background: #2a2a2d;
 }
 
 .memberAvatar {
@@ -332,63 +301,47 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.6rem;
-  color: #ffffff;
-  font-size: 1.9rem;
-  font-weight: 600;
+  margin-bottom: var(--space-2);
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
   font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif;
   letter-spacing: -0.02em;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-md);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .memberCard:hover .memberAvatar {
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-[data-theme='dark'] .memberAvatar {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-lg);
 }
 
 .memberName {
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin-bottom: 0.15rem;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-1);
 }
 
 .memberTitle {
-  font-size: 0.78rem;
-  color: var(--ifm-color-emphasis-700, #666);
-  line-height: 1.4;
-}
-
-[data-theme='dark'] .memberTitle {
-  color: #bbb;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-tight);
 }
 
 .disclosureBox {
   max-width: 720px;
-  margin: 0 auto 1.5rem;
-  padding: 1rem 1.25rem;
-  background: var(--ifm-color-emphasis-100, #f8f9fa);
-  border-left: 3px solid var(--ifm-color-primary, #2e8555);
-  border-radius: 4px;
-}
-
-[data-theme='dark'] .disclosureBox {
-  background: #2a2a2d;
+  margin: 0 auto var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-surface-elevated);
+  border-left: 3px solid var(--color-brand);
+  border-radius: var(--radius-sm);
 }
 
 .disclosureText {
-  font-size: 0.9rem;
-  line-height: 1.7;
-  color: var(--ifm-color-emphasis-700, #555);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-loose);
+  color: var(--color-text-secondary);
   margin: 0;
-}
-
-[data-theme='dark'] .disclosureText {
-  color: #bbb;
 }
 
 @media (max-width: 996px) {
@@ -402,27 +355,23 @@
     grid-template-columns: repeat(3, 1fr);
   }
   .originTitle {
-    font-size: 1.5rem;
+    font-size: var(--font-size-xl);
   }
   .originLead {
-    font-size: 1.05rem;
+    font-size: var(--font-size-md);
   }
 }
 
-/* ── 友站區塊 ── */
+/* ─── 友站區塊 ─── */
 .friendsSection {
-  background: var(--ifm-color-emphasis-100, #f8f9fa);
-  padding: 2.5rem 0;
-}
-
-[data-theme='dark'] .friendsSection {
-  background: #1f1f21;
+  background: var(--color-surface-elevated);
+  padding: var(--space-10) 0;
 }
 
 .friendsGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: var(--space-4);
   max-width: 720px;
   margin: 0 auto;
 }
@@ -431,32 +380,27 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--ifm-card-background-color, #ffffff);
-  border: 1px solid var(--ifm-color-emphasis-200, #e0e4e8);
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
-}
-
-[data-theme='dark'] .friendCard {
-  background: #2a2a2d;
-  border-color: #444;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
 }
 
 .friendName {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-2);
 }
 
 .friendLinks {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.9rem;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
 }
 
 .friendLink {
-  color: var(--ifm-color-primary, #2e8555);
+  color: var(--color-brand);
   text-decoration: none;
 }
 
@@ -465,7 +409,7 @@
 }
 
 .friendDot {
-  color: var(--ifm-color-emphasis-500, #aaa);
+  color: var(--color-text-muted);
 }
 
 @media (max-width: 600px) {

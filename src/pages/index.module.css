@@ -1,10 +1,9 @@
 /**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
+ * Hero banner — uses design-tokens.css throughout.
  */
 
 .heroBanner {
-  padding: 4rem 0;
+  padding: var(--space-16) 0;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -12,21 +11,21 @@
 
 @media screen and (max-width: 996px) {
   .heroBanner {
-    padding: 2rem;
+    padding: var(--space-8);
   }
 }
 
 .heroStats {
-  font-size: 0.95rem;
+  font-size: var(--font-size-md);
   opacity: 0.92;
-  margin: 0.5rem 0 1.5rem;
-  line-height: 1.6;
+  margin: var(--space-2) 0 var(--space-6);
+  line-height: var(--line-height-loose);
 }
 
 .buttons {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: var(--space-4);
   flex-wrap: wrap;
 }

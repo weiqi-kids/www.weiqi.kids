@@ -1,26 +1,22 @@
 .heroSlim {
-  padding: 3rem 0 2rem 0;
-  background: linear-gradient(180deg, var(--ifm-color-primary-lightest, #e6f4ee) 0%, var(--ifm-background-color, #ffffff) 100%);
+  padding: var(--space-12) 0 var(--space-8) 0;
+  background: linear-gradient(180deg, var(--color-brand-light) 0%, var(--color-surface) 100%);
   text-align: center;
 }
 
 [data-theme='dark'] .heroSlim {
-  background: linear-gradient(180deg, #1b3a2c 0%, #1b1b1d 100%);
+  background: linear-gradient(180deg, var(--color-surface-elevated) 0%, var(--color-surface) 100%);
 }
 
 .heroSlim h1 {
-  font-size: 2.25rem;
-  margin-bottom: 0.75rem;
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-3);
 }
 
 .heroDesc {
   max-width: 720px;
   margin: 0 auto;
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: var(--ifm-color-emphasis-700, #444);
-}
-
-[data-theme='dark'] .heroDesc {
-  color: #bbb;
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-loose);
+  color: var(--color-text-secondary);
 }

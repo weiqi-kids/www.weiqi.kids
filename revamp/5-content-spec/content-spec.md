@@ -650,6 +650,19 @@ D6 PDF 下載按鈕
 
 # §G — 共用檢查清單（Phase 1 / 2 / 3 上線前）
 
+## 設計 token 一致性檢查（**新增 2026-05-21**）
+
+> **本檢查項是 2026-05-21 補列**：USP 區塊曾因 hardcode hex / rem 而違反專案 design system，2026-05-21 已建立 `src/css/design-tokens.css`（oklch 色票 + 統一 type scale + spacing/radius/shadow），所有新組件 CSS 必須對齊。
+
+- [ ] **顏色**：不引入新的 hex literal；改用 semantic token（`var(--color-brand)`、`var(--color-text-primary)`、`var(--color-accent-warm)` 等）。所有顏色來源 = `design-tokens.css` 的 oklch primitives
+- [ ] **字體大小**：不引入新的 rem literal；只使用 `var(--font-size-xs/sm/base/md/lg/xl/2xl/3xl/4xl)`。如缺尺寸先在 design-tokens.css 加 token
+- [ ] **間距**：不引入新的 rem literal；只使用 `var(--space-1/2/3/4/5/6/8/10/12/16)`
+- [ ] **圓角**：只使用 `var(--radius-sm/md/lg/xl/pill)`
+- [ ] **陰影**：只使用 `var(--shadow-sm/md/lg)`
+- [ ] **行高 / 字重**：只使用 `var(--line-height-tight/normal/loose)` / `var(--font-weight-regular/medium/semibold/bold)`
+- [ ] **避免 hardcode dark-mode 顏色**：使用 semantic token（深色模式由 design-tokens.css 統一處理），不寫 `[data-theme='dark'] .foo { color: #bbb }`
+- [ ] **如需新 token**：直接在 `design-tokens.css` 加，標明 use case 與 oklch 值
+
 ## 內容檢查
 
 - [ ] 所有必要區塊都已完成（A1-A7 / B1-B5 / C1-C6 / D1-D6）

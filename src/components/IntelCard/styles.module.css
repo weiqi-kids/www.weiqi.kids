@@ -1,10 +1,10 @@
 .card {
   display: flex;
   flex-direction: column;
-  background: var(--ifm-card-background-color, #ffffff);
-  border: 1px solid var(--ifm-color-emphasis-200, #e0e4e8);
-  border-radius: 12px;
-  padding: 1.25rem 1.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
   text-decoration: none;
   color: inherit;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -13,36 +13,31 @@
 
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  border-color: var(--ifm-color-primary, #2e8555);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-brand);
   text-decoration: none;
   color: inherit;
 }
 
 [data-theme='dark'] .card {
-  background: #2a2a2d;
-  border-color: #444;
-}
-
-[data-theme='dark'] .card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border-color: var(--color-border-strong);
 }
 
 .header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--ifm-color-emphasis-200, #e0e4e8);
-  margin-bottom: 1rem;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-4);
 }
 
 [data-theme='dark'] .header {
-  border-bottom-color: #444;
+  border-bottom-color: var(--color-border-strong);
 }
 
 .icon {
-  font-size: 1.6rem;
+  font-size: var(--font-size-xl);
   line-height: 1;
 }
 
@@ -50,38 +45,34 @@
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  gap: var(--space-1);
   min-width: 0;
 }
 
 .repoName {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--ifm-color-primary, #2e8555);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-brand);
 }
 
 .divider {
-  color: var(--ifm-color-emphasis-500, #8a8a8a);
-  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
 }
 
 .industryName {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--ifm-color-emphasis-900, #1a1a2e);
-}
-
-[data-theme='dark'] .industryName {
-  color: #f0f0f0;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
 }
 
 /* ── 三大數字塊 ── */
 .metrics {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 0.75rem;
-  padding: 1rem 0;
+  gap: var(--space-3);
+  padding: var(--space-4) 0;
 }
 
 .metricsTwoCol {
@@ -96,65 +87,57 @@
 }
 
 .metricValue {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--ifm-color-emphasis-900, #1a1a2e);
-  line-height: 1.2;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-tight);
   font-variant-numeric: tabular-nums;
   word-break: break-word;
 }
 
-[data-theme='dark'] .metricValue {
-  color: #f0f0f0;
-}
-
 .metricLabel {
-  font-size: 0.75rem;
-  color: var(--ifm-color-emphasis-600, #666);
-  margin-top: 0.25rem;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
   letter-spacing: 0.5px;
 }
 
 /* ── 追蹤主題 ── */
 .topics {
-  font-size: 0.85rem;
-  line-height: 1.6;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--ifm-color-emphasis-200, #e0e4e8);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-loose);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
   margin-top: auto;
 }
 
 [data-theme='dark'] .topics {
-  border-top-color: #444;
+  border-top-color: var(--color-border-strong);
 }
 
 .topicsLabel {
-  color: var(--ifm-color-emphasis-600, #666);
-  margin-right: 0.5rem;
+  color: var(--color-text-muted);
+  margin-right: var(--space-2);
 }
 
 .topicsValue {
-  color: var(--ifm-color-emphasis-800, #333);
-}
-
-[data-theme='dark'] .topicsValue {
-  color: #ccc;
+  color: var(--color-text-secondary);
 }
 
 /* ── 行動按鈕 ── */
 .cta {
-  margin-top: 0.75rem;
+  margin-top: var(--space-3);
   text-align: right;
-  font-size: 0.85rem;
-  color: var(--ifm-color-primary, #2e8555);
-  font-weight: 500;
+  font-size: var(--font-size-sm);
+  color: var(--color-brand);
+  font-weight: var(--font-weight-medium);
 }
 
 @media (max-width: 480px) {
   .metricValue {
-    font-size: 1.25rem;
+    font-size: var(--font-size-lg);
   }
   .metrics {
-    gap: 0.4rem;
+    gap: var(--space-2);
   }
 }
