@@ -1,19 +1,32 @@
 ---
 sidebar_position: 2
 title: 詹益萬
-industry_tags: []
+description: 萬是弱電通
+industry_tags: [總機監視器]
 ai_tools: []
 contributing_role: 未來合作意向
 ---
 
 # 詹益萬
 
-（資料補充中）
+> **「萬是弱電通」**
 
-## 關於
+**誠華科技有限公司　經理**
 
-詹益萬 是台灣好棋寶寶協會的會員。詳細介紹資料補充中。
+小組：J.醫起開診所
 
-## 在協會中的角色
+## 專業領域
 
-未來合作意向 — 等待對應的 AI 工具合作機會。
+- 商務電話總機
+- 數位監控系統安裝
+- 買賣
+
+## 需要的合作夥伴
+
+空調系統、廣告招牌公司、水電工程
+
+## 聯繫方式
+
+- 電話：0931-614066
+- 網站：https://www.facebook.com/Tecom.Cheng.hua/about/?ref=page_internal
+- Facebook：https://www.facebook.com/mars.chang.18

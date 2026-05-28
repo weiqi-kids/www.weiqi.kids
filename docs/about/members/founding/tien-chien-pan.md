@@ -1,12 +1,15 @@
 ---
 sidebar_position: 31
 title: 潘天健
+description: 三高變高三
 industry_tags: [整合醫學, 中西醫, 抗衰老]
 ai_tools: []
 contributing_role: 未來合作意向
 ---
 
 # 潘天健
+
+> **「三高變高三」**
 
 ![潘天健](/img/members/tien-chien-pan.png)
 
@@ -55,6 +58,10 @@ contributing_role: 未來合作意向
 - 台灣中醫美容學會 會員醫師
 - 台灣抗衰老再生學會 會員醫師
 - 細胞分子矯正醫學會台灣分會 創始會員
+
+## 需要的合作夥伴
+
+有下列健康需求：減重、醫美、抗衰老、預防醫學
 
 ## 聯繫方式
 

@@ -8,7 +8,7 @@
     "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "37 mitra lintas-domain · 41+ alat AI sumber terbuka · 100% gratis · Diperbarui otomatis setiap hari"
+    "message": "67 mitra lintas-domain · 41+ alat AI sumber terbuka · 100% gratis · Diperbarui otomatis setiap hari"
   },
   "homepage.cta.proposal": { "message": "Ajukan kolaborasi" },
   "homepage.cta.meet": { "message": "Mari bertemu dulu" },
@@ -40,7 +40,7 @@
     "message": "Evolusi AlphaGo →"
   },
   "homepage.members.title": {
-    "message": "37 mitra dari berbagai bidang"
+    "message": "67 mitra dari berbagai bidang"
   },
   "homepage.members.desc": {
     "message": "Pengacara, akuntan, konsultan ISO, pengobatan Tiongkok, kedokteran integratif, edukasi kesehatan, rehabilitasi, pemasaran, event planning, musik, teknik AI. Setiap orang adalah contoh hidup model 'integrator AI × pakar domain'."
@@ -82,7 +82,7 @@
     "message": "Beranda"
   },
   "homepage.meta.description": {
-    "message": "37 mitra dari hukum, ISO, teknologi, kesehatan, rehabilitasi, pemasaran, musik dll. Mengubah pengetahuan industri menjadi 41+ alat AI sumber terbuka, semua gratis. Kolaborasi lintas-domain disambut."
+    "message": "67 mitra dari hukum, ISO, teknologi, kesehatan, rehabilitasi, pemasaran, musik dll. Mengubah pengetahuan industri menjadi 41+ alat AI sumber terbuka, semua gratis. Kolaborasi lintas-domain disambut."
   },
   "theme.ErrorPageContent.title": {
     "message": "Terjadi kesalahan.",

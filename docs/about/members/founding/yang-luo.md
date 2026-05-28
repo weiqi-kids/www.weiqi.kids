@@ -1,12 +1,15 @@
 ---
 sidebar_position: 28
 title: 羅揚
+description: 高濃度魚油
 industry_tags: [健康教育, 保健食品, 營養補充]
 ai_tools: []
 contributing_role: 未來合作意向
 ---
 
 # 羅揚
+
+> **「高濃度魚油」**
 
 **健康教育內容創作者**
 
@@ -35,3 +38,7 @@ contributing_role: 未來合作意向
 ## 合作平台
 
 - [亞太醫頭條 appi.news](https://appi.news/)
+
+## 需要的合作夥伴
+
+團購通路、探詢優質營養品者、需要健康諮詢服務者

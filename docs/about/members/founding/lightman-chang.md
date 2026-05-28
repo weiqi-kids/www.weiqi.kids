@@ -1,12 +1,15 @@
 ---
 sidebar_position: 1
 title: 張饒輝
+description: 跨境工程師
 industry_tags: [AI 工程, 圍棋教育, 醫療科技]
 ai_tools: [all]
 contributing_role: 領域知識主筆
 ---
 
 # 張饒輝 Lightman Chang
+
+> **「跨境工程師」**
 
 **台灣好棋寶寶協會 理事長**
 
@@ -31,6 +34,10 @@ contributing_role: 領域知識主筆
 - **AI 整合工程師**：負責把夥伴領域知識整合為開源 AI 工具
 - **跨域審閱**：協助所有公益專案的技術整合與品質審閱
 - **內容主筆**：協會大部分 AI 工具的主導開發者（包含 social-listening、six-hats、tapwater-ai、bless.link、agent.writer、apps/\*、research/\* 等）
+
+## 需要的合作夥伴
+
+想增加曝光度的協會、想提高競爭門檻的藥廠、想建置分潤 Line@ 商城的 IP 主
 
 ## 聯繫方式
 

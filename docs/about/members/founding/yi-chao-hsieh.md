@@ -1,19 +1,36 @@
 ---
 sidebar_position: 11
 title: 謝一肇
-industry_tags: []
+description: 網店一把罩
+industry_tags: [數位行銷]
 ai_tools: []
 contributing_role: 未來合作意向
 ---
 
-# 謝一肇
+# 謝一肇 Chuck
 
-（資料補充中）
+> **「網店一把罩」**
 
-## 關於
+**捷盛數位行銷有限公司　行銷總監**
 
-謝一肇 是台灣好棋寶寶協會的會員。詳細介紹資料補充中。
+小組：D.醫療行銷組
 
-## 在協會中的角色
+## 專業領域
 
-未來合作意向 — 等待對應的 AI 工具合作機會。
+- 品牌數位行銷企劃
+
+## 經歷
+
+- 專業年資：12 年
+- 公司年資：5 年
+
+## 需要的合作夥伴
+
+想要從網路拓展生意的品牌主
+
+## 聯繫方式
+
+- 電話：0921-603496
+- 網站：https://cybermkt.com.tw/
+- Facebook：https://cybermkt.tw/chuck
+- 生日：10/19

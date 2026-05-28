@@ -1,12 +1,15 @@
 ---
 sidebar_position: 18
 title: 周敬彥
+description: 全天銷售員
 industry_tags: [網路行銷, SEO, 網站架設]
 ai_tools: []
 contributing_role: 未來合作意向
 ---
 
 # 周敬彥
+
+> **「全天銷售員」**
 
 ![周敬彥](/img/members/jing-yan-chou.jpg)
 
@@ -57,6 +60,10 @@ contributing_role: 未來合作意向
 - 行業經驗：5 年（網站架設、SEO）
 - 前職：人力仲介（工廠外勞）
 - BNI 大台中榮耀分會 會員
+
+## 需要的合作夥伴
+
+商業設計師、活動企劃、品牌行銷規劃、整合行銷企劃
 
 ## 聯繫方式
 

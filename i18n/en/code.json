@@ -8,7 +8,7 @@
     "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "37 cross-domain partners · 41+ open-source AI tools · 100% free · Updated daily",
+    "message": "67 cross-domain partners · 41+ open-source AI tools · 100% free · Updated daily",
     "description": "Hero stats line"
   },
   "homepage.cta.proposal": { "message": "Propose a collaboration" },
@@ -41,7 +41,7 @@
     "message": "AlphaGo Evolution →"
   },
   "homepage.members.title": {
-    "message": "37 Partners from Different Fields"
+    "message": "67 Partners from Different Fields"
   },
   "homepage.members.desc": {
     "message": "Lawyers, accountants, ISO consultants, TCM practitioners, integrative medicine, health educators, physical rehab, marketing, event planning, music, AI engineering. Each is a living example of the \"AI integrator × domain expert\" model."
@@ -83,7 +83,7 @@
     "message": "Home"
   },
   "homepage.meta.description": {
-    "message": "37 partners from law, ISO, tech, healthcare, rehab, marketing, music and more. Turning industry know-how into 41+ open-source AI tools, all completely free. Cross-domain collaboration welcome."
+    "message": "67 partners from law, ISO, tech, healthcare, rehab, marketing, music and more. Turning industry know-how into 41+ open-source AI tools, all completely free. Cross-domain collaboration welcome."
   },
   "theme.ErrorPageContent.title": {
     "message": "This page crashed.",

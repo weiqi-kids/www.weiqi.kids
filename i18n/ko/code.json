@@ -8,7 +8,7 @@
     "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "37명의 크로스도메인 파트너 · 41+ 오픈소스 AI 도구 · 전부 무료 · 매일 자동 업데이트",
+    "message": "67명의 크로스도메인 파트너 · 41+ 오픈소스 AI 도구 · 전부 무료 · 매일 자동 업데이트",
     "description": "Hero stats line"
   },
   "homepage.cta.proposal": { "message": "협력 제안" },
@@ -41,7 +41,7 @@
     "message": "AlphaGo 진화 정리 →"
   },
   "homepage.members.title": {
-    "message": "다양한 분야의 37명 파트너"
+    "message": "다양한 분야의 67명 파트너"
   },
   "homepage.members.desc": {
     "message": "변호사, 회계사, ISO 컨설턴트, 한의학, 통합의학, 건강교육, 정복, 마케팅, 이벤트 기획, 음악 창작, AI 공학. 모두 'AI 통합자 × 영역 전문가' 모델의 실례."
@@ -83,7 +83,7 @@
     "message": "홈"
   },
   "homepage.meta.description": {
-    "message": "변호사, ISO, 기술, 의료, 정복, 마케팅, 음악 등 다양한 분야의 37명 파트너가 산업 노하우를 41+ 개 무료 오픈소스 AI 도구로. 크로스도메인 협력 환영."
+    "message": "변호사, ISO, 기술, 의료, 정복, 마케팅, 음악 등 다양한 분야의 67명 파트너가 산업 노하우를 41+ 개 무료 오픈소스 AI 도구로. 크로스도메인 협력 환영."
   },
   "theme.ErrorPageContent.title": {
     "message": "페이지에 오류가 발생하였습니다.",

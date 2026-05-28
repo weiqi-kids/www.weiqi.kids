@@ -1,12 +1,15 @@
 ---
 sidebar_position: 17
 title: 黃子彥
+description: 漢方保健品
 industry_tags: [中醫養生, 預防醫學, 健康衛教]
 ai_tools: [huatuo-ai, agent-writer]
 contributing_role: 領域知識主筆
 ---
 
 # 黃子彥
+
+> **「漢方保健品」**
 
 **草本上膳醫廚｜GCM 上醫預防醫學發展協會 數位編輯部 總編輯**
 
@@ -31,6 +34,10 @@ contributing_role: 領域知識主筆
 
 - [GCM 上醫預防醫學發展協會](https://gcm.org.tw/)
 - [亞太醫頭條 appi.news](https://appi.news/)
+
+## 需要的合作夥伴
+
+開發自有品牌的漢方保健品的企業主
 
 ## 聯繫方式
 

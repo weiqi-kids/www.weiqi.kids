@@ -1,12 +1,15 @@
 ---
 sidebar_position: 16
 title: 郭尚諺
+description: 命運的吉他
 industry_tags: [音樂, 商業音樂製作, 古典吉他]
 ai_tools: []
 contributing_role: 未來合作意向
 ---
 
 # 郭尚諺 Ian
+
+> **「命運的吉他」**
 
 ![郭尚諺](/img/members/ian-kuo.jpg)
 
@@ -64,6 +67,10 @@ contributing_role: 未來合作意向
 - 戶外運動：鐵人三項、羽球、登山、海邊活動
 - 藝文活動：音樂會、演唱會、馬戲團、音樂劇
 - 其他：心理學、身心靈修養、出國自助旅遊
+
+## 需要的合作夥伴
+
+活動、專案行銷企劃、Youtuber、部落客
 
 ## 聯繫方式
 

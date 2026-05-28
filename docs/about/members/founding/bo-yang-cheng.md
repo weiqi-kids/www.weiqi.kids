@@ -1,12 +1,15 @@
 ---
 sidebar_position: 21
 title: 鄭博陽
+description: 猛男整脊師
 industry_tags: [整復, 健身, 體態調整]
 ai_tools: []
 contributing_role: 未來合作意向
 ---
 
 # 鄭博陽
+
+> **「猛男整脊師」**
 
 ![鄭博陽](/img/members/bo-yang-cheng.jpg)
 
@@ -32,6 +35,10 @@ contributing_role: 未來合作意向
 - 國際整復師認證
 - 專業健身教練資格
 - 前健美選手
+
+## 需要的合作夥伴
+
+健檢診所（有 X 光）、芳療師、按摩會館（沒有傷科）、中醫西醫骨科、健身房、舞蹈教室、舞蹈老師、跆拳道老師
 
 ## 聯繫方式
 

@@ -1,12 +1,15 @@
 ---
 sidebar_position: 20
 title: 周思傑
+description: 法律不糾結
 industry_tags: [法律, 企業法務, 資產傳承]
 ai_tools: []
 contributing_role: 未來合作意向
 ---
 
 # 周思傑
+
+> **「法律不糾結」**
 
 ![周思傑](/img/members/sih-jie-chou.png)
 
@@ -59,6 +62,10 @@ contributing_role: 未來合作意向
 - 大學四年級通過地政士考試
 - 公務人員高考財稅法務類組錄取
 - 政風類組臺北市第三名錄取
+
+## 需要的合作夥伴
+
+企業主／保險業／房仲業／地政士／記帳士／會計師
 
 ## 聯繫方式
 

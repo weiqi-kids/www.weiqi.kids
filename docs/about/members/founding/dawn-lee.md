@@ -1,12 +1,15 @@
 ---
 sidebar_position: 12
 title: 李郁萱
+description: 企業好家教
 industry_tags: [ISO 顧問, 醫療器材, 食品安全]
 ai_tools: []
 contributing_role: 未來合作意向
 ---
 
 # 郁萱 Dawn Lee
+
+> **「企業好家教」**
 
 ![郁萱](/img/members/dawn-lee.jpg)
 
@@ -58,6 +61,10 @@ contributing_role: 未來合作意向
 ## 學歷
 
 - 醫療相關碩士
+
+## 需要的合作夥伴
+
+工廠品保／工廠老闆／會計師／實驗室／專業建廠團隊／教育訓練機構
 
 ## 聯繫方式
 
