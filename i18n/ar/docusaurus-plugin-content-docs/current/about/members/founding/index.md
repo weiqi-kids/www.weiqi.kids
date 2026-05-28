@@ -11,9 +11,3 @@ import MembersDirectory from '@site/src/components/MembersDirectory';
 جمعية تايوان جود جو بيبي مؤسسة بواسطة **٣٧ شريكاً متعدد التخصصات** يطورون مشاريع مفتوحة المصدر للصالح العام وفق نموذج «مُدمج الذكاء الاصطناعي × خبير المجال». تعرض هذه الصفحة جميع الشركاء جنباً إلى جنب دون تصنيف.
 
 <MembersDirectory />
-
----
-
-## حول استكمال البيانات
-
-«الشعار من خمسة أحرف» مأخوذ من فرع BNI تايتشونغ الكبرى. «البيانات قيد الاستكمال» تعني أننا لم نتلقَ بعد ملف الشريك. [lightman.chang@gmail.com](mailto:lightman.chang@gmail.com?subject=Member-Profile-Update)

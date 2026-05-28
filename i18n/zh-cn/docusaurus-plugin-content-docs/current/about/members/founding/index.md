@@ -11,9 +11,3 @@ import MembersDirectory from '@site/src/components/MembersDirectory';
 台湾好棋宝宝协会由 **37 位跨域伙伴**共同推动「AI 整合 × 领域专业」的开源公益专案。本阶段不区分职务、不分群组，每位伙伴并列展示。
 
 <MembersDirectory />
-
----
-
-## 关于资料补充
-
-「关键五字」 为 BNI 大台中荣耀分会的副标标语。「资料补充中」 表示尚未取得本人提供或网路公开可查的个人介绍资料。如您是伙伴本人并希望更新介绍，欢迎来信。 [lightman.chang@gmail.com](mailto:lightman.chang@gmail.com?subject=Member-Profile-Update)

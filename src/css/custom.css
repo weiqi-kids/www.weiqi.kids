@@ -91,3 +91,82 @@
 .navbar__item--compact.dropdown__link {
   font-size: var(--font-size-sm);
 }
+
+/* ============================================================
+ * Docusaurus 主題元件字體對齊 design-tokens
+ * 用 !important 覆寫 Infima 預設 hardcoded font-size
+ * （cssnano 會 dedupe 同 selector 規則導致 Infima default 勝出，
+ *   故對 framework default 顯式宣告 brand override 必要）
+ * 確保 docs 頁面的 TOC、breadcrumbs、pagination、sidebar
+ * 都走統一 type scale
+ * ============================================================ */
+
+/* 右側 TOC sidebar */
+.table-of-contents {
+  font-size: var(--font-size-sm) !important;
+}
+
+.table-of-contents__link {
+  font-size: var(--font-size-sm) !important;
+}
+
+/* 行動裝置版 TOC */
+.theme-doc-toc-mobile {
+  font-size: var(--font-size-sm) !important;
+}
+
+/* 左側 docs sidebar 選單 */
+.menu__link {
+  font-size: var(--font-size-sm) !important;
+}
+
+.menu__list-item-collapsible {
+  font-size: var(--font-size-sm) !important;
+}
+
+/* Docs 頁面底部 prev/next 導覽 */
+.pagination-nav__label {
+  font-size: var(--font-size-md) !important;
+}
+
+.pagination-nav__sublabel {
+  font-size: var(--font-size-sm) !important;
+}
+
+/* Breadcrumbs */
+.breadcrumbs__link {
+  font-size: var(--font-size-sm) !important;
+}
+
+/* Docs 內文段落 / 列表 */
+.markdown {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-loose);
+}
+
+.markdown li {
+  font-size: var(--font-size-base);
+}
+
+/* Footer */
+.footer {
+  font-size: var(--font-size-sm) !important;
+}
+
+.footer__title {
+  font-size: var(--font-size-md) !important;
+}
+
+/* Navbar 主項目 */
+.navbar__link {
+  font-size: var(--font-size-base) !important;
+}
+
+.navbar__brand b {
+  font-size: var(--font-size-md);
+}
+
+/* Dropdown 子項目 */
+.dropdown__menu .dropdown__link {
+  font-size: var(--font-size-sm) !important;
+}

@@ -11,9 +11,3 @@ import MembersDirectory from '@site/src/components/MembersDirectory';
 La Asociación Taiwanesa Good Go Baby está cofundada por **37 socios interdisciplinarios** que impulsan proyectos de interés público open-source bajo el modelo «integrador IA × experto de dominio». Esta página lista a todos los socios sin categorización.
 
 <MembersDirectory />
-
----
-
-## Sobre los datos faltantes
-
-El «lema de cinco caracteres» proviene del capítulo BNI Gran Taichung Glory. «Datos pendientes» significa que aún no hemos recibido el perfil del socio. [lightman.chang@gmail.com](mailto:lightman.chang@gmail.com?subject=Member-Profile-Update)
