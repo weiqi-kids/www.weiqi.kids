@@ -70,8 +70,8 @@
 
 /* Compact navbar items (GitHub and locale dropdown) */
 .navbar__item--compact {
-  font-size: 0.8rem;
-  padding: 0.25rem 0.5rem;
+  font-size: var(--font-size-sm);
+  padding: var(--space-1) var(--space-2);
 }
 
 /* GitHub icon link */
@@ -89,5 +89,5 @@
 
 /* Locale dropdown compact style */
 .navbar__item--compact.dropdown__link {
-  font-size: 0.8rem;
+  font-size: var(--font-size-sm);
 }

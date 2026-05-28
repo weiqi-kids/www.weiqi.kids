@@ -102,9 +102,10 @@
 }
 
 .name {
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-primary);
+  line-height: var(--line-height-tight);
 }
 
 .enName {
@@ -114,22 +115,22 @@
 }
 
 .key5 {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   color: var(--color-accent-warm);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-3);
   line-height: var(--line-height-tight);
 }
 
 .title {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
-  line-height: var(--line-height-tight);
+  line-height: var(--line-height-normal);
   margin-bottom: var(--space-1);
 }
 
 .org {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   color: var(--color-text-muted);
   line-height: var(--line-height-normal);
   margin-top: auto;
