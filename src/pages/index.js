@@ -24,7 +24,7 @@ function HomepageHeader() {
         </p>
         <p className={styles.heroStats}>
           <Translate id="homepage.hero.stats" description="Hero stats line">
-            67 位跨域夥伴 · 41+ 開源 AI 工具 · 全部免費 · 每日自動更新
+            37 位跨域夥伴 · 41+ 開源 AI 工具 · 全部免費 · 每日自動更新
           </Translate>
         </p>
         <div className={styles.buttons}>

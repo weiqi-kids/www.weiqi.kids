@@ -42,3 +42,7 @@ ref/
 **/身分證/
 **/*身份證*
 **/*身分證*
+
+# Claude Code 本地狀態
+/.claude/
+.claude/

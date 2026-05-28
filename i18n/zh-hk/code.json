@@ -8,7 +8,7 @@
     "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "67 位跨域夥伴 · 41+ 開源 AI 工具 · 全部免費 · 每日自動更新"
+    "message": "37 位跨域夥伴 · 41+ 開源 AI 工具 · 全部免費 · 每日自動更新"
   },
   "homepage.cta.proposal": { "message": "合作提案" },
   "homepage.cta.meet": { "message": "想先見面傾下" },
@@ -40,7 +40,7 @@
     "message": "AlphaGo 演進整理 →"
   },
   "homepage.members.title": {
-    "message": "67 位來自唔同領域嘅夥伴"
+    "message": "37 位來自唔同領域嘅夥伴"
   },
   "homepage.members.desc": {
     "message": "律師、會計、ISO 顧問、中醫、整合醫學、健康教育、整復、行銷、活動企劃、音樂創作、AI 工程。每位都係「AI 整合者 × 領域專家」模式嘅活範例。"

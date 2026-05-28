@@ -8,7 +8,7 @@
     "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "67 parceiros interdisciplinares · 41+ ferramentas IA open-source · 100% grátis · Atualização diária"
+    "message": "37 parceiros interdisciplinares · 41+ ferramentas IA open-source · 100% grátis · Atualização diária"
   },
   "homepage.cta.proposal": { "message": "Propor colaboração" },
   "homepage.cta.meet": { "message": "Vamos nos conhecer primeiro" },
@@ -40,7 +40,7 @@
     "message": "Evolução do AlphaGo →"
   },
   "homepage.members.title": {
-    "message": "67 parceiros de áreas diferentes"
+    "message": "37 parceiros de áreas diferentes"
   },
   "homepage.members.desc": {
     "message": "Advogados, contadores, consultores ISO, medicina chinesa, medicina integrativa, educação em saúde, reabilitação, marketing, planejamento de eventos, música, engenharia IA. Cada um é um exemplo vivo do modelo «integrador IA × especialista de domínio»."
@@ -82,7 +82,7 @@
     "message": "Início"
   },
   "homepage.meta.description": {
-    "message": "67 parceiros de direito, ISO, tecnologia, saúde, reabilitação, marketing, música etc. Transformando know-how industrial em 41+ ferramentas IA open-source, todas grátis. Colaboração interdisciplinar bem-vinda."
+    "message": "37 parceiros de direito, ISO, tecnologia, saúde, reabilitação, marketing, música etc. Transformando know-how industrial em 41+ ferramentas IA open-source, todas grátis. Colaboração interdisciplinar bem-vinda."
   },
   "theme.ErrorPageContent.title": {
     "message": "Esta página deu erro.",

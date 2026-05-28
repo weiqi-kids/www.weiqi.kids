@@ -173,7 +173,7 @@ export default function ImpactReport2026() {
       description={translate({
         id: 'impact.meta.description',
         message:
-          '41+ 開源公益專案、67 位跨域夥伴、6 大線下活動成果、11 語系覆蓋。2026 年度完整影響力報告，CC-BY 4.0 全部公開。',
+          '41+ 開源公益專案、37 位跨域夥伴、6 大線下活動成果、11 語系覆蓋。2026 年度完整影響力報告，CC-BY 4.0 全部公開。',
       })}>
       <header className={styles.hero}>
         <div className="container">
@@ -185,7 +185,7 @@ export default function ImpactReport2026() {
           </Heading>
           <p className={styles.heroSubtitle}>
             <Translate id="impact.hero.subtitle">
-              台灣好棋寶寶協會 ／ 67 位跨域夥伴 × 41+ 開源公益專案 × 6 大線下活動
+              台灣好棋寶寶協會 ／ 37 位跨域夥伴 × 41+ 開源公益專案 × 6 大線下活動
             </Translate>
           </p>
           <p className={styles.heroQuote}>
@@ -205,7 +205,7 @@ export default function ImpactReport2026() {
             </Heading>
             <div className={styles.statGrid}>
               <StatCard
-                number="67"
+                number="37"
                 labelKey="impact.numbers.partners"
                 labelDefault="位跨域夥伴"
               />
@@ -290,21 +290,21 @@ export default function ImpactReport2026() {
           </div>
         </section>
 
-        {/* 67 位夥伴 */}
+        {/* 37 位夥伴 */}
         <section className={styles.sectionAlt}>
           <div className="container">
             <Heading as="h2" className={styles.sectionTitle}>
-              <Translate id="impact.partners.title">67 位夥伴的跨域組合</Translate>
+              <Translate id="impact.partners.title">37 位夥伴的跨域組合</Translate>
             </Heading>
             <p className={styles.sectionDesc}>
               <Translate id="impact.partners.desc">
-                30 位協會召集人 + 2 位後續加入會員 + 5 位獨立合作夥伴 + 30 位 BNI 大台中榮耀分會夥伴。
-                跨產業組合涵蓋律師、會計師、ISO 顧問、中醫、整合醫學、整復、行銷、活動企劃、音樂、IP 設計、保險、財富管理、不動產、教育、職業棋士等。
+                30 位協會召集人 + 2 位後續加入會員 + 5 位獨立合作夥伴。
+                跨產業組合涵蓋律師、會計師、ISO 顧問、中醫、整合醫學、整復、健康教育、行銷、活動企劃、音樂、職業棋士等。
               </Translate>
             </p>
             <div className={styles.partnersCta}>
               <Link to="/docs/about/members/founding/" className={styles.partnersLink}>
-                <Translate id="impact.partners.cta">查看完整 67 位夥伴 →</Translate>
+                <Translate id="impact.partners.cta">查看完整 37 位夥伴 →</Translate>
               </Link>
             </div>
           </div>

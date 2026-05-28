@@ -235,7 +235,7 @@ function MembersSection() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <Heading as="h2">
-            <Translate id="homepage.members.title">67 位來自不同領域的夥伴</Translate>
+            <Translate id="homepage.members.title">37 位來自不同領域的夥伴</Translate>
           </Heading>
           <p className={styles.sectionDescription}>
             <Translate id="homepage.members.desc">
