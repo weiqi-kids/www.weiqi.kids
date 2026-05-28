@@ -14,17 +14,17 @@ function HomepageHeader() {
       <div className="container">
         <Heading as="h1" className="hero__title">
           <Translate id="homepage.hero.title" description="Hero H1 title">
-            商界夥伴 × AI × 圍棋
+            圍棋文化前進的推手
           </Translate>
         </Heading>
         <p className="hero__subtitle">
           <Translate id="homepage.tagline" description="Hero subtitle below H1">
-            把產業 know-how 變成開源 AI 工具
+            商界夥伴 × 跨域 AI × 公益圍棋
           </Translate>
         </p>
         <p className={styles.heroStats}>
           <Translate id="homepage.hero.stats" description="Hero stats line">
-            37 位跨域夥伴 · 41+ 開源 AI 工具 · 全部免費 · 每日自動更新
+            37 位跨域夥伴 · 41+ AI 工具 · 8 篇學術論文 · 每日自動更新
           </Translate>
         </p>
         <div className={styles.buttons}>
@@ -54,7 +54,7 @@ export default function Home() {
   return (
     <Layout
       title={translate({id: 'homepage.meta.title', message: '首頁'})}
-      description={translate({id: 'homepage.meta.description', message: '台灣好棋寶寶協會官網 - 提供圍棋教學、AI 研究資源，推動圍棋文化發展'})}>
+      description={translate({id: 'homepage.meta.description', message: '台灣好棋寶寶協會 — 圍棋文化前進的推手。圍棋公益推廣、跨域 AI 開源、學術原創三軸並進。'})}>
       <HomepageHeader />
       <main>
         <HomepageLinks />

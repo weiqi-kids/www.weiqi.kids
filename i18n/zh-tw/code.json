@@ -353,18 +353,18 @@
     "message": "首頁"
   },
   "homepage.meta.description": {
-    "message": "37 位來自律師、ISO、技術、醫療、整復、行銷、音樂等領域的夥伴，把產業 know-how 變成 41+ 個全部免費開源的 AI 工具。歡迎跨域合作。"
+    "message": "台灣好棋寶寶協會 — 圍棋文化前進的推手。圍棋公益推廣、跨域 AI 開源、學術原創三軸並進。"
   },
   "homepage.hero.title": {
-    "message": "商界夥伴 × AI × 圍棋",
+    "message": "圍棋文化前進的推手",
     "description": "Hero H1 title"
   },
   "homepage.tagline": {
-    "message": "把產業 know-how 變成開源 AI 工具",
+    "message": "商界夥伴 × 跨域 AI × 公益圍棋",
     "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "37 位跨域夥伴 · 41+ 開源 AI 工具 · 全部免費 · 每日自動更新",
+    "message": "37 位跨域夥伴 · 41+ AI 工具 · 8 篇學術論文 · 每日自動更新",
     "description": "Hero stats line"
   },
   "homepage.cta.proposal": {
@@ -377,17 +377,50 @@
     "message": "認識夥伴"
   },
   "homepage.usp.title": {
-    "message": "我們不收費，全部開源"
+    "message": "圍棋文化前進的推手"
   },
   "homepage.usp.lead": {
-    "message": "完全免費、無會員費、全部開源（CC-BY 4.0）。我們不做付費培訓、不收引薦費、不賣會員制。"
+    "message": "不只推圍棋。把圍棋人從 AlphaGo 學到的 AI 適應力，帶到每一個跨域場域。"
   },
-  "homepage.usp.not1.label": { "message": "不是純圍棋協會" },
-  "homepage.usp.not1.desc": { "message": "我們把圍棋當紐帶不當目的" },
-  "homepage.usp.not2.label": { "message": "不是純 AI 推廣" },
-  "homepage.usp.not2.desc": { "message": "我們有真正自產的開源工具" },
-  "homepage.usp.not3.label": { "message": "不是純商務人脈" },
-  "homepage.usp.not3.desc": { "message": "我們有共同開源產出當證據" },
+  "homepage.usp.axis1.title": { "message": "圍棋公益" },
+  "homepage.usp.axis1.metric": { "message": "10 縣市・187 張現場紀錄" },
+  "homepage.usp.axis1.body": { "message": "嘉年華、城市對抗賽、全國公開賽、主題講座；與台北市體育總會、弈客圍棋平台合作。" },
+  "homepage.usp.axis1.audience": { "message": "親子・學齡兒童・社區" },
+  "homepage.usp.axis1.cta": { "message": "看活動 →" },
+  "homepage.usp.axis2.title": { "message": "跨域開源" },
+  "homepage.usp.axis2.metric": { "message": "41+ AI 工具・11 大產業" },
+  "homepage.usp.axis2.body": { "message": "從預防醫學、健康教育、財稅法務到供應鏈情報；每個工具皆 CC-BY 4.0 全部開源。" },
+  "homepage.usp.axis2.audience": { "message": "夥伴企業・社會大眾" },
+  "homepage.usp.axis2.cta": { "message": "看工具 →" },
+  "homepage.usp.axis3.title": { "message": "學術原創" },
+  "homepage.usp.axis3.metric": { "message": "8 篇學術論文" },
+  "homepage.usp.axis3.body": { "message": "圍棋理論、機器學習與經典數學問題；每篇含完整數學證明 + 互動視覺化網頁 + GitHub 開源。" },
+  "homepage.usp.axis3.audience": { "message": "研究者・教育工作者" },
+  "homepage.usp.axis3.cta": { "message": "看論文 →" },
+  "homepage.usp.future": {
+    "message": "下一站：前進社區，邀請長輩帶孫子下圍棋（2026 啟動）"
+  },
+  "homepage.act.title": { "message": "圍棋公益實證" },
+  "homepage.act.desc": { "message": "從 2023 年至今，協會主辦／合辦的圍棋活動實況。" },
+  "homepage.act.metric.records": { "message": "張現場紀錄" },
+  "homepage.act.metric.cities": { "message": "縣市聯動" },
+  "homepage.act.metric.sessions": { "message": "場主題講座" },
+  "homepage.act.metric.videos": { "message": "部多語推廣 + 短影音" },
+  "homepage.act.carnival.title": { "message": "圍棋嘉年華" },
+  "homepage.act.carnival.desc": { "message": "和平高中正式場地，與台北市體育總會合作辦理；含 5.7GB 宣傳影片與場刊。" },
+  "homepage.act.carnival.audience": { "message": "親子・學齡兒童" },
+  "homepage.act.cityLeague.title": { "message": "城市網路對抗賽 2024 春季" },
+  "homepage.act.cityLeague.desc": { "message": "72 位官方選手線上對戰；涵蓋台北、新北、桃園、新竹、台中、台南、高雄、屏東、宜蘭、金門；結合弈客圍棋平台。" },
+  "homepage.act.cityLeague.audience": { "message": "8-18 歲棋手" },
+  "homepage.act.tournament.title": { "message": "113 年全國圍棋公開賽" },
+  "homepage.act.tournament.desc": { "message": "與台北市體育總會合辦的官方賽事；蓬萊國小場地；含 25 張側拍花絮。" },
+  "homepage.act.tournament.audience": { "message": "全國公開" },
+  "homepage.act.funClub.title": { "message": "好棋同樂會主題講座" },
+  "homepage.act.funClub.desc": { "message": "蔡丞韋職業五段（圍棋）／金工微距（藝術）／熊赫囑廚（健康）／鄭骨館坐姿教學（運動健康）。每月跨域實體聚會。" },
+  "homepage.act.funClub.audience": { "message": "跨域夥伴" },
+  "homepage.act.promoVideos.title": { "message": "圍棋推廣影片 + 短影音" },
+  "homepage.act.promoVideos.desc": { "message": "4 部多語推廣影片（中英文有/無字幕版）+ 12 部圍棋教育短影音（圍棋教我的事、定不下來的孩子、坐姿不良輸家無常等）。" },
+  "homepage.act.promoVideos.audience": { "message": "社群媒體" },
   "homepage.origin.badge": {
     "message": "源起紀念碑"
   },
@@ -395,7 +428,7 @@
     "message": "為什麼是圍棋？"
   },
   "homepage.origin.lead": {
-    "message": "AI 浪潮第一個席捲的是圍棋界。"
+    "message": "我們是「圍棋文化前進的推手」——因為 AI 浪潮第一個席捲的是圍棋界。"
   },
   "homepage.origin.body": {
     "message": "2016 年 AlphaGo 擊敗李世乭，圍棋人是最早被 AI 洗禮、也最早擁抱 AI 的一群人。今天，我們把這份經驗帶到健康、產業、教育、公共政策等各領域，讓更多人能夠善用這股技術浪潮。"
@@ -461,7 +494,7 @@
     "message": "三大合作面向"
   },
   "homepage.pillars.desc": {
-    "message": "夥伴提供領域知識，理事長負責 AI 整合。產出三類成果：AI 工具、產業情報、學術論文，全部開源。"
+    "message": "學術論文・產業情報・AI 工具——每篇都做完整根因分析，每個都全部開源 CC-BY 4.0。"
   },
   "homepage.pillar.research.count": {
     "message": "篇論文"

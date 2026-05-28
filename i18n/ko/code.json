@@ -1,27 +1,25 @@
 {
   "homepage.hero.title": {
-    "message": "비즈니스 파트너 × AI × 바둑",
+    "message": "圍棋文化前進的推手",
     "description": "Hero H1 title"
   },
   "homepage.tagline": {
-    "message": "산업 노하우를 오픈소스 AI 도구로",
+    "message": "商界夥伴 × 跨域 AI × 公益圍棋",
     "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "37명의 크로스도메인 파트너 · 41+ 오픈소스 AI 도구 · 전부 무료 · 매일 자동 업데이트",
+    "message": "37 位跨域夥伴 · 41+ AI 工具 · 8 篇學術論文 · 每日自動更新",
     "description": "Hero stats line"
   },
-  "homepage.cta.proposal": { "message": "협력 제안" },
-  "homepage.cta.meet": { "message": "먼저 만나서 얘기" },
-  "homepage.cta.members": { "message": "파트너 만나기" },
-  "homepage.usp.title": { "message": "전부 무료, 완전 오픈소스" },
-  "homepage.usp.lead": { "message": "완전 무료, 회비 없음, 전부 오픈소스(CC-BY 4.0). 유료 교육·소개비·회원제는 하지 않습니다." },
-  "homepage.usp.not1.label": { "message": "순수 바둑 협회가 아닙니다" },
-  "homepage.usp.not1.desc": { "message": "바둑은 목적이 아닌 연결고리" },
-  "homepage.usp.not2.label": { "message": "순수 AI 추진 단체가 아닙니다" },
-  "homepage.usp.not2.desc": { "message": "직접 만든 오픈소스 도구가 있습니다" },
-  "homepage.usp.not3.label": { "message": "순수 비즈니스 네트워크가 아닙니다" },
-  "homepage.usp.not3.desc": { "message": "공동 오픈소스 성과가 증거" },
+  "homepage.cta.proposal": {
+    "message": "협력 제안"
+  },
+  "homepage.cta.meet": {
+    "message": "먼저 만나서 얘기"
+  },
+  "homepage.cta.members": {
+    "message": "파트너 만나기"
+  },
   "homepage.origin.badge": {
     "message": "기원의 기념비"
   },
@@ -29,7 +27,7 @@
     "message": "왜 바둑인가?"
   },
   "homepage.origin.lead": {
-    "message": "AI 물결이 가장 먼저 휩쓸고 간 곳은 바둑계였습니다."
+    "message": "我們是「圍棋文化前進的推手」——因為 AI 浪潮第一個席捲的是圍棋界。"
   },
   "homepage.origin.body": {
     "message": "2016년 AlphaGo가 이세돌을 이긴 이후, 바둑인들은 AI의 세례를 가장 먼저 받고, AI를 가장 먼저 받아들인 사람들입니다. 오늘날 우리는 이 경험을 헬스케어, 산업, 교육, 공공 정책 등 다양한 분야로 확장하여, 더 많은 사람들이 이 기술 물결을 활용할 수 있도록 돕고 있습니다."
@@ -83,7 +81,7 @@
     "message": "홈"
   },
   "homepage.meta.description": {
-    "message": "변호사, ISO, 기술, 의료, 정복, 마케팅, 음악 등 다양한 분야의 37명 파트너가 산업 노하우를 41+ 개 무료 오픈소스 AI 도구로. 크로스도메인 협력 환영."
+    "message": "台灣好棋寶寶協會 — 圍棋文化前進的推手。圍棋公益推廣、跨域 AI 開源、學術原創三軸並進。"
   },
   "theme.ErrorPageContent.title": {
     "message": "페이지에 오류가 발생하였습니다.",
@@ -595,7 +593,7 @@
     "message": "세 가지 협력 방향"
   },
   "homepage.pillars.desc": {
-    "message": "파트너가 영역 지식, 이사장이 AI 통합. AI 도구·산업 정보·학술 논문 세 가지 산출물, 모두 오픈소스."
+    "message": "學術論文・產業情報・AI 工具——每篇都做完整根因分析，每個都全部開源 CC-BY 4.0。"
   },
   "homepage.pillar.research.count": {
     "message": "篇論文"
@@ -686,5 +684,122 @@
   "theme.SearchBar.label": {
     "message": "Search",
     "description": "The ARIA label and placeholder for search button"
+  },
+  "homepage.usp.title": {
+    "message": "圍棋文化前進的推手"
+  },
+  "homepage.usp.lead": {
+    "message": "不只推圍棋。把圍棋人從 AlphaGo 學到的 AI 適應力，帶到每一個跨域場域。"
+  },
+  "homepage.usp.axis1.title": {
+    "message": "圍棋公益"
+  },
+  "homepage.usp.axis1.metric": {
+    "message": "10 縣市・187 張現場紀錄"
+  },
+  "homepage.usp.axis1.body": {
+    "message": "嘉年華、城市對抗賽、全國公開賽、主題講座；與台北市體育總會、弈客圍棋平台合作。"
+  },
+  "homepage.usp.axis1.audience": {
+    "message": "親子・學齡兒童・社區"
+  },
+  "homepage.usp.axis1.cta": {
+    "message": "看活動 →"
+  },
+  "homepage.usp.axis2.title": {
+    "message": "跨域開源"
+  },
+  "homepage.usp.axis2.metric": {
+    "message": "41+ AI 工具・11 大產業"
+  },
+  "homepage.usp.axis2.body": {
+    "message": "從預防醫學、健康教育、財稅法務到供應鏈情報；每個工具皆 CC-BY 4.0 全部開源。"
+  },
+  "homepage.usp.axis2.audience": {
+    "message": "夥伴企業・社會大眾"
+  },
+  "homepage.usp.axis2.cta": {
+    "message": "看工具 →"
+  },
+  "homepage.usp.axis3.title": {
+    "message": "學術原創"
+  },
+  "homepage.usp.axis3.metric": {
+    "message": "8 篇學術論文"
+  },
+  "homepage.usp.axis3.body": {
+    "message": "圍棋理論、機器學習與經典數學問題；每篇含完整數學證明 + 互動視覺化網頁 + GitHub 開源。"
+  },
+  "homepage.usp.axis3.audience": {
+    "message": "研究者・教育工作者"
+  },
+  "homepage.usp.axis3.cta": {
+    "message": "看論文 →"
+  },
+  "homepage.usp.future": {
+    "message": "下一站：前進社區，邀請長輩帶孫子下圍棋（2026 啟動）"
+  },
+  "homepage.act.title": {
+    "message": "圍棋公益實證"
+  },
+  "homepage.act.desc": {
+    "message": "從 2023 年至今，協會主辦／合辦的圍棋活動實況。"
+  },
+  "homepage.act.metric.records": {
+    "message": "張現場紀錄"
+  },
+  "homepage.act.metric.cities": {
+    "message": "縣市聯動"
+  },
+  "homepage.act.metric.sessions": {
+    "message": "場主題講座"
+  },
+  "homepage.act.metric.videos": {
+    "message": "部多語推廣 + 短影音"
+  },
+  "homepage.act.carnival.title": {
+    "message": "圍棋嘉年華"
+  },
+  "homepage.act.carnival.desc": {
+    "message": "和平高中正式場地，與台北市體育總會合作辦理；含 5.7GB 宣傳影片與場刊。"
+  },
+  "homepage.act.carnival.audience": {
+    "message": "親子・學齡兒童"
+  },
+  "homepage.act.cityLeague.title": {
+    "message": "城市網路對抗賽 2024 春季"
+  },
+  "homepage.act.cityLeague.desc": {
+    "message": "72 位官方選手線上對戰；涵蓋台北、新北、桃園、新竹、台中、台南、高雄、屏東、宜蘭、金門；結合弈客圍棋平台。"
+  },
+  "homepage.act.cityLeague.audience": {
+    "message": "8-18 歲棋手"
+  },
+  "homepage.act.tournament.title": {
+    "message": "113 年全國圍棋公開賽"
+  },
+  "homepage.act.tournament.desc": {
+    "message": "與台北市體育總會合辦的官方賽事；蓬萊國小場地；含 25 張側拍花絮。"
+  },
+  "homepage.act.tournament.audience": {
+    "message": "全國公開"
+  },
+  "homepage.act.funClub.title": {
+    "message": "好棋同樂會主題講座"
+  },
+  "homepage.act.funClub.desc": {
+    "message": "蔡丞韋職業五段（圍棋）／金工微距（藝術）／熊赫囑廚（健康）／鄭骨館坐姿教學（運動健康）。每月跨域實體聚會。"
+  },
+  "homepage.act.funClub.audience": {
+    "message": "跨域夥伴"
+  },
+  "homepage.act.promoVideos.title": {
+    "message": "圍棋推廣影片 + 短影音"
+  },
+  "homepage.act.promoVideos.desc": {
+    "message": "4 部多語推廣影片（中英文有/無字幕版）+ 12 部圍棋教育短影音（圍棋教我的事、定不下來的孩子、坐姿不良輸家無常等）。"
+  },
+  "homepage.act.promoVideos.audience": {
+    "message": "社群媒體"
   }
 }

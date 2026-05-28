@@ -13,6 +13,7 @@ import {intelLinks} from '@site/src/data/links/intel';
 import {appLinks} from '@site/src/data/links/apps';
 import {friendSites} from '@site/src/data/links/friends';
 import {founders} from '@site/src/data/members';
+import {activities} from '@site/src/data/activities';
 
 import styles from './styles.module.css';
 
@@ -39,52 +40,153 @@ const appHighlights = appHighlightIds
   .map((id) => appLinks.find((a) => a.id === id))
   .filter(Boolean);
 
-// ─── USP 宣告區塊（不收費 + 三條「不是什麼」）───
+// ─── USP 區塊：協會三軸並立（圍棋公益／跨域開源／學術原創）───
+function UspAxisCard({icon, titleKey, titleDefault, metric, metricLabelKey, metricLabelDefault, bodyKey, bodyDefault, audienceKey, audienceDefault, ctaKey, ctaDefault, ctaHref}) {
+  return (
+    <Link to={ctaHref} className={styles.uspAxis}>
+      <div className={styles.uspAxisIcon}>{icon}</div>
+      <Heading as="h3" className={styles.uspAxisTitle}>
+        <Translate id={titleKey}>{titleDefault}</Translate>
+      </Heading>
+      <div className={styles.uspAxisMetric}>
+        <span className={styles.uspAxisMetricNumber}>{metric}</span>
+        <span className={styles.uspAxisMetricLabel}>
+          <Translate id={metricLabelKey}>{metricLabelDefault}</Translate>
+        </span>
+      </div>
+      <p className={styles.uspAxisBody}>
+        <Translate id={bodyKey}>{bodyDefault}</Translate>
+      </p>
+      <div className={styles.uspAxisAudience}>
+        <Translate id={audienceKey}>{audienceDefault}</Translate>
+      </div>
+      <div className={styles.uspAxisCta}>
+        <Translate id={ctaKey}>{ctaDefault}</Translate>
+      </div>
+    </Link>
+  );
+}
+
 function USPSection() {
   return (
     <section className={clsx(styles.section, styles.uspSection)}>
       <div className="container">
         <div className={styles.sectionHeader}>
           <Heading as="h2">
-            <Translate id="homepage.usp.title">我們不收費，全部開源</Translate>
+            <Translate id="homepage.usp.title">圍棋文化前進的推手</Translate>
           </Heading>
           <p className={styles.sectionDescription}>
             <Translate id="homepage.usp.lead">
-              完全免費、無會員費、全部開源（CC-BY 4.0）。我們不做付費培訓、不收引薦費、不賣會員制。
+              不只推圍棋。把圍棋人從 AlphaGo 學到的 AI 適應力，帶到每一個跨域場域。
             </Translate>
           </p>
         </div>
         <div className={styles.uspGrid}>
-          <div className={styles.uspItem}>
-            <div className={styles.uspNot}>
-              <Translate id="homepage.usp.not1.label">不是純圍棋協會</Translate>
-            </div>
-            <p className={styles.uspExplain}>
-              <Translate id="homepage.usp.not1.desc">
-                我們把圍棋當紐帶不當目的
-              </Translate>
-            </p>
-          </div>
-          <div className={styles.uspItem}>
-            <div className={styles.uspNot}>
-              <Translate id="homepage.usp.not2.label">不是純 AI 推廣</Translate>
-            </div>
-            <p className={styles.uspExplain}>
-              <Translate id="homepage.usp.not2.desc">
-                我們有真正自產的開源工具
-              </Translate>
-            </p>
-          </div>
-          <div className={styles.uspItem}>
-            <div className={styles.uspNot}>
-              <Translate id="homepage.usp.not3.label">不是純商務人脈</Translate>
-            </div>
-            <p className={styles.uspExplain}>
-              <Translate id="homepage.usp.not3.desc">
-                我們有共同開源產出當證據
-              </Translate>
-            </p>
-          </div>
+          <UspAxisCard
+            icon="⚫"
+            titleKey="homepage.usp.axis1.title"
+            titleDefault="圍棋公益"
+            metric="10"
+            metricLabelKey="homepage.usp.axis1.metricLabel"
+            metricLabelDefault="縣市・187 張紀錄"
+            bodyKey="homepage.usp.axis1.body"
+            bodyDefault="城市對抗賽、嘉年華、好棋同樂會主題講座、全國公開賽"
+            audienceKey="homepage.usp.axis1.audience"
+            audienceDefault="樂齡・聽障・親子・學齡兒童"
+            ctaKey="homepage.usp.axis1.cta"
+            ctaDefault="看實體活動 →"
+            ctaHref="/docs/about/activities/"
+          />
+          <UspAxisCard
+            icon="🤖"
+            titleKey="homepage.usp.axis2.title"
+            titleDefault="跨域開源"
+            metric="41+"
+            metricLabelKey="homepage.usp.axis2.metricLabel"
+            metricLabelDefault="AI 工具・11 大產業"
+            bodyKey="homepage.usp.axis2.body"
+            bodyDefault="夥伴提供領域 know-how，理事長負責 AI 整合，產出全部 CC-BY 4.0"
+            audienceKey="homepage.usp.axis2.audience"
+            audienceDefault="消費・健康・資安・貿易・政策"
+            ctaKey="homepage.usp.axis2.cta"
+            ctaDefault="看開源工具 →"
+            ctaHref="/apps/"
+          />
+          <UspAxisCard
+            icon="📐"
+            titleKey="homepage.usp.axis3.title"
+            titleDefault="學術原創"
+            metric="8"
+            metricLabelKey="homepage.usp.axis3.metricLabel"
+            metricLabelDefault="篇論文・含完整證明"
+            bodyKey="homepage.usp.axis3.body"
+            bodyDefault="圍棋次佳手公式、官子計算、SGD 收斂、深度泛化、AI 對齊、Collatz、四色定理、Erdős-Sidon"
+            audienceKey="homepage.usp.axis3.audience"
+            audienceDefault="圍棋・機器學習・AI 安全・數學"
+            ctaKey="homepage.usp.axis3.cta"
+            ctaDefault="看論文 →"
+            ctaHref="/research/"
+          />
+        </div>
+        <p className={styles.uspFuture}>
+          <Translate id="homepage.usp.future">
+            下一站：前進社區，邀請長輩帶孫子下圍棋（2026 啟動）
+          </Translate>
+        </p>
+      </div>
+    </section>
+  );
+}
+
+// ─── 實體活動成果展示（5 個代表活動）───
+function ActivityCard({activity}) {
+  return (
+    <div className={styles.activityCard}>
+      {activity.image ? (
+        <img src={activity.image} alt={activity.titleDefault} className={styles.activityImage} />
+      ) : (
+        <div className={styles.activityIcon}>{activity.icon || '📌'}</div>
+      )}
+      <div className={styles.activityBody}>
+        <Heading as="h3" className={styles.activityTitle}>
+          <Translate id={activity.titleKey}>{activity.titleDefault}</Translate>
+        </Heading>
+        <div className={styles.activityMetricRow}>
+          <span className={styles.activityMetric}>{activity.metric}</span>
+          <span className={styles.activityMetricLabel}>
+            <Translate id={activity.metricLabelKey}>{activity.metricLabelDefault}</Translate>
+          </span>
+        </div>
+        <p className={styles.activityDesc}>
+          <Translate id={activity.descKey}>{activity.descDefault}</Translate>
+        </p>
+        <div className={styles.activityAudience}>
+          <Translate id={activity.audienceKey}>{activity.audienceDefault}</Translate>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ActivitiesShowcase() {
+  return (
+    <section className={clsx(styles.section, styles.sectionAlt)}>
+      <div className="container">
+        <div className={styles.sectionHeader}>
+          <Heading as="h2">
+            <Translate id="homepage.act.title">實體活動成果</Translate>
+          </Heading>
+          <p className={styles.sectionDescription}>
+            <Translate id="homepage.act.desc">
+              協會 2023-2024 已辦理大量圍棋公益活動，從樂齡到親子、從台北到金門，
+              累積完整的活動紀錄、影片資產與媒體素材。
+            </Translate>
+          </p>
+        </div>
+        <div className={styles.activitiesGrid}>
+          {activities.map((a) => (
+            <ActivityCard key={a.id} activity={a} />
+          ))}
         </div>
       </div>
     </section>
@@ -119,11 +221,11 @@ function PillarSection() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <Heading as="h2">
-            <Translate id="homepage.pillars.title">三大合作面向</Translate>
+            <Translate id="homepage.pillars.title">深入三大產出</Translate>
           </Heading>
           <p className={styles.sectionDescription}>
             <Translate id="homepage.pillars.desc">
-              夥伴提供領域知識，理事長負責 AI 整合。產出三類成果：AI 工具、產業情報、學術論文，全部開源。
+              學術論文・產業情報・AI 工具——每篇都做完整根因分析，每個都全部開源 CC-BY 4.0。
             </Translate>
           </p>
         </div>
@@ -206,7 +308,7 @@ function WeiqiOriginSection() {
           </Heading>
           <p className={styles.originLead}>
             <Translate id="homepage.origin.lead">
-              AI 浪潮第一個席捲的是圍棋界。
+              我們是「圍棋文化前進的推手」——因為 AI 浪潮第一個席捲的是圍棋界。
             </Translate>
           </p>
           <p className={styles.originBody}>
@@ -320,6 +422,7 @@ export default function HomepageLinks() {
   return (
     <>
       <USPSection />
+      <ActivitiesShowcase />
       <PillarSection />
 
       {/* 學術研究精選 */}

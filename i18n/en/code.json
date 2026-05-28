@@ -1,27 +1,25 @@
 {
   "homepage.hero.title": {
-    "message": "Business Partners × AI × Go",
+    "message": "Driving Force Behind Weiqi Culture",
     "description": "Hero H1 title"
   },
   "homepage.tagline": {
-    "message": "Turning industry know-how into open-source AI tools",
+    "message": "Business Partners × Cross-Domain AI × Go for Public Good",
     "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "37 cross-domain partners · 41+ open-source AI tools · 100% free · Updated daily",
+    "message": "37 cross-domain partners · 41+ AI tools · 8 academic papers · Updated daily",
     "description": "Hero stats line"
   },
-  "homepage.cta.proposal": { "message": "Propose a collaboration" },
-  "homepage.cta.meet": { "message": "Let's meet first" },
-  "homepage.cta.members": { "message": "Meet the partners" },
-  "homepage.usp.title": { "message": "Free for all, fully open-source" },
-  "homepage.usp.lead": { "message": "Completely free, no membership fees, all open-source (CC-BY 4.0). We don't sell paid training, referral fees, or memberships." },
-  "homepage.usp.not1.label": { "message": "Not just a Go association" },
-  "homepage.usp.not1.desc": { "message": "We use Go as a tie, not the goal" },
-  "homepage.usp.not2.label": { "message": "Not just AI promotion" },
-  "homepage.usp.not2.desc": { "message": "We produce our own open-source tools" },
-  "homepage.usp.not3.label": { "message": "Not just business networking" },
-  "homepage.usp.not3.desc": { "message": "Shared open-source output is the proof" },
+  "homepage.cta.proposal": {
+    "message": "Propose a collaboration"
+  },
+  "homepage.cta.meet": {
+    "message": "Let's meet first"
+  },
+  "homepage.cta.members": {
+    "message": "Meet the partners"
+  },
   "homepage.origin.badge": {
     "message": "Origin Story"
   },
@@ -29,7 +27,7 @@
     "message": "Why Go?"
   },
   "homepage.origin.lead": {
-    "message": "Go was the first field swept by the AI wave."
+    "message": "We are \"the driving force behind Weiqi culture\" — because the Go community was the first to feel the AI wave."
   },
   "homepage.origin.body": {
     "message": "When AlphaGo defeated Lee Sedol in 2016, Go players were among the earliest to be transformed by — and to embrace — artificial intelligence. Today, we carry that experience into health, industry, education, and public policy, helping more people benefit from this technological tide."
@@ -83,7 +81,7 @@
     "message": "Home"
   },
   "homepage.meta.description": {
-    "message": "37 partners from law, ISO, tech, healthcare, rehab, marketing, music and more. Turning industry know-how into 41+ open-source AI tools, all completely free. Cross-domain collaboration welcome."
+    "message": "Weiqi Kids Association — The driving force behind Weiqi (Go) culture. Three parallel axes: Go public outreach, cross-domain open-source AI, and original academic research."
   },
   "theme.ErrorPageContent.title": {
     "message": "This page crashed.",
@@ -595,7 +593,7 @@
     "message": "Three Collaboration Directions"
   },
   "homepage.pillars.desc": {
-    "message": "Partners contribute domain knowledge; the chairman handles AI integration. Three outputs: AI tools, industry intelligence, academic papers — all open-source."
+    "message": "Academic papers · Industry intelligence · AI tools — each with complete root-cause analysis, all open-sourced under CC-BY 4.0."
   },
   "homepage.pillar.research.count": {
     "message": "篇論文"
@@ -686,5 +684,122 @@
   "theme.SearchPage.noResultsText": {
     "message": "No documents were found",
     "description": "The paragraph for empty search result"
+  },
+  "homepage.usp.title": {
+    "message": "Driving Force Behind Weiqi Culture"
+  },
+  "homepage.usp.lead": {
+    "message": "Not just promoting Go. We bring the AI adaptability that Go players learned from AlphaGo into every cross-domain field."
+  },
+  "homepage.usp.axis1.title": {
+    "message": "Go for Public Good"
+  },
+  "homepage.usp.axis1.metric": {
+    "message": "10 cities · 187 on-site records"
+  },
+  "homepage.usp.axis1.body": {
+    "message": "Carnivals, city league matches, national open tournaments, themed lectures; partnered with Taipei City Sports Federation and Yike Weiqi platform."
+  },
+  "homepage.usp.axis1.audience": {
+    "message": "Families · school-age children · communities"
+  },
+  "homepage.usp.axis1.cta": {
+    "message": "See activities →"
+  },
+  "homepage.usp.axis2.title": {
+    "message": "Cross-Domain Open Source"
+  },
+  "homepage.usp.axis2.metric": {
+    "message": "41+ AI tools · 11 industries"
+  },
+  "homepage.usp.axis2.body": {
+    "message": "From preventive medicine and health education to tax/legal advisory and supply-chain intelligence; every tool open-sourced under CC-BY 4.0."
+  },
+  "homepage.usp.axis2.audience": {
+    "message": "Partner enterprises · general public"
+  },
+  "homepage.usp.axis2.cta": {
+    "message": "See tools →"
+  },
+  "homepage.usp.axis3.title": {
+    "message": "Original Academic Research"
+  },
+  "homepage.usp.axis3.metric": {
+    "message": "8 academic papers"
+  },
+  "homepage.usp.axis3.body": {
+    "message": "Go theory, machine learning, and classical mathematics; each paper includes complete proofs + interactive visualization + GitHub source."
+  },
+  "homepage.usp.axis3.audience": {
+    "message": "Researchers · educators"
+  },
+  "homepage.usp.axis3.cta": {
+    "message": "See papers →"
+  },
+  "homepage.usp.future": {
+    "message": "Next stop: into the community, inviting elders to play Go with their grandchildren (launching 2026)"
+  },
+  "homepage.act.title": {
+    "message": "Go for Public Good — Evidence"
+  },
+  "homepage.act.desc": {
+    "message": "Real Weiqi activities organized or co-organized by the association since 2023."
+  },
+  "homepage.act.metric.records": {
+    "message": "on-site records"
+  },
+  "homepage.act.metric.cities": {
+    "message": "cities linked"
+  },
+  "homepage.act.metric.sessions": {
+    "message": "themed lectures"
+  },
+  "homepage.act.metric.videos": {
+    "message": "multilingual promos + shorts"
+  },
+  "homepage.act.carnival.title": {
+    "message": "Weiqi Carnival"
+  },
+  "homepage.act.carnival.desc": {
+    "message": "Heping High School official venue, co-organized with Taipei City Sports Federation; includes 5.7GB of promotional video and event booklet."
+  },
+  "homepage.act.carnival.audience": {
+    "message": "Families · school-age children"
+  },
+  "homepage.act.cityLeague.title": {
+    "message": "City Online League — 2024 Spring"
+  },
+  "homepage.act.cityLeague.desc": {
+    "message": "72 official players in online matches; covering Taipei, New Taipei, Taoyuan, Hsinchu, Taichung, Tainan, Kaohsiung, Pingtung, Yilan, Kinmen; via Yike Weiqi platform."
+  },
+  "homepage.act.cityLeague.audience": {
+    "message": "Players aged 8–18"
+  },
+  "homepage.act.tournament.title": {
+    "message": "2024 National Go Open"
+  },
+  "homepage.act.tournament.desc": {
+    "message": "Official tournament co-organized with Taipei City Sports Federation; held at Penglai Elementary School; includes 25 candid photos."
+  },
+  "homepage.act.tournament.audience": {
+    "message": "Open to all"
+  },
+  "homepage.act.funClub.title": {
+    "message": "Hao-Qi Fun Club Themed Lectures"
+  },
+  "homepage.act.funClub.desc": {
+    "message": "Tsai Cheng-Wei 5-dan pro (Go) / Macro metal art / Health (Xiong Hexu Kitchen) / Posture correction (Zheng Bone Clinic). Monthly cross-domain meetups."
+  },
+  "homepage.act.funClub.audience": {
+    "message": "Cross-domain partners"
+  },
+  "homepage.act.promoVideos.title": {
+    "message": "Weiqi Promotional Videos + Shorts"
+  },
+  "homepage.act.promoVideos.desc": {
+    "message": "4 multilingual promotional videos (Chinese/English with/without subtitles) + 12 educational shorts on Go (What Go Taught Me, Restless Children, Bad Posture & Losing Habits, etc.)."
+  },
+  "homepage.act.promoVideos.audience": {
+    "message": "Social media"
   }
 }

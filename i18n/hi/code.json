@@ -1,26 +1,25 @@
 {
   "homepage.hero.title": {
-    "message": "व्यापारिक भागीदार × AI × गो",
+    "message": "圍棋文化前進的推手",
     "description": "Hero H1 title"
   },
   "homepage.tagline": {
-    "message": "उद्योग की जानकारी को ओपन-सोर्स AI टूल्स में बदलना",
+    "message": "商界夥伴 × 跨域 AI × 公益圍棋",
     "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "३७ क्रॉस-डोमेन भागीदार · ४१+ ओपन-सोर्स AI टूल्स · पूर्णतः मुफ्त · प्रतिदिन स्वचालित अपडेट"
+    "message": "37 位跨域夥伴 · 41+ AI 工具 · 8 篇學術論文 · 每日自動更新",
+    "description": "Hero stats line"
   },
-  "homepage.cta.proposal": { "message": "सहयोग प्रस्ताव" },
-  "homepage.cta.meet": { "message": "पहले मिलकर बात करें" },
-  "homepage.cta.members": { "message": "भागीदारों से मिलें" },
-  "homepage.usp.title": { "message": "हम मुफ्त हैं, पूर्णतः ओपन-सोर्स" },
-  "homepage.usp.lead": { "message": "पूर्णतः मुफ्त, कोई सदस्यता शुल्क नहीं, सब ओपन-सोर्स (CC-BY 4.0)। हम भुगतान प्रशिक्षण, रेफरल शुल्क, या सदस्यता योजना नहीं चलाते।" },
-  "homepage.usp.not1.label": { "message": "केवल गो संगठन नहीं" },
-  "homepage.usp.not1.desc": { "message": "हम गो को सेतु के रूप में देखते हैं, लक्ष्य नहीं" },
-  "homepage.usp.not2.label": { "message": "केवल AI प्रचार नहीं" },
-  "homepage.usp.not2.desc": { "message": "हमारे पास वास्तविक स्व-निर्मित ओपन-सोर्स टूल्स हैं" },
-  "homepage.usp.not3.label": { "message": "केवल व्यापारिक नेटवर्क नहीं" },
-  "homepage.usp.not3.desc": { "message": "साझा ओपन-सोर्स उत्पादन प्रमाण है" },
+  "homepage.cta.proposal": {
+    "message": "सहयोग प्रस्ताव"
+  },
+  "homepage.cta.meet": {
+    "message": "पहले मिलकर बात करें"
+  },
+  "homepage.cta.members": {
+    "message": "भागीदारों से मिलें"
+  },
   "homepage.origin.badge": {
     "message": "उत्पत्ति स्मारक"
   },
@@ -28,7 +27,7 @@
     "message": "गो क्यों?"
   },
   "homepage.origin.lead": {
-    "message": "AI की लहर ने सबसे पहले गो की दुनिया को अपनी चपेट में लिया।"
+    "message": "我們是「圍棋文化前進的推手」——因為 AI 浪潮第一個席捲的是圍棋界。"
   },
   "homepage.origin.body": {
     "message": "जब 2016 में AlphaGo ने ली सेडोल को हराया, तो गो के खिलाड़ी पहले लोग थे जिन्होंने AI की क्रांति को महसूस किया और उसे अपनाया। आज, हम यही अनुभव स्वास्थ्य, उद्योग, शिक्षा और सार्वजनिक नीति के क्षेत्रों में लेकर जाते हैं, ताकि अधिक से अधिक लोग इस तकनीकी लहर का लाभ उठा सकें।"
@@ -82,7 +81,7 @@
     "message": "होम"
   },
   "homepage.meta.description": {
-    "message": "कानून, ISO, प्रौद्योगिकी, स्वास्थ्य, पुनर्वास, विपणन, संगीत आदि क्षेत्रों के ३७ भागीदार उद्योग की जानकारी को ४१+ पूर्णतः मुफ्त ओपन-सोर्स AI टूल्स में बदल रहे हैं। क्रॉस-डोमेन सहयोग का स्वागत है।"
+    "message": "台灣好棋寶寶協會 — 圍棋文化前進的推手。圍棋公益推廣、跨域 AI 開源、學術原創三軸並進。"
   },
   "theme.ErrorPageContent.title": {
     "message": "This page crashed.",
@@ -594,7 +593,7 @@
     "message": "तीन सहयोग दिशाएँ"
   },
   "homepage.pillars.desc": {
-    "message": "भागीदार डोमेन ज्ञान प्रदान करते हैं; अध्यक्ष AI एकीकरण संभालते हैं। तीन उत्पाद: AI टूल्स, उद्योग खुफिया, शैक्षणिक पत्र — सब ओपन-सोर्स।"
+    "message": "學術論文・產業情報・AI 工具——每篇都做完整根因分析，每個都全部開源 CC-BY 4.0。"
   },
   "homepage.pillar.research.count": {
     "message": "篇論文"
@@ -685,5 +684,122 @@
   "theme.SearchPage.noResultsText": {
     "message": "No documents were found",
     "description": "The paragraph for empty search result"
+  },
+  "homepage.usp.title": {
+    "message": "圍棋文化前進的推手"
+  },
+  "homepage.usp.lead": {
+    "message": "不只推圍棋。把圍棋人從 AlphaGo 學到的 AI 適應力，帶到每一個跨域場域。"
+  },
+  "homepage.usp.axis1.title": {
+    "message": "圍棋公益"
+  },
+  "homepage.usp.axis1.metric": {
+    "message": "10 縣市・187 張現場紀錄"
+  },
+  "homepage.usp.axis1.body": {
+    "message": "嘉年華、城市對抗賽、全國公開賽、主題講座；與台北市體育總會、弈客圍棋平台合作。"
+  },
+  "homepage.usp.axis1.audience": {
+    "message": "親子・學齡兒童・社區"
+  },
+  "homepage.usp.axis1.cta": {
+    "message": "看活動 →"
+  },
+  "homepage.usp.axis2.title": {
+    "message": "跨域開源"
+  },
+  "homepage.usp.axis2.metric": {
+    "message": "41+ AI 工具・11 大產業"
+  },
+  "homepage.usp.axis2.body": {
+    "message": "從預防醫學、健康教育、財稅法務到供應鏈情報；每個工具皆 CC-BY 4.0 全部開源。"
+  },
+  "homepage.usp.axis2.audience": {
+    "message": "夥伴企業・社會大眾"
+  },
+  "homepage.usp.axis2.cta": {
+    "message": "看工具 →"
+  },
+  "homepage.usp.axis3.title": {
+    "message": "學術原創"
+  },
+  "homepage.usp.axis3.metric": {
+    "message": "8 篇學術論文"
+  },
+  "homepage.usp.axis3.body": {
+    "message": "圍棋理論、機器學習與經典數學問題；每篇含完整數學證明 + 互動視覺化網頁 + GitHub 開源。"
+  },
+  "homepage.usp.axis3.audience": {
+    "message": "研究者・教育工作者"
+  },
+  "homepage.usp.axis3.cta": {
+    "message": "看論文 →"
+  },
+  "homepage.usp.future": {
+    "message": "下一站：前進社區，邀請長輩帶孫子下圍棋（2026 啟動）"
+  },
+  "homepage.act.title": {
+    "message": "圍棋公益實證"
+  },
+  "homepage.act.desc": {
+    "message": "從 2023 年至今，協會主辦／合辦的圍棋活動實況。"
+  },
+  "homepage.act.metric.records": {
+    "message": "張現場紀錄"
+  },
+  "homepage.act.metric.cities": {
+    "message": "縣市聯動"
+  },
+  "homepage.act.metric.sessions": {
+    "message": "場主題講座"
+  },
+  "homepage.act.metric.videos": {
+    "message": "部多語推廣 + 短影音"
+  },
+  "homepage.act.carnival.title": {
+    "message": "圍棋嘉年華"
+  },
+  "homepage.act.carnival.desc": {
+    "message": "和平高中正式場地，與台北市體育總會合作辦理；含 5.7GB 宣傳影片與場刊。"
+  },
+  "homepage.act.carnival.audience": {
+    "message": "親子・學齡兒童"
+  },
+  "homepage.act.cityLeague.title": {
+    "message": "城市網路對抗賽 2024 春季"
+  },
+  "homepage.act.cityLeague.desc": {
+    "message": "72 位官方選手線上對戰；涵蓋台北、新北、桃園、新竹、台中、台南、高雄、屏東、宜蘭、金門；結合弈客圍棋平台。"
+  },
+  "homepage.act.cityLeague.audience": {
+    "message": "8-18 歲棋手"
+  },
+  "homepage.act.tournament.title": {
+    "message": "113 年全國圍棋公開賽"
+  },
+  "homepage.act.tournament.desc": {
+    "message": "與台北市體育總會合辦的官方賽事；蓬萊國小場地；含 25 張側拍花絮。"
+  },
+  "homepage.act.tournament.audience": {
+    "message": "全國公開"
+  },
+  "homepage.act.funClub.title": {
+    "message": "好棋同樂會主題講座"
+  },
+  "homepage.act.funClub.desc": {
+    "message": "蔡丞韋職業五段（圍棋）／金工微距（藝術）／熊赫囑廚（健康）／鄭骨館坐姿教學（運動健康）。每月跨域實體聚會。"
+  },
+  "homepage.act.funClub.audience": {
+    "message": "跨域夥伴"
+  },
+  "homepage.act.promoVideos.title": {
+    "message": "圍棋推廣影片 + 短影音"
+  },
+  "homepage.act.promoVideos.desc": {
+    "message": "4 部多語推廣影片（中英文有/無字幕版）+ 12 部圍棋教育短影音（圍棋教我的事、定不下來的孩子、坐姿不良輸家無常等）。"
+  },
+  "homepage.act.promoVideos.audience": {
+    "message": "社群媒體"
   }
 }
