@@ -114,13 +114,13 @@
   font-size: var(--font-size-caption) !important;
 }
 
-/* 左側 docs sidebar 選單 */
+/* 左側 docs sidebar 選單（主要導覽，用 body 16px 不用 caption）*/
 .menu__link {
-  font-size: var(--font-size-caption) !important;
+  font-size: var(--font-size-body) !important;
 }
 
 .menu__list-item-collapsible {
-  font-size: var(--font-size-caption) !important;
+  font-size: var(--font-size-body) !important;
 }
 
 /* Docs 頁面底部 prev/next 導覽 */
