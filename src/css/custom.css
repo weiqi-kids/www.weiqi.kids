@@ -9,16 +9,15 @@
 @import './design-tokens.css';
 
 /* Override Infima's color primitives with oklch tokens.
- * Light mode: brand green (current). To migrate to amber per positioning §4,
- * change --color-brand to var(--color-amber-600) in design-tokens.css. */
+ * 品牌色 = 暖橙（positioning §4「圍棋黑白為主 + 單一暖色」，2026-05-28 用戶確認）*/
 :root {
-  --ifm-color-primary:         var(--color-green-500);
-  --ifm-color-primary-dark:    var(--color-green-600);
-  --ifm-color-primary-darker:  var(--color-green-700);
-  --ifm-color-primary-darkest: var(--color-green-800);
-  --ifm-color-primary-light:   oklch(55% 0.10 152);
-  --ifm-color-primary-lighter: oklch(58% 0.10 152);
-  --ifm-color-primary-lightest: var(--color-green-300);
+  --ifm-color-primary:         var(--color-brand);            /* oklch(67% 0.17 60) */
+  --ifm-color-primary-dark:    oklch(60% 0.17 55);
+  --ifm-color-primary-darker:  oklch(55% 0.16 50);
+  --ifm-color-primary-darkest: oklch(48% 0.14 48);
+  --ifm-color-primary-light:   oklch(74% 0.16 65);
+  --ifm-color-primary-lighter: oklch(78% 0.14 68);
+  --ifm-color-primary-lightest: oklch(85% 0.10 72);
 
   --ifm-color-emphasis-100: var(--color-gray-100);
   --ifm-color-emphasis-200: var(--color-gray-200);
@@ -31,14 +30,14 @@
 
   --ifm-background-color: var(--color-surface);
 
-  /* Typography — 對齊 design-tokens.css 的 type scale */
-  --ifm-font-size-base: var(--font-size-base);
-  --ifm-h1-font-size: var(--font-size-3xl);
-  --ifm-h2-font-size: var(--font-size-2xl);
-  --ifm-h3-font-size: var(--font-size-xl);
-  --ifm-h4-font-size: var(--font-size-lg);
-  --ifm-h5-font-size: var(--font-size-md);
-  --ifm-h6-font-size: var(--font-size-base);
+  /* Typography — 對齊協會 5 階字級規範 */
+  --ifm-font-size-base: var(--font-size-body);
+  --ifm-h1-font-size: var(--font-size-h1);    /* 36px */
+  --ifm-h2-font-size: var(--font-size-h2);    /* 24px */
+  --ifm-h3-font-size: var(--font-size-h3);    /* 18px */
+  --ifm-h4-font-size: var(--font-size-h3);    /* 18px — 跟 h3 同 */
+  --ifm-h5-font-size: var(--font-size-body);  /* 16px */
+  --ifm-h6-font-size: var(--font-size-body);  /* 16px */
   --ifm-line-height-base: var(--line-height-normal);
   --ifm-leading: var(--line-height-loose);
   --ifm-heading-line-height: var(--line-height-tight);
@@ -55,13 +54,13 @@
 
 /* Dark mode: lighter brand for contrast. */
 [data-theme='dark'] {
-  --ifm-color-primary:         oklch(75% 0.13 175);
-  --ifm-color-primary-dark:    oklch(70% 0.13 175);
-  --ifm-color-primary-darker:  oklch(66% 0.13 175);
-  --ifm-color-primary-darkest: oklch(60% 0.13 175);
-  --ifm-color-primary-light:   oklch(80% 0.12 175);
-  --ifm-color-primary-lighter: oklch(82% 0.12 175);
-  --ifm-color-primary-lightest: oklch(86% 0.10 175);
+  --ifm-color-primary:         var(--color-brand);            /* dark mode 較亮的暖色 */
+  --ifm-color-primary-dark:    oklch(70% 0.16 60);
+  --ifm-color-primary-darker:  oklch(66% 0.16 58);
+  --ifm-color-primary-darkest: oklch(60% 0.14 55);
+  --ifm-color-primary-light:   oklch(80% 0.14 70);
+  --ifm-color-primary-lighter: oklch(83% 0.12 72);
+  --ifm-color-primary-lightest: oklch(88% 0.08 75);
 
   --ifm-background-color: var(--color-surface);
 
@@ -70,7 +69,7 @@
 
 /* Compact navbar items (GitHub and locale dropdown) */
 .navbar__item--compact {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-caption);
   padding: var(--space-1) var(--space-2);
 }
 
@@ -89,7 +88,7 @@
 
 /* Locale dropdown compact style */
 .navbar__item--compact.dropdown__link {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-caption);
 }
 
 /* ============================================================
@@ -103,63 +102,63 @@
 
 /* 右側 TOC sidebar */
 .table-of-contents {
-  font-size: var(--font-size-sm) !important;
+  font-size: var(--font-size-caption) !important;
 }
 
 .table-of-contents__link {
-  font-size: var(--font-size-sm) !important;
+  font-size: var(--font-size-caption) !important;
 }
 
 /* 行動裝置版 TOC */
 .theme-doc-toc-mobile {
-  font-size: var(--font-size-sm) !important;
+  font-size: var(--font-size-caption) !important;
 }
 
 /* 左側 docs sidebar 選單 */
 .menu__link {
-  font-size: var(--font-size-sm) !important;
+  font-size: var(--font-size-caption) !important;
 }
 
 .menu__list-item-collapsible {
-  font-size: var(--font-size-sm) !important;
+  font-size: var(--font-size-caption) !important;
 }
 
 /* Docs 頁面底部 prev/next 導覽 */
 .pagination-nav__label {
-  font-size: var(--font-size-md) !important;
+  font-size: var(--font-size-h3) !important;
 }
 
 .pagination-nav__sublabel {
-  font-size: var(--font-size-sm) !important;
+  font-size: var(--font-size-caption) !important;
 }
 
 /* Breadcrumbs */
 .breadcrumbs__link {
-  font-size: var(--font-size-sm) !important;
+  font-size: var(--font-size-caption) !important;
 }
 
 /* Docs 內文段落 / 列表 */
 .markdown {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-body);
   line-height: var(--line-height-loose);
 }
 
 .markdown li {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-body);
 }
 
 /* Footer */
 .footer {
-  font-size: var(--font-size-sm) !important;
+  font-size: var(--font-size-caption) !important;
 }
 
 .footer__title {
-  font-size: var(--font-size-md) !important;
+  font-size: var(--font-size-h3) !important;
 }
 
 /* Navbar 主項目 */
 .navbar__link {
-  font-size: var(--font-size-base) !important;
+  font-size: var(--font-size-body) !important;
 }
 
 .navbar__brand b {
@@ -168,5 +167,5 @@
 
 /* Dropdown 子項目 */
 .dropdown__menu .dropdown__link {
-  font-size: var(--font-size-sm) !important;
+  font-size: var(--font-size-caption) !important;
 }

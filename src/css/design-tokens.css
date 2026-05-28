@@ -1,28 +1,74 @@
 /**
- * Design Tokens — Single source of truth for color, type, spacing, radius, shadow.
+ * Design Tokens — 台灣好棋寶寶協會官方規範
  *
- * All token values use oklch() for perceptually uniform color (positioning §4 alignment).
- * Existing components should reference these tokens via var(--token-name).
+ * 2026-05-28 用戶確認：
+ * - 字級 5 階（h1 / h2 / h3 / body / caption）
+ * - 顏色 5 色（黑白為主 + 單一暖色），對齊 positioning §4「色彩克制」
  *
- * Token hierarchy:
- *   1. Primitive tokens (scale-based, e.g. --color-amber-500, --font-size-md)
- *   2. Semantic tokens (intent-based, e.g. --color-brand, --color-text-primary)
+ * 所有顏色用 oklch()（感知均勻色彩空間）。新組件 CSS 必須使用語意化 token
+ * （--font-size-h1 等、--color-text-primary 等），不可 hardcode 或自創。
  *
- * Add new components by referencing semantic tokens. If a semantic token is missing
- * for your use case, add it here first instead of hardcoding values in module.css.
- *
- * Migration status (2026-05-21):
- * - USP section (HomepageLinks/styles.module.css): refactored ✅
- * - Other module.css files: pending Phase 4 harmonization (legacy values still work
- *   via Infima fallbacks; tokens take precedence where used).
+ * 不在規範內的尺寸（如 20px、30px、48px）一律 snap 到最近的官方字級。
  */
 
 :root {
   /* ============================================================
-   * 1. Primitive color tokens (oklch)
+   * 字級規範（5 階）
    * ============================================================ */
 
-  /* Neutrals (chroma = 0, pure perceptual gray) */
+  --font-size-h1:      2.25rem;   /* 36px — 大標 H1 / Hero */
+  --font-size-h2:      1.5rem;    /* 24px — 區塊標 H2 */
+  --font-size-h3:      1.125rem;  /* 18px — 副標 H3 / card title */
+  --font-size-body:    1rem;      /* 16px — 內文、卡片描述 */
+  --font-size-caption: 0.875rem;  /* 14px — caption / TOC / breadcrumbs / sidebar */
+
+  /* Legacy aliases（向後相容，snap 到 5 階規範）
+   * 新組件不要用這些，請改用語意化名稱。 */
+  --font-size-xs:   var(--font-size-caption);
+  --font-size-sm:   var(--font-size-caption);
+  --font-size-base: var(--font-size-body);
+  --font-size-md:   var(--font-size-h3);
+  --font-size-lg:   var(--font-size-h3);       /* 20px snap 到 h3 18px */
+  --font-size-xl:   var(--font-size-h2);
+  --font-size-2xl:  var(--font-size-h2);       /* 30px snap 到 h2 24px */
+  --font-size-3xl:  var(--font-size-h1);
+  --font-size-4xl:  var(--font-size-h1);       /* 48px snap 到 h1 36px */
+
+  /* 行高與字重 */
+  --line-height-tight:  1.25;
+  --line-height-normal: 1.5;
+  --line-height-loose:  1.75;
+
+  --font-weight-regular: 400;
+  --font-weight-medium:  500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:    700;
+
+  /* ============================================================
+   * 顏色規範（5 色，oklch）
+   * 對齊 positioning §4：圍棋黑白為主 + 單一暖色當品牌色
+   * ============================================================ */
+
+  /* 文字顏色（黑白灰階） */
+  --color-text-primary:   oklch(15% 0 0);   /* 主文字（近黑）*/
+  --color-text-secondary: oklch(35% 0 0);   /* 次文字（深灰）*/
+  --color-text-muted:     oklch(57% 0 0);   /* 輔助文字（中灰）*/
+  --color-text-inverse:   oklch(98% 0 0);   /* 反色文字（白底深色背景時）*/
+
+  /* 品牌暖色（唯一品牌色，positioning §4「單一暖色」）*/
+  --color-brand:          oklch(67% 0.17 60);   /* 暖橙 — CTA、強調、連結 */
+  --color-brand-light:    oklch(94% 0.06 75);   /* 暖橙淺色版 — 區塊背景 */
+  --color-accent-warm:    var(--color-brand);   /* alias，舊組件使用 */
+  --color-accent-warm-soft: var(--color-brand-light);  /* alias */
+
+  /* 表面與邊框（白＋淺灰）*/
+  --color-surface:          oklch(100% 0 0);    /* 純白底 */
+  --color-surface-elevated: oklch(96% 0 0);     /* 淺灰背景（區塊區隔）*/
+  --color-surface-alt:      oklch(92% 0 0);     /* 更深一點淺灰 */
+  --color-border:           oklch(90% 0 0);
+  --color-border-strong:    oklch(80% 0 0);
+
+  /* Legacy 灰階 primitives（向後相容） */
   --color-gray-50:  oklch(98% 0 0);
   --color-gray-100: oklch(96% 0 0);
   --color-gray-200: oklch(92% 0 0);
@@ -34,87 +80,36 @@
   --color-gray-800: oklch(24% 0 0);
   --color-gray-900: oklch(15% 0 0);
 
-  /* Brand green (current Infima primary, 2016+ Docusaurus default territory) */
+  /* Legacy 綠色 primitives（圍棋人科技舊識別色，不再當品牌色，
+   * 僅供圍棋相關內容區塊識別用，新組件勿用） */
   --color-green-50:  oklch(96% 0.025 152);
-  --color-green-100: oklch(92% 0.05 152);
   --color-green-300: oklch(75% 0.10 152);
-  --color-green-500: oklch(50% 0.10 152);  /* ≈ #2e8555 */
-  --color-green-600: oklch(46% 0.10 152);
+  --color-green-500: oklch(50% 0.10 152);
   --color-green-700: oklch(40% 0.10 152);
-  --color-green-800: oklch(33% 0.10 152);
 
-  /* Brand amber (positioning §4「輔以單一暖色當品牌色」accent) */
+  /* Legacy 暖色 palette（保留供細部調整） */
   --color-amber-50:  oklch(97% 0.04 75);
   --color-amber-100: oklch(94% 0.07 75);
-  --color-amber-300: oklch(82% 0.13 70);
   --color-amber-500: oklch(72% 0.16 65);
-  --color-amber-600: oklch(67% 0.17 60);   /* ≈ #d97706, warm CTA accent */
-  --color-amber-700: oklch(58% 0.15 55);
-  --color-amber-800: oklch(48% 0.13 50);
+  --color-amber-600: oklch(67% 0.17 60);
 
   /* ============================================================
-   * 2. Semantic color tokens (intent-based)
-   *    Components SHOULD reference these, not primitives.
+   * 間距 spacing（4px base）
    * ============================================================ */
 
-  --color-brand:                var(--color-green-500); /* current primary */
-  --color-brand-light:          var(--color-green-100);
-  --color-brand-dark:           var(--color-green-700);
-  --color-accent-warm:          var(--color-amber-600); /* CTA highlights, USP labels */
-  --color-accent-warm-soft:     var(--color-amber-50);  /* warm tint backgrounds */
-
-  --color-text-primary:         var(--color-gray-900);
-  --color-text-secondary:       var(--color-gray-700);
-  --color-text-muted:           var(--color-gray-500);
-  --color-text-inverse:         var(--color-gray-50);
-
-  --color-surface:              oklch(100% 0 0);        /* white */
-  --color-surface-elevated:     var(--color-gray-50);
-  --color-surface-alt:          var(--color-gray-100);
-  --color-border:               var(--color-gray-200);
-  --color-border-strong:        var(--color-gray-300);
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
 
   /* ============================================================
-   * 3. Type scale (1.25 ratio "major third", anchored at 1rem)
-   *    Maps cleanly to existing module.css usages.
-   * ============================================================ */
-
-  --font-size-xs:   0.75rem;    /* 12px — tags, captions */
-  --font-size-sm:   0.875rem;   /* 14px — body small */
-  --font-size-base: 1rem;       /* 16px — body */
-  --font-size-md:   1.125rem;   /* 18px — emphasized body */
-  --font-size-lg:   1.25rem;    /* 20px — sub-headings */
-  --font-size-xl:   1.5rem;     /* 24px — H3 / card title */
-  --font-size-2xl:  1.875rem;   /* 30px — H2 / section title */
-  --font-size-3xl:  2.25rem;    /* 36px — H1 medium */
-  --font-size-4xl:  3rem;       /* 48px — Hero H1 large */
-
-  --line-height-tight:  1.25;
-  --line-height-normal: 1.5;
-  --line-height-loose:  1.75;
-
-  --font-weight-regular: 400;
-  --font-weight-medium:  500;
-  --font-weight-semibold: 600;
-  --font-weight-bold:    700;
-
-  /* ============================================================
-   * 4. Spacing scale (4px base, geometric progression for large)
-   * ============================================================ */
-
-  --space-1:  0.25rem;   /* 4 */
-  --space-2:  0.5rem;    /* 8 */
-  --space-3:  0.75rem;   /* 12 */
-  --space-4:  1rem;      /* 16 */
-  --space-5:  1.25rem;   /* 20 */
-  --space-6:  1.5rem;    /* 24 */
-  --space-8:  2rem;      /* 32 */
-  --space-10: 2.5rem;    /* 40 */
-  --space-12: 3rem;      /* 48 */
-  --space-16: 4rem;      /* 64 */
-
-  /* ============================================================
-   * 5. Radius scale
+   * 圓角 radius
    * ============================================================ */
 
   --radius-sm:   4px;
@@ -124,7 +119,7 @@
   --radius-pill: 999px;
 
   /* ============================================================
-   * 6. Shadow scale (oklch-friendly alpha)
+   * 陰影
    * ============================================================ */
 
   --shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.06);
@@ -133,26 +128,25 @@
 }
 
 /* ============================================================
- * Dark mode overrides for semantic tokens
+ * Dark mode 對應
  * ============================================================ */
 
 [data-theme='dark'] {
-  --color-brand:            var(--color-green-300);
-  --color-brand-light:      var(--color-green-800);
-  --color-brand-dark:       var(--color-green-100);
-  --color-accent-warm:      var(--color-amber-500);
-  --color-accent-warm-soft: oklch(20% 0.05 60);
+  --color-text-primary:   oklch(98% 0 0);
+  --color-text-secondary: oklch(80% 0 0);
+  --color-text-muted:     oklch(60% 0 0);
+  --color-text-inverse:   oklch(15% 0 0);
 
-  --color-text-primary:     var(--color-gray-50);
-  --color-text-secondary:   var(--color-gray-300);
-  --color-text-muted:       var(--color-gray-400);
-  --color-text-inverse:     var(--color-gray-900);
+  --color-brand:          oklch(75% 0.16 65);   /* 暗模式用較亮的暖色 */
+  --color-brand-light:    oklch(28% 0.06 60);
+  --color-accent-warm:    var(--color-brand);
+  --color-accent-warm-soft: var(--color-brand-light);
 
-  --color-surface:          oklch(17% 0 0);    /* near-black neutral */
+  --color-surface:          oklch(17% 0 0);
   --color-surface-elevated: oklch(21% 0 0);
   --color-surface-alt:      oklch(24% 0 0);
-  --color-border:           var(--color-gray-800);
-  --color-border-strong:    var(--color-gray-700);
+  --color-border:           oklch(28% 0 0);
+  --color-border-strong:    oklch(35% 0 0);
 
   --shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.30);
   --shadow-md: 0 2px 8px oklch(0% 0 0 / 0.35);
