@@ -33,3 +33,12 @@ yarn-error.log*
 # 👉 Slack Bot
 slack-bot/.env
 slack-bot/node_modules/
+
+# 🔒 PII / 敏感資料：召集人身分證 + 其他原始會員素材
+# 絕不可 commit。所有 ref/ 內容只能在本機作為內容生產來源使用。
+/ref
+ref/
+**/身份證/
+**/身分證/
+**/*身份證*
+**/*身分證*
