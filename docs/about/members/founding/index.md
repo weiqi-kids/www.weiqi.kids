@@ -1,56 +1,21 @@
 ---
 sidebar_position: 0
 title: 創始會員
+description: 37 位來自律師、會計、ISO 顧問、中醫、整合醫學、整復、健康教育、行銷、活動企劃、音樂、職業棋士等領域的跨域夥伴。
 ---
+
+import MembersDirectory from '@site/src/components/MembersDirectory';
 
 # 37 位夥伴
 
-台灣好棋寶寶協會由 37 位跨域夥伴共同推動「AI 整合 × 領域專業」的開源公益專案。每位夥伴的個人介紹頁由本人撰寫或審閱通過。
+台灣好棋寶寶協會由 **37 位跨域夥伴**共同推動「AI 整合 × 領域專業」的開源公益專案。本階段不區分職務、不分群組，每位夥伴並列展示；個別介紹頁由本人撰寫或審閱通過。
 
-## 全部 37 位夥伴
+<MembersDirectory />
 
-| 姓名 | 關鍵五字 | 行業 ／ 公司 |
-|------|---------|------|
-| [張饒輝 Lightman](./lightman-chang) | 跨境工程師 | 台灣好棋寶寶協會 理事長／藥提醒科技／圍棋人科技 |
-| [詹益萬](./yi-wan-chan) | 萬是弱電通 | 誠華科技 ／ 總機監視器 |
-| [蕭愛霖](./ai-lin-hsiao) | 圍棋專業召集人 | 台灣職業女棋士 ／ 二段 |
-| [蕭誠緯 Web](./cheng-wei-hsiao) | 醫友萬事通 | 中華民國上醫預防醫學發展協會 |
-| [夏大峯](./da-feng-hsia) | Line@ 許願池 | 必盈科技 ／ Line@ 設計 |
-| [王瀞祺](./jing-chi-wang) | — | 資料補充中 |
-| [林昊德](./hao-de-lin) | — | 資料補充中 |
-| [蔡博仁](./bo-jen-tsai) | — | 資料補充中 |
-| [廖宜鋒 James](./james-liao) | 財會宜開封 | 德新聯合會計師事務所 |
-| [陳阿美](./a-mei-chen) | 保單幸福美 | 國泰人壽 ／ 保險業 |
-| [謝一肇 Chuck](./yi-chao-hsieh) | 網店一把罩 | 捷盛數位行銷 |
-| [李郁萱 Dawn](./dawn-lee) | 企業好家教 | 鉑銳生技 ／ ISO 顧問 |
-| [李尚澔 Gavin](./shang-hao-lee) | 隨時喝庄咖 | 隨食旅人食療藝文餐廳 |
-| [蔡昭雪](./chao-hsueh-tsai) | — | 資料補充中 |
-| [吳軒儒 Steven](./hsuan-ju-wu) | 影像恫凍動 | 一田視覺整合 ／ 短影音 |
-| [郭尚諺 Ian](./ian-kuo) | 命運的吉他 | 加一吉他 ／ 商業音樂 |
-| [黃子彥 Jacob](./zi-yan-huang) | 漢方保健品 | 上一生物醫學 ／ 漢方研發 |
-| [周敬彥 Leon](./jing-yan-chou) | 全天銷售員 | 揚京快客 ／ 網頁設計 SEO |
-| [姜封豪](./feng-hao-chiang) | 運動通健康 | 健康領域聯合診所 |
-| [周思傑 Aaron](./sih-jie-chou) | 法律不糾結 | 眾城國際法律事務所 |
-| [鄭博陽 老 K](./bo-yang-cheng) | 猛男整脊師 | 鄭骨館體雕中心 |
-| [吳芳圳 Rich](./fang-chuan-wu) | 高資產傳承 | 永達保險 ／ 財稅資產規劃 |
-| [陳秉辰 Eric](./bing-chen-chen) | 紅點設計師 | 辰光事業 ／ 產品設計 |
-| [邱尚偉 Wei](./wei-chiu) | — | 藍海策略營銷 ／ 活動企劃 |
-| [吳宜芳 Eva](./yi-fang-wu) | 海上的納美 | 聯凱國際運通 ／ 國際運輸 |
-| [黃英屏](./ying-ping-huang) | — | 資料補充中 |
-| [顏怡璇 Sarah](./yi-hsuan-yen) | 茶禮藏不住 | 無藏茗茶 ／ 客製化茶禮 |
-| [羅揚](./yang-luo) | 高濃度魚油 | 樂地滋生醫 ／ 保健食品 |
-| [陳于玲 Aling](./yu-ling-chen) | 大公仔景點 | 模鐵鹿立體布景 |
-| [林新為](./xin-wei-lin) | 圍棋專業召集人 | 台灣職業棋士 ／ 四段（2025 中環碁聖賽亞軍）|
-| [潘天健](./tien-chien-pan) | 三高變高三 | 沁安診所 ／ 整合醫學 |
-| [趙珍](./zhen-zhao) | — | 深圳五味中醫館 ／ 中醫臨床 |
-| [亞何](./ya-he) | — | 網站開發 |
-| [謝依純](./yi-chun-hsieh) | — | 配音 |
-| [吳荻](./wu-di) | — | 插畫 |
-| [敬達](./jing-da) | — | WordPress 開發 |
-| [毛子](./mao-zi) | — | 插畫 |
+---
 
 ## 關於資料補充
 
 - **「關鍵五字」** 為 BNI 大台中榮耀分會的副標標語（部分夥伴提供）
 - **「資料補充中」** 表示尚未取得本人提供或網路公開可查的個人介紹資料
-- 如您是夥伴本人並希望更新介紹，歡迎來信 [lightman.chang@gmail.com](mailto:lightman.chang@gmail.com?subject=%E3%80%90%E5%A4%A5%E4%BC%B4%E4%BB%8B%E7%B4%B9%E6%9B%B4%E6%96%B0%E3%80%91)
+- 如您是夥伴本人並希望更新介紹，歡迎來信 [lightman.chang@gmail.com](mailto:lightman.chang@gmail.com?subject=%E3%80%90%E5%A4%A5%E4%BC%B4%E4%BB%8B%E7%B4%B9%E6%9B%B4%E6%96%B0%E3%80%91)。

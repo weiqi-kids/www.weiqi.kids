@@ -1,24 +1,19 @@
 ---
 sidebar_position: 0
 title: 創始會員
+description: 37 位嚟自律師、會計、ISO 顧問、中醫、整合醫學、整復、健康教育、行銷、活動企劃、音樂、職業棋士等領域嘅跨域夥伴。
 ---
 
-# 創始會員
+import MembersDirectory from '@site/src/components/MembersDirectory';
 
-台灣好棋寶寶協會由一群熱愛圍棋、來自各行各業的專業人士共同創立。他們帶著對圍棋文化的熱情與各自領域的專業，攜手推動圍棋在台灣的發展。
+# 37 位夥伴
 
-## 理事長
+台灣好棋寶寶協會由 **37 位跨域夥伴**共同推動「AI 整合 × 領域專業」的開源公益專案。本階段不區分職務、不分群組，每位夥伴並列展示。
 
-- [張饒輝](./lightman-chang) - 台灣好棋寶寶協會
+<MembersDirectory />
 
-## 創始會員
+---
 
-| 姓名 | 專業領域 | 公司/機構 |
-|------|----------|-----------|
-| [郁萱](./dawn-lee) | ISO 顧問 | 鉑銳生技有限公司 |
-| [周思傑](./sih-jie-chou) | 法律 | 眾城國際法律事務所 |
-| [周敬彥](./jing-yan-chou) | 網絡行銷 | 揚京快客行銷有限公司 |
-| [邱尚偉](./wei-chiu) | 活動策劃 | 藍海策略營銷管理顧問 |
-| [郭尚諺](./ian-kuo) | 音樂創作 | 加一吉他 |
-| [鄭博陽](./bo-yang-cheng) | 整復健身 | 鄭骨館體雕中心 |
-| [潘天健](./tien-chien-pan) | 整合醫學 | 沁安整合醫學診所 |
+## 關於資料補充
+
+「關鍵五字」 為 BNI 大台中榮耀分會嘅副標標語。「資料補充中」 表示重未取得本人提供或網絡公開可查嘅個人介紹資料。 [lightman.chang@gmail.com](mailto:lightman.chang@gmail.com?subject=Member-Profile-Update)

@@ -1,24 +1,19 @@
 ---
 sidebar_position: 0
-title: Miembros Fundadores
+title: Miembros fundadores
+description: 37 socios de derecho, contabilidad, consultoría ISO, medicina china, medicina integrativa, rehabilitación, educación en salud, marketing, planificación de eventos, música, Go profesional, etc.
 ---
 
-# Miembros Fundadores
+import MembersDirectory from '@site/src/components/MembersDirectory';
 
-La Asociación Taiwan Good Go Baby fue fundada por un grupo de profesionales de diversos campos que comparten su amor por el Go. Aportan su pasión por la cultura del Go y su experiencia profesional para promover el desarrollo del Go en Taiwán.
+# 37 socios
 
-## Presidente
+La Asociación Taiwanesa Good Go Baby está cofundada por **37 socios interdisciplinarios** que impulsan proyectos de interés público open-source bajo el modelo «integrador IA × experto de dominio». Esta página lista a todos los socios sin categorización.
 
-- [Zhang Raohui](./lightman-chang) - Taiwan Good Go Baby Association
+<MembersDirectory />
 
-## Miembros Fundadores
+---
 
-| Nombre | Campo | Organización |
-|--------|-------|--------------|
-| [Yu Xuan](./dawn-lee) | Consultoría ISO | Beright Biotech Co., Ltd. |
-| [Zhou Sijie](./sih-jie-chou) | Legal | Zhongcheng International Law Firm |
-| [Zhou Jingyan](./jing-yan-chou) | Marketing Digital | Yangking Quick Marketing |
-| [Qiu Shangwei](./wei-chiu) | Planificación de Eventos | Blue Ocean Strategy Marketing |
-| [Guo Shangyan](./ian-kuo) | Producción Musical | Plus One Guitar |
-| [Zheng Boyang](./bo-yang-cheng) | Osteopatía y Fitness | Zheng Bone Body Sculpting |
-| [Pan Tianjian](./tien-chien-pan) | Medicina Integrativa | Qinan Integrative Medicine Clinic |
+## Sobre los datos faltantes
+
+El «lema de cinco caracteres» proviene del capítulo BNI Gran Taichung Glory. «Datos pendientes» significa que aún no hemos recibido el perfil del socio. [lightman.chang@gmail.com](mailto:lightman.chang@gmail.com?subject=Member-Profile-Update)

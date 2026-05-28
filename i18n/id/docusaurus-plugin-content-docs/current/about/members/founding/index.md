@@ -1,24 +1,19 @@
 ---
 sidebar_position: 0
 title: Anggota Pendiri
+description: 37 mitra dari hukum, akuntansi, konsultasi ISO, pengobatan Tiongkok, kedokteran integratif, rehabilitasi, edukasi kesehatan, pemasaran, event planning, musik, Go profesional, dll.
 ---
 
-# Anggota Pendiri
+import MembersDirectory from '@site/src/components/MembersDirectory';
 
-Asosiasi Taiwan Good Go Baby didirikan oleh sekelompok profesional dari berbagai bidang yang berbagi kecintaan terhadap Go.
+# 37 mitra
 
-## Ketua
+Asosiasi Good Go Baby Taiwan dibentuk oleh **37 mitra lintas-domain** yang mendorong proyek sumber terbuka untuk kepentingan publik dengan model «integrator AI × pakar domain». Halaman ini mencantumkan semua mitra tanpa pengelompokan.
 
-- [Zhang Raohui](./lightman-chang) - Taiwan Good Go Baby Association
+<MembersDirectory />
 
-## Anggota Pendiri
+---
 
-| Nama | Bidang | Organisasi |
-|------|--------|------------|
-| [Yu Xuan](./dawn-lee) | Konsultan ISO | Beright Biotech |
-| [Zhou Sijie](./sih-jie-chou) | Hukum | Zhongcheng Law Firm |
-| [Zhou Jingyan](./jing-yan-chou) | Pemasaran Digital | Yangking Marketing |
-| [Qiu Shangwei](./wei-chiu) | Acara | Blue Ocean Strategy |
-| [Guo Shangyan](./ian-kuo) | Musik | Plus One Guitar |
-| [Zheng Boyang](./bo-yang-cheng) | Osteopati | Zheng Bone Center |
-| [Pan Tianjian](./tien-chien-pan) | Kedokteran Integratif | Qinan Clinic |
+## Tentang data yang belum lengkap
+
+«Slogan lima karakter» berasal dari cabang BNI Greater Taichung Glory. «Data dalam pelengkapan» berarti kami belum menerima profil dari mitra. [lightman.chang@gmail.com](mailto:lightman.chang@gmail.com?subject=Member-Profile-Update)

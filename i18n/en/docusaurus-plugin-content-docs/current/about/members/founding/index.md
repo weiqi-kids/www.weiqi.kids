@@ -1,27 +1,19 @@
 ---
 sidebar_position: 0
 title: Founding Members
+description: 37 partners from law, accounting, ISO consulting, TCM, integrative medicine, physical rehab, health education, marketing, event planning, music, professional Go and more.
 ---
 
-# Founding Members
+import MembersDirectory from '@site/src/components/MembersDirectory';
 
-The Taiwan Good Go Baby Association was founded by a group of passionate Go enthusiasts from diverse professional backgrounds. Together, they work to promote Go culture across Taiwan and beyond.
+# 37 Partners
 
-## Chairman
+The Taiwan Good Go Baby Association is co-founded by **37 cross-domain partners** advancing open-source public-interest projects under the model «AI integrator × domain expert». This page lists all partners side-by-side without categorization.
 
-- [Lightman Chang](./lightman-chang) - Taiwan Good Go Baby Association
+<MembersDirectory />
 
-## Founding Members
+---
 
-| Name | Expertise | Organization |
-|------|-----------|--------------|
-| [Dawn Lee](./dawn-lee) | ISO Consulting | Beright Biotech |
-| [Sih-Jie Chou](./sih-jie-chou) | Law | Chungcheng International Law Firm |
-| [Jing-Yan Chou](./jing-yan-chou) | Digital Marketing | Yang Jing Marketing |
-| [Wei Chiu](./wei-chiu) | Event Planning | Blue Ocean Strategy Consulting |
-| [Ian Kuo](./ian-kuo) | Music Production | Plus One Guitar |
-| [Bo-Yang Cheng](./bo-yang-cheng) | Physical Therapy | Cheng Osteopathic Center |
-| [Tien-Chien Pan](./tien-chien-pan) | Integrative Medicine | Chin-An Clinic |
-| [Yang Luo](./yang-luo) | Health Education | Supplement R&D & Education |
-| [Zi-Yan Huang](./zi-yan-huang) | TCM Wellness | GCM Preventive Medicine Association |
-| [Zhen Zhao](./zhen-zhao) | TCM Clinical Practice | Shenzhen Wuwei TCM Clinic |
+## About data completeness
+
+The «key-5-character tagline» is from the BNI Greater Taichung Glory chapter. «Data pending» means we have not yet received the partner's personal profile. If you are the partner and wish to update your profile, please email us. [lightman.chang@gmail.com](mailto:lightman.chang@gmail.com?subject=Member-Profile-Update)
