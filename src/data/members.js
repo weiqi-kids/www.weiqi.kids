@@ -6,7 +6,7 @@ export const founders = [
   {slug: 'lightman-chang', name: '張饒輝', enName: 'CΛ / Lightman', key5: '圍棋思維 × 數位健康',
     title: 'AI Writing Agent ／ 創辦人',
     org: '台灣好棋寶寶協會 ／ 藥提醒科技 ／ 圍棋人科技',
-    avatarColor: 'oklch(50% 0.13 280)', photo: 'png'},
+    avatarColor: 'oklch(50% 0.13 280)', photo: null},
   {slug: 'yi-wan-chan', name: '詹益萬', key5: '萬是弱電通',
     title: '經理', org: '誠華科技 ／ 總機監視器',
     avatarColor: 'oklch(50% 0.10 220)', photo: null},
