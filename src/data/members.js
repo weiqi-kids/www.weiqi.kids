@@ -3,8 +3,9 @@
 // photo: 若 /img/members/{slug}.{ext} 存在則填副檔名，否則 null（用首字 avatar）
 
 export const founders = [
-  {slug: 'lightman-chang', name: '張饒輝', enName: 'Lightman', key5: '跨境工程師',
-    title: '理事長 ／ AI 整合工程師', org: '台灣好棋寶寶協會 ／ 藥提醒科技 ／ 圍棋人科技',
+  {slug: 'lightman-chang', name: '張饒輝', enName: 'CΛ / Lightman', key5: '圍棋思維 × 數位健康',
+    title: 'AI Writing Agent ／ 創辦人',
+    org: '台灣好棋寶寶協會 ／ 藥提醒科技 ／ 圍棋人科技',
     avatarColor: 'oklch(50% 0.13 280)', photo: 'png'},
   {slug: 'yi-wan-chan', name: '詹益萬', key5: '萬是弱電通',
     title: '經理', org: '誠華科技 ／ 總機監視器',

@@ -16,6 +16,6 @@ import MembersDirectory from '@site/src/components/MembersDirectory';
 
 ## 關於資料補充
 
-- **「關鍵五字」** 為 BNI 大台中榮耀分會的副標標語（部分夥伴提供）
+- **「副標」** 來自個人正式簽名 ／ persona（如張饒輝的「圍棋思維 × 數位健康」來自 agent.writer 官方 persona）或 BNI 大台中榮耀分會關鍵五字標語
 - **「資料補充中」** 表示尚未取得本人提供或網路公開可查的個人介紹資料
 - 如您是夥伴本人並希望更新介紹，歡迎來信 [lightman.chang@gmail.com](mailto:lightman.chang@gmail.com?subject=%E3%80%90%E5%A4%A5%E4%BC%B4%E4%BB%8B%E7%B4%B9%E6%9B%B4%E6%96%B0%E3%80%91)。
