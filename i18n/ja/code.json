@@ -8,7 +8,7 @@
     "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "11 名のクロスドメインパートナー · 41+ オープンソース AI ツール · 完全無料 · 毎日自動更新",
+    "message": "37 名のクロスドメインパートナー · 41+ オープンソース AI ツール · 完全無料 · 毎日自動更新",
     "description": "Hero stats line"
   },
   "homepage.cta.proposal": { "message": "コラボを提案" },
@@ -41,7 +41,7 @@
     "message": "AlphaGo 進化の整理 →"
   },
   "homepage.members.title": {
-    "message": "異分野からの 11 名のパートナー"
+    "message": "異分野からの 37 名のパートナー"
   },
   "homepage.members.desc": {
     "message": "弁護士、会計士、ISO コンサル、漢方、統合医療、健康教育、整復、マーケティング、イベント企画、音楽創作、AI 工学。各メンバーが「AI 統合者 × 領域専門家」モデルの体現者。"
@@ -83,7 +83,7 @@
     "message": "ホーム"
   },
   "homepage.meta.description": {
-    "message": "弁護士、ISO、技術、医療など各分野の 11 名のパートナーが、産業知見を 41+ の完全無料・オープンソース AI ツールに。クロスドメイン協力歓迎。"
+    "message": "弁護士、ISO、技術、医療、整復、マーケティング、音楽など各分野の 37 名のパートナーが、産業知見を 41+ の完全無料・オープンソース AI ツールに。クロスドメイン協力歓迎。"
   },
   "theme.ErrorPageContent.title": {
     "message": "エラーが発生しました",

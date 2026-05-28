@@ -1,6 +1,9 @@
 ---
-sidebar_position: 11
+sidebar_position: 32
 title: 趙珍
+industry_tags: [中醫臨床, 婦科, 針藥結合]
+ai_tools: []
+contributing_role: 未來合作意向
 ---
 
 # 趙珍

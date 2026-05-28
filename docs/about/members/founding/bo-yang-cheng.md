@@ -1,6 +1,9 @@
 ---
-sidebar_position: 7
+sidebar_position: 21
 title: 鄭博陽
+industry_tags: [整復, 健身, 體態調整]
+ai_tools: []
+contributing_role: 未來合作意向
 ---
 
 # 鄭博陽

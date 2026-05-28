@@ -1,6 +1,9 @@
 ---
-sidebar_position: 8
+sidebar_position: 31
 title: 潘天健
+industry_tags: [整合醫學, 中西醫, 抗衰老]
+ai_tools: []
+contributing_role: 未來合作意向
 ---
 
 # 潘天健

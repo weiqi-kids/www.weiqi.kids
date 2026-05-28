@@ -1,6 +1,9 @@
 ---
-sidebar_position: 5
+sidebar_position: 24
 title: 邱尚偉
+industry_tags: [活動企劃, 品牌行銷, 公益活動]
+ai_tools: []
+contributing_role: 未來合作意向
 ---
 
 # 邱尚偉 Wei

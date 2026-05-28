@@ -1,6 +1,9 @@
 ---
-sidebar_position: 9
+sidebar_position: 28
 title: 羅揚
+industry_tags: [健康教育, 保健食品, 營養補充]
+ai_tools: []
+contributing_role: 未來合作意向
 ---
 
 # 羅揚

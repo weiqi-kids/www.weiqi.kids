@@ -1,6 +1,9 @@
 ---
-sidebar_position: 10
+sidebar_position: 17
 title: 黃子彥
+industry_tags: [中醫養生, 預防醫學, 健康衛教]
+ai_tools: [huatuo-ai, agent-writer]
+contributing_role: 領域知識主筆
 ---
 
 # 黃子彥
