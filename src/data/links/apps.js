@@ -21,6 +21,7 @@ export const appCategories = [
 export const appLinks = [
   {
     id: 'ecommerce',
+    industry_tag: 'business-intel',
     category: 'consumer',
     titleKey: 'homepage.links.ai.ecommerce.title',
     titleDefault: '電商產品研究',
@@ -31,6 +32,7 @@ export const appLinks = [
   },
   {
     id: 'supplement',
+    industry_tag: 'health',
     category: 'consumer',
     titleKey: 'homepage.links.ai.supplement.title',
     titleDefault: '保健食品產品情報',
@@ -41,6 +43,7 @@ export const appLinks = [
   },
   {
     id: 'education',
+    industry_tag: 'education',
     category: 'consumer',
     titleKey: 'homepage.links.ai.education.title',
     titleDefault: '學生學習地圖',
@@ -51,6 +54,7 @@ export const appLinks = [
   },
   {
     id: 'job',
+    industry_tag: 'education',
     category: 'consumer',
     titleKey: 'homepage.links.ai.job.title',
     titleDefault: '求職技能需求觀測站',
@@ -61,6 +65,7 @@ export const appLinks = [
   },
   {
     id: 'security',
+    industry_tag: 'security',
     category: 'monitoring',
     titleKey: 'homepage.links.ai.security.title',
     titleDefault: '資安威脅情報中心',
@@ -71,6 +76,7 @@ export const appLinks = [
   },
   {
     id: 'health',
+    industry_tag: 'health',
     category: 'monitoring',
     titleKey: 'homepage.links.ai.health.title',
     titleDefault: 'EpiAlert 疫情快訊',
@@ -81,6 +87,7 @@ export const appLinks = [
   },
   {
     id: 'law',
+    industry_tag: 'finance-law',
     category: 'monitoring',
     titleKey: 'homepage.links.ai.law.title',
     titleDefault: '全球框架法規變動',
@@ -91,6 +98,7 @@ export const appLinks = [
   },
   {
     id: 'trade',
+    industry_tag: 'business-intel',
     category: 'monitoring',
     titleKey: 'homepage.links.ai.trade.title',
     titleDefault: '全球貿易情報分析',
@@ -101,6 +109,7 @@ export const appLinks = [
   },
   {
     id: 'listening',
+    industry_tag: 'business-intel',
     category: 'monitoring',
     titleKey: 'homepage.links.ai.listening.title',
     titleDefault: '聲量監測',
@@ -111,6 +120,7 @@ export const appLinks = [
   },
   {
     id: 'policy',
+    industry_tag: 'finance-law',
     category: 'monitoring',
     titleKey: 'homepage.links.ai.policy.title',
     titleDefault: '政策承諾追蹤',

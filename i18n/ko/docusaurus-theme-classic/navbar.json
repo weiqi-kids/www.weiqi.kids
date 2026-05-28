@@ -1,16 +1,47 @@
 {
-  "title": { "message": "바둑 키즈" },
-  "logo.alt": { "message": "호기보보협회 로고" },
-  "item.label.夥伴": { "message": "파트너" },
-  "item.label.認識夥伴": { "message": "파트너 만나기" },
-  "item.label.關於協會": { "message": "협회 소개" },
-  "item.label.合作提案": { "message": "협력 제안" },
-  "item.label.AI 工具": { "message": "AI 도구" },
-  "item.label.論文": { "message": "논문" },
-  "item.label.產業情報": { "message": "산업 정보" },
-  "item.label.圍棋資源": { "message": "바둑 리소스" },
-  "item.label.學圍棋": { "message": "바둑 배우기" },
-  "item.label.AlphaGo": { "message": "AlphaGo" },
-  "item.label.動畫教室": { "message": "애니메이션 교실" },
-  "item.label.技術文件": { "message": "기술 문서" }
+  "title": {
+    "message": "바둑 키즈"
+  },
+  "logo.alt": {
+    "message": "호기보보협회 로고"
+  },
+  "item.label.夥伴": {
+    "message": "파트너"
+  },
+  "item.label.認識夥伴": {
+    "message": "파트너 만나기"
+  },
+  "item.label.關於協會": {
+    "message": "협회 소개"
+  },
+  "item.label.合作提案": {
+    "message": "협력 제안"
+  },
+  "item.label.AI 工具": {
+    "message": "AI 도구"
+  },
+  "item.label.論文": {
+    "message": "논문"
+  },
+  "item.label.產業情報": {
+    "message": "산업 정보"
+  },
+  "item.label.圍棋資源": {
+    "message": "바둑 리소스"
+  },
+  "item.label.學圍棋": {
+    "message": "바둑 배우기"
+  },
+  "item.label.AlphaGo": {
+    "message": "AlphaGo"
+  },
+  "item.label.動畫教室": {
+    "message": "애니메이션 교실"
+  },
+  "item.label.技術文件": {
+    "message": "기술 문서"
+  },
+  "item.label.年度成果報告": {
+    "message": "연간 성과 보고서"
+  }
 }

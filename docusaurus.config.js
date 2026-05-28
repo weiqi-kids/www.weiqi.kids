@@ -217,6 +217,7 @@ const config = {
             position: 'left',
             items: [
               { to: '/docs/about/members/founding/', label: '認識夥伴' },
+              { to: '/impact-report/2026/', label: '年度成果報告' },
               { to: '/docs/about', label: '關於協會' },
               { href: 'mailto:lightman.chang@gmail.com?subject=%E3%80%90%E5%90%88%E4%BD%9C%E6%8F%90%E6%A1%88%E3%80%91', label: '合作提案' },
             ],

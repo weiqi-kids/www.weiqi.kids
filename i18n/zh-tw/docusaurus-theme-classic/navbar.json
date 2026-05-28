@@ -54,5 +54,8 @@
   "item.label.技術文件": {
     "message": "技術文件",
     "description": "Navbar sub-item 技術文件"
+  },
+  "item.label.年度成果報告": {
+    "message": "年度成果報告"
   }
 }

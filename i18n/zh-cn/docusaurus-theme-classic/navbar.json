@@ -1,16 +1,47 @@
 {
-  "title": { "message": "好棋宝宝" },
-  "logo.alt": { "message": "好棋宝宝协会标志" },
-  "item.label.夥伴": { "message": "伙伴" },
-  "item.label.認識夥伴": { "message": "认识伙伴" },
-  "item.label.關於協會": { "message": "关于协会" },
-  "item.label.合作提案": { "message": "合作提案" },
-  "item.label.AI 工具": { "message": "AI 工具" },
-  "item.label.論文": { "message": "论文" },
-  "item.label.產業情報": { "message": "产业情报" },
-  "item.label.圍棋資源": { "message": "围棋资源" },
-  "item.label.學圍棋": { "message": "学围棋" },
-  "item.label.AlphaGo": { "message": "AlphaGo" },
-  "item.label.動畫教室": { "message": "动画教室" },
-  "item.label.技術文件": { "message": "技术文件" }
+  "title": {
+    "message": "好棋宝宝"
+  },
+  "logo.alt": {
+    "message": "好棋宝宝协会标志"
+  },
+  "item.label.夥伴": {
+    "message": "伙伴"
+  },
+  "item.label.認識夥伴": {
+    "message": "认识伙伴"
+  },
+  "item.label.關於協會": {
+    "message": "关于协会"
+  },
+  "item.label.合作提案": {
+    "message": "合作提案"
+  },
+  "item.label.AI 工具": {
+    "message": "AI 工具"
+  },
+  "item.label.論文": {
+    "message": "论文"
+  },
+  "item.label.產業情報": {
+    "message": "产业情报"
+  },
+  "item.label.圍棋資源": {
+    "message": "围棋资源"
+  },
+  "item.label.學圍棋": {
+    "message": "学围棋"
+  },
+  "item.label.AlphaGo": {
+    "message": "AlphaGo"
+  },
+  "item.label.動畫教室": {
+    "message": "动画教室"
+  },
+  "item.label.技術文件": {
+    "message": "技术文件"
+  },
+  "item.label.年度成果報告": {
+    "message": "年度成果报告"
+  }
 }

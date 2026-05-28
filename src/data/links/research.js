@@ -35,6 +35,7 @@ export const researchCategories = [
 export const researchPapers = [
   {
     id: 'go-second-best',
+    industry_tag: 'go',
     repo: 'go-second-best-move-formula',
     category: 'go',
     titleKey: 'research.paper.go-second-best.title',
@@ -47,6 +48,7 @@ export const researchPapers = [
   },
   {
     id: 'go-yose',
+    industry_tag: 'go',
     repo: 'go-yose-optimal-move-computation',
     category: 'go',
     titleKey: 'research.paper.go-yose.title',
@@ -59,6 +61,7 @@ export const researchPapers = [
   },
   {
     id: 'sgd-convergence',
+    industry_tag: 'ai-math',
     repo: 'sgd-convergence-theory',
     category: 'ml-theory',
     titleKey: 'research.paper.sgd-convergence.title',
@@ -71,6 +74,7 @@ export const researchPapers = [
   },
   {
     id: 'deep-generalize',
+    industry_tag: 'ai-math',
     repo: 'why-deep-networks-generalize',
     category: 'ml-theory',
     titleKey: 'research.paper.deep-generalize.title',
@@ -83,6 +87,7 @@ export const researchPapers = [
   },
   {
     id: 'ai-alignment',
+    industry_tag: 'ai-math',
     repo: 'ai-alignment-guarantees',
     category: 'ai-safety',
     titleKey: 'research.paper.ai-alignment.title',
@@ -95,6 +100,7 @@ export const researchPapers = [
   },
   {
     id: 'collatz',
+    industry_tag: 'ai-math',
     repo: 'collatz-research-report',
     category: 'mathematics',
     titleKey: 'research.paper.collatz.title',
@@ -107,6 +113,7 @@ export const researchPapers = [
   },
   {
     id: 'four-color',
+    industry_tag: 'ai-math',
     repo: 'four-color-structural-proof',
     category: 'mathematics',
     titleKey: 'research.paper.four-color.title',
@@ -119,6 +126,7 @@ export const researchPapers = [
   },
   {
     id: 'optimal-golomb-ruler',
+    industry_tag: 'ai-math',
     repo: 'optimal-golomb-ruler',
     category: 'mathematics',
     titleKey: 'research.paper.optimal-golomb-ruler.title',

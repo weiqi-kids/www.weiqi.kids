@@ -1,16 +1,47 @@
 {
-  "title": { "message": "囲碁キッズ" },
-  "logo.alt": { "message": "好棋ベビー協会ロゴ" },
-  "item.label.夥伴": { "message": "パートナー" },
-  "item.label.認識夥伴": { "message": "パートナー紹介" },
-  "item.label.關於協會": { "message": "協会について" },
-  "item.label.合作提案": { "message": "コラボを提案" },
-  "item.label.AI 工具": { "message": "AI ツール" },
-  "item.label.論文": { "message": "論文" },
-  "item.label.產業情報": { "message": "業界情報" },
-  "item.label.圍棋資源": { "message": "囲碁リソース" },
-  "item.label.學圍棋": { "message": "囲碁を学ぶ" },
-  "item.label.AlphaGo": { "message": "AlphaGo" },
-  "item.label.動畫教室": { "message": "アニメ教室" },
-  "item.label.技術文件": { "message": "技術ドキュメント" }
+  "title": {
+    "message": "囲碁キッズ"
+  },
+  "logo.alt": {
+    "message": "好棋ベビー協会ロゴ"
+  },
+  "item.label.夥伴": {
+    "message": "パートナー"
+  },
+  "item.label.認識夥伴": {
+    "message": "パートナー紹介"
+  },
+  "item.label.關於協會": {
+    "message": "協会について"
+  },
+  "item.label.合作提案": {
+    "message": "コラボを提案"
+  },
+  "item.label.AI 工具": {
+    "message": "AI ツール"
+  },
+  "item.label.論文": {
+    "message": "論文"
+  },
+  "item.label.產業情報": {
+    "message": "業界情報"
+  },
+  "item.label.圍棋資源": {
+    "message": "囲碁リソース"
+  },
+  "item.label.學圍棋": {
+    "message": "囲碁を学ぶ"
+  },
+  "item.label.AlphaGo": {
+    "message": "AlphaGo"
+  },
+  "item.label.動畫教室": {
+    "message": "アニメ教室"
+  },
+  "item.label.技術文件": {
+    "message": "技術ドキュメント"
+  },
+  "item.label.年度成果報告": {
+    "message": "年次成果レポート"
+  }
 }

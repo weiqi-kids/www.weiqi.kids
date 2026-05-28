@@ -1,16 +1,47 @@
 {
-  "title": { "message": "Weiqi.Kids" },
-  "logo.alt": { "message": "Logo de la Asociación Weiqi Kids" },
-  "item.label.夥伴": { "message": "Socios" },
-  "item.label.認識夥伴": { "message": "Conoce a los socios" },
-  "item.label.關於協會": { "message": "Sobre la asociación" },
-  "item.label.合作提案": { "message": "Proponer" },
-  "item.label.AI 工具": { "message": "Herramientas IA" },
-  "item.label.論文": { "message": "Investigación" },
-  "item.label.產業情報": { "message": "Inteligencia industrial" },
-  "item.label.圍棋資源": { "message": "Recursos de Go" },
-  "item.label.學圍棋": { "message": "Aprender Go" },
-  "item.label.AlphaGo": { "message": "AlphaGo" },
-  "item.label.動畫教室": { "message": "Animaciones" },
-  "item.label.技術文件": { "message": "Documentación técnica" }
+  "title": {
+    "message": "Weiqi.Kids"
+  },
+  "logo.alt": {
+    "message": "Logo de la Asociación Weiqi Kids"
+  },
+  "item.label.夥伴": {
+    "message": "Socios"
+  },
+  "item.label.認識夥伴": {
+    "message": "Conoce a los socios"
+  },
+  "item.label.關於協會": {
+    "message": "Sobre la asociación"
+  },
+  "item.label.合作提案": {
+    "message": "Proponer"
+  },
+  "item.label.AI 工具": {
+    "message": "Herramientas IA"
+  },
+  "item.label.論文": {
+    "message": "Investigación"
+  },
+  "item.label.產業情報": {
+    "message": "Inteligencia industrial"
+  },
+  "item.label.圍棋資源": {
+    "message": "Recursos de Go"
+  },
+  "item.label.學圍棋": {
+    "message": "Aprender Go"
+  },
+  "item.label.AlphaGo": {
+    "message": "AlphaGo"
+  },
+  "item.label.動畫教室": {
+    "message": "Animaciones"
+  },
+  "item.label.技術文件": {
+    "message": "Documentación técnica"
+  },
+  "item.label.年度成果報告": {
+    "message": "Informe de Impacto"
+  }
 }

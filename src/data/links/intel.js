@@ -65,6 +65,7 @@ export const intelCategories = [
   },
   {
     id: 'telecom',
+    industry_tag: 'business-intel',
     titleKey: 'intel.category.telecom.title',
     titleDefault: '通訊',
     descKey: 'intel.category.telecom.desc',
@@ -83,6 +84,7 @@ export const intelLinks = [
   // ─── 半導體與電子 ───
   {
     id: 'memory',
+    industry_tag: 'business-intel',
     repo: 'memory-intel',
     category: 'semiconductor-electronics',
     titleKey: 'intel.memory.title',
@@ -101,6 +103,7 @@ export const intelLinks = [
   },
   {
     id: 'display',
+    industry_tag: 'business-intel',
     repo: 'display-intel',
     category: 'semiconductor-electronics',
     titleKey: 'intel.display.title',
@@ -119,6 +122,7 @@ export const intelLinks = [
   // ─── 汽車與運輸 ───
   {
     id: 'auto',
+    industry_tag: 'business-intel',
     repo: 'auto-intel',
     category: 'auto-transport',
     titleKey: 'intel.auto.title',
@@ -135,6 +139,7 @@ export const intelLinks = [
   },
   {
     id: 'shipping',
+    industry_tag: 'business-intel',
     repo: 'shipping-intel',
     category: 'auto-transport',
     titleKey: 'intel.shipping.title',
@@ -153,6 +158,7 @@ export const intelLinks = [
   // ─── 能源與綠能 ───
   {
     id: 'solar',
+    industry_tag: 'business-intel',
     repo: 'solar-intel',
     category: 'energy',
     titleKey: 'intel.solar.title',
@@ -170,6 +176,7 @@ export const intelLinks = [
   },
   {
     id: 'battery',
+    industry_tag: 'business-intel',
     repo: 'battery-intel',
     category: 'energy',
     titleKey: 'intel.battery.title',
@@ -187,6 +194,7 @@ export const intelLinks = [
   },
   {
     id: 'hydrogen',
+    industry_tag: 'business-intel',
     repo: 'hydrogen-intel',
     category: 'energy',
     titleKey: 'intel.hydrogen.title',
@@ -205,6 +213,7 @@ export const intelLinks = [
   // ─── 建材與基礎建設 ───
   {
     id: 'steel',
+    industry_tag: 'business-intel',
     repo: 'steel-intel',
     category: 'materials-construction',
     titleKey: 'intel.steel.title',
@@ -221,6 +230,7 @@ export const intelLinks = [
   },
   {
     id: 'cement',
+    industry_tag: 'business-intel',
     repo: 'cement-intel',
     category: 'materials-construction',
     titleKey: 'intel.cement.title',
@@ -238,6 +248,7 @@ export const intelLinks = [
   },
   {
     id: 'glass',
+    industry_tag: 'business-intel',
     repo: 'glass-intel',
     category: 'materials-construction',
     titleKey: 'intel.glass.title',
@@ -255,6 +266,7 @@ export const intelLinks = [
   },
   {
     id: 'housing',
+    industry_tag: 'business-intel',
     repo: 'housing-intel',
     category: 'materials-construction',
     titleKey: 'intel.housing.title',
@@ -276,6 +288,7 @@ export const intelLinks = [
   // ─── 工業與機械 ───
   {
     id: 'machinery',
+    industry_tag: 'business-intel',
     repo: 'machinery-intel',
     category: 'industrial-machinery',
     titleKey: 'intel.machinery.title',
@@ -294,6 +307,7 @@ export const intelLinks = [
   // ─── 國防與太空 ───
   {
     id: 'defense',
+    industry_tag: 'business-intel',
     repo: 'defense-intel',
     category: 'defense-space',
     titleKey: 'intel.defense.title',
@@ -311,6 +325,7 @@ export const intelLinks = [
   },
   {
     id: 'space',
+    industry_tag: 'business-intel',
     repo: 'space-intel',
     category: 'defense-space',
     titleKey: 'intel.space.title',
@@ -330,6 +345,7 @@ export const intelLinks = [
   // ─── 民生與消費 ───
   {
     id: 'food',
+    industry_tag: 'business-intel',
     repo: 'food-intel',
     category: 'consumer',
     titleKey: 'intel.food.title',
@@ -347,6 +363,7 @@ export const intelLinks = [
   },
   {
     id: 'pharma',
+    industry_tag: 'business-intel',
     repo: 'pharma-intel',
     category: 'consumer',
     titleKey: 'intel.pharma.title',
@@ -365,6 +382,7 @@ export const intelLinks = [
   },
   {
     id: 'textile',
+    industry_tag: 'business-intel',
     repo: 'textile-intel',
     category: 'consumer',
     titleKey: 'intel.textile.title',
@@ -381,6 +399,7 @@ export const intelLinks = [
   },
   {
     id: 'petpack',
+    industry_tag: 'business-intel',
     repo: 'petpack-intel',
     category: 'consumer',
     titleKey: 'intel.petpack.title',
@@ -397,6 +416,7 @@ export const intelLinks = [
   // ─── 資源與環保 ───
   {
     id: 'mineral',
+    industry_tag: 'business-intel',
     repo: 'mineral-intel',
     category: 'resources-environment',
     titleKey: 'intel.mineral.title',
@@ -413,6 +433,7 @@ export const intelLinks = [
   },
   {
     id: 'water',
+    industry_tag: 'business-intel',
     repo: 'water-intel',
     category: 'resources-environment',
     titleKey: 'intel.water.title',
@@ -430,6 +451,7 @@ export const intelLinks = [
   },
   {
     id: 'recycle',
+    industry_tag: 'business-intel',
     repo: 'recycle-intel',
     category: 'resources-environment',
     titleKey: 'intel.recycle.title',
@@ -465,6 +487,7 @@ export const intelLinks = [
   // ─── 農業 ───
   {
     id: 'agri',
+    industry_tag: 'business-intel',
     repo: 'agri-intel',
     category: 'agriculture',
     titleKey: 'intel.agri.title',
