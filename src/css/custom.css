@@ -31,6 +31,24 @@
 
   --ifm-background-color: var(--color-surface);
 
+  /* Typography — 對齊 design-tokens.css 的 type scale */
+  --ifm-font-size-base: var(--font-size-base);
+  --ifm-h1-font-size: var(--font-size-3xl);
+  --ifm-h2-font-size: var(--font-size-2xl);
+  --ifm-h3-font-size: var(--font-size-xl);
+  --ifm-h4-font-size: var(--font-size-lg);
+  --ifm-h5-font-size: var(--font-size-md);
+  --ifm-h6-font-size: var(--font-size-base);
+  --ifm-line-height-base: var(--line-height-normal);
+  --ifm-leading: var(--line-height-loose);
+  --ifm-heading-line-height: var(--line-height-tight);
+  --ifm-heading-font-weight: var(--font-weight-semibold);
+  --ifm-paragraph-margin-bottom: var(--space-4);
+
+  /* Spacing — 對齊 design-tokens.css 的 spacing scale */
+  --ifm-spacing-horizontal: var(--space-4);
+  --ifm-spacing-vertical: var(--space-4);
+
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: oklch(0% 0 0 / 0.10);
 }
