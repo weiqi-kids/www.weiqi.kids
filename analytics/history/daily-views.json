@@ -569,7 +569,12 @@
       "timestamp": "2026-05-29T00:00:00Z",
       "count": 0,
       "uniques": 0
+    },
+    {
+      "timestamp": "2026-05-30T00:00:00Z",
+      "count": 0,
+      "uniques": 0
     }
   ],
-  "lastUpdated": "2026-05-31T01:59:14.950Z"
+  "lastUpdated": "2026-06-01T02:08:06.370Z"
 }
