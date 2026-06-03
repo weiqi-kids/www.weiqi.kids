@@ -1,5 +1,8 @@
 // 學術研究發表（*.proof.weiqi.kids）
 // 用於：首頁「學術研究」精選 + /research/ 落地頁
+//
+// 排序慣例：越新的論文越前面（newest first）。
+// 此陣列順序同時決定：① 首頁精選取前 3 篇 ② /research/ 各分類組內順序。
 
 export const researchCategories = [
   {
@@ -32,7 +35,60 @@ export const researchCategories = [
   },
 ];
 
+// ⚠️ 新論文一律加在陣列「最前面」（newest first）。
 export const researchPapers = [
+  {
+    id: 'perfect-cuboid',
+    industry_tag: 'ai-math',
+    repo: 'perfect-cuboid-problem',
+    category: 'mathematics',
+    titleKey: 'research.paper.perfect-cuboid.title',
+    titleDefault: '完美長方體問題',
+    descKey: 'research.paper.perfect-cuboid.desc',
+    descDefault: 'Euler 1769 年提出、250 年未解：將幾何問題化約為橢圓曲線上的有理點，以六篇可電腦驗證的部分結果逐一封閉特定子家族（不宣稱完全解決）。',
+    href: 'https://perfect-cuboid-problem.proof.weiqi.kids/',
+    repoHref: 'https://github.com/weiqi-kids/perfect-cuboid-problem',
+    icon: '📦',
+  },
+  {
+    id: 'optimal-golomb-ruler',
+    industry_tag: 'ai-math',
+    repo: 'optimal-golomb-ruler',
+    category: 'mathematics',
+    titleKey: 'research.paper.optimal-golomb-ruler.title',
+    titleDefault: 'Erdős–Sidon 攻擊報告',
+    descKey: 'research.paper.optimal-golomb-ruler.desc',
+    descDefault: '94 輪 LLM sub-agent 群攻擊 Erdős–Sidon 猜想：未撼動 1969 年 Lindström 上界，卻意外發現 49 年前 Bloom–Golomb 例子的新性質、命名兩個 LLM-數學失敗模式，產出三篇可發表 paper。',
+    href: 'https://optimal-golomb-ruler.proof.weiqi.kids/',
+    repoHref: 'https://github.com/weiqi-kids/optimal-golomb-ruler',
+    icon: '📏',
+  },
+  {
+    id: 'four-color',
+    industry_tag: 'ai-math',
+    repo: 'four-color-structural-proof',
+    category: 'mathematics',
+    titleKey: 'research.paper.four-color.title',
+    titleDefault: '四色定理之結構性證明',
+    descKey: 'research.paper.four-color.desc',
+    descDefault: 'Tutte 對偶 + Grötzsch 化約，將四色定理化約為更簡單子問題，配置數縮減 80 倍，避免機器窮舉。',
+    href: 'https://four-color-structural-proof.proof.weiqi.kids/',
+    repoHref: 'https://github.com/weiqi-kids/four-color-structural-proof',
+    icon: '🎨',
+  },
+  {
+    id: 'ai-alignment',
+    industry_tag: 'ai-math',
+    repo: 'ai-alignment-guarantees',
+    category: 'ai-safety',
+    titleKey: 'research.paper.ai-alignment.title',
+    titleDefault: 'AI 對齊保證的三層分裂結論',
+    descKey: 'research.paper.ai-alignment.desc',
+    descDefault: '用計算理論、資訊理論、密碼學證明驗證、訓練、內層三層對齊的不可能性，無單一技術能同時解決。',
+    href: 'https://ai-alignment-guarantees.proof.weiqi.kids/',
+    repoHref: 'https://github.com/weiqi-kids/ai-alignment-guarantees',
+    icon: '🛡️',
+  },
   {
     id: 'go-second-best',
     industry_tag: 'go',
@@ -86,19 +142,6 @@ export const researchPapers = [
     icon: '🧠',
   },
   {
-    id: 'ai-alignment',
-    industry_tag: 'ai-math',
-    repo: 'ai-alignment-guarantees',
-    category: 'ai-safety',
-    titleKey: 'research.paper.ai-alignment.title',
-    titleDefault: 'AI 對齊保證的三層分裂結論',
-    descKey: 'research.paper.ai-alignment.desc',
-    descDefault: '用計算理論、資訊理論、密碼學證明驗證、訓練、內層三層對齊的不可能性，無單一技術能同時解決。',
-    href: 'https://ai-alignment-guarantees.proof.weiqi.kids/',
-    repoHref: 'https://github.com/weiqi-kids/ai-alignment-guarantees',
-    icon: '🛡️',
-  },
-  {
     id: 'collatz',
     industry_tag: 'ai-math',
     repo: 'collatz-research-report',
@@ -110,31 +153,5 @@ export const researchPapers = [
     href: 'https://collatz-research-report.proof.weiqi.kids/',
     repoHref: 'https://github.com/weiqi-kids/collatz-research-report',
     icon: 'Σ',
-  },
-  {
-    id: 'four-color',
-    industry_tag: 'ai-math',
-    repo: 'four-color-structural-proof',
-    category: 'mathematics',
-    titleKey: 'research.paper.four-color.title',
-    titleDefault: '四色定理之結構性證明',
-    descKey: 'research.paper.four-color.desc',
-    descDefault: 'Tutte 對偶 + Grötzsch 化約，將四色定理化約為更簡單子問題，配置數縮減 80 倍，避免機器窮舉。',
-    href: 'https://four-color-structural-proof.proof.weiqi.kids/',
-    repoHref: 'https://github.com/weiqi-kids/four-color-structural-proof',
-    icon: '🎨',
-  },
-  {
-    id: 'optimal-golomb-ruler',
-    industry_tag: 'ai-math',
-    repo: 'optimal-golomb-ruler',
-    category: 'mathematics',
-    titleKey: 'research.paper.optimal-golomb-ruler.title',
-    titleDefault: 'Erdős–Sidon 攻擊報告',
-    descKey: 'research.paper.optimal-golomb-ruler.desc',
-    descDefault: '94 輪 LLM sub-agent 群攻擊 Erdős–Sidon 猜想：未撼動 1969 年 Lindström 上界，卻意外發現 49 年前 Bloom–Golomb 例子的新性質、命名兩個 LLM-數學失敗模式，產出三篇可發表 paper。',
-    href: 'https://optimal-golomb-ruler.proof.weiqi.kids/',
-    repoHref: 'https://github.com/weiqi-kids/optimal-golomb-ruler',
-    icon: '📏',
   },
 ];

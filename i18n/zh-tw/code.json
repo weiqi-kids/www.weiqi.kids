@@ -364,7 +364,7 @@
     "description": "Hero subtitle below H1"
   },
   "homepage.hero.stats": {
-    "message": "37 位跨域夥伴 · 41+ AI 工具 · 8 篇學術論文 · 每日自動更新",
+    "message": "37 位跨域夥伴 · 41+ AI 工具 · 9 篇學術論文 · 每日自動更新",
     "description": "Hero stats line"
   },
   "homepage.cta.proposal": {
@@ -393,7 +393,7 @@
   "homepage.usp.axis2.audience": { "message": "夥伴企業・社會大眾" },
   "homepage.usp.axis2.cta": { "message": "看工具 →" },
   "homepage.usp.axis3.title": { "message": "學術原創" },
-  "homepage.usp.axis3.metric": { "message": "8 篇學術論文" },
+  "homepage.usp.axis3.metric": { "message": "9 篇學術論文" },
   "homepage.usp.axis3.body": { "message": "圍棋理論、機器學習與經典數學問題；每篇含完整數學證明 + 互動視覺化網頁 + GitHub 開源。" },
   "homepage.usp.axis3.audience": { "message": "研究者・教育工作者" },
   "homepage.usp.axis3.cta": { "message": "看論文 →" },
