@@ -1,0 +1,86 @@
+# 台灣好棋寶寶協會 Weiqi.Kids
+
+> 台灣非營利組織「社團法人台灣好棋寶寶協會」（Taiwan Good Go Baby Association）官方網站，定位為「圍棋文化前進的推手」。三大主軸並立：圍棋公益推廣、跨域開源 AI 工具、學術原創研究。網站以 Docusaurus 建置，提供 11 種語言（繁中、簡中、粵語、英、日、韓、西、葡、印地、印尼、阿拉伯文）。
+
+## 關於本站內容
+
+- 站內所有 AI 工具、產業情報儀表板與學術論文皆**免費且開源**。
+- 圍棋教學涵蓋從入門規則到 AlphaGo／KataGo 技術原理，適合棋友與 AI 工程師。
+- 學術論文為原創數學與 AI 研究，多以「可電腦驗證的部分結果」呈現，不誇大宣稱完全解決未解難題。
+- 聯絡與合作提案：lightman.chang@gmail.com
+
+## 核心頁面
+
+- [關於協會](https://www.weiqi.kids/docs/about/): 協會宗旨、組織與夥伴介紹
+- [使用指南](https://www.weiqi.kids/docs/intro/): 網站區塊導覽（給棋友／給工程師／演進整理）
+- [認識夥伴](https://www.weiqi.kids/docs/about/members/founding/): 創始夥伴介紹（跨域專業背景）
+- [年度成果報告](https://www.weiqi.kids/impact-report/2026/): 2026 年度公益與開源成果
+- [AI 工具總覽](https://www.weiqi.kids/apps/): 全部免費開源的 AI 應用工具
+- [學術論文](https://www.weiqi.kids/research/): 原創數學與 AI 研究報告
+- [產業情報](https://www.weiqi.kids/intel/): 24 條全球供應鏈即時情報儀表板
+
+## 圍棋學習（給棋友）
+
+- [學圍棋入口](https://www.weiqi.kids/docs/learn/): 依實力分級的圍棋學習地圖
+- [圍棋規則](https://www.weiqi.kids/docs/learn/introduction/rules/): 圍棋基本規則
+- [圍棋術語](https://www.weiqi.kids/docs/learn/introduction/terminology/): 常用術語解說
+- [圍棋禮儀](https://www.weiqi.kids/docs/learn/introduction/etiquette/): 對局禮儀
+- [開局前 10 手](https://www.weiqi.kids/docs/learn/introduction/first-10-moves/): 入門佈局
+- [AI 時代的圍棋](https://www.weiqi.kids/docs/learn/ai-era/): AI 如何改變圍棋學習
+- [用 AI 學圍棋](https://www.weiqi.kids/docs/learn/ai-era/learning-with-ai/): 善用 AI 工具提升棋力
+- [圍棋人類歷史](https://www.weiqi.kids/docs/learn/history/human-history/): 圍棋的起源與發展
+- [圍棋 AI 歷史](https://www.weiqi.kids/docs/learn/history/ai-history/): 從 AlphaGo 到 KataGo
+
+## AlphaGo 運作原理（20 篇系列，給工程師）
+
+- [AlphaGo 系列入口](https://www.weiqi.kids/docs/alphago/): 從零理解 AlphaGo 的完整教學
+- [AlphaGo 的誕生](https://www.weiqi.kids/docs/alphago/birth-of-alphago/): 歷史背景
+- [為何圍棋如此困難](https://www.weiqi.kids/docs/alphago/why-go-is-hard/): 圍棋的計算複雜度
+- [Move 37](https://www.weiqi.kids/docs/alphago/move-37/): 著名的第 37 手
+- [策略網路](https://www.weiqi.kids/docs/alphago/policy-network/): Policy Network 原理
+- [價值網路](https://www.weiqi.kids/docs/alphago/value-network/): Value Network 原理
+- [蒙地卡羅樹搜尋](https://www.weiqi.kids/docs/alphago/mcts-neural-combo/): MCTS 與神經網路結合
+- [AlphaGo Zero](https://www.weiqi.kids/docs/alphago/alphago-zero/): 從零自我對弈
+- [雙頭 ResNet](https://www.weiqi.kids/docs/alphago/dual-head-resnet/): 網路架構
+- [傳承與影響](https://www.weiqi.kids/docs/alphago/legacy-and-impact/): AlphaGo 的歷史意義
+
+## KataGo 技術文件（給工程師）
+
+- [技術總覽](https://www.weiqi.kids/docs/tech/): KataGo 技術文件入口
+- [運作原理](https://www.weiqi.kids/docs/tech/how-it-works/): KataGo 如何運作
+- [KataGo 創新](https://www.weiqi.kids/docs/tech/how-it-works/katago-innovations/): 相對 AlphaGo 的改良
+- [動手實作](https://www.weiqi.kids/docs/tech/hands-on/): 安裝與基本使用
+- [深入技術](https://www.weiqi.kids/docs/tech/deep-dive/): 神經網路、MCTS、訓練、GPU 最佳化
+- [產業應用](https://www.weiqi.kids/docs/tech/industry/): 圍棋 AI 技術的產業轉化
+
+## AI 工具（免費開源）
+
+- [電商產品研究](https://ecommerce.weiqi.kids/): AI 驅動的電商產品深度研究與分析
+- [保健食品產品情報](https://supplement.weiqi.kids/): 保健食品的科學化深度分析
+- [學生學習地圖](https://learn.weiqi.kids/): 為學生規劃最適學習路徑
+- [求職技能需求觀測站](https://skills.weiqi.kids/): 觀測就業市場技能需求變化
+- [資安威脅情報中心](https://security.weiqi.kids/): 即時掌握全球資安威脅動態
+- [EpiAlert 疫情快訊](https://epialert.weiqi.kids/): 全球疫情即時監測與預警
+- [全球框架法規變動](https://risk.weiqi.kids/): 追蹤全球法規與產業規則變動
+- [全球貿易情報分析](https://trade.weiqi.kids/): 分析全球貿易動態
+- [聲量監測](https://listening.weiqi.kids/): 即時監測網路輿情與品牌口碑
+- [政策承諾追蹤](https://lightchang.github.io/brighterarc/): 追蹤政府與政治人物的政策承諾
+
+## 學術論文（原創研究）
+
+- [完美長方體問題](https://perfect-cuboid-problem.proof.weiqi.kids/): Euler 1769 年提出、250 年未解；化約為橢圓曲線有理點，以六篇可驗證部分結果封閉特定子家族（不宣稱完全解決）
+- [Erdős–Sidon 攻擊報告](https://optimal-golomb-ruler.proof.weiqi.kids/): 94 輪 LLM sub-agent 群攻擊 Erdős–Sidon 猜想，產出三篇可發表論文並命名兩個 LLM-數學失敗模式
+- [四色定理之結構性證明](https://four-color-structural-proof.proof.weiqi.kids/): Tutte 對偶 + Grötzsch 化約，配置數縮減 80 倍，避免機器窮舉
+- [AI 對齊保證的三層分裂結論](https://ai-alignment-guarantees.proof.weiqi.kids/): 用計算理論、資訊理論、密碼學證明驗證／訓練／內層三層對齊的不可能性
+- [圍棋次佳手公式](https://go-second-best-move-formula.proof.weiqi.kids/): 證明「第二好的次一手公式」在圍棋中不存在
+- [圍棋官子最佳一手計算](https://go-yose-optimal-move-computation.proof.weiqi.kids/): PSPACE 困難下界 + BW 標準形狀上界 + 排序定理
+- [SGD 收斂理論](https://sgd-convergence-theory.proof.weiqi.kids/): 隨機梯度下降為何收斂到好解的互動式理論視覺化
+- [深度網路為何泛化](https://why-deep-networks-generalize.proof.weiqi.kids/): 深度學習泛化能力的理論分析
+- [Collatz 猜想研究報告](https://collatz-research-report.proof.weiqi.kids/): Collatz（3n+1）猜想的研究報告
+
+## Optional
+
+- [產業情報總覽（24 條供應鏈）](https://www.weiqi.kids/intel/): 半導體、面板、汽車、航運、太陽能、電池、氫能、鋼鐵、水泥、玻璃、營建、機械、國防、太空、食品、製藥、紡織、寵物包裝、稀土礦物、水務、回收、電信、農業、記憶體等全球供應鏈即時情報
+- [GitHub 原始碼](https://github.com/weiqi-kids/www.weiqi.kids): 官網開源原始碼
+- [Mastodon](https://mastodon.weiqi.kids/): 協會去中心化社群
+- [PeerTube](https://peertube.weiqi.kids/): 協會影音平台
