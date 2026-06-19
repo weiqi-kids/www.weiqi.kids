@@ -23,6 +23,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
  * @param {Array<string|Object>} props.hasCredential - 認證；字串或 {name, category}（≥1）
  * @param {Array<{name:string, url?:string}>} [props.worksFor] - 任職組織（協會以外）
  * @param {Array<{name:string, position?:number, path?:string}>} [props.breadcrumbs] - 額外麵包屑
+ * @param {string} [props.inLanguage] - 頁面語言（BCP 47），預設 zh-TW；翻譯頁應傳入對應語言
  */
 export default function PersonSchema({
   name,
@@ -38,10 +39,16 @@ export default function PersonSchema({
   hasCredential = [],
   worksFor = [],
   breadcrumbs = [],
+  inLanguage = 'zh-TW',
 }) {
-  const { siteConfig } = useDocusaurusContext();
+  const { siteConfig, i18n } = useDocusaurusContext();
   const siteUrl = siteConfig.url;
-  const canonicalUrl = `${siteUrl}/docs/${slug}/`;
+  // 翻譯頁網址含語系前綴（預設語系除外），確保 @id／url 指向正確的本地化頁面
+  const localePrefix =
+    i18n && i18n.currentLocale && i18n.currentLocale !== i18n.defaultLocale
+      ? `/${i18n.currentLocale}`
+      : '';
+  const canonicalUrl = `${siteUrl}${localePrefix}/docs/${slug}/`;
   const personId = `${canonicalUrl}#person`;
   const imageUrl = image
     ? (image.startsWith('http') ? image : `${siteUrl}${image}`)
@@ -72,10 +79,11 @@ export default function PersonSchema({
     ),
   ];
 
+  const localeBase = `${siteUrl}${localePrefix}`;
   const defaultCrumbs = [
-    { '@type': 'ListItem', position: 1, name: '首頁', item: `${siteUrl}/` },
-    { '@type': 'ListItem', position: 2, name: '關於協會', item: `${siteUrl}/docs/about/` },
-    { '@type': 'ListItem', position: 3, name: '認識夥伴', item: `${siteUrl}/docs/about/members/founding/` },
+    { '@type': 'ListItem', position: 1, name: '首頁', item: `${localeBase}/` },
+    { '@type': 'ListItem', position: 2, name: '關於協會', item: `${localeBase}/docs/about/` },
+    { '@type': 'ListItem', position: 3, name: '認識夥伴', item: `${localeBase}/docs/about/members/founding/` },
     { '@type': 'ListItem', position: 4, name: name, item: canonicalUrl },
   ];
 
@@ -89,7 +97,7 @@ export default function PersonSchema({
         url: canonicalUrl,
         name: `${name}｜台灣好棋寶寶協會`,
         description: description,
-        inLanguage: 'zh-TW',
+        inLanguage: inLanguage,
         isPartOf: { '@id': `${siteUrl}#website` },
         primaryImageOfPage: { '@type': 'ImageObject', url: imageUrl },
         mainEntity: { '@id': personId },
