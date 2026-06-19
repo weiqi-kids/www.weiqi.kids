@@ -84,7 +84,7 @@ import FAQ from '@site/src/components/SEO/FAQ';
 문제·원인·방법·최선 —— 먼저 진짜 문제를 명확히 정의하고, 그 뒤의 원인을 파고들며, 실행 가능한 방법을 제시하고, 마지막으로 어떤 방식이 더 나은지 비교하여 문제를 근원에서 예방한다.
 </ExpertQuote>
 
-<KeyTakeaway>
+<KeyTakeaway title="핵심 요약">
 
 - **AI × 디지털 헬스 통합가**: 분야를 넘나드는 산업 지식을 무료·오픈소스 AI 도구로 통합
 - **FHIR／SMART on FHIR 상호운용 전문가**: 임상 워크플로와 데이터 흐름 연계 설계

@@ -169,3 +169,15 @@
 .dropdown__menu .dropdown__link {
   font-size: var(--font-size-caption) !important;
 }
+
+/* ─── AEO 重點答案區塊（原始 .key-answer class 用，對齊暖橙品牌）─── */
+.markdown .key-answer {
+  background: var(--color-brand-light);
+  border-left: 4px solid var(--color-brand);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-4);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-loose);
+}

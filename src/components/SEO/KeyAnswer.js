@@ -13,11 +13,11 @@ export default function KeyAnswer({ question, children }) {
       className="key-answer"
       data-question={question}
       style={{
-        backgroundColor: 'var(--ifm-color-primary-lightest)',
-        padding: '1rem',
-        borderRadius: '8px',
-        borderLeft: '4px solid var(--ifm-color-primary)',
-        marginBottom: '1rem',
+        backgroundColor: 'var(--color-brand-light)',
+        padding: 'var(--space-4) var(--space-5)',
+        borderRadius: 'var(--radius-md)',
+        borderLeft: '4px solid var(--color-brand)',
+        marginBottom: 'var(--space-4)',
       }}
     >
       <strong>{children}</strong>

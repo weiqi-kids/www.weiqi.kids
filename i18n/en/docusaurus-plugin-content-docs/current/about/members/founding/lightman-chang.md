@@ -84,7 +84,7 @@ Not merely a technologist, nor only a content creator, but an integrator standin
 Problem, cause, method, best — first define the real problem clearly, then trace the causes behind it, propose actionable methods, and finally compare which approach is better, aiming to prevent problems at their source.
 </ExpertQuote>
 
-<KeyTakeaway>
+<KeyTakeaway title="Key Takeaways">
 
 - **AI × Digital Health Integrator**: turning cross-domain industry knowledge into free, open-source AI tools
 - **FHIR / SMART on FHIR Interoperability Expert**: clinical workflow and data flow integration design

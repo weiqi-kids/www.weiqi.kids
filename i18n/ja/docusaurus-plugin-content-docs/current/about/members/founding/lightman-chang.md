@@ -84,7 +84,7 @@ import FAQ from '@site/src/components/SEO/FAQ';
 問題・原因・方法・最善 —— まず本当の問題を明確に定義し、その背後にある原因を掘り下げ、実行可能な方法を提示し、最後にどのやり方がより良いかを比較して、問題を源から未然に防ぐ。
 </ExpertQuote>
 
-<KeyTakeaway>
+<KeyTakeaway title="重要ポイント">
 
 - **AI × デジタルヘルスのインテグレーター**：分野横断の産業知識を無料・オープンソースの AI ツールへ統合
 - **FHIR／SMART on FHIR 相互運用の専門家**：臨床ワークフローとデータフローの連携設計

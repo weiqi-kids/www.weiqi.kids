@@ -84,7 +84,7 @@ import FAQ from '@site/src/components/SEO/FAQ';
 问题、原因、方法、最好 —— 先把真正的问题定义清楚，再往下追出形成问题的原因，提出可执行的方法，最后比较什么做法更好，并尽量把问题从源头防范于未然。
 </ExpertQuote>
 
-<KeyTakeaway>
+<KeyTakeaway title="重点摘要">
 
 - **AI × 数字健康整合者**：把跨域产业知识整合为免费开源的 AI 工具
 - **FHIR／SMART on FHIR 医疗互通专家**：临床工作流与数据流串接设计

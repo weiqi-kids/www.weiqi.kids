@@ -36,16 +36,17 @@ export default function FAQ({ items, title = '常見問題' }) {
           <details
             key={index}
             style={{
-              marginBottom: '1rem',
-              padding: '1rem',
-              backgroundColor: 'var(--ifm-color-gray-100)',
-              borderRadius: '8px',
+              marginBottom: 'var(--space-3)',
+              padding: 'var(--space-4) var(--space-5)',
+              backgroundColor: 'var(--color-surface-elevated)',
+              border: '1px solid var(--color-border)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
             <summary style={{
-              fontWeight: 'bold',
+              fontWeight: 'var(--font-weight-semibold)',
               cursor: 'pointer',
-              marginBottom: '0.5rem'
+              color: 'var(--color-text-primary)',
             }}>
               {item.question}
             </summary>
