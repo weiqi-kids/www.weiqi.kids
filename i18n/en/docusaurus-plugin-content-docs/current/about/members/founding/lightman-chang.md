@@ -9,6 +9,11 @@ contributing_role: Domain Knowledge Lead
 ---
 
 import PersonSchema from '@site/src/components/SEO/PersonSchema';
+import ProfileHero from '@site/src/components/ProfileHero';
+import ProfileWorks from '@site/src/components/ProfileWorks';
+import KeyTakeaway from '@site/src/components/SEO/KeyTakeaway';
+import ExpertQuote from '@site/src/components/SEO/ExpertQuote';
+import FAQ from '@site/src/components/SEO/FAQ';
 
 <PersonSchema
   name="Lightman Chang"
@@ -46,109 +51,112 @@ import PersonSchema from '@site/src/components/SEO/PersonSchema';
 
 # Lightman Chang (張饒輝 / CΛ)
 
-> **"Go Thinking × Digital Health ⇒ AI Writing Agent"**
+<ProfileHero
+  name="Lightman Chang"
+  enName="張饒輝 / CΛ"
+  slogan="Go Thinking × Digital Health ⇒ AI Writing Agent"
+  titles={['Founder, Taiwan Good Go Baby Association', 'CTO, Medicine Reminder Technology', 'Founding Shareholder, Goer Technology']}
+  avatar={{
+    photo: '/img/members/lightman-chang.jpg',
+    zoom: 2,
+    fx: '46%',
+    fy: '27%',
+    alt: 'Lightman Chang playing Go at a tournament',
+    initial: '輝',
+    color: 'oklch(50% 0.13 280)',
+  }}
+  links={[
+    { label: 'Email', href: 'mailto:lightman.chang@gmail.com', icon: '✉', external: true },
+    { label: 'yao.care', href: 'https://www.yao.care', icon: '🌐', external: true },
+    { label: 'GitHub', href: 'https://github.com/yao-care/TwTxGNN', icon: '💻', external: true },
+    { label: 'Facebook', href: 'https://www.facebook.com/lightman.chang/', icon: '👤', external: true },
+  ]}
+  location="13F, No. 239, Sec. 2, Taiwan Blvd., West District, Taichung City"
+/>
 
-**Founder, Taiwan Good Go Baby Association / CTO, Medicine Reminder Technology / Founding Shareholder, Goer Technology**
+## About
 
 <p className="key-answer" data-question="Who is Lightman Chang?">Lightman Chang (張饒輝 / CΛ) is the founder of the Taiwan Good Go Baby Association, CTO of Medicine Reminder Technology Co., Ltd., and a founding shareholder of Goer Technology Co., Ltd. Working at the intersection of problem analysis, root-cause investigation, method design, systems integration, and knowledge translation, he turns cross-domain industry expertise into free and open-source AI tools, while devoting himself to Go education and structured thinking.</p>
 
-## Role & Positioning
+Not merely a technologist, nor only a content creator, but an integrator standing at the intersection of **problem analysis, root-cause investigation, method design, systems integration, and knowledge translation**. He has a long-standing focus on AI, digital health, healthcare information integration, and product design, while devoting himself to Go education and knowledge dissemination — his thinking and writing carry both a Go player's whole-board perspective and a systems designer's structural sense.
 
-Not merely a technologist, nor only a content creator, but an integrator standing at the intersection of **problem analysis, root-cause investigation, method design, systems integration, and knowledge translation**. He has a long-standing focus on AI, digital health, healthcare information integration, product design, and content translation, alongside Go education, thinking training, and knowledge dissemination.
+<ExpertQuote author="Lightman Chang" title="Founder, Taiwan Good Go Baby Association">
+Problem, cause, method, best — first define the real problem clearly, then trace the causes behind it, propose actionable methods, and finally compare which approach is better, aiming to prevent problems at their source.
+</ExpertQuote>
 
-His core approach to thinking and writing can be summarized in four words: **problem, cause, method, best** — first define the real problem clearly, then trace the causes behind it, propose actionable methods, and finally compare which approach is better, aiming to prevent problems at their source.
+<KeyTakeaway>
 
-## Current Positions
+- **AI × Digital Health Integrator**: turning cross-domain industry knowledge into free, open-source AI tools
+- **FHIR / SMART on FHIR Interoperability Expert**: clinical workflow and data flow integration design
+- **Guangdong Junior Go Teacher**: bridging cross-strait Go education systems
 
-- **Taiwan Good Go Baby Association** — Founder
-- **Medicine Reminder Technology Co., Ltd.** — CTO (Digital Health / Healthcare Information Systems)
-- **Goer Technology Co., Ltd.** — Founding Shareholder (Go)
+</KeyTakeaway>
 
 ## Areas of Expertise
 
-- **AI / Digital Health Product Design**
-- **Healthcare Information Workflow & Systems Integration**
+### 🩺 Healthcare Information & Digital Health
+
+- AI / digital health product design, healthcare information workflow & systems integration
 - **FHIR** (Fast Healthcare Interoperability Resources) and **SMART on FHIR** application design
 - Clinical workflow, data flow, and result return-loop planning
-- Problem decomposition, root-cause analysis, and process optimization
-- Knowledge translation and educational content design
+- Collaboration with the association's healthcare members (Tzu-Yen Huang, Tien-Chien Pan, Feng-Hao Chiang, Bo-Yang Cheng, Yang Luo, etc.) on AI tool integration
+
+### ⚫ Go Education & Thinking Methods
+
 - Go education, thinking training, and structured learning design
+- Connecting Go thinking with product design and decision-making methods
+- Problem decomposition, root-cause analysis, process optimization; knowledge translation and educational content design
 
 ## Go Education Credentials
 
 - **Guangdong Province Junior Go Teacher Certification** (completed online training program)
-- Completed courses: Introduction to Go Studies, Go Pedagogy (I/II/III), Foundations of Go Culture (I/II/III), Early-Childhood Go Education Psychology, Development Opportunities for Go Training under Current Education Policy, and Exam Preparation
-- Passed the demonstration-lecture examination of the online Go teacher training program (trainer-level qualification)
+- Completed courses span Introduction to Go Studies, Go Pedagogy, Foundations of Go Culture, Early-Childhood Go Education Psychology, and more — and passed the demonstration-lecture examination of the online Go teacher training program (trainer-level qualification)
 
 ## Selected Work
 
-> The following are projects led by him or by the association; all are free or open source.
+<ProfileWorks
+  groups={[
+    {
+      title: '🩺 Healthcare Information & Digital Health',
+      items: [
+        { title: 'TwTxGNN Drug Repurposing Platform', desc: 'Open-source drug repurposing platform using Graph Neural Networks (GNN)', href: 'https://github.com/yao-care/TwTxGNN', icon: '💊', external: true },
+        { title: 'Drug Repurposing Reports (30+ Countries)', desc: 'Cross-country validation covering 140K+ AI drug candidates', href: 'https://twtxgnn.yao.care/', icon: '🌍', external: true },
+        { title: 'TwTxGNN SMART on FHIR Clinical App', desc: 'Clinical decision support listed in the SMART Health IT App Gallery', href: 'https://apps.smarthealthit.org/app/twtxgnn-smart-app', icon: '🏥', external: true },
+        { title: 'AI HuaTuo Health Platform', desc: 'AI Traditional Chinese Medicine knowledge platform (co-contributed with Tzu-Yen Huang)', href: 'https://huatuo.ai.yao.care/', icon: '⚕️', external: true },
+      ],
+    },
+    {
+      title: '🧠 Association AI Tools & Intelligence',
+      items: [
+        { title: 'EpiAlert', desc: 'Global epidemic real-time monitoring and early warning', href: 'https://epialert.weiqi.kids/', icon: '🦠', external: true },
+        { title: 'Supplement Intelligence', desc: 'Science-based deep analysis of health supplements', href: 'https://supplement.weiqi.kids/', icon: '💪', external: true },
+        { title: 'Security Threat Intelligence Center', desc: 'Real-time global cybersecurity threat monitoring', href: 'https://security.weiqi.kids/', icon: '🛡️', external: true },
+        { title: 'All 41+ Open-Source AI Tools', desc: 'Lead developer of most of the association\'s AI tools', href: '/apps/', icon: '🧰', external: false },
+      ],
+    },
+  ]}
+/>
 
-### 🩺 Healthcare Information & Digital Health
+## Role within the Association & Collaboration
 
-- **[TwTxGNN Drug Repurposing Open-Source Platform](https://github.com/yao-care/TwTxGNN)** — An open-source platform applying Graph Neural Networks (GNN) to drug repurposing.
-- **[Drug Repurposing Validation Reports across 30+ Countries](https://twtxgnn.yao.care/)** — Cross-country validation reports covering 140K+ AI drug candidates.
-- **[TwTxGNN SMART on FHIR Clinical App](https://apps.smarthealthit.org/app/twtxgnn-smart-app)** — A clinical decision-support application listed in the SMART Health IT App Gallery.
-- **[AI HuaTuo Health Platform](https://huatuo.ai.yao.care/)** — An AI Traditional Chinese Medicine knowledge platform (co-contributed with association member Tzu-Yen Huang).
+He serves as **AI Integration Engineer** and **Lead Author**, leading the development of most of the association's open-source AI tools and supporting technical integration and cross-domain quality review across all public-benefit projects. He also advocates Go education through his Guangdong junior Go teacher certification, and writes columns on healthcare information, digital health, and Go thinking under a personal persona.
 
-### 🧠 AI Tools & Intelligence (weiqi.kids)
-
-Lead developer of most of the association's AI tools, including but not limited to:
-
-- [EpiAlert](https://epialert.weiqi.kids/), [Supplement Intelligence](https://supplement.weiqi.kids/), [Security Threat Intelligence Center](https://security.weiqi.kids/)
-- [Global Regulatory Change Tracker](https://risk.weiqi.kids/), [Global Trade Intelligence](https://trade.weiqi.kids/), [E-commerce Product Research](https://ecommerce.weiqi.kids/)
-- [Job Skill Demand Observatory](https://skills.weiqi.kids/), [Student Learning Map](https://learn.weiqi.kids/), [Social Listening](https://listening.weiqi.kids/)
-- and most projects under [/apps/](/apps/), [/research/](/research/), and [/intel/](/intel/)
-
-## Cross-Domain Work
-
-### 🩺 Healthcare Information & Digital Health
-
-- CTO, Medicine Reminder Technology Co., Ltd.
-- FHIR / SMART on FHIR healthcare interoperability standard design
-- Clinical workflow and data flow integration
-- Collaboration with the association's healthcare members (Tzu-Yen Huang, Tien-Chien Pan, Feng-Hao Chiang, Bo-Yang Cheng, Yang Luo, etc.) on AI tool integration
-
-### ⚫ Go Education
-
-- Founding Shareholder, Goer Technology Co., Ltd.
-- Guangdong Province Junior Go Teacher qualification
-- Connecting Go thinking with product design and decision-making methods
-- Methodological writing on structured thinking, Go play, and systems design
-
-## Writing Style
-
-**Clear, practical, and accessible; systematic and structured; focused on problem definition and root causes; never grandiose, vague, or preachy.** Best suited for neutral, structured, logic- and root-cause-driven, practical editorials or columns.
-
-### Reasoning Logic
-
-1. First, define the real problem
-2. Then break down the causes behind it
-3. Then organize actionable methods
-4. Finally, compare which approach is better, returning to how to prevent the problem from recurring at its root
-
-## Role within the Association
-
-- **AI Integration Engineer**: turning members' domain knowledge into open-source AI tools
-- **Cross-Domain Reviewer**: supporting technical integration and quality review across all public-benefit projects
-- **Lead Author**: lead developer of most of the association's AI tools
-- **Go Education Advocate**: bridging cross-strait Go education systems through Guangdong junior Go teacher certification
-- **AI Writing Agent**: writing columns on healthcare information, digital health, and Go thinking under a personal persona
-
-## Partners Sought
+**Partners welcome to connect:**
 
 - Associations looking to increase visibility
 - Pharmaceutical companies looking to raise competitive barriers
 - IP owners looking to build revenue-sharing LINE@ storefronts
-- Healthcare startups, product managers, engineers, and advisory roles (in FHIR / SMART on FHIR / clinical workflow integration)
+- Healthcare startups, product managers, engineers, and advisory roles (FHIR / SMART on FHIR / clinical workflow integration)
 
-## Contact
-
-- Email: lightman.chang@gmail.com
-- Phone: 0988-911679
-- Company website: https://www.yao.care
-- Facebook: https://www.facebook.com/lightman.chang/
-- Address: 13F, No. 239, Sec. 2, Taiwan Blvd., West District, Taichung City
+<FAQ
+  title="Frequently Asked Questions"
+  items={[
+    { question: 'What are Lightman Chang\'s areas of expertise?', answer: 'AI / digital health product design, healthcare information systems integration, FHIR / SMART on FHIR application design, and Go education and structured thinking.' },
+    { question: 'How can I collaborate with Lightman Chang or the association?', answer: 'Email lightman.chang@gmail.com. Good fits include associations seeking visibility, pharmaceutical companies raising competitive barriers, healthcare startups, and teams working on FHIR / clinical workflow integration.' },
+    { question: 'What is his role at the Taiwan Good Go Baby Association?', answer: 'He is the founder and AI Integration Engineer, leading the development of most of the association\'s open-source AI tools and handling cross-domain technical integration and quality review.' },
+    { question: 'What does "problem, cause, method, best" mean?', answer: 'It is his thinking methodology — first define the real problem, trace its causes, propose actionable methods, then compare which approach is better and prevent the problem from recurring at its root.' },
+  ]}
+/>
 
 ---
 

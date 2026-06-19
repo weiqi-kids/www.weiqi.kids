@@ -1,0 +1,161 @@
+/**
+ * ProfileHero 名片式 hero 卡 — 全用 design-tokens.css 變數，禁止 hardcode。
+ */
+
+.hero {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  margin: var(--space-4) 0 var(--space-8);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+[data-theme='dark'] .hero {
+  border-color: var(--color-border-strong);
+}
+
+/* ─── 頭像 ─── */
+.avatar {
+  position: relative;
+  flex: 0 0 auto;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+}
+
+.avatarImg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  object-fit: cover;
+  /* width/height/transform 由組件 inline 帶入（聚焦臉部） */
+}
+
+.avatarInitial {
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.02em;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+
+/* ─── 右側內容 ─── */
+.body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.nameRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.name {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-tight);
+}
+
+.enName {
+  font-size: var(--font-size-body);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-regular);
+}
+
+.slogan {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-accent-warm);
+  line-height: var(--line-height-tight);
+  margin-top: var(--space-2);
+}
+
+.titles {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-4) 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.titlePill {
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  background: var(--color-brand-light);
+  border-radius: var(--radius-pill);
+  padding: var(--space-1) var(--space-3);
+  line-height: var(--line-height-normal);
+}
+
+.location {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted);
+  margin-top: var(--space-3);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.linkBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-brand);
+  border: 1px solid var(--color-brand);
+  border-radius: var(--radius-md);
+  padding: var(--space-1) var(--space-3);
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.linkBtn:hover {
+  background: var(--color-brand);
+  color: var(--color-text-inverse);
+  text-decoration: none;
+}
+
+.linkIcon {
+  font-size: var(--font-size-body);
+  line-height: 1;
+}
+
+/* ─── RWD：窄螢幕直向堆疊、置中 ─── */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-4);
+    padding: var(--space-5);
+  }
+
+  .nameRow,
+  .titles,
+  .links {
+    justify-content: center;
+  }
+
+  .avatar {
+    width: 104px;
+    height: 104px;
+  }
+}

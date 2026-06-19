@@ -9,6 +9,11 @@ contributing_role: 領域知識主筆
 ---
 
 import PersonSchema from '@site/src/components/SEO/PersonSchema';
+import ProfileHero from '@site/src/components/ProfileHero';
+import ProfileWorks from '@site/src/components/ProfileWorks';
+import KeyTakeaway from '@site/src/components/SEO/KeyTakeaway';
+import ExpertQuote from '@site/src/components/SEO/ExpertQuote';
+import FAQ from '@site/src/components/SEO/FAQ';
 
 <PersonSchema
   name="張饒輝"
@@ -46,109 +51,112 @@ import PersonSchema from '@site/src/components/SEO/PersonSchema';
 
 # 張饒輝 CΛ / Lightman
 
-> **「囲碁的思考 × デジタルヘルス ⇒ AI Writing Agent」**
+<ProfileHero
+  name="張饒輝"
+  enName="CΛ / Lightman"
+  slogan="囲碁的思考 × デジタルヘルス ⇒ AI Writing Agent"
+  titles={['台湾好棋ベビー協会 創設者', '薬リマインダー科技 技術長', '囲碁人科技 創業株主']}
+  avatar={{
+    photo: '/img/members/lightman-chang.jpg',
+    zoom: 2,
+    fx: '46%',
+    fy: '27%',
+    alt: '対局中の張饒輝',
+    initial: '輝',
+    color: 'oklch(50% 0.13 280)',
+  }}
+  links={[
+    { label: 'Email', href: 'mailto:lightman.chang@gmail.com', icon: '✉', external: true },
+    { label: 'yao.care', href: 'https://www.yao.care', icon: '🌐', external: true },
+    { label: 'GitHub', href: 'https://github.com/yao-care/TwTxGNN', icon: '💻', external: true },
+    { label: 'Facebook', href: 'https://www.facebook.com/lightman.chang/', icon: '👤', external: true },
+  ]}
+  location="台中市西区台湾大道二段 239 号 13 階"
+/>
 
-**台湾好棋ベビー協会 創設者 ／ 薬リマインダー科技 技術長 ／ 囲碁人科技 創業株主**
+## プロフィール
 
 <p className="key-answer" data-question="張饒輝とは誰ですか？">張饒輝（CΛ／Lightman）は台湾好棋ベビー協会の創設者であり、薬リマインダー科技股份有限公司の技術長、囲碁人科技股份有限公司の創業株主です。問題分析、根本原因の追究、方法設計、システム統合、知識翻訳の交差点に立ち、分野横断の産業知識を無料・オープンソースの AI ツールへと統合しながら、囲碁教育と構造化思考の普及に取り組んでいます。</p>
 
-## 役割と立ち位置
+単なる技術者でも、コンテンツ制作者でもなく、**問題分析・根本原因の追究・方法設計・システム統合・知識翻訳** の交差点に立つインテグレーターです。AI、デジタルヘルス、医療情報統合、製品設計に長く取り組むとともに、囲碁教育と知識普及にも力を注いでいます。その思考と執筆には、囲碁の全局観とシステム設計の構造感の両方が息づいています。
 
-単なる技術者でも、コンテンツ制作者でもなく、**問題分析・根本原因の追究・方法設計・システム統合・知識翻訳** の交差点に立つインテグレーターです。AI、デジタルヘルス、医療情報統合、製品設計、コンテンツ翻訳に長く取り組むとともに、囲碁教育、思考訓練、知識普及にも力を注いでいます。
+<ExpertQuote author="張饒輝" title="台湾好棋ベビー協会 創設者">
+問題・原因・方法・最善 —— まず本当の問題を明確に定義し、その背後にある原因を掘り下げ、実行可能な方法を提示し、最後にどのやり方がより良いかを比較して、問題を源から未然に防ぐ。
+</ExpertQuote>
 
-思考と執筆の核心は「**問題・原因・方法・最善**」の四語に集約されます。まず本当の問題を明確に定義し、その背後にある原因を掘り下げ、実行可能な方法を提示し、最後にどのやり方がより良いかを比較して、問題を源から未然に防ぐことを目指します。
+<KeyTakeaway>
 
-## 現職
+- **AI × デジタルヘルスのインテグレーター**：分野横断の産業知識を無料・オープンソースの AI ツールへ統合
+- **FHIR／SMART on FHIR 相互運用の専門家**：臨床ワークフローとデータフローの連携設計
+- **広東省囲碁初級教師**：両岸の囲碁教育システムを橋渡し
 
-- **社団法人 台湾好棋ベビー協会** ─ 創設者
-- **薬リマインダー科技股份有限公司** ─ 技術長（デジタルヘルス ／ 医療情報システム）
-- **囲碁人科技股份有限公司** ─ 創業株主（囲碁）
+</KeyTakeaway>
 
 ## 専門領域
 
-- **AI ／ デジタルヘルス製品設計**
-- **医療情報フローとシステム統合**
+### 🩺 医療情報とデジタルヘルス
+
+- AI／デジタルヘルス製品設計、医療情報フローとシステム統合
 - **FHIR**（Fast Healthcare Interoperability Resources）と **SMART on FHIR** アプリケーション設計
 - 臨床ワークフロー、データフロー、結果返却メカニズムの設計
-- 問題分解、根本原因分析、プロセス最適化
-- 知識翻訳と教育型コンテンツ設計
+- 協会の医療メンバー（黄子彦、潘天健、姜封豪、鄭博陽、羅揚 ら）との AI ツール統合協働
+
+### ⚫ 囲碁教育と思考法
+
 - 囲碁教育、思考訓練、構造化学習設計
+- 囲碁的思考と製品設計・意思決定手法の結びつけ
+- 問題分解、根本原因分析、プロセス最適化；知識翻訳と教育型コンテンツ設計
 
 ## 囲碁教育資格
 
 - **広東省囲碁初級教師資格認証**（オンライン研修修了）
-- 修了科目：囲碁学概論、囲碁教育学（一／二／三）、囲碁文化基礎（一／二／三）、幼児囲碁教育心理学、現行教育政策下における囲碁研修の発展機会、試験対策
-- オンライン囲碁教師研修の模擬授業試験に合格（指導者レベル）
+- 修了科目は囲碁学概論、囲碁教育学、囲碁文化基礎、幼児囲碁教育心理学などに及び、オンライン囲碁教師研修の模擬授業試験に合格（指導者レベル）
 
 ## 代表的な業績
 
-> 以下は本人が主導、または協会が主導して開発したプロジェクトで、いずれも無料またはオープンソースです。
+<ProfileWorks
+  groups={[
+    {
+      title: '🩺 医療情報とデジタルヘルス',
+      items: [
+        { title: 'TwTxGNN ドラッグ・リポジショニング基盤', desc: 'グラフニューラルネットワーク（GNN）による既存薬再利用のオープンソース基盤', href: 'https://github.com/yao-care/TwTxGNN', icon: '💊', external: true },
+        { title: '30か国以上の検証レポート', desc: '14万件超の AI 候補薬を対象とした多国間検証', href: 'https://twtxgnn.yao.care/', icon: '🌍', external: true },
+        { title: 'TwTxGNN SMART on FHIR 臨床アプリ', desc: 'SMART Health IT App Gallery 掲載の臨床意思決定支援', href: 'https://apps.smarthealthit.org/app/twtxgnn-smart-app', icon: '🏥', external: true },
+        { title: 'AI 華佗 ヘルスプラットフォーム', desc: 'AI 中医学知識プラットフォーム（黄子彦と共同貢献）', href: 'https://huatuo.ai.yao.care/', icon: '⚕️', external: true },
+      ],
+    },
+    {
+      title: '🧠 協会の AI ツールとインテリジェンス',
+      items: [
+        { title: 'EpiAlert 感染症速報', desc: 'グローバル感染症のリアルタイム監視と早期警告', href: 'https://epialert.weiqi.kids/', icon: '🦠', external: true },
+        { title: 'サプリメント情報', desc: 'サプリメントの科学的な詳細分析', href: 'https://supplement.weiqi.kids/', icon: '💪', external: true },
+        { title: 'セキュリティ脅威情報センター', desc: 'グローバルなサイバー脅威のリアルタイム監視', href: 'https://security.weiqi.kids/', icon: '🛡️', external: true },
+        { title: '41以上のオープンソース AI ツール', desc: '協会の AI ツールの多くを主導開発', href: '/apps/', icon: '🧰', external: false },
+      ],
+    },
+  ]}
+/>
 
-### 🩺 医療情報とデジタルヘルス
+## 協会における役割と協働の呼びかけ
 
-- **[TwTxGNN ドラッグ・リポジショニング オープンソース基盤](https://github.com/yao-care/TwTxGNN)** ─ グラフニューラルネットワーク（GNN）による既存薬再利用（drug repurposing）のオープンソース基盤。
-- **[30か国以上のドラッグ・リポジショニング検証レポート](https://twtxgnn.yao.care/)** ─ 14万件超の AI 候補薬を対象とした多国間検証レポート。
-- **[TwTxGNN SMART on FHIR 臨床アプリ](https://apps.smarthealthit.org/app/twtxgnn-smart-app)** ─ SMART Health IT App Gallery に掲載された臨床意思決定支援アプリ。
-- **[AI 華佗 ヘルスプラットフォーム](https://huatuo.ai.yao.care/)** ─ AI 中医学知識プラットフォーム（協会メンバーの黄子彦と共同貢献）。
+協会では **AI 統合エンジニア** 兼 **主筆** として、協会のオープンソース AI ツールの多くを主導開発し、すべての公益プロジェクトの技術統合と分野横断の品質レビューを支援しています。また広東省囲碁初級教師資格を通じて囲碁教育を推進し、個人ペルソナで医療情報、デジタルヘルス、囲碁的思考のコラムを執筆しています。
 
-### 🧠 AI ツールとインテリジェンス（協会 weiqi.kids）
-
-協会の AI ツールの多くを主導開発。含むがこれに限らない：
-
-- [EpiAlert 感染症速報](https://epialert.weiqi.kids/)、[サプリメント情報](https://supplement.weiqi.kids/)、[セキュリティ脅威情報センター](https://security.weiqi.kids/)
-- [グローバル規制変更トラッカー](https://risk.weiqi.kids/)、[グローバル貿易インテリジェンス](https://trade.weiqi.kids/)、[EC 製品リサーチ](https://ecommerce.weiqi.kids/)
-- [求人スキル需要観測所](https://skills.weiqi.kids/)、[学生学習マップ](https://learn.weiqi.kids/)、[ソーシャルリスニング](https://listening.weiqi.kids/)
-- および [/apps/](/apps/)、[/research/](/research/)、[/intel/](/intel/) 配下の大部分のプロジェクト
-
-## 分野横断の取り組み
-
-### 🩺 医療情報とデジタルヘルス
-
-- 薬リマインダー科技股份有限公司 技術長
-- FHIR ／ SMART on FHIR 医療情報相互運用標準の設計
-- 臨床ワークフローとデータフローの連携
-- 協会の医療メンバー（黄子彦、潘天健、姜封豪、鄭博陽、羅揚 ら）との AI ツール統合協働
-
-### ⚫ 囲碁教育
-
-- 囲碁人科技股份有限公司 創業株主
-- 広東省囲碁初級教師資格
-- 囲碁的思考と製品設計・意思決定手法の結びつけ
-- 構造化思考、囲碁対局、システム設計に関する方法論の執筆
-
-## 文体
-
-**明快、実務的、分かりやすい。体系的で構造的。問題定義と根本原因を重視し、誇張せず、空疎でなく、説教調でない。** 中立的・構造的で、論理と根本原因を重んじ、実用性を重視する社説やコラムに適しています。
-
-### 論理展開
-
-1. まず本当の問題を定義する
-2. 次にその問題を生む原因を分解する
-3. 次に実行可能な方法を整理する
-4. 最後にどのやり方がより良いかを比較し、根本から再発を防ぐ方法に立ち返る
-
-## 協会における役割
-
-- **AI 統合エンジニア**：メンバーの領域知識をオープンソース AI ツールへ統合
-- **分野横断レビュー**：すべての公益プロジェクトの技術統合と品質レビューを支援
-- **主筆**：協会の AI ツールの多くを主導開発
-- **囲碁教育の推進**：広東省囲碁初級教師資格を通じ、両岸の囲碁教育システムを橋渡し
-- **AI Writing Agent**：個人ペルソナで医療情報、デジタルヘルス、囲碁的思考などのコラムを執筆
-
-## 求めるパートナー
+**こんなパートナーを歓迎します：**
 
 - 認知度を高めたい団体
 - 競争障壁を高めたい製薬企業
 - 収益分配型の LINE@ ストアを構築したい IP 保有者
-- 医療スタートアップ、プロダクトマネージャー、エンジニア、顧問的役割（FHIR ／ SMART on FHIR ／ 臨床ワークフロー統合の分野）
+- 医療スタートアップ、プロダクトマネージャー、エンジニア、顧問的役割（FHIR ／ SMART on FHIR ／ 臨床ワークフロー統合）
 
-## 連絡先
-
-- Email：lightman.chang@gmail.com
-- 電話：0988-911679
-- 会社サイト：https://www.yao.care
-- Facebook：https://www.facebook.com/lightman.chang/
-- 住所：台中市西区台湾大道二段 239 号 13 階
+<FAQ
+  title="よくある質問"
+  items={[
+    { question: '張饒輝の専門領域は何ですか？', answer: 'AI／デジタルヘルス製品設計、医療情報システム統合、FHIR／SMART on FHIR アプリケーション設計、そして囲碁教育と構造化思考です。' },
+    { question: '張饒輝や協会とどう協働できますか？', answer: 'lightman.chang@gmail.com までご連絡ください。認知度を高めたい団体、競争障壁を高めたい製薬企業、医療スタートアップ、FHIR／臨床ワークフロー統合に取り組むチームが適しています。' },
+    { question: '台湾好棋ベビー協会での役割は何ですか？', answer: '創設者兼 AI 統合エンジニアとして、協会のオープンソース AI ツールの多くを主導開発し、分野横断の技術統合と品質レビューを担当しています。' },
+    { question: '「問題・原因・方法・最善」とは何ですか？', answer: '彼の思考方法論です——まず本当の問題を定義し、その原因を掘り下げ、実行可能な方法を提示し、どのやり方がより良いかを比較して、問題を根本から再発防止します。' },
+  ]}
+/>
 
 ---
 

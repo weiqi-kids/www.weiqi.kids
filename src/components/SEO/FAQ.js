@@ -6,8 +6,9 @@ import Head from '@docusaurus/Head';
  * 自動產生 FAQPage Schema
  *
  * @param {Array} items - FAQ 項目陣列 [{question, answer}]
+ * @param {string} [title] - 區塊標題（多語系用，預設「常見問題」）
  */
-export default function FAQ({ items }) {
+export default function FAQ({ items, title = '常見問題' }) {
   // 產生 FAQPage Schema
   const faqSchema = {
     "@context": "https://schema.org",
@@ -30,7 +31,7 @@ export default function FAQ({ items }) {
         </script>
       </Head>
       <div className="faq-section" style={{ marginTop: '2rem' }}>
-        <h2>常見問題</h2>
+        <h2>{title}</h2>
         {items.map((item, index) => (
           <details
             key={index}
