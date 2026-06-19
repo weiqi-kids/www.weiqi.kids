@@ -7,3 +7,4 @@ export { default as ActionableSteps } from './ActionableSteps';
 export { default as ArticleSchema } from './ArticleSchema';
 export { default as GlobalSchema } from './GlobalSchema';
 export { default as CollectionPageSchema } from './CollectionPageSchema';
+export { default as PersonSchema } from './PersonSchema';
