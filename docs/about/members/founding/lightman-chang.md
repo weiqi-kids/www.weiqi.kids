@@ -93,17 +93,10 @@ import FAQ from '@site/src/components/SEO/FAQ';
 
 ## 專業領域
 
-### 🩺 醫療資訊與數位健康
-
-- AI／數位健康產品設計、醫療資訊流程與系統整合
-- **FHIR**（Fast Healthcare Interoperability Resources）與 **SMART on FHIR** 應用設計
-- 臨床工作流、資料流與結果回傳機制規劃
+- **AI／數位健康產品設計**、醫療資訊流程與系統整合
+- **FHIR**（Fast Healthcare Interoperability Resources）與 **SMART on FHIR** 應用設計、臨床工作流與資料流規劃
 - 與會內醫療夥伴（黃子彥、潘天健、姜封豪、鄭博陽、羅揚 等）的 AI 工具整合協作
-
-### ⚫ 圍棋教育與思考方法
-
-- 圍棋教育、思考訓練與結構化學習設計
-- 圍棋思維與產品設計、決策方法的連結整理
+- **圍棋教育與結構化學習設計**、圍棋思維與決策方法的連結
 - 問題拆解、根因分析與流程優化；知識轉譯與教育型內容設計
 
 ## 圍棋教育認證

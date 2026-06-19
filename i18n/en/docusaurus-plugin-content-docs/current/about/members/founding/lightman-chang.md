@@ -94,17 +94,10 @@ Problem, cause, method, best — first define the real problem clearly, then tra
 
 ## Areas of Expertise
 
-### 🩺 Healthcare Information & Digital Health
-
-- AI / digital health product design, healthcare information workflow & systems integration
-- **FHIR** (Fast Healthcare Interoperability Resources) and **SMART on FHIR** application design
-- Clinical workflow, data flow, and result return-loop planning
+- **AI / digital health product design**, healthcare information workflow & systems integration
+- **FHIR** (Fast Healthcare Interoperability Resources) and **SMART on FHIR** application design, clinical workflow & data flow planning
 - Collaboration with the association's healthcare members (Tzu-Yen Huang, Tien-Chien Pan, Feng-Hao Chiang, Bo-Yang Cheng, Yang Luo, etc.) on AI tool integration
-
-### ⚫ Go Education & Thinking Methods
-
-- Go education, thinking training, and structured learning design
-- Connecting Go thinking with product design and decision-making methods
+- **Go education & structured learning design**, connecting Go thinking with decision-making methods
 - Problem decomposition, root-cause analysis, process optimization; knowledge translation and educational content design
 
 ## Go Education Credentials

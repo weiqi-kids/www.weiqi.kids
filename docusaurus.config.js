@@ -94,6 +94,9 @@ const config = {
 
   onBrokenLinks: 'throw',
 
+  // 將內容語言（<html lang>）傳給 GA4（content_language 自訂維度）
+  clientModules: ['./src/clientModules/gtag-content-language.js'],
+
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
@@ -190,6 +193,11 @@ const config = {
         },
         theme: {
           customCss: './src/css/custom.css',
+        },
+        // Google Analytics 4（官方 gtag 外掛，自動處理 SPA 換頁追蹤）
+        gtag: {
+          trackingID: 'G-16V1KSEH6W',
+          anonymizeIP: true,
         },
       }),
     ],
