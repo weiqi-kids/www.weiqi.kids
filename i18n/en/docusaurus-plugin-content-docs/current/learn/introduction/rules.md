@@ -7,6 +7,8 @@ title: Go Rules
 
 The rules of Go are very simple, but the variations they produce are endless. This is exactly what makes Go fascinating.
 
+<p className="key-answer" data-question="What are the basic rules of Go?">In Go, Black and White take turns placing stones on the intersections of the board's lines, with Black playing first, aiming to surround more empty space. A stone is captured and removed when it loses all of its surrounding "liberties," and there are special rules such as illegal points and ko. At the end of the game, the winner is decided by who surrounds more territory.</p>
+
 ## Basic Concepts
 
 ### Board and Stones

@@ -7,6 +7,8 @@ title: Era KataGo
 
 Apos a aposentadoria do AlphaGo em 2017, o desenvolvimento da IA de Go nao parou. Pelo contrario, a comunidade de codigo aberto assumiu a tocha, fazendo com que a IA de Go de nivel superior deixasse de ser exclusividade das gigantes de tecnologia e se tornasse uma ferramenta disponivel para todos. Este movimento de "democratizacao da IA" mudou completamente a forma de aprender e treinar Go.
 
+<p className="key-answer" data-question="O que e a era KataGo?">Apos a aposentadoria do AlphaGo, a comunidade de codigo aberto assumiu a tocha: do Leela Zero e do ELF OpenGo ate o KataGo, lancado por David Wu em 2019, a IA de Go de nivel superior tornou-se acessivel a todos. Com treinamento mais eficiente, suporte a partidas com handicap e a varias regras, alem de saida de analise detalhada, o KataGo tornou-se a IA de Go de codigo aberto mais popular da atualidade.</p>
+
 ## Ascensao da IA de Codigo Aberto
 
 ### Leela Zero: O Poder da Comunidade

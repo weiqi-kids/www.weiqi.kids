@@ -7,6 +7,8 @@ title: Aprendendo com IA
 
 IA e a ferramenta de aprendizado mais poderosa para jogadores amadores nesta era. Usar IA bem pode acelerar muito seu progresso; mas se usada incorretamente, pode ate atrapalhar o aprendizado. Este artigo apresentara como usar IA corretamente para auxiliar o aprendizado.
 
+<p className="key-answer" data-question="Como aprender Go com IA?">Voce pode usar o KataGo, gratuito e de codigo aberto, como motor de analise, combinado com interfaces graficas como Lizzie ou Sabaki para carregar registros de partidas e revisa-los pela taxa de vitoria e pelas melhores jogadas sugeridas; o essencial e pensar por conta propria antes de ver a resposta da IA, evitando a dependencia excessiva.</p>
+
 ## Ferramentas de IA Recomendadas
 
 ### KataGo

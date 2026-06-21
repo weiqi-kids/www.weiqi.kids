@@ -7,6 +7,8 @@ title: Era AlphaGo
 
 De 2015 a 2017, la serie de programas AlphaGo de Google DeepMind creo uno de los avances mas emblematicos en la historia de la inteligencia artificial. En solo dos anos, el Go paso de ser "un juego que la IA no puede conquistar" a ser "un campo donde la IA supera completamente a los humanos".
 
+<p className="key-answer" data-question="¿Qué ocurrió durante la era AlphaGo?">Entre 2015 y 2017, AlphaGo de DeepMind venció primero al profesional Fan Hui en 2015, derrotó a Lee Sedol por 4:1 en 2016, encadenó victorias en línea como Master y venció a Ke Jie en 2017. Combinando redes neuronales profundas con la búsqueda en árbol de Monte Carlo, logró que la IA superara por completo el nivel humano en el Go.</p>
+
 ## Octubre 2015: AlphaGo derrota a Fan Hui
 
 ### Partida historica secreta

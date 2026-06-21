@@ -8,6 +8,8 @@ description: Step-by-step guide to implementing a simplified AlphaGo Zero style 
 
 This article guides you step by step to implement a simplified AlphaGo Zero style Go AI, covering game logic, neural network, MCTS, and training process.
 
+<p className="key-answer" data-question="How do you build a Go AI from scratch?">Building a Go AI from scratch requires four core modules: the board and rule logic, a neural network (with a policy head and a value head), Monte Carlo Tree Search (MCTS), and a self-play reinforcement learning training loop. This article implements a simplified AlphaGo Zero architecture on a 9x9 board, capable of training an AI that reaches amateur beginner strength.</p>
+
 :::info Learning Goals
 After completing this tutorial, you will have a Go AI that can:
 - Self-play on a 9×9 board

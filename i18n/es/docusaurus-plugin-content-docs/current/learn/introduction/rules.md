@@ -7,6 +7,8 @@ title: Reglas del Go
 
 Las reglas del Go son muy simples, pero las variaciones que generan son infinitas. Esto es precisamente lo que hace fascinante al Go.
 
+<p className="key-answer" data-question="¿Cuáles son las reglas básicas del Go?">En el Go, negras y blancas colocan por turnos sus piedras en las intersecciones de las líneas del tablero, jugando las negras primero, con el objetivo de rodear más territorio vacío; una piedra es capturada cuando pierde todas sus "libertades" alrededor, y existen reglas especiales como los puntos prohibidos y el ko. Al terminar, el resultado se determina según quién haya rodeado más territorio.</p>
+
 ## Conceptos basicos
 
 ### Tablero y piedras

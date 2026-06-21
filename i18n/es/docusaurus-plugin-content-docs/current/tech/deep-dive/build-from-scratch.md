@@ -8,6 +8,8 @@ description: Tutorial paso a paso para implementar una IA de Go estilo AlphaGo Z
 
 Este articulo te guia paso a paso para implementar una IA de Go simplificada al estilo AlphaGo Zero, cubriendo logica del juego, red neuronal, MCTS y proceso de entrenamiento.
 
+<p className="key-answer" data-question="¿Cómo construir una IA de Go desde cero?">Construir una IA de Go desde cero requiere cuatro módulos centrales: la lógica del tablero y las reglas, la red neuronal (con cabezas de política y de valor), la búsqueda en árbol de Monte Carlo (MCTS) y el ciclo de entrenamiento por aprendizaje por refuerzo mediante auto-juego. Este artículo lo implementa con una arquitectura simplificada estilo AlphaGo Zero en un tablero de 9x9, capaz de entrenar una IA con nivel amateur principiante.</p>
+
 :::info Objetivos de aprendizaje
 Al completar este tutorial, tendras una IA de Go capaz de:
 - Auto-jugar en tablero 9x9

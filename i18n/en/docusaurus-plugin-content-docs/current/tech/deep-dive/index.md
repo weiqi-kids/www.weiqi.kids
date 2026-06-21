@@ -8,6 +8,8 @@ description: Advanced topic guide covering neural networks, MCTS, training, opti
 
 This section is for engineers who want to dive deep into Go AI, covering technical implementation, theoretical foundations, and practical applications.
 
+<p className="key-answer" data-question="Which topics should you start with to study Go AI in depth?">This section organizes its in-depth content around four areas: core technologies (neural network architecture, MCTS implementation, training mechanisms), performance optimization (GPU backends, model quantization and deployment, evaluation benchmarks), advanced topics (distributed training, custom rules, key papers), and open source and implementation. It suits engineers who want to study or contribute to Go AI in depth.</p>
+
 ---
 
 ## Article Overview

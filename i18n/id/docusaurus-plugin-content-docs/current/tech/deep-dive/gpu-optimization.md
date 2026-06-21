@@ -8,6 +8,8 @@ description: Panduan perbandingan dan tuning performa backend CUDA, OpenCL, Meta
 
 Artikel ini memperkenalkan berbagai backend GPU yang didukung KataGo, perbedaan performa, dan cara melakukan tuning untuk mendapatkan performa optimal.
 
+<p className="key-answer" data-question="Bagaimana cara mengoptimalkan performa GPU KataGo?">KataGo menyediakan empat backend komputasi: CUDA, OpenCL, Metal, dan Eigen; GPU NVIDIA memberikan performa terbaik dengan CUDA, lintas merek dapat menggunakan OpenCL, Apple Silicon menggunakan Metal, dan CPU murni menggunakan Eigen. Kunci optimasi adalah memilih backend yang tepat serta menyetel ukuran batch (nnMaxBatchSize) dan jumlah thread agar GPU dimanfaatkan secara maksimal.</p>
+
 ---
 
 ## Gambaran Backend

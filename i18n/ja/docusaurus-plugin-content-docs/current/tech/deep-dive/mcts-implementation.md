@@ -8,6 +8,8 @@ description: モンテカルロ木探索の実装、PUCT選択、並列化技術
 
 本記事では、KataGoにおけるモンテカルロ木探索（MCTS）の実装詳細を、データ構造、選択戦略、並列化技術を含めて詳しく解説します。
 
+<p className="key-answer" data-question="KataGoのMCTSはどのように実装されているのか？">KataGoのMCTSは、選択（Selection）、展開（Expansion）、評価（Evaluation）、逆伝播（Backpropagation）の4ステップのループで構成されます。選択段階ではPUCT公式で探索と活用のバランスを取り、さらに仮想損失、バッチ化したニューラルネットワーク評価、マルチスレッド並列化によって探索効率を大幅に向上させています。</p>
+
 ---
 
 ## MCTSの4ステップ復習

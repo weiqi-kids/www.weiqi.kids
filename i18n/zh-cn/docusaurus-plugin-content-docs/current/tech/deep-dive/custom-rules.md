@@ -8,6 +8,8 @@ description: KataGo 支持的围棋规则集、变体棋盘与自定义配置详
 
 本文介绍 KataGo 支持的各种围棋规则、棋盘大小变体，以及如何自定义规则配置。
 
+<p className="key-answer" data-question="KataGo 支持哪些围棋规则并如何自定义？">KataGo 支持中国、日本、韩国、AGA、新西兰、Tromp-Taylor 等多种规则集，可在 config.cfg 中通过 rules、komi（贴目）、boardXSize/boardYSize（棋盘大小）等参数自定义计目方式、贴目与棋盘尺寸。</p>
+
 ---
 
 ## 规则集总览

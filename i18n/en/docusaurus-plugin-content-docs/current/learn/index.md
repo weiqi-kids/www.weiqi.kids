@@ -7,6 +7,8 @@ title: For Go Players
 
 Welcome to the Go Players section! Whether you're a complete beginner just starting out or an enthusiast looking to improve your game, you'll find learning resources suited for you here.
 
+<p className="key-answer" data-question="How do you learn Go from scratch?">Start with the introduction to build a solid foundation, learning the rules, basic terminology, game etiquette, and the first ten opening moves. Then move on to the AI era section to understand the conceptual shifts AI has brought and how to use AI tools to improve, gradually building correct understanding and playing strength step by step.</p>
+
 ## Who This Section Is For
 
 - **Complete beginners**: Never played Go before and want to learn from scratch

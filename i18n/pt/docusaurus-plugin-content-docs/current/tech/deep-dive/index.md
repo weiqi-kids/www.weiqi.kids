@@ -8,6 +8,8 @@ description: "Guia de tópicos avançados: redes neurais, MCTS, treinamento, oti
 
 Esta seção é destinada a engenheiros que desejam se aprofundar no estudo de IA para Go, abrangendo implementação técnica, fundamentos teóricos e aplicações práticas.
 
+<p className="key-answer" data-question="Por quais tópicos começar para se aprofundar em IA de Go?">Esta seção organiza o conteúdo aprofundado em quatro grandes temas: tecnologias essenciais (arquitetura de rede neural, implementação do MCTS, mecanismo de treinamento), otimização de desempenho (backends de GPU, quantização e implantação de modelos, benchmarks de avaliação), tópicos avançados (treinamento distribuído, regras personalizadas, artigos importantes) e código aberto e implementação, sendo ideal para engenheiros que desejam pesquisar a fundo ou contribuir com a IA de Go.</p>
+
 ---
 
 ## Visão Geral dos Artigos

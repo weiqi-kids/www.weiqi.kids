@@ -7,6 +7,8 @@ title: Cambios que trajo la IA
 
 La aparicion de AlphaGo no solo derroto a los mejores jugadores humanos, mas importante aun, cambio nuestra comprension del Go. Muchos conceptos que antes se consideraban "sentido comun" necesitan ser reexaminados bajo el analisis de la IA.
 
+<p className="key-answer" data-question="¿Qué cambios principales trajo la IA a los conceptos del Go?">La IA derribó muchos conceptos tradicionales: la invasión del san-san pasó de ser una "pérdida" a una jugada habitual en la apertura, el valor de la influencia exterior se reevaluó dando mayor importancia al territorio real, y las elecciones de apertura cambiaron notablemente, enfatizando en conjunto la eficiencia global y un juicio objetivo de la probabilidad de victoria.</p>
+
 ## Principales cambios de estilo
 
 ### San-san se volvio comun

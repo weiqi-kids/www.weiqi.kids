@@ -8,6 +8,8 @@ description: Join the KataGo open source community, contribute computing power o
 
 KataGo is an active open source project with multiple ways to contribute.
 
+<p className="key-answer" data-question="How can you contribute to the KataGo open source community?">There are four main ways to contribute to KataGo: donate GPU computing power to the distributed training network (katagotraining.org), report issues on GitHub, improve the documentation, and contribute C++/Python code. The lowest-barrier option is contributing computing power by running self-play on a computer with a GPU.</p>
+
 ---
 
 ## Contribution Methods Overview

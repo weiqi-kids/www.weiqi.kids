@@ -8,6 +8,8 @@ description: Bergabung dengan komunitas open source KataGo, kontribusi daya komp
 
 KataGo adalah proyek open source yang aktif, dengan berbagai cara untuk berpartisipasi dan berkontribusi.
 
+<p className="key-answer" data-question="Bagaimana cara berkontribusi ke komunitas open source KataGo?">Ada empat cara utama untuk berkontribusi ke KataGo: menyumbangkan daya komputasi GPU ke jaringan pelatihan terdistribusi (katagotraining.org), melaporkan masalah di GitHub, memperbaiki dokumentasi, dan berkontribusi kode C++/Python; cara dengan hambatan paling rendah adalah menjalankan self-play menggunakan komputer ber-GPU untuk menyumbang daya komputasi.</p>
+
 ---
 
 ## Gambaran Cara Kontribusi

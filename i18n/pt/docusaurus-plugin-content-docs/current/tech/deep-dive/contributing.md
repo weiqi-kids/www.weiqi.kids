@@ -8,6 +8,8 @@ description: Junte-se a comunidade open source do KataGo, contribua com poder co
 
 O KataGo e um projeto open source ativo, com varias formas de participar e contribuir.
 
+<p className="key-answer" data-question="Como participar da comunidade open source do KataGo?">Existem quatro formas principais de participar do KataGo: contribuir com poder de GPU para a rede de treinamento distribuido (katagotraining.org), reportar problemas no GitHub, melhorar a documentacao e contribuir com codigo C++/Python. A forma de menor barreira de entrada e usar um computador com GPU para executar auto-jogo e contribuir com poder computacional.</p>
+
 ---
 
 ## Visao Geral das Formas de Contribuicao

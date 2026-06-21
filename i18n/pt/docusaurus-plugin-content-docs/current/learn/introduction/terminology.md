@@ -7,6 +7,8 @@ title: Terminologia do Go
 
 Aprender a terminologia do Go ajuda voce a entender comentarios de partidas, compreender explicacoes e comunicar-se com outros jogadores.
 
+<p className="key-answer" data-question="Quais sao os termos mais usados no Go?">Os termos mais usados no Go podem ser divididos em categorias como posicoes do tabuleiro (tengen, hoshi, komoku, san-san, canto, lado, centro, da primeira a quarta linha) e termos de formas e de partida. Familiarizar-se com esses nomes ajuda a entender os comentarios das partidas e a conversar com outros jogadores.</p>
+
 ## Terminologia do Tabuleiro
 
 ### Posicoes Importantes do Tabuleiro

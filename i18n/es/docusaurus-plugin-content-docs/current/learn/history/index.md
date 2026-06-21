@@ -11,6 +11,8 @@ En marzo de 2016, AlphaGo de Google DeepMind derroto al campeon mundial Lee Sedo
 
 Pero esto no es el final, sino el comienzo de una nueva era.
 
+<p className="key-answer" data-question="¿Cómo cambió la IA el Go?">La IA redefinió la "mejor jugada", derribando conceptos tradicionales como el san-san y el hombro y adoptando en su lugar un razonamiento basado en la eficiencia global; al mismo tiempo, revolucionó la forma de aprender, permitiendo a los jugadores enfrentarse a la IA las 24 horas y recibir evaluaciones numéricas en tiempo real, elevando con ello el techo del nivel de juego.</p>
+
 ### Cambios que trajo la IA
 
 **1. Redefinicion de "la mejor jugada"**

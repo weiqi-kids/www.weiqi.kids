@@ -7,6 +7,8 @@ title: Etiqueta en las partidas
 
 El Go no es solo una competencia de victoria y derrota, sino tambien una expresion de cultura y refinamiento. La buena etiqueta en las partidas es una cualidad basica que todo jugador deberia tener.
 
+<p className="key-answer" data-question="¿Qué etiqueta hay que seguir al jugar al Go?">Antes de comenzar la partida hay que saludar al oponente y adivinar quién juega con negras o blancas; tras colocar una piedra no se puede retractar (la jugada es definitiva), durante la partida hay que mantener el silencio y la concentración, respetar al oponente y, al terminar, confirmar honestamente el resultado. Estas son las normas básicas de etiqueta en las partidas.</p>
+
 ## Inicio de la partida
 
 ### Saludo

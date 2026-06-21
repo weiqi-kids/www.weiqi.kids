@@ -7,6 +7,8 @@ title: Conceitos de Abertura
 
 A abertura (tambem chamada fuseki) e a primeira fase de uma partida de Go. Esta fase determina a direcao de todo o jogo. Este artigo apresentara os conceitos basicos de abertura para ajudar voce a desenvolver uma boa visao global.
 
+<p className="key-answer" data-question="Como jogar a abertura no Go?">O nucleo da abertura segue o principio de que os cantos valem ouro, os lados valem prata e o centro vale capim: ocupe primeiro os cantos, que tem a maior eficiencia, depois os lados, e so por ultimo considere o centro. O objetivo e ocupar os grandes pontos, estabelecer bases e equilibrar territorio e influencia.</p>
+
 ## A Direcao Geral da Abertura
 
 ### Objetivos da Abertura

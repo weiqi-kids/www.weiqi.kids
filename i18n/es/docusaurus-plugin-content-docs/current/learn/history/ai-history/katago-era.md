@@ -7,6 +7,8 @@ title: Era KataGo
 
 Despues de que AlphaGo se retiro en 2017, el desarrollo de la IA de Go no se detuvo. Por el contrario, la comunidad de codigo abierto tomo la antorcha, haciendo que la IA de Go de primer nivel ya no sea un privilegio exclusivo de gigantes tecnologicos, sino una herramienta que todos pueden usar. Este movimiento de "democratizacion de la IA" cambio completamente la forma de aprender y entrenar Go.
 
+<p className="key-answer" data-question="¿Qué es la era KataGo?">Tras la retirada de AlphaGo, la comunidad de código abierto tomó el relevo: desde Leela Zero y ELF OpenGo hasta KataGo, publicado por David Wu en 2019, la IA de Go de primer nivel se popularizó. Con un entrenamiento más eficiente, soporte para piedras de hándicap y múltiples reglas, y una salida de análisis detallada, KataGo se ha convertido en la IA de Go de código abierto más popular en la actualidad.</p>
+
 ## Ascenso de la IA de codigo abierto
 
 ### Leela Zero: El poder de la comunidad

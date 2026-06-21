@@ -7,6 +7,8 @@ title: Belajar Go dengan AI
 
 AI adalah alat pembelajaran paling kuat untuk pemain amatir di era ini. Memanfaatkan AI dengan baik dapat sangat mempercepat kemajuan Anda; tetapi jika digunakan dengan tidak tepat, justru dapat menghambat pembelajaran. Artikel ini akan memperkenalkan cara menggunakan AI dengan benar untuk membantu pembelajaran.
 
+<p className="key-answer" data-question="Bagaimana cara belajar Go dengan AI?">Anda dapat menggunakan KataGo yang gratis dan open source sebagai mesin analisis, dipadukan dengan antarmuka grafis seperti Lizzie atau Sabaki untuk memuat catatan permainan, lalu melakukan review melalui tingkat kemenangan dan saran langkah terbaik. Kuncinya adalah berpikir sendiri dulu baru melihat jawaban AI, dan menghindari ketergantungan berlebihan.</p>
+
 ## Alat AI yang Direkomendasikan
 
 ### KataGo

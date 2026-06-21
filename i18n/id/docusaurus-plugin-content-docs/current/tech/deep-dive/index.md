@@ -8,6 +8,8 @@ description: "Panduan topik lanjutan: neural network, MCTS, pelatihan, optimasi,
 
 Bagian ini ditujukan untuk engineer yang ingin mendalami AI Go, mencakup implementasi teknis, dasar teori, dan aplikasi praktis.
 
+<p className="key-answer" data-question="Dari topik mana sebaiknya memulai untuk mendalami AI Go?">Bagian ini menyusun konten mendalam secara sistematis berdasarkan empat tema utama: teknologi inti (arsitektur neural network, implementasi MCTS, mekanisme pelatihan), optimasi performa (backend GPU, kuantisasi dan deployment model, benchmark evaluasi), topik lanjutan (pelatihan terdistribusi, aturan kustom, paper kunci), serta open source dan implementasinya, cocok bagi engineer yang ingin mendalami penelitian atau berkontribusi pada AI Go.</p>
+
 ---
 
 ## Daftar Artikel

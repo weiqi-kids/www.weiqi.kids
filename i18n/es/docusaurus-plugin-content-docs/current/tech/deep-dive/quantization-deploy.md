@@ -8,6 +8,8 @@ description: Técnicas de cuantización de modelos KataGo, formatos de exportaci
 
 Este artículo presenta cómo cuantizar modelos KataGo para reducir los requisitos de recursos, así como soluciones de despliegue en diversas plataformas.
 
+<p className="key-answer" data-question="¿Cómo cuantizar y desplegar un modelo KataGo?">La cuantización reduce el tamaño del modelo y acelera la inferencia al bajar la precisión numérica: FP16 ahorra la mitad de la memoria casi sin pérdida de precisión, e INT8 comprime hasta una cuarta parte; los métodos se dividen en cuantización posterior al entrenamiento (PTQ, simple y rápida) y entrenamiento consciente de la cuantización (QAT, más precisa pero requiere reentrenar), y luego se despliega en cada plataforma con herramientas como TensorRT.</p>
+
 ---
 
 ## Visión general de técnicas de cuantización

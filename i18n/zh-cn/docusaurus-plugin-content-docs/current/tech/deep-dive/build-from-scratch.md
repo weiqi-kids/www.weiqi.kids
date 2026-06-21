@@ -8,6 +8,8 @@ description: 一步步教你实现一个简易版的 AlphaGo Zero 风格围棋 A
 
 本文带你一步步实现一个简化版的 AlphaGo Zero 风格围棋 AI，涵盖游戏逻辑、神经网络、MCTS 与训练流程。
 
+<p className="key-answer" data-question="如何从零打造一个围棋 AI？">从零打造围棋 AI 需要四个核心模块：棋盘与规则逻辑、神经网络（策略头与价值头）、蒙特卡洛树搜索（MCTS），以及自我对弈强化学习训练循环；本文以简化版 AlphaGo Zero 架构在 9×9 棋盘上实现，可训练出达业余初级棋力的 AI。</p>
+
 :::info 学习目标
 完成本教程后，你将拥有一个能够：
 - 在 9×9 棋盘上自我对弈

@@ -7,6 +7,8 @@ title: Go Moderno e Contemporaneo
 
 Do estabelecimento das Quatro Casas de Go japonesas no seculo XVII ate a disputa China-Coreia no seculo XXI, o Go moderno e contemporaneo passou por importantes transformacoes de profissionalizacao e internacionalizacao. Esta historia testemunha o processo do Go evoluindo de arte tradicional oriental para esporte competitivo global.
 
+<p className="key-answer" data-question="Como o Go moderno e contemporaneo evoluiu do Japao ate a disputa China-Coreia?">No seculo XVII, o Japao criou o Godokoro e as Quatro Casas, como a Hon'inbo, impulsionando a profissionalizacao do Go e formando mestres como Dosaku e Shusaku; no seculo XX, Wu Qingyuan iniciou a Nova Abertura e dominou o cenario, e, no pos-guerra, seguiram-se a era de ouro japonesa, a ascensao coreana e o renascimento chines, configurando a disputa China-Coreia.</p>
+
 ## Era das Quatro Casas Japonesas (1612-1868)
 
 ### Estabelecimento do Sistema das Casas

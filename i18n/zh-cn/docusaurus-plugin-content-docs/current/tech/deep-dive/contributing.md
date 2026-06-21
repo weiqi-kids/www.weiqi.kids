@@ -8,6 +8,8 @@ description: 加入 KataGo 开源社区，贡献算力或代码
 
 KataGo 是一个活跃的开源项目，有多种方式可以参与贡献。
 
+<p className="key-answer" data-question="如何参与 KataGo 开源社区？">参与 KataGo 主要有四种方式：贡献 GPU 算力给分布式训练网络（katagotraining.org）、在 GitHub 报告问题、改进文档，以及贡献 C++/Python 代码；门槛最低的是用带 GPU 的电脑运行自我对弈来贡献算力。</p>
+
 ---
 
 ## 贡献方式总览

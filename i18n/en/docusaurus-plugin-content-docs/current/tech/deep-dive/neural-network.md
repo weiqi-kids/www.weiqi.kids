@@ -8,6 +8,8 @@ description: In-depth analysis of KataGo's neural network design, input features
 
 This article provides an in-depth analysis of KataGo's complete neural network architecture, from input feature encoding to multi-head output design.
 
+<p className="key-answer" data-question="What is KataGo's neural network architecture?">KataGo uses a single neural network with multi-head output. Its backbone is a residual tower (20 to 60 residual blocks plus global pooling layers) that extracts features from the input feature planes, and it then branches into four output heads: policy (move probabilities), value (win rate), score (point difference), and ownership (territory ownership).</p>
+
 ---
 
 ## Architecture Overview

@@ -8,6 +8,8 @@ description: KataGo model quantization techniques, export formats, and cross-pla
 
 This article introduces how to quantize KataGo models to reduce resource requirements, and deployment solutions for various platforms.
 
+<p className="key-answer" data-question="How do you quantize and deploy a KataGo model?">Quantization reduces model size and speeds up inference by lowering numerical precision: FP16 halves memory use with almost no accuracy loss, and INT8 can compress it to a quarter. Quantization comes in two forms, post-training quantization (PTQ, simple and fast) and quantization-aware training (QAT, more accurate but requires retraining), and the result is deployed to various platforms with tools such as TensorRT.</p>
+
 ---
 
 ## Quantization Techniques Overview

@@ -8,6 +8,8 @@ description: Tutorial langkah demi langkah untuk mengimplementasikan AI Go berga
 
 Artikel ini memandu Anda langkah demi langkah untuk mengimplementasikan AI Go bergaya AlphaGo Zero yang disederhanakan, mencakup logika game, neural network, MCTS, dan alur pelatihan.
 
+<p className="key-answer" data-question="Bagaimana cara membangun AI Go dari nol?">Membangun AI Go dari nol membutuhkan empat modul inti: logika papan dan aturan, neural network (policy head dan value head), Monte Carlo Tree Search (MCTS), serta loop pelatihan reinforcement learning melalui self-play; artikel ini mengimplementasikan arsitektur AlphaGo Zero versi sederhana pada papan 9×9, yang dapat melatih AI hingga mencapai level amatir pemula.</p>
+
 :::info Tujuan Pembelajaran
 Setelah menyelesaikan tutorial ini, Anda akan memiliki AI Go yang dapat:
 - Self-play di papan 9×9

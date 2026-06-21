@@ -8,6 +8,8 @@ description: Struktur kode KataGo, modul inti, dan desain arsitektur
 
 Artikel ini membantu Anda memahami struktur kode KataGo, cocok untuk engineer yang ingin mendalami penelitian atau berkontribusi kode.
 
+<p className="key-answer" data-question="Seperti apa struktur source code KataGo?">Source code KataGo (github.com/lightvector/KataGo) terbagi menjadi dua bagian utama: cpp/ adalah engine inti C++ yang berisi program utama, aturan Go (game), pencarian MCTS (search), dan inferensi neural network (neuralnet); sedangkan python/ adalah kode pelatihan Python yang berisi program utama pelatihan, definisi arsitektur jaringan (model.py), dan pemrosesan data.</p>
+
 ---
 
 ## Mendapatkan Source Code

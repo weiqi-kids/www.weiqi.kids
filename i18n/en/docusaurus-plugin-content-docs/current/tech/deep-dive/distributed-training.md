@@ -8,6 +8,8 @@ description: KataGo distributed training system architecture, Self-play Worker, 
 
 This article introduces KataGo's distributed training system architecture, explaining how the global community's computing power continuously improves the model.
 
+<p className="key-answer" data-question="How does KataGo's distributed training architecture work?">In KataGo's distributed training, self-play workers run by volunteers worldwide play games and upload the resulting game data. A central training server collects the data, periodically trains a stronger model, and releases it back to the workers to keep playing, forming a continuous self-improvement loop.</p>
+
 ---
 
 ## System Architecture Overview

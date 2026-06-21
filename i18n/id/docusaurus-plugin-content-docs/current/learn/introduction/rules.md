@@ -7,6 +7,8 @@ title: Aturan Go
 
 Aturan Go sangat sederhana, tetapi variasi yang dihasilkan tak terbatas. Inilah daya tarik Go.
 
+<p className="key-answer" data-question="Apa aturan dasar Go?">Dalam Go, pihak hitam dan putih bergiliran meletakkan batu di persimpangan garis papan, hitam bermain lebih dulu, dengan tujuan mengelilingi wilayah kosong yang lebih banyak; sebuah batu yang kehilangan semua "liberti" di sekitarnya akan ditangkap, ada pula aturan khusus seperti titik terlarang dan ko, dan di akhir permainan pemenang ditentukan oleh banyaknya wilayah yang dikelilingi.</p>
+
 ## Konsep Dasar
 
 ### Papan dan Batu

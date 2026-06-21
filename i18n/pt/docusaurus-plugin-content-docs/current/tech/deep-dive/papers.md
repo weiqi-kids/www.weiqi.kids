@@ -8,6 +8,8 @@ description: "Analise dos pontos-chave dos artigos marcos da IA de Go: AlphaGo, 
 
 Este artigo organiza os artigos mais importantes na historia do desenvolvimento da IA de Go, fornecendo resumos e pontos tecnicos para compreensao rapida.
 
+<p className="key-answer" data-question="Quais sao os artigos essenciais sobre IA de Go?">Os artigos marcos na historia da IA de Go incluem: o MCTS de Coulom (2006), o AlphaGo (2016), o AlphaGo Zero (2017), o generalizado AlphaZero (2017) e o KataGo de David Wu (2019), que propos diversas melhorias de eficiencia; para entender os fundamentos, comece pelo AlphaGo, e para referencia de implementacao foque no artigo do KataGo.</p>
+
 ---
 
 ## Visao Geral dos Artigos

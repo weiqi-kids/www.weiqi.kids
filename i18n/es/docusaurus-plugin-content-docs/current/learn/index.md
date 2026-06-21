@@ -7,6 +7,8 @@ title: Para jugadores de Go
 
 Bienvenido a la seccion para jugadores de Go. Ya seas un principiante que recien comienza o un aficionado que busca mejorar, aqui encontraras recursos de aprendizaje adecuados para ti.
 
+<p className="key-answer" data-question="¿Cómo aprender Go desde cero?">Empieza por la sección de introducción para construir una base sólida, aprendiendo las reglas del Go, la terminología básica, la etiqueta en las partidas y las primeras diez jugadas; luego pasa a la sección de la era de la IA para conocer los cambios de concepto que trajo la inteligencia artificial y aprender a usar bien las herramientas de IA, estableciendo de forma gradual conceptos correctos y fuerza de juego.</p>
+
 ## Para quien es esta seccion
 
 - **Principiantes absolutos**: Nunca has jugado Go y quieres aprender desde cero

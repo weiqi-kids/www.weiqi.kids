@@ -8,6 +8,8 @@ description: Análisis profundo del diseño de red neuronal de KataGo, caracter�
 
 Este artículo analiza en profundidad la arquitectura completa de la red neuronal de KataGo, desde la codificación de características de entrada hasta el diseño de salida múltiple.
 
+<p className="key-answer" data-question="¿Cuál es la arquitectura de la red neuronal de KataGo?">KataGo adopta un diseño de red neuronal única con salida múltiple: usa como tronco una torre residual (de 20 a 60 bloques residuales con capas de agrupación global), extrae características de los planos de entrada y luego se divide en cuatro cabezas de salida: Policy (probabilidad de jugada), Value (probabilidad de victoria), Score (diferencia de puntos) y Ownership (pertenencia del territorio).</p>
+
 ---
 
 ## Visión general de la arquitectura

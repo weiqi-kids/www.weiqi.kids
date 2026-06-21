@@ -7,6 +7,8 @@ title: Terminologi Go
 
 Mempelajari terminologi Go dapat membantu Anda memahami catatan permainan, memahami penjelasan, dan berkomunikasi dengan pemain lain.
 
+<p className="key-answer" data-question="Apa saja istilah Go yang umum digunakan?">Istilah Go yang umum dapat dibagi menjadi kategori posisi papan (tengen, hoshi, komoku, san-san, sudut, tepi, tengah, dan jalur ke-1 hingga ke-4) serta bentuk batu dan istilah dalam permainan; menguasai istilah-istilah ini membantu Anda memahami penjelasan catatan permainan dan berkomunikasi dengan pemain lain.</p>
+
 ## Terminologi Papan
 
 ### Posisi Penting di Papan

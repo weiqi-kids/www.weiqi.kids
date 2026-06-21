@@ -8,6 +8,8 @@ description: Deep understanding of KataGo's self-play training process and core 
 
 This article provides an in-depth analysis of KataGo's training mechanism, helping you understand how self-play training works.
 
+<p className="key-answer" data-question="How does KataGo's training mechanism work?">KataGo uses self-play reinforcement learning: an initial model plays many games against itself to generate game records, the collected data is used with policy and value loss functions to train and update a stronger model, and the loop repeats for continuous improvement. The GPU memory and time required grow with model size (for example, from b6c96 to b40c256).</p>
+
 ---
 
 ## Training Overview

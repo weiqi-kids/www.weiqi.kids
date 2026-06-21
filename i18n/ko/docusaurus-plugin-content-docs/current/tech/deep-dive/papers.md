@@ -8,6 +8,8 @@ description: AlphaGo, AlphaZero, KataGo 등 바둑 AI 이정표 논문의 핵심
 
 이 문서는 바둑 AI 발전사에서 가장 중요한 논문들을 정리하여 빠른 이해를 위한 요약과 기술적 핵심을 제공합니다.
 
+<p className="key-answer" data-question="바둑 AI에서 꼭 읽어야 할 핵심 논문은 무엇인가요?">바둑 AI 발전사의 이정표 논문으로는 Coulom의 MCTS(2006), AlphaGo(2016), AlphaGo Zero(2017), 일반화된 AlphaZero(2017), 그리고 David Wu가 여러 효율 개선을 제안한 KataGo(2019)가 있습니다. 기초를 이해하려면 먼저 AlphaGo를 읽고, 구현 참고용으로는 KataGo 논문을 중심으로 보는 것이 좋습니다.</p>
+
 ---
 
 ## 논문 개요

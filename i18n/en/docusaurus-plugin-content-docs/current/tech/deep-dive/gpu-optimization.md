@@ -8,6 +8,8 @@ description: KataGo's CUDA, OpenCL, Metal backend comparison and performance tun
 
 This article introduces the various GPU backends supported by KataGo, performance differences, and how to tune for optimal performance.
 
+<p className="key-answer" data-question="How do you optimize KataGo's GPU performance?">KataGo offers four compute backends: CUDA, OpenCL, Metal, and Eigen. CUDA gives the best performance on NVIDIA GPUs, OpenCL works across vendors, Metal is for Apple Silicon, and Eigen is for CPU-only use. The keys to optimization are choosing the right backend and tuning the batch size (nnMaxBatchSize) and thread count to fully utilize the GPU.</p>
+
 ---
 
 ## Backend Overview

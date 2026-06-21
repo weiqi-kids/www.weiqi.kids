@@ -7,6 +7,8 @@ title: Perubahan yang Dibawa AI
 
 Kemunculan AlphaGo tidak hanya mengalahkan pemain manusia terbaik, yang lebih penting adalah mengubah pemahaman kita tentang Go. Banyak konsep yang dulu dianggap "akal sehat", di bawah analisis AI perlu ditinjau ulang.
 
+<p className="key-answer" data-question="Perubahan utama apa yang dibawa AI bagi konsep Go?">AI menjungkirbalikkan banyak konsep tradisional: san-san berubah dari "merugi" menjadi taktik pembukaan yang umum, nilai pengaruh luar dievaluasi ulang sehingga wilayah lebih dihargai, dan pilihan titik pembukaan pun berubah jelas. Secara keseluruhan lebih menekankan efisiensi seluruh papan dan penilaian peluang menang yang objektif.</p>
+
 ## Perubahan Gaya Bermain Utama
 
 ### Bermain San-san Menjadi Umum

@@ -7,6 +7,8 @@ title: Conceptos de apertura
 
 La apertura (tambien llamada fuseki) es la primera fase de una partida de Go. Esta fase determina la direccion de toda la partida. Este articulo presentara los conceptos basicos de apertura para ayudarte a establecer una vision correcta del juego.
 
+<p className="key-answer" data-question="¿Cómo se juega la apertura en el Go?">El núcleo de la apertura es seguir el principio de "esquinas de oro, bordes de plata, centro de paja": ocupar primero las esquinas, que son las más eficientes, luego defender los bordes y, por último, considerar el centro; el objetivo es apoderarse de los puntos grandes, establecer bases y equilibrar el territorio real con la influencia.</p>
+
 ## Direccion general de la apertura
 
 ### Objetivos de la apertura

@@ -7,6 +7,8 @@ title: Konsep Pembukaan
 
 Pembukaan (juga disebut fuseki) adalah tahap pertama dari pertandingan Go. Tahap ini menentukan arah seluruh permainan. Artikel ini akan memperkenalkan konsep dasar pembukaan, membantu Anda membangun visi menyeluruh yang benar.
 
+<p className="key-answer" data-question="Bagaimana cara bermain pembukaan dalam Go?">Inti pembukaan adalah mengikuti prinsip "sudut emas, sisi perak, perut rumput": rebut dulu sudut yang paling efisien, lalu jaga sisi, dan baru terakhir pertimbangkan tengah papan; tujuannya adalah menduduki tempat besar, membangun basis, sekaligus menyeimbangkan wilayah nyata dan pengaruh.</p>
+
 ## Arah Besar Pembukaan
 
 ### Tujuan Pembukaan

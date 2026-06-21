@@ -7,6 +7,8 @@ title: Learning with AI
 
 AI is the most powerful learning tool for amateur players in this era. Using AI well can greatly accelerate your improvement; but if used improperly, it may actually hinder learning. This article introduces how to correctly use AI to assist learning.
 
+<p className="key-answer" data-question="How do you learn Go with AI?">You can use the free, open-source KataGo as your analysis engine, paired with a graphical interface like Lizzie or Sabaki to load game records and review them through win-rate and best-move suggestions. The key is to think for yourself first and check the AI's answer afterward, avoiding over-dependence.</p>
+
 ## Recommended AI Tools
 
 ### KataGo

@@ -8,6 +8,8 @@ description: "Guía de temas avanzados: redes neuronales, MCTS, entrenamiento, o
 
 Este capítulo está diseñado para ingenieros que desean investigar a fondo la IA de Go, cubriendo implementación técnica, fundamentos teóricos y aplicaciones prácticas.
 
+<p className="key-answer" data-question="¿Por qué temas empezar para profundizar en la IA de Go?">Este capítulo organiza el contenido avanzado en cuatro grandes temas: tecnología central (arquitectura de redes neuronales, implementación de MCTS, mecanismo de entrenamiento), optimización del rendimiento (backends GPU, cuantización y despliegue de modelos, benchmarks de evaluación), temas avanzados (entrenamiento distribuido, reglas personalizadas, artículos clave) y código abierto e implementación, ideal para ingenieros que desean investigar a fondo o contribuir a la IA de Go.</p>
+
 ---
 
 ## Índice de artículos

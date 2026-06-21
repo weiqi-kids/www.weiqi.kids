@@ -8,6 +8,8 @@ description: Conjuntos de regras de Go suportados pelo KataGo, variantes de tabu
 
 Este artigo apresenta os diversos conjuntos de regras de Go suportados pelo KataGo, variantes de tamanho de tabuleiro e como personalizar configuracoes de regras.
 
+<p className="key-answer" data-question="Quais regras de Go o KataGo suporta e como personaliza-las?">O KataGo suporta varios conjuntos de regras, como chinesa, japonesa, coreana, AGA, neozelandesa e Tromp-Taylor. No arquivo config.cfg e possivel personalizar o metodo de contagem, o komi e o tamanho do tabuleiro por meio de parametros como rules, komi e boardXSize/boardYSize.</p>
+
 ---
 
 ## Visao Geral dos Conjuntos de Regras

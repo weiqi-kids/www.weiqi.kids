@@ -8,6 +8,8 @@ description: In-depth analysis of Monte Carlo Tree Search implementation, PUCT s
 
 This article provides an in-depth analysis of Monte Carlo Tree Search (MCTS) implementation details in KataGo, including data structures, selection strategies, and parallelization techniques.
 
+<p className="key-answer" data-question="How is KataGo's MCTS implemented?">KataGo's MCTS runs a loop of four steps: selection, expansion, evaluation, and backpropagation. The selection step uses the PUCT formula to balance exploration and exploitation, and search efficiency is greatly improved through virtual loss, batched neural network evaluation, and multithreaded parallelization.</p>
+
 ---
 
 ## MCTS Four-Step Review

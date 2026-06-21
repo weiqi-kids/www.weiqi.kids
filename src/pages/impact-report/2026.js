@@ -1,5 +1,7 @@
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
+import Head from '@docusaurus/Head';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Heading from '@theme/Heading';
 import Translate, {translate} from '@docusaurus/Translate';
 import {industries} from '@site/src/data/links/industries';
@@ -156,6 +158,9 @@ function ActivityCard({a}) {
 }
 
 export default function ImpactReport2026() {
+  const { siteConfig } = useDocusaurusContext();
+  const siteUrl = siteConfig.url;
+  const reportUrl = `${siteUrl}/impact-report/2026/`;
   const all = allProjects();
   const byIndustry = industries
     .map((ind) => ({
@@ -163,6 +168,44 @@ export default function ImpactReport2026() {
       projects: all.filter((p) => p.industry_tag === ind.id),
     }))
     .filter((g) => g.projects.length > 0);
+
+  // Report + ItemList 結構化資料（年度成果報告）
+  const reportSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Report',
+        '@id': `${reportUrl}#report`,
+        url: reportUrl,
+        name: '2026 年度開源成果報告',
+        headline: '台灣好棋寶寶協會 2026 年度開源成果報告',
+        description:
+          '41+ 開源公益專案、37 位跨域夥伴、6 大線下活動成果、11 語系覆蓋。2026 年度完整影響力報告，CC-BY 4.0 全部公開。',
+        datePublished: '2026-01-01',
+        dateModified: '2026-06-21',
+        inLanguage: 'zh-TW',
+        author: { '@id': `${siteUrl}#organization` },
+        publisher: { '@id': `${siteUrl}#organization` },
+        isAccessibleForFree: true,
+        license: 'https://creativecommons.org/licenses/by/4.0/',
+        about: ['圍棋公益推廣', '跨域開源 AI 工具', '學術原創研究'],
+        isPartOf: { '@id': `${siteUrl}#website` },
+        mainEntity: { '@id': `${reportUrl}#projects` },
+      },
+      {
+        '@type': 'ItemList',
+        '@id': `${reportUrl}#projects`,
+        name: '2026 年度開源公益專案清單',
+        numberOfItems: all.length,
+        itemListElement: all.map((p, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: p.titleDefault || p.title || p.id,
+          url: p.href || p.url,
+        })),
+      },
+    ],
+  };
 
   return (
     <Layout
@@ -175,6 +218,10 @@ export default function ImpactReport2026() {
         message:
           '41+ 開源公益專案、37 位跨域夥伴、6 大線下活動成果、11 語系覆蓋。2026 年度完整影響力報告，CC-BY 4.0 全部公開。',
       })}>
+      <Head>
+        <meta property="og:type" content="article" />
+        <script type="application/ld+json">{JSON.stringify(reportSchema)}</script>
+      </Head>
       <header className={styles.hero}>
         <div className="container">
           <div className={styles.heroBadge}>

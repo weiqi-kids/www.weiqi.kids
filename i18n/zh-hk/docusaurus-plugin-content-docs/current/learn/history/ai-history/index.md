@@ -9,6 +9,8 @@ title: AI 圍棋發展史
 
 不過，2015 年至 2017 年間，DeepMind 嘅 AlphaGo 系列程式徹底改變咗呢一切。呢場革命唔單止影響咗圍棋，更加推動咗成個人工智能領域嘅發展。
 
+<p className="key-answer" data-question="AI 圍棋係點樣發展起嚟嘅？">圍棋因為搜索空間龐大、局面難以評估，長期被視為 AI 最難攻克嘅遊戲；直到 2015 至 2017 年 DeepMind 嘅 AlphaGo 突破，圍棋 AI 進入 AlphaGo 時代同其後嘅 KataGo 開源時代兩大階段。</p>
+
 ## 點解圍棋咁難？
 
 ### 龐大嘅搜索空間

@@ -7,6 +7,8 @@ title: Changes Brought by AI
 
 The emergence of AlphaGo not only defeated top human players but more importantly changed our understanding of Go. Many concepts previously considered "common knowledge" need to be re-examined under AI analysis.
 
+<p className="key-answer" data-question="What major changes has AI brought to Go concepts?">AI overturned many traditional ideas: the 3-3 invasion went from a "loss" to a common opening technique, the value of outside influence was reassessed in favor of greater emphasis on territory, and opening-point choices changed noticeably. Overall, AI places more weight on whole-board efficiency and objective win-rate judgment.</p>
+
 ## Major Style Changes
 
 ### The 3-3 Point Became Common

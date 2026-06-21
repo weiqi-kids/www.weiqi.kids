@@ -8,6 +8,8 @@ description: Estrutura de codigo do KataGo, modulos principais e design de arqui
 
 Este artigo ajuda voce a entender a estrutura de codigo do KataGo, adequado para engenheiros que desejam pesquisar a fundo ou contribuir com codigo.
 
+<p className="key-answer" data-question="Como e estruturado o codigo-fonte do KataGo?">O codigo-fonte do KataGo (github.com/lightvector/KataGo) divide-se principalmente em duas partes: cpp/ e o motor central em C++, contendo o programa principal, as regras do Go (game), a busca MCTS (search) e a inferencia da rede neural (neuralnet); ja python/ e o codigo de treinamento em Python, contendo o programa principal de treinamento, a definicao da arquitetura da rede (model.py) e o processamento de dados.</p>
+
 ---
 
 ## Obter o Codigo-fonte

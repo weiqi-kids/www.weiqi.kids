@@ -8,6 +8,8 @@ description: Teknik kuantisasi model KataGo, format ekspor, dan solusi deploymen
 
 Artikel ini memperkenalkan cara mengkuantisasi model KataGo untuk mengurangi kebutuhan sumber daya, serta solusi deployment di berbagai platform.
 
+<p className="key-answer" data-question="Bagaimana cara mengkuantisasi dan men-deploy model KataGo?">Kuantisasi mengurangi ukuran model dan mempercepat inferensi dengan menurunkan presisi numerik: FP16 dapat menghemat separuh memori dengan hampir tanpa kehilangan presisi, INT8 dapat memampatkannya lagi hingga seperempat; metode kuantisasi terbagi menjadi post-training quantization (PTQ, sederhana dan cepat) serta quantization-aware training (QAT, presisi lebih tinggi tetapi perlu dilatih ulang), lalu dipadukan dengan alat seperti TensorRT untuk deployment ke berbagai platform.</p>
+
 ---
 
 ## Gambaran Teknik Kuantisasi

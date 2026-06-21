@@ -7,6 +7,8 @@ title: Era de la IA
 
 En 2016, AlphaGo derroto al campeon mundial Lee Sedol, conmocionando a todo el mundo del Go. Desde ese momento, el Go entro en una nueva era de IA.
 
+<p className="key-answer" data-question="¿Qué es la era de la IA en el Go?">La era de la IA en el Go comenzó en 2016 cuando AlphaGo derrotó a Lee Sedol. La inteligencia artificial no solo superó la fuerza humana, sino que rompió los conocimientos establecidos, abrió nuevas formas de juego y se convirtió en una poderosa herramienta de aprendizaje con la que los aficionados pueden jugar y analizar partidas en cualquier momento.</p>
+
 ## El significado de esta era
 
 La inteligencia artificial no solo vencio a los mejores jugadores humanos, mas importante aun:

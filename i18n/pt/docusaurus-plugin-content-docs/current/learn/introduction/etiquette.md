@@ -7,6 +7,8 @@ title: Etiqueta no Jogo
 
 Go nao e apenas uma competicao de vitoria e derrota, mas tambem uma demonstracao de cultura e refinamento. Boa etiqueta no jogo e uma qualidade basica que todo jogador deve ter.
 
+<p className="key-answer" data-question="Quais sao as etiquetas no jogo de Go?">Antes do inicio da partida, cumprimente o oponente e use o nigiri para decidir quem joga de preto ou branco; uma vez colocada a pedra nao se pode voltar atras, durante a partida mantenha-se em silencio e concentrado, respeite o oponente e, ao final, confirme honestamente o resultado. Estas sao as etiquetas basicas do jogo.</p>
+
 ## Inicio da Partida
 
 ### Cumprimentos

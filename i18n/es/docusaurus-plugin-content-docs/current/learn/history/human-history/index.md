@@ -7,6 +7,8 @@ title: Historia del desarrollo del Go humano
 
 El Go es uno de los juegos de tablero mas antiguos y profundos de la historia humana. Desde las leyendas de origen en la antigua China, a lo largo de miles de anos de desarrollo, el Go no es solo un juego, sino que se ha convertido en una parte importante de la cultura del Este de Asia, llevando multiples significados de filosofia, arte y competencia.
 
+<p className="key-answer" data-question="¿Cómo ha sido la historia del desarrollo del Go humano?">El Go humano se originó en la antigua China y atravesó el período antiguo de su difusión a Japón y Corea, el período moderno temprano de las academias del Japón Edo y la nueva apertura de Go Seigen, luego el período contemporáneo de la época dorada del Japón de posguerra, el auge de Corea y el resurgimiento de China, hasta llegar finalmente a la era de la IA en 2015.</p>
+
 ## Vista general del desarrollo
 
 ### Periodo antiguo (aprox. 2000 a.C. - 1600 d.C.)

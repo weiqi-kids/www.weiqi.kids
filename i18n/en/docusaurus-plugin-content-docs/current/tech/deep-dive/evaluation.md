@@ -8,6 +8,8 @@ description: Go AI Elo rating system, match testing, and performance benchmarkin
 
 This article introduces how to evaluate Go AI strength and performance, including the Elo rating system, match testing methods, and standard benchmarks.
 
+<p className="key-answer" data-question="How do you evaluate a Go AI's strength and performance?">A Go AI's strength is mainly evaluated with the Elo rating system, which computes relative win rates and rating gaps from large numbers of games, and statistical methods such as SPRT can confirm whether a new model is genuinely stronger. Performance is measured with benchmarks like the number of search nodes per second (visits/playouts).</p>
+
 ---
 
 ## Elo Rating System

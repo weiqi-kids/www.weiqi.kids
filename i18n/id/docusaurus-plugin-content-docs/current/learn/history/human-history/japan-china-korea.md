@@ -7,6 +7,8 @@ title: Go Modern
 
 Dari pembentukan empat rumah besar Jepang pada abad ke-17, hingga persaingan Tiongkok-Korea pada abad ke-21, Go modern mengalami transformasi penting profesionalisasi dan internasionalisasi. Periode sejarah ini menyaksikan proses Go berkembang dari seni tradisional Timur menjadi olahraga kompetitif global.
 
+<p className="key-answer" data-question="Bagaimana Go modern berkembang dari Jepang hingga persaingan Tiongkok-Korea?">Pada abad ke-17 Jepang mendirikan Go-dokoro dan empat rumah besar seperti Honinbo, mendorong profesionalisasi Go serta melahirkan maestro seperti Dosaku dan Shusaku; pada abad ke-20 Go Seigen merintis fuseki baru dan menguasai dunia Go, lalu setelah perang muncullah era keemasan Jepang, kebangkitan Korea, dan kebangunan Tiongkok yang membentuk persaingan Tiongkok-Korea.</p>
+
 ## Zaman Empat Rumah Besar Jepang (1612-1868)
 
 ### Pembentukan Sistem Rumah Go

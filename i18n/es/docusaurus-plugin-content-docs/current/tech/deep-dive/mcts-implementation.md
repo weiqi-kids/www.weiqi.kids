@@ -8,6 +8,8 @@ description: Análisis profundo de la implementación de Monte Carlo Tree Search
 
 Este artículo analiza en profundidad los detalles de implementación de Monte Carlo Tree Search (MCTS) en KataGo, incluyendo estructuras de datos, estrategias de selección y técnicas de paralelización.
 
+<p className="key-answer" data-question="¿Cómo se implementa el MCTS de KataGo?">El MCTS de KataGo está formado por un ciclo de cuatro pasos: selección (Selection), expansión (Expansion), evaluación (Evaluation) y retropropagación (Backpropagation); la fase de selección usa la fórmula PUCT para equilibrar exploración y explotación, y aumenta enormemente la eficiencia de la búsqueda mediante la pérdida virtual, la evaluación por lotes de la red neuronal y la paralelización con múltiples hilos.</p>
+
 ---
 
 ## Repaso de los cuatro pasos de MCTS

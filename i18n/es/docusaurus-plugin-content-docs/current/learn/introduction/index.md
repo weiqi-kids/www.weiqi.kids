@@ -7,6 +7,8 @@ title: Introduccion
 
 Bienvenido al mundo del Go. Esta seccion te guiara desde cero para construir una base solida en Go.
 
+<p className="key-answer" data-question="¿Qué hay que aprender primero para iniciarse en el Go?">Para iniciarse en el Go conviene aprender en orden cuatro fundamentos: las reglas del Go (libertades, captura, puntos prohibidos, ko, ojos y vida, determinación del resultado), la terminología básica, la etiqueta en las partidas y la dirección y conceptos básicos de la apertura.</p>
+
 ## Contenido de esta seccion
 
 ### Reglas del Go

@@ -8,6 +8,8 @@ description: Técnicas de quantização de modelos KataGo, formatos de exportaç
 
 Este artigo apresenta como quantizar modelos KataGo para reduzir requisitos de recursos, além de soluções de implantação para várias plataformas.
 
+<p className="key-answer" data-question="Como quantizar e implantar modelos do KataGo?">A quantização reduz o tamanho do modelo e acelera a inferência ao diminuir a precisão numérica: o FP16 economiza metade da memória quase sem perda de precisão, e o INT8 comprime ainda mais para um quarto; os métodos de quantização dividem-se em quantização pós-treinamento (PTQ, simples e rápida) e treinamento consciente de quantização (QAT, mais preciso, mas exige novo treinamento), combinados com ferramentas como o TensorRT para implantação em várias plataformas.</p>
+
 ---
 
 ## Visão Geral das Técnicas de Quantização

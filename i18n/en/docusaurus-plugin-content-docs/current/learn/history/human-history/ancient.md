@@ -7,6 +7,8 @@ title: Ancient Go
 
 Go's history can be traced back thousands of years to ancient China. It is one of humanity's oldest board games. Beyond being an intellectual game, it carries deep cultural significance, reflecting the essence of Eastern philosophy in concepts of yin-yang, balance, and strategic thinking.
 
+<p className="key-answer" data-question="When and where did ancient Go originate?">Go originated in China thousands of years ago, traditionally said to have been created by Emperor Yao to teach his son. The earliest reliable written records appear in the Spring and Autumn period texts "Zuo Zhuan" and the "Analects," and the Warring States period produced Yi Qiu, the first famous Go master. From the very start, Go was closely tied to education and self-cultivation.</p>
+
 ## Chinese Origins
 
 ### Legend: Emperor Yao Creates Go

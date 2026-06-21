@@ -8,6 +8,8 @@ description: Highlights from milestone Go AI papers including AlphaGo, AlphaZero
 
 This article summarizes the most important papers in Go AI development history, providing quick summaries and technical highlights.
 
+<p className="key-answer" data-question="What are the essential key papers on Go AI?">The milestone papers in Go AI history include Coulom's MCTS (2006), AlphaGo (2016), AlphaGo Zero (2017), the generalized AlphaZero (2017), and KataGo (2019) by David Wu, which introduced many efficiency improvements. To learn the fundamentals, start with AlphaGo; for implementation reference, focus on the KataGo paper.</p>
+
 ---
 
 ## Papers Overview

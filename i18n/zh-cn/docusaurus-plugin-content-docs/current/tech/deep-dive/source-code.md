@@ -8,6 +8,8 @@ description: KataGo 代码结构、核心模块与架构设计
 
 本文带你了解 KataGo 的代码结构，适合想深入研究或贡献代码的工程师。
 
+<p className="key-answer" data-question="KataGo 的源代码结构是怎样的？">KataGo 源代码（github.com/lightvector/KataGo）主要分为两部分：cpp/ 是 C++ 核心引擎，包含主程序、围棋规则（game）、MCTS 搜索（search）与神经网络推理（neuralnet）；python/ 则是 Python 训练代码，包含训练主程序、网络架构定义（model.py）与数据处理。</p>
+
 ---
 
 ## 获取源代码

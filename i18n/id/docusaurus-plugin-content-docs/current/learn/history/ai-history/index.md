@@ -9,6 +9,8 @@ Untuk waktu yang lama, Go dianggap sebagai permainan paling sulit ditaklukkan ol
 
 Namun, antara tahun 2015 hingga 2017, seri program AlphaGo dari DeepMind mengubah semua ini secara total. Revolusi ini tidak hanya mempengaruhi Go, tetapi juga mendorong perkembangan seluruh bidang kecerdasan buatan.
 
+<p className="key-answer" data-question="Bagaimana AI Go berkembang?">Go lama dianggap sebagai permainan paling sulit ditaklukkan AI karena ruang pencariannya yang sangat besar dan posisi yang sulit dievaluasi. Baru setelah terobosan AlphaGo dari DeepMind pada 2015 hingga 2017, AI Go memasuki dua tahap besar: era AlphaGo dan era open source KataGo setelahnya.</p>
+
 ## Mengapa Go Begitu Sulit?
 
 ### Ruang Pencarian yang Sangat Besar

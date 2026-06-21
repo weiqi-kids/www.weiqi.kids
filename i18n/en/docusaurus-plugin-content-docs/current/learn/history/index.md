@@ -11,6 +11,8 @@ In March 2016, Google DeepMind's AlphaGo defeated world champion Lee Sedol 4:1. 
 
 But this wasn't the end - it was the beginning of a new era.
 
+<p className="key-answer" data-question="How did AI change Go?">AI redefined what counts as the "best move," overturning traditional ideas like the 3-3 invasion and shoulder hit in favor of whole-board efficiency. It also revolutionized learning, letting players practice against AI around the clock and receive instant numerical evaluation, and it raised the overall ceiling of Go skill.</p>
+
 ### Changes Brought by AI
 
 **1. Redefining "Best Moves"**

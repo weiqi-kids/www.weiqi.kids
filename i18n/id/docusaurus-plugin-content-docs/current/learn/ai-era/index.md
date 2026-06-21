@@ -7,6 +7,8 @@ title: Era AI
 
 Tahun 2016, AlphaGo mengalahkan juara dunia Lee Sedol, mengejutkan seluruh dunia Go. Sejak saat itu, Go memasuki era AI yang baru.
 
+<p className="key-answer" data-question="Apa itu era AI dalam Go?">Era AI dalam Go dimulai pada tahun 2016 ketika AlphaGo mengalahkan Lee Sedol. Kecerdasan buatan tidak hanya melampaui kemampuan bermain manusia, tetapi juga mendobrak pemahaman yang ada, membuka cara bermain baru, dan menjadi alat pembelajaran yang kuat bagi pemain amatir untuk bermain dan menganalisis catatan permainan kapan saja.</p>
+
 ## Makna Era Ini
 
 Kecerdasan buatan tidak hanya mengalahkan pemain manusia terbaik, yang lebih penting adalah:

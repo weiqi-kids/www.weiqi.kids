@@ -8,6 +8,8 @@ description: 몬테카를로 트리 탐색 구현, PUCT 선택 및 병렬화 기
 
 이 문서는 KataGo의 몬테카를로 트리 탐색(MCTS) 구현 세부사항을 데이터 구조, 선택 전략 및 병렬화 기술을 포함하여 심층적으로 분석합니다.
 
+<p className="key-answer" data-question="KataGo의 MCTS는 어떻게 구현되나요?">KataGo의 MCTS는 선택(Selection), 확장(Expansion), 평가(Evaluation), 역전파(Backpropagation) 네 단계가 반복되는 순환으로 구성됩니다. 선택 단계에서는 PUCT 공식으로 탐색과 활용의 균형을 맞추며, 가상 손실, 배치 신경망 평가, 멀티 스레드 병렬화를 통해 탐색 효율을 크게 높입니다.</p>
+
 ---
 
 ## MCTS 4단계 복습

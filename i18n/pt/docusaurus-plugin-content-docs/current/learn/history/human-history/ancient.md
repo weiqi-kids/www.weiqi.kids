@@ -7,6 +7,8 @@ title: Go Antigo
 
 A historia do Go remonta a milhares de anos na China, sendo um dos jogos de tabuleiro mais antigos da humanidade. Nao e apenas um jogo intelectual, mas carrega profundo conteudo cultural, refletindo a essencia da filosofia oriental sobre yin e yang, equilibrio e pensamento estrategico.
 
+<p className="key-answer" data-question="Quando e onde o Go antigo se originou?">O Go originou-se ha milhares de anos na China e, segundo a lenda, foi criado pelo Imperador Yao para educar seu filho; os primeiros registros escritos confiaveis aparecem nas obras "Zuo Zhuan" e "Anacletos", do periodo de Primaveras e Outonos, e no periodo dos Estados Combatentes ja havia Yi Qiu, o primeiro mestre de Go, ligando o jogo desde o inicio a educacao e ao cultivo pessoal.</p>
+
 ## Origem na China
 
 ### Lenda: Yao Cria o Go

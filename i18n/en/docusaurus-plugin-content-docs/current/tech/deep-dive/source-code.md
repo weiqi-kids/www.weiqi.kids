@@ -8,6 +8,8 @@ description: KataGo code structure, core modules, and architecture design
 
 This article helps you understand KataGo's code structure, suitable for engineers who want to dive deeper or contribute code.
 
+<p className="key-answer" data-question="What is the structure of KataGo's source code?">The KataGo source code (github.com/lightvector/KataGo) is divided into two main parts. The cpp/ directory is the C++ core engine, containing the main program, the Go rules (game), MCTS search (search), and neural network inference (neuralnet). The python/ directory is the Python training code, containing the training main program, the network architecture definition (model.py), and data processing.</p>
+
 ---
 
 ## Getting the Source Code

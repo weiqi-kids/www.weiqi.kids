@@ -7,6 +7,8 @@ title: KataGo 时代
 
 AlphaGo 在 2017 年退役后，围棋 AI 的发展并未停止。相反地，开源社群接过了火炬，让顶级围棋 AI 不再是科技巨头的专利，而是每个人都能使用的工具。这场「AI 民主化」运动彻底改变了围棋的学习和训练方式。
 
+<p className="key-answer" data-question="KataGo 时代是什么？">AlphaGo 退役后，开源社群接棒：从 Leela Zero、ELF OpenGo 到 2019 年 David Wu 发布的 KataGo，让顶级围棋 AI 走向普及。KataGo 以更高效的训练、支持让子与多种规则、详细分析输出成为如今最受欢迎的开源围棋 AI。</p>
+
 ## 开源 AI 的兴起
 
 ### Leela Zero：社群的力量

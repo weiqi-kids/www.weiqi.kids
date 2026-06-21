@@ -8,6 +8,8 @@ description: Sistem rating Elo AI Go, pengujian pertandingan, dan metode benchma
 
 Artikel ini memperkenalkan cara mengevaluasi kekuatan dan performa AI Go, termasuk sistem rating Elo, metode pengujian pertandingan, dan benchmark standar.
 
+<p className="key-answer" data-question="Bagaimana cara mengevaluasi kekuatan dan performa AI Go?">Evaluasi kekuatan AI Go umumnya menggunakan sistem rating Elo, yang menghitung tingkat kemenangan relatif dan selisih rating melalui sejumlah besar pertandingan, dan dapat dilengkapi metode statistik seperti SPRT untuk menentukan apakah model baru benar-benar lebih kuat; sementara performa diukur dengan benchmark seperti jumlah node yang dicari per detik (visits/playouts).</p>
+
 ---
 
 ## Sistem Rating Elo

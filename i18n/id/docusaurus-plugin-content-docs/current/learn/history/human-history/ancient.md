@@ -7,6 +7,8 @@ title: Go Kuno
 
 Sejarah Go dapat ditelusuri hingga ribuan tahun yang lalu di Tiongkok, merupakan salah satu permainan papan tertua umat manusia. Ini bukan hanya permainan kecerdasan, tetapi juga membawa kandungan budaya yang mendalam, mencerminkan esensi filsafat Timur tentang yin-yang, keseimbangan, dan pemikiran strategis.
 
+<p className="key-answer" data-question="Kapan dan di mana Go kuno berasal?">Go berasal dari Tiongkok ribuan tahun yang lalu, konon diciptakan oleh Kaisar Yao untuk mengajar putranya. Catatan tertulis paling awal yang dapat diandalkan terdapat dalam "Zuo Zhuan" dan "Analects" dari periode Musim Semi dan Musim Gugur, dan pada periode Negara-negara Berperang muncul Yi Qiu, selebriti Go paling awal. Sejak awal Go erat kaitannya dengan pendidikan dan kultivasi diri.</p>
+
 ## Asal-usul di Tiongkok
 
 ### Legenda: Yao Menciptakan Go

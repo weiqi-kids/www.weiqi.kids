@@ -8,6 +8,8 @@ description: Análise aprofundada do design de rede neural do KataGo, recursos d
 
 Este artigo analisa em profundidade a arquitetura completa da rede neural do KataGo, desde a codificação de recursos de entrada até o design de múltiplas saídas.
 
+<p className="key-answer" data-question="Qual é a arquitetura da rede neural do KataGo?">O KataGo adota um design de rede neural única com múltiplas saídas: usa uma torre residual (20 a 60 blocos residuais com camadas de agrupamento global) como espinha dorsal, extrai recursos dos planos de características de entrada e, em seguida, ramifica-se em quatro cabeças de saída: Policy (probabilidade de jogada), Value (taxa de vitória), Score (diferença de pontos) e Ownership (posse de território).</p>
+
 ---
 
 ## Visão Geral da Arquitetura

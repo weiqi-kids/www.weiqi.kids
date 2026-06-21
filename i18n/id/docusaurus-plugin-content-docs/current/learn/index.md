@@ -7,6 +7,8 @@ title: Untuk Pemain Go
 
 Selamat datang di area khusus pemain Go! Baik Anda pemula yang baru mengenal Go, maupun penggemar yang ingin meningkatkan keterampilan, di sini tersedia sumber belajar yang cocok untuk Anda.
 
+<p className="key-answer" data-question="Bagaimana cara belajar Go dari nol?">Mulailah dengan Bagian Pemula untuk membangun dasar yang kuat, mempelajari aturan Go, istilah dasar, etiket bermain, dan sepuluh langkah pembukaan; kemudian masuk ke Bagian Era AI untuk memahami perubahan konsep yang dibawa kecerdasan buatan dan belajar memanfaatkan alat AI untuk berkembang, sehingga konsep yang benar dan kekuatan bermain terbangun secara bertahap.</p>
+
 ## Siapa yang Cocok dengan Bagian Ini
 
 - **Pemula Total**: Belum pernah bermain Go, ingin belajar dari nol

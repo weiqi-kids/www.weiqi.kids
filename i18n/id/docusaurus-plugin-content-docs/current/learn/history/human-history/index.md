@@ -7,6 +7,8 @@ title: Sejarah Perkembangan Go Manusia
 
 Go adalah salah satu permainan papan tertua dan paling mendalam dalam sejarah manusia. Dari legenda asal-usul di Tiongkok kuno, melalui ribuan tahun perkembangan, Go tidak hanya menjadi permainan, tetapi juga bagian penting dari budaya Asia Timur, membawa makna ganda filsafat, seni, dan kompetisi.
 
+<p className="key-answer" data-question="Bagaimana sejarah perkembangan Go manusia?">Go manusia berasal dari Tiongkok kuno, melalui periode kuno saat menyebar ke Jepang dan Korea, periode modern dengan sistem rumah Go zaman Edo Jepang dan Shin Fuseki dari Go Seigen, lalu periode kontemporer dengan zaman keemasan Jepang pascaperang, kebangkitan Korea, dan kebangkitan kembali Tiongkok, hingga akhirnya menyambut era AI pada tahun 2015.</p>
+
 ## Ikhtisar Garis Perkembangan
 
 ### Periode Kuno (sekitar 2000 SM - 1600 M)

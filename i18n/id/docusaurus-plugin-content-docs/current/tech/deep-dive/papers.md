@@ -8,6 +8,8 @@ description: Analisis poin penting paper milestone AI Go seperti AlphaGo, AlphaZ
 
 Artikel ini merangkum paper paling penting dalam sejarah pengembangan AI Go, menyediakan ringkasan dan poin teknis untuk pemahaman cepat.
 
+<p className="key-answer" data-question="Apa saja paper kunci yang wajib dibaca tentang AI Go?">Paper milestone dalam sejarah pengembangan AI Go mencakup: MCTS oleh Coulom (2006), AlphaGo (2016), AlphaGo Zero (2017), AlphaZero yang lebih umum (2017), serta KataGo oleh David Wu yang mengajukan berbagai peningkatan efisiensi (2019); untuk memahami dasarnya bacalah AlphaGo terlebih dahulu, sedangkan untuk referensi implementasi gunakan paper KataGo.</p>
+
 ---
 
 ## Gambaran Paper

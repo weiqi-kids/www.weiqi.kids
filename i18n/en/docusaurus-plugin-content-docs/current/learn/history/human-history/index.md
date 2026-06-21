@@ -7,6 +7,8 @@ title: Human Go Development History
 
 Go is one of humanity's oldest and most profound board games. From legendary origins in ancient China, through thousands of years of development, Go has become not just a game but an important part of East Asian culture, carrying philosophical, artistic, and competitive meanings.
 
+<p className="key-answer" data-question="What is the history of human Go?">Human Go originated in ancient China. It spread to Japan and Korea during the ancient period, advanced through the early modern period of Japan's Edo-era Go houses and Wu Qingyuan's New Fuseki, and then moved into the modern period of Japan's postwar golden age, Korea's rise, and China's revival, finally entering the AI era in 2015.</p>
+
 ## Development Overview
 
 ### Ancient Period (~2000 BCE - 1600 CE)

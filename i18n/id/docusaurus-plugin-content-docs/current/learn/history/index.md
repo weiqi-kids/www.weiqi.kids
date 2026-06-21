@@ -11,6 +11,8 @@ Pada Maret 2016, AlphaGo dari Google DeepMind mengalahkan juara dunia Lee Sedol 
 
 Tetapi ini bukan akhir, melainkan awal dari era baru.
 
+<p className="key-answer" data-question="Bagaimana AI mengubah Go?">AI mendefinisikan ulang "cara bermain terbaik", menumbangkan konsep tradisional seperti san-san dan kata-tsuki, lalu beralih ke pemikiran efisiensi seluruh papan; sekaligus merevolusi cara belajar sehingga pemain dapat bertanding dengan AI 24 jam dan memperoleh evaluasi numerik secara langsung, dan batas atas keterampilan Go pun ikut meningkat.</p>
+
 ### Perubahan yang Dibawa AI
 
 **1. Mendefinisikan Ulang "Cara Bermain Terbaik"**

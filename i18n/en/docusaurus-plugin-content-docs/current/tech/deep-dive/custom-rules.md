@@ -8,6 +8,8 @@ description: Go rulesets supported by KataGo, board size variants, and custom se
 
 This article introduces the various Go rules supported by KataGo, board size variants, and how to customize rule settings.
 
+<p className="key-answer" data-question="What Go rules does KataGo support and how do you customize them?">KataGo supports many rulesets, including Chinese, Japanese, Korean, AGA, New Zealand, and Tromp-Taylor. In config.cfg you can customize the scoring method, komi, and board dimensions through parameters such as rules, komi, and boardXSize/boardYSize.</p>
+
 ---
 
 ## Ruleset Overview

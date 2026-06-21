@@ -7,6 +7,8 @@ title: Secao Iniciante
 
 Bem-vindo ao mundo do Go! Esta secao vai guia-lo do zero para construir uma base solida no Go.
 
+<p className="key-answer" data-question="O que aprender primeiro ao iniciar no Go?">Quem inicia no Go deve aprender, em ordem, quatro fundamentos: as regras do Go (liberdades, capturas, pontos proibidos, ko, olhos e grupos vivos, determinacao do vencedor), a terminologia basica, a etiqueta no jogo e a direcao e os conceitos basicos da abertura.</p>
+
 ## Conteudo desta Secao
 
 ### Regras do Go

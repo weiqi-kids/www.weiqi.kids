@@ -8,6 +8,8 @@ description: Analisis de los puntos clave de los articulos hito de IA de Go como
 
 Este articulo resume los articulos mas importantes en la historia del desarrollo de IA de Go, proporcionando resumenes y puntos tecnicos clave para una comprension rapida.
 
+<p className="key-answer" data-question="¿Cuáles son los artículos clave imprescindibles sobre IA de Go?">Los artículos hito en la historia de la IA de Go incluyen: el MCTS de Coulom (2006), AlphaGo (2016), AlphaGo Zero (2017), el generalizado AlphaZero (2017) y KataGo (2019) de David Wu, que aportó numerosas mejoras de eficiencia; para entender los fundamentos conviene leer primero AlphaGo, y como referencia de implementación el artículo de KataGo.</p>
+
 ---
 
 ## Vision general de articulos

@@ -7,6 +7,8 @@ title: Modern Go
 
 From the 17th century establishment of Japan's Four Houses to the 21st century China-Korea rivalry, modern Go has experienced important transitions toward professionalization and internationalization. This history witnessed Go's evolution from traditional Eastern art to global competitive sport.
 
+<p className="key-answer" data-question="How did modern Go develop from Japan to the China-Korea rivalry?">In the 17th century, Japan established the Go Authority and the Four Houses, including Hon'inbo, professionalizing Go and producing masters such as Dosaku and Shusaku. In the 20th century, Wu Qingyuan pioneered the New Fuseki and dominated the Go world, and after the war the game moved through Japan's golden age into the China-Korea rivalry shaped by Korea's rise and China's revival.</p>
+
 ## Japan's Four Houses Era (1612-1868)
 
 ### Establishment of the House System

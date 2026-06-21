@@ -7,6 +7,8 @@ title: AlphaGo 時代
 
 2015 年至 2017 年，Google DeepMind 嘅 AlphaGo 系列程式創造咗人工智能歷史上最具標誌性嘅突破之一。喺短短兩年之內，圍棋由「人工智能無法征服嘅遊戲」變成咗「AI 完全超越人類嘅領域」。
 
+<p className="key-answer" data-question="AlphaGo 時代發生咗啲咩？">2015 至 2017 年間，DeepMind 嘅 AlphaGo 先於 2015 年擊敗職業棋手樊麾、2016 年以 4:1 擊敗李世乭，再以 Master 喺網上連勝並於 2017 年戰勝柯潔，靠深度神經網絡結合蒙特卡羅樹搜索，令 AI 完全超越人類圍棋水準。</p>
+
 ## 2015 年 10 月：AlphaGo 擊敗樊麾
 
 ### 歷史性嘅秘密對局

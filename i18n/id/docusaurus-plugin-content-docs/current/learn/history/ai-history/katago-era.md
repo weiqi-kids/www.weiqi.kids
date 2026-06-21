@@ -7,6 +7,8 @@ title: Era KataGo
 
 Setelah AlphaGo pensiun pada tahun 2017, perkembangan AI Go tidak berhenti. Sebaliknya, komunitas open source mengambil alih estafet, membuat AI Go tingkat atas bukan lagi hak eksklusif raksasa teknologi, melainkan alat yang dapat digunakan setiap orang. Gerakan "demokratisasi AI" ini secara total mengubah cara belajar dan berlatih Go.
 
+<p className="key-answer" data-question="Apa itu era KataGo?">Setelah AlphaGo pensiun, komunitas open source mengambil alih estafet: dari Leela Zero, ELF OpenGo, hingga KataGo yang dirilis David Wu pada tahun 2019, membuat AI Go tingkat atas menjadi populer. Dengan pelatihan yang lebih efisien, dukungan untuk handicap dan berbagai aturan, serta output analisis terperinci, KataGo menjadi AI Go open source paling populer saat ini.</p>
+
 ## Kebangkitan AI Open Source
 
 ### Leela Zero: Kekuatan Komunitas

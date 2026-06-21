@@ -7,6 +7,8 @@ title: Go Terminology
 
 Learning Go terminology helps you understand game commentaries and communicate with other players.
 
+<p className="key-answer" data-question="What are the common terms used in Go?">Common Go terms fall into categories such as board positions (tengen, star point, komoku, san-san, corner, side, center, and the first through fourth lines) as well as shape and gameplay terms. Becoming familiar with these terms helps you follow game commentary and communicate with other players.</p>
+
 ## Board Terminology
 
 ### Important Board Positions

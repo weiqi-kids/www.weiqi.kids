@@ -8,6 +8,8 @@ description: Sistema de classificacao Elo para IA de Go, testes de partidas e me
 
 Este artigo apresenta como avaliar a forca de jogo e o desempenho de uma IA de Go, incluindo o sistema de classificacao Elo, metodos de teste de partidas e benchmarks padrao.
 
+<p className="key-answer" data-question="Como avaliar a forca de jogo e o desempenho de uma IA de Go?">A avaliacao da forca de jogo de uma IA de Go usa principalmente o sistema de classificacao Elo, calculando a taxa de vitoria relativa e a diferenca de pontuacao por meio de um grande numero de partidas, podendo combinar metodos estatisticos como o SPRT para determinar se o novo modelo e realmente mais forte; ja o desempenho e medido por benchmarks como o numero de nos pesquisados por segundo (visits/playouts).</p>
+
 ---
 
 ## Sistema de Classificacao Elo

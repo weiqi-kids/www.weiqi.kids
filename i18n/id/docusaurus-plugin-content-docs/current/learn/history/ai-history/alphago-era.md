@@ -7,6 +7,8 @@ title: Era AlphaGo
 
 Tahun 2015 hingga 2017, seri program AlphaGo dari Google DeepMind menciptakan salah satu terobosan paling ikonik dalam sejarah kecerdasan buatan. Dalam waktu singkat dua tahun, Go berubah dari "permainan yang tidak bisa ditaklukkan kecerdasan buatan" menjadi "bidang di mana AI sepenuhnya melampaui manusia".
 
+<p className="key-answer" data-question="Apa yang terjadi pada era AlphaGo?">Antara tahun 2015 hingga 2017, AlphaGo dari DeepMind pertama mengalahkan pemain profesional Fan Hui pada 2015, lalu mengalahkan Lee Sedol 4:1 pada 2016, kemudian meraih kemenangan beruntun online sebagai Master dan mengalahkan Ke Jie pada 2017. Dengan menggabungkan deep neural network dan Monte Carlo Tree Search, AI sepenuhnya melampaui level Go manusia.</p>
+
 ## Oktober 2015: AlphaGo Mengalahkan Fan Hui
 
 ### Pertandingan Rahasia Bersejarah

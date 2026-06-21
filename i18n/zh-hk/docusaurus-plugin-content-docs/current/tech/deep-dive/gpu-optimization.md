@@ -8,6 +8,8 @@ description: KataGo 嘅 CUDA、OpenCL、Metal 後端比較同效能調校指南
 
 本文介紹 KataGo 支援嘅各種 GPU 後端、效能差異，以及點樣調校以獲得最佳效能。
 
+<p className="key-answer" data-question="點樣優化 KataGo 嘅 GPU 效能？">KataGo 提供 CUDA、OpenCL、Metal、Eigen 四種計算後端；NVIDIA GPU 用 CUDA 效能最好，跨廠牌可用 OpenCL，Apple Silicon 用 Metal，純 CPU 則用 Eigen。優化關鍵係揀啱後端並調校批次大小（nnMaxBatchSize）同執行緒數以充分利用 GPU。</p>
+
 ---
 
 ## 後端總覽

@@ -8,6 +8,8 @@ description: Sistema de puntuación Elo para IA de Go, pruebas de partidas y mé
 
 Este artículo presenta cómo evaluar la fuerza de juego y el rendimiento de una IA de Go, incluyendo el sistema de puntuación Elo, métodos de prueba de partidas y benchmarks estándar.
 
+<p className="key-answer" data-question="¿Cómo evaluar la fuerza y el rendimiento de una IA de Go?">Para evaluar la fuerza de una IA de Go se usa principalmente el sistema de puntuación Elo, que calcula la probabilidad de victoria relativa y la diferencia de puntuación mediante numerosas partidas, y puede combinarse con métodos estadísticos como SPRT para juzgar si un nuevo modelo es realmente más fuerte; el rendimiento se mide con benchmarks como el número de nodos buscados por segundo (visits/playouts).</p>
+
 ---
 
 ## Sistema de puntuación Elo

@@ -7,6 +7,8 @@ title: Introduction
 
 Welcome to the world of Go! This section will take you from zero to building a solid foundation in Go.
 
+<p className="key-answer" data-question="What should you learn first when starting Go?">When starting Go, learn the four basics in order: the rules of Go (liberties, capturing, illegal moves, ko, eyes and living groups, and scoring), basic terminology, game etiquette, and the basic direction and concepts of the opening.</p>
+
 ## Contents of This Section
 
 ### Go Rules

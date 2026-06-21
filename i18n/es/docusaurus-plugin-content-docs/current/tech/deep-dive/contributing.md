@@ -8,6 +8,8 @@ description: Unirse a la comunidad de codigo abierto de KataGo, contribuir poder
 
 KataGo es un proyecto de codigo abierto activo con multiples formas de contribuir.
 
+<p className="key-answer" data-question="¿Cómo participar en la comunidad de código abierto de KataGo?">Hay cuatro formas principales de participar en KataGo: aportar poder de cómputo de GPU a la red de entrenamiento distribuido (katagotraining.org), reportar problemas en GitHub, mejorar la documentación y contribuir código en C++/Python; la opción de menor barrera de entrada es aportar cómputo ejecutando auto-juego en una computadora con GPU.</p>
+
 ---
 
 ## Vision general de formas de contribucion

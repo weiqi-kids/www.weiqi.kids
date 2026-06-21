@@ -8,6 +8,8 @@ description: Comparação e guia de otimização de desempenho para backends CUD
 
 Este artigo apresenta os vários backends de GPU suportados pelo KataGo, diferenças de desempenho e como ajustar para obter o melhor desempenho.
 
+<p className="key-answer" data-question="Como otimizar o desempenho de GPU do KataGo?">O KataGo oferece quatro backends de computação: CUDA, OpenCL, Metal e Eigen; em GPUs NVIDIA o CUDA tem o melhor desempenho, para múltiplas marcas pode-se usar OpenCL, em Apple Silicon usa-se Metal, e para CPU pura usa-se Eigen. A chave da otimização é escolher o backend correto e ajustar o tamanho do lote (nnMaxBatchSize) e o número de threads para aproveitar plenamente a GPU.</p>
+
 ---
 
 ## Visão Geral dos Backends

@@ -9,6 +9,8 @@ For a long time, Go was considered the game most difficult for artificial intell
 
 However, between 2015 and 2017, DeepMind's AlphaGo series completely changed everything. This revolution not only affected Go but also pushed forward the entire field of artificial intelligence.
 
+<p className="key-answer" data-question="How did AI Go develop?">Because of its enormous search space and the difficulty of evaluating positions, Go was long regarded as the hardest game for AI to conquer. That changed with DeepMind's AlphaGo breakthrough from 2015 to 2017, after which Go AI moved through two major stages: the AlphaGo era and the later open-source KataGo era.</p>
+
 ## Why Is Go So Hard?
 
 ### Enormous Search Space

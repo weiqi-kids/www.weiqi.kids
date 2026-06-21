@@ -8,6 +8,8 @@ description: Analisis mendalam implementasi Monte Carlo Tree Search, seleksi PUC
 
 Artikel ini menganalisis secara mendalam detail implementasi Monte Carlo Tree Search (MCTS) di KataGo, termasuk struktur data, strategi seleksi, dan teknik paralelisasi.
 
+<p className="key-answer" data-question="Bagaimana MCTS KataGo diimplementasikan?">MCTS KataGo terdiri dari siklus empat langkah: Seleksi (Selection), Ekspansi (Expansion), Evaluasi (Evaluation), dan Backpropagation. Pada tahap seleksi digunakan rumus PUCT untuk menyeimbangkan eksplorasi dan eksploitasi, dan melalui virtual loss, evaluasi neural network secara batch, serta paralelisasi multi-thread, efisiensi pencarian meningkat secara signifikan.</p>
+
 ---
 
 ## Tinjauan Empat Langkah MCTS

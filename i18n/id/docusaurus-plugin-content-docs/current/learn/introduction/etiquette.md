@@ -7,6 +7,8 @@ title: Etiket Bermain
 
 Go bukan hanya pertarungan menang-kalah, tetapi juga ekspresi budaya dan budi pekerti. Etiket bermain yang baik adalah kualitas dasar yang harus dimiliki setiap pemain.
 
+<p className="key-answer" data-question="Apa saja etiket bermain dalam Go?">Sebelum pertandingan dimulai, berilah salam kepada lawan dan lakukan nigiri untuk menentukan siapa memegang hitam atau putih; setelah meletakkan batu tidak boleh menariknya kembali, selama pertandingan tetaplah tenang dan fokus serta menghormati lawan, dan di akhir permainan konfirmasikan hasil dengan jujur. Inilah etiket bermain yang mendasar.</p>
+
 ## Memulai Pertandingan
 
 ### Salam

@@ -8,6 +8,8 @@ description: Analisis mendalam desain neural network KataGo, fitur input, dan ar
 
 Artikel ini menganalisis secara mendalam arsitektur lengkap neural network KataGo, dari encoding fitur input hingga desain multi-head output.
 
+<p className="key-answer" data-question="Apa itu arsitektur neural network KataGo?">KataGo menggunakan desain neural network tunggal dengan multi-head output: residual tower (20-60 blok residual ditambah layer global pooling) sebagai tulang punggung yang mengekstrak fitur dari plane fitur input, lalu bercabang menjadi empat output head, yaitu Policy (probabilitas langkah), Value (peluang menang), Score (selisih poin), dan Ownership (kepemilikan wilayah).</p>
+
 ---
 
 ## Gambaran Arsitektur

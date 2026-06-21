@@ -8,6 +8,8 @@ description: Compreensão profunda do fluxo de treinamento por auto-jogo do Kata
 
 Este artigo analisa em profundidade o mecanismo de treinamento do KataGo, ajudando você a entender o princípio de funcionamento do treinamento por auto-jogo.
 
+<p className="key-answer" data-question="Como funciona o mecanismo de treinamento do KataGo?">O KataGo utiliza aprendizado por reforço com auto-jogo: o modelo inicial gera um grande número de registros de partidas por auto-jogo, os dados coletados são usados para treinar o modelo com funções de perda de política e de valor, produzindo um modelo mais forte, e esse ciclo se repete para um progresso contínuo; a memória de GPU e o tempo necessários para o treinamento aumentam conforme a escala do modelo (por exemplo, de b6c96 a b40c256).</p>
+
 ---
 
 ## Visão Geral do Treinamento

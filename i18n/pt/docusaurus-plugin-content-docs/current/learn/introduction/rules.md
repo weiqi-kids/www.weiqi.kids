@@ -7,6 +7,8 @@ title: Regras do Go
 
 As regras do Go sao muito simples, mas as variacoes que surgem delas sao infinitas. Esta e a magia do Go.
 
+<p className="key-answer" data-question="Quais sao as regras basicas do Go?">No Go, preto e branco jogam alternadamente, colocando pedras nas intersecoes das linhas do tabuleiro; o preto joga primeiro e o objetivo e cercar mais espaco vazio. Uma pedra que perde todas as suas liberdades e capturada, e existem regras especiais como pontos proibidos e ko. Ao final, o vencedor e decidido pela quantidade de territorio cercado.</p>
+
 ## Conceitos Basicos
 
 ### Tabuleiro e Pedras

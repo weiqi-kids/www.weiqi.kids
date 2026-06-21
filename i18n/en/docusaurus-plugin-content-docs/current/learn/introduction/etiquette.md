@@ -7,6 +7,8 @@ title: Game Etiquette
 
 Go is not just a contest of winning and losing, but also an expression of culture and refinement. Good game etiquette is fundamental to every Go player.
 
+<p className="key-answer" data-question="What etiquette should you follow when playing Go?">Before a game you greet your opponent and determine who plays Black or White through nigiri. Once a stone is placed you cannot take it back, you stay quiet and focused and respect your opponent during play, and at the end you honestly confirm the result. These are the basic rules of Go etiquette.</p>
+
 ## Before the Game
 
 ### Greeting

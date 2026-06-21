@@ -8,6 +8,8 @@ description: Penjelasan detail set aturan Go yang didukung KataGo, varian papan,
 
 Artikel ini memperkenalkan berbagai aturan Go, varian ukuran papan yang didukung KataGo, serta cara mengkonfigurasi aturan kustom.
 
+<p className="key-answer" data-question="Aturan Go apa saja yang didukung KataGo dan bagaimana cara mengkustomisasinya?">KataGo mendukung berbagai set aturan seperti Chinese, Japanese, Korean, AGA, New Zealand, dan Tromp-Taylor; Anda dapat mengkustomisasi metode penghitungan, komi, dan ukuran papan melalui parameter rules, komi, serta boardXSize/boardYSize di dalam config.cfg.</p>
+
 ---
 
 ## Gambaran Set Aturan

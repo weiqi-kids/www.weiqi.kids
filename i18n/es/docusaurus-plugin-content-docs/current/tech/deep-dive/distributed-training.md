@@ -8,6 +8,8 @@ description: Arquitectura del sistema de entrenamiento distribuido de KataGo, Se
 
 Este artículo presenta la arquitectura del sistema de entrenamiento distribuido de KataGo, explicando cómo mejorar continuamente los modelos a través del poder de cómputo de la comunidad global.
 
+<p className="key-answer" data-question="¿Cómo funciona la arquitectura de entrenamiento distribuido de KataGo?">En el entrenamiento distribuido de KataGo, los Self-play Workers de voluntarios de todo el mundo ejecutan auto-juego y suben los datos de las partidas; el servidor central de entrenamiento recopila los datos y entrena periódicamente modelos más fuertes, que luego se publican a los Workers para que sigan jugando, formando un ciclo de mejora continua y automática.</p>
+
 ---
 
 ## Visión general de la arquitectura del sistema

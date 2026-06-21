@@ -7,6 +7,8 @@ title: Bagian Pemula
 
 Selamat datang di dunia Go! Bagian ini akan membimbing Anda dari nol untuk membangun dasar Go yang kuat.
 
+<p className="key-answer" data-question="Apa yang harus dipelajari lebih dulu untuk pemula Go?">Pemula Go sebaiknya mempelajari empat dasar secara berurutan: aturan Go (liberti, penangkapan, titik terlarang, ko, mata dan kelompok hidup, penentuan menang-kalah), istilah dasar, etiket bermain, serta arah dan konsep dasar pembukaan.</p>
+
 ## Isi Bagian Ini
 
 ### Aturan Go

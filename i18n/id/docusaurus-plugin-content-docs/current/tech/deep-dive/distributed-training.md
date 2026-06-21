@@ -8,6 +8,8 @@ description: Arsitektur sistem pelatihan terdistribusi KataGo, Self-play Worker,
 
 Artikel ini memperkenalkan arsitektur sistem pelatihan terdistribusi KataGo, menjelaskan bagaimana model terus ditingkatkan melalui daya komputasi komunitas global.
 
+<p className="key-answer" data-question="Bagaimana arsitektur pelatihan terdistribusi KataGo bekerja?">Pelatihan terdistribusi KataGo dijalankan oleh Self-play Worker dari sukarelawan di seluruh dunia yang melakukan self-play dan mengunggah data catatan permainan; server pelatihan pusat mengumpulkan data tersebut, secara berkala melatih model yang lebih kuat, lalu merilisnya kembali ke Worker untuk melanjutkan permainan, membentuk siklus peningkatan diri yang berkelanjutan.</p>
+
 ---
 
 ## Gambaran Arsitektur Sistem

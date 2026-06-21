@@ -7,6 +7,8 @@ title: Opening Concepts
 
 The opening (also called fuseki) is the first phase of a Go game. This phase determines the direction of the entire game. This article introduces basic opening concepts to help you develop proper whole-board vision.
 
+<p className="key-answer" data-question="How should you play the opening in Go?">The core of the opening follows the principle of "corner, side, center": first take the most efficient corners, then defend the sides, and only consider the center last. The goal is to claim the big points, establish bases, and balance territory with influence.</p>
+
 ## General Direction of the Opening
 
 ### Opening Objectives

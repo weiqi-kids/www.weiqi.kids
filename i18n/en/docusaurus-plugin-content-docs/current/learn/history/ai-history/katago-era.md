@@ -7,6 +7,8 @@ title: The KataGo Era
 
 After AlphaGo retired in 2017, Go AI development didn't stop. On the contrary, the open source community took up the torch, making top-tier Go AI no longer the exclusive property of tech giants but a tool everyone can use. This "AI democratization" movement completely changed how Go is learned and trained.
 
+<p className="key-answer" data-question="What is the KataGo era?">After AlphaGo retired, the open-source community took over: from Leela Zero and ELF OpenGo to KataGo, released by David Wu in 2019, top-tier Go AI became widely accessible. With more efficient training, support for handicap games and multiple rule sets, and detailed analysis output, KataGo has become the most popular open-source Go AI today.</p>
+
 ## The Rise of Open Source AI
 
 ### Leela Zero: The Power of Community

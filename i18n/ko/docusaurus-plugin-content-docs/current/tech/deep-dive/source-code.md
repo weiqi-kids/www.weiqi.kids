@@ -8,6 +8,8 @@ description: KataGo 코드 구조, 핵심 모듈 및 아키텍처 설계
 
 이 문서는 KataGo의 코드 구조를 안내하며, 깊이 연구하거나 코드에 기여하고자 하는 엔지니어에게 적합합니다.
 
+<p className="key-answer" data-question="KataGo의 소스 코드 구조는 어떻게 되어 있나요?">KataGo 소스 코드(github.com/lightvector/KataGo)는 크게 두 부분으로 나뉩니다. cpp/ 는 C++ 핵심 엔진으로 메인 프로그램, 바둑 규칙(game), MCTS 탐색(search), 신경망 추론(neuralnet)을 포함합니다. python/ 은 Python 학습 코드로 학습 메인 프로그램, 네트워크 아키텍처 정의(model.py), 데이터 처리를 포함합니다.</p>
+
 ---
 
 ## 소스 코드 가져오기

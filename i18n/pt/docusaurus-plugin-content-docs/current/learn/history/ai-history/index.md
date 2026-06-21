@@ -9,6 +9,8 @@ Por muito tempo, o Go foi considerado o jogo mais dificil de ser conquistado pel
 
 No entanto, entre 2015 e 2017, a serie AlphaGo da DeepMind mudou tudo isso completamente. Esta revolucao nao apenas afetou o Go, mas impulsionou o desenvolvimento de todo o campo da inteligencia artificial.
 
+<p className="key-answer" data-question="Como a IA no Go se desenvolveu?">Por causa do espaco de busca gigantesco e da dificuldade de avaliar posicoes, o Go foi por muito tempo considerado o jogo mais dificil de a IA conquistar; isso so mudou com o avanco do AlphaGo da DeepMind entre 2015 e 2017, e desde entao a IA de Go passou por duas grandes fases: a era AlphaGo e a posterior era do KataGo de codigo aberto.</p>
+
 ## Por que o Go e tao Dificil?
 
 ### Espaco de Busca Gigantesco

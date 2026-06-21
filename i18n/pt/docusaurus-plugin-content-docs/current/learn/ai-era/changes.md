@@ -7,6 +7,8 @@ title: Mudancas Trazidas pela IA
 
 O surgimento do AlphaGo nao apenas venceu os melhores jogadores humanos, mais importante ainda, mudou nosso entendimento do Go. Muitos conceitos antes considerados "conhecimento comum" precisam ser reavaliados sob a analise da IA.
 
+<p className="key-answer" data-question="Quais sao as principais mudancas que a IA trouxe aos conceitos do Go?">A IA subverteu muitos conceitos tradicionais: jogar no 3-3 passou de "jogada perdedora" a recurso comum de abertura, o valor da influencia externa foi reavaliado em favor de mais territorio, as escolhas de abertura mudaram visivelmente e, no geral, passou-se a enfatizar a eficiencia em todo o tabuleiro e o julgamento objetivo da taxa de vitoria.</p>
+
 ## Principais Mudancas no Estilo de Jogo
 
 ### Jogar no 3-3 Tornou-se Comum

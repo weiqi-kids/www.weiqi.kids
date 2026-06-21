@@ -8,6 +8,8 @@ description: Memahami secara mendalam alur pelatihan self-play dan teknik inti K
 
 Artikel ini menganalisis secara mendalam mekanisme pelatihan KataGo, membantu Anda memahami prinsip kerja pelatihan self-play.
 
+<p className="key-answer" data-question="Bagaimana mekanisme pelatihan KataGo bekerja?">KataGo menggunakan reinforcement learning self-play: model awal melakukan self-play dalam jumlah besar untuk menghasilkan rekaman permainan, setelah data dikumpulkan model dilatih menggunakan fungsi loss policy dan value untuk menghasilkan model yang lebih kuat, lalu siklus ini diulang agar terus meningkat; memori GPU dan waktu yang dibutuhkan untuk pelatihan bertambah seiring skala model (misalnya dari b6c96 hingga b40c256).</p>
+
 ---
 
 ## Gambaran Pelatihan
