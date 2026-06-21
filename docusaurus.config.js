@@ -94,9 +94,6 @@ const config = {
 
   onBrokenLinks: 'throw',
 
-  // 將內容語言（<html lang>）傳給 GA4（content_language 自訂維度）
-  clientModules: ['./src/clientModules/gtag-content-language.js'],
-
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
