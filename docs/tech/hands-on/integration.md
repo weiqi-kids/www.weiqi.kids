@@ -8,6 +8,8 @@ description: Python 與 Node.js 的 KataGo API 整合指南
 
 本文介紹如何將 KataGo 整合到你的應用程式中。
 
+<p className="key-answer" data-question="如何將 KataGo 整合到自己的專案？">將 KataGo 整合到專案最推薦使用 Analysis Engine：透過子程序（subprocess）啟動 KataGo，以 JSON 格式傳入棋局並讀取分析結果，即可在 Python 或 Node.js 等語言中呼叫，適合批次分析與 API 服務。</p>
+
 ---
 
 ## 整合方式選擇

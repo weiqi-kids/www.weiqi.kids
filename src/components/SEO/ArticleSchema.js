@@ -29,6 +29,8 @@ export default function ArticleSchema({
   wordCount = 5000,
   relatedLinks = [],
   breadcrumbs = [],
+  lastReviewed,
+  reviewedBy,
 }) {
   const { siteConfig } = useDocusaurusContext();
   const siteUrl = siteConfig.url;
@@ -88,7 +90,9 @@ export default function ArticleSchema({
         "isPartOf": {
           "@type": "WebSite",
           "@id": `${siteUrl}#website`
-        }
+        },
+        ...(lastReviewed ? { "lastReviewed": lastReviewed } : {}),
+        ...(reviewedBy ? { "reviewedBy": { "@type": "Person", "name": reviewedBy } } : {})
       },
       // BreadcrumbList
       {
@@ -140,6 +144,10 @@ export default function ArticleSchema({
 
   return (
     <Head>
+      {/* 文章頁 og:type 設為 article（全域不再寫死 website，避免重複） */}
+      <meta property="og:type" content="article" />
+      <meta property="article:published_time" content={datePublished} />
+      <meta property="article:modified_time" content={dateModified || datePublished} />
       <script type="application/ld+json">
         {JSON.stringify(schema)}
       </script>

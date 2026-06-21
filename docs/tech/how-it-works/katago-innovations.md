@@ -8,6 +8,8 @@ description: KataGo 如何以 50 倍效率提升超越 AlphaGo
 
 KataGo 是 David Wu 於 2019 年發表的開源圍棋 AI，以更少的資源達到更強的棋力。本文將深入解析其技術創新。
 
+<p className="key-answer" data-question="KataGo 相對 AlphaGo 有哪些創新？">KataGo 相對 AlphaGo 的關鍵創新在於完全開源（MIT 授權）、以約 30 GPU、19 天的高效訓練超越前作，並額外輸出目數、領地與多規則支援，使訓練效率與功能都大幅提升。</p>
+
 ## 為什麼需要 KataGo？
 
 ### AlphaGo 的問題

@@ -12,6 +12,8 @@ description: 從 AlphaGo 到 KataGo，完整理解圍棋 AI 的運作原理
 - 說明自我對弈訓練的運作原理
 - 了解 KataGo 相對於 AlphaGo 的改進
 
+<p className="key-answer" data-question="圍棋 AI 是如何運作的？">圍棋 AI 的核心是用深度神經網路評估局面與選點，再結合蒙地卡羅樹搜索（MCTS）在約 10^170 種龐大局面中聚焦最有希望的著手，並透過自我對弈不斷產生棋譜來強化自身棋力。</p>
+
 ---
 
 ## 一、圍棋為什麼難？

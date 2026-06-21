@@ -12,6 +12,8 @@ description: 快速上手 KataGo，從安裝到對弈只需 30 分鐘
 - ✅ 分析一盤棋的每步棋勝率
 - ✅ 理解基本的 GTP 協議
 
+<p className="key-answer" data-question="如何在 30 分鐘內跑起第一個圍棋 AI？">只要四個步驟即可在約 30 分鐘內完成：安裝 KataGo（如 macOS 用 Homebrew）、下載神經網路模型、建立設定檔，最後啟動 GTP 模式即可與 AI 對弈並分析每步棋的勝率。</p>
+
 ---
 
 ## 步驟 1：安裝 KataGo（5 分鐘）

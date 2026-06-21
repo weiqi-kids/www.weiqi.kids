@@ -39,13 +39,8 @@ const config = {
   // SEO 全域設定
   headTags: [
     // Open Graph 基本標籤
-    {
-      tagName: 'meta',
-      attributes: {
-        property: 'og:type',
-        content: 'website',
-      },
-    },
+    // 註：og:type 不在此全域寫死；文章頁由 ArticleSchema 設為 article，
+    // 其餘頁面預設（不輸出 og:type，等同 website），避免重複標籤。
     {
       tagName: 'meta',
       attributes: {
@@ -181,10 +176,9 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          editUrl: 'https://github.com/weiqi-kids/www.weiqi.kids/tree/main/',
+          editLocalizedFiles: true,
+          showLastUpdateTime: true,
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
         },

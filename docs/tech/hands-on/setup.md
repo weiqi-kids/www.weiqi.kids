@@ -8,6 +8,8 @@ description: 各平台詳細安裝步驟、模型選擇與設定檔說明
 
 本文詳細介紹在各平台上安裝 KataGo 的完整步驟。
 
+<p className="key-answer" data-question="如何安裝 KataGo？">安裝 KataGo 需先依硬體選擇後端：NVIDIA 顯卡用 CUDA、AMD 與 Intel 內顯用 OpenCL、Apple Silicon 用 Metal，無 GPU 則用 Eigen 純 CPU 後端；接著安裝 KataGo 執行檔、下載神經網路模型並準備設定檔即可運行。</p>
+
 ## 系統需求
 
 ### 硬體需求

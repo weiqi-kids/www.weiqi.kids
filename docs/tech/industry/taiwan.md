@@ -8,6 +8,8 @@ description: 台灣圍棋 AI 應用案例：GOER AI、黑嘉嘉圍棋教室
 
 台灣雖然市場規模較小，但在圍棋 AI 應用上有獨特的發展。
 
+<p className="key-answer" data-question="台灣的圍棋 AI 發展現況如何？">台灣市場規模雖小，仍發展出具特色的圍棋 AI 應用，例如結合 KataGo 引擎與教務管理的 GOER AI 教學系統，以及黑嘉嘉圍棋教室等案例，將自動對局分析、客觀評分與學習進度追蹤導入實際教學。</p>
+
 ---
 
 ## GOER AI 系統

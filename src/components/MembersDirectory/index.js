@@ -14,7 +14,7 @@ function MemberCard({m}) {
         className={styles.avatar}
         style={photoSrc ? undefined : {background: m.avatarColor}}>
         {photoSrc ? (
-          <img src={photoSrc} alt={m.name} className={styles.avatarImg} />
+          <img src={photoSrc} alt={m.name} className={styles.avatarImg} loading="lazy" decoding="async" />
         ) : (
           <span className={styles.avatarInitial}>{initial}</span>
         )}

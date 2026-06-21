@@ -8,6 +8,8 @@ description: KataGo 支援的圍棋規則集、變體棋盤與自訂設定詳解
 
 本文介紹 KataGo 支援的各種圍棋規則、棋盤大小變體，以及如何自訂規則設定。
 
+<p className="key-answer" data-question="KataGo 支援哪些圍棋規則並如何自訂？">KataGo 支援中國、日本、韓國、AGA、紐西蘭、Tromp-Taylor 等多種規則集，可在 config.cfg 中透過 rules、komi（貼目）、boardXSize/boardYSize（棋盤大小）等參數自訂計目方式、貼目與棋盤尺寸。</p>
+
 ---
 
 ## 規則集總覽

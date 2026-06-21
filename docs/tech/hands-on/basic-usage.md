@@ -8,6 +8,8 @@ description: GTP 協議與 Analysis Engine 的完整使用指南
 
 KataGo 提供兩種操作模式：GTP 模式（適合對弈）和 Analysis Engine（適合程式整合）。
 
+<p className="key-answer" data-question="KataGo 有哪兩種操作模式，分別適合什麼用途？">KataGo 提供兩種操作模式：GTP 模式採用標準的 Go Text Protocol，適合人機對弈與棋類軟體串接；Analysis Engine 採用 JSON 格式輸入輸出，適合批次分析與程式整合。</p>
+
 ---
 
 ## GTP 模式

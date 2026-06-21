@@ -8,6 +8,8 @@ description: 圍棋 AI 在學習平台與職業訓練的實際應用
 
 本文介紹圍棋 AI 在教學平台和職業訓練中的實際應用。
 
+<p className="key-answer" data-question="圍棋 AI 在實際應用中有哪些案例？">圍棋 AI 已廣泛應用於線上學習平台與職業訓練，例如德國的 AI Sensei 與免費的 OGS（Online Go Server）都以 KataGo 引擎提供即時對局分析、勝率曲線與引導式覆盤，讓一般棋友與職業棋手都能取得專業級的 AI 教學輔助。</p>
+
 ---
 
 ## 學習平台
