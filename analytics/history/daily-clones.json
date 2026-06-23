@@ -679,7 +679,12 @@
       "timestamp": "2026-06-20T00:00:00Z",
       "count": 36,
       "uniques": 14
+    },
+    {
+      "timestamp": "2026-06-21T00:00:00Z",
+      "count": 122,
+      "uniques": 45
     }
   ],
-  "lastUpdated": "2026-06-22T02:14:05.739Z"
+  "lastUpdated": "2026-06-23T01:53:10.695Z"
 }
