@@ -704,7 +704,12 @@
       "timestamp": "2026-06-25T00:00:00Z",
       "count": 21,
       "uniques": 10
+    },
+    {
+      "timestamp": "2026-06-26T00:00:00Z",
+      "count": 6,
+      "uniques": 4
     }
   ],
-  "lastUpdated": "2026-06-27T01:50:44.551Z"
+  "lastUpdated": "2026-06-28T02:00:43.781Z"
 }
