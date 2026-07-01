@@ -1,0 +1,103 @@
+{
+  "date": "2026-07-01",
+  "site": "weiqi.kids",
+  "generatedAt": "2026-07-01T10:25:02.852Z",
+  "ga4": {
+    "range": "7daysAgo..yesterday",
+    "sessions": 160,
+    "users": 159,
+    "views": 199,
+    "avgDurationSec": 13,
+    "taiwanOrganicSessions": 3,
+    "channels": [
+      {
+        "channel": "Direct",
+        "sessions": 151
+      },
+      {
+        "channel": "Organic Search",
+        "sessions": 6
+      },
+      {
+        "channel": "AI Assistant",
+        "sessions": 1
+      },
+      {
+        "channel": "Referral",
+        "sessions": 1
+      },
+      {
+        "channel": "Unassigned",
+        "sessions": 1
+      }
+    ],
+    "topPages": [
+      {
+        "path": "/",
+        "views": 10
+      },
+      {
+        "path": "/en/",
+        "views": 8
+      },
+      {
+        "path": "/en/docs/alphago/move-37/",
+        "views": 7
+      },
+      {
+        "path": "/en/docs/tech/how-it-works/katago-innovations/",
+        "views": 6
+      },
+      {
+        "path": "/docs/tech/deep-dive/neural-network/",
+        "views": 5
+      },
+      {
+        "path": "/en/docs/tech/deep-dive/training/",
+        "views": 4
+      },
+      {
+        "path": "/docs/about/members/founding/",
+        "views": 3
+      },
+      {
+        "path": "/docs/about/members/founding/tien-chien-pan/",
+        "views": 3
+      },
+      {
+        "path": "/en/docs/learn/ai-era/learning-with-ai/",
+        "views": 3
+      },
+      {
+        "path": "/en/docs/tech/deep-dive/gpu-optimization/",
+        "views": 3
+      },
+      {
+        "path": "/en/docs/tech/deep-dive/neural-network/",
+        "views": 3
+      },
+      {
+        "path": "/es/docs/tech/overview/landscape/",
+        "views": 3
+      },
+      {
+        "path": "/zh-hk/docs/tech/deep-dive/neural-network/",
+        "views": 3
+      },
+      {
+        "path": "/docs/about/",
+        "views": 2
+      },
+      {
+        "path": "/docs/alphago/input-features/",
+        "views": 2
+      }
+    ]
+  },
+  "gsc": {
+    "error": "GSC API：User does not have sufficient permission for site 'https://www.weiqi.kids/'. See also: https://support.google.com/webmasters/answer/2451999."
+  },
+  "index": {
+    "error": "Sitemaps：User does not have sufficient permission for site 'https://www.weiqi.kids/'. See also: https://support.google.com/webmasters/answer/2451999."
+  }
+}
