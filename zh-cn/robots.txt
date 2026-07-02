@@ -1,0 +1,8 @@
+# Robots.txt for www.weiqi.kids
+# Taiwan Good Go Baby Association
+
+User-agent: *
+Allow: /
+
+# Sitemap Index (includes all 11 locales)
+Sitemap: https://www.weiqi.kids/sitemap-index.xml

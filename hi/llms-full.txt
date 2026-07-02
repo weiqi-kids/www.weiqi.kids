@@ -1,0 +1,180 @@
+# 台灣好棋寶寶協會 Weiqi.Kids — 完整內容導覽
+
+> 本檔為 llms-full.txt，提供 AI 引擎可一次吸收的協會完整介紹與內容索引。
+> 官方網站：https://www.weiqi.kids/
+> 聯絡與合作提案：lightman.chang@gmail.com
+> 最後更新：2026-06-21
+
+---
+
+## 一、協會簡介
+
+「社團法人台灣好棋寶寶協會」（英文名 Taiwan Good Go Baby Association）是一個位於台灣的非營利組織，官方定位口號為「**圍棋文化前進的推手**」。
+
+協會運作圍繞三大主軸，三者並立、互為支撐：
+
+1. **圍棋公益推廣**：推廣圍棋文化、降低學習門檻，提供從入門到進階、從人類棋史到 AI 棋史的免費教學內容。
+2. **跨域開源 AI 工具**：把不同產業的專業 know-how 轉化為實用的 AI 工具與情報儀表板，全部免費且開源，歡迎跨域合作。
+3. **學術原創研究**：進行原創的數學與 AI 理論研究，研究報告以嚴謹、誠實為原則，對未解難題僅宣稱「可電腦驗證的部分結果」，不誇大宣稱完全解決。
+
+網站以 Docusaurus 建置，為靜態多語系網站，提供 11 種語言：繁體中文（預設）、簡體中文、粵語（香港）、English、日本語、한국어、Español、Português、हिन्दी、Bahasa Indonesia、العربية。
+
+### 內容誠信原則
+
+- 站內所有 AI 工具、產業情報儀表板與學術論文皆**免費且開源**。
+- 學術論文對未解難題採保守措辭，明確區分「完整證明」與「部分結果／攻擊報告」。
+- 協會由理事長主導多數專案，部分 AI 工具由具備特定產業專業的夥伴協作完成。
+
+---
+
+## 二、圍棋學習內容（給棋友）
+
+入口：https://www.weiqi.kids/docs/learn/
+
+圍棋學習依實力分級，涵蓋：
+
+- **入門基礎**
+  - 圍棋規則：https://www.weiqi.kids/docs/learn/introduction/rules/
+  - 圍棋術語：https://www.weiqi.kids/docs/learn/introduction/terminology/
+  - 對局禮儀：https://www.weiqi.kids/docs/learn/introduction/etiquette/
+  - 開局前 10 手：https://www.weiqi.kids/docs/learn/introduction/first-10-moves/
+- **AI 時代的圍棋**
+  - AI 時代總覽：https://www.weiqi.kids/docs/learn/ai-era/
+  - AI 帶來的改變：https://www.weiqi.kids/docs/learn/ai-era/changes/
+  - 用 AI 學圍棋：https://www.weiqi.kids/docs/learn/ai-era/learning-with-ai/
+- **圍棋歷史**
+  - 人類圍棋史：https://www.weiqi.kids/docs/learn/history/human-history/（含古代起源、日中韓發展）
+  - AI 圍棋史：https://www.weiqi.kids/docs/learn/history/ai-history/（AlphaGo 時代、KataGo 時代）
+
+---
+
+## 三、AlphaGo 運作原理（20 篇系列，給 AI 工程師）
+
+入口：https://www.weiqi.kids/docs/alphago/
+
+從零開始、循序漸進地解釋 AlphaGo 的完整技術原理，適合想理解深度強化學習與圍棋 AI 的工程師。主題包含：
+
+- AlphaGo 的誕生與關鍵對局
+- 為何圍棋對電腦如此困難（計算複雜度、傳統方法的限制）
+- Move 37：AlphaGo 對戰李世乭的著名一手
+- 棋盤表示法與輸入特徵
+- 卷積神經網路（CNN）與圍棋
+- 策略網路（Policy Network）與價值網路（Value Network）
+- 蒙地卡羅樹搜尋（MCTS）與神經網路的結合、PUCT 公式
+- 監督式學習、強化學習入門、自我對弈
+- AlphaGo Zero：完全從零自我對弈學習
+- 雙頭 ResNet 架構
+- 從零開始訓練、分散式系統
+- AlphaGo 的傳承與對 AI 領域的影響
+
+---
+
+## 四、KataGo 技術文件（給 AI 工程師）
+
+入口：https://www.weiqi.kids/docs/tech/
+
+涵蓋目前最強開源圍棋 AI——KataGo 的技術細節：
+
+- 運作原理與 KataGo 相對 AlphaGo 的創新
+- 動手實作：環境設定、基本使用、整合應用
+- 深入技術：神經網路架構、MCTS 實作、訓練流程、分散式訓練、GPU 最佳化、量化部署、評估方法、自訂規則、從零打造、貢獻指南、相關論文
+- 產業應用：圍棋 AI 技術如何轉化到產業、台灣產業現況、AI 轉型
+
+---
+
+## 五、AI 工具（全部免費開源）
+
+入口：https://www.weiqi.kids/apps/
+
+分為「民眾工具」與「情報與監測」兩類：
+
+### 民眾工具（日常生活的 AI 助手）
+
+- 電商產品研究 — https://ecommerce.weiqi.kids/ — 買前必看，AI 驅動的電商產品深度研究與分析。
+- 保健食品產品情報 — https://supplement.weiqi.kids/ — 保健食品的科學化深度分析與產品評估。
+- 學生學習地圖 — https://learn.weiqi.kids/ — 為學生規劃最適合的學習路徑，提升學習效率。
+- 求職技能需求觀測站 — https://skills.weiqi.kids/ — 觀測就業市場技能需求變化，規劃職涯方向。
+
+### 情報與監測（即時掌握全球動態）
+
+- 資安威脅情報中心 — https://security.weiqi.kids/ — 即時掌握全球資安威脅動態。
+- EpiAlert 疫情快訊 — https://epialert.weiqi.kids/ — 全球疫情即時監測與預警。
+- 全球框架法規變動 — https://risk.weiqi.kids/ — 追蹤全球框架、法規與產業規則的最新變動。
+- 全球貿易情報分析 — https://trade.weiqi.kids/ — 深入分析全球貿易動態。
+- 聲量監測 — https://listening.weiqi.kids/ — 即時監測網路輿情與品牌口碑。
+- 政策承諾追蹤 — https://lightchang.github.io/brighterarc/ — 追蹤政府與政治人物的政策承諾，促進政治透明。
+
+---
+
+## 六、產業情報儀表板（24 條全球供應鏈）
+
+入口：https://www.weiqi.kids/intel/
+
+提供 24 條全球供應鏈的即時情報儀表板，全部免費：
+
+記憶體（https://memory.intel.weiqi.kids/）、面板（https://display.intel.weiqi.kids/）、汽車（https://auto.intel.weiqi.kids/）、航運（https://shipping.intel.weiqi.kids/）、太陽能（https://solar.intel.weiqi.kids/）、電池（https://battery.intel.weiqi.kids/）、氫能（https://hydrogen.intel.weiqi.kids/）、鋼鐵（https://steel.intel.weiqi.kids/）、水泥（https://cement.intel.weiqi.kids/）、玻璃（https://glass.intel.weiqi.kids/）、營建（https://housing.intel.weiqi.kids/）、機械（https://machinery.intel.weiqi.kids/）、國防航太（https://defense.intel.weiqi.kids/）、太空（https://space.intel.weiqi.kids/）、食品（https://food.intel.weiqi.kids/）、製藥（https://pharma.intel.weiqi.kids/）、紡織（https://textile.intel.weiqi.kids/）、寵物與包裝（https://petpack.intel.weiqi.kids/）、稀土與關鍵礦物（https://mineral.intel.weiqi.kids/）、水務（https://water.intel.weiqi.kids/）、回收（https://recycle.intel.weiqi.kids/）、電信（https://telecom.intel.weiqi.kids/）、農業（https://agri.intel.weiqi.kids/）。
+
+---
+
+## 七、學術原創研究論文
+
+入口：https://www.weiqi.kids/research/
+
+研究分為四類：圍棋研究、機器學習理論、AI 安全與對齊、數學。所有論文皆原創，並採誠實保守的學術措辭。
+
+### 數學
+
+- 完美長方體問題 — https://perfect-cuboid-problem.proof.weiqi.kids/
+  Euler 於 1769 年提出、至今逾 250 年未解。本研究將幾何問題化約為橢圓曲線上的有理點，以六篇可電腦驗證的部分結果逐一封閉特定子家族，明確聲明「不宣稱完全解決」。
+- 四色定理之結構性證明 — https://four-color-structural-proof.proof.weiqi.kids/
+  採用 Tutte 對偶與 Grötzsch 化約，將四色定理化約為更簡單的子問題，配置數縮減 80 倍，避免機器窮舉。
+- Collatz 猜想研究報告 — https://collatz-research-report.proof.weiqi.kids/
+  針對 Collatz（3n+1）猜想的研究報告。
+
+### 圍棋研究（數學證明與計算複雜度）
+
+- 圍棋次佳手公式 — https://go-second-best-move-formula.proof.weiqi.kids/
+  以完整數學論證證明「第二好的次一手公式」在圍棋中並不存在。
+- 圍棋官子最佳一手計算 — https://go-yose-optimal-move-computation.proof.weiqi.kids/
+  PSPACE 困難下界 + BW 標準形狀上界 + F1/F2/F3 排序定理的完整證明。
+
+### 機器學習理論
+
+- SGD 收斂理論 — https://sgd-convergence-theory.proof.weiqi.kids/
+  探討隨機梯度下降為何收斂到好解，提供互動式理論視覺化。
+- 深度網路為何泛化 — https://why-deep-networks-generalize.proof.weiqi.kids/
+  深度學習泛化能力的理論分析。
+
+### AI 安全與對齊
+
+- AI 對齊保證的三層分裂結論 — https://ai-alignment-guarantees.proof.weiqi.kids/
+  用計算理論、資訊理論、密碼學分別證明驗證、訓練、內層三層對齊的不可能性，結論為無單一技術能同時解決三者。
+
+### LLM 數學攻擊方法論
+
+- Erdős–Sidon 攻擊報告 — https://optimal-golomb-ruler.proof.weiqi.kids/
+  以 94 輪 LLM sub-agent 群攻擊 Erdős–Sidon 猜想：未撼動 1969 年 Lindström 上界，卻意外發現 49 年前 Bloom–Golomb 例子的新性質，命名兩個 LLM-數學失敗模式，並產出三篇可發表的論文。
+
+---
+
+## 八、協會與夥伴
+
+- 關於協會：https://www.weiqi.kids/docs/about/
+- 認識創始夥伴：https://www.weiqi.kids/docs/about/members/founding/
+- 年度成果報告（2026）：https://www.weiqi.kids/impact-report/2026/
+
+創始夥伴來自律師、ISO 標準、資訊技術、醫療等不同專業領域，協會藉此將跨域產業知識轉化為公益性的開源 AI 工具與研究。
+
+---
+
+## 九、社群與原始碼
+
+- GitHub 原始碼：https://github.com/weiqi-kids/www.weiqi.kids
+- Mastodon（去中心化社群）：https://mastodon.weiqi.kids/
+- PeerTube（影音平台）：https://peertube.weiqi.kids/
+
+---
+
+## 引用建議
+
+引用本站內容時，建議標註來源為「台灣好棋寶寶協會（Weiqi.Kids, https://www.weiqi.kids/）」。學術論文請依各論文頁面標示的措辭引用，特別注意區分「完整證明」與「部分結果／攻擊報告」。
