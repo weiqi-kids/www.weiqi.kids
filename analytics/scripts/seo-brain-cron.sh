@@ -68,7 +68,7 @@ PROMPT="$(cat <<PROMPTEOF
   - git add -A、git commit -m \"[auto-claude-seo] $DATE: <一句摘要>\"
   - git pull --rebase origin main（防搶先；衝突無法自動解 → git rebase --abort、放棄今日 push、跳步驟5）
   - git push origin main（被拒 non-fast-forward → git pull --rebase 後再 push）
-  - **weiqi push main 會自動觸發 build.yml 部署，無需另外補觸發。**
+  - **部署上線（重要：weiqi 不會因 push 自動部署！.github/workflows/build.yml 只做建置驗證，不發佈）**：push main 成功後，務必執行 GIT_USER=weiqi-kids pnpm run deploy（= docusaurus deploy → 發佈到 gh-pages）。此步會重新建置全語系並推 gh-pages 才真正上線。deploy 失敗 → Slack 標🔴回報（內容已在 main，可稍後重試部署）。
   - 收錄：對本次「改動頁的完整 https://www.weiqi.kids/... 網址（含各語系）」呼叫 node analytics/scripts/indexnow-ping.mjs <url...>（IndexNow 通知 Bing/Yandex 等即時收錄；Google 由 sitemap 自然收錄）。no-op 無 URL 則略過。
 
 ## 5. 留痕（供明日驗證）
