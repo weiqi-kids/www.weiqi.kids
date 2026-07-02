@@ -1,7 +1,7 @@
 ---
 sidebar_position: 19
 title: 姜封豪
-description: 運動通健康
+description: 姜封豪為健康領域聯合診所院長，專精運動營養家庭醫學，具13年專業實務經驗，是台灣好棋寶寶協會創始會員。
 industry_tags: [醫事]
 ai_tools: []
 contributing_role: 未來合作意向
