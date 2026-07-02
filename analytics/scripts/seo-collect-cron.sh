@@ -12,7 +12,7 @@ export TZ="Asia/Taipei"
 
 # 站別參數（非機密）＋ SA 金鑰路徑（既有 GA4 SA，folk 同一把）。
 export GA4_PROPERTY_ID="${GA4_PROPERTY_ID:-458470883}"
-export GSC_SITE_URL="${GSC_SITE_URL:-https://www.weiqi.kids/}"
+export GSC_SITE_URL="${GSC_SITE_URL:-sc-domain:weiqi.kids}"
 export GOOGLE_APPLICATION_CREDENTIALS="${GOOGLE_APPLICATION_CREDENTIALS:-/root/.config/ga4-insights/sa-key.json}"
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
