@@ -69,7 +69,7 @@ PROMPT="$(cat <<PROMPTEOF
   - git pull --rebase origin main（防搶先；衝突無法自動解 → git rebase --abort、放棄今日 push、跳步驟5）
   - git push origin main（被拒 non-fast-forward → git pull --rebase 後再 push）
   - **weiqi push main 會自動觸發 build.yml 部署，無需另外補觸發。**
-  - 收錄：若 static/ 下有 IndexNow key 檔則對改動頁做 IndexNow ping；沒有就略過（Google 由 sitemap 自然收錄）。
+  - 收錄：對本次「改動頁的完整 https://www.weiqi.kids/... 網址（含各語系）」呼叫 node analytics/scripts/indexnow-ping.mjs <url...>（IndexNow 通知 Bing/Yandex 等即時收錄；Google 由 sitemap 自然收錄）。no-op 無 URL 則略過。
 
 ## 5. 留痕（供明日驗證）
 - 寫 analytics/seo-daily/$DATE-actions.md：① 昨日賭注勝負 ② 今日判讀摘要 ③ 改了哪些檔、賭哪些 query/page、預期效果。技術細節寫這裡，不寫進 Slack。
