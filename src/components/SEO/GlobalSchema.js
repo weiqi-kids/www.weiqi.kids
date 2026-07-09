@@ -27,8 +27,7 @@ export default function GlobalSchema() {
           "height": 200
         },
         "sameAs": [
-          "https://mastodon.weiqi.kids/",
-          "https://peertube.weiqi.kids/"
+          "https://github.com/weiqi-kids"
         ],
         "contactPoint": {
           "@type": "ContactPoint",

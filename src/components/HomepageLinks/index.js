@@ -7,7 +7,6 @@ import IntelCard from '@site/src/components/IntelCard';
 import PaperCard from '@site/src/components/PaperCard';
 import AppCard from '@site/src/components/AppCard';
 
-import {officialLinks} from '@site/src/data/links/official';
 import {researchPapers} from '@site/src/data/links/research';
 import {intelLinks} from '@site/src/data/links/intel';
 import {appLinks} from '@site/src/data/links/apps';
@@ -22,8 +21,6 @@ const appIcons = {
   security: '🛡️', health: '🦠', law: '⚖️', trade: '🌐',
   listening: '📊', policy: '📜',
 };
-
-const officialIcons = { status: '🟢', social: '💬', video: '🎬' };
 
 // 從 intelLinks 挑選首頁精選 6 條（橫跨大類別）
 const intelHighlightIds = ['memory', 'auto', 'solar', 'housing', 'pharma', 'defense'];
@@ -401,14 +398,6 @@ function FriendsSection() {
                 <a href={f.href} target="_blank" rel="noopener noreferrer" className={styles.friendLink}>
                   <Translate id="homepage.friends.link.web">官網</Translate>
                 </a>
-                <span className={styles.friendDot}>·</span>
-                <a href={f.socialHref} target="_blank" rel="noopener noreferrer" className={styles.friendLink}>
-                  <Translate id="homepage.friends.link.social">社群</Translate>
-                </a>
-                <span className={styles.friendDot}>·</span>
-                <a href={f.videoHref} target="_blank" rel="noopener noreferrer" className={styles.friendLink}>
-                  <Translate id="homepage.friends.link.video">影音</Translate>
-                </a>
               </div>
             </div>
           ))}
@@ -474,19 +463,6 @@ export default function HomepageLinks() {
 
       {/* 創始會員 */}
       <MembersSection />
-
-      {/* 官方平台 */}
-      <HighlightSection
-        titleKey="homepage.official.title"
-        titleDefault="官方平台"
-        descKey="homepage.official.desc"
-        descDefault="好棋寶寶協會官方服務 — 狀態監控、Mastodon 社群、PeerTube 影音。"
-        columns={3}
-        alt>
-        {officialLinks.map((o) => (
-          <AppCard key={o.id} {...o} icon={officialIcons[o.icon] || '🔗'} />
-        ))}
-      </HighlightSection>
 
       {/* 友站聯播 */}
       <FriendsSection />

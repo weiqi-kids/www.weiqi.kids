@@ -10,8 +10,6 @@ export const friendSites = [
     descKey: 'homepage.links.friends.appi.desc',
     descDefault: '亞太地區醫療健康新聞的專業媒體平台。',
     href: 'https://appi.news/',
-    socialHref: 'https://mastodon.appi.news/',
-    videoHref: 'https://peertube.appi.news/',
     icon: 'news',
   },
   {
@@ -21,8 +19,6 @@ export const friendSites = [
     descKey: 'homepage.links.friends.tlsr.desc',
     descDefault: '銅蛇醫報官方網站，提供專業醫療資訊與報導。',
     href: 'https://tlsr.news/',
-    socialHref: 'https://mastodon.tlsr.news/',
-    videoHref: 'https://peertube.tlsr.news/',
     icon: 'tlsr-news',
   },
 ];
