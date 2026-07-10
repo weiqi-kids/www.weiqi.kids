@@ -21,10 +21,11 @@ const SPEAKABLE = [
   '.key-answer', '.expert-quote', '.actionable-steps li', '.faq-answer-content',
 ];
 
-function toISO(epochSeconds) {
-  if (!epochSeconds) return undefined;
+function toISO(epochMillis) {
+  if (!epochMillis) return undefined;
   // 不可用 new Date() 取現在時間，但用既有 timestamp 轉 ISO 是安全的
-  return new Date(epochSeconds * 1000).toISOString();
+  // metadata.lastUpdatedAt 與 frontMatter date 的 getTime() 皆已是毫秒，不可再乘 1000
+  return new Date(epochMillis).toISOString();
 }
 
 const BCP47 = { 'zh-tw': 'zh-TW', 'zh-cn': 'zh-CN', 'zh-hk': 'zh-HK' };
