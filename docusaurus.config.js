@@ -250,6 +250,34 @@ const config = {
       },
       footer: {
         style: 'dark',
+        links: [
+          {
+            title: '圍棋資源',
+            items: [
+              { to: '/docs/learn', label: '學圍棋' },
+              { to: '/docs/alphago', label: 'AlphaGo' },
+              { to: '/docs/animations', label: '動畫教室' },
+              { to: '/docs/tech', label: '技術文件' },
+            ],
+          },
+          {
+            title: '研究與工具',
+            items: [
+              { to: '/apps/', label: 'AI 工具' },
+              { to: '/research/', label: '論文' },
+              { to: '/intel/', label: '產業情報' },
+            ],
+          },
+          {
+            title: '夥伴',
+            items: [
+              { to: '/docs/about/members/founding/', label: '認識夥伴' },
+              { to: '/impact-report/2026/', label: '年度成果報告' },
+              { to: '/docs/about', label: '關於協會' },
+              { href: 'mailto:lightman.chang@gmail.com?subject=%E3%80%90%E5%90%88%E4%BD%9C%E6%8F%90%E6%A1%88%E3%80%91', label: '合作提案' },
+            ],
+          },
+        ],
         copyright: `Copyright © ${new Date().getFullYear()} 台灣好棋寶寶協會. Built with Docusaurus.`,
       },
       prism: {

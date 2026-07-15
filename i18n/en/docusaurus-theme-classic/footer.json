@@ -1,34 +1,58 @@
 {
-  "link.title.關於協會": {
-    "message": "關於協會",
-    "description": "The title of the footer links column with title=關於協會 in the footer"
-  },
   "link.title.圍棋資源": {
-    "message": "圍棋資源",
+    "message": "Go Resources",
     "description": "The title of the footer links column with title=圍棋資源 in the footer"
   },
-  "link.title.友商介紹": {
-    "message": "友商介紹",
-    "description": "The title of the footer links column with title=友商介紹 in the footer"
+  "link.title.研究與工具": {
+    "message": "Research & Tools",
+    "description": "The title of the footer links column with title=研究與工具 in the footer"
   },
-  "link.title.特別感謝": {
-    "message": "特別感謝",
-    "description": "The title of the footer links column with title=特別感謝 in the footer"
+  "link.title.夥伴": {
+    "message": "Partners",
+    "description": "The title of the footer links column with title=夥伴 in the footer"
   },
-  "link.item.label.快速了解": {
-    "message": "快速了解",
-    "description": "The label of footer link with label=快速了解 linking to /docs/intro"
+  "link.item.label.學圍棋": {
+    "message": "Learn Go",
+    "description": "The label of footer link with label=學圍棋"
   },
-  "link.item.label.Blog": {
-    "message": "Blog",
-    "description": "The label of footer link with label=Blog linking to /blog"
+  "link.item.label.AlphaGo": {
+    "message": "AlphaGo",
+    "description": "The label of footer link with label=AlphaGo"
   },
-  "link.item.label.GitHub": {
-    "message": "GitHub",
-    "description": "The label of footer link with label=GitHub linking to https://github.com/facebook/docusaurus"
+  "link.item.label.動畫教室": {
+    "message": "Animations",
+    "description": "The label of footer link with label=動畫教室"
   },
-  "copyright": {
-    "message": "Copyright © 2025 Weiqi.Kids. Built with Docusaurus.",
-    "description": "The footer copyright"
+  "link.item.label.技術文件": {
+    "message": "Technical Docs",
+    "description": "The label of footer link with label=技術文件"
+  },
+  "link.item.label.AI 工具": {
+    "message": "AI Tools",
+    "description": "The label of footer link with label=AI 工具"
+  },
+  "link.item.label.論文": {
+    "message": "Research",
+    "description": "The label of footer link with label=論文"
+  },
+  "link.item.label.產業情報": {
+    "message": "Industry Intel",
+    "description": "The label of footer link with label=產業情報"
+  },
+  "link.item.label.認識夥伴": {
+    "message": "Meet the partners",
+    "description": "The label of footer link with label=認識夥伴"
+  },
+  "link.item.label.年度成果報告": {
+    "message": "Impact Report",
+    "description": "The label of footer link with label=年度成果報告"
+  },
+  "link.item.label.關於協會": {
+    "message": "About",
+    "description": "The label of footer link with label=關於協會"
+  },
+  "link.item.label.合作提案": {
+    "message": "Propose",
+    "description": "The label of footer link with label=合作提案"
   }
 }
