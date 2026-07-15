@@ -406,12 +406,6 @@
     "message": "标签",
     "description": "The title of the tag list page"
   },
-  "homepage.links.official.section.title": {
-    "message": "官方"
-  },
-  "homepage.links.official.section.desc": {
-    "message": "好棋宝宝协会官方平台，提供服务状态监控、社群互动与影音内容。"
-  },
   "homepage.links.ai.section.title": {
     "message": "AI 研究"
   },
@@ -429,24 +423,6 @@
   },
   "homepage.links.tlsr.section.desc": {
     "message": "专注于医疗保健资讯的合作媒体。"
-  },
-  "homepage.links.official.status.title": {
-    "message": "网站状态列"
-  },
-  "homepage.links.official.status.desc": {
-    "message": "即时监控所有好棋宝宝服务的运作状态，确保服务品质与稳定性。"
-  },
-  "homepage.links.official.social.title": {
-    "message": "社群"
-  },
-  "homepage.links.official.social.desc": {
-    "message": "加入好棋宝宝 Mastodon 社群，与围棋爱好者交流互动。"
-  },
-  "homepage.links.official.video.title": {
-    "message": "影音"
-  },
-  "homepage.links.official.video.desc": {
-    "message": "观看好棋宝宝 PeerTube 影音频道，学习围棋知识与技巧。"
   },
   "homepage.links.ai.ecommerce.title": {
     "message": "电商产品研究"

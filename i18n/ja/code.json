@@ -406,12 +406,6 @@
     "message": "タグ",
     "description": "The title of the tag list page"
   },
-  "homepage.links.official.section.title": {
-    "message": "公式"
-  },
-  "homepage.links.official.section.desc": {
-    "message": "好棋ベビー協会の公式プラットフォーム。サービス状態監視、コミュニティ交流、動画コンテンツを提供。"
-  },
   "homepage.links.ai.section.title": {
     "message": "AI リサーチ"
   },
@@ -429,24 +423,6 @@
   },
   "homepage.links.tlsr.section.desc": {
     "message": "医療・健康情報に特化した協力メディア。"
-  },
-  "homepage.links.official.status.title": {
-    "message": "ステータスページ"
-  },
-  "homepage.links.official.status.desc": {
-    "message": "好棋ベビーの全サービスの稼働状況をリアルタイム監視し、品質と安定性を確保。"
-  },
-  "homepage.links.official.social.title": {
-    "message": "ソーシャル"
-  },
-  "homepage.links.official.social.desc": {
-    "message": "好棋ベビー Mastodon コミュニティに参加して、囲碁愛好者と交流しましょう。"
-  },
-  "homepage.links.official.video.title": {
-    "message": "動画"
-  },
-  "homepage.links.official.video.desc": {
-    "message": "好棋ベビー PeerTube チャンネルで囲碁の知識とテクニックを学びましょう。"
   },
   "homepage.links.ai.ecommerce.title": {
     "message": "EC製品リサーチ"

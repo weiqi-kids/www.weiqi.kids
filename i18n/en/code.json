@@ -406,12 +406,6 @@
     "message": "Tags",
     "description": "The title of the tag list page"
   },
-  "homepage.links.official.section.title": {
-    "message": "Official"
-  },
-  "homepage.links.official.section.desc": {
-    "message": "Official platforms of Good Go Baby Association, providing service status monitoring, community interaction, and video content."
-  },
   "homepage.links.ai.section.title": {
     "message": "AI Research"
   },
@@ -429,24 +423,6 @@
   },
   "homepage.links.tlsr.section.desc": {
     "message": "Collaborative media focused on healthcare information."
-  },
-  "homepage.links.official.status.title": {
-    "message": "Status Page"
-  },
-  "homepage.links.official.status.desc": {
-    "message": "Real-time monitoring of all Good Go Baby services to ensure quality and stability."
-  },
-  "homepage.links.official.social.title": {
-    "message": "Social"
-  },
-  "homepage.links.official.social.desc": {
-    "message": "Join the Good Go Baby Mastodon community to interact with Go enthusiasts."
-  },
-  "homepage.links.official.video.title": {
-    "message": "Video"
-  },
-  "homepage.links.official.video.desc": {
-    "message": "Watch Good Go Baby PeerTube channel to learn Go knowledge and techniques."
   },
   "homepage.links.ai.ecommerce.title": {
     "message": "E-commerce Product Research"

@@ -406,12 +406,6 @@
     "message": "태그",
     "description": "The title of the tag list page"
   },
-  "homepage.links.official.section.title": {
-    "message": "공식"
-  },
-  "homepage.links.official.section.desc": {
-    "message": "바둑 베이비 협회 공식 플랫폼으로, 서비스 상태 모니터링, 커뮤니티 상호작용 및 영상 콘텐츠를 제공합니다."
-  },
   "homepage.links.ai.section.title": {
     "message": "AI 연구"
   },
@@ -429,24 +423,6 @@
   },
   "homepage.links.tlsr.section.desc": {
     "message": "의료 건강 정보에 특화된 협력 미디어입니다."
-  },
-  "homepage.links.official.status.title": {
-    "message": "상태 페이지"
-  },
-  "homepage.links.official.status.desc": {
-    "message": "모든 바둑 베이비 서비스의 운영 상태를 실시간 모니터링하여 서비스 품질과 안정성을 보장합니다."
-  },
-  "homepage.links.official.social.title": {
-    "message": "소셜"
-  },
-  "homepage.links.official.social.desc": {
-    "message": "바둑 베이비 Mastodon 커뮤니티에 참여하여 바둑 애호가들과 교류하세요."
-  },
-  "homepage.links.official.video.title": {
-    "message": "동영상"
-  },
-  "homepage.links.official.video.desc": {
-    "message": "바둑 베이비 PeerTube 채널에서 바둑 지식과 기술을 학습하세요."
   },
   "homepage.links.ai.ecommerce.title": {
     "message": "이커머스 제품 연구"

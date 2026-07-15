@@ -406,12 +406,6 @@
     "message": "Tag",
     "description": "The title of the tag list page"
   },
-  "homepage.links.official.section.title": {
-    "message": "Resmi"
-  },
-  "homepage.links.official.section.desc": {
-    "message": "Platform resmi Asosiasi Good Go Baby, menyediakan pemantauan status layanan, interaksi komunitas, dan konten video."
-  },
   "homepage.links.ai.section.title": {
     "message": "Riset AI"
   },
@@ -429,24 +423,6 @@
   },
   "homepage.links.tlsr.section.desc": {
     "message": "Media kolaboratif yang berfokus pada informasi kesehatan."
-  },
-  "homepage.links.official.status.title": {
-    "message": "Halaman Status"
-  },
-  "homepage.links.official.status.desc": {
-    "message": "Pemantauan real-time semua layanan Good Go Baby untuk memastikan kualitas dan stabilitas."
-  },
-  "homepage.links.official.social.title": {
-    "message": "Sosial"
-  },
-  "homepage.links.official.social.desc": {
-    "message": "Bergabunglah dengan komunitas Mastodon Good Go Baby untuk berinteraksi dengan penggemar Go."
-  },
-  "homepage.links.official.video.title": {
-    "message": "Video"
-  },
-  "homepage.links.official.video.desc": {
-    "message": "Tonton saluran PeerTube Good Go Baby untuk mempelajari pengetahuan dan teknik Go."
   },
   "homepage.links.ai.ecommerce.title": {
     "message": "Riset Produk E-commerce"

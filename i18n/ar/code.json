@@ -406,12 +406,6 @@
     "message": "This page is a draft. It will only be visible in dev and be excluded from the production build.",
     "description": "The draft content banner message"
   },
-  "homepage.links.official.section.title": {
-    "message": "رسمي"
-  },
-  "homepage.links.official.section.desc": {
-    "message": "المنصات الرسمية لجمعية Good Go Baby، توفر مراقبة حالة الخدمة والتفاعل المجتمعي ومحتوى الفيديو."
-  },
   "homepage.links.ai.section.title": {
     "message": "أبحاث الذكاء الاصطناعي"
   },
@@ -429,24 +423,6 @@
   },
   "homepage.links.tlsr.section.desc": {
     "message": "وسيلة إعلامية تعاونية تركز على معلومات الرعاية الصحية."
-  },
-  "homepage.links.official.status.title": {
-    "message": "صفحة الحالة"
-  },
-  "homepage.links.official.status.desc": {
-    "message": "مراقبة فورية لجميع خدمات Good Go Baby لضمان الجودة والاستقرار."
-  },
-  "homepage.links.official.social.title": {
-    "message": "اجتماعي"
-  },
-  "homepage.links.official.social.desc": {
-    "message": "انضم إلى مجتمع Good Go Baby على Mastodon للتفاعل مع عشاق لعبة Go."
-  },
-  "homepage.links.official.video.title": {
-    "message": "فيديو"
-  },
-  "homepage.links.official.video.desc": {
-    "message": "شاهد قناة Good Go Baby على PeerTube لتعلم معارف وتقنيات لعبة Go."
   },
   "homepage.links.ai.ecommerce.title": {
     "message": "بحث منتجات التجارة الإلكترونية"

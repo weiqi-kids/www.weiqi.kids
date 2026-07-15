@@ -84,5 +84,3 @@
 
 - [產業情報總覽（24 條供應鏈）](https://www.weiqi.kids/intel/): 半導體、面板、汽車、航運、太陽能、電池、氫能、鋼鐵、水泥、玻璃、營建、機械、國防、太空、食品、製藥、紡織、寵物包裝、稀土礦物、水務、回收、電信、農業、記憶體等全球供應鏈即時情報
 - [GitHub 原始碼](https://github.com/weiqi-kids/www.weiqi.kids): 官網開源原始碼
-- [Mastodon](https://mastodon.weiqi.kids/): 協會去中心化社群
-- [PeerTube](https://peertube.weiqi.kids/): 協會影音平台

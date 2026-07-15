@@ -406,12 +406,6 @@
     "message": "Marcadores",
     "description": "The title of the tag list page"
   },
-  "homepage.links.official.section.title": {
-    "message": "Oficial"
-  },
-  "homepage.links.official.section.desc": {
-    "message": "Plataformas oficiais da Associação Good Go Baby, oferecendo monitoramento de status, interação comunitária e conteúdo de vídeo."
-  },
   "homepage.links.ai.section.title": {
     "message": "Pesquisa de IA"
   },
@@ -429,24 +423,6 @@
   },
   "homepage.links.tlsr.section.desc": {
     "message": "Mídia colaboradora focada em informações de saúde."
-  },
-  "homepage.links.official.status.title": {
-    "message": "Página de Status"
-  },
-  "homepage.links.official.status.desc": {
-    "message": "Monitoramento em tempo real de todos os serviços Good Go Baby para garantir qualidade e estabilidade."
-  },
-  "homepage.links.official.social.title": {
-    "message": "Social"
-  },
-  "homepage.links.official.social.desc": {
-    "message": "Junte-se à comunidade Mastodon do Good Go Baby para interagir com entusiastas de Go."
-  },
-  "homepage.links.official.video.title": {
-    "message": "Vídeo"
-  },
-  "homepage.links.official.video.desc": {
-    "message": "Assista ao canal PeerTube do Good Go Baby para aprender conhecimentos e técnicas de Go."
   },
   "homepage.links.ai.ecommerce.title": {
     "message": "Pesquisa de Produtos E-commerce"

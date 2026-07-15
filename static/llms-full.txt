@@ -170,8 +170,6 @@
 ## 九、社群與原始碼
 
 - GitHub 原始碼：https://github.com/weiqi-kids/www.weiqi.kids
-- Mastodon（去中心化社群）：https://mastodon.weiqi.kids/
-- PeerTube（影音平台）：https://peertube.weiqi.kids/
 
 ---
 

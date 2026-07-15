@@ -406,12 +406,6 @@
     "message": "टैग",
     "description": "The title of the tag list page"
   },
-  "homepage.links.official.section.title": {
-    "message": "आधिकारिक"
-  },
-  "homepage.links.official.section.desc": {
-    "message": "गुड गो बेबी एसोसिएशन का आधिकारिक प्लेटफॉर्म, सेवा स्थिति निगरानी, समुदाय संवाद और वीडियो सामग्री प्रदान करता है।"
-  },
   "homepage.links.ai.section.title": {
     "message": "AI अनुसंधान"
   },
@@ -429,24 +423,6 @@
   },
   "homepage.links.tlsr.section.desc": {
     "message": "स्वास्थ्य सेवा जानकारी पर केंद्रित सहयोगी मीडिया।"
-  },
-  "homepage.links.official.status.title": {
-    "message": "स्टेटस पेज"
-  },
-  "homepage.links.official.status.desc": {
-    "message": "गुणवत्ता और स्थिरता सुनिश्चित करने के लिए सभी गुड गो बेबी सेवाओं की रीयल-टाइम निगरानी।"
-  },
-  "homepage.links.official.social.title": {
-    "message": "सोशल"
-  },
-  "homepage.links.official.social.desc": {
-    "message": "गो के शौकीनों के साथ बातचीत करने के लिए गुड गो बेबी Mastodon समुदाय से जुड़ें।"
-  },
-  "homepage.links.official.video.title": {
-    "message": "वीडियो"
-  },
-  "homepage.links.official.video.desc": {
-    "message": "गो ज्ञान और तकनीक सीखने के लिए गुड गो बेबी PeerTube चैनल देखें।"
   },
   "homepage.links.ai.ecommerce.title": {
     "message": "ई-कॉमर्स उत्पाद अनुसंधान"
