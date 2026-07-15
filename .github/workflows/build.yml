@@ -1,5 +1,7 @@
-# GitHub Actions Workflow: Build Validation
-# Validates build on PR and push to catch broken links and build errors
+# GitHub Actions Workflow: Build Validation + Deploy
+# Validates build on PR and push; on push to main, deploys build/ to gh-pages.
+# 2026-07-15：補上自動部署——此前 push main 不會更新線上（Pages 吃 gh-pages 分支），
+# 反思/大腦的內容改動曾累積在 main 未出貨（7/10、7/11 兩筆），與其他站 deploy.yml 慣例對齊。
 
 name: Build Validation
 
@@ -18,6 +20,9 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch: # Manual trigger
+
+permissions:
+  contents: write # push main 時要推 gh-pages
 
 jobs:
   build:
@@ -45,6 +50,14 @@ jobs:
         env:
           # Fail on any broken links
           NODE_OPTIONS: '--max-old-space-size=4096'
+
+      - name: Deploy to gh-pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          commit_message: 'Deploy ${{ github.sha }} [skip ci]'
 
       - name: Upload build artifacts (on failure)
         if: failure()
