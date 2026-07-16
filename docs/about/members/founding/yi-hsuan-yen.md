@@ -1,7 +1,7 @@
 ---
 sidebar_position: 27
 title: 顏怡璇
-description: 茶禮藏不住
+description: 顏怡璇為無藏茗茶經理，擁有23年茶葉文創與客製化茶禮實務經驗，是台灣好棋寶寶協會創始會員。
 industry_tags: [客製化茶禮]
 ai_tools: []
 contributing_role: 未來合作意向
@@ -12,6 +12,8 @@ contributing_role: 未來合作意向
 > **「茶禮藏不住」**
 
 **無藏茗茶　經理**
+
+**23 年茶葉文創專業資歷｜B2B 客製化茶禮盒｜15 年公司資歷**
 
 小組：F.企業禮贈品組
 
