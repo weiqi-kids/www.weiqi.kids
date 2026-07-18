@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="60" fill="#e3f2fd" stroke="#2196f3" stroke-width="3"/>
+  <circle cx="75" cy="85" r="18" fill="#2196f3"/>
+  <circle cx="125" cy="85" r="18" fill="#64b5f6"/>
+  <circle cx="100" cy="125" r="18" fill="#1976d2"/>
+  <line x1="88" y1="95" x2="112" y2="95" stroke="#2196f3" stroke-width="3"/>
+  <line x1="82" y1="100" x2="100" y2="118" stroke="#2196f3" stroke-width="3"/>
+  <line x1="118" y1="100" x2="100" y2="118" stroke="#64b5f6" stroke-width="3"/>
+  <circle cx="75" cy="85" r="8" fill="white"/>
+  <circle cx="125" cy="85" r="8" fill="white"/>
+  <circle cx="100" cy="125" r="8" fill="white"/>
+  <text x="100" y="170" text-anchor="middle" fill="#1976d2" font-size="12" font-weight="bold">APPI</text>
+</svg>
