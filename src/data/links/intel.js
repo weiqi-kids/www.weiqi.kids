@@ -5,6 +5,10 @@
 // - companies: { total, upstream, midstream, downstream }
 // - topicsHighlight: 卡片上顯示的 3-5 個差異化主題
 // - baseline: [{ ticker, name, desc }]，無基線時為空陣列
+//
+// ⚠️ descDefault 長度下限 50 字元：/intel/ 落地頁以 itemSchemaType="DataCatalog"
+//    把每筆 descDefault 當成 Dataset 結構化資料的 description 輸出，Google 要求
+//    description 介於 50–5000 字元，低於 50 會在 Search Console 報「字串長度無效」。
 
 export const intelCategories = [
   {
@@ -145,7 +149,7 @@ export const intelLinks = [
     titleKey: 'intel.shipping.title',
     titleDefault: '航運供應鏈',
     descKey: 'intel.shipping.desc',
-    descDefault: '從韓國 HD、中船造船廠到長榮、陽明、萬海與 Maersk，掌握貨櫃與散裝運價。',
+    descDefault: '從韓國 HD、中船造船廠到長榮、陽明、萬海與 Maersk 三大聯盟，涵蓋貨櫃、散裝與油輪，每日掌握 SCFI 運價與艙位供需動態。',
     href: 'https://shipping.intel.weiqi.kids/',
     icon: '🚢',
     companies: { total: 14, upstream: 4, midstream: 10, downstream: 0 },
@@ -294,7 +298,7 @@ export const intelLinks = [
     titleKey: 'intel.machinery.title',
     titleDefault: '機械供應鏈',
     descKey: 'intel.machinery.desc',
-    descDefault: '傳動元件（上銀、THK）、自動化巨頭（Fanuc、Siemens、台達）到工具機與下游重工。',
+    descDefault: '傳動元件（上銀、THK）、自動化巨頭（Fanuc、Siemens、台達）到工具機與下游重工、半導體設備，追蹤製造業景氣與訂單動能。',
     href: 'https://machinery.intel.weiqi.kids/',
     icon: '⚙️',
     companies: { total: 22, upstream: 11, midstream: 7, downstream: 4 },
@@ -422,7 +426,7 @@ export const intelLinks = [
     titleKey: 'intel.mineral.title',
     titleDefault: '稀土與關鍵礦物',
     descKey: 'intel.mineral.desc',
-    descDefault: '聚焦稀土供應鏈：開採（MP Materials、Lynas）、加工分離到中國北方稀土等新興礦商。',
+    descDefault: '聚焦稀土與關鍵礦物供應鏈：從開採（MP Materials、Lynas）、加工分離到中國北方稀土等礦商，掌握磁材與國防、電動車需求。',
     href: 'https://mineral.intel.weiqi.kids/',
     icon: '⛏️',
     companies: { total: 15, upstream: 10, midstream: 5, downstream: 0 },
@@ -493,7 +497,7 @@ export const intelLinks = [
     titleKey: 'intel.agri.title',
     titleDefault: '農業供應鏈',
     descKey: 'intel.agri.desc',
-    descDefault: '肥料上游（Nutrien、台肥）、農藥種子、Deere 農機、ADM 農產品貿易完整鏈。',
+    descDefault: '從肥料上游（Nutrien、台肥）、農藥與種子、Deere 農機到 ADM、Bunge 農產品貿易，完整追蹤全球糧食與農業景氣循環。',
     href: 'https://agri.intel.weiqi.kids/',
     icon: '🌾',
     companies: { total: 18, upstream: 6, midstream: 6, downstream: 6 },
