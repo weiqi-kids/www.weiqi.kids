@@ -1,0 +1,2019 @@
+{
+  "date": "2026-07-21",
+  "generatedAt": "2026-07-20T20:35:02.556Z",
+  "ga4": {
+    "range": "7daysAgo..yesterday",
+    "sessions": 536,
+    "users": 537,
+    "views": 742,
+    "avgDurationSec": 9,
+    "taiwanOrganicSessions": 2,
+    "channels": [
+      {
+        "channel": "Direct",
+        "sessions": 531
+      },
+      {
+        "channel": "Organic Search",
+        "sessions": 2
+      },
+      {
+        "channel": "AI Assistant",
+        "sessions": 1
+      },
+      {
+        "channel": "Referral",
+        "sessions": 1
+      },
+      {
+        "channel": "Unassigned",
+        "sessions": 1
+      }
+    ],
+    "topPages": [
+      {
+        "path": "/en/docs/tech/how-it-works/katago-innovations/",
+        "views": 19
+      },
+      {
+        "path": "/",
+        "views": 18
+      },
+      {
+        "path": "/zh-hk/docs/tech/how-it-works/katago-innovations/",
+        "views": 18
+      },
+      {
+        "path": "/en/docs/tech/overview/landscape/",
+        "views": 15
+      },
+      {
+        "path": "/en/docs/tech/hands-on/setup/",
+        "views": 13
+      },
+      {
+        "path": "/en/docs/tech/hands-on/",
+        "views": 12
+      },
+      {
+        "path": "/en/",
+        "views": 10
+      },
+      {
+        "path": "/zh-cn/docs/tech/",
+        "views": 10
+      },
+      {
+        "path": "/id/docs/tech/how-it-works/",
+        "views": 9
+      },
+      {
+        "path": "/ko/docs/tech/overview/landscape/",
+        "views": 9
+      },
+      {
+        "path": "/zh-cn/docs/tech/deep-dive/gpu-optimization/",
+        "views": 9
+      },
+      {
+        "path": "/docs/tech/deep-dive/neural-network/",
+        "views": 8
+      },
+      {
+        "path": "/en/docs/learn/history/ai-history/katago-era/",
+        "views": 8
+      },
+      {
+        "path": "/en/docs/tech/deep-dive/training/",
+        "views": 8
+      },
+      {
+        "path": "/en/docs/tech/how-it-works/",
+        "views": 8
+      }
+    ]
+  },
+  "gsc": {
+    "range": "2026-07-10..2026-07-17",
+    "totals": {
+      "clicks": 10,
+      "impressions": 3072,
+      "ctr": 0.0032552083333333335,
+      "position": 10.529947916666666
+    },
+    "topQueries": [
+      {
+        "query": "顏怡璇",
+        "clicks": 1,
+        "impressions": 3,
+        "ctr": 0.3333333333333333,
+        "position": 19
+      },
+      {
+        "query": "\"148176/25\" \"elliptic curve\"",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 6
+      },
+      {
+        "query": "\"148176/25\" elliptic curve",
+        "clicks": 0,
+        "impressions": 11,
+        "ctr": 0,
+        "position": 6.363636363636363
+      },
+      {
+        "query": "\"cuboid surface\" k3 euler brick",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 2.571428571428571
+      },
+      {
+        "query": "\"euler brick surface\" k3",
+        "clicks": 0,
+        "impressions": 14,
+        "ctr": 0,
+        "position": 1
+      },
+      {
+        "query": "\"euler brick\" \"k3 surface\"",
+        "clicks": 0,
+        "impressions": 97,
+        "ctr": 0,
+        "position": 5.154639175257732
+      },
+      {
+        "query": "\"euler brick\" \"k3\"",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 10.333333333333334
+      },
+      {
+        "query": "\"euler brick\" \"k3\" surface",
+        "clicks": 0,
+        "impressions": 9,
+        "ctr": 0,
+        "position": 6.444444444444445
+      },
+      {
+        "query": "\"euler bricks\" \"k3 surface\"",
+        "clicks": 0,
+        "impressions": 62,
+        "ctr": 0,
+        "position": 8.451612903225806
+      },
+      {
+        "query": "\"euler bricks\" \"k3 surface\" parametrization",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "query": "\"euler bricks\" \"k3\" surface",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 6.571428571428571
+      },
+      {
+        "query": "\"euler bricks\" \"k3\" surface parametrization",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 6
+      },
+      {
+        "query": "\"i_n^*\" \"root number\" \"(-1/p)\" elliptic curve",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "query": "\"integralpoints\" \"elliptic logarithm\" \"magma\"",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 10.5
+      },
+      {
+        "query": "\"integralpoints\" \"rank computed\" \"magma\"",
+        "clicks": 0,
+        "impressions": 10,
+        "ctr": 0,
+        "position": 3.4
+      },
+      {
+        "query": "\"integralpoints\" \"rank computed\" magma",
+        "clicks": 0,
+        "impressions": 76,
+        "ctr": 0,
+        "position": 3.1842105263157894
+      },
+      {
+        "query": "\"integralpoints\" \"rank computed\" magma elliptic",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 5.25
+      },
+      {
+        "query": "\"integralpoints\" \"saturated\" magma elliptic",
+        "clicks": 0,
+        "impressions": 10,
+        "ctr": 0,
+        "position": 8.4
+      },
+      {
+        "query": "\"integralpoints\" \"saturated\" magma elliptic curve",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 8
+      },
+      {
+        "query": "\"integralpoints\" \"saturation\" \"magma\" \"elliptic\"",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 7.5
+      },
+      {
+        "query": "\"integralpoints\" \"saturation\" magma elliptic",
+        "clicks": 0,
+        "impressions": 28,
+        "ctr": 0,
+        "position": 9.107142857142858
+      },
+      {
+        "query": "\"integralpoints\" \"saturation\" magma elliptic curve",
+        "clicks": 0,
+        "impressions": 20,
+        "ctr": 0,
+        "position": 9.4
+      },
+      {
+        "query": "\"j-invariant\" \"148176/25\"",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 4
+      },
+      {
+        "query": "\"school students — youth risk behavior survey, united states, 2023.\" or \"frequent social media use and experiences with bullying victimization, persistent\" or \"feelings of sadness or hopelessness, and suicide risk among high\"",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "query": "2015 waterborne disease outbreaks annual surveillance report cdc pdf",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 15
+      }
+    ],
+    "topPages": [
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/surveillance_summary/2026/2026-02-05-quickstats-percentage-of-children-aged-18-years-wh.html",
+        "clicks": 1,
+        "impressions": 2,
+        "ctr": 0.5,
+        "position": 5.5
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/competition/amc-aime.html",
+        "clicks": 1,
+        "impressions": 37,
+        "ctr": 0.02702702702702703,
+        "position": 7.4324324324324325
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "clicks": 1,
+        "impressions": 102,
+        "ctr": 0.00980392156862745,
+        "position": 41.509803921568626
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/taiwan-gsat.html",
+        "clicks": 1,
+        "impressions": 3,
+        "ctr": 0.3333333333333333,
+        "position": 4.333333333333334
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/us-sat.html",
+        "clicks": 1,
+        "impressions": 4,
+        "ctr": 0.25,
+        "position": 16.5
+      },
+      {
+        "page": "https://risk.weiqi.kids/docs/Narrator/ai_implementation_guide/",
+        "clicks": 1,
+        "impressions": 1,
+        "ctr": 1,
+        "position": 6
+      },
+      {
+        "page": "https://risk.weiqi.kids/docs/Narrator/ai_implementation_guide/2026-06-ai-implementation-guide/",
+        "clicks": 1,
+        "impressions": 4,
+        "ctr": 0.25,
+        "position": 3.5
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/cheng-wei-hsiao/",
+        "clicks": 1,
+        "impressions": 5,
+        "ctr": 0.2,
+        "position": 6.4
+      },
+      {
+        "page": "https://www.weiqi.kids/en/research/",
+        "clicks": 1,
+        "impressions": 1,
+        "ctr": 1,
+        "position": 3
+      },
+      {
+        "page": "https://www.weiqi.kids/pt/docs/about/members/founding/yi-hsuan-yen/",
+        "clicks": 1,
+        "impressions": 3,
+        "ctr": 0.3333333333333333,
+        "position": 19
+      },
+      {
+        "page": "https://ai-alignment-guarantees.proof.weiqi.kids/",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 6.666666666666667
+      },
+      {
+        "page": "https://brighterarc.weiqi.kids/",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 19
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/risk_assessment/2025-11-20-influenza-a-h3n2-threat.html",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/situational_update/2024-12-18-respiratory-infections-winter-2024.html",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 34
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/surveillance/",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 6
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/surveillance/2025-12-05-cdtr-week-49.html",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 4.6
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/surveillance/2025-12-12-cdtr-week-50.html",
+        "clicks": 0,
+        "impressions": 11,
+        "ctr": 0,
+        "position": 7.181818181818182
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/surveillance/2026-01-16-cdtr-week-3.html",
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0,
+        "position": 9.875
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-cholera.html",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 55.5
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-feichongganranzheng.html",
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0,
+        "position": 23.625
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-fusneigeliamibanaomojingyan.html",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 17
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-guangdongzhuxuexianchongganranzheng.html",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 45
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-mumps.html",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 46.5
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-xuanmaochongganranzheng.html",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 54
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-10-rabies-prevention-outdoor-activities.html",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      }
+    ],
+    "pageQueryCross": [
+      {
+        "page": "https://www.weiqi.kids/pt/docs/about/members/founding/yi-hsuan-yen/",
+        "query": "顏怡璇",
+        "clicks": 1,
+        "impressions": 3,
+        "ctr": 0.3333333333333333,
+        "position": 19
+      },
+      {
+        "page": "https://brighterarc.weiqi.kids/",
+        "query": "2026冬季錄影訓練綱要",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 29
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/surveillance/2026-01-16-cdtr-week-3.html",
+        "query": "ecdc communicable disease threats march 2026",
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0,
+        "position": 9.875
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-cholera.html",
+        "query": "cholerae",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 56
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-cholera.html",
+        "query": "vibrio cholera",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 64
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-cholera.html",
+        "query": "霍亂是什麼",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 46
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-feichongganranzheng.html",
+        "query": "肺 吸 蟲 症狀",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 23
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-feichongganranzheng.html",
+        "query": "肺吸虫症",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 95
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-feichongganranzheng.html",
+        "query": "肺吸蟲",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 18
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-feichongganranzheng.html",
+        "query": "肺吸蟲症狀",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 24
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-guangdongzhuxuexianchongganranzheng.html",
+        "query": "廣東住血線蟲",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 45
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-mumps.html",
+        "query": "流行性腮腺炎",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 68
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-xuanmaochongganranzheng.html",
+        "query": "trichina",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 66
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/tw_cdc_alerts/disease_info/2026-02-08-xuanmaochongganranzheng.html",
+        "query": "旋毛虫症",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 77
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/uk_ukhsa_updates/",
+        "query": "ukhsa updates",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 22
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/uk_ukhsa_updates/guidance/2026-02-03-vaccination-of-individuals-with-uncertain-or-incomplete-immunisation.html",
+        "query": "uncertain imms uk",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 28
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/uk_ukhsa_updates/guidance/2026-02-03-vaccination-of-individuals-with-uncertain-or-incomplete-immunisation.html",
+        "query": "vaccination of individuals with uncertain",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 18
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/uk_ukhsa_updates/research/2026-02-03-bloodborne-viruses-opt-out-testing-in-emergency-departments.html",
+        "query": "403-bbvs",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 37
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/case_series/2026/2026-02-05-suspected-counterfeit-m-30-oxycodone-pill-exposure.html",
+        "query": "m30 pill",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 62
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/case_series/2026/2026-02-05-suspected-counterfeit-m-30-oxycodone-pill-exposure.html",
+        "query": "percocet m30",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 91
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/outbreak_report/2026/2026-02-05-notes-from-the-field-norovirus-outbreaks-reported-.html",
+        "query": "norostat",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 19
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/surveillance_summary/2026/2026-02-05-description-of-eschar-associated-rickettsial-disea.html",
+        "query": "eschar",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 40
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/surveillance_summary/2026/2026-02-05-mmwr-supplement-characteristics-associated-with-pr.html",
+        "query": "mmwr supplements",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 22
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/surveillance_summary/2026/2026-02-05-notes-from-the-field-monkey-bite-in-a-public-park-.html",
+        "query": "monkey bite",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 67
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/surveillance_summary/2026/2026-02-05-supplement-frequent-social-media-use-and-experienc.html",
+        "query": "\"school students — youth risk behavior survey, united states, 2023.\" or \"frequent social media use and experiences with bullying victimization, persistent\" or \"feelings of sadness or hopelessness, and suicide risk among high\"",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/surveillance_summary/2026/2026-02-05-supplement-frequent-social-media-use-and-experienc.html",
+        "query": "frequent social media use and experiences with bullying victimization, persistent feelings of sadness or hopelessness, and suicide risk among high school students — youth risk behavior survey, united states, 2023",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/surveillance_summary/2026/2026-02-05-surveillance-summaries-surveillance-of-waterborne-.html",
+        "query": "2015 waterborne disease outbreaks annual surveillance report cdc pdf",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 15
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/surveillance_summary/2026/2026-02-05-surveillance-summaries-surveillance-of-waterborne-.html",
+        "query": "waterborne disease",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 13
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/surveillance_summary/2026/2026-02-05-surveillance-summaries-surveillance-of-waterborne-.html",
+        "query": "waterborne disease outbreaks annual surveillance report 2015 recreational water cases",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 29
+      },
+      {
+        "page": "https://epialert.weiqi.kids/disease/measles.html",
+        "query": "measles in chinese",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 89
+      },
+      {
+        "page": "https://epialert.weiqi.kids/disease/measles.html",
+        "query": "measles 中文",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 90
+      },
+      {
+        "page": "https://epialert.weiqi.kids/disease/measles.html",
+        "query": "measles中文",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 86
+      },
+      {
+        "page": "https://epialert.weiqi.kids/disease/measles.html",
+        "query": "麻疹",
+        "clicks": 0,
+        "impressions": 14,
+        "ctr": 0,
+        "position": 99.42857142857143
+      },
+      {
+        "page": "https://epialert.weiqi.kids/disease/measles.html",
+        "query": "麻疹 傳染途徑",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 98
+      },
+      {
+        "page": "https://epialert.weiqi.kids/disease/measles.html",
+        "query": "麻疹 初期 症状",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 93
+      },
+      {
+        "page": "https://epialert.weiqi.kids/disease/measles.html",
+        "query": "麻疹 症狀",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 93
+      },
+      {
+        "page": "https://epialert.weiqi.kids/disease/measles.html",
+        "query": "麻疹症狀",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 81
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/competition/amc-aime.html",
+        "query": "aime amc",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 1
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/competition/amc-aime.html",
+        "query": "amc aime",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 11
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/competition/ukmt.html",
+        "query": "jmc 2026 grade boundaries",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 36
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/competition/ukmt.html",
+        "query": "jmc boundaries 2026",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 34
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/competition/ukmt.html",
+        "query": "ukmt 2026 grade boundaries",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 45
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/australia-naplan.html",
+        "query": "naplan",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 1
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/canada-eqao.html",
+        "query": "grade 12 eqao",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 28
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/canada-eqao.html",
+        "query": "osslt average score",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 45
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/japan-common-test.html",
+        "query": "共通テスト",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 29
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/japan-common-test.html",
+        "query": "大學入學共通考試",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 1
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "achievement level psle",
+        "clicks": 0,
+        "impressions": 11,
+        "ctr": 0,
+        "position": 84
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "achievement level psle express",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 74.66666666666667
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "achievement level psle foundation",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 87.4
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "achievement levels psle",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 84.66666666666667
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "al 6 psle",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 85
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "psle",
+        "clicks": 0,
+        "impressions": 16,
+        "ctr": 0,
+        "position": 6.5
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "psle achievement level",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 83
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "psle achievement levels",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 81.66666666666667
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "psle foundation score",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 90.5
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "psle mark",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 73
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "psle passing score",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 79
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "psle result 2024",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 61
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "psle results 2023",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 53
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "psle score",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 76.33333333333333
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "psle scoring system 2024",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 94.5
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "psle 新加坡",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 6
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "新加坡psle",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 1
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/uk-a-level",
+        "query": "a level",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 41
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/uk-a-level",
+        "query": "a level分數",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 49
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/uk-a-level",
+        "query": "a-level",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 40
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/us-ap-calc.html",
+        "query": "advanced placement calculus",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/us-sat.html",
+        "query": "sat",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 51
+      },
+      {
+        "page": "https://learn.weiqi.kids/for-researchers/pisa-data.html",
+        "query": "pisa 2025 排名",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 7.857142857142857
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/",
+        "query": "\"148176/25\" elliptic curve",
+        "clicks": 0,
+        "impressions": 10,
+        "ctr": 0,
+        "position": 10.2
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/",
+        "query": "\"i_n^*\" \"root number\" \"(-1/p)\" elliptic curve",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/",
+        "query": "\"integralpoints\" \"saturation\" \"magma\" \"elliptic\"",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 7.5
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/",
+        "query": "\"integralpoints\" \"saturation\" magma elliptic",
+        "clicks": 0,
+        "impressions": 28,
+        "ctr": 0,
+        "position": 9.107142857142858
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/",
+        "query": "\"integralpoints\" \"saturation\" magma elliptic curve",
+        "clicks": 0,
+        "impressions": 20,
+        "ctr": 0,
+        "position": 9.4
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/",
+        "query": "完美長方體",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 11
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-a/paper.pdf",
+        "query": "\"148176/25\" \"elliptic curve\"",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 6
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-a/paper.pdf",
+        "query": "\"148176/25\" elliptic curve",
+        "clicks": 0,
+        "impressions": 9,
+        "ctr": 0,
+        "position": 5.777777777777778
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-a/paper.pdf",
+        "query": "\"j-invariant\" \"148176/25\"",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 4
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"cuboid surface\" k3 euler brick",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 2.571428571428571
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler brick surface\" k3",
+        "clicks": 0,
+        "impressions": 14,
+        "ctr": 0,
+        "position": 1
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler brick\" \"k3 surface\"",
+        "clicks": 0,
+        "impressions": 97,
+        "ctr": 0,
+        "position": 5.154639175257732
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler brick\" \"k3\"",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 10.333333333333334
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler brick\" \"k3\" surface",
+        "clicks": 0,
+        "impressions": 9,
+        "ctr": 0,
+        "position": 6.444444444444445
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler bricks\" \"k3 surface\"",
+        "clicks": 0,
+        "impressions": 62,
+        "ctr": 0,
+        "position": 8.451612903225806
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler bricks\" \"k3 surface\" parametrization",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler bricks\" \"k3\" surface",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 6.571428571428571
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler bricks\" \"k3\" surface parametrization",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 6
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "88",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 1
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "diophantine triple with fibonacci numbers and elliptic curve.pdf -jd -amazon -taobao -dangdang -jarhu -yami -douban -apple -weread.qq -baike.baidu",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 8
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-e/paper.pdf",
+        "query": "\"integralpoints\" \"elliptic logarithm\" \"magma\"",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 10.5
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-e/paper.pdf",
+        "query": "\"integralpoints\" \"rank computed\" \"magma\"",
+        "clicks": 0,
+        "impressions": 10,
+        "ctr": 0,
+        "position": 3.4
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-e/paper.pdf",
+        "query": "\"integralpoints\" \"rank computed\" magma",
+        "clicks": 0,
+        "impressions": 76,
+        "ctr": 0,
+        "position": 3.1842105263157894
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-e/paper.pdf",
+        "query": "\"integralpoints\" \"rank computed\" magma elliptic",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 5.25
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-e/paper.pdf",
+        "query": "\"integralpoints\" \"saturated\" magma elliptic",
+        "clicks": 0,
+        "impressions": 10,
+        "ctr": 0,
+        "position": 8.4
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-e/paper.pdf",
+        "query": "\"integralpoints\" \"saturated\" magma elliptic curve",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 8
+      },
+      {
+        "page": "https://skills.weiqi.kids/glossary/",
+        "query": "p25 p50 p75",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 1
+      },
+      {
+        "page": "https://skills.weiqi.kids/glossary/",
+        "query": "p25 p50 p75 意思",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 3
+      },
+      {
+        "page": "https://supplement.weiqi.kids/data-sources/jp-fnfc.html",
+        "query": "fnfc",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 3.5
+      },
+      {
+        "page": "https://supplement.weiqi.kids/reports/curcumin/guide.html",
+        "query": "curcuminoids 中文",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 88
+      },
+      {
+        "page": "https://supplement.weiqi.kids/reports/curcumin/guide.html",
+        "query": "turmeric 和 curcumin 的 区别",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 76
+      },
+      {
+        "page": "https://trade.weiqi.kids/data-timeline/",
+        "query": "数据月度更新",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 8.666666666666668
+      },
+      {
+        "page": "https://www.weiqi.kids/",
+        "query": "wei qi",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 56
+      },
+      {
+        "page": "https://www.weiqi.kids/",
+        "query": "weiqi",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 34.25
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/alphago/",
+        "query": "alpha go",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 23
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/alphago/",
+        "query": "alphago",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 16
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/alphago/puct-formula/",
+        "query": "puct",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 2.5
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/alphago/puct-formula/",
+        "query": "puct formula",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 6
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/bing-chen-chen/",
+        "query": "陳秉辰",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 20
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/feng-hao-chiang/",
+        "query": "姜封豪",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 9.333333333333334
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/hao-de-lin/",
+        "query": "林昊德",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 10.666666666666666
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/ian-kuo/",
+        "query": "ian kuo",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/zi-yan-huang/",
+        "query": "黃子彥",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/tech/how-it-works/katago-innovations/",
+        "query": "katago",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 19
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/tech/industry/",
+        "query": "围棋ai",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 25
+      },
+      {
+        "page": "https://www.weiqi.kids/es/docs/about/members/founding/wu-di/",
+        "query": "吳荻",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 26
+      },
+      {
+        "page": "https://www.weiqi.kids/pt/docs/about/members/founding/xin-wei-lin/",
+        "query": "林新為",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 3
+      }
+    ],
+    "strikingDistance": [
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler brick\" \"k3 surface\"",
+        "clicks": 0,
+        "impressions": 97,
+        "ctr": 0,
+        "position": 5.154639175257732
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler bricks\" \"k3 surface\"",
+        "clicks": 0,
+        "impressions": 62,
+        "ctr": 0,
+        "position": 8.451612903225806
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/",
+        "query": "\"integralpoints\" \"saturation\" magma elliptic",
+        "clicks": 0,
+        "impressions": 28,
+        "ctr": 0,
+        "position": 9.107142857142858
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/",
+        "query": "\"integralpoints\" \"saturation\" magma elliptic curve",
+        "clicks": 0,
+        "impressions": 20,
+        "ctr": 0,
+        "position": 9.4
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "psle",
+        "clicks": 0,
+        "impressions": 16,
+        "ctr": 0,
+        "position": 6.5
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/",
+        "query": "\"148176/25\" elliptic curve",
+        "clicks": 0,
+        "impressions": 10,
+        "ctr": 0,
+        "position": 10.2
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-e/paper.pdf",
+        "query": "\"integralpoints\" \"saturated\" magma elliptic",
+        "clicks": 0,
+        "impressions": 10,
+        "ctr": 0,
+        "position": 8.4
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-a/paper.pdf",
+        "query": "\"148176/25\" elliptic curve",
+        "clicks": 0,
+        "impressions": 9,
+        "ctr": 0,
+        "position": 5.777777777777778
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler brick\" \"k3\" surface",
+        "clicks": 0,
+        "impressions": 9,
+        "ctr": 0,
+        "position": 6.444444444444445
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/surveillance/2026-01-16-cdtr-week-3.html",
+        "query": "ecdc communicable disease threats march 2026",
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0,
+        "position": 9.875
+      },
+      {
+        "page": "https://learn.weiqi.kids/for-researchers/pisa-data.html",
+        "query": "pisa 2025 排名",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 7.857142857142857
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler bricks\" \"k3\" surface",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 6.571428571428571
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler brick\" \"k3\"",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 10.333333333333334
+      },
+      {
+        "page": "https://trade.weiqi.kids/data-timeline/",
+        "query": "数据月度更新",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 8.666666666666668
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/feng-hao-chiang/",
+        "query": "姜封豪",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 9.333333333333334
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/surveillance_summary/2026/2026-02-05-supplement-frequent-social-media-use-and-experienc.html",
+        "query": "\"school students — youth risk behavior survey, united states, 2023.\" or \"frequent social media use and experiences with bullying victimization, persistent\" or \"feelings of sadness or hopelessness, and suicide risk among high\"",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "psle 新加坡",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 6
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-e/paper.pdf",
+        "query": "\"integralpoints\" \"elliptic logarithm\" \"magma\"",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 10.5
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-e/paper.pdf",
+        "query": "\"integralpoints\" \"rank computed\" magma elliptic",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 5.25
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-e/paper.pdf",
+        "query": "\"integralpoints\" \"saturated\" magma elliptic curve",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 8
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/hao-de-lin/",
+        "query": "林昊德",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 10.666666666666666
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/surveillance_summary/2026/2026-02-05-surveillance-summaries-surveillance-of-waterborne-.html",
+        "query": "2015 waterborne disease outbreaks annual surveillance report cdc pdf",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 15
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/",
+        "query": "\"i_n^*\" \"root number\" \"(-1/p)\" elliptic curve",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/",
+        "query": "\"integralpoints\" \"saturation\" \"magma\" \"elliptic\"",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 7.5
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler bricks\" \"k3 surface\" parametrization",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler bricks\" \"k3\" surface parametrization",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 6
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "diophantine triple with fibonacci numbers and elliptic curve.pdf -jd -amazon -taobao -dangdang -jarhu -yami -douban -apple -weread.qq -baike.baidu",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 8
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/alphago/puct-formula/",
+        "query": "puct formula",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 6
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/surveillance_summary/2026/2026-02-05-supplement-frequent-social-media-use-and-experienc.html",
+        "query": "frequent social media use and experiences with bullying victimization, persistent feelings of sadness or hopelessness, and suicide risk among high school students — youth risk behavior survey, united states, 2023",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/surveillance_summary/2026/2026-02-05-surveillance-summaries-surveillance-of-waterborne-.html",
+        "query": "waterborne disease",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 13
+      }
+    ],
+    "highImpZeroClick": [
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler brick\" \"k3 surface\"",
+        "clicks": 0,
+        "impressions": 97,
+        "ctr": 0,
+        "position": 5.154639175257732
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-e/paper.pdf",
+        "query": "\"integralpoints\" \"rank computed\" magma",
+        "clicks": 0,
+        "impressions": 76,
+        "ctr": 0,
+        "position": 3.1842105263157894
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler bricks\" \"k3 surface\"",
+        "clicks": 0,
+        "impressions": 62,
+        "ctr": 0,
+        "position": 8.451612903225806
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/",
+        "query": "\"integralpoints\" \"saturation\" magma elliptic",
+        "clicks": 0,
+        "impressions": 28,
+        "ctr": 0,
+        "position": 9.107142857142858
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/",
+        "query": "\"integralpoints\" \"saturation\" magma elliptic curve",
+        "clicks": 0,
+        "impressions": 20,
+        "ctr": 0,
+        "position": 9.4
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "psle",
+        "clicks": 0,
+        "impressions": 16,
+        "ctr": 0,
+        "position": 6.5
+      },
+      {
+        "page": "https://epialert.weiqi.kids/disease/measles.html",
+        "query": "麻疹",
+        "clicks": 0,
+        "impressions": 14,
+        "ctr": 0,
+        "position": 99.42857142857143
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler brick surface\" k3",
+        "clicks": 0,
+        "impressions": 14,
+        "ctr": 0,
+        "position": 1
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "achievement level psle",
+        "clicks": 0,
+        "impressions": 11,
+        "ctr": 0,
+        "position": 84
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/",
+        "query": "\"148176/25\" elliptic curve",
+        "clicks": 0,
+        "impressions": 10,
+        "ctr": 0,
+        "position": 10.2
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-e/paper.pdf",
+        "query": "\"integralpoints\" \"rank computed\" \"magma\"",
+        "clicks": 0,
+        "impressions": 10,
+        "ctr": 0,
+        "position": 3.4
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-e/paper.pdf",
+        "query": "\"integralpoints\" \"saturated\" magma elliptic",
+        "clicks": 0,
+        "impressions": 10,
+        "ctr": 0,
+        "position": 8.4
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-a/paper.pdf",
+        "query": "\"148176/25\" elliptic curve",
+        "clicks": 0,
+        "impressions": 9,
+        "ctr": 0,
+        "position": 5.777777777777778
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler brick\" \"k3\" surface",
+        "clicks": 0,
+        "impressions": 9,
+        "ctr": 0,
+        "position": 6.444444444444445
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/surveillance/2026-01-16-cdtr-week-3.html",
+        "query": "ecdc communicable disease threats march 2026",
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0,
+        "position": 9.875
+      },
+      {
+        "page": "https://learn.weiqi.kids/for-researchers/pisa-data.html",
+        "query": "pisa 2025 排名",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 7.857142857142857
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"cuboid surface\" k3 euler brick",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 2.571428571428571
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler bricks\" \"k3\" surface",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 6.571428571428571
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "achievement level psle express",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 74.66666666666667
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "psle achievement level",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 83
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-b/paper.pdf",
+        "query": "\"euler brick\" \"k3\"",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 10.333333333333334
+      },
+      {
+        "page": "https://trade.weiqi.kids/data-timeline/",
+        "query": "数据月度更新",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 8.666666666666668
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/feng-hao-chiang/",
+        "query": "姜封豪",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 9.333333333333334
+      },
+      {
+        "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/surveillance_summary/2026/2026-02-05-supplement-frequent-social-media-use-and-experienc.html",
+        "query": "\"school students — youth risk behavior survey, united states, 2023.\" or \"frequent social media use and experiences with bullying victimization, persistent\" or \"feelings of sadness or hopelessness, and suicide risk among high\"",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://epialert.weiqi.kids/disease/measles.html",
+        "query": "麻疹 症狀",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 93
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "achievement level psle foundation",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 87.4
+      },
+      {
+        "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/singapore-psle.html",
+        "query": "psle 新加坡",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 6
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-e/paper.pdf",
+        "query": "\"integralpoints\" \"elliptic logarithm\" \"magma\"",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 10.5
+      },
+      {
+        "page": "https://perfect-cuboid-problem.proof.weiqi.kids/paper-e/paper.pdf",
+        "query": "\"integralpoints\" \"rank computed\" magma elliptic",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 5.25
+      },
+      {
+        "page": "https://www.weiqi.kids/",
+        "query": "weiqi",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 34.25
+      }
+    ]
+  },
+  "index": {
+    "sitemaps": [
+      {
+        "path": "https://brighterarc.weiqi.kids/sitemap.xml",
+        "submitted": 1588,
+        "errors": "0",
+        "warnings": "0"
+      },
+      {
+        "path": "https://listening.weiqi.kids/sitemap.xml",
+        "submitted": 39,
+        "errors": "0",
+        "warnings": "0"
+      },
+      {
+        "path": "https://www.weiqi.kids/sitemap-index.xml",
+        "submitted": 1606,
+        "errors": "0",
+        "warnings": "3"
+      },
+      {
+        "path": "https://www.weiqi.kids/sitemap.xml",
+        "submitted": 146,
+        "errors": "0",
+        "warnings": "0"
+      },
+      {
+        "path": "https://epialert.weiqi.kids/sitemap.xml",
+        "submitted": 2488,
+        "errors": "0",
+        "warnings": "0"
+      },
+      {
+        "path": "https://skills.weiqi.kids/sitemap.xml",
+        "submitted": 55,
+        "errors": "0",
+        "warnings": "0"
+      },
+      {
+        "path": "https://ecommerce.weiqi.kids/sitemap.xml",
+        "submitted": 663,
+        "errors": "0",
+        "warnings": "0"
+      },
+      {
+        "path": "https://trade.weiqi.kids/sitemap.xml",
+        "submitted": 40,
+        "errors": "0",
+        "warnings": "0"
+      },
+      {
+        "path": "https://risk.weiqi.kids/sitemap.xml",
+        "submitted": 28,
+        "errors": "0",
+        "warnings": "0"
+      },
+      {
+        "path": "https://learn.weiqi.kids/sitemap.xml",
+        "submitted": 65,
+        "errors": "0",
+        "warnings": "0"
+      },
+      {
+        "path": "https://security.weiqi.kids/sitemap.xml",
+        "submitted": 47,
+        "errors": "0",
+        "warnings": "0"
+      },
+      {
+        "path": "https://supplement.weiqi.kids/sitemap.xml",
+        "submitted": 36,
+        "errors": "0",
+        "warnings": "0"
+      }
+    ],
+    "coverage": [
+      {
+        "url": "https://www.weiqi.kids/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-07-18T08:03:51Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/learn/",
+        "coverageState": "Discovered - currently not indexed",
+        "lastCrawlTime": null
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/tech/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-07-09T15:39:37Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/alphago/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-07-01T18:08:44Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/about/",
+        "coverageState": "Crawled - currently not indexed",
+        "lastCrawlTime": "2026-04-27T17:10:57Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/en/",
+        "coverageState": "Duplicate, Google chose different canonical than user",
+        "lastCrawlTime": "2026-07-19T08:19:57Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/ja/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-07-04T09:16:31Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/zh-cn/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-07-15T09:56:09Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/zh-hk/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-07-17T09:49:10Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/ko/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-07-18T20:46:43Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/es/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-07-14T04:01:31Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/pt/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-07-19T05:19:27Z"
+      }
+    ]
+  }
+}
