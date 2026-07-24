@@ -1,17 +1,17 @@
 {
-  "date": "2026-07-24",
-  "generatedAt": "2026-07-24T13:06:06.121Z",
+  "date": "2026-07-25",
+  "generatedAt": "2026-07-24T20:35:02.365Z",
   "ga4": {
     "range": "7daysAgo..yesterday",
-    "sessions": 575,
-    "users": 574,
-    "views": 687,
-    "avgDurationSec": 16,
+    "sessions": 554,
+    "users": 552,
+    "views": 666,
+    "avgDurationSec": 17,
     "taiwanOrganicSessions": 5,
     "channels": [
       {
         "channel": "Direct",
-        "sessions": 565
+        "sessions": 544
       },
       {
         "channel": "Organic Search",
@@ -37,27 +37,31 @@
       },
       {
         "path": "/zh-hk/docs/tech/how-it-works/katago-innovations/",
-        "views": 20
-      },
-      {
-        "path": "/en/",
-        "views": 19
-      },
-      {
-        "path": "/en/docs/tech/how-it-works/katago-innovations/",
         "views": 18
       },
       {
-        "path": "/en/docs/tech/deep-dive/neural-network/",
-        "views": 12
+        "path": "/en/",
+        "views": 17
       },
       {
-        "path": "/en/docs/tech/overview/landscape/",
-        "views": 11
+        "path": "/en/docs/tech/how-it-works/katago-innovations/",
+        "views": 14
+      },
+      {
+        "path": "/en/docs/tech/deep-dive/neural-network/",
+        "views": 13
+      },
+      {
+        "path": "/en/docs/tech/deep-dive/gpu-optimization/",
+        "views": 10
       },
       {
         "path": "/en/docs/tech/deep-dive/training/",
-        "views": 9
+        "views": 10
+      },
+      {
+        "path": "/ar/docs/tech/how-it-works/katago-innovations/",
+        "views": 8
       },
       {
         "path": "/docs/learn/introduction/rules/",
@@ -68,28 +72,24 @@
         "views": 8
       },
       {
-        "path": "/ar/docs/tech/how-it-works/katago-innovations/",
-        "views": 7
-      },
-      {
-        "path": "/docs/alphago/self-play/",
-        "views": 7
-      },
-      {
-        "path": "/zh-cn/docs/tech/deep-dive/gpu-optimization/",
-        "views": 7
-      },
-      {
-        "path": "/ar/docs/tech/how-it-works/",
-        "views": 6
+        "path": "/zh-cn/docs/tech/deep-dive/training/",
+        "views": 8
       },
       {
         "path": "/docs/learn/ai-era/learning-with-ai/",
-        "views": 6
+        "views": 7
       },
       {
-        "path": "/docs/tech/deep-dive/source-code/",
-        "views": 6
+        "path": "/en/docs/alphago/alphago-zero/",
+        "views": 7
+      },
+      {
+        "path": "/en/docs/alphago/why-go-is-hard/",
+        "views": 7
+      },
+      {
+        "path": "/en/docs/tech/deep-dive/evaluation/",
+        "views": 7
       }
     ],
     "daily": [
@@ -301,6 +301,12 @@
         "date": "2026-07-23",
         "sessions": 79,
         "avgDurationSec": 15,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-07-24",
+        "sessions": 70,
+        "avgDurationSec": 5,
         "taiwanOrganic": 0
       }
     ]
