@@ -1,17 +1,17 @@
 {
-  "date": "2026-07-26",
-  "generatedAt": "2026-07-26T15:45:55.560Z",
+  "date": "2026-07-27",
+  "generatedAt": "2026-07-26T20:35:11.176Z",
   "ga4": {
     "range": "7daysAgo..yesterday",
-    "sessions": 644,
-    "users": 643,
-    "views": 762,
-    "avgDurationSec": 14,
+    "sessions": 622,
+    "users": 622,
+    "views": 742,
+    "avgDurationSec": 15,
     "taiwanOrganicSessions": 5,
     "channels": [
       {
         "channel": "Direct",
-        "sessions": 635
+        "sessions": 613
       },
       {
         "channel": "Organic Search",
@@ -29,27 +29,23 @@
     "topPages": [
       {
         "path": "/",
-        "views": 27
+        "views": 26
       },
       {
         "path": "/en/",
-        "views": 20
+        "views": 19
       },
       {
         "path": "/en/docs/tech/deep-dive/neural-network/",
-        "views": 13
-      },
-      {
-        "path": "/zh-hk/docs/tech/how-it-works/katago-innovations/",
-        "views": 13
+        "views": 15
       },
       {
         "path": "/en/docs/tech/deep-dive/gpu-optimization/",
-        "views": 11
+        "views": 12
       },
       {
-        "path": "/en/docs/tech/how-it-works/katago-innovations/",
-        "views": 10
+        "path": "/zh-hk/docs/tech/how-it-works/katago-innovations/",
+        "views": 11
       },
       {
         "path": "/docs/learn/introduction/rules/",
@@ -68,23 +64,27 @@
         "views": 9
       },
       {
-        "path": "/ar/docs/tech/how-it-works/katago-innovations/",
-        "views": 8
-      },
-      {
-        "path": "/en/docs/alphago/alphago-zero/",
-        "views": 8
-      },
-      {
         "path": "/zh-cn/docs/tech/deep-dive/training/",
-        "views": 8
+        "views": 9
       },
       {
         "path": "/docs/learn/ai-era/learning-with-ai/",
-        "views": 7
+        "views": 8
       },
       {
         "path": "/en/docs/alphago/why-go-is-hard/",
+        "views": 8
+      },
+      {
+        "path": "/en/docs/tech/how-it-works/katago-innovations/",
+        "views": 8
+      },
+      {
+        "path": "/zh-hk/docs/tech/deep-dive/evaluation/",
+        "views": 8
+      },
+      {
+        "path": "/en/docs/tech/deep-dive/evaluation/",
         "views": 7
       }
     ],
@@ -310,6 +310,12 @@
         "sessions": 150,
         "avgDurationSec": 2,
         "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-07-26",
+        "sessions": 61,
+        "avgDurationSec": 5,
+        "taiwanOrganic": 1
       }
     ]
   },
