@@ -185,6 +185,10 @@ const config = {
         theme: {
           customCss: './src/css/custom.css',
         },
+        // 站內搜尋頁（11 語系各一頁）帶 noindex，不該列入 sitemap（GSC 警告來源之一）
+        sitemap: {
+          ignorePatterns: ['/search/', '/**/search/'],
+        },
         // Google Analytics 4（官方 gtag 外掛，自動處理 SPA 換頁追蹤）
         gtag: {
           trackingID: 'G-16V1KSEH6W',
