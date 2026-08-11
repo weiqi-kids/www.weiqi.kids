@@ -13,7 +13,7 @@ import rehypeKatex from 'rehype-katex';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: '好棋寶寶協會 | Weiqi.Kids',
-  tagline: '台灣好棋寶寶協會｜致力於圍棋文化前進的推手',
+  tagline: '台灣好棋寶寶協會｜因棋結緣的跨域夥伴，一起把 AI 做成開源工具',
   favicon: 'img/favicon.ico',
 
   // Umami Analytics（共用 weiqikids Umami 實例）
@@ -204,7 +204,7 @@ const config = {
       // 社交分享卡片圖片
       image: 'img/social-card.png',
       metadata: [
-        { name: 'keywords', content: '圍棋, Go, 好棋寶寶, AI, KataGo, AlphaGo, 圍棋教學, 圍棋入門' },
+        { name: 'keywords', content: '好棋寶寶, 跨域AI, 開源工具, 商界合作, 圍棋, Go, KataGo, AlphaGo, 圍棋教學, 圍棋入門' },
         { name: 'description', content: '11 位來自律師、ISO、技術、醫療等領域的夥伴，把產業 know-how 變成 41+ 個全部免費開源的 AI 工具。歡迎跨域合作。' },
       ],
       navbar: {
@@ -256,12 +256,12 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: '圍棋資源',
+            title: '夥伴',
             items: [
-              { to: '/docs/learn', label: '學圍棋' },
-              { to: '/docs/alphago', label: 'AlphaGo' },
-              { to: '/docs/animations', label: '動畫教室' },
-              { to: '/docs/tech', label: '技術文件' },
+              { to: '/docs/about/members/founding/', label: '認識夥伴' },
+              { to: '/impact-report/2026/', label: '年度成果報告' },
+              { to: '/docs/about', label: '關於協會' },
+              { href: 'mailto:lightman.chang@gmail.com?subject=%E3%80%90%E5%90%88%E4%BD%9C%E6%8F%90%E6%A1%88%E3%80%91', label: '合作提案' },
             ],
           },
           {
@@ -273,12 +273,12 @@ const config = {
             ],
           },
           {
-            title: '夥伴',
+            title: '圍棋資源',
             items: [
-              { to: '/docs/about/members/founding/', label: '認識夥伴' },
-              { to: '/impact-report/2026/', label: '年度成果報告' },
-              { to: '/docs/about', label: '關於協會' },
-              { href: 'mailto:lightman.chang@gmail.com?subject=%E3%80%90%E5%90%88%E4%BD%9C%E6%8F%90%E6%A1%88%E3%80%91', label: '合作提案' },
+              { to: '/docs/learn', label: '學圍棋' },
+              { to: '/docs/alphago', label: 'AlphaGo' },
+              { to: '/docs/animations', label: '動畫教室' },
+              { to: '/docs/tech', label: '技術文件' },
             ],
           },
         ],

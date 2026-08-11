@@ -14,7 +14,7 @@ function HomepageHeader() {
       <div className="container">
         <Heading as="h1" className="hero__title">
           <Translate id="homepage.hero.title" description="Hero H1 title">
-            圍棋文化前進的推手
+            因為圍棋認識彼此，因為 AI 一起做事
           </Translate>
         </Heading>
         <p className="hero__subtitle">
@@ -54,7 +54,7 @@ export default function Home() {
   return (
     <Layout
       title={translate({id: 'homepage.meta.title', message: '首頁'})}
-      description={translate({id: 'homepage.meta.description', message: '台灣好棋寶寶協會 — 圍棋文化前進的推手。圍棋公益推廣、跨域 AI 開源、學術原創三軸並進。'})}>
+      description={translate({id: 'homepage.meta.description', message: '台灣好棋寶寶協會——跨域夥伴因圍棋結緣，一起把各自的專業做成開源 AI 工具與學術研究。'})}>
       <HomepageHeader />
       <main>
         <HomepageLinks />

@@ -32,9 +32,9 @@ export default function GlobalSchema() {
         "contactPoint": {
           "@type": "ContactPoint",
           "contactType": "customer service",
-          "url": `${siteUrl}/docs/aboutus`
+          "url": `${siteUrl}/docs/about`
         },
-        "description": "推動圍棋文化與 AI 研究的台灣非營利組織"
+        "description": "台灣的非營利組織，跨域夥伴因圍棋結緣，合作開發開源 AI 工具"
       },
       // WebSite Schema with SearchAction
       {

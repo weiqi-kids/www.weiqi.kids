@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 title: 學圍棋
-description: 從零開始學習圍棋，認識 AI 時代的圍棋世界
+description: 從零開始學圍棋，認識 AI 如何改變下棋——台灣好棋寶寶協會的公益圍棋教育服務
 ---
 
 # 學圍棋

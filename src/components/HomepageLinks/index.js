@@ -70,30 +70,15 @@ function USPSection() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <Heading as="h2">
-            <Translate id="homepage.usp.title">圍棋文化前進的推手</Translate>
+            <Translate id="homepage.usp.title">我們一起做出來的東西</Translate>
           </Heading>
           <p className={styles.sectionDescription}>
             <Translate id="homepage.usp.lead">
-              不只推圍棋。把圍棋人從 AlphaGo 學到的 AI 適應力，帶到每一個跨域場域。
+              圍棋是起點，AI 工具、學術論文，是這群跨域夥伴實際做出來的東西。
             </Translate>
           </p>
         </div>
         <div className={styles.uspGrid}>
-          <UspAxisCard
-            icon="⚫"
-            titleKey="homepage.usp.axis1.title"
-            titleDefault="圍棋公益"
-            metric="10"
-            metricLabelKey="homepage.usp.axis1.metricLabel"
-            metricLabelDefault="縣市・187 張紀錄"
-            bodyKey="homepage.usp.axis1.body"
-            bodyDefault="城市對抗賽、嘉年華、好棋同樂會主題講座、全國公開賽"
-            audienceKey="homepage.usp.axis1.audience"
-            audienceDefault="樂齡・聽障・親子・學齡兒童"
-            ctaKey="homepage.usp.axis1.cta"
-            ctaDefault="看實體活動 →"
-            ctaHref="/docs/about/activities/"
-          />
           <UspAxisCard
             icon="🤖"
             titleKey="homepage.usp.axis2.title"
@@ -123,6 +108,21 @@ function USPSection() {
             ctaKey="homepage.usp.axis3.cta"
             ctaDefault="看論文 →"
             ctaHref="/research/"
+          />
+          <UspAxisCard
+            icon="⚫"
+            titleKey="homepage.usp.axis1.title"
+            titleDefault="圍棋公益"
+            metric="10"
+            metricLabelKey="homepage.usp.axis1.metricLabel"
+            metricLabelDefault="縣市・187 張紀錄"
+            bodyKey="homepage.usp.axis1.body"
+            bodyDefault="城市對抗賽、嘉年華、好棋同樂會主題講座、全國公開賽"
+            audienceKey="homepage.usp.axis1.audience"
+            audienceDefault="樂齡・聽障・親子・學齡兒童"
+            ctaKey="homepage.usp.axis1.cta"
+            ctaDefault="看實體活動 →"
+            ctaHref="/docs/about/activities/"
           />
         </div>
         <p className={styles.uspFuture}>
@@ -167,7 +167,7 @@ function ActivityCard({activity}) {
 
 function ActivitiesShowcase() {
   return (
-    <section className={clsx(styles.section, styles.sectionAlt)}>
+    <section className={styles.section}>
       <div className="container">
         <div className={styles.sectionHeader}>
           <Heading as="h2">
@@ -305,7 +305,7 @@ function WeiqiOriginSection() {
           </Heading>
           <p className={styles.originLead}>
             <Translate id="homepage.origin.lead">
-              我們是「圍棋文化前進的推手」——因為 AI 浪潮第一個席捲的是圍棋界。
+              我們從圍棋出發，因為 AI 浪潮第一個席捲的就是圍棋界。
             </Translate>
           </p>
           <p className={styles.originBody}>
@@ -411,7 +411,6 @@ export default function HomepageLinks() {
   return (
     <>
       <USPSection />
-      <ActivitiesShowcase />
       <PillarSection />
 
       {/* 學術研究精選 */}
@@ -457,6 +456,9 @@ export default function HomepageLinks() {
           <AppCard key={a.id} {...a} icon={appIcons[a.icon] || '🔧'} />
         ))}
       </HighlightSection>
+
+      {/* 實體活動成果（圍棋公益，L3 延伸） */}
+      <ActivitiesShowcase />
 
       {/* 圍棋源起紀念碑 */}
       <WeiqiOriginSection />
