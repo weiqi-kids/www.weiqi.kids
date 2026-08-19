@@ -959,7 +959,17 @@
       "timestamp": "2026-08-15T00:00:00Z",
       "count": 1,
       "uniques": 1
+    },
+    {
+      "timestamp": "2026-08-16T00:00:00Z",
+      "count": 4,
+      "uniques": 4
+    },
+    {
+      "timestamp": "2026-08-17T00:00:00Z",
+      "count": 2,
+      "uniques": 1
     }
   ],
-  "lastUpdated": "2026-08-18T00:25:47.262Z"
+  "lastUpdated": "2026-08-19T00:25:47.853Z"
 }
