@@ -1,7 +1,7 @@
 ---
 sidebar_position: 19
 title: 姜封豪
-description: 姜封豪為健康領域聯合診所院長，專精運動營養家庭醫學，畢業於中國醫藥大學中西醫學系，具13年專業實務經驗，是台灣好棋寶寶協會創始會員。
+description: 姜封豪醫師為健康領域聯合診所院長，學歷為中國醫藥大學中西醫學系雙主修，具13年家庭醫學專科實務經驗，是台灣好棋寶寶協會創始會員。
 industry_tags: [醫事]
 ai_tools: []
 contributing_role: 未來合作意向
