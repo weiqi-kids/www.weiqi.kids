@@ -19,7 +19,7 @@ function HomepageHeader() {
         </Heading>
         <p className="hero__subtitle">
           <Translate id="homepage.tagline" description="Hero subtitle below H1">
-            商界夥伴 × 跨域 AI × 公益圍棋
+            跨域開源 × 學術原創 × 圍棋公益
           </Translate>
         </p>
         <p className={styles.heroStats}>
