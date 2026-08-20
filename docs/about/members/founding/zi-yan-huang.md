@@ -1,7 +1,7 @@
 ---
 sidebar_position: 17
 title: 黃子彥
-description: 漢方保健品
+description: 黃子彥現任GCM上醫預防醫學發展協會數位編輯部總編輯，長期投入預防醫學與中醫養生知識整合，是台灣好棋寶寶協會創始會員。
 industry_tags: [中醫養生, 預防醫學, 健康衛教]
 ai_tools: [huatuo-ai, agent-writer]
 contributing_role: 領域知識主筆
