@@ -30,6 +30,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # 🔴 淺 clone 會毀掉 showLastUpdateTime 與 sitemap 的 lastmod。
+          #    Docusaurus 是逐檔跑 `git log -1` 取日期，depth=1 只有一個 commit，
+          #    於是**每一頁的日期都變成建置日**。2026-08-21 實測：線上 6 個不同的
+          #    docs 頁全部顯示「最後於 2026年8月20日更新」，那是上次 build 的日子，
+          #    不是那一頁真的改過的日子。sitemap 的 lastmod 吃同一份資料，
+          #    不修這個就開 lastmod 等於每次建置都宣稱全站更新——假訊號比沒有更糟。
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4

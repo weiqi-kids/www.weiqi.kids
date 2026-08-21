@@ -188,6 +188,14 @@ const config = {
         // 站內搜尋頁（11 語系各一頁）帶 noindex，不該列入 sitemap（GSC 警告來源之一）
         sitemap: {
           ignorePatterns: ['/search/', '/**/search/'],
+          // 2026-08-21 加。沒有 lastmod 的後果不是「少一個欄位」：
+          //   ① Google 沒有「這一頁變了」的訊號，改寫既有頁面等於沒說；
+          //   ② seo-ops 每天的 sitemap 過期重送判準（線上網址數 ≠ GSC submitted，
+          //      或線上最新 lastmod 晚於 lastDownloaded）只剩前者，改內容不會觸發。
+          // 實例：/docs/tech/ 的 GSC 記錄停在 2026-07-27，三週半沒被重抓。
+          // 日期來源是 docs 的 showLastUpdateTime（走 git），所以 CI 的 checkout
+          // 必須是 fetch-depth: 0——見 .github/workflows/build.yml 的註解。
+          lastmod: 'date',
         },
         // Google Analytics 4（官方 gtag 外掛，自動處理 SPA 換頁追蹤）
         gtag: {
