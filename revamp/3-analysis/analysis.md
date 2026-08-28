@@ -311,7 +311,7 @@ based_on:
 | revamp/0-positioning/positioning.md (v2) | Persona / USP / KPI 起點 | 2026-05-14 |
 | revamp/1-discovery/discovery.md | 內容現況、量測現況 | 2026-05-14 |
 | revamp/2-competitive/competitive.md | 競品差距、可借鏡做法 | 2026-05-20 |
-| 本機 `/root/www.weiqi.kids/docs/about/members/` | 11 位會員檔案行數、深度盤點 | 2026-05-14 已盤 |
+| 本機 `/mnt/www-weiqi-kids/www.weiqi.kids/docs/about/members/` | 11 位會員檔案行數、深度盤點 | 2026-05-14 已盤 |
 | **未取**：實際用戶訪談 / Umami 行為數據 / 用戶問卷 | — | 因 Umami 未啟用 |
 
 > **強提醒**：本報告所有 Persona 推論皆基於 0-positioning §2 的假設與 11 位會員的實際跨產業組成。**Umami 啟用後 30 天的真實流量數據可能會推翻或大幅調整此處 Persona 比重**。建議 `4-strategy` 階段保留「快速調整」彈性，避免把所有 P0b 內容鎖死在當前假設上。

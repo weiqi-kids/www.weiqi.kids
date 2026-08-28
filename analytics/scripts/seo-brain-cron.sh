@@ -123,7 +123,7 @@ if [ "$DRY_RUN" != "1" ] && [ "$CLAUDE_OK" = "0" ] && [ -x "$SLACK_NOTIFY" ]; th
   printf '%s' "🚦 今天要不要你出手：🔴 需要你看一下
 :warning: *weiqi.kids SEO 自動優化 $DATE — 執行中斷*
 本機大腦層 headless 執行失敗或逾時，今日可能未完成優化/通報。
-請查 log：/root/www.weiqi.kids/logs/seo-brain.log" | "$SLACK_NOTIFY" "$CHANNEL" >/dev/null 2>&1 \
+請查 log：/mnt/www-weiqi-kids/www.weiqi.kids/logs/seo-brain.log" | "$SLACK_NOTIFY" "$CHANNEL" >/dev/null 2>&1 \
     && echo "[weiqi-brain] 已發失敗保底 Slack" || echo "[weiqi-brain] 失敗保底 Slack 也送不出（查 token）"
 fi
 

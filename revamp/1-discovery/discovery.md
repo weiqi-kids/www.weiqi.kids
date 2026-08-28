@@ -238,6 +238,6 @@ based_on: revamp/0-positioning/positioning.md (v2)
 
 - GitHub Traffic API: `analytics/current/`、`analytics/history/`（最新採集 2026-05-14）
 - 網站 HTTP/HTML: 直接 curl https://www.weiqi.kids/（2026-05-14）
-- 內容盤點: 本機 `/root/www.weiqi.kids/docs/` 與 `src/pages/`
+- 內容盤點: 本機 `/mnt/www-weiqi-kids/www.weiqi.kids/docs/` 與 `src/pages/`
 - Navbar config: `docusaurus.config.js` + `i18n/zh-tw/docusaurus-theme-classic/navbar.json`
 - Lighthouse / Mozilla Observatory / SSL Labs: **未執行**（不阻擋本階段，列為後補）
