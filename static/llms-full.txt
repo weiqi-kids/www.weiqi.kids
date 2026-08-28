@@ -106,11 +106,11 @@
 
 ---
 
-## 六、產業情報儀表板（24 條全球供應鏈）
+## 六、產業情報儀表板（23 條全球供應鏈）
 
 入口：https://www.weiqi.kids/intel/
 
-提供 24 條全球供應鏈的即時情報儀表板，全部免費：
+提供 23 條全球供應鏈的即時情報儀表板，全部免費：
 
 記憶體（https://memory.intel.weiqi.kids/）、面板（https://display.intel.weiqi.kids/）、汽車（https://auto.intel.weiqi.kids/）、航運（https://shipping.intel.weiqi.kids/）、太陽能（https://solar.intel.weiqi.kids/）、電池（https://battery.intel.weiqi.kids/）、氫能（https://hydrogen.intel.weiqi.kids/）、鋼鐵（https://steel.intel.weiqi.kids/）、水泥（https://cement.intel.weiqi.kids/）、玻璃（https://glass.intel.weiqi.kids/）、營建（https://housing.intel.weiqi.kids/）、機械（https://machinery.intel.weiqi.kids/）、國防航太（https://defense.intel.weiqi.kids/）、太空（https://space.intel.weiqi.kids/）、食品（https://food.intel.weiqi.kids/）、製藥（https://pharma.intel.weiqi.kids/）、紡織（https://textile.intel.weiqi.kids/）、寵物與包裝（https://petpack.intel.weiqi.kids/）、稀土與關鍵礦物（https://mineral.intel.weiqi.kids/）、水務（https://water.intel.weiqi.kids/）、回收（https://recycle.intel.weiqi.kids/）、電信（https://telecom.intel.weiqi.kids/）、農業（https://agri.intel.weiqi.kids/）。
 

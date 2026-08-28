@@ -19,7 +19,7 @@
 - [年度成果報告](https://www.weiqi.kids/impact-report/2026/): 2026 年度公益與開源成果
 - [AI 工具總覽](https://www.weiqi.kids/apps/): 全部免費開源的 AI 應用工具
 - [學術論文](https://www.weiqi.kids/research/): 原創數學與 AI 研究報告
-- [產業情報](https://www.weiqi.kids/intel/): 24 條全球供應鏈即時情報儀表板
+- [產業情報](https://www.weiqi.kids/intel/): 23 條全球供應鏈即時情報儀表板
 
 ## 圍棋學習（給棋友）
 
@@ -82,5 +82,5 @@
 
 ## Optional
 
-- [產業情報總覽（24 條供應鏈）](https://www.weiqi.kids/intel/): 半導體、面板、汽車、航運、太陽能、電池、氫能、鋼鐵、水泥、玻璃、營建、機械、國防、太空、食品、製藥、紡織、寵物包裝、稀土礦物、水務、回收、電信、農業、記憶體等全球供應鏈即時情報
+- [產業情報總覽（23 條供應鏈）](https://www.weiqi.kids/intel/): 面板、汽車、航運、太陽能、電池、氫能、鋼鐵、水泥、玻璃、營建、機械、國防、太空、食品、製藥、紡織、寵物包裝、稀土礦物、水務、回收、電信、農業、記憶體等全球供應鏈即時情報
 - [GitHub 原始碼](https://github.com/weiqi-kids/www.weiqi.kids): 官網開源原始碼
