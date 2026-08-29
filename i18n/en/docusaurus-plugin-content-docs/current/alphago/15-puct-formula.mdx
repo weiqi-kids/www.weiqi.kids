@@ -4,7 +4,50 @@ title: "PUCT Formula: AlphaGo's MCTS Selection Rule Explained"
 description: "How AlphaGo's PUCT formula balances exploitation and exploration in MCTS, with full derivation, Python code, and c_puct tuning values by project."
 ---
 
+import Head from '@docusaurus/Head';
 import { MCTSTree } from '@site/src/components/D3Charts';
+import { KeyTakeaway, FAQ } from '@site/src/components/SEO';
+
+<Head>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://www.weiqi.kids/en/docs/alphago/puct-formula/#webpage",
+          "url": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+          "name": "PUCT Formula: AlphaGo's MCTS Selection Rule Explained",
+          "description": "How AlphaGo's PUCT formula balances exploitation and exploration in MCTS, with full derivation, Python code, and c_puct tuning values by project.",
+          "isPartOf": { "@id": "https://www.weiqi.kids/#website" },
+          "primaryImageOfPage": { "@type": "ImageObject", "url": "https://www.weiqi.kids/img/social-card.png" },
+          "datePublished": "2024-01-15",
+          "dateModified": "2026-08-29",
+          "inLanguage": "en",
+          "speakable": {
+            "@type": "SpeakableSpecification",
+            "cssSelector": [".article-summary", ".speakable-content", ".key-takeaway", ".key-answer", ".expert-quote", ".actionable-steps li", ".faq-answer-content"]
+          }
+        },
+        {
+          "@type": "Article",
+          "@id": "https://www.weiqi.kids/en/docs/alphago/puct-formula/#article",
+          "mainEntityOfPage": { "@id": "https://www.weiqi.kids/en/docs/alphago/puct-formula/#webpage" },
+          "headline": "PUCT Formula: AlphaGo's MCTS Selection Rule Explained",
+          "description": "How AlphaGo's PUCT formula balances exploitation and exploration in MCTS, with full derivation, Python code, and c_puct tuning values by project.",
+          "image": { "@type": "ImageObject", "url": "https://www.weiqi.kids/img/social-card.png", "width": 1200, "height": 630 },
+          "author": { "@id": "https://www.weiqi.kids/#organization" },
+          "publisher": { "@id": "https://www.weiqi.kids/#organization" },
+          "datePublished": "2024-01-15",
+          "dateModified": "2026-08-29",
+          "isAccessibleForFree": true,
+          "inLanguage": "en",
+          "isPartOf": { "@type": "WebSite", "@id": "https://www.weiqi.kids/#website" }
+        }
+      ]
+    })}
+  </script>
+</Head>
 
 # PUCT Formula Explained
 
@@ -726,3 +769,17 @@ This implementation shows PUCT formula's core role in MCTS. Actual AlphaGo imple
 - Tree reuse
 - Dirichlet noise
 - Temperature control and other features
+
+---
+
+<KeyTakeaway title="Key Takeaways">
+- The PUCT formula = Q(s,a) + U(s,a), balancing "exploiting known good moves" against "exploring unknown possibilities"
+- The exploration constant c_puct controls the exploration-exploitation trade-off; AlphaGo uses 1.5, with the optimal value usually between 1.0 and 2.0
+- Compared to traditional UCB1, PUCT's advantage is using the Policy Network's prior probability to guide the search, which converges faster
+</KeyTakeaway>
+
+<FAQ title="Frequently Asked Questions" items={[
+  { question: "What do the Q and U values in the PUCT formula represent?", answer: "Q(s,a) is the exploitation term, representing the action's average value — reflecting how this move has performed in past simulations. U(s,a) is the exploration term, representing the action's remaining exploration value — reflecting how much unexplored potential this move still has. The sum of the two determines which action is finally selected." },
+  { question: "Why does AlphaGo use PUCT instead of traditional UCB1?", answer: "PUCT can use the prior probability provided by the Policy Network, letting the search focus on reasonable moves from the very start. In addition, PUCT's linear exploration decay converges faster than UCB1's logarithmic decay, making it better suited to scenarios with a strong prior." },
+  { question: "How should the c_puct parameter be tuned?", answer: "A smaller c_puct value (e.g. 0.5) favors exploiting known good moves; a larger value (e.g. 5) favors exploring new possibilities. The optimal value depends on network quality and search budget: a stronger network can use a smaller value, and more simulations allow a larger value. Typical values fall between 1.0 and 2.0." },
+]} />
