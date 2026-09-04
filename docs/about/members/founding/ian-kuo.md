@@ -1,7 +1,7 @@
 ---
 sidebar_position: 16
 title: 郭尚諺
-description: 命運的吉他
+description: 郭尚諺（Ian Kuo）為加一吉他團長、作曲家，古典吉他演奏經驗達29年，2013年與夥伴共同創立加一吉他，是台灣好棋寶寶協會創始會員。
 industry_tags: [音樂, 商業音樂製作, 古典吉他]
 ai_tools: []
 contributing_role: 未來合作意向

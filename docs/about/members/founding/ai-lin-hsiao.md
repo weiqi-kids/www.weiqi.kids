@@ -1,7 +1,7 @@
 ---
 sidebar_position: 3
 title: 蕭愛霖
-description: 台灣職業女棋士
+description: 蕭愛霖為台灣職業女棋士（二段），原登錄台灣棋院、業務併入海峰棋院，曾參加女子圍棋最強戰，是台灣好棋寶寶協會圍棋專業召集人。
 industry_tags: [圍棋, 職業棋士]
 ai_tools: []
 contributing_role: 領域知識主筆
