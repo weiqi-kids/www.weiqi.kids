@@ -1,6 +1,7 @@
 ---
 sidebar_position: 6
 title: Ian Kuo
+description: Ian Kuo is the founder and composer of Plus One Guitar, a classical guitarist with 14 years of musical experience and a founding member of the Weiqi.Kids Association.
 ---
 
 # Ian Kuo
