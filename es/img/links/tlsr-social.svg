@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- 背景圓 -->
+  <circle cx="100" cy="100" r="70" fill="#FFF8DC" stroke="#CD853F" stroke-width="3"/>
+  <!-- 中心銅蛇符號 -->
+  <path d="M100 130 Q90 115 95 100 Q100 85 95 75 Q92 68 100 65 Q108 68 105 75 Q100 85 105 100 Q110 115 100 130"
+        fill="none" stroke="#CD853F" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="100" cy="58" r="6" fill="#CD853F"/>
+  <circle cx="97" cy="56" r="1.5" fill="#1a1a1a"/>
+  <circle cx="103" cy="56" r="1.5" fill="#1a1a1a"/>
+  <!-- 人群圓點 -->
+  <circle cx="55" cy="85" r="15" fill="#8B4513"/>
+  <circle cx="145" cy="85" r="15" fill="#8B4513"/>
+  <circle cx="65" cy="135" r="12" fill="#A0522D"/>
+  <circle cx="135" cy="135" r="12" fill="#A0522D"/>
+  <!-- 連結線 -->
+  <line x1="68" y1="90" x2="90" y2="100" stroke="#CD853F" stroke-width="2" stroke-dasharray="4,2"/>
+  <line x1="132" y1="90" x2="110" y2="100" stroke="#CD853F" stroke-width="2" stroke-dasharray="4,2"/>
+  <line x1="75" y1="130" x2="92" y2="115" stroke="#CD853F" stroke-width="2" stroke-dasharray="4,2"/>
+  <line x1="125" y1="130" x2="108" y2="115" stroke="#CD853F" stroke-width="2" stroke-dasharray="4,2"/>
+  <!-- 人形 -->
+  <circle cx="55" cy="80" r="6" fill="white"/>
+  <circle cx="145" cy="80" r="6" fill="white"/>
+  <circle cx="65" cy="130" r="5" fill="white"/>
+  <circle cx="135" cy="130" r="5" fill="white"/>
+</svg>
