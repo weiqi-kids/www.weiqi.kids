@@ -1,6 +1,7 @@
 ---
 sidebar_position: 7
 title: 林昊德
+description: 林昊德，台灣好棋寶寶協會創始會員。
 industry_tags: []
 ai_tools: []
 contributing_role: 未來合作意向
