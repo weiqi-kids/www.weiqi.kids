@@ -6,7 +6,7 @@ description: "How AlphaGo's PUCT formula balances exploitation and exploration i
 
 import Head from '@docusaurus/Head';
 import { MCTSTree } from '@site/src/components/D3Charts';
-import { KeyTakeaway, FAQ } from '@site/src/components/SEO';
+import { KeyAnswer, KeyTakeaway, FAQ } from '@site/src/components/SEO';
 
 <Head>
   <script type="application/ld+json">
@@ -50,6 +50,10 @@ import { KeyTakeaway, FAQ } from '@site/src/components/SEO';
 </Head>
 
 # PUCT Formula Explained
+
+<KeyAnswer question="What is the PUCT formula?">
+PUCT (Predictor + UCT) is the move-selection rule AlphaGo's Monte Carlo Tree Search uses to pick which branch to expand next. At each node it scores every candidate move as Q(s,a) + U(s,a): Q is the move's average result from past simulations, and U is an exploration bonus weighted by the Policy Network's prior probability P(s,a). AlphaGo sets the exploration constant c_puct to 1.5.
+</KeyAnswer>
 
 In the previous article, we outlined the combination of MCTS with neural networks. Now let's dive deep into the core of MCTS selection - the **PUCT formula**.
 
