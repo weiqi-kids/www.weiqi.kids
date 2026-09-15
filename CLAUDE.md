@@ -1,5 +1,21 @@
 # Weiqi.Kids 專案指南
 
+## Agent skills
+
+使用 Matt Pocock 工程技能前，讀取 `docs/agents/skills.md`，取得 Codex 呼叫方式與技能來源。
+
+### Issue tracker
+
+本專案使用 GitHub Issues。建立規格、拆票、讀取或更新 issue 前，讀取 `docs/agents/issue-tracker.md`。
+
+### Triage labels
+
+使用五種預設 triage 標籤。分類 issue 或套用標籤前，讀取 `docs/agents/triage-labels.md`。
+
+### Domain docs
+
+使用 single-context 結構。工程技能探索程式碼前，讀取 `docs/agents/domain.md`。
+
 ## 專案概述
 
 台灣好棋寶寶協會官網（https://www.weiqi.kids/），使用 Docusaurus 3.8 建置的多語系靜態網站。

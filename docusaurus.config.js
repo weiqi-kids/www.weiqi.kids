@@ -7,6 +7,7 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import {GlobExcludeDefault} from '@docusaurus/utils';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -175,6 +176,8 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          // 工程技能設定與架構決策不產生公開文件頁面。
+          exclude: [...GlobExcludeDefault, 'agents/**', 'adr/**'],
           sidebarPath: './sidebars.js',
           editUrl: 'https://github.com/weiqi-kids/www.weiqi.kids/tree/main/',
           editLocalizedFiles: true,
