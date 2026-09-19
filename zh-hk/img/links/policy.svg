@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- 文件背景 -->
+  <rect x="45" y="30" width="110" height="140" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="3"/>
+  <!-- 文件折角 -->
+  <path d="M125 30 L155 60 L125 60 Z" fill="#c8e6c9" stroke="#4caf50" stroke-width="2"/>
+  <!-- 標題列 -->
+  <rect x="60" y="50" width="60" height="8" rx="2" fill="#2e7d32"/>
+  <!-- 承諾項目與勾選 -->
+  <rect x="60" y="75" width="70" height="6" rx="2" fill="#81c784"/>
+  <circle cx="145" cy="78" r="8" fill="#4caf50"/>
+  <path d="M141 78 L144 81 L150 74" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="60" y="95" width="70" height="6" rx="2" fill="#81c784"/>
+  <circle cx="145" cy="98" r="8" fill="#4caf50"/>
+  <path d="M141 98 L144 101 L150 94" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="60" y="115" width="70" height="6" rx="2" fill="#81c784"/>
+  <circle cx="145" cy="118" r="8" fill="#ff9800"/>
+  <rect x="143" y="114" width="4" height="8" rx="1" fill="white"/>
+
+  <rect x="60" y="135" width="70" height="6" rx="2" fill="#81c784"/>
+  <circle cx="145" cy="138" r="8" fill="#f44336"/>
+  <path d="M142 135 L148 141 M148 135 L142 141" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  <!-- 追蹤圖示 -->
+  <circle cx="160" cy="160" r="25" fill="#1976d2" opacity="0.9"/>
+  <circle cx="160" cy="160" r="12" fill="none" stroke="white" stroke-width="3"/>
+  <line x1="168" y1="168" x2="178" y2="178" stroke="white" stroke-width="3" stroke-linecap="round"/>
+</svg>
