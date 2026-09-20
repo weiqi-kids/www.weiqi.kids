@@ -1,0 +1,1908 @@
+{
+  "date": "2026-09-21",
+  "generatedAt": "2026-09-20T20:35:11.650Z",
+  "ga4": {
+    "range": "7daysAgo..yesterday",
+    "sessions": 1543,
+    "users": 1538,
+    "views": 1855,
+    "avgDurationSec": 9,
+    "engagedSessions": 229,
+    "taiwanOrganicSessions": 9,
+    "channelsRange": "8daysAgo..2daysAgo",
+    "channels": [
+      {
+        "channel": "Direct",
+        "sessions": 1472,
+        "engaged": 177
+      },
+      {
+        "channel": "Organic Search",
+        "sessions": 21,
+        "engaged": 12
+      },
+      {
+        "channel": "Unassigned",
+        "sessions": 5,
+        "engaged": 0
+      },
+      {
+        "channel": "AI Assistant",
+        "sessions": 3,
+        "engaged": 2
+      }
+    ],
+    "topPages": [
+      {
+        "path": "/",
+        "views": 58
+      },
+      {
+        "path": "/en/",
+        "views": 36
+      },
+      {
+        "path": "/research/",
+        "views": 20
+      },
+      {
+        "path": "/intel/",
+        "views": 19
+      },
+      {
+        "path": "/en/docs/alphago/puct-formula/",
+        "views": 18
+      },
+      {
+        "path": "/apps/",
+        "views": 17
+      },
+      {
+        "path": "/zh-cn/",
+        "views": 17
+      },
+      {
+        "path": "/faq/",
+        "views": 15
+      },
+      {
+        "path": "/en/docs/tech/overview/landscape/",
+        "views": 11
+      },
+      {
+        "path": "/pt/docs/learn/introduction/rules/",
+        "views": 9
+      },
+      {
+        "path": "/docs/about/",
+        "views": 8
+      },
+      {
+        "path": "/docs/about/members/founding/",
+        "views": 8
+      },
+      {
+        "path": "/en/docs/tech/hands-on/",
+        "views": 8
+      },
+      {
+        "path": "/en/docs/tech/industry/applications/",
+        "views": 8
+      },
+      {
+        "path": "/en/docs/tech/overview/timeline/",
+        "views": 8
+      }
+    ],
+    "aiReferrals": {
+      "range": "28daysAgo..yesterday",
+      "total": 3,
+      "engaged": 2,
+      "sources": [
+        {
+          "source": "chatgpt.com",
+          "sessions": 3,
+          "engaged": 2
+        }
+      ]
+    },
+    "daily": [
+      {
+        "date": "2026-07-27",
+        "sessions": 82,
+        "avgDurationSec": 76,
+        "engaged": 14,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-07-28",
+        "sessions": 108,
+        "avgDurationSec": 71,
+        "engaged": 36,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-07-29",
+        "sessions": 129,
+        "avgDurationSec": 67,
+        "engaged": 26,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-07-30",
+        "sessions": 131,
+        "avgDurationSec": 58,
+        "engaged": 19,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-07-31",
+        "sessions": 83,
+        "avgDurationSec": 10,
+        "engaged": 18,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-08-01",
+        "sessions": 75,
+        "avgDurationSec": 26,
+        "engaged": 11,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-02",
+        "sessions": 65,
+        "avgDurationSec": 7,
+        "engaged": 10,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-03",
+        "sessions": 77,
+        "avgDurationSec": 4,
+        "engaged": 16,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-04",
+        "sessions": 87,
+        "avgDurationSec": 8,
+        "engaged": 19,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-05",
+        "sessions": 75,
+        "avgDurationSec": 13,
+        "engaged": 16,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-06",
+        "sessions": 79,
+        "avgDurationSec": 5,
+        "engaged": 18,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-07",
+        "sessions": 62,
+        "avgDurationSec": 2,
+        "engaged": 7,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-08-08",
+        "sessions": 73,
+        "avgDurationSec": 2,
+        "engaged": 7,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-09",
+        "sessions": 77,
+        "avgDurationSec": 3,
+        "engaged": 10,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-10",
+        "sessions": 69,
+        "avgDurationSec": 21,
+        "engaged": 10,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-08-11",
+        "sessions": 61,
+        "avgDurationSec": 7,
+        "engaged": 5,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-08-12",
+        "sessions": 59,
+        "avgDurationSec": 40,
+        "engaged": 13,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-08-13",
+        "sessions": 64,
+        "avgDurationSec": 2,
+        "engaged": 9,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-14",
+        "sessions": 53,
+        "avgDurationSec": 5,
+        "engaged": 11,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-15",
+        "sessions": 60,
+        "avgDurationSec": 7,
+        "engaged": 6,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-16",
+        "sessions": 58,
+        "avgDurationSec": 4,
+        "engaged": 11,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-17",
+        "sessions": 72,
+        "avgDurationSec": 3,
+        "engaged": 12,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-18",
+        "sessions": 52,
+        "avgDurationSec": 3,
+        "engaged": 5,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-19",
+        "sessions": 73,
+        "avgDurationSec": 2,
+        "engaged": 12,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-20",
+        "sessions": 95,
+        "avgDurationSec": 4,
+        "engaged": 13,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-21",
+        "sessions": 86,
+        "avgDurationSec": 4,
+        "engaged": 14,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-08-22",
+        "sessions": 53,
+        "avgDurationSec": 2,
+        "engaged": 4,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-23",
+        "sessions": 57,
+        "avgDurationSec": 3,
+        "engaged": 11,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-24",
+        "sessions": 61,
+        "avgDurationSec": 9,
+        "engaged": 11,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-08-25",
+        "sessions": 62,
+        "avgDurationSec": 22,
+        "engaged": 10,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-08-26",
+        "sessions": 66,
+        "avgDurationSec": 6,
+        "engaged": 14,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-08-27",
+        "sessions": 84,
+        "avgDurationSec": 3,
+        "engaged": 7,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-08-28",
+        "sessions": 108,
+        "avgDurationSec": 7,
+        "engaged": 17,
+        "taiwanOrganic": 3
+      },
+      {
+        "date": "2026-08-29",
+        "sessions": 77,
+        "avgDurationSec": 4,
+        "engaged": 15,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-08-30",
+        "sessions": 78,
+        "avgDurationSec": 25,
+        "engaged": 13,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-31",
+        "sessions": 69,
+        "avgDurationSec": 4,
+        "engaged": 11,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-01",
+        "sessions": 74,
+        "avgDurationSec": 4,
+        "engaged": 8,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-02",
+        "sessions": 67,
+        "avgDurationSec": 2,
+        "engaged": 6,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-03",
+        "sessions": 56,
+        "avgDurationSec": 5,
+        "engaged": 7,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-04",
+        "sessions": 58,
+        "avgDurationSec": 3,
+        "engaged": 7,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-05",
+        "sessions": 69,
+        "avgDurationSec": 3,
+        "engaged": 10,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-06",
+        "sessions": 73,
+        "avgDurationSec": 3,
+        "engaged": 10,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-07",
+        "sessions": 59,
+        "avgDurationSec": 2,
+        "engaged": 4,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-08",
+        "sessions": 79,
+        "avgDurationSec": 21,
+        "engaged": 8,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-09",
+        "sessions": 63,
+        "avgDurationSec": 5,
+        "engaged": 7,
+        "taiwanOrganic": 3
+      },
+      {
+        "date": "2026-09-10",
+        "sessions": 60,
+        "avgDurationSec": 3,
+        "engaged": 8,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-11",
+        "sessions": 71,
+        "avgDurationSec": 11,
+        "engaged": 5,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-12",
+        "sessions": 85,
+        "avgDurationSec": 2,
+        "engaged": 6,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-13",
+        "sessions": 82,
+        "avgDurationSec": 3,
+        "engaged": 10,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-14",
+        "sessions": 56,
+        "avgDurationSec": 11,
+        "engaged": 12,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-15",
+        "sessions": 489,
+        "avgDurationSec": 3,
+        "engaged": 43,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-16",
+        "sessions": 470,
+        "avgDurationSec": 3,
+        "engaged": 63,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-17",
+        "sessions": 130,
+        "avgDurationSec": 3,
+        "engaged": 16,
+        "taiwanOrganic": 4
+      },
+      {
+        "date": "2026-09-18",
+        "sessions": 142,
+        "avgDurationSec": 14,
+        "engaged": 28,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-19",
+        "sessions": 132,
+        "avgDurationSec": 12,
+        "engaged": 19,
+        "taiwanOrganic": 2,
+        "attributionPending": true
+      },
+      {
+        "date": "2026-09-20",
+        "sessions": 125,
+        "avgDurationSec": 56,
+        "engaged": 48,
+        "taiwanOrganic": 1
+      }
+    ]
+  },
+  "gsc": {
+    "range": "2026-09-10..2026-09-17",
+    "totals": {
+      "clicks": 14,
+      "impressions": 814,
+      "ctr": 0.0171990171990172,
+      "position": 5.717444717444717
+    },
+    "scope": "https://www.weiqi.kids/",
+    "domainWide": {
+      "clicks": 33,
+      "impressions": 7693,
+      "note": "整個網域資源（含所有子網域）的量；本站以外的部分不屬於這個站的成績"
+    },
+    "topQueries": [
+      {
+        "query": "katago 安裝",
+        "clicks": 1,
+        "impressions": 6,
+        "ctr": 0.16666666666666666,
+        "position": 4.333333333333334
+      },
+      {
+        "query": "puct formula",
+        "clicks": 1,
+        "impressions": 12,
+        "ctr": 0.08333333333333333,
+        "position": 1.5833333333333335
+      },
+      {
+        "query": "ian kuo",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "query": "kata1 b60",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 5
+      },
+      {
+        "query": "katago github",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 77
+      },
+      {
+        "query": "katago vs alphago zero",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 1
+      },
+      {
+        "query": "katago weights",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 8
+      },
+      {
+        "query": "mcts puct",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "query": "puct",
+        "clicks": 0,
+        "impressions": 18,
+        "ctr": 0,
+        "position": 7.388888888888889
+      },
+      {
+        "query": "puct formula alphago paper",
+        "clicks": 0,
+        "impressions": 13,
+        "ctr": 0,
+        "position": 3
+      },
+      {
+        "query": "puct formula alphago zero paper",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 4
+      },
+      {
+        "query": "puct formula mcts alphago paper",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "query": "puct mcts",
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0,
+        "position": 10.375
+      },
+      {
+        "query": "puct meaning",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 8
+      },
+      {
+        "query": "吳荻",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 11.5
+      },
+      {
+        "query": "圍棋人科技",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 26
+      },
+      {
+        "query": "圍棋歷史",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "query": "姜封豪",
+        "clicks": 0,
+        "impressions": 22,
+        "ctr": 0,
+        "position": 9.5
+      },
+      {
+        "query": "姜豐豪",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 4
+      },
+      {
+        "query": "李郁萱",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 4
+      },
+      {
+        "query": "林昊德",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "query": "潘天健",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 13
+      },
+      {
+        "query": "羅揚",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 11
+      },
+      {
+        "query": "蔡博仁",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 28
+      },
+      {
+        "query": "蕭愛霖",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 5.333333333333333
+      }
+    ],
+    "topPages": [
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "clicks": 6,
+        "impressions": 466,
+        "ctr": 0.012875536480686695,
+        "position": 4.8326180257510725
+      },
+      {
+        "page": "https://www.weiqi.kids/",
+        "clicks": 2,
+        "impressions": 8,
+        "ctr": 0.25,
+        "position": 1.375
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/lightman-chang/",
+        "clicks": 2,
+        "impressions": 2,
+        "ctr": 1,
+        "position": 3.5
+      },
+      {
+        "page": "https://www.weiqi.kids/ar/docs/about/activities/partners/yi-chun/",
+        "clicks": 1,
+        "impressions": 2,
+        "ctr": 0.5,
+        "position": 7
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/zi-yan-huang/",
+        "clicks": 1,
+        "impressions": 10,
+        "ctr": 0.1,
+        "position": 10.1
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/tech/hands-on/setup/",
+        "clicks": 1,
+        "impressions": 18,
+        "ctr": 0.05555555555555555,
+        "position": 4.388888888888889
+      },
+      {
+        "page": "https://www.weiqi.kids/zh-cn/docs/about/members/chairman/",
+        "clicks": 1,
+        "impressions": 1,
+        "ctr": 1,
+        "position": 15
+      },
+      {
+        "page": "https://www.weiqi.kids/ar/docs/about/members/founding/sih-jie-chou/",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 6.25
+      },
+      {
+        "page": "https://www.weiqi.kids/ar/docs/alphago/board-representation/",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 3
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 6
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/locations/taipei/",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/bo-jen-tsai/",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 28
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/cheng-wei-hsiao/",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 5
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/dawn-lee/",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 4
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/feng-hao-chiang/",
+        "clicks": 0,
+        "impressions": 30,
+        "ctr": 0,
+        "position": 8.033333333333333
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/tien-chien-pan/",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 13
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/yang-luo/",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 9.333333333333334
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/alphago/legacy-and-impact/",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/alphago/supervised-learning/",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 7.5
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/alphago/value-network/",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 5.333333333333333
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/alphago/why-go-is-hard/",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 1
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/learn/history/",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 1
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/learn/history/ai-history/alphago-era/",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/learn/history/ai-history/katago-era/",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 13
+      }
+    ],
+    "groupTotals": {
+      "疫情監測資料(Extractor)": {
+        "imp": 0,
+        "clk": 0,
+        "n": 0
+      },
+      "考試門檻分析(Narrator)": {
+        "imp": 0,
+        "clk": 0,
+        "n": 0
+      },
+      "研究資料": {
+        "imp": 0,
+        "clk": 0,
+        "n": 0
+      },
+      "英文": {
+        "imp": 625,
+        "clk": 7,
+        "n": 38
+      }
+    },
+    "channelHealth": {
+      "疫情監測資料(Extractor)": {
+        "imp": 0,
+        "clk": 0,
+        "ctr": 0,
+        "position": null,
+        "pagesWithImpressions": 0,
+        "bands": {
+          "前3": 0,
+          "4-5": 0,
+          "6-8": 0,
+          "9-15": 0,
+          "16+": 0
+        },
+        "cliff": []
+      },
+      "考試門檻分析(Narrator)": {
+        "imp": 0,
+        "clk": 0,
+        "ctr": 0,
+        "position": null,
+        "pagesWithImpressions": 0,
+        "bands": {
+          "前3": 0,
+          "4-5": 0,
+          "6-8": 0,
+          "9-15": 0,
+          "16+": 0
+        },
+        "cliff": []
+      },
+      "研究資料": {
+        "imp": 0,
+        "clk": 0,
+        "ctr": 0,
+        "position": null,
+        "pagesWithImpressions": 0,
+        "bands": {
+          "前3": 0,
+          "4-5": 0,
+          "6-8": 0,
+          "9-15": 0,
+          "16+": 0
+        },
+        "cliff": []
+      },
+      "英文": {
+        "imp": 625,
+        "clk": 7,
+        "ctr": 0.0112,
+        "position": 5.113599999999999,
+        "pagesWithImpressions": 38,
+        "bands": {
+          "前3": 40,
+          "4-5": 513,
+          "6-8": 24,
+          "9-15": 45,
+          "16+": 3
+        },
+        "cliff": []
+      }
+    },
+    "positionBands": [
+      {
+        "band": "前3",
+        "pages": 19,
+        "imp": 58,
+        "clicks": 2,
+        "ctr": 0.034482758620689655
+      },
+      {
+        "band": "4-5",
+        "pages": 20,
+        "imp": 548,
+        "clicks": 9,
+        "ctr": 0.016423357664233577
+      },
+      {
+        "band": "6-8",
+        "pages": 30,
+        "imp": 109,
+        "clicks": 1,
+        "ctr": 0.009174311926605505
+      },
+      {
+        "band": "9-15",
+        "pages": 27,
+        "imp": 90,
+        "clicks": 2,
+        "ctr": 0.022222222222222223
+      },
+      {
+        "band": "16+",
+        "pages": 7,
+        "imp": 9,
+        "clicks": 0,
+        "ctr": 0
+      }
+    ],
+    "pageQueryCross": [
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct formula",
+        "clicks": 1,
+        "impressions": 6,
+        "ctr": 0.16666666666666666,
+        "position": 1.1666666666666667
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/tech/hands-on/setup/",
+        "query": "katago 安裝",
+        "clicks": 1,
+        "impressions": 6,
+        "ctr": 0.16666666666666666,
+        "position": 4.333333333333334
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/bo-jen-tsai/",
+        "query": "蔡博仁",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 28
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/dawn-lee/",
+        "query": "李郁萱",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 4
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/feng-hao-chiang/",
+        "query": "姜封豪",
+        "clicks": 0,
+        "impressions": 22,
+        "ctr": 0,
+        "position": 9.5
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/feng-hao-chiang/",
+        "query": "姜豐豪",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 4
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/tien-chien-pan/",
+        "query": "潘天健",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 13
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/yang-luo/",
+        "query": "羅揚",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 11
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/zi-yan-huang/",
+        "query": "黃子彥",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/learn/history/human-history/ancient/",
+        "query": "圍棋歷史",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/ai-lin-hsiao/",
+        "query": "蕭愛霖",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 5.333333333333333
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/ian-kuo/",
+        "query": "ian kuo",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "mcts puct",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct",
+        "clicks": 0,
+        "impressions": 16,
+        "ctr": 0,
+        "position": 7.75
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct formula alphago paper",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 3
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct formula alphago zero paper",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 4
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct formula mcts alphago paper",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct mcts",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 10.6
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct meaning",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 8
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/#advanced-variants",
+        "query": "puct mcts",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/#mathematical-derivation",
+        "query": "puct mcts",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/#meaning-of-each-term",
+        "query": "puct formula alphago paper",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 3
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/#relationship-with-ucb1",
+        "query": "puct formula",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 2
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/#specific-implementation-in-alphago",
+        "query": "puct formula",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 2
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/#specific-implementation-in-alphago",
+        "query": "puct formula alphago paper",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 3
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/#the-puct-formula",
+        "query": "puct formula",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 2
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/#the-puct-formula",
+        "query": "puct formula alphago paper",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 3
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/#the-puct-formula",
+        "query": "puct mcts",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/tech/hands-on/",
+        "query": "kata1 b60",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 5
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/tech/hands-on/",
+        "query": "katago github",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 77
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/tech/how-it-works/katago-innovations/",
+        "query": "katago vs alphago zero",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 1
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/tech/how-it-works/katago-innovations/",
+        "query": "katago weights",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 8
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/tech/industry/",
+        "query": "圍棋人科技",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 26
+      },
+      {
+        "page": "https://www.weiqi.kids/id/docs/about/activities/partners/wu-di/",
+        "query": "吳荻",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 11.5
+      },
+      {
+        "page": "https://www.weiqi.kids/ja/docs/about/members/founding/hao-de-lin/",
+        "query": "林昊德",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "page": "https://www.weiqi.kids/ko/docs/learn/history/human-history/",
+        "query": "바둑 역사",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 45
+      },
+      {
+        "page": "https://www.weiqi.kids/ko/docs/learn/history/human-history/",
+        "query": "바둑역사",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 44
+      },
+      {
+        "page": "https://www.weiqi.kids/pt/docs/about/members/founding/yi-hsuan-yen/",
+        "query": "顏怡璇",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "page": "https://www.weiqi.kids/zh-cn/docs/about/members/founding/hao-de-lin/",
+        "query": "林昊德",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "page": "https://www.weiqi.kids/zh-cn/docs/alphago/puct-formula",
+        "query": "puct",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 4.5
+      }
+    ],
+    "strikingDistance": [
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/feng-hao-chiang/",
+        "query": "姜封豪",
+        "clicks": 0,
+        "impressions": 22,
+        "ctr": 0,
+        "position": 9.5
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct",
+        "clicks": 0,
+        "impressions": 16,
+        "ctr": 0,
+        "position": 7.75
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/zi-yan-huang/",
+        "query": "黃子彥",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/tien-chien-pan/",
+        "query": "潘天健",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 13
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct mcts",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 10.6
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/ai-lin-hsiao/",
+        "query": "蕭愛霖",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 5.333333333333333
+      },
+      {
+        "page": "https://www.weiqi.kids/ja/docs/about/members/founding/hao-de-lin/",
+        "query": "林昊德",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/yang-luo/",
+        "query": "羅揚",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 11
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/ian-kuo/",
+        "query": "ian kuo",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "mcts puct",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/tech/hands-on/",
+        "query": "kata1 b60",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 5
+      },
+      {
+        "page": "https://www.weiqi.kids/id/docs/about/activities/partners/wu-di/",
+        "query": "吳荻",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 11.5
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/learn/history/human-history/ancient/",
+        "query": "圍棋歷史",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct formula mcts alphago paper",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct meaning",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 8
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/#advanced-variants",
+        "query": "puct mcts",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/#mathematical-derivation",
+        "query": "puct mcts",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/#the-puct-formula",
+        "query": "puct mcts",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/tech/how-it-works/katago-innovations/",
+        "query": "katago weights",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 8
+      },
+      {
+        "page": "https://www.weiqi.kids/pt/docs/about/members/founding/yi-hsuan-yen/",
+        "query": "顏怡璇",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "page": "https://www.weiqi.kids/zh-cn/docs/about/members/founding/hao-de-lin/",
+        "query": "林昊德",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      }
+    ],
+    "highImpZeroClick": [
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/feng-hao-chiang/",
+        "query": "姜封豪",
+        "clicks": 0,
+        "impressions": 22,
+        "ctr": 0,
+        "position": 9.5
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct",
+        "clicks": 0,
+        "impressions": 16,
+        "ctr": 0,
+        "position": 7.75
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct formula alphago paper",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 3
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/zi-yan-huang/",
+        "query": "黃子彥",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct mcts",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 10.6
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/tien-chien-pan/",
+        "query": "潘天健",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 13
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/ai-lin-hsiao/",
+        "query": "蕭愛霖",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 5.333333333333333
+      },
+      {
+        "page": "https://www.weiqi.kids/ja/docs/about/members/founding/hao-de-lin/",
+        "query": "林昊德",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 9
+      }
+    ]
+  },
+  "index": {
+    "sitemaps": [
+      {
+        "path": "https://www.weiqi.kids/sitemap.xml",
+        "submitted": 146,
+        "errors": "0",
+        "warnings": "0",
+        "lastDownloaded": "2026-09-19T20:35:15.308Z",
+        "resubmit": "已重送（lastmod 2026-09-20 晚於 lastDownloaded 2026-09-19T20:35:15.308Z）"
+      },
+      {
+        "path": "https://www.weiqi.kids/sitemap-index.xml",
+        "submitted": 1598,
+        "errors": "0",
+        "warnings": "0",
+        "lastDownloaded": "2026-09-19T20:35:14.888Z",
+        "resubmit": "已重送（網址數 1598→1606、lastmod 2026-09-20 晚於 lastDownloaded 2026-09-19T20:35:14.888Z）"
+      }
+    ],
+    "coverage": [
+      {
+        "url": "https://www.weiqi.kids/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-12T08:07:20Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/learn/",
+        "coverageState": "Discovered - currently not indexed",
+        "lastCrawlTime": null
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/tech/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-07-27T20:26:09Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/alphago/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-08-14T20:02:56Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/about/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-05T02:57:56Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/en/",
+        "coverageState": "Duplicate, Google chose different canonical than user",
+        "lastCrawlTime": "2026-09-07T00:21:51Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/ja/",
+        "coverageState": "Duplicate, Google chose different canonical than user",
+        "lastCrawlTime": "2026-09-11T07:41:30Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/zh-cn/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-08-30T10:13:06Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/zh-hk/",
+        "coverageState": "Duplicate, Google chose different canonical than user",
+        "lastCrawlTime": "2026-08-30T10:46:06Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/ko/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-08-14T12:51:04Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/es/",
+        "coverageState": "Duplicate, Google chose different canonical than user",
+        "lastCrawlTime": "2026-09-03T22:16:02Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/pt/",
+        "coverageState": "Duplicate, Google chose different canonical than user",
+        "lastCrawlTime": "2026-08-27T03:38:45Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-09T17:10:57Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/about/members/founding/lightman-chang/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-12T08:11:54Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/ar/docs/about/activities/partners/yi-chun/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-09T13:02:51Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/about/members/founding/zi-yan-huang/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-08-26T00:34:56Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/en/docs/tech/hands-on/setup/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-09T17:42:44Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/zh-cn/docs/about/members/chairman/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-06-21T00:27:49Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/ar/docs/about/members/founding/sih-jie-chou/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-08-26T16:40:05Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/ar/docs/alphago/board-representation/",
+        "coverageState": "Crawled - currently not indexed",
+        "lastCrawlTime": "2026-09-16T21:12:30Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/about/locations/taipei/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-07T01:19:52Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/about/members/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-09T02:41:21Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/about/members/founding/bo-jen-tsai/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-08T23:41:01Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/about/members/founding/cheng-wei-hsiao/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-08-25T05:06:33Z",
+        "auto": true
+      }
+    ]
+  },
+  "targetTrend": {
+    "range": "2026-09-11..2026-09-17",
+    "prevRange": "2026-09-04..2026-09-10",
+    "rows": [
+      {
+        "query": "weiqi kids",
+        "pinned": true,
+        "position": null,
+        "prevPosition": null,
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "puct",
+        "pinned": true,
+        "position": 7.411764705882353,
+        "prevPosition": 6.916666666666667,
+        "impressions": 17,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "puct formula",
+        "pinned": true,
+        "position": 1,
+        "prevPosition": 2.8,
+        "impressions": 4,
+        "clicks": 1,
+        "ctr": 0.25
+      },
+      {
+        "query": "alphago",
+        "pinned": true,
+        "position": null,
+        "prevPosition": null,
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "katago",
+        "pinned": true,
+        "position": null,
+        "prevPosition": null,
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "圍棋ai",
+        "pinned": true,
+        "position": null,
+        "prevPosition": 14,
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "圍棋 ai 分析",
+        "pinned": true,
+        "position": null,
+        "prevPosition": null,
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "姜封豪",
+        "pinned": false,
+        "position": 9.631578947368421,
+        "prevPosition": 9.095238095238095,
+        "impressions": 19,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "katago 安裝",
+        "pinned": false,
+        "position": 4.333333333333334,
+        "prevPosition": null,
+        "impressions": 6,
+        "clicks": 1,
+        "ctr": 0.16666666666666666
+      },
+      {
+        "query": "黃子彥",
+        "pinned": false,
+        "position": 10,
+        "prevPosition": 10.428571428571429,
+        "impressions": 6,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "潘天健",
+        "pinned": false,
+        "position": 13,
+        "prevPosition": null,
+        "impressions": 5,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "林昊德",
+        "pinned": false,
+        "position": 9.333333333333334,
+        "prevPosition": 9.5,
+        "impressions": 3,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "吳荻",
+        "pinned": false,
+        "position": 11.5,
+        "prevPosition": null,
+        "impressions": 2,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "羅揚",
+        "pinned": false,
+        "position": 11,
+        "prevPosition": 14.5,
+        "impressions": 2,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "蕭愛霖",
+        "pinned": false,
+        "position": 5.5,
+        "prevPosition": 5.777777777777778,
+        "impressions": 2,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "圍棋人科技",
+        "pinned": false,
+        "position": 26,
+        "prevPosition": null,
+        "impressions": 1,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "圍棋歷史",
+        "pinned": false,
+        "position": 7,
+        "prevPosition": null,
+        "impressions": 1,
+        "clicks": 0,
+        "ctr": 0
+      }
+    ]
+  },
+  "geo": {
+    "site": "weiqi.kids",
+    "sampleUrl": "https://www.weiqi.kids/zh-cn/docs/learn/introduction/",
+    "checks": {
+      "ai": {
+        "s": "✅"
+      },
+      "sitemap": {
+        "s": "✅"
+      },
+      "llms": {
+        "s": "✅"
+      },
+      "llmsFull": {
+        "s": "✅"
+      },
+      "org": {
+        "s": "✅"
+      },
+      "sameAs": {
+        "s": "✅"
+      },
+      "content": {
+        "s": "✅"
+      },
+      "faq": {
+        "s": "✅"
+      },
+      "cite": {
+        "s": "—"
+      },
+      "expect": {
+        "s": "—"
+      },
+      "targetQ": {
+        "s": "—"
+      }
+    },
+    "gaps": [],
+    "warns": [],
+    "ok": true
+  }
+}
