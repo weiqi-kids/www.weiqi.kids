@@ -1,0 +1,133 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import { db, audit } from '../../server/db';
+import { identitiesOf, membershipOf, isMembershipActive, unlinkIdentity } from '../../server/accounts';
+import { requestMagicLink } from '../../server/magic-link';
+import { lineEnabled } from '../../server/line';
+import { runtimeCourses } from '../../server/courses';
+import { clientIpHash, str } from '../../server/http';
+import { fmtDate } from '../../lib/courses';
+export const prerender = false;
+
+const me = Astro.locals.account;
+if (!me) return Astro.redirect('/auth/login/?next=/account/');
+
+let message: string | null = null;
+let error: string | null = null;
+let debugLink: string | undefined;
+const linked = Astro.url.searchParams.get('linked');
+if (linked) message = linked === 'line' ? '已綁定 LINE。' : '已綁定 Email。';
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const action = str(form, 'action', 40);
+  if (action === 'rename') {
+    const name = str(form, 'display_name', 60);
+    if (name) {
+      await db().prepare('UPDATE accounts SET display_name = ? WHERE id = ?').bind(name, me.id).run();
+      await audit(me.id, 'account.rename', me.id);
+      me.display_name = name;
+      message = '已更新顯示名稱。';
+    }
+  } else if (action === 'link-email') {
+    const email = str(form, 'email', 120).toLowerCase();
+    if (form.get('confirm') !== 'yes') error = '請勾選確認，才會綁定。';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) error = '請填寫有效的 Email。';
+    else {
+      const r = await requestMagicLink({ email, purpose: 'link', accountId: me.id, ipHash: await clientIpHash(Astro.request), origin: Astro.url.origin });
+      if (r.ok) { message = `確認信已寄到 ${email}，點信中連結即完成綁定。`; debugLink = r.debugLink; } else error = r.error;
+    }
+  } else if (action === 'unlink') {
+    const provider = str(form, 'provider', 10) === 'line' ? 'line' : 'email';
+    message = (await unlinkIdentity(me.id, provider)) ? '已解除綁定。' : null;
+    if (!message) error = '至少要保留一種登入方式。';
+  } else if (action === 'read-notifications') {
+    await db().prepare('UPDATE notifications SET read_at = ? WHERE account_id = ? AND read_at IS NULL').bind(new Date().toISOString(), me.id).run();
+  }
+}
+
+const identities = await identitiesOf(me.id);
+const emailIdentity = identities.find((i) => i.provider === 'email');
+const lineIdentity = identities.find((i) => i.provider === 'line');
+const membership = await membershipOf(me.id);
+const courses = await runtimeCourses();
+const courseTitle = (slug: string) => courses.find((c) => c.data.slug === slug)?.data.title ?? slug;
+const { results: access } = await db().prepare('SELECT course_slug, opened_at FROM course_access WHERE account_id = ? ORDER BY opened_at DESC').bind(me.id).all<{ course_slug: string; opened_at: string }>();
+const { results: teaching } = await db().prepare('SELECT course_slug FROM course_staff WHERE account_id = ?').bind(me.id).all<{ course_slug: string }>();
+const { results: enrollments } = await db().prepare(
+  'SELECT code, course_slug, status, created_at FROM enrollments WHERE account_id = ? OR (account_id IS NULL AND email = ?) ORDER BY created_at DESC',
+).bind(me.id, emailIdentity?.subject ?? '').all<{ code: string; course_slug: string; status: string; created_at: string }>();
+const { results: notes } = await db().prepare('SELECT message, link, created_at, read_at FROM notifications WHERE account_id = ? ORDER BY created_at DESC LIMIT 20').bind(me.id).all<{ message: string; link: string | null; created_at: string; read_at: string | null }>();
+const application = await db().prepare('SELECT status, review_note, updated_at FROM instructor_applications WHERE account_id = ? ORDER BY created_at DESC LIMIT 1').bind(me.id).first<{ status: string; review_note: string | null; updated_at: string }>();
+const STATUS: Record<string, string> = { submitted: '已送出，等待協會核款', paid: '已核款', activated: '已開通', cancelled: '已取消' };
+const APP_STATUS: Record<string, string> = { submitted: '審核中', changes_requested: '需要補件', approved: '已核准', rejected: '未通過' };
+const d = (iso: string) => fmtDate(new Date(iso));
+---
+<AppLayout title="帳號">
+  <div class="prose">
+    <h1>帳號</h1>
+    {message && <p class="notice">{message}</p>}
+    {debugLink && <p class="notice">測試環境：寄信服務尚未啟用，請直接使用這個連結：<a href={debugLink}>{debugLink}</a></p>}
+    {error && <p class="notice notice-error">{error}</p>}
+
+    {notes.length > 0 && (
+      <section>
+        <h2>通知</h2>
+        <ul>{notes.map((n) => <li class={n.read_at ? 'muted' : ''}>{d(n.created_at)}：{n.link ? <a href={n.link}>{n.message}</a> : n.message}</li>)}</ul>
+        <form method="post"><input type="hidden" name="action" value="read-notifications" /><button class="link-button" type="submit">全部標為已讀</button></form>
+      </section>
+    )}
+
+    <h2>會員</h2>
+    {membership
+      ? <p>會員效期：{d(membership.started_at)}～{d(membership.expires_at)}（{isMembershipActive(membership) ? '有效' : '已到期；既有課程與紀錄仍保留，報名新課前需續會'}）</p>
+      : <p>尚未成為會員。第一次報名課程並經協會核款後，會同時成為會員。</p>}
+
+    <h2>我的課程</h2>
+    {access.length === 0 && teaching.length === 0 ? <p>還沒有開通的課程。<a href="/camp/courses/">看正式課程</a></p> : (
+      <ul>
+        {teaching.map((t) => <li>講師：<a href={`/camp/courses/${t.course_slug}/forum/`}>{courseTitle(t.course_slug)}</a></li>)}
+        {access.map((a) => <li><a href={`/camp/courses/${a.course_slug}/forum/`}>{courseTitle(a.course_slug)}</a>（{d(a.opened_at)} 開通）．<a href={`/camp/courses/${a.course_slug}/materials/`}>技能單張</a></li>)}
+      </ul>
+    )}
+
+    <h2>報名紀錄</h2>
+    {enrollments.length === 0 ? <p>沒有報名紀錄。</p> : (
+      <ul>{enrollments.map((e) => <li><code>{e.code}</code>．{courseTitle(e.course_slug)}．{STATUS[e.status] ?? e.status}（{d(e.created_at)}）</li>)}</ul>
+    )}
+    {!emailIdentity && <p class="form-hint">報名時填的 Email 綁定到這個帳號後，報名紀錄才會顯示在這裡。</p>}
+
+    <h2>講師申請</h2>
+    {application
+      ? <p>狀態：{APP_STATUS[application.status] ?? application.status}{application.review_note && `．協會意見：${application.review_note}`}．<a href="/account/teaching/">查看或修改</a></p>
+      : <p><a href="/account/teaching/">申請成為講師</a>（需先上過一門課程）</p>}
+
+    <h2>登入方式</h2>
+    <ul>
+      <li>Email：{emailIdentity ? <>{emailIdentity.subject} {lineIdentity && <form class="inline" method="post"><input type="hidden" name="action" value="unlink" /><input type="hidden" name="provider" value="email" /><button class="link-button" type="submit">解除綁定</button></form>}</> : '尚未綁定'}</li>
+      <li>LINE：{lineIdentity ? <>已綁定 {emailIdentity && <form class="inline" method="post"><input type="hidden" name="action" value="unlink" /><input type="hidden" name="provider" value="line" /><button class="link-button" type="submit">解除綁定</button></form>}</> : (lineEnabled() ? <a href="/auth/line/?link=1">綁定 LINE</a> : '尚未開放')}</li>
+    </ul>
+    {!emailIdentity && (
+      <form method="post">
+        <input type="hidden" name="action" value="link-email" />
+        <div class="form-field">
+          <label for="email">綁定 Email</label>
+          <input id="email" name="email" type="email" required />
+        </div>
+        <div class="form-field"><label><input type="checkbox" name="confirm" value="yes" required /> 我確認這個 Email 是我本人的，要綁定到目前這個帳號。</label></div>
+        <button class="btn btn-ghost" type="submit">寄送確認信</button>
+      </form>
+    )}
+
+    <h2>顯示名稱</h2>
+    <form method="post">
+      <input type="hidden" name="action" value="rename" />
+      <div class="form-field"><label for="display_name">在課程論壇顯示的名稱</label><input id="display_name" name="display_name" value={me.display_name} maxlength="60" required /></div>
+      <button class="btn btn-ghost" type="submit">儲存</button>
+    </form>
+  </div>
+</AppLayout>
+<style>
+  .inline { display: inline; }
+  section { margin-bottom: var(--space-8); }
+</style>

@@ -1,0 +1,62 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import { db, audit } from '../../server/db';
+import { newId, nowIso } from '../../server/crypto';
+import { str } from '../../server/http';
+export const prerender = false;
+
+const me = Astro.locals.account;
+if (!me) return Astro.redirect('/auth/login/?next=/account/teaching/');
+
+// 資格：以既有課程開通紀錄驗證（至少一門 6,000 元標準課程）。
+const eligible = !!(await db().prepare('SELECT 1 FROM course_access WHERE account_id = ? LIMIT 1').bind(me.id).first());
+let app = await db().prepare('SELECT * FROM instructor_applications WHERE account_id = ? ORDER BY created_at DESC LIMIT 1').bind(me.id)
+  .first<{ id: string; profile: string; experience: string; topic: string; audience: string; proposal: string; status: string; review_note: string | null }>();
+const editable = eligible && (!app || app.status === 'changes_requested' || app.status === 'rejected');
+let error: string | null = null;
+let message: string | null = null;
+
+if (Astro.request.method === 'POST' && editable) {
+  const form = await Astro.request.formData();
+  const fields = { profile: str(form, 'profile'), experience: str(form, 'experience'), topic: str(form, 'topic', 200), audience: str(form, 'audience', 500), proposal: str(form, 'proposal') };
+  if (Object.values(fields).some((v) => !v)) error = '每一欄都要填寫。';
+  else {
+    if (app && app.status === 'changes_requested') {
+      await db().prepare("UPDATE instructor_applications SET profile = ?, experience = ?, topic = ?, audience = ?, proposal = ?, status = 'submitted', updated_at = ? WHERE id = ?")
+        .bind(fields.profile, fields.experience, fields.topic, fields.audience, fields.proposal, nowIso(), app.id).run();
+      await audit(me.id, 'instructor_application.resubmit', app.id);
+    } else {
+      const id = newId();
+      await db().prepare('INSERT INTO instructor_applications (id, account_id, profile, experience, topic, audience, proposal) VALUES (?, ?, ?, ?, ?, ?, ?)')
+        .bind(id, me.id, fields.profile, fields.experience, fields.topic, fields.audience, fields.proposal).run();
+      await audit(me.id, 'instructor_application.submit', id);
+    }
+    message = '已送出講師申請，協會審核後會通知你。';
+    app = await db().prepare('SELECT * FROM instructor_applications WHERE account_id = ? ORDER BY created_at DESC LIMIT 1').bind(me.id).first();
+  }
+}
+const STATUS: Record<string, string> = { submitted: '審核中', changes_requested: '需要補件', approved: '已核准', rejected: '未通過' };
+const showForm = eligible && (!app || app.status === 'changes_requested' || app.status === 'rejected') && !message;
+const v = app && app.status === 'changes_requested' ? app : null;
+---
+<AppLayout title="講師申請" breadcrumbs={[{ name: '我的帳號', href: '/account/' }, { name: '講師申請', href: '/account/teaching/' }]}>
+  <div class="prose">
+    <h1>講師申請</h1>
+    {message && <p class="notice">{message}</p>}
+    {error && <p class="notice notice-error">{error}</p>}
+    {!eligible && <p class="notice">需要先上過至少一門 6,000 元的標準課程，才能申請成為講師。</p>}
+    {app && !showForm && <p>目前狀態：<strong>{STATUS[app.status] ?? app.status}</strong>{app.review_note && `．協會意見：${app.review_note}`}</p>}
+    {app && app.status === 'approved' && <p>申請已核准。協會會和你一起建立正式課程與開課表單。</p>}
+    {showForm && (
+      <form method="post">
+        {v?.review_note && <p class="notice">協會意見：{v.review_note}</p>}
+        <div class="form-field"><label for="profile">專業背景</label><textarea id="profile" name="profile" rows="4" required>{v?.profile}</textarea></div>
+        <div class="form-field"><label for="experience">相關資格或經驗</label><textarea id="experience" name="experience" rows="4" required>{v?.experience}</textarea></div>
+        <div class="form-field"><label for="topic">想分享的主題</label><input id="topic" name="topic" required value={v?.topic} /></div>
+        <div class="form-field"><label for="audience">目標對象與要解決的問題</label><textarea id="audience" name="audience" rows="3" required>{v?.audience}</textarea></div>
+        <div class="form-field"><label for="proposal">初步課程構想（1 堂主題教學、3 堂實作各做什麼）</label><textarea id="proposal" name="proposal" rows="8" required>{v?.proposal}</textarea></div>
+        <button class="btn" type="submit">送出申請</button>
+      </form>
+    )}
+  </div>
+</AppLayout>

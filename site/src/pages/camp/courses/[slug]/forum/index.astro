@@ -1,0 +1,90 @@
+---
+import AppLayout from '../../../../../layouts/AppLayout.astro';
+import { findCourse } from '../../../../../server/courses';
+import { courseRole, can } from '../../../../../server/permissions';
+import { db, audit } from '../../../../../server/db';
+import { listTopics, createPost, validateFiles, visibleTo, uploadsEnabled, MAX_FILES } from '../../../../../server/forum';
+import { str } from '../../../../../server/http';
+import { fmtDate } from '../../../../../lib/courses';
+export const prerender = false;
+
+const slug = Astro.params.slug!;
+const course = await findCourse(slug);
+if (!course) return new Response('Not found', { status: 404 });
+const me = Astro.locals.account;
+if (!me) return Astro.redirect(`/auth/login/?next=${encodeURIComponent(Astro.url.pathname)}`);
+let role = await courseRole(me, slug);
+const base = `/camp/courses/${slug}/`;
+let error: string | null = null;
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const action = str(form, 'action', 20);
+  if (action === 'join' && can.joinCamp(role)) {
+    await db().prepare('INSERT OR IGNORE INTO camp_members (course_slug, account_id) VALUES (?, ?)').bind(slug, me.id).run();
+    await audit(me.id, 'camp.join', slug);
+    return Astro.redirect(`${base}forum/`, 303);
+  }
+  if (action === 'post' && can.post(role)) {
+    const title = str(form, 'title', 200);
+    const body = str(form, 'body', 20_000);
+    const files = form.getAll('images').filter((f): f is File => f instanceof File);
+    error = !title || !body ? '標題和內容都要填寫。' : await validateFiles(files);
+    if (!error) {
+      const id = await createPost(slug, me, { parentId: null, title, body, files });
+      return Astro.redirect(`${base}forum/${id}/`, 303);
+    }
+  }
+}
+
+const allowed = can.viewForum(role);
+const topics = allowed ? (await listTopics(slug)).filter((t) => visibleTo(t, me, role)) : [];
+const STATUS: Record<string, string> = { withdrawn: '已撤回', hidden: '已隱藏' };
+---
+<AppLayout title={`課程論壇：${course.data.title}`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: course.data.title, href: base }, { name: '課程論壇', href: `${base}forum/` }]}>
+  <div class="prose">
+    <h1>課程論壇</h1>
+    <p><a href={base}>{course.data.title}</a>．<a href={`${base}materials/`}>技能單張</a></p>
+    {error && <p class="notice notice-error">{error}</p>}
+    {!allowed && (can.joinCamp(role) ? (
+      <form method="post" class="notice">
+        <p>你已取得這門課的資格。加入實作營後，就可以在論壇發文、上傳作品與和講師討論。</p>
+        <input type="hidden" name="action" value="join" />
+        <button class="btn" type="submit">加入實作營</button>
+      </form>
+    ) : (
+      <p class="notice">課程論壇只開放給這門課實作營的成員。報名並經協會核款開通後，就可以自己加入實作營。</p>
+    ))}
+  </div>
+  {allowed && (
+    <>
+      <ul class="topics">
+        {topics.length === 0 && <li class="muted">還沒有文章，來發第一篇吧。</li>}
+        {topics.map((t) => (
+          <li>
+            <a href={`${base}forum/${t.id}/`}><strong>{t.title}</strong></a>
+            {STATUS[t.status] && <span class="tag">{STATUS[t.status]}</span>}
+            <span class="muted"> {t.author_name}．{fmtDate(new Date(t.created_at))}．{t.replies} 則回覆</span>
+          </li>
+        ))}
+      </ul>
+      {can.post(role) && (
+        <section class="prose">
+          <h2>發表新文章</h2>
+          <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="post" />
+            <div class="form-field"><label for="title">標題</label><input id="title" name="title" required maxlength="200" /></div>
+            <div class="form-field"><label for="body">內容</label><textarea id="body" name="body" rows="8" required></textarea><span class="form-hint">可以用 Markdown 語法。</span></div>
+            {uploadsEnabled() && (<div class="form-field"><label for="images">圖片（選填，最多 {MAX_FILES} 張，每張 5 MB 以內）</label><input id="images" name="images" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple /></div>)}
+            <button class="btn" type="submit">發表</button>
+          </form>
+        </section>
+      )}
+    </>
+  )}
+</AppLayout>
+<style>
+  .topics { list-style: none; padding: 0; margin: 0 0 var(--space-12); }
+  .topics li { padding: var(--space-3) 0; border-bottom: 1px solid var(--color-line); }
+  :global(.tag) { font-size: var(--text-xs); background: var(--color-warn-bg); padding: 0 var(--space-2); border-radius: var(--radius-sm); margin-left: var(--space-2); }
+</style>

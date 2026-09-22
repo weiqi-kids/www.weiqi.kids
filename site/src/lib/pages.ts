@@ -12,8 +12,6 @@ export const SECTION_LABELS: Record<string, string> = {
   '/gatherings/archive/': '歷史棋聚',
   '/camp/': 'AI 共學營',
   '/knowledge/': '公開知識',
-  '/knowledge/interactive/': '互動教材',
-  '/knowledge/ai-go/kata-go/': 'KataGo',
 };
 
 let cache: Page[] | null = null;

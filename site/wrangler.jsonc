@@ -9,7 +9,7 @@
   "assets": { "directory": "./dist/client", "binding": "ASSETS", "not_found_handling": "404-page", "html_handling": "force-trailing-slash" },
   "observability": { "enabled": true },
   "workers_dev": true,
-  "vars": { "SHOW_DRAFT_COURSES": "1" },
+  "vars": { "SHOW_DRAFT_COURSES": "1", "MAGIC_LINK_DEBUG": "1" },
   "d1_databases": [
     { "binding": "DB", "database_name": "weiqi-kids-staging", "database_id": "c1345075-b309-4d2b-90ac-775ae6f6c0f3", "migrations_dir": "migrations" }
   ]

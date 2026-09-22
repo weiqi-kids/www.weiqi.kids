@@ -1,0 +1,48 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { requireAdmin } from '../../server/guard';
+import { db } from '../../server/db';
+import { resolveAppeal } from '../../server/admin';
+import { str } from '../../server/http';
+export const prerender = false;
+const stop = requireAdmin(Astro); if (stop) return stop;
+const me = Astro.locals.account!;
+let message: string | null = null;
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const decision = str(form, 'decision', 20);
+  if (decision === 'upheld' || decision === 'restored') {
+    message = (await resolveAppeal(str(form, 'appeal', 60), me.id, decision, str(form, 'note', 1000) || null)) ? '已處理申訴並通知作者。' : '這件申訴已處理過。';
+  }
+}
+const { results: appeals } = await db().prepare(
+  `SELECT ap.id, ap.reason, ap.created_at, p.id AS post_id, p.parent_id, p.course_slug, p.body, a.display_name
+   FROM appeals ap JOIN posts p ON p.id = ap.post_id JOIN accounts a ON a.id = ap.author_id WHERE ap.status = 'open' ORDER BY ap.created_at`,
+).all<{ id: string; reason: string; created_at: string; post_id: string; parent_id: string | null; course_slug: string; body: string; display_name: string }>();
+const { results: actions } = await db().prepare(
+  `SELECT m.action, m.reason, m.actor_role, m.created_at, m.post_id, p.course_slug, p.parent_id, a.display_name AS actor
+   FROM moderation_actions m JOIN posts p ON p.id = m.post_id JOIN accounts a ON a.id = m.actor_id ORDER BY m.created_at DESC LIMIT 100`,
+).all<{ action: string; reason: string; actor_role: string; created_at: string; post_id: string; course_slug: string; parent_id: string | null; actor: string }>();
+const link = (slug: string, parent: string | null, id: string) => `/camp/courses/${slug}/forum/${parent ?? id}/#p-${id}`;
+---
+<AdminLayout title="隱藏與申訴">
+  {message && <p class="notice">{message}</p>}
+  <h2>待處理申訴</h2>
+  {appeals.length === 0 ? <p>沒有待處理的申訴。</p> : appeals.map((a) => (
+    <article class="card">
+      <p><strong>{a.display_name}</strong>．{a.created_at.slice(0, 10)}．<a href={link(a.course_slug, a.parent_id, a.post_id)}>查看內容</a></p>
+      <p>申訴理由：{a.reason}</p>
+      <form method="post">
+        <input type="hidden" name="appeal" value={a.id} />
+        <div class="form-field"><label>處理說明（會通知作者）</label><input name="note" /></div>
+        <button class="btn" name="decision" value="restored" type="submit">申訴成立，恢復內容</button>
+        <button class="btn btn-ghost" name="decision" value="upheld" type="submit">維持隱藏</button>
+      </form>
+    </article>
+  ))}
+  <h2>最近的隱藏／恢復紀錄</h2>
+  <table class="admin-table">
+    <thead><tr><th>時間</th><th>操作者</th><th>動作</th><th>原因</th><th>內容</th></tr></thead>
+    <tbody>{actions.map((m) => <tr><td>{m.created_at.slice(0, 16).replace('T', ' ')}</td><td>{m.actor}（{m.actor_role === 'admin' ? '管理員' : '講師'}）</td><td>{m.action === 'hide' ? '隱藏' : '恢復'}</td><td>{m.reason}</td><td><a href={link(m.course_slug, m.parent_id, m.post_id)}>{m.course_slug}</a></td></tr>)}</tbody>
+  </table>
+</AdminLayout>

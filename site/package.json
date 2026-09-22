@@ -8,9 +8,9 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "node scripts/check-design.mjs && node scripts/check-content.mjs && node scripts/build-redirects.mjs && astro build",
+    "build": "node scripts/check-design.mjs && node scripts/check-content.mjs && node scripts/build-redirects.mjs && astro build && node scripts/check-links.mjs",
     "preview": "astro preview",
-    "deploy": "pnpm build && wrangler deploy",
+    "deploy": "SHOW_DRAFT_COURSES=1 pnpm build && wrangler deploy",
     "check:design": "node scripts/check-design.mjs",
     "check:content": "node scripts/check-content.mjs",
     "check:content:all": "node scripts/check-content.mjs --all",
@@ -26,6 +26,8 @@
     "d3": "^7.9.0",
     "katex": "^0.18.7",
     "mermaid": "^12.0.0",
+    "micromark": "^4.0.2",
+    "micromark-extension-gfm": "^3.0.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "rehype-katex": "^7.0.1",
@@ -41,7 +43,9 @@
     ]
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "@cloudflare/workers-types": "^5.20260922.1",
+    "typescript": "^6.0.3",
     "vitest": "^5.0.1",
     "wrangler": "^4.136.1"
   }

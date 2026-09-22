@@ -20,7 +20,7 @@ async function verifyTurnstile(token: string, ip: string, secret: string) {
   return data.success;
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   const form = await request.formData();
   const courses = await getCollection('courses');
   const showDrafts = env.SHOW_DRAFT_COURSES === '1';
@@ -47,8 +47,8 @@ export const POST: APIRoute = async ({ request }) => {
     const code = enrollmentCode(new Date(), crypto.getRandomValues(new Uint8Array(4)));
     try {
       await env.DB.prepare(
-        'INSERT INTO enrollments (code, course_slug, name, email, line_name, membership, note, ip_hash) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      ).bind(code, v.course, v.name, v.email, v.lineName, v.membership, v.note, ipHash).run();
+        'INSERT INTO enrollments (code, course_slug, name, email, line_name, membership, note, ip_hash, account_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      ).bind(code, v.course, v.name, v.email, v.lineName, v.membership, v.note, ipHash, locals.account?.id ?? null).run();
       return json({ code, email: v.email }, 201);
     } catch (err) {
       if (!String(err).includes('UNIQUE')) throw err;

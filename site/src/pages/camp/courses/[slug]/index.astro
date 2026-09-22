@@ -43,7 +43,8 @@ const schema = {
       {c.sessions.map((s) => <><dt>{s.label}</dt><dd>{fmtDate(s.date)}（{s.kind === 'teaching' ? '主題教學' : '實作'}）</dd></>)}
       <dt>資格</dt><dd>協會會員；第一次報名含入會</dd>
     </dl>
-    {c.status === 'open' && <p><a class="btn" href={`${path}enroll/`}>報名這門課</a></p>}
+    {(c.status === 'open' || c.status === 'draft') && <p><a class="btn" href={`${path}enroll/`}>報名這門課</a></p>}
+    <p class="muted">已開通的學員：<a href={`${path}materials/`}>技能單張</a>．<a href={`${path}forum/`}>課程論壇</a></p>
     <Content />
   </article>
 </BaseLayout>

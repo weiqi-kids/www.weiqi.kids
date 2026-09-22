@@ -1,0 +1,16 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { requireAdmin } from '../../server/guard';
+import { db } from '../../server/db';
+export const prerender = false;
+const stop = requireAdmin(Astro); if (stop) return stop;
+const { results } = await db().prepare(
+  'SELECT l.created_at, l.action, l.target, l.detail, a.display_name FROM audit_log l LEFT JOIN accounts a ON a.id = l.actor_id ORDER BY l.id DESC LIMIT 300',
+).all<{ created_at: string; action: string; target: string | null; detail: string | null; display_name: string | null }>();
+---
+<AdminLayout title="操作紀錄">
+  <table class="admin-table">
+    <thead><tr><th>時間</th><th>操作者</th><th>動作</th><th>對象</th><th>內容</th></tr></thead>
+    <tbody>{results.map((r) => <tr><td>{r.created_at.slice(0, 19).replace('T', ' ')}</td><td>{r.display_name ?? '系統'}</td><td>{r.action}</td><td><code>{r.target}</code></td><td>{r.detail}</td></tr>)}</tbody>
+  </table>
+</AdminLayout>

@@ -1,0 +1,26 @@
+---
+// 登入後頁面：不進搜尋引擎。
+import BaseLayout from './BaseLayout.astro';
+import type { Crumb } from './BaseLayout.astro';
+interface Props { title: string; breadcrumbs?: Crumb[] }
+const { title, breadcrumbs } = Astro.props;
+const account = Astro.locals.account;
+---
+<BaseLayout title={title} noindex breadcrumbs={breadcrumbs}>
+  <div class="app-bar">
+    {account ? (
+      <>
+        <span>已登入：<a href="/account/">{account.display_name}</a>{account.is_admin === 1 && <> ．<a href="/admin/">管理區</a></>}</span>
+        <form method="post" action="/auth/logout/"><button class="link-button" type="submit">登出</button></form>
+      </>
+    ) : (
+      <a href={`/auth/login/?next=${encodeURIComponent(Astro.url.pathname)}`}>登入</a>
+    )}
+  </div>
+  <slot />
+</BaseLayout>
+<style>
+  .app-bar { display: flex; gap: var(--space-4); justify-content: flex-end; align-items: center; font-size: var(--text-xs); margin-bottom: var(--space-6); flex-wrap: wrap; }
+  .app-bar form { margin: 0; }
+  :global(.link-button) { background: none; border: 0; padding: 0; color: var(--color-primary); text-decoration: underline; cursor: pointer; font: inherit; }
+</style>

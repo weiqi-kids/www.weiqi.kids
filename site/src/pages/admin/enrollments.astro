@@ -1,0 +1,65 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { requireAdmin } from '../../server/guard';
+import { db } from '../../server/db';
+import { confirmEnrollment, cancelEnrollment, type EnrollmentRow } from '../../server/admin';
+import { str } from '../../server/http';
+export const prerender = false;
+const stop = requireAdmin(Astro); if (stop) return stop;
+const me = Astro.locals.account!;
+let message: string | null = null;
+let error: string | null = null;
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const code = str(form, 'code', 40);
+  const note = str(form, 'note', 500) || null;
+  if (str(form, 'action', 20) === 'confirm') {
+    const r = await confirmEnrollment(code, me.id, { renew: form.get('renew') === 'yes', note });
+    if (r.ok) message = `${code} 已核款並開通。`; else error = r.error;
+  } else if (str(form, 'action', 20) === 'cancel') {
+    await cancelEnrollment(code, me.id, note);
+    message = `${code} 已取消。`;
+  }
+}
+const filter = Astro.url.searchParams.get('status') ?? 'submitted';
+const { results } = await db().prepare(`SELECT * FROM enrollments ${filter === 'all' ? '' : 'WHERE status = ?'} ORDER BY created_at DESC LIMIT 200`)
+  .bind(...(filter === 'all' ? [] : [filter])).all<EnrollmentRow>();
+const LABEL: Record<string, string> = { submitted: '待核款', activated: '已開通', cancelled: '已取消', paid: '已核款' };
+---
+<AdminLayout title="報名與核款">
+  {message && <p class="notice">{message}</p>}
+  {error && <p class="notice notice-error">{error}</p>}
+  <p>依 LINE@ 收到的匯款紀錄與報名編號核對。<a href="?status=submitted">待核款</a>．<a href="?status=activated">已開通</a>．<a href="?status=cancelled">已取消</a>．<a href="?status=all">全部</a></p>
+  <table class="admin-table">
+    <thead><tr><th>報名編號</th><th>課程</th><th>姓名／Email／LINE</th><th>身分</th><th>備註</th><th>狀態</th><th>操作</th></tr></thead>
+    <tbody>
+      {results.map((e) => (
+        <tr>
+          <td><code>{e.code}</code><br />{e.created_at.slice(0, 16).replace('T', ' ')}</td>
+          <td>{e.course_slug}</td>
+          <td>{e.name}<br />{e.email}{e.line_name && <><br />LINE：{e.line_name}</>}</td>
+          <td>{e.membership === 'new' ? '首次（含入會）' : '既有會員'}</td>
+          <td>{e.note}{e.review_note && <><br />處理說明：{e.review_note}</>}</td>
+          <td>{LABEL[e.status] ?? e.status}</td>
+          <td>
+            {e.status === 'submitted' && (
+              <>
+                <form method="post">
+                  <input type="hidden" name="action" value="confirm" /><input type="hidden" name="code" value={e.code} />
+                  <input name="note" placeholder="處理說明（選填）" />
+                  <label><input type="checkbox" name="renew" value="yes" /> 會員已到期時同時續會一年</label>
+                  <button class="btn" type="submit">確認收款並開通</button>
+                </form>
+                <form method="post">
+                  <input type="hidden" name="action" value="cancel" /><input type="hidden" name="code" value={e.code} />
+                  <input name="note" placeholder="取消原因" />
+                  <button class="link-button" type="submit">取消報名</button>
+                </form>
+              </>
+            )}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</AdminLayout>

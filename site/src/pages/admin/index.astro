@@ -1,0 +1,22 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { requireAdmin } from '../../server/guard';
+import { db } from '../../server/db';
+export const prerender = false;
+const stop = requireAdmin(Astro); if (stop) return stop;
+const q = (sql: string) => db().prepare(sql).first<{ n: number }>().then((r) => r?.n ?? 0);
+const [pending, apps, appeals, members] = await Promise.all([
+  q("SELECT COUNT(*) AS n FROM enrollments WHERE status = 'submitted'"),
+  q("SELECT COUNT(*) AS n FROM instructor_applications WHERE status = 'submitted'"),
+  q("SELECT COUNT(*) AS n FROM appeals WHERE status = 'open'"),
+  q(`SELECT COUNT(*) AS n FROM memberships WHERE expires_at > strftime('%Y-%m-%dT%H:%M:%fZ', 'now')`),
+]);
+---
+<AdminLayout title="總覽">
+  <ul class="card-grid cols-3">
+    <li><a class="card" href="/admin/enrollments/"><h2>{pending}</h2><p>筆報名等待核款</p></a></li>
+    <li><a class="card" href="/admin/instructors/"><h2>{apps}</h2><p>件講師申請待審</p></a></li>
+    <li><a class="card" href="/admin/moderation/"><h2>{appeals}</h2><p>件申訴待處理</p></a></li>
+    <li><a class="card" href="/admin/members/"><h2>{members}</h2><p>位有效會員</p></a></li>
+  </ul>
+</AdminLayout>

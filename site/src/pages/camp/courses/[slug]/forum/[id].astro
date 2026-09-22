@@ -1,0 +1,150 @@
+---
+import AppLayout from '../../../../../layouts/AppLayout.astro';
+import { findCourse } from '../../../../../server/courses';
+import { courseRole, can, HIDE_REASONS } from '../../../../../server/permissions';
+import { getPost, listReplies, attachmentsFor, createPost, editPost, withdrawPost, moderate, fileAppeal, lastModeration, openAppeal, validateFiles, visibleTo, uploadsEnabled, type Post } from '../../../../../server/forum';
+import { renderUserMarkdown } from '../../../../../server/markdown';
+import { str } from '../../../../../server/http';
+import { fmtDate } from '../../../../../lib/courses';
+export const prerender = false;
+
+const slug = Astro.params.slug!;
+const id = Astro.params.id!;
+const course = await findCourse(slug);
+if (!course) return new Response('Not found', { status: 404 });
+const me = Astro.locals.account;
+if (!me) return Astro.redirect(`/auth/login/?next=${encodeURIComponent(Astro.url.pathname)}`);
+const role = await courseRole(me, slug);
+const base = `/camp/courses/${slug}/`;
+if (!can.viewForum(role)) return Astro.redirect(`${base}forum/`);
+const topic = await getPost(slug, id);
+if (!topic || topic.parent_id || !visibleTo(topic, me, role)) return new Response('Not found', { status: 404 });
+const here = `${base}forum/${id}/`;
+let error: string | null = null;
+let message: string | null = null;
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const action = str(form, 'action', 20);
+  const targetId = str(form, 'post', 60) || id;
+  const target = targetId === id ? topic : await getPost(slug, targetId);
+  if (!target || (target.parent_id && target.parent_id !== id)) error = '找不到這則內容。';
+  else if (action === 'reply' && can.post(role)) {
+    const body = str(form, 'body', 20_000);
+    const files = form.getAll('images').filter((f): f is File => f instanceof File);
+    error = !body ? '請填寫回覆內容。' : await validateFiles(files);
+    if (!error) { await createPost(slug, me, { parentId: id, title: null, body, files }); return Astro.redirect(here, 303); }
+  } else if (action === 'edit') {
+    const body = str(form, 'body', 20_000);
+    const title = target.parent_id ? null : str(form, 'title', 200) || target.title;
+    if (!body || !(await editPost(target, me, title, body))) error = '無法修改這則內容。';
+    else return Astro.redirect(here, 303);
+  } else if (action === 'withdraw') {
+    if (!(await withdrawPost(target, me))) error = '無法撤回這則內容。';
+    else return Astro.redirect(here, 303);
+  } else if (action === 'hide' || action === 'restore') {
+    const reason = action === 'hide' ? str(form, 'reason', 40) : '恢復顯示';
+    if (action === 'hide' && !(HIDE_REASONS as readonly string[]).includes(reason)) error = '請選擇隱藏原因。';
+    else if (!(await moderate(target, me, role, action, reason, str(form, 'note', 500) || null, here))) error = '無法執行這個操作。';
+    else return Astro.redirect(here, 303);
+  } else if (action === 'appeal') {
+    const reason = str(form, 'reason', 2000);
+    if (!reason || !(await fileAppeal(target, me, reason))) error = '無法送出申訴（可能已有處理中的申訴）。';
+    else message = '已送出申訴，協會會重新審查。';
+  }
+}
+
+const topicNow = (await getPost(slug, id))!;
+const replies = (await listReplies(slug, id)).filter((r) => visibleTo(r, me, role));
+const all = [topicNow, ...replies];
+const files = await attachmentsFor(all.map((p) => p.id));
+const extra = new Map<string, { mod: Awaited<ReturnType<typeof lastModeration>>; appeal: Awaited<ReturnType<typeof openAppeal>> }>();
+for (const p of all.filter((x) => x.status === 'hidden')) extra.set(p.id, { mod: await lastModeration(p.id), appeal: await openAppeal(p.id) });
+const STATUS: Record<string, string> = { withdrawn: '已撤回（只有你看得到）', hidden: '已隱藏' };
+const renderable = (p: Post) => p;
+---
+<AppLayout title={topicNow.title ?? '課程論壇'} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: course.data.title, href: base }, { name: '課程論壇', href: `${base}forum/` }, { name: topicNow.title ?? '文章', href: here }]}>
+  <div class="prose">
+    <p><a href={`${base}forum/`}>← 回課程論壇</a></p>
+    {error && <p class="notice notice-error">{error}</p>}
+    {message && <p class="notice">{message}</p>}
+    {all.map(renderable).map((p, i) => {
+      const isAuthor = p.author_id === me.id;
+      const ex = extra.get(p.id);
+      return (
+        <article class={`post ${i === 0 ? 'post-topic' : ''}`} id={`p-${p.id}`}>
+          {i === 0 && <h1>{p.title}</h1>}
+          <p class="muted meta">{p.author_name}．{fmtDate(new Date(p.created_at))}{p.updated_at !== p.created_at && '（已編輯）'}{STATUS[p.status] && <span class="tag">{STATUS[p.status]}</span>}</p>
+          {p.status === 'hidden' && ex?.mod && <p class="notice">隱藏者：{ex.mod.actor_role === 'admin' ? '協會管理員' : '講師'}．原因：{ex.mod.reason}．時間：{fmtDate(new Date(ex.mod.created_at))}</p>}
+          <div set:html={renderUserMarkdown(p.body)} />
+          {(files.get(p.id) ?? []).length > 0 && (
+            <div class="images">{files.get(p.id)!.map((f) => <a href={`${base}forum/files/${f.id}/`}><img src={`${base}forum/files/${f.id}/`} alt="上傳的圖片" loading="lazy" /></a>)}</div>
+          )}
+          <div class="actions">
+            {isAuthor && p.status !== 'withdrawn' && (
+              <details>
+                <summary>編輯</summary>
+                <form method="post">
+                  <input type="hidden" name="action" value="edit" /><input type="hidden" name="post" value={p.id} />
+                  {i === 0 && <div class="form-field"><label>標題</label><input name="title" value={p.title ?? ''} required /></div>}
+                  <div class="form-field"><label>內容</label><textarea name="body" rows="6" required>{p.body}</textarea></div>
+                  <button class="btn btn-ghost" type="submit">儲存</button>
+                </form>
+              </details>
+            )}
+            {isAuthor && p.status === 'published' && (
+              <form method="post"><input type="hidden" name="action" value="withdraw" /><input type="hidden" name="post" value={p.id} /><button class="link-button" type="submit">撤回</button></form>
+            )}
+            {can.moderate(role) && !isAuthor && p.status === 'published' && (
+              <details>
+                <summary>隱藏</summary>
+                <form method="post">
+                  <input type="hidden" name="action" value="hide" /><input type="hidden" name="post" value={p.id} />
+                  <div class="form-field"><label>原因</label><select name="reason" required>{HIDE_REASONS.map((r) => <option>{r}</option>)}</select></div>
+                  <div class="form-field"><label>補充說明（會通知作者）</label><input name="note" maxlength="500" /></div>
+                  <button class="btn btn-ghost" type="submit">隱藏這則內容</button>
+                </form>
+              </details>
+            )}
+            {can.moderate(role) && !isAuthor && p.status === 'hidden' && (
+              <form method="post"><input type="hidden" name="action" value="restore" /><input type="hidden" name="post" value={p.id} /><button class="link-button" type="submit">恢復顯示</button></form>
+            )}
+            {isAuthor && p.status === 'hidden' && (ex?.appeal?.status === 'open'
+              ? <p class="muted">申訴處理中（{fmtDate(new Date(ex.appeal.created_at))} 送出）</p>
+              : (
+                <details>
+                  <summary>提出申訴</summary>
+                  <form method="post">
+                    <input type="hidden" name="action" value="appeal" /><input type="hidden" name="post" value={p.id} />
+                    <div class="form-field"><label>申訴理由</label><textarea name="reason" rows="4" required></textarea></div>
+                    <button class="btn btn-ghost" type="submit">送出申訴</button>
+                  </form>
+                </details>
+              ))}
+          </div>
+        </article>
+      );
+    })}
+
+    {can.post(role) && (
+      <section>
+        <h2>回覆</h2>
+        <form method="post" enctype="multipart/form-data">
+          <input type="hidden" name="action" value="reply" />
+          <div class="form-field"><label for="body">內容</label><textarea id="body" name="body" rows="5" required></textarea></div>
+          {uploadsEnabled() && (<div class="form-field"><label for="images">圖片（選填）</label><input id="images" name="images" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple /></div>)}
+          <button class="btn" type="submit">送出回覆</button>
+        </form>
+      </section>
+    )}
+  </div>
+</AppLayout>
+<style>
+  .post { border-bottom: 1px solid var(--color-line); padding-block: var(--space-6); }
+  .meta { font-size: var(--text-xs); }
+  .images { display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: var(--space-2); margin-bottom: var(--space-4); }
+  .images img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius-sm); }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: flex-start; font-size: var(--text-sm); }
+  .actions form { margin: 0; }
+  .tag { font-size: var(--text-xs); background: var(--color-warn-bg); padding: 0 var(--space-2); border-radius: var(--radius-sm); margin-left: var(--space-2); }
+</style>

@@ -1,0 +1,50 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { requireAdmin } from '../../server/guard';
+import { db } from '../../server/db';
+import { reviewApplication } from '../../server/admin';
+import { str } from '../../server/http';
+export const prerender = false;
+const stop = requireAdmin(Astro); if (stop) return stop;
+const me = Astro.locals.account!;
+let message: string | null = null;
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const status = str(form, 'status', 30);
+  if (status === 'approved' || status === 'changes_requested' || status === 'rejected') {
+    await reviewApplication(str(form, 'id', 60), me.id, status, str(form, 'note', 1000) || null);
+    message = '已更新審核結果並通知申請人。';
+  }
+}
+const { results } = await db().prepare(
+  `SELECT i.*, a.display_name FROM instructor_applications i JOIN accounts a ON a.id = i.account_id ORDER BY CASE i.status WHEN 'submitted' THEN 0 ELSE 1 END, i.updated_at DESC`,
+).all<{ id: string; account_id: string; display_name: string; profile: string; experience: string; topic: string; audience: string; proposal: string; status: string; review_note: string | null; updated_at: string }>();
+---
+<AdminLayout title="講師申請">
+  {message && <p class="notice">{message}</p>}
+  {results.length === 0 && <p>沒有講師申請。</p>}
+  {results.map((r) => (
+    <article class="card app">
+      <h2>{r.display_name}：{r.topic}</h2>
+      <p class="muted">狀態：{r.status}．更新：{r.updated_at.slice(0, 10)}．帳號 <code>{r.account_id}</code></p>
+      <dl class="facts">
+        <dt>專業背景</dt><dd>{r.profile}</dd>
+        <dt>資格或經驗</dt><dd>{r.experience}</dd>
+        <dt>對象與問題</dt><dd>{r.audience}</dd>
+        <dt>課程構想</dt><dd class="pre">{r.proposal}</dd>
+      </dl>
+      {r.review_note && <p>上次意見：{r.review_note}</p>}
+      <form method="post">
+        <input type="hidden" name="id" value={r.id} />
+        <div class="form-field"><label>審核意見</label><textarea name="note" rows="2"></textarea></div>
+        <button class="btn" name="status" value="approved" type="submit">核准</button>
+        <button class="btn btn-ghost" name="status" value="changes_requested" type="submit">要求補件</button>
+        <button class="btn btn-ghost" name="status" value="rejected" type="submit">不核准</button>
+      </form>
+    </article>
+  ))}
+</AdminLayout>
+<style>
+  .app { margin-bottom: var(--space-6); }
+  .pre { white-space: pre-wrap; }
+</style>

@@ -1,0 +1,98 @@
+---
+import AppLayout from '../../../../layouts/AppLayout.astro';
+import { findCourse } from '../../../../server/courses';
+import { courseRole, can } from '../../../../server/permissions';
+import { db, audit } from '../../../../server/db';
+import { newId, nowIso } from '../../../../server/crypto';
+import { renderUserMarkdown } from '../../../../server/markdown';
+import { str } from '../../../../server/http';
+export const prerender = false;
+
+const slug = Astro.params.slug!;
+const course = await findCourse(slug);
+if (!course) return new Response('Not found', { status: 404 });
+const me = Astro.locals.account;
+if (!me) return Astro.redirect(`/auth/login/?next=${encodeURIComponent(Astro.url.pathname)}`);
+const role = await courseRole(me, slug);
+const base = `/camp/courses/${slug}/`;
+let error: string | null = null;
+
+if (Astro.request.method === 'POST' && can.editMaterials(role)) {
+  const form = await Astro.request.formData();
+  const title = str(form, 'title', 200);
+  const body = str(form, 'body', 50_000);
+  const id = str(form, 'id', 60);
+  if (!title || !body) error = '標題和內容都要填寫。';
+  else if (id) {
+    const cur = await db().prepare('SELECT version FROM materials WHERE id = ? AND course_slug = ?').bind(id, slug).first<{ version: number }>();
+    if (cur) {
+      const v = cur.version + 1;
+      await db().batch([
+        db().prepare('UPDATE materials SET title = ?, body = ?, version = ?, updated_at = ? WHERE id = ?').bind(title, body, v, nowIso(), id),
+        db().prepare('INSERT INTO material_versions (material_id, version, title, body, edited_by) VALUES (?, ?, ?, ?, ?)').bind(id, v, title, body, me.id),
+      ]);
+      await audit(me.id, 'material.edit', id, { version: v });
+    }
+  } else {
+    const nid = newId();
+    const pos = await db().prepare('SELECT COALESCE(MAX(position), 0) + 1 AS p FROM materials WHERE course_slug = ?').bind(slug).first<{ p: number }>();
+    await db().batch([
+      db().prepare('INSERT INTO materials (id, course_slug, title, body, position, created_by) VALUES (?, ?, ?, ?, ?, ?)').bind(nid, slug, title, body, pos?.p ?? 1, me.id),
+      db().prepare('INSERT INTO material_versions (material_id, version, title, body, edited_by) VALUES (?, 1, ?, ?, ?)').bind(nid, title, body, me.id),
+    ]);
+    await audit(me.id, 'material.create', nid);
+  }
+  if (!error) return Astro.redirect(`${base}materials/`, 303);
+}
+
+const allowed = can.viewMaterials(role);
+const { results: materials } = allowed
+  ? await db().prepare("SELECT id, title, body, version, updated_at FROM materials WHERE course_slug = ? AND status = 'published' ORDER BY position").bind(slug).all<{ id: string; title: string; body: string; version: number; updated_at: string }>()
+  : { results: [] };
+const template = '## 問題\n\n## 發生的原因\n\n## 解決方法有哪些\n\n## 我建議的流程\n';
+---
+<AppLayout title={`技能單張：${course.data.title}`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: course.data.title, href: base }, { name: '技能單張', href: `${base}materials/` }]}>
+  <div class="prose">
+    <h1>技能單張</h1>
+    <p><a href={base}>{course.data.title}</a>．<a href={`${base}forum/`}>課程論壇</a></p>
+    {!allowed ? (
+      <p class="notice">技能單張只提供給已開通這門課的參與者。報名並經協會核款後就可以看到全部單張。</p>
+    ) : (
+      <>
+        {error && <p class="notice notice-error">{error}</p>}
+        {materials.length === 0 && <p>講師還沒有上傳技能單張。</p>}
+        {materials.map((m, i) => (
+          <article class="material">
+            <h2>{i + 1}. {m.title}</h2>
+            <p class="muted form-hint">第 {m.version} 版</p>
+            <div set:html={renderUserMarkdown(m.body)} />
+            {can.editMaterials(role) && (
+              <details>
+                <summary>修改這張單張</summary>
+                <form method="post">
+                  <input type="hidden" name="id" value={m.id} />
+                  <div class="form-field"><label>標題</label><input name="title" value={m.title} required /></div>
+                  <div class="form-field"><label>內容（Markdown）</label><textarea name="body" rows="14" required>{m.body}</textarea></div>
+                  <button class="btn btn-ghost" type="submit">儲存新版本</button>
+                </form>
+              </details>
+            )}
+          </article>
+        ))}
+        {can.editMaterials(role) && (
+          <section>
+            <h2>新增技能單張</h2>
+            <form method="post">
+              <div class="form-field"><label for="t">標題</label><input id="t" name="title" required /></div>
+              <div class="form-field"><label for="b">內容（Markdown）</label><textarea id="b" name="body" rows="14" required>{template}</textarea></div>
+              <button class="btn" type="submit">新增</button>
+            </form>
+          </section>
+        )}
+      </>
+    )}
+  </div>
+</AppLayout>
+<style>
+  .material { border-top: 1px solid var(--color-line); padding-top: var(--space-6); margin-top: var(--space-6); }
+</style>

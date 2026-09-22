@@ -1,0 +1,50 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import { requestMagicLink } from '../../server/magic-link';
+import { lineEnabled } from '../../server/line';
+import { clientIpHash, safeRedirect, str } from '../../server/http';
+export const prerender = false;
+
+const next = safeRedirect(Astro.url.searchParams.get('next'));
+if (Astro.locals.account) return Astro.redirect(next);
+
+let message: string | null = null;
+let error: string | null = null;
+let debugLink: string | undefined;
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const email = str(form, 'email', 120).toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) error = '請填寫有效的 Email。';
+  else {
+    const r = await requestMagicLink({ email, purpose: 'login', redirectTo: safeRedirect(str(form, 'next')), ipHash: await clientIpHash(Astro.request), origin: Astro.url.origin });
+    if (r.ok) { message = `如果 ${email} 可以收信，登入連結已經寄出，15 分鐘內有效。`; debugLink = r.debugLink; }
+    else error = r.error;
+  }
+}
+---
+<AppLayout title="登入">
+  <div class="prose">
+    <h1>登入</h1>
+    <p>登入後可以查看報名與會員狀態、課程技能單張，以及參加課程論壇。</p>
+    {message && <p class="notice">{message}</p>}
+    {debugLink && <p class="notice">測試環境：寄信服務尚未啟用，請直接使用這個連結登入：<a href={debugLink}>{debugLink}</a></p>}
+    {error && <p class="notice notice-error">{error}</p>}
+
+    <h2>用 Email 登入</h2>
+    <form method="post">
+      <input type="hidden" name="next" value={next} />
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required autocomplete="email" />
+        <span class="form-hint">我們會寄一個一次性的登入連結給你，不需要密碼。</span>
+      </div>
+      <button class="btn" type="submit">寄送登入連結</button>
+    </form>
+
+    <h2>用 LINE 登入</h2>
+    {lineEnabled()
+      ? <p><a class="btn btn-ghost" href={`/auth/line/?next=${encodeURIComponent(next)}`}>用 LINE 登入</a></p>
+      : <p class="muted">LINE 登入尚未開放。</p>}
+    <p class="form-hint">Email 和 LINE 會被當成兩個不同的帳號，除非你登入後在「我的帳號」自己綁定。</p>
+  </div>
+</AppLayout>

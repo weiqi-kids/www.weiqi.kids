@@ -1,0 +1,50 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import { consumeMagicLink } from '../../server/magic-link';
+import { findIdentity, createAccountWithIdentity, linkIdentity } from '../../server/accounts';
+import { createSession } from '../../server/session';
+import { audit } from '../../server/db';
+import { safeRedirect, str, isSecure } from '../../server/http';
+export const prerender = false;
+
+// GET 只顯示確認按鈕；按下（POST）才使用連結，避免信箱的連結掃描器把一次性連結用掉。
+let error: string | null = null;
+const token = Astro.url.searchParams.get('token') ?? '';
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const t = await consumeMagicLink(str(form, 'token', 200));
+  if (!t) error = '這個連結已經失效（超過 15 分鐘、已使用過，或已重新申請）。請回到登入頁重新申請。';
+  else if (t.purpose === 'link') {
+    const me = Astro.locals.account;
+    if (!me || me.id !== t.account_id) error = '請先用原本的方式登入，再點一次綁定連結（綁定連結已失效，需重新申請）。';
+    else {
+      const r = await linkIdentity(me.id, 'email', t.email);
+      if (r === 'taken') error = '這個 Email 已經屬於另一個網站帳號，或你的帳號已經綁定其他 Email。需要合併請聯絡協會。';
+      else return Astro.redirect('/account/?linked=email');
+    }
+  } else {
+    const existing = await findIdentity('email', t.email);
+    const accountId = existing?.account_id ?? (await createAccountWithIdentity('email', t.email, t.email.split('@')[0]));
+    await createSession(Astro.cookies, accountId, isSecure(Astro.url));
+    await audit(accountId, 'login.email', accountId);
+    return Astro.redirect(safeRedirect(t.redirect_to));
+  }
+}
+---
+<AppLayout title="確認登入">
+  <div class="prose">
+    <h1>確認登入</h1>
+    {error ? (
+      <>
+        <p class="notice notice-error">{error}</p>
+        <p><a href="/auth/login/">回到登入頁</a></p>
+      </>
+    ) : (
+      <form method="post">
+        <input type="hidden" name="token" value={token} />
+        <p>按下按鈕完成登入。</p>
+        <button class="btn" type="submit">登入</button>
+      </form>
+    )}
+  </div>
+</AppLayout>

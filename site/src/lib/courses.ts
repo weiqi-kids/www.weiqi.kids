@@ -2,7 +2,7 @@ import { getCollection } from 'astro:content';
 
 // 正式站只顯示非草稿課程；staging 可用 SHOW_DRAFT_COURSES=1 預覽草稿課程。
 export async function publicCourses() {
-  const showDrafts = import.meta.env.SHOW_DRAFT_COURSES === '1';
+  const showDrafts = (globalThis.process?.env?.SHOW_DRAFT_COURSES ?? import.meta.env.SHOW_DRAFT_COURSES) === '1';
   const all = await getCollection('courses');
   return all
     .filter((c) => showDrafts || c.data.status !== 'draft')
