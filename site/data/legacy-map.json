@@ -35,7 +35,7 @@
   "old": "/docs/about/activities/game-reviews/",
   "title": "來點覆盤",
   "create": false,
-  "redirect": "/knowledge/go/"
+  "redirect": "/knowledge/go/reviews/"
  },
  {
   "src": "docs/about/activities/index.md",
@@ -110,9 +110,8 @@
   "src": "docs/about/activities/videos.md",
   "old": "/docs/about/activities/videos/",
   "title": "圍棋推廣影片",
-  "create": true,
-  "redirect": "/association/activities/videos/",
-  "kind": "association"
+  "create": false,
+  "redirect": "/association/activities/videos/"
  },
  {
   "src": "docs/about/cooperation.md",

@@ -1,0 +1,33 @@
+---
+// 輕量 YouTube 嵌入：先顯示縮圖，點擊才載入播放器（youtube-nocookie）。
+interface Props { id: string; title: string; duration?: number }
+const { id, title, duration } = Astro.props;
+const mins = duration ? `${Math.floor(duration / 60)}:${String(duration % 60).padStart(2, '0')}` : null;
+---
+<figure class="yt">
+  <button class="yt-play" type="button" data-id={id} data-title={title} aria-label={`播放影片：${title}`}>
+    <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt="" loading="lazy" width="480" height="360" />
+    <span class="yt-icon" aria-hidden="true">▶</span>
+  </button>
+  <figcaption>{title}{mins && <span class="muted">（{mins}）</span>}</figcaption>
+</figure>
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.yt-play').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${btn.dataset.id}?autoplay=1&rel=0`;
+      iframe.title = btn.dataset.title ?? '';
+      iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
+      iframe.allowFullscreen = true;
+      btn.replaceWith(iframe);
+    }, { once: true });
+  });
+</script>
+<style>
+  .yt { margin: 0 0 var(--space-6); }
+  .yt-play, .yt :global(iframe) { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: var(--radius); overflow: hidden; background: var(--color-text); padding: 0; cursor: pointer; position: relative; }
+  .yt-play img { width: 100%; height: 100%; object-fit: cover; }
+  .yt-icon { position: absolute; inset: 0; margin: auto; width: 4rem; height: 4rem; border-radius: 50%; background: var(--color-primary); color: var(--color-white); display: grid; place-items: center; font-size: var(--text-lg); }
+  .yt-play:hover .yt-icon { background: var(--color-primary-dark); }
+  figcaption { font-size: var(--text-sm); margin-top: var(--space-2); }
+</style>

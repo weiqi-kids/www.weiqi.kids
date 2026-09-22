@@ -4,6 +4,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { allPages, breadcrumbsFor, childrenOf, parentPath, type Page } from '../lib/pages';
 import { site } from '../data/site.js';
 import { founders } from '../data/legacy/members.js';
+import { mediaByPath, videos as videoData } from '../data/media.js';
+import Gallery from '../components/Gallery.astro';
+import YouTube from '../components/YouTube.astro';
+import VideoGrid from '../components/VideoGrid.astro';
 
 export async function getStaticPaths() {
   const pages = await allPages();
@@ -22,6 +26,9 @@ const idx = siblings.findIndex((s) => s.data.path === d.path);
 const prev = d.kind === 'knowledge' && idx > 0 ? siblings[idx - 1] : null;
 const next = d.kind === 'knowledge' && idx >= 0 && idx < siblings.length - 1 ? siblings[idx + 1] : null;
 const url = new URL(d.path, Astro.site).href;
+const media = (mediaByPath as Record<string, { galleries?: string[]; videos?: string[]; videoList?: string }>)[d.path];
+const singleVideos = (media?.videos ?? []).map((k) => (videoData as any)[k]);
+const videoList = media?.videoList ? (videoData as any)[media.videoList] : [];
 
 const slug = d.path.split('/').filter(Boolean).at(-1);
 const member = d.kind === 'member' || d.kind === 'partner' ? founders.find((f) => f.slug === slug) : null;
@@ -77,6 +84,10 @@ if (d.kind === 'knowledge') {
     <Content />
   </article>
 
+  {singleVideos.length > 0 && <section class="prose media-section">{singleVideos.map((v) => <YouTube {...v} />)}</section>}
+  {videoList.length > 0 && <section class="media-section"><h2>活動影片</h2><VideoGrid items={videoList} /></section>}
+  {(media?.galleries ?? []).map((g) => <Gallery name={g as any} />)}
+
   {children.length > 0 && (
     <section class="children">
       <h2>這個單元的文章</h2>
@@ -98,5 +109,6 @@ if (d.kind === 'knowledge') {
 <style>
   .meta { font-size: var(--text-xs); }
   .children { margin-top: var(--space-12); }
+  .media-section { margin-top: var(--space-8); }
   .pager { display: flex; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-line); flex-wrap: wrap; }
 </style>

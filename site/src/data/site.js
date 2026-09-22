@@ -2,10 +2,11 @@
 export const site = {
   name: '台灣好棋寶寶協會',
   legalName: '社團法人台灣好棋寶寶協會',
-  alternateName: 'Taiwan Good Go Baby Association',
+  alternateName: 'Good Move Association',
+  youtube: 'https://www.youtube.com/@GoodMoveAssociation',
   url: 'https://www.weiqi.kids',
   email: 'lightman.chang@gmail.com',
-  logo: { url: 'https://www.weiqi.kids/img/social-card.png', width: 1200, height: 630 },
+  logo: { url: 'https://www.weiqi.kids/media/brand/logo-stacked.png', width: 704, height: 590 },
   // 協會 LINE@（好棋寶寶，@685hqmrm）：提交匯款紀錄與私密資料。
   lineOfficialUrl: 'https://line.me/R/ti/p/@685hqmrm',
   lineOfficialId: '@685hqmrm',

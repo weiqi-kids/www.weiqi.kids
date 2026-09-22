@@ -1,0 +1,13 @@
+---
+import YouTube from './YouTube.astro';
+interface Props { items: { id: string; title: string; duration?: number }[] }
+const { items } = Astro.props;
+---
+<div class="video-grid">
+  {items.map((v) => <YouTube {...v} />)}
+</div>
+<style>
+  .video-grid { display: grid; gap: var(--space-6); grid-template-columns: 1fr; }
+  @media (min-width: 768px) { .video-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .video-grid { grid-template-columns: repeat(3, 1fr); } }
+</style>

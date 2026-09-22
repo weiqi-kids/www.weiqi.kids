@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import VideoGrid from '../../../components/VideoGrid.astro';
+import { videos, channelUrl } from '../../../data/media.js';
+---
+<BaseLayout title="來點覆盤：圍棋對局覆盤影片" description="好棋寶寶協會的覆盤影片：來點覆盤跨界對談三集，以及蔡丞韋、陳禧、林新為、詹宜典等職業棋士的覆盤與純棋分享。" breadcrumbs={[{ name: '公開知識', href: '/knowledge/' }, { name: '學圍棋', href: '/knowledge/go/' }, { name: '來點覆盤', href: '/knowledge/go/reviews/' }]}>
+  <div class="prose">
+    <h1>來點覆盤</h1>
+    <div class="key-answer" data-question="什麼是覆盤？">
+      <p>覆盤是下完棋後把對局從頭擺一次，找出好棋、疑問手與更好的下法。這裡收錄協會製作的覆盤影片，全部公開觀看。</p>
+    </div>
+  </div>
+  <section>
+    <h2>來點覆盤：跨界對談</h2>
+    <p class="prose">小小林老師與營養學、脊椎矯正、工業設計專家，一邊覆盤一邊聊對局時的壓力、坐姿與時間管理。</p>
+    <VideoGrid items={videos.reviews} />
+  </section>
+  <section>
+    <h2>職業棋士覆盤與純棋分享</h2>
+    <VideoGrid items={videos.proReviews} />
+  </section>
+  <p class="prose">更多影片見協會 <a href={channelUrl} rel="noopener">YouTube 頻道</a>。</p>
+</BaseLayout>
+<style>
+  section { margin-top: var(--space-12); }
+</style>

@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import YouTube from '../../../components/YouTube.astro';
+import VideoGrid from '../../../components/VideoGrid.astro';
+import { videos, channelUrl } from '../../../data/media.js';
+const shorts = ['圍棋教我的事', '定不下來的孩子', '坐姿不良 輸家無常', '誰說圍棋很輕鬆', '棋如人生，人生如棋', '圍棋升段必備品', '帶小孩比賽如何不緊張', '用眼過度的圍棋大師', '你就是你所下的棋', '各段位的圍棋視角', '靠天份是沒用的', '努力比天賦重要'];
+---
+<BaseLayout title="圍棋推廣影片" description="台灣好棋寶寶協會的影片：台灣美學圍棋藝術推廣影片（7 種語言）、來點覆盤、職業棋士覆盤與純棋分享、圍棋教學與好棋同樂會活動紀錄。" breadcrumbs={[{ name: '協會', href: '/association/' }, { name: '協會活動', href: '/association/activities/' }, { name: '圍棋推廣影片', href: '/association/activities/videos/' }]}>
+  <div class="prose">
+    <h1>圍棋推廣影片</h1>
+    <div class="key-answer" data-question="好棋寶寶協會有哪些影片？">
+      <p>協會的影片都放在 YouTube 頻道 <a href={channelUrl} rel="noopener">@GoodMoveAssociation</a>，包含推廣影片、來點覆盤節目、職業棋士覆盤、圍棋教學與活動紀錄。</p>
+    </div>
+    <h2>台灣美學．圍棋藝術</h2>
+    <YouTube {...videos.promo} />
+    <p>其他語言版本：{videos.promoLang.map((v, i) => <>{i > 0 && '、'}<a href={`https://www.youtube.com/watch?v=${v.id}`} rel="noopener">{v.label}</a></>)}</p>
+  </div>
+
+  <section>
+    <h2>來點覆盤</h2>
+    <p class="prose">圍棋老師與不同領域的專家對談，從一盤棋聊到壓力、久坐與時間管理。</p>
+    <VideoGrid items={videos.reviews} />
+  </section>
+
+  <section>
+    <h2>職業棋士覆盤與純棋分享</h2>
+    <VideoGrid items={videos.proReviews} />
+  </section>
+
+  <section>
+    <h2>圍棋教學</h2>
+    <VideoGrid items={videos.teaching} />
+  </section>
+
+  <section>
+    <h2>好棋同樂會活動紀錄</h2>
+    <VideoGrid items={videos.funClub} />
+  </section>
+
+  <section class="prose">
+    <h2>圍棋教育短影音</h2>
+    <p>協會製作了 12 部短影音，用輕鬆的方式分享圍棋觀念：</p>
+    <ol class="shorts">{shorts.map((t) => <li>{t}</li>)}</ol>
+    <p>頻道上還有 9×9 小棋盤對局、三十六計與圍棋，以及狐狸與狸貓對弈等短片系列，請到 <a href={`${channelUrl}/shorts`} rel="noopener">YouTube Shorts</a> 觀看。</p>
+  </section>
+</BaseLayout>
+<style>
+  section { margin-top: var(--space-12); }
+  .shorts { columns: 2; }
+</style>

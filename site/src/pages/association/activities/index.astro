@@ -10,6 +10,7 @@ const items = sortPages((await allPages()).filter((p) => p.data.kind === 'associ
   </div>
   <ul class="card-grid">
     {items.map((p) => <li><a class="card" href={p.data.path}><h2>{p.data.title}</h2>{p.data.description && <p class="muted">{p.data.description}</p>}</a></li>)}
+    <li><a class="card" href="/association/activities/videos/"><h2>圍棋推廣影片</h2><p class="muted">推廣影片、來點覆盤、職業棋士覆盤與圍棋教學。</p></a></li>
     <li><a class="card" href="/gatherings/archive/"><h2>歷史棋聚</h2><p class="muted">親子圍棋嘉年華、全國圍棋公開賽、好棋同樂會。</p></a></li>
   </ul>
 </BaseLayout>

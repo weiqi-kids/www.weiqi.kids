@@ -5,6 +5,7 @@ const pages = await allPages();
 const count = pages.filter((p) => p.data.kind === 'knowledge').length;
 const sections = [
   { href: '/knowledge/go/', title: '學圍棋', desc: '規則、術語、禮儀、開局前 10 手，以及圍棋的歷史。' },
+  { href: '/knowledge/go/reviews/', title: '來點覆盤', desc: '跨界對談覆盤節目，以及職業棋士的覆盤與純棋分享影片。' },
   { href: '/knowledge/ai-go/alphago/', title: 'AlphaGo', desc: '20 篇從歷史、第 37 手到策略網路、價值網路與 AlphaGo Zero 的完整解析。' },
   { href: '/knowledge/ai-go/', title: '圍棋 AI 技術', desc: 'KataGo 的原理、安裝操作、訓練與部署，以及圍棋 AI 的發展史。' },
   { href: '/knowledge/ai/', title: 'AI 時代與跨產業應用', desc: 'AI 怎麼改變圍棋學習，以及圍棋 AI 對產業的啟示。' },

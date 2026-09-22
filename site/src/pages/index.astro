@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site, courseRules } from '../data/site.js';
 import { getCollection } from 'astro:content';
+import YouTube from '../components/YouTube.astro';
+import { videos } from '../data/media.js';
 const topics = (await getCollection('topics')).sort((a, b) => a.data.order - b.data.order);
 const website = {
   '@context': 'https://schema.org',
@@ -14,8 +16,11 @@ const website = {
 ---
 <BaseLayout title={site.name} description="台灣好棋寶寶協會是因圍棋結緣的跨產業會員團體，主辦好棋寶寶棋聚與 AI 共學營，並整理圍棋與 AI 的公開知識。" schema={[website]}>
   <section class="hero">
-    <h1>因圍棋結緣，一起學會用 AI 做事</h1>
-    <p class="lead">台灣好棋寶寶協會的會員來自各行各業。協會辦兩種活動：以圍棋交流為主的「好棋寶寶棋聚」，以及會員一起實作 AI 應用的「AI 共學營」。</p>
+    <div>
+      <h1>因圍棋結緣，一起學會用 AI 做事</h1>
+      <p class="lead">台灣好棋寶寶協會的會員來自各行各業。協會辦兩種活動：以圍棋交流為主的「好棋寶寶棋聚」，以及會員一起實作 AI 應用的「AI 共學營」。</p>
+    </div>
+    <img class="hero-art" src="/media/brand/banner.webp" alt="好棋寶寶吉祥物狸貓與狐狸" width="2000" height="1125" />
   </section>
 
   <ul class="card-grid cols-3 services">
@@ -56,6 +61,12 @@ const website = {
     </ul>
   </section>
 
+  <section class="promo">
+    <h2>好棋寶寶的圍棋活動</h2>
+    <p>協會辦過親子圍棋嘉年華、全國圍棋公開賽、城市網路對抗賽與每月的好棋同樂會。<a href="/gatherings/archive/">看歷史棋聚的照片與影片</a></p>
+    <YouTube {...videos.promo} />
+  </section>
+
   <section>
     <h2>公開知識</h2>
     <p>圍棋入門、圍棋歷史、AlphaGo 與 KataGo 的原理和操作，全部公開閱讀。</p>
@@ -63,7 +74,10 @@ const website = {
   </section>
 </BaseLayout>
 <style>
-  .hero { padding-block: var(--space-8) var(--space-6); max-width: var(--measure); }
+  .hero { padding-block: var(--space-8) var(--space-6); display: grid; gap: var(--space-8); align-items: center; }
+  @media (min-width: 1024px) { .hero { grid-template-columns: 1fr 1fr; } }
+  .hero-art { width: 100%; height: auto; border-radius: var(--radius); }
+  .promo { max-width: var(--measure); }
   .hero h1 { font-size: var(--text-3xl); }
   .lead { font-size: var(--text-lg); color: var(--color-ink-soft); }
   .services { margin-bottom: var(--space-12); }
