@@ -6,7 +6,14 @@
   "main": "@astrojs/cloudflare/entrypoints/server",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
-  "assets": { "directory": "./dist/client", "binding": "ASSETS", "not_found_handling": "404-page", "html_handling": "force-trailing-slash" },
+  // 動態路由必須先進 Worker：瀏覽器導覽請求（Sec-Fetch-Mode: navigate）否則會被靜態資產層直接回 404。
+  "assets": {
+    "directory": "./dist/client",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "html_handling": "force-trailing-slash",
+    "run_worker_first": ["/api/*", "/auth/*", "/account/*", "/admin/*", "/camp/courses/*/forum/*", "/camp/courses/*/materials/*"]
+  },
   "observability": { "enabled": true },
   "workers_dev": true,
   "vars": { "SHOW_DRAFT_COURSES": "1", "MAGIC_LINK_DEBUG": "1" },

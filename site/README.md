@@ -37,6 +37,10 @@ npx wrangler secret put LINE_CHANNEL_SECRET
 npx wrangler secret put TURNSTILE_SECRET_KEY   # 並在建置時設定 PUBLIC_TURNSTILE_SITE_KEY
 ```
 
+## 新增動態路由時
+
+在 `wrangler.jsonc` 的 `assets.run_worker_first` 加上路徑。沒加的話，瀏覽器直接開啟該網址會被靜態資產層回 404（curl 測不出來，要帶 `Sec-Fetch-Mode: navigate` 標頭測試）。
+
 ## 開課
 
 在 `src/content/courses/<slug>.md` 新增課程（`status: open`，4 個場次），部署後即開放報名。TTQS 整理方式見 `docs/ttqs-first-course.md`。
