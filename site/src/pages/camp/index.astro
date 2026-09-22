@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { courseRules } from '../../data/site.js';
+import { getCollection } from 'astro:content';
+const open = (await getCollection('courses')).filter((c) => c.data.status === 'open');
+---
+<BaseLayout title="AI 共學營" description="台灣好棋寶寶協會主辦的 AI 共學營：會員依每月主題，一起學習並實作各行各業的 AI 應用。每門課 1 堂主題教學、3 堂實作、為期一個月。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }]}>
+  <div class="prose">
+    <h1>AI 共學營</h1>
+    <div class="key-answer" data-question="AI 共學營是什麼？">
+      <p>AI 共學營是台灣好棋寶寶協會為會員辦的共學活動。每個月一個 AI 應用主題，例如「用 AI 建立產業情報流程」。每門課 1 堂主題教學、3 堂實作，為期{courseRules.duration}，費用 {courseRules.fee.toLocaleString('zh-TW')} 元。</p>
+    </div>
+    <dl class="facts">
+      <dt>主辦</dt><dd>台灣好棋寶寶協會</dd>
+      <dt>適合誰</dt><dd>想把 AI 用在自己工作上的各行各業人士</dd>
+      <dt>課程結構</dt><dd>1 堂主題教學＋3 堂實作，合計{courseRules.duration}</dd>
+      <dt>費用</dt><dd>每門課 {courseRules.fee.toLocaleString('zh-TW')} 元；第一次報名同時入會，不另收入會費</dd>
+      <dt>資格</dt><dd>協會會員（效期一年，一年一續會）</dd>
+      <dt>目前開放報名</dt><dd>{open.length ? `${open.length} 門課` : '尚未開放，第一門課確定後公布'}</dd>
+    </dl>
+  </div>
+  <ul class="card-grid cols-3">
+    <li><a class="card" href="/camp/about/"><h2>共學營介紹</h2><p>誰主辦、課程裡有什麼、學員能得到什麼。</p></a></li>
+    <li><a class="card" href="/camp/how-it-works/"><h2>參加流程</h2><p>從報名、匯款、開通到實作與結營。</p></a></li>
+    <li><a class="card" href="/camp/topics/"><h2>課程主題</h2><p>五個可以開課的主題與示範案例。</p></a></li>
+    <li><a class="card" href="/camp/courses/"><h2>正式課程</h2><p>已排定日期、講師的課程與報名。</p></a></li>
+    <li><a class="card" href="/camp/instructors/"><h2>講師</h2><p>講師介紹與成為講師的方式。</p></a></li>
+    <li><a class="card" href="/camp/faq/"><h2>常見問題</h2><p>費用、會員、教材、實作營與作品公開。</p></a></li>
+  </ul>
+</BaseLayout>

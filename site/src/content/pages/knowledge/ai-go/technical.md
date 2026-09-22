@@ -1,0 +1,162 @@
+---
+title: "給想深入研究的人"
+description: "進階主題導覽：神經網路、MCTS、訓練、優化、部署"
+path: "/knowledge/ai-go/technical/"
+kind: "knowledge"
+order: 1
+datePublished: "2026-02-21"
+dateModified: "2026-06-21"
+legacySource: "docs/tech/deep-dive/index.md"
+sourceVerbatim: true
+---
+
+這個章節適合想要深入研究圍棋 AI 的工程師，涵蓋技術實作、理論基礎與實務應用。
+
+<p class="key-answer" data-question="深入研究圍棋 AI 該從哪些主題入手？">本章節依四大主題系統整理深入內容：核心技術（神經網路架構、MCTS 實作、訓練機制）、效能優化（GPU 後端、模型量化部署、評估基準）、進階主題（分散式訓練、自訂規則、關鍵論文）以及開源與實作，適合想深入研究或貢獻圍棋 AI 的工程師。</p>
+
+---
+
+## 文章總覽
+
+### 核心技術
+
+| 文章 | 說明 |
+|------|------|
+| [神經網路架構詳解](/knowledge/ai-go/technical/neural-network/) | KataGo 的殘差網路、輸入特徵、多頭輸出設計 |
+| [MCTS 實作細節](/knowledge/ai-go/technical/mcts-implementation/) | PUCT 選擇、虛擬損失、批次評估、並行化 |
+| [KataGo 訓練機制解析](/knowledge/ai-go/technical/training/) | 自我對弈、損失函數、訓練循環 |
+
+### 效能優化
+
+| 文章 | 說明 |
+|------|------|
+| [GPU 後端與優化](/knowledge/ai-go/technical/gpu-optimization/) | CUDA、OpenCL、Metal 後端比較與調校 |
+| [模型量化與部署](/knowledge/ai-go/technical/quantization-deploy/) | FP16、INT8、TensorRT、各平台部署 |
+| [評估與基準測試](/knowledge/ai-go/technical/evaluation/) | Elo 評分、對局測試、SPRT 統計方法 |
+
+### 進階主題
+
+| 文章 | 說明 |
+|------|------|
+| [分散式訓練架構](/knowledge/ai-go/technical/distributed-training/) | Self-play Worker、資料收集、模型發布 |
+| [自訂規則與變體](/knowledge/ai-go/technical/custom-rules/) | 中國、日本、AGA 規則，棋盤大小變體 |
+| [關鍵論文導讀](/knowledge/ai-go/technical/papers/) | AlphaGo、AlphaZero、KataGo 論文重點解析 |
+
+### 開源與實作
+
+| 文章 | 說明 |
+|------|------|
+| [KataGo 原始碼導讀](/knowledge/ai-go/technical/source-code/) | 目錄結構、核心模組、程式碼風格 |
+| [參與開源社群](/knowledge/ai-go/technical/contributing/) | 貢獻方式、分散式訓練、社群參與 |
+| [從零打造圍棋 AI](/knowledge/ai-go/technical/build-from-scratch/) | 一步步實作簡易版 AlphaGo Zero |
+
+---
+
+## 你想做什麼？
+
+| 目標 | 建議路徑 |
+|------|---------|
+| 理解神經網路設計 | [神經網路架構詳解](/knowledge/ai-go/technical/neural-network/) → [MCTS 實作細節](/knowledge/ai-go/technical/mcts-implementation/) |
+| 優化執行效能 | [GPU 後端與優化](/knowledge/ai-go/technical/gpu-optimization/) → [模型量化與部署](/knowledge/ai-go/technical/quantization-deploy/) |
+| 研究訓練方法 | [KataGo 訓練機制解析](/knowledge/ai-go/technical/training/) → [分散式訓練架構](/knowledge/ai-go/technical/distributed-training/) |
+| 理解論文原理 | [關鍵論文導讀](/knowledge/ai-go/technical/papers/) → [神經網路架構詳解](/knowledge/ai-go/technical/neural-network/) |
+| 動手寫程式 | [從零打造圍棋 AI](/knowledge/ai-go/technical/build-from-scratch/) → [KataGo 原始碼導讀](/knowledge/ai-go/technical/source-code/) |
+| 參與開源專案 | [參與開源社群](/knowledge/ai-go/technical/contributing/) → [KataGo 原始碼導讀](/knowledge/ai-go/technical/source-code/) |
+
+---
+
+## 進階概念索引
+
+深入研究時，你會接觸到以下進階概念：
+
+### F 系列：縮放（8 個）
+
+| 編號 | 圍棋概念 | 物理/數學對應 |
+|------|---------|--------------|
+| F1 | 棋盤大小 vs 複雜度 | 複雜度縮放 |
+| F2 | 網路大小 vs 棋力 | 容量縮放 |
+| F3 | 訓練時間 vs 收益 | 收益遞減律 |
+| F4 | 資料量 vs 泛化 | 樣本複雜度 |
+| F5 | 計算資源縮放 | 縮放定律 |
+| F6 | 神經縮放律 | 雙對數關係 |
+| F7 | 大批次訓練 | 臨界批次 |
+| F8 | 參數效率 | 壓縮界限 |
+
+### G 系列：維度（6 個）
+
+| 編號 | 圍棋概念 | 物理/數學對應 |
+|------|---------|--------------|
+| G1 | 高維表示 | 向量空間 |
+| G2 | 維度災難 | 高維困境 |
+| G3 | 流形假設 | 低維流形 |
+| G4 | 中間表示 | 隱空間 |
+| G5 | 特徵解耦 | 獨立成分 |
+| G6 | 語意方向 | 幾何代數 |
+
+### H 系列：強化學習（9 個）
+
+| 編號 | 圍棋概念 | 物理/數學對應 |
+|------|---------|--------------|
+| H1 | MDP | 馬可夫鏈 |
+| H2 | 貝爾曼方程 | 動態規劃 |
+| H3 | 價值迭代 | 不動點定理 |
+| H4 | 策略梯度 | 隨機優化 |
+| H5 | 經驗回放 | 重要性採樣 |
+| H6 | 折扣因子 | 時間偏好 |
+| H7 | TD 學習 | 增量估計 |
+| H8 | 優勢函數 | 基線減方差 |
+| H9 | PPO 裁剪 | 信賴域 |
+
+### K 系列：優化方法（6 個）
+
+| 編號 | 圍棋概念 | 物理/數學對應 |
+|------|---------|--------------|
+| K1 | SGD | 隨機逼近 |
+| K2 | 動量 | 慣性 |
+| K3 | Adam | 自適應步長 |
+| K4 | 學習率衰減 | 退火 |
+| K5 | 梯度裁剪 | 飽和限制 |
+| K6 | SGD 噪聲 | 隨機擾動 |
+
+### L 系列：泛化與穩定（5 個）
+
+| 編號 | 圍棋概念 | 物理/數學對應 |
+|------|---------|--------------|
+| L1 | 過擬合 | 過度適應 |
+| L2 | 正則化 | 約束優化 |
+| L3 | Dropout | 稀疏激活 |
+| L4 | 資料增強 | 對稱破缺 |
+| L5 | 早停 | 最優停止 |
+
+---
+
+## 硬體需求
+
+### 閱讀與學習
+
+無特殊需求，任何電腦都可以。
+
+### 訓練模型
+
+| 規模 | 建議硬體 | 訓練時間 |
+|------|---------|---------|
+| 迷你（b6c96） | GTX 1060 6GB | 數小時 |
+| 小型（b10c128） | RTX 3060 12GB | 1-2 天 |
+| 中型（b18c384） | RTX 4090 24GB | 1-2 週 |
+| 完整（b40c256） | 多 GPU 集群 | 數週 |
+
+### 分散式訓練貢獻
+
+- 任何有 GPU 的電腦都可以參與
+- 建議至少 GTX 1060 或同等級
+- 需要穩定的網路連線
+
+---
+
+## 開始閱讀
+
+**推薦從這裡開始：**
+
+- 想了解原理？→ [神經網路架構詳解](/knowledge/ai-go/technical/neural-network/)
+- 想動手實作？→ [從零打造圍棋 AI](/knowledge/ai-go/technical/build-from-scratch/)
+- 想讀論文？→ [關鍵論文導讀](/knowledge/ai-go/technical/papers/)

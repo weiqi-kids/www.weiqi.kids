@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { fmtDate } from '../../lib/courses';
+import { site } from '../../data/site.js';
+export async function getStaticPaths() {
+  return (await getCollection('gatherings')).map((g) => ({ params: { slug: g.data.slug }, props: { g } }));
+}
+const { g } = Astro.props as { g: CollectionEntry<'gatherings'> };
+const { Content } = await render(g);
+const d = g.data;
+const path = `/gatherings/${d.slug}/`;
+const event = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: d.title,
+  description: d.summary,
+  startDate: d.startDate.toISOString(),
+  ...(d.endDate ? { endDate: d.endDate.toISOString() } : {}),
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  eventStatus: 'https://schema.org/EventScheduled',
+  location: { '@type': 'Place', name: d.location, address: d.location },
+  organizer: { '@id': `${site.url}/#organization` },
+};
+---
+<BaseLayout title={d.title} description={`${fmtDate(d.startDate)}．${d.location}．${d.summary}`} breadcrumbs={[{ name: '好棋寶寶棋聚', href: '/gatherings/' }, { name: d.title, href: path }]} schema={[event]}>
+  <article class="prose">
+    <h1>{d.title}</h1>
+    <dl class="facts">
+      <dt>日期</dt><dd>{fmtDate(d.startDate)}</dd>
+      <dt>地點</dt><dd>{d.location}</dd>
+      <dt>形式</dt><dd>{d.format}</dd>
+      <dt>報名方式</dt><dd>{d.signup}</dd>
+    </dl>
+    <Content />
+  </article>
+</BaseLayout>

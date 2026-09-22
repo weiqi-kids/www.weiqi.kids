@@ -1,0 +1,667 @@
+---
+title: "Value Network 詳解"
+description: "深入理解 AlphaGo 的價值網路架構、訓練挑戰與在 MCTS 中的關鍵作用"
+path: "/knowledge/ai-go/alphago/value-network/"
+kind: "knowledge"
+order: 9
+datePublished: "2024-01-15"
+dateModified: "2024-02-22"
+keywords: ["Value Network", "價值網路", "AlphaGo", "勝率預測", "MCTS", "深度學習", "圍棋AI"]
+legacySource: "docs/alphago/08-value-network.mdx"
+sourceVerbatim: true
+---
+
+import KeyTakeaway from '~/components/mdx/KeyTakeaway.astro';
+import FAQ from '~/components/mdx/FAQ.astro';
+
+如果說 Policy Network 告訴 AlphaGo「下一步應該下哪裡」，那麼 Value Network 回答的是一個更根本的問題：
+
+> **「這盤棋，我會贏嗎？」**
+
+---
+
+## 什麼是 Value Network？
+
+### 核心功能
+
+Value Network 是一個深度卷積神經網路，它的任務是：
+
+> **給定當前棋盤狀態，預測最終的勝率**
+
+用數學表示：
+
+```
+v = f_θ(s)
+```
+
+其中：
+- `s`：當前棋盤狀態
+- `f_θ`：Value Network（θ 是網路參數）
+- `v`：一個介於 -1 到 +1 之間的數值
+
+### 輸出的含義
+
+| 輸出值 | 含義 |
+|--------|------|
+| +1 | 當前玩家必勝 |
+| +0.5 | 當前玩家約 75% 勝率 |
+| 0 | 雙方勝率相等 |
+| -0.5 | 當前玩家約 25% 勝率 |
+| -1 | 當前玩家必敗 |
+
+### 為什麼需要單一數值？
+
+#### 比較不同選擇
+
+在下棋時，我們經常需要在多個選項中做選擇。Value Network 讓這個比較變得簡單：
+
+```
+選項 A 的局面價值：0.3
+選項 B 的局面價值：0.5
+選項 C 的局面價值：0.2
+
+→ 選擇 B（最高的價值）
+```
+
+如果沒有單一數值，我們如何比較「吃掉對方一塊棋」和「圍住一大塊空」哪個更好？
+
+#### 取代大量模擬
+
+在傳統的蒙地卡羅樹搜索中，評估一個局面需要進行 **隨機模擬（rollout）**：
+
+1. 從當前局面開始
+2. 雙方隨機下棋直到遊戲結束
+3. 記錄勝負
+4. 重複數千次，計算勝率
+
+這非常慢。Value Network 可以**一次前向傳播**就給出評估，速度快幾個數量級。
+
+| 方法 | 評估時間 | 精度 |
+|------|---------|------|
+| 1000 次隨機模擬 | ~2000 毫秒 | 較低 |
+| 15000 次隨機模擬 | ~30000 毫秒 | 中等 |
+| Value Network | ~3 毫秒 | 高（等價於 15000 次模擬） |
+
+---
+
+## 網路架構
+
+### 與 Policy Network 的相似性
+
+Value Network 的架構與 Policy Network 非常相似，都是深度卷積神經網路：
+
+```mermaid
+flowchart LR
+    A["輸入層<br/>19×19×48"] --> B["卷積層 ×12<br/>19×19×192"]
+    B --> C["全連接層<br/>256維"]
+    C --> D["輸出<br/>單一數值"]
+```
+
+### 輸入層
+
+與 Policy Network 相同，輸入是 **19×19×49** 的特徵張量：
+
+- **19×19**：棋盤大小
+- **49**：48 個特徵平面 + 1 個表示當前輪到誰的平面
+
+多出的 1 個平面很重要：Value Network 需要知道是誰的回合，因為同一局面對黑棋和白棋的價值是相反的。
+
+### 卷積層
+
+與 Policy Network 相同：
+- **12 層卷積層**
+- **192 個濾波器**
+- **3×3 卷積核**（第一層 5×5）
+- **ReLU 激活函數**
+
+### 輸出層的差異
+
+這是 Value Network 與 Policy Network 的關鍵差異：
+
+#### Policy Network 輸出
+```
+19×19×192 → 1×1 卷積 → 19×19×1 → 展平 → 361維 → Softmax → 機率分布
+```
+
+#### Value Network 輸出
+```
+19×19×192 → 1×1 卷積 → 19×19×1 → 展平 → 361維 → 全連接256 → ReLU → 全連接1 → Tanh → 單一數值
+```
+
+### Tanh 激活函數
+
+Value Network 的最後一層使用 **Tanh**（雙曲正切）函數：
+
+```
+Tanh(x) = (e^x - e^(-x)) / (e^x + e^(-x))
+```
+
+Tanh 的輸出範圍是 **(-1, +1)**，正好對應勝負。
+
+#### 為什麼用 Tanh 而非 Sigmoid？
+
+Sigmoid 的輸出範圍是 (0, 1)，也可以表示勝率。但 Tanh 有幾個優點：
+
+1. **對稱性**：以 0 為中心，輸出可正可負
+2. **梯度更好**：在 0 附近梯度接近 1
+3. **語意清晰**：正值贏、負值輸、零是平局
+
+### 完整架構圖
+
+```mermaid
+flowchart TB
+    A["輸入: 19×19×49"] --> B["Conv 5×5, 192 filters"]
+    B --> C["ReLU"]
+    C --> D["Conv 3×3, 192 filters ×11"]
+    D --> E["ReLU"]
+    E --> F["Conv 1×1, 1 filter"]
+    F --> G["展平 (361 維)"]
+    G --> H["全連接 (256 維)"]
+    H --> I["ReLU"]
+    I --> J["全連接 (1 維)"]
+    J --> K["Tanh"]
+    K --> L["輸出: [-1, +1]"]
+```
+
+### 參數數量
+
+| 層 | 計算 | 參數數量 |
+|---|------|---------|
+| 卷積層 | 同 Policy Network | ~3.9M |
+| 全連接層 1 | 361×256 + 256 | 92,672 |
+| 全連接層 2 | 256×1 + 1 | 257 |
+| **總計** | | **~4.0M** |
+
+約 400 萬個參數，比 Policy Network 略多。
+
+---
+
+## 訓練的挑戰
+
+### 過擬合問題
+
+Value Network 的訓練比 Policy Network 困難得多。主要問題是**過擬合**。
+
+#### 什麼是過擬合？
+
+過擬合是指模型「記住」了訓練資料，而非學會泛化。表現為：
+- 訓練集上表現很好
+- 測試集上表現很差
+
+#### 為什麼 Value Network 容易過擬合？
+
+考慮一盤棋的資料：
+
+```
+局面 1 → 局面 2 → 局面 3 → ... → 局面 200 → 結果：黑勝
+```
+
+如果直接用這些資料訓練：
+- 這 200 個局面有很強的相關性
+- 它們來自同一盤棋，有相同的結果
+- 模型可能學會「認出」這盤棋，而非理解局面
+
+DeepMind 發現：如果用相同的人類棋譜訓練 Policy 和 Value Network，Value Network 會嚴重過擬合。
+
+### 解決方案：自我對弈資料
+
+DeepMind 的解決方案是用**自我對弈**生成新的訓練資料：
+
+```
+1. 用訓練好的 RL Policy Network 自我對弈
+2. 從每盤棋中只取一個局面（避免相關性）
+3. 這個局面的標籤是該盤棋的最終結果
+4. 生成 3000 萬個這樣的樣本
+```
+
+#### 為什麼這能解決過擬合？
+
+1. **資料量大**：3000 萬個獨立的局面
+2. **無相關性**：每盤棋只取一個局面
+3. **分布不同**：自我對弈的局面分布不同於人類棋譜
+
+### 訓練資料的產生
+
+```python
+# 偽代碼
+training_data = []
+
+for game_id in range(30_000_000):
+    # 自我對弈一盤
+    states, result = self_play(rl_policy_network)
+
+    # 隨機選取一個局面
+    random_index = random.randint(0, len(states) - 1)
+    state = states[random_index]
+
+    # 記錄局面和結果
+    training_data.append((state, result))
+```
+
+---
+
+## 訓練目標與方法
+
+### 均方誤差損失
+
+Value Network 使用**均方誤差（MSE）**作為損失函數：
+
+```
+L(θ) = (1/n) × Σ (v_θ(s) - z)²
+```
+
+其中：
+- `v_θ(s)`：模型預測的價值
+- `z`：實際結果（+1 或 -1）
+
+#### 為什麼用 MSE 而非交叉熵？
+
+- **交叉熵**適合分類問題（離散的標籤）
+- **MSE** 適合回歸問題（連續的數值）
+
+雖然結果只有 +1 或 -1，但模型預測的是連續值（-1 到 +1 之間的任何數）。MSE 讓模型學會預測接近 +1 或 -1 的值。
+
+### 訓練過程
+
+```python
+# 偽代碼
+for epoch in range(num_epochs):
+    for batch in dataloader:
+        states, outcomes = batch
+
+        # 前向傳播
+        values = network(states)  # (batch, 1)
+
+        # 計算損失（MSE）
+        loss = mse_loss(values, outcomes)
+
+        # 反向傳播
+        loss.backward()
+        optimizer.step()
+```
+
+訓練細節：
+- **優化器**：SGD with momentum
+- **學習率**：0.003
+- **批次大小**：32
+- **訓練時間**：約 1 週（50 GPUs）
+
+---
+
+## 準確度分析
+
+### 與隨機模擬的比較
+
+DeepMind 在論文中進行了詳細的比較：
+
+| 評估方法 | 預測誤差 |
+|---------|---------|
+| 1000 次隨機模擬 | 較高 |
+| 15000 次隨機模擬 | 中等 |
+| Value Network | 與 15000 次模擬相當 |
+
+這意味著一次 Value Network 評估 ≈ 15000 次隨機模擬，但速度快約 1000 倍。
+
+### 各階段的準確度
+
+Value Network 的準確度取決於遊戲進程：
+
+| 階段 | 剩餘手數 | 預測難度 | 準確度 |
+|------|---------|---------|--------|
+| 開局 | ~300 | 很難 | 較低 |
+| 中盤 | ~150 | 困難 | 中等 |
+| 收官 | ~50 | 較易 | 較高 |
+| 終局 | ~10 | 簡單 | 很高 |
+
+這是直覺上合理的：越接近遊戲結束，結果越確定。
+
+### 輸出分布
+
+一個訓練良好的 Value Network 的輸出分布：
+
+```
+        頻率
+          |
+          |    *
+          |   * *
+          |  *   *
+          | *     *
+          |*       *
+          +----+----+---- 輸出值
+         -1    0   +1
+
+大多數輸出集中在 -1 和 +1 附近
+（因為大多數局面有明確的勝負傾向）
+```
+
+### 不確定的局面
+
+當 Value Network 輸出接近 0 時，表示局面非常複雜，勝負難料。這些局面通常是：
+- 大型戰鬥中
+- 雙方勢均力敵
+- 存在多個可能的變化
+
+在 MCTS 中，這些節點會獲得更多的搜索資源（因為不確定性高）。
+
+---
+
+## 在 MCTS 中的作用
+
+### 葉節點評估
+
+Value Network 在 MCTS 的 **Evaluation** 階段發揮關鍵作用：
+
+```mermaid
+flowchart TB
+    Root["根節點<br/>(當前局面)"] --> A["A"]
+    Root --> B["B"]
+    A --> A1["A1<br/>葉節點"]
+    A --> A2["A2<br/>葉節點"]
+    B --> B1["B1<br/>葉節點"]
+    B --> B2["B2<br/>葉節點"]
+    A1 --> E1["評估"]
+    A2 --> E2["評估"]
+    B1 --> E3["評估"]
+    B2 --> E4["評估"]
+```
+
+當 MCTS 到達一個葉節點時，需要評估這個局面的價值。有兩種方法：
+
+1. **隨機模擬（Rollout）**：從葉節點隨機下到遊戲結束
+2. **Value Network 評估**：直接用神經網路預測
+
+AlphaGo 結合了兩者：
+
+```
+V(leaf) = (1-λ) × V_network(leaf) + λ × V_rollout(leaf)
+```
+
+其中 λ = 0.5，即各佔一半權重。
+
+#### 為什麼要結合？
+
+- **Value Network** 更準確，但可能有系統性偏差
+- **隨機模擬** 較不準確，但提供獨立的估計
+- 結合兩者可以互補
+
+### AlphaGo Zero 的簡化
+
+後來的 AlphaGo Zero 完全棄用了隨機模擬：
+
+```
+V(leaf) = V_network(leaf)
+```
+
+這大大簡化了系統，同時棋力更強。這證明了 Value Network 足夠可靠，不需要隨機模擬的「保險」。
+
+### 回溯更新
+
+評估完葉節點後，這個值會沿路徑回溯更新：
+
+```mermaid
+flowchart BT
+    A["v3 = V(leaf) = 0.6"] --> B["A2 的 Q 值更新"]
+    B --> C["A 的 Q 值更新"]
+    C --> D["根節點的統計更新"]
+```
+
+每個節點維護的 Q 值是所有經過它的葉節點評估的平均：
+
+```
+Q(s, a) = (1/N(s,a)) × Σ V(leaf)
+```
+
+---
+
+## 視覺化分析
+
+### 價值曲面
+
+想像一個簡化的 3×3 棋盤。Value Network 學到的是一個「價值曲面」：
+
+**價值矩陣範例（黑子位置 vs 白子位置）**
+
+| 黑\白 | 1 | 2 | 3 |
+|:---:|:---:|:---:|:---:|
+| **1** | +0.3 | -0.1 | +0.2 |
+| **2** | -0.2 | +0.5 | -0.3 |
+| **3** | +0.1 | -0.2 | +0.4 |
+
+這個曲面告訴我們每個位置組合的價值。正值有利於黑棋，負值有利於白棋。
+
+### 訓練過程中的演變
+
+隨著訓練進行，Value Network 的預測逐漸變得更準確：
+
+**預測誤差隨訓練步數變化**
+
+| 訓練步數 | 預測誤差 |
+|:---:|:---:|
+| 0 | 1.0 |
+| 100K | 0.5 |
+| 500K | 0.1 |
+| 1M | ~0.1（趨於穩定） |
+
+誤差會快速下降，然後趨於穩定。
+
+### 困難局面的識別
+
+Value Network 可以幫助識別困難局面：
+
+| 輸出 | 含義 | 應對策略 |
+|------|------|---------|
+| 接近 +1 | 大優 | 穩健下法 |
+| 接近 -1 | 大劣 | 尋找翻盤機會 |
+| 接近 0 | 複雜局面 | 需要深入計算 |
+
+AlphaGo 會在接近 0 的局面投入更多思考時間。
+
+---
+
+## 實作要點
+
+### PyTorch 實現
+
+```python
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class ValueNetwork(nn.Module):
+    def __init__(self, input_channels=49, num_filters=192, num_layers=12):
+        super().__init__()
+
+        # 第一卷積層（5×5）
+        self.conv1 = nn.Conv2d(input_channels, num_filters,
+                               kernel_size=5, padding=2)
+
+        # 中間卷積層（3×3）×11
+        self.conv_layers = nn.ModuleList([
+            nn.Conv2d(num_filters, num_filters,
+                     kernel_size=3, padding=1)
+            for _ in range(num_layers - 1)
+        ])
+
+        # 輸出卷積層
+        self.conv_out = nn.Conv2d(num_filters, 1, kernel_size=1)
+
+        # 全連接層
+        self.fc1 = nn.Linear(361, 256)
+        self.fc2 = nn.Linear(256, 1)
+
+    def forward(self, x):
+        # x: (batch, 49, 19, 19)
+
+        # 卷積層
+        x = F.relu(self.conv1(x))
+        for conv in self.conv_layers:
+            x = F.relu(conv(x))
+        x = self.conv_out(x)
+
+        # 展平
+        x = x.view(x.size(0), -1)  # (batch, 361)
+
+        # 全連接層
+        x = F.relu(self.fc1(x))
+        x = torch.tanh(self.fc2(x))
+
+        return x.squeeze(-1)  # (batch,)
+```
+
+### 訓練循環
+
+```python
+def train_value_network(model, optimizer, states, outcomes):
+    """
+    states: (batch, 49, 19, 19) - 棋盤特徵
+    outcomes: (batch,) - 遊戲結果 (+1 或 -1)
+    """
+    # 前向傳播
+    values = model(states)  # (batch,)
+
+    # MSE 損失
+    loss = F.mse_loss(values, outcomes)
+
+    # 反向傳播
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    # 計算準確率（預測正確的勝負）
+    predictions = (values > 0).float() * 2 - 1  # 轉換為 +1/-1
+    accuracy = (predictions == outcomes).float().mean()
+
+    return loss.item(), accuracy.item()
+```
+
+### 避免過擬合的技巧
+
+```python
+# 1. 資料增強（8重對稱性）
+def augment(state, outcome):
+    augmented = []
+    for rotation in [0, 90, 180, 270]:
+        s = rotate(state, rotation)
+        augmented.append((s, outcome))
+        augmented.append((flip(s), outcome))
+    return augmented
+
+# 2. Dropout
+class ValueNetworkWithDropout(ValueNetwork):
+    def __init__(self, *args, dropout_rate=0.5, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.dropout = nn.Dropout(dropout_rate)
+
+    def forward(self, x):
+        # ... 卷積層 ...
+        x = self.dropout(x)  # 在全連接層前 dropout
+        # ... 全連接層 ...
+
+# 3. 早停（Early Stopping）
+best_val_loss = float('inf')
+patience = 10
+counter = 0
+
+for epoch in range(max_epochs):
+    train_loss = train_one_epoch()
+    val_loss = evaluate()
+
+    if val_loss < best_val_loss:
+        best_val_loss = val_loss
+        save_model()
+        counter = 0
+    else:
+        counter += 1
+        if counter >= patience:
+            print("Early stopping!")
+            break
+```
+
+---
+
+## 與 Policy Network 的協作
+
+### 互補關係
+
+Policy Network 和 Value Network 在 AlphaGo 中互補：
+
+| 網路 | 回答的問題 | 輸出 | MCTS 角色 |
+|------|-----------|------|----------|
+| Policy | 下一步下哪裡？ | 機率分布 | 引導搜索方向 |
+| Value | 這盤棋會贏嗎？ | 單一數值 | 評估葉節點 |
+
+### 統一的雙頭網路
+
+在 AlphaGo Zero 中，這兩個網路被合併成一個**雙頭網路**：
+
+```mermaid
+flowchart TB
+    A["共享的特徵提取層"] --> B["Policy Head"]
+    A --> C["Value Head"]
+    B --> D["361個機率"]
+    C --> E["單一數值"]
+```
+
+這種設計的優點：
+- **參數共享**：減少計算量
+- **特徵共享**：Policy 和 Value 使用相同的特徵
+- **訓練更穩定**：兩個目標互相正則化
+
+詳見 [雙頭網路與殘差網路](/knowledge/ai-go/alphago/dual-head-resnet/)。
+
+---
+
+## 動畫對應
+
+本文涉及的核心概念與動畫編號：
+
+| 編號 | 概念 | 物理/數學對應 |
+|------|------|--------------|
+| 🎬 E2 | Value Network | 勢能面 |
+| 🎬 D4 | 價值函數 | 期望報酬 |
+| 🎬 C6 | 葉節點評估 | 函數逼近 |
+| 🎬 H3 | 時序差分 | 引導學習 |
+
+---
+
+## 延伸閱讀
+
+- **上一篇**：[Policy Network 詳解](/knowledge/ai-go/alphago/policy-network/) — 策略網路如何選擇著法
+- **下一篇**：[輸入特徵設計](/knowledge/ai-go/alphago/input-features/) — 48 個特徵平面詳解
+- **進階主題**：[MCTS 與神經網路的結合](/knowledge/ai-go/alphago/mcts-neural-combo/) — 完整的搜索流程
+
+---
+
+## 關鍵要點
+
+1. **Value Network 預測勝率**：輸出 -1 到 +1 之間的單一數值
+2. **Tanh 輸出**：確保輸出在正確的範圍內
+3. **MSE 損失**：將預測值逼近實際結果
+4. **過擬合挑戰**：需要用自我對弈資料來避免
+5. **取代隨機模擬**：一次評估 ≈ 15000 次模擬
+
+Value Network 是 AlphaGo 的「判斷力」——它讓 AI 能夠評估任何局面的好壞，而不需要窮盡所有可能。
+
+---
+
+## 參考資料
+
+1. Silver, D., et al. (2016). "Mastering the game of Go with deep neural networks and tree search." *Nature*, 529, 484-489.
+2. Silver, D., et al. (2017). "Mastering the game of Go without human knowledge." *Nature*, 551, 354-359.
+3. Sutton, R. S., & Barto, A. G. (2018). *Reinforcement Learning: An Introduction*. MIT Press.
+4. Tesauro, G. (1995). "Temporal difference learning and TD-Gammon." *Communications of the ACM*, 38(3), 58-68.
+
+---
+
+<KeyTakeaway>
+本文重點：
+- Value Network 預測當前局面的勝率，輸出介於 -1 到 +1 之間的單一數值
+- 使用 MSE 損失函數訓練，需透過自我對弈資料避免過擬合問題
+- 一次 Value Network 評估相當於 15000 次隨機模擬，大幅提升 MCTS 效率
+</KeyTakeaway>
+
+<FAQ items={[
+  { question: "Value Network 和 Policy Network 有什麼區別？", answer: "Policy Network 回答「下一步應該下哪裡」，輸出 361 個位置的機率分布；Value Network 回答「這盤棋會贏嗎」，輸出單一的勝率數值。兩者在 MCTS 中扮演互補的角色。" },
+  { question: "為什麼 Value Network 容易過擬合？", answer: "因為同一盤棋的局面具有高度相關性，如果直接使用人類棋譜訓練，模型可能「記住」特定棋局而非學會泛化。解決方案是使用自我對弈產生的獨立局面進行訓練。" },
+  { question: "AlphaGo Zero 為什麼能完全棄用隨機模擬？", answer: "因為 Value Network 的預測精度已經足夠高，可以直接替代傳統 MCTS 中的 rollout 評估，這大幅簡化了系統架構並提升了棋力。" }
+]} />

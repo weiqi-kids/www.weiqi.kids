@@ -1,0 +1,35 @@
+---
+interface Link { label: string; href: string; external?: boolean }
+interface Props {
+  name: string; enName?: string; slogan?: string; titles?: string[];
+  avatar?: { photo?: string; alt?: string; initial?: string };
+  links?: Link[]; location?: string;
+}
+const { name, enName, slogan, titles = [], avatar = {}, links = [], location } = Astro.props;
+---
+<div class="profile-hero">
+  <div class="profile-avatar">
+    {avatar.photo ? <img src={avatar.photo} alt={avatar.alt || name} width="160" height="160" /> : <span>{avatar.initial || name.slice(-1)}</span>}
+  </div>
+  <div>
+    <p class="profile-name">{name}{enName && <span class="muted"> {enName}</span>}</p>
+    {slogan && <p class="profile-slogan">{slogan}</p>}
+    {titles.length > 0 && <ul class="profile-titles">{titles.map((t) => <li>{t}</li>)}</ul>}
+    {location && <p class="muted">{location}</p>}
+    {links.length > 0 && (
+      <ul class="profile-links">
+        {links.map((l) => <li><a href={l.href} rel={l.external ? 'noopener' : undefined}>{l.label}</a></li>)}
+      </ul>
+    )}
+  </div>
+</div>
+<style>
+  .profile-hero { display: grid; gap: var(--space-6); grid-template-columns: 1fr; margin-bottom: 2em; align-items: start; }
+  @media (min-width: 640px) { .profile-hero { grid-template-columns: 10rem 1fr; } }
+  .profile-avatar { width: 10rem; height: 10rem; border-radius: 50%; overflow: hidden; background: var(--color-brand); display: grid; place-items: center; color: var(--color-white); font-size: var(--text-2xl); }
+  .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .profile-name { font-size: var(--text-lg); font-weight: 700; margin: 0; }
+  .profile-slogan { color: var(--color-primary); font-weight: 700; margin: 0 0 var(--space-2); }
+  .profile-titles, .profile-links { list-style: none; padding: 0; margin: 0 0 var(--space-2); display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .profile-titles li { background: var(--color-bg-soft); border-radius: 999px; padding: 0 var(--space-3); font-size: var(--text-xs); }
+</style>

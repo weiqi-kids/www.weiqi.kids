@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { fmtDate } from '../../lib/courses';
+import { site } from '../../data/site.js';
+const now = new Date();
+const upcoming = (await getCollection('gatherings')).filter((g) => g.data.startDate >= now).sort((a, b) => a.data.startDate.getTime() - b.data.startDate.getTime());
+---
+<BaseLayout title="即將舉辦的棋聚" description="好棋寶寶棋聚近期場次的日期、地點、形式與報名方式。" breadcrumbs={[{ name: '好棋寶寶棋聚', href: '/gatherings/' }, { name: '即將舉辦', href: '/gatherings/upcoming/' }]}>
+  <div class="prose">
+    <h1>即將舉辦的棋聚</h1>
+    {upcoming.length === 0 ? (
+      <p>目前沒有公告的場次。想收到下一場通知，請來信 <a href={`mailto:${site.email}?subject=${encodeURIComponent('【棋聚通知】')}`}>{site.email}</a>。</p>
+    ) : (
+      <ul class="card-grid">
+        {upcoming.map((g) => (
+          <li><a class="card" href={`/gatherings/${g.data.slug}/`}><h2>{g.data.title}</h2><p>{fmtDate(g.data.startDate)}．{g.data.location}．{g.data.format}</p><p class="muted">{g.data.summary}</p></a></li>
+        ))}
+      </ul>
+    )}
+  </div>
+</BaseLayout>

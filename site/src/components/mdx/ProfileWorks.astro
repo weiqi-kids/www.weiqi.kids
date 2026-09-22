@@ -1,0 +1,15 @@
+---
+interface Item { title: string; desc?: string; href: string; external?: boolean }
+interface Props { groups: { title: string; items: Item[] }[] }
+const { groups } = Astro.props;
+---
+{groups.map((g) => (
+  <section class="profile-works">
+    <h3>{g.title}</h3>
+    <ul class="card-grid">
+      {g.items.map((i) => (
+        <li><a class="card" href={i.href} rel={i.external ? 'noopener' : undefined}><strong>{i.title}</strong>{i.desc && <p class="muted">{i.desc}</p>}</a></li>
+      ))}
+    </ul>
+  </section>
+))}

@@ -1,0 +1,376 @@
+/* 全站基礎樣式：只准引用 variables.css 的 token。 */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-text-size-adjust: 100%;
+}
+
+body { margin: 0; font-size: var(--text-base); line-height: 1.8; }
+
+h1, h2, h3, h4 { line-height: 1.35; margin-block: 1.6em 0.6em; }
+h1 { font-size: var(--text-2xl); margin-top: 0; }
+h2 { font-size: var(--text-xl); }
+h3 { font-size: var(--text-lg); }
+h4 { font-size: var(--text-base); }
+small { font-size: var(--text-xs); }
+p { margin-block: 0 1em; }
+
+a { color: var(--color-primary); text-underline-offset: 0.2em; }
+a:hover { color: var(--color-primary-dark); }
+:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+
+img, video, svg { max-width: 100%; height: auto; }
+
+.container { max-width: 72rem; margin-inline: auto; padding-inline: clamp(1rem, 4vw, 2rem); }
+.prose { max-width: var(--measure); }
+.muted { color: var(--color-ink-muted); }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* 文章內容 */
+.prose table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: var(--text-sm); }
+.prose th, .prose td { border: 1px solid var(--color-line); padding: var(--space-2) var(--space-3); text-align: left; vertical-align: top; }
+.prose th { background: var(--color-bg-soft); }
+.prose blockquote { margin: 0 0 1em; padding: var(--space-2) var(--space-4); border-left: 4px solid var(--color-brand); color: var(--color-ink-soft); }
+.prose code { font-family: var(--font-mono); font-size: 0.9em; background: var(--color-code-bg); padding: 0.1em 0.35em; border-radius: var(--radius-sm); }
+.prose pre { overflow-x: auto; padding: var(--space-4); border-radius: var(--radius); font-size: var(--text-xs); line-height: 1.6; }
+.prose pre code { background: none; padding: 0; font-size: inherit; }
+.prose img { border-radius: var(--radius-sm); }
+.prose .katex-display { overflow-x: auto; overflow-y: hidden; }
+
+/* 提示框（由 remark 外掛從 :::note 等轉出） */
+.callout { margin: 0 0 1.2em; padding: var(--space-3) var(--space-4); border-left: 4px solid var(--color-note-line); background: var(--color-note-bg); border-radius: var(--radius-sm); }
+.callout > :last-child { margin-bottom: 0; }
+.callout-title { font-weight: 700; margin-bottom: var(--space-1); }
+.callout-tip { border-color: var(--color-tip-line); background: var(--color-tip-bg); }
+.callout-info { border-color: var(--color-note-line); background: var(--color-note-bg); }
+.callout-caution, .callout-warning { border-color: var(--color-warn-line); background: var(--color-warn-bg); }
+.callout-danger { border-color: var(--color-danger-line); background: var(--color-danger-bg); }
+
+/* 共用元件 */
+.btn {
+  display: inline-block; padding: var(--space-3) var(--space-6); border-radius: 999px;
+  background: var(--color-primary); color: var(--color-white); text-decoration: none; font-weight: 700;
+  border: 2px solid var(--color-primary); font-size: var(--text-base); cursor: pointer; font-family: inherit;
+}
+.btn:hover { background: var(--color-primary-dark); border-color: var(--color-primary-dark); color: var(--color-white); }
+.btn-ghost { background: transparent; color: var(--color-primary); }
+.btn-ghost:hover { background: var(--color-bg-soft); color: var(--color-primary-dark); }
+
+.card-grid { display: grid; gap: var(--space-6); grid-template-columns: 1fr; padding: 0; list-style: none; }
+@media (min-width: 768px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .card-grid.cols-3 { grid-template-columns: repeat(3, 1fr); } }
+.card {
+  display: block; background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius);
+  padding: var(--space-6); box-shadow: var(--shadow-card); color: inherit; text-decoration: none; height: 100%;
+}
+a.card:hover { box-shadow: var(--shadow-card-hover); color: inherit; }
+.card h2, .card h3 { margin-top: 0; font-size: var(--text-lg); }
+.card p:last-child { margin-bottom: 0; }
+
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-2) var(--space-6); margin: 0 0 1.5em; }
+.facts dt { font-weight: 700; }
+.facts dd { margin: 0; }
+
+.key-answer { background: var(--color-bg-soft); border-radius: var(--radius); padding: var(--space-4) var(--space-6); margin-bottom: 1.5em; }
+.key-answer > :last-child { margin-bottom: 0; }
+
+.faq details { border-bottom: 1px solid var(--color-line); padding: var(--space-3) 0; }
+.faq summary { cursor: pointer; font-weight: 700; }
+
+.form-field { display: grid; gap: var(--space-1); margin-bottom: var(--space-4); }
+.form-field label { font-weight: 700; }
+.form-field input, .form-field select, .form-field textarea {
+  font: inherit; font-size: var(--text-base); padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-line); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text);
+}
+.form-hint { color: var(--color-ink-muted); font-size: var(--text-xs); }
+.notice { padding: var(--space-4); border-radius: var(--radius); background: var(--color-note-bg); }
+.notice-error { background: var(--color-danger-bg); }
+
+/* D3 圖表 */
+.chart { margin: 1.5em 0; padding: var(--space-4); border: 1px solid var(--color-line); border-radius: var(--radius); background: var(--color-surface); overflow-x: auto; }
+.chart-caption { font-size: var(--text-xs); color: var(--color-ink-muted); }
+
+/* ── 圖表元件（移植自舊站 D3Charts） ── */
+/* D3Charts 共用樣式 */
+
+/* 棋盤容器 */
+.go-board-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.go-board {
+  background: var(--chart-board);
+  border-radius: 4px;
+  box-shadow: 0 4px 6px var(--chart-shadow-soft);
+}
+
+.go-board .grid-line {
+  stroke: var(--chart-ink);
+  stroke-width: 1;
+}
+
+.go-board .star-point {
+  fill: var(--chart-ink);
+}
+
+.go-board .stone-black {
+  fill: var(--chart-stone-black);
+  stroke: var(--chart-black);
+  stroke-width: 1;
+}
+
+.go-board .stone-white {
+  fill: var(--chart-stone-white);
+  stroke: var(--chart-ink);
+  stroke-width: 1;
+}
+
+/* 熱力圖 */
+.heatmap-cell {
+  stroke: none;
+  transition: opacity 0.2s;
+}
+
+.heatmap-cell:hover {
+  stroke: var(--chart-ink);
+  stroke-width: 2;
+}
+
+.heatmap-label {
+  font-size: var(--text-xs);
+  fill: var(--chart-ink);
+  pointer-events: none;
+}
+
+/* MCTS 樹 */
+.mcts-tree-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+  overflow-x: auto;
+}
+
+.mcts-tree .node circle {
+  fill: var(--chart-white);
+  stroke: var(--chart-blue);
+  stroke-width: 2;
+  transition: all 0.3s;
+}
+
+.mcts-tree .node circle:hover {
+  fill: var(--chart-blue-soft);
+  stroke-width: 3;
+}
+
+.mcts-tree .node text {
+  font-size: var(--text-xs);
+  fill: var(--chart-ink);
+}
+
+.mcts-tree .link {
+  fill: none;
+  stroke: var(--chart-ink-muted);
+  stroke-width: 1.5;
+}
+
+.mcts-tree .link.selected {
+  stroke: var(--chart-blue);
+  stroke-width: 3;
+}
+
+/* ELO 圖表 */
+.elo-chart-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.elo-chart .axis-label {
+  font-size: var(--text-xs);
+  fill: var(--chart-ink-soft);
+}
+
+.elo-chart .line {
+  fill: none;
+  stroke: var(--chart-blue);
+  stroke-width: 2;
+}
+
+.elo-chart .area {
+  fill: var(--chart-blue);
+  opacity: 0.1;
+}
+
+.elo-chart .grid line {
+  stroke: var(--chart-grid);
+  stroke-dasharray: 2,2;
+}
+
+.elo-chart .milestone {
+  fill: var(--chart-red);
+}
+
+.elo-chart .milestone-label {
+  font-size: var(--text-xs);
+  fill: var(--chart-ink);
+}
+
+/* CNN 層視覺化 */
+.cnn-layers-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+  overflow-x: auto;
+}
+
+.cnn-layer {
+  fill: var(--chart-blue);
+  opacity: 0.7;
+  stroke: var(--chart-blue-dark);
+  stroke-width: 1;
+}
+
+.cnn-layer:hover {
+  opacity: 1;
+}
+
+.cnn-arrow {
+  fill: var(--chart-ink-soft);
+}
+
+.cnn-label {
+  font-size: var(--text-xs);
+  fill: var(--chart-ink);
+  text-anchor: middle;
+}
+
+/* ResNet Block */
+.resnet-block-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.resnet-block rect {
+  fill: var(--chart-blue);
+  rx: 4;
+  ry: 4;
+}
+
+.resnet-block .skip-connection {
+  fill: none;
+  stroke: var(--chart-red);
+  stroke-width: 2;
+  stroke-dasharray: 5,3;
+}
+
+.resnet-block .add-node {
+  fill: var(--chart-green);
+}
+
+/* 互動控制 */
+.d3-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.d3-controls button {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--chart-grid);
+  border-radius: 4px;
+  background: var(--chart-white);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.d3-controls button:hover {
+  background: var(--chart-stone-white);
+  border-color: var(--chart-blue);
+}
+
+.d3-controls button.active {
+  background: var(--chart-blue);
+  color: var(--chart-white);
+  border-color: var(--chart-blue);
+}
+
+.d3-slider {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.d3-slider input[type="range"] {
+  width: 150px;
+}
+
+.d3-slider label {
+  font-size: var(--text-xs);
+  color: var(--chart-ink-soft);
+}
+
+/* 提示框 */
+.d3-tooltip {
+  position: absolute;
+  padding: 8px 12px;
+  background: var(--chart-tooltip-bg);
+  color: var(--chart-white);
+  border-radius: 4px;
+  font-size: var(--text-xs);
+  pointer-events: none;
+  z-index: 1000;
+  max-width: 200px;
+}
+
+/* 圖例 */
+.d3-legend {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.d3-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--text-xs);
+  color: var(--chart-ink-soft);
+}
+
+.d3-legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+}
+
+/* 響應式 */
+@media (max-width: 768px) {
+  .go-board-container,
+  .mcts-tree-container,
+  .elo-chart-container,
+  .cnn-layers-container,
+  .resnet-block-container {
+    overflow-x: auto;
+    padding: 0 1rem;
+  }
+
+  .d3-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+

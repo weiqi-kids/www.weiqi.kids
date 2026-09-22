@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // 預設部署為 staging（ADR 0007）。正式網域切換前不設定 routes／custom domain。
+  "name": "weiqi-kids-staging",
+  "account_id": "9d17db3ab1021898e4873621c147d0ad",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": { "directory": "./dist/client", "binding": "ASSETS", "not_found_handling": "404-page", "html_handling": "force-trailing-slash" },
+  "observability": { "enabled": true },
+  "workers_dev": true,
+  "vars": { "SHOW_DRAFT_COURSES": "1" },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "weiqi-kids-staging", "database_id": "c1345075-b309-4d2b-90ac-775ae6f6c0f3", "migrations_dir": "migrations" }
+  ]
+}

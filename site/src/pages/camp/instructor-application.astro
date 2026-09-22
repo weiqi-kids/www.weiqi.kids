@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site.js';
+---
+<BaseLayout title="講師申請" description="申請成為 AI 共學營講師的資格、要準備的資料與審核流程。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '講師', href: '/camp/instructors/' }, { name: '講師申請', href: '/camp/instructor-application/' }]}>
+  <article class="prose">
+    <h1>講師申請</h1>
+    <h2>申請資格</h2>
+    <div class="key-answer" data-question="講師申請需要什麼資格？">
+      <p>申請人必須已經上過至少一門 6,000 元的 AI 共學營標準課程。協會以實際的課程參與紀錄確認資格。</p>
+    </div>
+    <h2>要準備的資料</h2>
+    <ul>
+      <li>專業背景與相關資格或經驗</li>
+      <li>想分享的主題與目標對象</li>
+      <li>這個主題要解決學員的什麼問題</li>
+      <li>初步課程構想：1 堂主題教學的內容、3 堂實作的任務</li>
+    </ul>
+    <h2>審核流程</h2>
+    <ol class="actionable-steps">
+      <li>提出申請。</li>
+      <li>協會管理員審核，必要時請你補件。</li>
+      <li>核准後，填寫開課表單（需求、目標、大綱、時數、方法、評量與預期成果），建立正式課程。</li>
+    </ol>
+    <h2>目前的申請方式</h2>
+    <p>網站上的講師申請表會在會員登入功能上線後開放。在此之前，請來信 <a href={`mailto:${site.email}?subject=${encodeURIComponent('【講師申請】')}`}>{site.email}</a>，信中寫上你上過的課程名稱與以上資料。</p>
+  </article>
+</BaseLayout>

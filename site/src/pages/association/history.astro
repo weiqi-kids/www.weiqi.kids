@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const events = [
+  { when: '2023 年', what: '好棋同樂會在台中舉辦主題講座與棋聚，講題包含金工微距攝影、健康飲食，並邀請蔡丞韋職業五段分享。', href: '/gatherings/archive/fun-club/' },
+  { when: '2024 年 1 月', what: '舉辦城市網路對抗賽 2024 春季賽，10 個縣市組隊在弈客圍棋平台對弈。', href: '/association/activities/city-league/' },
+  { when: '2024 年 1 月 28 日', what: '協辦 113 年臺北市體育總會全國圍棋公開賽春季賽，地點蓬萊國小。', href: '/gatherings/archive/' },
+  { when: '2024 年 6 月', what: '舉辦第一屆好棋寶寶盃親子圍棋嘉年華，地點和平高中。', href: '/gatherings/archive/' },
+  { when: '2026 年', what: '會員合作完成 AI 應用工具、23 條產業供應鏈情報與研究發表，並整理 AlphaGo、KataGo 的公開知識。', href: '/camp/topics/' },
+  { when: '2026 年 9 月', what: '網站改版：以協會、好棋寶寶棋聚、AI 共學營三條服務線重新整理。', href: '/camp/' },
+];
+---
+<BaseLayout title="協會歷史" description="台灣好棋寶寶協會的發展紀錄：好棋同樂會、城市網路對抗賽、親子圍棋嘉年華、推廣影片，到 AI 共學營。" breadcrumbs={[{ name: '協會', href: '/association/' }, { name: '協會歷史', href: '/association/history/' }]}>
+  <article class="prose">
+    <h1>協會歷史</h1>
+    <ol class="timeline">
+      {events.map((e) => <li><strong>{e.when}</strong><p>{e.what} <a href={e.href}>看紀錄</a></p></li>)}
+    </ol>
+    <p>協會也製作了形象影片與 12 部圍棋教育短影音，見<a href="/association/activities/videos/">圍棋推廣影片</a>。</p>
+  </article>
+</BaseLayout>
+<style>
+  .timeline { list-style: none; padding: 0; border-left: 3px solid var(--color-brand); }
+  .timeline li { padding-left: var(--space-6); margin-bottom: var(--space-6); }
+  .timeline p { margin: 0; }
+</style>

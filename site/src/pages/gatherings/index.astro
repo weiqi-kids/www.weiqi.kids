@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { fmtDate } from '../../lib/courses';
+const now = new Date();
+const upcoming = (await getCollection('gatherings')).filter((g) => g.data.startDate >= now).sort((a, b) => a.data.startDate.getTime() - b.data.startDate.getTime());
+---
+<BaseLayout title="好棋寶寶棋聚" description="台灣好棋寶寶協會的圍棋交流活動：實體聚會、主題講座、友誼對局與新手交流。不需要共學營會員資格。" breadcrumbs={[{ name: '好棋寶寶棋聚', href: '/gatherings/' }]}>
+  <div class="prose">
+    <h1>好棋寶寶棋聚</h1>
+    <div class="key-answer" data-question="好棋寶寶棋聚是什麼？">
+      <p>好棋寶寶棋聚是協會辦的圍棋交流活動，內容包含實體聚會、主題講座、友誼對局與新手交流。棋聚和 AI 共學營分開辦理，參加棋聚不需要共學營課程資格。</p>
+    </div>
+  </div>
+  <ul class="card-grid cols-3">
+    <li><a class="card" href="/gatherings/about/"><h2>棋聚介紹</h2><p>棋聚的形式、適合誰、怎麼參加。</p></a></li>
+    <li><a class="card" href="/gatherings/upcoming/"><h2>即將舉辦</h2><p>{upcoming.length ? `${upcoming.length} 場即將舉辦` : '目前沒有公告的場次'}</p></a></li>
+    <li><a class="card" href="/gatherings/archive/"><h2>歷史棋聚</h2><p>親子圍棋嘉年華、全國圍棋公開賽、好棋同樂會。</p></a></li>
+  </ul>
+  {upcoming.length > 0 && (
+    <section>
+      <h2>近期場次</h2>
+      <ul>{upcoming.map((g) => <li><a href={`/gatherings/${g.data.slug}/`}>{fmtDate(g.data.startDate)}．{g.data.title}</a></li>)}</ul>
+    </section>
+  )}
+</BaseLayout>

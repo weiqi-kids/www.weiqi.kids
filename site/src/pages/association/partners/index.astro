@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { allPages, sortPages } from '../../../lib/pages';
+import { site } from '../../../data/site.js';
+const partners = sortPages((await allPages()).filter((p) => p.data.kind === 'partner'));
+const roles: Record<string, string> = { 'wu-di': '插畫：角色設計', 'mao-zi': '插畫：圍棋主題桌布', 'da-feng': 'LINE@ 介面與功能開發', 'jing-da': 'WordPress 網站開發', 'ya-he': '網站改版提案', 'yi-chun': '宣傳配音' };
+---
+<BaseLayout title="合作夥伴" description="與台灣好棋寶寶協會合作過的插畫、LINE@ 開發、網站與配音夥伴，以及與協會合作的方式。" breadcrumbs={[{ name: '協會', href: '/association/' }, { name: '合作夥伴', href: '/association/partners/' }]}>
+  <div class="prose">
+    <h1>合作夥伴</h1>
+    <p>以下是和協會合作過的個人與團隊。</p>
+  </div>
+  <ul class="card-grid cols-3">
+    {partners.map((p) => {
+      const slug = p.data.path.split('/').filter(Boolean).at(-1)!;
+      return <li><a class="card" href={p.data.path}><h2>{p.data.title}</h2><p class="muted">{roles[slug] ?? ''}</p></a></li>;
+    })}
+    <li><div class="card"><h2>台灣張家在大陸</h2><p class="muted">社群組織：跨海圍棋交流</p></div></li>
+  </ul>
+  <section class="prose">
+    <h2>和協會合作</h2>
+    <div class="key-answer" data-question="怎麼和台灣好棋寶寶協會合作？">
+      <p>來信 <a href={`mailto:${site.email}?subject=${encodeURIComponent('【合作提案】')}`}>{site.email}</a>，寫下你想合作的方向。還沒有具體想法、想先認識協會也可以來信，理事長會安排見面或線上對談。</p>
+    </div>
+    <p>想開一門 AI 共學營課程的人，請看<a href="/camp/instructor-application/">講師申請</a>。</p>
+  </section>
+</BaseLayout>
+<style>
+  section { margin-top: var(--space-12); }
+  h2 { font-size: var(--text-lg); }
+</style>

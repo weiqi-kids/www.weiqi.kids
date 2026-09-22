@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { courseRules } from '../../../data/site.js';
+import { appLinks } from '../../../data/legacy/apps.js';
+import { intelLinks } from '../../../data/legacy/intel.js';
+import { researchPapers } from '../../../data/legacy/research.js';
+
+export async function getStaticPaths() {
+  const topics = await getCollection('topics');
+  return topics.map((topic) => ({ params: { slug: topic.data.slug }, props: { topic } }));
+}
+const { topic } = Astro.props as { topic: CollectionEntry<'topics'> };
+const { Content } = await render(topic);
+const t = topic.data;
+const courses = (await getCollection('courses')).filter((c) => c.data.topic === t.slug && c.data.status !== 'draft');
+
+type Case = { title: string; desc: string; href: string };
+const cases: Case[] =
+  t.caseSet === 'monitoring' ? appLinks.filter((a: any) => a.category === 'monitoring').map((a: any) => ({ title: a.titleDefault, desc: a.descDefault, href: a.href }))
+  : t.caseSet === 'apps' ? appLinks.map((a: any) => ({ title: a.titleDefault, desc: a.descDefault, href: a.href }))
+  : t.caseSet === 'intel' ? intelLinks.map((a: any) => ({ title: a.titleDefault, desc: a.descDefault, href: a.href }))
+  : t.caseSet === 'research' ? researchPapers.map((a: any) => ({ title: a.titleDefault, desc: a.descDefault, href: a.href }))
+  : [];
+const path = `/camp/topics/${t.slug}/`;
+---
+<BaseLayout title={t.title} description={`${t.summary} AI 共學營課程主題；每門課 1 堂主題教學＋3 堂實作，為期一個月，${courseRules.fee.toLocaleString('zh-TW')} 元。`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '課程主題', href: '/camp/topics/' }, { name: t.title, href: path }]}>
+  <article class="prose">
+    <h1>{t.title}</h1>
+    <div class="key-answer" data-question={`${t.title}學什麼？`}>
+      <p>{t.summary}</p>
+    </div>
+    <dl class="facts">
+      <dt>適合誰</dt><dd>{t.audience}</dd>
+      <dt>課程結構</dt><dd>1 堂主題教學＋3 堂實作，為期{courseRules.duration}</dd>
+      <dt>費用</dt><dd>每門課 {courseRules.fee.toLocaleString('zh-TW')} 元（需協會會員資格；第一次報名含入會）</dd>
+      <dt>開課狀態</dt><dd>{courses.length ? <a href="#courses">{courses.length} 門正式課程</a> : '尚未排定正式課程'}</dd>
+    </dl>
+    <Content />
+
+    {courses.length > 0 && (
+      <section id="courses">
+        <h2>這個主題的正式課程</h2>
+        <ul>{courses.map((c) => <li><a href={`/camp/courses/${c.data.slug}/`}>{c.data.title}</a></li>)}</ul>
+      </section>
+    )}
+  </article>
+
+  {cases.length > 0 && (
+    <section class="cases">
+      <h2>協會做過的示範案例（{cases.length} 個）</h2>
+      <p class="prose">以下是協會過去做出的成品，講師可以拿來當教學示範。它們不是學員作業，也不代表每個案例都是一門課。</p>
+      <ul class="card-grid cols-3">
+        {cases.map((c) => (
+          <li><a class="card" href={c.href} rel="noopener"><h3>{c.title}</h3><p class="muted">{c.desc}</p></a></li>
+        ))}
+      </ul>
+    </section>
+  )}
+</BaseLayout>
+<style>
+  .cases { margin-top: var(--space-12); }
+</style>

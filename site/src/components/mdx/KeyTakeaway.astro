@@ -1,0 +1,13 @@
+---
+interface Props { title?: string }
+const { title = '重點整理' } = Astro.props;
+---
+<section class="key-takeaway">
+  <h2 class="key-takeaway-title">{title}</h2>
+  <slot />
+</section>
+<style>
+  .key-takeaway { margin: 2em 0; padding: var(--space-4) var(--space-6); border-radius: var(--radius); background: var(--color-bg-soft); border-left: 4px solid var(--color-brand); }
+  .key-takeaway-title { font-size: var(--text-lg); margin: 0 0 var(--space-2); }
+  .key-takeaway :global(ul) { margin: 0; padding-left: 1.2em; }
+</style>

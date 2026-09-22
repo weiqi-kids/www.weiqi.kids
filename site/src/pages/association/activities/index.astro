@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { allPages, sortPages } from '../../../lib/pages';
+const items = sortPages((await allPages()).filter((p) => p.data.kind === 'association' && p.data.path.startsWith('/association/activities/')));
+---
+<BaseLayout title="協會活動" description="台灣好棋寶寶協會辦過的活動紀錄：城市網路對抗賽、圍棋推廣影片，以及好棋寶寶棋聚的歷史場次。" breadcrumbs={[{ name: '協會', href: '/association/' }, { name: '協會活動', href: '/association/activities/' }]}>
+  <div class="prose">
+    <h1>協會活動</h1>
+    <p>協會辦過的活動紀錄。圍棋聚會、同樂會與親子圍棋嘉年華，整理在<a href="/gatherings/archive/">歷史棋聚</a>。</p>
+  </div>
+  <ul class="card-grid">
+    {items.map((p) => <li><a class="card" href={p.data.path}><h2>{p.data.title}</h2>{p.data.description && <p class="muted">{p.data.description}</p>}</a></li>)}
+    <li><a class="card" href="/gatherings/archive/"><h2>歷史棋聚</h2><p class="muted">親子圍棋嘉年華、全國圍棋公開賽、好棋同樂會。</p></a></li>
+  </ul>
+</BaseLayout>

@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site.js';
+---
+<BaseLayout title="協會" description="社團法人台灣好棋寶寶協會：因圍棋結緣的跨產業會員團體，主辦好棋寶寶棋聚與 AI 共學營。" breadcrumbs={[{ name: '協會', href: '/association/' }]}>
+  <div class="prose">
+    <h1>{site.legalName}</h1>
+    <div class="key-answer" data-question="台灣好棋寶寶協會是什麼組織？">
+      <p>台灣好棋寶寶協會是一群因圍棋認識彼此的各行各業人士組成的社團法人。協會主辦兩種活動：以圍棋交流為主的好棋寶寶棋聚，以及會員一起實作 AI 應用的 AI 共學營。</p>
+    </div>
+  </div>
+  <ul class="card-grid cols-3">
+    <li><a class="card" href="/association/about/"><h2>協會介紹</h2><p>協會在做什麼、怎麼運作、怎麼聯絡。</p></a></li>
+    <li><a class="card" href="/association/members/"><h2>成員</h2><p>來自醫療、法律、設計、行銷、圍棋等領域的會員。</p></a></li>
+    <li><a class="card" href="/association/partners/"><h2>合作夥伴</h2><p>協助插畫、LINE@、網站與配音的夥伴，以及合作方式。</p></a></li>
+    <li><a class="card" href="/association/activities/"><h2>協會活動</h2><p>城市網路對抗賽、推廣影片等活動紀錄。</p></a></li>
+    <li><a class="card" href="/association/history/"><h2>協會歷史</h2><p>從圍棋活動到 AI 共學營的發展紀錄。</p></a></li>
+  </ul>
+</BaseLayout>

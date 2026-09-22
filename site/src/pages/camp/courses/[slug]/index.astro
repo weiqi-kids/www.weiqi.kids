@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { render, getCollection, type CollectionEntry } from 'astro:content';
+import { publicCourses, STATUS_LABEL, fmtDate } from '../../../../lib/courses';
+import { site } from '../../../../data/site.js';
+
+export async function getStaticPaths() {
+  return (await publicCourses()).map((course) => ({ params: { slug: course.data.slug }, props: { course } }));
+}
+const { course } = Astro.props as { course: CollectionEntry<'courses'> };
+const { Content } = await render(course);
+const c = course.data;
+const topic = (await getCollection('topics')).find((t) => t.data.slug === c.topic);
+const path = `/camp/courses/${c.slug}/`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Course',
+  name: c.title,
+  description: c.summary,
+  inLanguage: 'zh-Hant-TW',
+  provider: { '@id': `${site.url}/#organization` },
+  offers: { '@type': 'Offer', price: c.fee, priceCurrency: 'TWD', category: 'Paid', availability: c.status === 'open' ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut', url: new URL(path, Astro.site).href },
+  hasCourseInstance: {
+    '@type': 'CourseInstance',
+    courseMode: 'Blended',
+    location: c.location,
+    startDate: c.startDate.toISOString().slice(0, 10),
+    endDate: c.endDate.toISOString().slice(0, 10),
+    instructor: c.instructors.map((name) => ({ '@type': 'Person', name })),
+    courseSchedule: { '@type': 'Schedule', repeatCount: 4, repeatFrequency: 'P1W' },
+  },
+};
+---
+<BaseLayout title={c.title} description={`${c.summary} ${fmtDate(c.startDate)}開始，1 堂主題教學＋3 堂實作，${c.fee.toLocaleString('zh-TW')} 元。`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '正式課程', href: '/camp/courses/' }, { name: c.title, href: path }]} schema={[schema]}>
+  <article class="prose">
+    <p class="muted">{STATUS_LABEL[c.status]}{topic && <>．主題：<a href={`/camp/topics/${topic.data.slug}/`}>{topic.data.title}</a></>}</p>
+    <h1>{c.title}</h1>
+    <div class="key-answer" data-question={`${c.title}的時間與費用？`}>
+      <p>{fmtDate(c.startDate)}～{fmtDate(c.endDate)}，地點：{c.location}。費用 {c.fee.toLocaleString('zh-TW')} 元；第一次報名同時成為協會會員。</p>
+    </div>
+    <dl class="facts">
+      <dt>講師</dt><dd>{c.instructors.join('、')}</dd>
+      {c.sessions.map((s) => <><dt>{s.label}</dt><dd>{fmtDate(s.date)}（{s.kind === 'teaching' ? '主題教學' : '實作'}）</dd></>)}
+      <dt>資格</dt><dd>協會會員；第一次報名含入會</dd>
+    </dl>
+    {c.status === 'open' && <p><a class="btn" href={`${path}enroll/`}>報名這門課</a></p>}
+    <Content />
+  </article>
+</BaseLayout>

@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { courseRules } from '../../data/site.js';
+---
+<BaseLayout title="共學營介紹" description="AI 共學營由台灣好棋寶寶協會主辦。每門課包含 1 堂主題教學、全部技能單張與 3 堂實作，結營後課程論壇保留，學員可以持續交流。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '共學營介紹', href: '/camp/about/' }]}>
+  <article class="prose">
+    <h1>共學營介紹</h1>
+    <div class="key-answer" data-question="AI 共學營由誰主辦、適合誰？">
+      <p>AI 共學營由台灣好棋寶寶協會主辦。協會會員來自醫療、法律、保險、設計、行銷、製造、教育等行業，共學營讓大家交流各自怎麼用 AI 做事，並在一個月內做出自己的作品。</p>
+    </div>
+
+    <h2>一門課包含什麼</h2>
+    <div class="key-answer" data-question="一門共學營課程包含什麼？">
+      <p>一門課包含第 1 堂主題教學、該主題的全部技能單張，以及第 2～4 堂實作，合計{courseRules.duration}，費用 {courseRules.fee.toLocaleString('zh-TW')} 元。加入實作不另收費。</p>
+    </div>
+    <ul>
+      <li><strong>主題教學</strong>：講師依主題講授需要的技能，並依學員反應調整深度。</li>
+      <li><strong>技能單張</strong>：每張圍繞一個問題，寫出「問題、發生的原因、有哪些解決方法、講師建議的流程」。課程開通後，參與者取得該課全部單張。</li>
+      <li><strong>實作營</strong>：取得課程資格的學員可以自行選擇加入，不需要協會再確認。每門課有自己的課程論壇，可以發文、上傳圖片與作品、和講師討論。</li>
+    </ul>
+
+    <h2>結營之後</h2>
+    <div class="key-answer" data-question="結營後還能使用課程論壇嗎？">
+      <p>可以。一個月的服務期結束後，原課程成員仍可以登入、查看、發文與上傳；講師可以依意願繼續回覆，但協會不承諾固定的回覆頻率。</p>
+    </div>
+
+    <h2>作品公開與好棋寶寶推薦</h2>
+    <div class="key-answer" data-question="學員作品會被公開嗎？">
+      <p>預設只在課程論壇內給該課成員看。作品要公開刊登在好棋寶寶推薦，必須同時經過講師認可品質，以及作者本人同意公開；作者之後也可以撤回公開。</p>
+    </div>
+
+    <h2>與好棋寶寶棋聚的差別</h2>
+    <p>棋聚是以圍棋交流為主的活動，不需要會員資格，也不使用共學營的課程論壇；參加棋聚不會取得共學營課程資格。詳見<a href="/gatherings/">好棋寶寶棋聚</a>。</p>
+  </article>
+</BaseLayout>

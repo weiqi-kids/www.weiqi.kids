@@ -1,0 +1,35 @@
+---
+title: "蕭愛霖"
+description: "蕭愛霖為台灣職業女棋士（二段），原登錄台灣棋院、業務併入海峰棋院，曾參加女子圍棋最強戰，是台灣好棋寶寶協會圍棋專業召集人。"
+path: "/association/members/ai-lin-hsiao/"
+kind: "member"
+order: 3
+datePublished: "2026-05-28"
+dateModified: "2026-09-04"
+legacySource: "docs/about/members/founding/ai-lin-hsiao.md"
+sourceVerbatim: true
+---
+
+> **「圍棋專業召集人」**
+
+**台灣職業女棋士 ／ 二段**
+
+## 關於
+
+蕭愛霖是台灣職業女棋士，二段。原登錄於台灣棋院（業務後併入海峰棋院），曾參加女子圍棋最強戰等多項職業賽事。作為協會的圍棋專業召集人，她把職業棋士的對局經驗與訓練視野帶進協會，協助協會在「圍棋作為長期信任紐帶」這條軸線上保有專業深度。
+
+## 圍棋資歷
+
+- 段位：二段（女子棋士）
+- 登錄棋院：台灣棋院（業務併入海峰棋院後續登錄）
+- 重要賽事：女子圍棋最強戰
+
+## 在協會中的角色
+
+- 圍棋專業諮詢與審閱
+- 未來合作意向：圍棋訓練 AI、棋譜分析、女子圍棋推廣
+
+## 資料來源
+
+公開來源整理；如本人希望更新介紹，歡迎來信
+[lightman.chang@gmail.com](mailto:lightman.chang@gmail.com?subject=%E3%80%90%E5%A4%A5%E4%BC%B4%E4%BB%8B%E7%B4%B9%E6%9B%B4%E6%96%B0%E3%80%91%E8%95%AD%E6%84%9B%E9%9C%96)。

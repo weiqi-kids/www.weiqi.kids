@@ -1,0 +1,1143 @@
+[
+ {
+  "src": "docs/about/activities/charity.md",
+  "old": "/docs/about/activities/charity/",
+  "title": "公益活動",
+  "create": false,
+  "redirect": "/association/activities/"
+ },
+ {
+  "src": "docs/about/activities/city-league.md",
+  "old": "/docs/about/activities/city-league/",
+  "title": "城市網路對抗賽",
+  "create": true,
+  "redirect": "/association/activities/city-league/",
+  "kind": "association"
+ },
+ {
+  "src": "docs/about/activities/events.md",
+  "old": "/docs/about/activities/events/",
+  "title": "圍棋活動",
+  "create": true,
+  "redirect": "/gatherings/archive/",
+  "kind": "gathering"
+ },
+ {
+  "src": "docs/about/activities/fun-club.md",
+  "old": "/docs/about/activities/fun-club/",
+  "title": "好棋同樂會",
+  "create": true,
+  "redirect": "/gatherings/archive/fun-club/",
+  "kind": "gathering"
+ },
+ {
+  "src": "docs/about/activities/game-reviews.md",
+  "old": "/docs/about/activities/game-reviews/",
+  "title": "來點覆盤",
+  "create": false,
+  "redirect": "/knowledge/go/"
+ },
+ {
+  "src": "docs/about/activities/index.md",
+  "old": "/docs/about/activities/",
+  "title": "活動實績",
+  "create": false,
+  "redirect": "/association/activities/"
+ },
+ {
+  "src": "docs/about/activities/market.md",
+  "old": "/docs/about/activities/market/",
+  "title": "圍棋市集",
+  "create": false,
+  "redirect": "/association/activities/"
+ },
+ {
+  "src": "docs/about/activities/partners/da-feng.md",
+  "old": "/docs/about/activities/partners/da-feng/",
+  "title": "夏大峯",
+  "create": true,
+  "redirect": "/association/partners/da-feng/",
+  "kind": "partner"
+ },
+ {
+  "src": "docs/about/activities/partners/index.md",
+  "old": "/docs/about/activities/partners/",
+  "title": "合作夥伴",
+  "create": false,
+  "redirect": "/association/partners/"
+ },
+ {
+  "src": "docs/about/activities/partners/jing-da.md",
+  "old": "/docs/about/activities/partners/jing-da/",
+  "title": "敬達",
+  "create": true,
+  "redirect": "/association/partners/jing-da/",
+  "kind": "partner"
+ },
+ {
+  "src": "docs/about/activities/partners/mao-zi.md",
+  "old": "/docs/about/activities/partners/mao-zi/",
+  "title": "毛子",
+  "create": true,
+  "redirect": "/association/partners/mao-zi/",
+  "kind": "partner"
+ },
+ {
+  "src": "docs/about/activities/partners/wu-di.md",
+  "old": "/docs/about/activities/partners/wu-di/",
+  "title": "吳荻",
+  "create": true,
+  "redirect": "/association/partners/wu-di/",
+  "kind": "partner"
+ },
+ {
+  "src": "docs/about/activities/partners/ya-he.md",
+  "old": "/docs/about/activities/partners/ya-he/",
+  "title": "亞何",
+  "create": true,
+  "redirect": "/association/partners/ya-he/",
+  "kind": "partner"
+ },
+ {
+  "src": "docs/about/activities/partners/yi-chun.md",
+  "old": "/docs/about/activities/partners/yi-chun/",
+  "title": "謝依純",
+  "create": true,
+  "redirect": "/association/partners/yi-chun/",
+  "kind": "partner"
+ },
+ {
+  "src": "docs/about/activities/videos.md",
+  "old": "/docs/about/activities/videos/",
+  "title": "圍棋推廣影片",
+  "create": true,
+  "redirect": "/association/activities/videos/",
+  "kind": "association"
+ },
+ {
+  "src": "docs/about/cooperation.md",
+  "old": "/docs/about/cooperation/",
+  "title": "合作邀請",
+  "create": false,
+  "redirect": "/association/partners/"
+ },
+ {
+  "src": "docs/about/index.md",
+  "old": "/docs/about/",
+  "title": "關於我們",
+  "create": false,
+  "redirect": "/association/about/"
+ },
+ {
+  "src": "docs/about/internal/misc/index.md",
+  "old": "/docs/about/internal/misc/",
+  "title": "參考資料",
+  "create": false,
+  "redirect": "/association/"
+ },
+ {
+  "src": "docs/about/internal/sop/financial-reports.md",
+  "old": "/docs/about/internal/sop/financial-reports/",
+  "title": "收支報表",
+  "create": false,
+  "redirect": "/association/"
+ },
+ {
+  "src": "docs/about/internal/sop/host-fun-club.md",
+  "old": "/docs/about/internal/sop/host-fun-club/",
+  "title": "舉辦好棋同樂會",
+  "create": false,
+  "redirect": "/association/"
+ },
+ {
+  "src": "docs/about/internal/sop/host-market.md",
+  "old": "/docs/about/internal/sop/host-market/",
+  "title": "舉辦圍棋市集",
+  "create": false,
+  "redirect": "/association/"
+ },
+ {
+  "src": "docs/about/internal/sop/index.md",
+  "old": "/docs/about/internal/sop/",
+  "title": "標準作業流程",
+  "create": false,
+  "redirect": "/association/"
+ },
+ {
+  "src": "docs/about/internal/sop/receipts.md",
+  "old": "/docs/about/internal/sop/receipts/",
+  "title": "收據",
+  "create": false,
+  "redirect": "/association/"
+ },
+ {
+  "src": "docs/about/intro.md",
+  "old": "/docs/about/intro/",
+  "title": "協會簡介",
+  "create": false,
+  "redirect": "/association/about/"
+ },
+ {
+  "src": "docs/about/locations/index.md",
+  "old": "/docs/about/locations/",
+  "title": "圍棋據點",
+  "create": false,
+  "redirect": "/association/activities/"
+ },
+ {
+  "src": "docs/about/locations/kaohsiung.md",
+  "old": "/docs/about/locations/kaohsiung/",
+  "title": "高雄",
+  "create": false,
+  "redirect": "/association/activities/"
+ },
+ {
+  "src": "docs/about/locations/taichung.md",
+  "old": "/docs/about/locations/taichung/",
+  "title": "台中",
+  "create": false,
+  "redirect": "/association/activities/"
+ },
+ {
+  "src": "docs/about/locations/taipei.md",
+  "old": "/docs/about/locations/taipei/",
+  "title": "台北",
+  "create": false,
+  "redirect": "/association/activities/"
+ },
+ {
+  "src": "docs/about/locations/yunlin.md",
+  "old": "/docs/about/locations/yunlin/",
+  "title": "雲林",
+  "create": false,
+  "redirect": "/association/activities/"
+ },
+ {
+  "src": "docs/about/meetings.md",
+  "old": "/docs/about/meetings/",
+  "title": "會議記錄",
+  "create": false,
+  "redirect": "/association/about/"
+ },
+ {
+  "src": "docs/about/members/accountant.md",
+  "old": "/docs/about/members/accountant/",
+  "title": "會計",
+  "create": false,
+  "redirect": "/association/members/"
+ },
+ {
+  "src": "docs/about/members/chairman.md",
+  "old": "/docs/about/members/chairman/",
+  "title": "理事長",
+  "create": false,
+  "redirect": "/association/members/lightman-chang/"
+ },
+ {
+  "src": "docs/about/members/directors.md",
+  "old": "/docs/about/members/directors/",
+  "title": "理事",
+  "create": false,
+  "redirect": "/association/members/"
+ },
+ {
+  "src": "docs/about/members/founding/a-mei-chen.md",
+  "old": "/docs/about/members/founding/a-mei-chen/",
+  "title": "陳阿美",
+  "create": true,
+  "redirect": "/association/members/a-mei-chen/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/ai-lin-hsiao.md",
+  "old": "/docs/about/members/founding/ai-lin-hsiao/",
+  "title": "蕭愛霖",
+  "create": true,
+  "redirect": "/association/members/ai-lin-hsiao/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/bing-chen-chen.md",
+  "old": "/docs/about/members/founding/bing-chen-chen/",
+  "title": "陳秉辰",
+  "create": true,
+  "redirect": "/association/members/bing-chen-chen/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/bo-jen-tsai.md",
+  "old": "/docs/about/members/founding/bo-jen-tsai/",
+  "title": "蔡博仁",
+  "create": true,
+  "redirect": "/association/members/bo-jen-tsai/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/bo-yang-cheng.md",
+  "old": "/docs/about/members/founding/bo-yang-cheng/",
+  "title": "鄭博陽",
+  "create": true,
+  "redirect": "/association/members/bo-yang-cheng/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/chao-hsueh-tsai.md",
+  "old": "/docs/about/members/founding/chao-hsueh-tsai/",
+  "title": "蔡昭雪",
+  "create": true,
+  "redirect": "/association/members/chao-hsueh-tsai/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/cheng-wei-hsiao.md",
+  "old": "/docs/about/members/founding/cheng-wei-hsiao/",
+  "title": "蕭誠緯",
+  "create": true,
+  "redirect": "/association/members/cheng-wei-hsiao/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/da-feng-hsia.md",
+  "old": "/docs/about/members/founding/da-feng-hsia/",
+  "title": "夏大峯",
+  "create": true,
+  "redirect": "/association/members/da-feng-hsia/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/dawn-lee.md",
+  "old": "/docs/about/members/founding/dawn-lee/",
+  "title": "李郁萱",
+  "create": true,
+  "redirect": "/association/members/dawn-lee/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/fang-chuan-wu.md",
+  "old": "/docs/about/members/founding/fang-chuan-wu/",
+  "title": "吳芳圳",
+  "create": true,
+  "redirect": "/association/members/fang-chuan-wu/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/feng-hao-chiang.md",
+  "old": "/docs/about/members/founding/feng-hao-chiang/",
+  "title": "姜封豪",
+  "create": true,
+  "redirect": "/association/members/feng-hao-chiang/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/hao-de-lin.md",
+  "old": "/docs/about/members/founding/hao-de-lin/",
+  "title": "林昊德",
+  "create": true,
+  "redirect": "/association/members/hao-de-lin/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/hsuan-ju-wu.md",
+  "old": "/docs/about/members/founding/hsuan-ju-wu/",
+  "title": "吳軒儒",
+  "create": true,
+  "redirect": "/association/members/hsuan-ju-wu/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/ian-kuo.md",
+  "old": "/docs/about/members/founding/ian-kuo/",
+  "title": "郭尚諺",
+  "create": true,
+  "redirect": "/association/members/ian-kuo/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/index.md",
+  "old": "/docs/about/members/founding/",
+  "title": "創始會員",
+  "create": false,
+  "redirect": "/association/members/"
+ },
+ {
+  "src": "docs/about/members/founding/james-liao.md",
+  "old": "/docs/about/members/founding/james-liao/",
+  "title": "廖宜鋒",
+  "create": true,
+  "redirect": "/association/members/james-liao/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/jing-chi-wang.md",
+  "old": "/docs/about/members/founding/jing-chi-wang/",
+  "title": "王瀞祺",
+  "create": true,
+  "redirect": "/association/members/jing-chi-wang/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/jing-da.md",
+  "old": "/docs/about/members/founding/jing-da/",
+  "title": "敬達",
+  "create": true,
+  "redirect": "/association/members/jing-da/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/jing-yan-chou.md",
+  "old": "/docs/about/members/founding/jing-yan-chou/",
+  "title": "周敬彥",
+  "create": true,
+  "redirect": "/association/members/jing-yan-chou/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/lightman-chang.md",
+  "old": "/docs/about/members/founding/lightman-chang/",
+  "title": "張饒輝",
+  "create": true,
+  "redirect": "/association/members/lightman-chang/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/mao-zi.md",
+  "old": "/docs/about/members/founding/mao-zi/",
+  "title": "毛子",
+  "create": true,
+  "redirect": "/association/members/mao-zi/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/shang-hao-lee.md",
+  "old": "/docs/about/members/founding/shang-hao-lee/",
+  "title": "李尚澔",
+  "create": true,
+  "redirect": "/association/members/shang-hao-lee/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/sih-jie-chou.md",
+  "old": "/docs/about/members/founding/sih-jie-chou/",
+  "title": "周思傑",
+  "create": true,
+  "redirect": "/association/members/sih-jie-chou/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/tien-chien-pan.md",
+  "old": "/docs/about/members/founding/tien-chien-pan/",
+  "title": "潘天健",
+  "create": true,
+  "redirect": "/association/members/tien-chien-pan/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/wei-chiu.md",
+  "old": "/docs/about/members/founding/wei-chiu/",
+  "title": "邱尚偉",
+  "create": true,
+  "redirect": "/association/members/wei-chiu/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/wu-di.md",
+  "old": "/docs/about/members/founding/wu-di/",
+  "title": "吳荻",
+  "create": true,
+  "redirect": "/association/members/wu-di/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/xin-wei-lin.md",
+  "old": "/docs/about/members/founding/xin-wei-lin/",
+  "title": "林新為",
+  "create": true,
+  "redirect": "/association/members/xin-wei-lin/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/ya-he.md",
+  "old": "/docs/about/members/founding/ya-he/",
+  "title": "亞何",
+  "create": true,
+  "redirect": "/association/members/ya-he/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/yang-luo.md",
+  "old": "/docs/about/members/founding/yang-luo/",
+  "title": "羅揚",
+  "create": true,
+  "redirect": "/association/members/yang-luo/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/yi-chao-hsieh.md",
+  "old": "/docs/about/members/founding/yi-chao-hsieh/",
+  "title": "謝一肇",
+  "create": true,
+  "redirect": "/association/members/yi-chao-hsieh/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/yi-chun-hsieh.md",
+  "old": "/docs/about/members/founding/yi-chun-hsieh/",
+  "title": "謝依純",
+  "create": true,
+  "redirect": "/association/members/yi-chun-hsieh/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/yi-fang-wu.md",
+  "old": "/docs/about/members/founding/yi-fang-wu/",
+  "title": "吳宜芳",
+  "create": true,
+  "redirect": "/association/members/yi-fang-wu/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/yi-hsuan-yen.md",
+  "old": "/docs/about/members/founding/yi-hsuan-yen/",
+  "title": "顏怡璇",
+  "create": true,
+  "redirect": "/association/members/yi-hsuan-yen/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/yi-wan-chan.md",
+  "old": "/docs/about/members/founding/yi-wan-chan/",
+  "title": "詹益萬",
+  "create": true,
+  "redirect": "/association/members/yi-wan-chan/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/ying-ping-huang.md",
+  "old": "/docs/about/members/founding/ying-ping-huang/",
+  "title": "黃英屏",
+  "create": true,
+  "redirect": "/association/members/ying-ping-huang/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/yu-ling-chen.md",
+  "old": "/docs/about/members/founding/yu-ling-chen/",
+  "title": "陳于玲",
+  "create": true,
+  "redirect": "/association/members/yu-ling-chen/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/zhen-zhao.md",
+  "old": "/docs/about/members/founding/zhen-zhao/",
+  "title": "趙珍",
+  "create": true,
+  "redirect": "/association/members/zhen-zhao/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/founding/zi-yan-huang.md",
+  "old": "/docs/about/members/founding/zi-yan-huang/",
+  "title": "黃子彥",
+  "create": true,
+  "redirect": "/association/members/zi-yan-huang/",
+  "kind": "member"
+ },
+ {
+  "src": "docs/about/members/index.md",
+  "old": "/docs/about/members/",
+  "title": "會員介紹",
+  "create": false,
+  "redirect": "/association/members/"
+ },
+ {
+  "src": "docs/about/members/secretary.md",
+  "old": "/docs/about/members/secretary/",
+  "title": "秘書長",
+  "create": false,
+  "redirect": "/association/members/"
+ },
+ {
+  "src": "docs/about/members/supervisors.md",
+  "old": "/docs/about/members/supervisors/",
+  "title": "監事",
+  "create": false,
+  "redirect": "/association/members/"
+ },
+ {
+  "src": "docs/alphago/01-birth-of-alphago.mdx",
+  "old": "/docs/alphago/birth-of-alphago/",
+  "title": "AlphaGo 的誕生",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/birth-of-alphago/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/02-key-matches.mdx",
+  "old": "/docs/alphago/key-matches/",
+  "title": "關鍵對局回顧",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/key-matches/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/03-move-37.mdx",
+  "old": "/docs/alphago/move-37/",
+  "title": "「神之一手」深度分析",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/move-37/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/04-why-go-is-hard.mdx",
+  "old": "/docs/alphago/why-go-is-hard/",
+  "title": "圍棋為什麼難？",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/why-go-is-hard/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/05-traditional-limits.mdx",
+  "old": "/docs/alphago/traditional-limits/",
+  "title": "傳統方法的極限",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/traditional-limits/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/06-board-representation.mdx",
+  "old": "/docs/alphago/board-representation/",
+  "title": "棋盤狀態表示",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/board-representation/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/07-policy-network.mdx",
+  "old": "/docs/alphago/policy-network/",
+  "title": "Policy Network 詳解",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/policy-network/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/08-value-network.mdx",
+  "old": "/docs/alphago/value-network/",
+  "title": "Value Network 詳解",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/value-network/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/09-input-features.mdx",
+  "old": "/docs/alphago/input-features/",
+  "title": "輸入特徵設計",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/input-features/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/10-cnn-and-go.mdx",
+  "old": "/docs/alphago/cnn-and-go/",
+  "title": "CNN 與圍棋的結合",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/cnn-and-go/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/11-supervised-learning.mdx",
+  "old": "/docs/alphago/supervised-learning/",
+  "title": "監督學習階段",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/supervised-learning/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/12-reinforcement-intro.mdx",
+  "old": "/docs/alphago/reinforcement-intro/",
+  "title": "強化學習入門",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/reinforcement-intro/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/13-self-play.mdx",
+  "old": "/docs/alphago/self-play/",
+  "title": "自我對弈",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/self-play/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/14-mcts-neural-combo.mdx",
+  "old": "/docs/alphago/mcts-neural-combo/",
+  "title": "MCTS 與神經網路的結合",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/mcts-neural-combo/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/15-puct-formula.mdx",
+  "old": "/docs/alphago/puct-formula/",
+  "title": "PUCT 公式詳解",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/puct-formula/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/16-alphago-zero.mdx",
+  "old": "/docs/alphago/alphago-zero/",
+  "title": "AlphaGo Zero 概述",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/alphago-zero/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/17-dual-head-resnet.mdx",
+  "old": "/docs/alphago/dual-head-resnet/",
+  "title": "雙頭網路與殘差網路",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/dual-head-resnet/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/18-training-from-scratch.mdx",
+  "old": "/docs/alphago/training-from-scratch/",
+  "title": "從零訓練的過程",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/training-from-scratch/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/19-distributed-systems.mdx",
+  "old": "/docs/alphago/distributed-systems/",
+  "title": "分散式系統與 TPU",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/distributed-systems/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/20-legacy-and-impact.mdx",
+  "old": "/docs/alphago/legacy-and-impact/",
+  "title": "AlphaGo 的遺產",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/legacy-and-impact/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/alphago/index.md",
+  "old": "/docs/alphago/",
+  "title": "AlphaGo",
+  "create": true,
+  "redirect": "/knowledge/ai-go/alphago/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/animations/index.md",
+  "old": "/docs/animations/",
+  "title": "動畫教室",
+  "create": true,
+  "redirect": "/knowledge/interactive/animations/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/learn/ai-era/changes.md",
+  "old": "/docs/learn/ai-era/changes/",
+  "title": "AI 帶來的變化",
+  "create": true,
+  "redirect": "/knowledge/ai/changes/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/learn/ai-era/index.md",
+  "old": "/docs/learn/ai-era/",
+  "title": "AI 時代",
+  "create": true,
+  "redirect": "/knowledge/ai/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/learn/ai-era/learning-with-ai.md",
+  "old": "/docs/learn/ai-era/learning-with-ai/",
+  "title": "用 AI 學棋",
+  "create": true,
+  "redirect": "/knowledge/ai/learning-with-ai/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/learn/history/ai-history/alphago-era.md",
+  "old": "/docs/learn/history/ai-history/alphago-era/",
+  "title": "AlphaGo 時代",
+  "create": true,
+  "redirect": "/knowledge/ai-go/history/alphago-era/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/learn/history/ai-history/index.md",
+  "old": "/docs/learn/history/ai-history/",
+  "title": "AI 圍棋發展史",
+  "create": true,
+  "redirect": "/knowledge/ai-go/history/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/learn/history/ai-history/katago-era.md",
+  "old": "/docs/learn/history/ai-history/katago-era/",
+  "title": "KataGo 時代",
+  "create": true,
+  "redirect": "/knowledge/ai-go/history/katago-era/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/learn/history/human-history/ancient.md",
+  "old": "/docs/learn/history/human-history/ancient/",
+  "title": "古代圍棋",
+  "create": true,
+  "redirect": "/knowledge/go/history/ancient/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/learn/history/human-history/index.md",
+  "old": "/docs/learn/history/human-history/",
+  "title": "人類圍棋發展史",
+  "create": true,
+  "redirect": "/knowledge/go/history/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/learn/history/human-history/japan-china-korea.md",
+  "old": "/docs/learn/history/human-history/japan-china-korea/",
+  "title": "近現代圍棋",
+  "create": true,
+  "redirect": "/knowledge/go/history/japan-china-korea/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/learn/history/index.md",
+  "old": "/docs/learn/history/",
+  "title": "圍棋 AI 演進整理",
+  "create": true,
+  "redirect": "/knowledge/ai-go/evolution/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/learn/index.md",
+  "old": "/docs/learn/",
+  "title": "學圍棋",
+  "create": true,
+  "redirect": "/knowledge/go/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/learn/introduction/etiquette.md",
+  "old": "/docs/learn/introduction/etiquette/",
+  "title": "對弈禮儀",
+  "create": true,
+  "redirect": "/knowledge/go/introduction/etiquette/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/learn/introduction/first-10-moves.md",
+  "old": "/docs/learn/introduction/first-10-moves/",
+  "title": "開局概念",
+  "create": true,
+  "redirect": "/knowledge/go/introduction/first-10-moves/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/learn/introduction/index.md",
+  "old": "/docs/learn/introduction/",
+  "title": "入門篇",
+  "create": true,
+  "redirect": "/knowledge/go/introduction/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/learn/introduction/rules.md",
+  "old": "/docs/learn/introduction/rules/",
+  "title": "圍棋規則",
+  "create": true,
+  "redirect": "/knowledge/go/introduction/rules/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/learn/introduction/terminology.md",
+  "old": "/docs/learn/introduction/terminology/",
+  "title": "圍棋術語",
+  "create": true,
+  "redirect": "/knowledge/go/introduction/terminology/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/deep-dive/build-from-scratch.md",
+  "old": "/docs/tech/deep-dive/build-from-scratch/",
+  "title": "從零打造圍棋 AI",
+  "create": true,
+  "redirect": "/knowledge/ai-go/technical/build-from-scratch/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/deep-dive/contributing.md",
+  "old": "/docs/tech/deep-dive/contributing/",
+  "title": "參與開源社群",
+  "create": true,
+  "redirect": "/knowledge/ai-go/technical/contributing/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/deep-dive/custom-rules.md",
+  "old": "/docs/tech/deep-dive/custom-rules/",
+  "title": "自訂規則與變體",
+  "create": true,
+  "redirect": "/knowledge/ai-go/technical/custom-rules/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/deep-dive/distributed-training.md",
+  "old": "/docs/tech/deep-dive/distributed-training/",
+  "title": "分散式訓練架構",
+  "create": true,
+  "redirect": "/knowledge/ai-go/technical/distributed-training/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/deep-dive/evaluation.md",
+  "old": "/docs/tech/deep-dive/evaluation/",
+  "title": "評估與基準測試",
+  "create": true,
+  "redirect": "/knowledge/ai-go/technical/evaluation/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/deep-dive/gpu-optimization.md",
+  "old": "/docs/tech/deep-dive/gpu-optimization/",
+  "title": "GPU 後端與優化",
+  "create": true,
+  "redirect": "/knowledge/ai-go/technical/gpu-optimization/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/deep-dive/index.md",
+  "old": "/docs/tech/deep-dive/",
+  "title": "給想深入研究的人",
+  "create": true,
+  "redirect": "/knowledge/ai-go/technical/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/deep-dive/mcts-implementation.md",
+  "old": "/docs/tech/deep-dive/mcts-implementation/",
+  "title": "MCTS 實作細節",
+  "create": true,
+  "redirect": "/knowledge/ai-go/technical/mcts-implementation/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/deep-dive/neural-network.md",
+  "old": "/docs/tech/deep-dive/neural-network/",
+  "title": "神經網路架構詳解",
+  "create": true,
+  "redirect": "/knowledge/ai-go/technical/neural-network/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/deep-dive/papers.md",
+  "old": "/docs/tech/deep-dive/papers/",
+  "title": "關鍵論文導讀",
+  "create": true,
+  "redirect": "/knowledge/ai-go/technical/papers/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/deep-dive/quantization-deploy.md",
+  "old": "/docs/tech/deep-dive/quantization-deploy/",
+  "title": "模型量化與部署",
+  "create": true,
+  "redirect": "/knowledge/ai-go/technical/quantization-deploy/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/deep-dive/source-code.md",
+  "old": "/docs/tech/deep-dive/source-code/",
+  "title": "KataGo 原始碼導讀",
+  "create": true,
+  "redirect": "/knowledge/ai-go/technical/source-code/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/deep-dive/training.md",
+  "old": "/docs/tech/deep-dive/training/",
+  "title": "KataGo 訓練機制解析",
+  "create": true,
+  "redirect": "/knowledge/ai-go/technical/training/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/hands-on/basic-usage.md",
+  "old": "/docs/tech/hands-on/basic-usage/",
+  "title": "基本使用",
+  "create": true,
+  "redirect": "/knowledge/ai-go/kata-go/hands-on/basic-usage/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/hands-on/index.md",
+  "old": "/docs/tech/hands-on/",
+  "title": "30 分鐘跑起第一個圍棋 AI",
+  "create": true,
+  "redirect": "/knowledge/ai-go/kata-go/hands-on/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/hands-on/integration.md",
+  "old": "/docs/tech/hands-on/integration/",
+  "title": "整合到你的專案",
+  "create": true,
+  "redirect": "/knowledge/ai-go/kata-go/hands-on/integration/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/hands-on/setup.md",
+  "old": "/docs/tech/hands-on/setup/",
+  "title": "完整安裝指南",
+  "create": true,
+  "redirect": "/knowledge/ai-go/kata-go/hands-on/setup/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/how-it-works/index.md",
+  "old": "/docs/tech/how-it-works/",
+  "title": "一篇文章搞懂圍棋 AI",
+  "create": true,
+  "redirect": "/knowledge/ai-go/how-it-works/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/how-it-works/katago-innovations.md",
+  "old": "/docs/tech/how-it-works/katago-innovations/",
+  "title": "KataGo 的關鍵創新",
+  "create": true,
+  "redirect": "/knowledge/ai-go/how-it-works/katago-innovations/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/index.md",
+  "old": "/docs/tech/",
+  "title": "技術文件",
+  "create": true,
+  "redirect": "/knowledge/ai-go/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/industry/ai-transformation.md",
+  "old": "/docs/tech/industry/ai-transformation/",
+  "title": "AI 轉型啟示",
+  "create": true,
+  "redirect": "/knowledge/ai/industry/ai-transformation/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/industry/applications.md",
+  "old": "/docs/tech/industry/applications/",
+  "title": "實際應用案例",
+  "create": true,
+  "redirect": "/knowledge/ai/industry/applications/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/industry/index.md",
+  "old": "/docs/tech/industry/",
+  "title": "圍棋 AI 產業現況",
+  "create": true,
+  "redirect": "/knowledge/ai/industry/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/industry/taiwan.md",
+  "old": "/docs/tech/industry/taiwan/",
+  "title": "台灣案例",
+  "create": true,
+  "redirect": "/knowledge/ai/industry/taiwan/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/overview/index.md",
+  "old": "/docs/tech/overview/",
+  "title": "圍棋 AI 能做什麼？",
+  "create": true,
+  "redirect": "/knowledge/ai-go/overview/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/overview/landscape.md",
+  "old": "/docs/tech/overview/landscape/",
+  "title": "生態全景圖",
+  "create": true,
+  "redirect": "/knowledge/ai-go/overview/landscape/",
+  "kind": "knowledge"
+ },
+ {
+  "src": "docs/tech/overview/timeline.md",
+  "old": "/docs/tech/overview/timeline/",
+  "title": "發展時間軸",
+  "create": true,
+  "redirect": "/knowledge/ai-go/overview/timeline/",
+  "kind": "knowledge"
+ },
+ {
+  "src": null,
+  "old": "/docs/intro/",
+  "title": null,
+  "create": false,
+  "redirect": "/"
+ },
+ {
+  "src": null,
+  "old": "/apps/",
+  "title": null,
+  "create": false,
+  "redirect": "/camp/topics/ai-applications/"
+ },
+ {
+  "src": null,
+  "old": "/intel/",
+  "title": null,
+  "create": false,
+  "redirect": "/camp/topics/supply-chain-intelligence/"
+ },
+ {
+  "src": null,
+  "old": "/research/",
+  "title": null,
+  "create": false,
+  "redirect": "/camp/topics/research-publication/"
+ },
+ {
+  "src": null,
+  "old": "/faq/",
+  "title": null,
+  "create": false,
+  "redirect": "/camp/faq/"
+ },
+ {
+  "src": null,
+  "old": "/impact-report/2026/",
+  "title": null,
+  "create": false,
+  "redirect": "/association/history/"
+ },
+ {
+  "src": null,
+  "old": "/search/",
+  "title": null,
+  "create": false,
+  "redirect": "/knowledge/"
+ },
+ {
+  "src": null,
+  "old": "/docs/",
+  "title": null,
+  "create": false,
+  "redirect": "/knowledge/"
+ }
+]

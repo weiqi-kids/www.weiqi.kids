@@ -1,0 +1,102 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { allPages, breadcrumbsFor, childrenOf, parentPath, type Page } from '../lib/pages';
+import { site } from '../data/site.js';
+import { founders } from '../data/legacy/members.js';
+
+export async function getStaticPaths() {
+  const pages = await allPages();
+  return pages.map((page) => ({ params: { path: page.data.path.replace(/^\/|\/$/g, '') }, props: { page } }));
+}
+
+const { page } = Astro.props as { page: Page };
+const pages = await allPages();
+const { Content } = await render(page);
+const d = page.data;
+const crumbs = breadcrumbsFor(d.path, d.title, pages);
+const children = childrenOf(d.path, pages);
+const parent = parentPath(d.path, pages);
+const siblings = parent ? childrenOf(parent, pages) : [];
+const idx = siblings.findIndex((s) => s.data.path === d.path);
+const prev = d.kind === 'knowledge' && idx > 0 ? siblings[idx - 1] : null;
+const next = d.kind === 'knowledge' && idx >= 0 && idx < siblings.length - 1 ? siblings[idx + 1] : null;
+const url = new URL(d.path, Astro.site).href;
+
+const slug = d.path.split('/').filter(Boolean).at(-1);
+const member = d.kind === 'member' || d.kind === 'partner' ? founders.find((f) => f.slug === slug) : null;
+
+const schema: Record<string, unknown>[] = [];
+if (d.kind === 'knowledge') {
+  schema.push({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: d.title,
+    description: d.description,
+    inLanguage: 'zh-Hant-TW',
+    datePublished: d.datePublished?.toISOString(),
+    dateModified: (d.dateModified ?? d.datePublished)?.toISOString(),
+    author: { '@id': `${site.url}/#organization` },
+    publisher: { '@id': `${site.url}/#organization` },
+    isAccessibleForFree: true,
+    mainEntityOfPage: url,
+    keywords: d.keywords?.join(', '),
+    isPartOf: { '@type': 'WebSite', name: site.name, url: `${site.url}/` },
+  });
+} else if (d.kind === 'member' || d.kind === 'partner') {
+  schema.push({
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: member?.name ?? d.title,
+    ...(member?.enName ? { alternateName: member.enName } : {}),
+    ...(member?.title ? { jobTitle: member.title } : {}),
+    ...(member?.org && member.org !== '資料補充中' ? { worksFor: { '@type': 'Organization', name: member.org } } : {}),
+    ...(d.kind === 'member' ? { memberOf: { '@id': `${site.url}/#organization` } } : {}),
+    url,
+    ...(member?.photo ? { image: new URL(`/img/members/${member.slug}.${member.photo}`, Astro.site).href } : {}),
+  });
+}
+---
+<BaseLayout
+  title={d.title}
+  description={d.description}
+  breadcrumbs={crumbs}
+  schema={schema}
+  ogType={d.kind === 'knowledge' ? 'article' : 'website'}
+  published={d.datePublished}
+  modified={d.dateModified ?? d.datePublished}
+>
+  <article class="prose">
+    <h1>{d.title}</h1>
+    {d.kind === 'knowledge' && d.dateModified && (
+      <p class="meta muted">最後更新：<time datetime={d.dateModified.toISOString().slice(0, 10)}>{d.dateModified.toISOString().slice(0, 10)}</time>．{site.name}整理</p>
+    )}
+    {member && member.org && member.org !== '資料補充中' && (
+      <p class="meta muted">{[member.title, member.org].filter(Boolean).join('．')}</p>
+    )}
+    <Content />
+  </article>
+
+  {children.length > 0 && (
+    <section class="children">
+      <h2>這個單元的文章</h2>
+      <ul class="card-grid">
+        {children.map((c) => (
+          <li><a class="card" href={c.data.path}><h3>{c.data.title}</h3>{c.data.description && <p class="muted">{c.data.description}</p>}</a></li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {(prev || next) && (
+    <nav class="pager" aria-label="上一篇與下一篇">
+      {prev ? <a href={prev.data.path}>← {prev.data.title}</a> : <span />}
+      {next ? <a href={next.data.path}>{next.data.title} →</a> : <span />}
+    </nav>
+  )}
+</BaseLayout>
+<style>
+  .meta { font-size: var(--text-xs); }
+  .children { margin-top: var(--space-12); }
+  .pager { display: flex; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-line); flex-wrap: wrap; }
+</style>

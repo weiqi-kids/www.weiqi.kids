@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LineContact from '../../components/LineContact.astro';
+import { courseRules } from '../../data/site.js';
+const steps = [
+  { name: '選一門開放報名的課程', text: '在「正式課程」頁選課，填寫報名表。送出後會拿到一組報名編號。' },
+  { name: '透過協會 LINE@ 附報名編號匯款', text: `每門課 ${courseRules.fee.toLocaleString('zh-TW')} 元。匯款紀錄與其他私密資料只透過協會 LINE@ 提交，不在網站上傳。` },
+  { name: '協會核款並開通課程', text: '協會人工核對款項後開通該課教材。第一次報名的人，在這一步同時成為協會會員。' },
+  { name: '參加第 1 堂主題教學', text: '講師講授主題，並交付全部技能單張。' },
+  { name: '自行選擇加入實作營', text: '取得課程資格後，可以自己加入該課實作營，參加第 2～4 堂實作，在課程論壇分享作品。' },
+  { name: '結營後持續交流', text: '一個月後結營，課程論壇保留，原課程成員可以繼續發文與互動。' },
+];
+const howto = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: '如何參加 AI 共學營',
+  totalTime: 'P1M',
+  estimatedCost: { '@type': 'MonetaryAmount', currency: 'TWD', value: courseRules.fee },
+  step: steps.map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.name, text: s.text })),
+};
+---
+<BaseLayout title="AI 共學營參加流程" description={`AI 共學營從報名到結營的流程：報名取得編號、LINE@ 附編號匯款 ${courseRules.fee.toLocaleString('zh-TW')} 元、協會核款開通、主題教學、自選加入實作營、結營後持續交流。`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '參加流程', href: '/camp/how-it-works/' }]} schema={[howto]}>
+  <article class="prose">
+    <h1>參加流程</h1>
+    <div class="key-answer" data-question="參加 AI 共學營要做哪些事？">
+      <p>報名取得編號，透過協會 LINE@ 附編號匯款，等協會核款開通，就可以上第 1 堂主題教學並自選加入實作營。整門課為期{courseRules.duration}。</p>
+    </div>
+    <ol class="steps actionable-steps">
+      {steps.map((s) => <li><strong>{s.name}</strong><p>{s.text}</p></li>)}
+    </ol>
+
+    <h2>費用與會員</h2>
+    <dl class="facts">
+      <dt>第一次報名</dt><dd>{courseRules.fee.toLocaleString('zh-TW')} 元，含入會與第一門課</dd>
+      <dt>之後每門新課</dt><dd>{courseRules.fee.toLocaleString('zh-TW')} 元，既有會員同價</dd>
+      <dt>會員效期</dt><dd>{courseRules.membershipTerm}，一年一續會</dd>
+      <dt>會員到期後</dt><dd>已上過的課程、作品與討論紀錄都保留；報名新課需要有效會員資格</dd>
+    </dl>
+
+    <h2>提交匯款紀錄</h2>
+    <p>匯款紀錄請傳到 <LineContact />，並附上報名編號。傳出匯款紀錄不代表已經開通，請等協會核款後的通知。</p>
+  </article>
+</BaseLayout>
+<style>
+  .steps li { margin-bottom: var(--space-4); }
+  .steps p { margin: 0; }
+</style>

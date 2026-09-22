@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import LineContact from '../../../../components/LineContact.astro';
+import { type CollectionEntry } from 'astro:content';
+import { publicCourses, fmtDate } from '../../../../lib/courses';
+
+export async function getStaticPaths() {
+  return (await publicCourses()).filter((c) => c.data.status === 'open').map((course) => ({ params: { slug: course.data.slug }, props: { course } }));
+}
+const { course } = Astro.props as { course: CollectionEntry<'courses'> };
+const c = course.data;
+const path = `/camp/courses/${c.slug}/`;
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+---
+<BaseLayout title={`報名：${c.title}`} description={`報名 AI 共學營課程「${c.title}」。`} noindex breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '正式課程', href: '/camp/courses/' }, { name: c.title, href: path }, { name: '報名', href: `${path}enroll/` }]}>
+  <div class="prose">
+    <h1>報名：{c.title}</h1>
+    <p>{fmtDate(c.startDate)}開始．{c.fee.toLocaleString('zh-TW')} 元。送出後會顯示報名編號，請附編號透過 <LineContact /> 提交匯款紀錄。</p>
+
+    <form id="enroll" method="post" action="/api/enrollments/" data-course={c.slug}>
+      <input type="hidden" name="course" value={c.slug} />
+      <div class="form-field">
+        <label for="name">姓名</label>
+        <input id="name" name="name" required maxlength="60" autocomplete="name" />
+      </div>
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required maxlength="120" autocomplete="email" />
+        <span class="form-hint">協會用來通知開通結果。</span>
+      </div>
+      <div class="form-field">
+        <label for="lineName">LINE 顯示名稱（選填）</label>
+        <input id="lineName" name="lineName" maxlength="60" />
+        <span class="form-hint">方便協會在 LINE@ 對應你的匯款紀錄。</span>
+      </div>
+      <div class="form-field">
+        <label for="membership">會員身分</label>
+        <select id="membership" name="membership" required>
+          <option value="new">第一次報名（同時入會）</option>
+          <option value="member">已是協會會員</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="note">想先讓講師知道的事（選填）</label>
+        <textarea id="note" name="note" rows="3" maxlength="500"></textarea>
+      </div>
+      <div class="visually-hidden" aria-hidden="true">
+        <label for="website">請勿填寫</label>
+        <input id="website" name="website" tabindex="-1" autocomplete="off" />
+      </div>
+      <div class="form-field">
+        <label><input type="checkbox" name="consent" value="yes" required /> 我同意協會使用以上資料處理本次報名與開通通知。</label>
+      </div>
+      {turnstileSiteKey && <div class="cf-turnstile" data-sitekey={turnstileSiteKey}></div>}
+      <button class="btn" type="submit">送出報名</button>
+    </form>
+    <div id="result" role="status" aria-live="polite"></div>
+  </div>
+  {turnstileSiteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+  <script>
+    const form = document.getElementById('enroll') as HTMLFormElement | null;
+    const result = document.getElementById('result');
+    form?.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      if (!result) return;
+      const button = form.querySelector('button');
+      if (button) button.disabled = true;
+      result.className = 'notice';
+      result.textContent = '送出中…';
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || '送出失敗，請稍後再試。');
+        form.hidden = true;
+        result.innerHTML = '';
+        const h = document.createElement('p');
+        h.innerHTML = '<strong>已收到報名。你的報名編號是：</strong>';
+        const code = document.createElement('p');
+        code.className = 'enroll-code';
+        code.textContent = data.code;
+        const next = document.createElement('p');
+        next.textContent = `請把這組編號連同匯款紀錄傳到協會 LINE@。協會核款開通後會寄信到 ${data.email}。`;
+        result.append(h, code, next);
+      } catch (err) {
+        result.className = 'notice notice-error';
+        result.textContent = (err as Error).message;
+        if (button) button.disabled = false;
+      }
+    });
+  </script>
+</BaseLayout>
+<style>
+  form { margin-top: var(--space-6); }
+  #result { margin-top: var(--space-6); }
+  #result :global(.enroll-code) { font-size: var(--text-xl); font-family: var(--font-mono); font-weight: 700; }
+</style>

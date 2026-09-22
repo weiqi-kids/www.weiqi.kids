@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { publicCourses, STATUS_LABEL, fmtDate } from '../../../lib/courses';
+const courses = await publicCourses();
+---
+<BaseLayout title="AI 共學營正式課程" description="AI 共學營已排定日期與講師的正式課程。每門課 1 堂主題教學＋3 堂實作，為期一個月，6,000 元。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '正式課程', href: '/camp/courses/' }]}>
+  <div class="prose">
+    <h1>正式課程</h1>
+    {courses.length === 0 ? (
+      <div class="key-answer" data-question="目前有開放報名的課程嗎？">
+        <p>目前還沒有開放報名的課程。第一門課由第一位講師以正式開課流程建立，確定日期後會公布在這裡。可以先看<a href="/camp/topics/">課程主題</a>，了解可能開設的內容。</p>
+      </div>
+    ) : (
+      <p>以下是已排定的課程。報名後會拿到報名編號，再透過協會 LINE@ 附編號匯款。</p>
+    )}
+  </div>
+  {courses.length > 0 && (
+    <ul class="card-grid">
+      {courses.map((c) => (
+        <li>
+          <a class="card" href={`/camp/courses/${c.data.slug}/`}>
+            <p class="muted">{STATUS_LABEL[c.data.status]}</p>
+            <h2>{c.data.title}</h2>
+            <p>{fmtDate(c.data.startDate)}～{fmtDate(c.data.endDate)}．{c.data.location}</p>
+            <p class="muted">{c.data.summary}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>

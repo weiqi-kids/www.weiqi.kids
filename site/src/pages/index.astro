@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site, courseRules } from '../data/site.js';
+import { getCollection } from 'astro:content';
+const topics = (await getCollection('topics')).sort((a, b) => a.data.order - b.data.order);
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: site.name,
+  url: `${site.url}/`,
+  inLanguage: 'zh-Hant-TW',
+  publisher: { '@id': `${site.url}/#organization` },
+};
+---
+<BaseLayout title={site.name} description="台灣好棋寶寶協會是因圍棋結緣的跨產業會員團體，主辦好棋寶寶棋聚與 AI 共學營，並整理圍棋與 AI 的公開知識。" schema={[website]}>
+  <section class="hero">
+    <h1>因圍棋結緣，一起學會用 AI 做事</h1>
+    <p class="lead">台灣好棋寶寶協會的會員來自各行各業。協會辦兩種活動：以圍棋交流為主的「好棋寶寶棋聚」，以及會員一起實作 AI 應用的「AI 共學營」。</p>
+  </section>
+
+  <ul class="card-grid cols-3 services">
+    <li>
+      <a class="card" href="/association/">
+        <h2>協會</h2>
+        <p>認識協會、成員、合作夥伴與過去辦過的活動。</p>
+      </a>
+    </li>
+    <li>
+      <a class="card" href="/gatherings/">
+        <h2>好棋寶寶棋聚</h2>
+        <p>實體聚會、主題講座、友誼對局與新手交流。</p>
+      </a>
+    </li>
+    <li>
+      <a class="card" href="/camp/">
+        <h2>AI 共學營</h2>
+        <p>每門課 {courseRules.teaching} 堂主題教學加 {courseRules.practice} 堂實作，為期{courseRules.duration}。</p>
+      </a>
+    </li>
+  </ul>
+
+  <section>
+    <h2>AI 共學營怎麼進行</h2>
+    <div class="key-answer" data-question="AI 共學營怎麼參加？">
+      <p>每門課 {courseRules.fee.toLocaleString('zh-TW')} 元，第一次報名同時成為協會會員（會員效期一年）。課程包含 1 堂主題教學、全部技能單張與 3 堂實作，為期一個月；結營後原課程的成員仍可以在課程論壇繼續交流。</p>
+    </div>
+    <p><a class="btn" href="/camp/how-it-works/">看完整流程</a> <a class="btn btn-ghost" href="/camp/topics/">看課程主題</a></p>
+  </section>
+
+  <section>
+    <h2>課程主題</h2>
+    <ul class="card-grid">
+      {topics.map((t) => (
+        <li><a class="card" href={`/camp/topics/${t.data.slug}/`}><h3>{t.data.title}</h3><p>{t.data.summary}</p></a></li>
+      ))}
+    </ul>
+  </section>
+
+  <section>
+    <h2>公開知識</h2>
+    <p>圍棋入門、圍棋歷史、AlphaGo 與 KataGo 的原理和操作，全部公開閱讀。</p>
+    <p><a href="/knowledge/">進入公開知識</a></p>
+  </section>
+</BaseLayout>
+<style>
+  .hero { padding-block: var(--space-8) var(--space-6); max-width: var(--measure); }
+  .hero h1 { font-size: var(--text-3xl); }
+  .lead { font-size: var(--text-lg); color: var(--color-ink-soft); }
+  .services { margin-bottom: var(--space-12); }
+  section { margin-bottom: var(--space-12); }
+</style>

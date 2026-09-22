@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { founders } from '../../../data/legacy/members.js';
+import { allPages } from '../../../lib/pages';
+const pages = await allPages();
+const hasPage = new Set(pages.filter((p) => p.data.kind === 'member').map((p) => p.data.path));
+const list = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: '台灣好棋寶寶協會成員',
+  itemListElement: founders.map((m: any, i: number) => ({ '@type': 'ListItem', position: i + 1, name: m.name, url: new URL(`/association/members/${m.slug}/`, Astro.site).href })),
+};
+---
+<BaseLayout title="協會成員" description={`台灣好棋寶寶協會 ${founders.length} 位成員，來自醫療、法律、保險、設計、行銷、教育與圍棋等領域。`} breadcrumbs={[{ name: '協會', href: '/association/' }, { name: '成員', href: '/association/members/' }]} schema={[list]}>
+  <div class="prose">
+    <h1>協會成員</h1>
+    <div class="key-answer" data-question="台灣好棋寶寶協會有哪些成員？">
+      <p>協會目前有 {founders.length} 位成員，來自醫療、法律、保險、設計、行銷、教育與圍棋等領域。以下資料經成員授權公開。</p>
+    </div>
+  </div>
+  <ul class="card-grid cols-3">
+    {founders.map((m: any) => {
+      const href = `/association/members/${m.slug}/`;
+      const body = (
+        <>
+          <h2>{m.name}{m.enName && <span class="muted"> {m.enName}</span>}</h2>
+          {m.key5 && <p class="slogan">{m.key5}</p>}
+          <p class="muted">{[m.title, m.org !== '資料補充中' ? m.org : null].filter(Boolean).join('．') || '資料整理中'}</p>
+        </>
+      );
+      return <li>{hasPage.has(href) ? <a class="card" href={href}>{body}</a> : <div class="card">{body}</div>}</li>;
+    })}
+  </ul>
+</BaseLayout>
+<style>
+  .slogan { color: var(--color-primary); font-weight: 700; margin-bottom: var(--space-1); }
+  h2 { font-size: var(--text-lg); }
+</style>

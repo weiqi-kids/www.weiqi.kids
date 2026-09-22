@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site, courseRules } from '../../data/site.js';
+import { founders } from '../../data/legacy/members.js';
+---
+<BaseLayout title="協會介紹" description="台灣好棋寶寶協會的會員組成、主辦的好棋寶寶棋聚與 AI 共學營、會員制度與聯絡方式。" breadcrumbs={[{ name: '協會', href: '/association/' }, { name: '協會介紹', href: '/association/about/' }]}>
+  <article class="prose">
+    <h1>協會介紹</h1>
+    <div class="key-answer" data-question="台灣好棋寶寶協會在做什麼？">
+      <p>{site.legalName}（{site.alternateName}）由一群因圍棋結緣的各行各業人士組成，目前有 {founders.length} 位成員。協會主辦好棋寶寶棋聚與 AI 共學營，並整理圍棋與 AI 的公開知識。</p>
+    </div>
+
+    <h2>協會主辦的兩種活動</h2>
+    <div class="key-answer" data-question="好棋寶寶棋聚和 AI 共學營有什麼不同？">
+      <p>好棋寶寶棋聚是以圍棋交流為主的聚會，包含主題講座、友誼對局與新手交流。AI 共學營是會員的付費課程，每門課 1 堂主題教學加 3 堂實作，為期{courseRules.duration}。</p>
+    </div>
+    <ul>
+      <li><a href="/gatherings/">好棋寶寶棋聚</a></li>
+      <li><a href="/camp/">AI 共學營</a></li>
+    </ul>
+
+    <h2>會員制度</h2>
+    <div class="key-answer" data-question="怎麼成為協會會員？">
+      <p>第一次報名 AI 共學營課程，協會核款開通時同時成為會員。每門課 {courseRules.fee.toLocaleString('zh-TW')} 元，第一次的費用已包含入會；會員效期一年，一年一續會。</p>
+    </div>
+
+    <h2>公開知識</h2>
+    <p>協會把圍棋入門、圍棋歷史、AlphaGo 與 KataGo 的原理整理成<a href="/knowledge/">公開知識</a>，任何人都可以閱讀；共學營講師可以引用，但完整課程教材只提供給該課參與者。</p>
+
+    <h2>組織</h2>
+    <p>理事長：<a href="/association/members/lightman-chang/">張饒輝</a>。</p>
+
+    <h2>聯絡協會</h2>
+    <p>Email：<a href={`mailto:${site.email}`}>{site.email}</a></p>
+  </article>
+</BaseLayout>
