@@ -3,6 +3,7 @@ import AppLayout from '../../layouts/AppLayout.astro';
 import { db, audit } from '../../server/db';
 import { newId, nowIso } from '../../server/crypto';
 import { str } from '../../server/http';
+import { APPLICATION_STATUS, label } from '../../lib/labels';
 export const prerender = false;
 
 const me = Astro.locals.account;
@@ -35,7 +36,6 @@ if (Astro.request.method === 'POST' && editable) {
     app = await db().prepare('SELECT * FROM instructor_applications WHERE account_id = ? ORDER BY created_at DESC LIMIT 1').bind(me.id).first();
   }
 }
-const STATUS: Record<string, string> = { submitted: '審核中', changes_requested: '需要補件', approved: '已核准', rejected: '未通過' };
 const showForm = eligible && (!app || app.status === 'changes_requested' || app.status === 'rejected') && !message;
 const v = app && app.status === 'changes_requested' ? app : null;
 ---
@@ -45,7 +45,7 @@ const v = app && app.status === 'changes_requested' ? app : null;
     {message && <p class="notice">{message}</p>}
     {error && <p class="notice notice-error">{error}</p>}
     {!eligible && <p class="notice">需要先上過至少一門 6,000 元的標準課程，才能申請成為講師。</p>}
-    {app && !showForm && <p>目前狀態：<strong>{STATUS[app.status] ?? app.status}</strong>{app.review_note && `．協會意見：${app.review_note}`}</p>}
+    {app && !showForm && <p>目前狀態：<strong>{label(APPLICATION_STATUS, app.status)}</strong>{app.review_note && `．協會意見：${app.review_note}`}</p>}
     {app && app.status === 'approved' && <p>申請已核准。協會會和你一起建立正式課程與開課表單。</p>}
     {showForm && (
       <form method="post">

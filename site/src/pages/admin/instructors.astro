@@ -2,49 +2,80 @@
 import AdminLayout from '../../layouts/AdminLayout.astro';
 import { requireAdmin } from '../../server/guard';
 import { db } from '../../server/db';
-import { reviewApplication } from '../../server/admin';
+import { reviewApplication, addInstructor } from '../../server/admin';
+import { accountSummaries, loginLabel, APPLICATION_STATUS, label } from '../../server/admin-view';
+import { runtimeCourses } from '../../server/courses';
 import { str } from '../../server/http';
+import { fmtDate } from '../../lib/courses';
 export const prerender = false;
 const stop = requireAdmin(Astro); if (stop) return stop;
 const me = Astro.locals.account!;
 let message: string | null = null;
+let error: string | null = null;
 if (Astro.request.method === 'POST') {
   const form = await Astro.request.formData();
-  const status = str(form, 'status', 30);
-  if (status === 'approved' || status === 'changes_requested' || status === 'rejected') {
-    await reviewApplication(str(form, 'id', 60), me.id, status, str(form, 'note', 1000) || null);
-    message = '已更新審核結果並通知申請人。';
+  if (str(form, 'action', 20) === 'assign') {
+    const r = await addInstructor(str(form, 'course', 100), str(form, 'account', 60), me.id, null);
+    if (r.ok) message = '已指定為課程講師。'; else error = r.error;
+  } else {
+    const status = str(form, 'status', 30);
+    if (status === 'approved' || status === 'changes_requested' || status === 'rejected') {
+      await reviewApplication(str(form, 'id', 60), me.id, status, str(form, 'note', 1000) || null);
+      message = '已更新審核結果並通知申請人。';
+    }
   }
 }
 const { results } = await db().prepare(
-  `SELECT i.*, a.display_name FROM instructor_applications i JOIN accounts a ON a.id = i.account_id ORDER BY CASE i.status WHEN 'submitted' THEN 0 ELSE 1 END, i.updated_at DESC`,
-).all<{ id: string; account_id: string; display_name: string; profile: string; experience: string; topic: string; audience: string; proposal: string; status: string; review_note: string | null; updated_at: string }>();
+  `SELECT * FROM instructor_applications ORDER BY CASE status WHEN 'submitted' THEN 0 WHEN 'changes_requested' THEN 1 ELSE 2 END, updated_at DESC`,
+).all<{ id: string; account_id: string; profile: string; experience: string; topic: string; audience: string; proposal: string; status: string; review_note: string | null; created_at: string; updated_at: string }>();
+const people = await accountSummaries(results.map((r) => r.account_id));
+const courses = await runtimeCourses();
+const { results: staff } = await db().prepare('SELECT course_slug, account_id FROM course_staff').all<{ course_slug: string; account_id: string }>();
+const d = (iso: string) => fmtDate(new Date(iso));
 ---
 <AdminLayout title="講師申請">
   {message && <p class="notice">{message}</p>}
+  {error && <p class="notice notice-error">{error}</p>}
   {results.length === 0 && <p>沒有講師申請。</p>}
-  {results.map((r) => (
-    <article class="card app">
-      <h2>{r.display_name}：{r.topic}</h2>
-      <p class="muted">狀態：{r.status}．更新：{r.updated_at.slice(0, 10)}．帳號 <code>{r.account_id}</code></p>
-      <dl class="facts">
-        <dt>專業背景</dt><dd>{r.profile}</dd>
-        <dt>資格或經驗</dt><dd>{r.experience}</dd>
-        <dt>對象與問題</dt><dd>{r.audience}</dd>
-        <dt>課程構想</dt><dd class="pre">{r.proposal}</dd>
-      </dl>
-      {r.review_note && <p>上次意見：{r.review_note}</p>}
-      <form method="post">
-        <input type="hidden" name="id" value={r.id} />
-        <div class="form-field"><label>審核意見</label><textarea name="note" rows="2"></textarea></div>
-        <button class="btn" name="status" value="approved" type="submit">核准</button>
-        <button class="btn btn-ghost" name="status" value="changes_requested" type="submit">要求補件</button>
-        <button class="btn btn-ghost" name="status" value="rejected" type="submit">不核准</button>
-      </form>
-    </article>
-  ))}
+  {results.map((r) => {
+    const p = people.get(r.account_id);
+    const teaching = staff.filter((s) => s.account_id === r.account_id).map((s) => courses.find((c) => c.data.slug === s.course_slug)?.data.title ?? s.course_slug);
+    return (
+      <article class="card app">
+        <p class="muted">{label(APPLICATION_STATUS, r.status)}．{d(r.created_at)} 申請{r.updated_at !== r.created_at && `，${d(r.updated_at)} 更新`}</p>
+        <h2>{p?.name ?? '（帳號已不存在）'}：{r.topic}</h2>
+        <dl class="facts">
+          <dt>登入方式</dt><dd>{p ? loginLabel(p) : ''}</dd>
+          <dt>上過的課程</dt><dd>{p?.courses.length ? p.courses.join('、') : '沒有（不符申請資格）'}</dd>
+          <dt>專業背景</dt><dd class="pre">{r.profile}</dd>
+          <dt>資格或經驗</dt><dd class="pre">{r.experience}</dd>
+          <dt>對象與問題</dt><dd class="pre">{r.audience}</dd>
+          <dt>課程構想</dt><dd class="pre">{r.proposal}</dd>
+          {r.review_note && <><dt>上次審核意見</dt><dd>{r.review_note}</dd></>}
+          {teaching.length > 0 && <><dt>目前任教</dt><dd>{teaching.join('、')}</dd></>}
+        </dl>
+        {r.status !== 'approved' && (
+          <form method="post">
+            <input type="hidden" name="id" value={r.id} />
+            <div class="form-field"><label>審核意見（會通知申請人）</label><textarea name="note" rows="2"></textarea></div>
+            <button class="btn" name="status" value="approved" type="submit">核准</button>
+            <button class="btn btn-ghost" name="status" value="changes_requested" type="submit">要求補件</button>
+            <button class="btn btn-ghost" name="status" value="rejected" type="submit">不核准</button>
+          </form>
+        )}
+        {r.status === 'approved' && courses.length > 0 && (
+          <form method="post" class="assign">
+            <input type="hidden" name="action" value="assign" /><input type="hidden" name="account" value={r.account_id} />
+            <label>指定為課程講師：<select name="course">{courses.map((c) => <option value={c.data.slug}>{c.data.title}</option>)}</select></label>
+            <button class="btn btn-ghost" type="submit">指定</button>
+          </form>
+        )}
+      </article>
+    );
+  })}
 </AdminLayout>
 <style>
   .app { margin-bottom: var(--space-6); }
   .pre { white-space: pre-wrap; }
+  .assign { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
 </style>

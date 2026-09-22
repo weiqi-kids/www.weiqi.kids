@@ -4,6 +4,8 @@ import { requireAdmin } from '../../server/guard';
 import { db } from '../../server/db';
 import { resolveAppeal } from '../../server/admin';
 import { str } from '../../server/http';
+import { runtimeCourses } from '../../server/courses';
+import { fmtDateTime } from '../../server/admin-view';
 export const prerender = false;
 const stop = requireAdmin(Astro); if (stop) return stop;
 const me = Astro.locals.account!;
@@ -23,6 +25,7 @@ const { results: actions } = await db().prepare(
   `SELECT m.action, m.reason, m.actor_role, m.created_at, m.post_id, p.course_slug, p.parent_id, a.display_name AS actor
    FROM moderation_actions m JOIN posts p ON p.id = m.post_id JOIN accounts a ON a.id = m.actor_id ORDER BY m.created_at DESC LIMIT 100`,
 ).all<{ action: string; reason: string; actor_role: string; created_at: string; post_id: string; course_slug: string; parent_id: string | null; actor: string }>();
+const titles = new Map((await runtimeCourses()).map((c) => [c.data.slug, c.data.title]));
 const link = (slug: string, parent: string | null, id: string) => `/camp/courses/${slug}/forum/${parent ?? id}/#p-${id}`;
 ---
 <AdminLayout title="隱藏與申訴">
@@ -30,7 +33,7 @@ const link = (slug: string, parent: string | null, id: string) => `/camp/courses
   <h2>待處理申訴</h2>
   {appeals.length === 0 ? <p>沒有待處理的申訴。</p> : appeals.map((a) => (
     <article class="card">
-      <p><strong>{a.display_name}</strong>．{a.created_at.slice(0, 10)}．<a href={link(a.course_slug, a.parent_id, a.post_id)}>查看內容</a></p>
+      <p><strong>{a.display_name}</strong>．{fmtDateTime(a.created_at)}．{titles.get(a.course_slug) ?? a.course_slug}．<a href={link(a.course_slug, a.parent_id, a.post_id)}>查看內容</a></p>
       <p>申訴理由：{a.reason}</p>
       <form method="post">
         <input type="hidden" name="appeal" value={a.id} />
@@ -43,6 +46,6 @@ const link = (slug: string, parent: string | null, id: string) => `/camp/courses
   <h2>最近的隱藏／恢復紀錄</h2>
   <table class="admin-table">
     <thead><tr><th>時間</th><th>操作者</th><th>動作</th><th>原因</th><th>內容</th></tr></thead>
-    <tbody>{actions.map((m) => <tr><td>{m.created_at.slice(0, 16).replace('T', ' ')}</td><td>{m.actor}（{m.actor_role === 'admin' ? '管理員' : '講師'}）</td><td>{m.action === 'hide' ? '隱藏' : '恢復'}</td><td>{m.reason}</td><td><a href={link(m.course_slug, m.parent_id, m.post_id)}>{m.course_slug}</a></td></tr>)}</tbody>
+    <tbody>{actions.map((m) => <tr><td>{fmtDateTime(m.created_at)}</td><td>{m.actor}（{m.actor_role === 'admin' ? '管理員' : '講師'}）</td><td>{m.action === 'hide' ? '隱藏' : '恢復'}</td><td>{m.reason}</td><td><a href={link(m.course_slug, m.parent_id, m.post_id)}>{titles.get(m.course_slug) ?? m.course_slug}</a></td></tr>)}</tbody>
   </table>
 </AdminLayout>

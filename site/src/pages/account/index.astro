@@ -7,6 +7,7 @@ import { lineEnabled } from '../../server/line';
 import { runtimeCourses } from '../../server/courses';
 import { clientIpHash, str } from '../../server/http';
 import { fmtDate } from '../../lib/courses';
+import { ENROLLMENT_STATUS, APPLICATION_STATUS, label } from '../../lib/labels';
 export const prerender = false;
 
 const me = Astro.locals.account;
@@ -59,8 +60,7 @@ const { results: enrollments } = await db().prepare(
 ).bind(me.id, emailIdentity?.subject ?? '').all<{ code: string; course_slug: string; status: string; created_at: string }>();
 const { results: notes } = await db().prepare('SELECT message, link, created_at, read_at FROM notifications WHERE account_id = ? ORDER BY created_at DESC LIMIT 20').bind(me.id).all<{ message: string; link: string | null; created_at: string; read_at: string | null }>();
 const application = await db().prepare('SELECT status, review_note, updated_at FROM instructor_applications WHERE account_id = ? ORDER BY created_at DESC LIMIT 1').bind(me.id).first<{ status: string; review_note: string | null; updated_at: string }>();
-const STATUS: Record<string, string> = { submitted: '已送出，等待協會核款', paid: '已核款', activated: '已開通', cancelled: '已取消' };
-const APP_STATUS: Record<string, string> = { submitted: '審核中', changes_requested: '需要補件', approved: '已核准', rejected: '未通過' };
+const ENROLLMENT_STATUS_USER = { ...ENROLLMENT_STATUS, submitted: '已送出，等待協會核款' };
 const d = (iso: string) => fmtDate(new Date(iso));
 ---
 <AppLayout title="帳號">
@@ -93,13 +93,13 @@ const d = (iso: string) => fmtDate(new Date(iso));
 
     <h2>報名紀錄</h2>
     {enrollments.length === 0 ? <p>沒有報名紀錄。</p> : (
-      <ul>{enrollments.map((e) => <li><code>{e.code}</code>．{courseTitle(e.course_slug)}．{STATUS[e.status] ?? e.status}（{d(e.created_at)}）</li>)}</ul>
+      <ul>{enrollments.map((e) => <li><code>{e.code}</code>．{courseTitle(e.course_slug)}．{label(ENROLLMENT_STATUS_USER, e.status)}（{d(e.created_at)}）</li>)}</ul>
     )}
     {!emailIdentity && <p class="form-hint">報名時填的 Email 綁定到這個帳號後，報名紀錄才會顯示在這裡。</p>}
 
     <h2>講師申請</h2>
     {application
-      ? <p>狀態：{APP_STATUS[application.status] ?? application.status}{application.review_note && `．協會意見：${application.review_note}`}．<a href="/account/teaching/">查看或修改</a></p>
+      ? <p>狀態：{label(APPLICATION_STATUS, application.status)}{application.review_note && `．協會意見：${application.review_note}`}．<a href="/account/teaching/">查看或修改</a></p>
       : <p><a href="/account/teaching/">申請成為講師</a>（需先上過一門課程）</p>}
 
     <h2>登入方式</h2>

@@ -2,15 +2,41 @@
 import AdminLayout from '../../layouts/AdminLayout.astro';
 import { requireAdmin } from '../../server/guard';
 import { db } from '../../server/db';
+import { ACTION_LABEL, fmtDateTime } from '../../server/admin-view';
 export const prerender = false;
 const stop = requireAdmin(Astro); if (stop) return stop;
 const { results } = await db().prepare(
-  'SELECT l.created_at, l.action, l.target, l.detail, a.display_name FROM audit_log l LEFT JOIN accounts a ON a.id = l.actor_id ORDER BY l.id DESC LIMIT 300',
-).all<{ created_at: string; action: string; target: string | null; detail: string | null; display_name: string | null }>();
+  `SELECT l.created_at, l.action, l.target, l.detail, a.display_name AS actor, t.display_name AS target_name
+   FROM audit_log l LEFT JOIN accounts a ON a.id = l.actor_id LEFT JOIN accounts t ON t.id = l.target
+   ORDER BY l.id DESC LIMIT 300`,
+).all<{ created_at: string; action: string; target: string | null; detail: string | null; actor: string | null; target_name: string | null }>();
+const detailText = (raw: string | null) => {
+  if (!raw) return '';
+  try {
+    const d = JSON.parse(raw) as Record<string, unknown>;
+    const parts: string[] = [];
+    if (d.override) parts.push(`例外理由：${d.override}`);
+    if (d.reason) parts.push(`原因：${d.reason}`);
+    if (d.note) parts.push(`說明：${d.note}`);
+    if (d.provider) parts.push(d.provider === 'line' ? 'LINE' : 'Email');
+    if (d.membership) parts.push({ created: '新建會員', renewed: '同時續會', unchanged: '會員不變' }[d.membership as string] ?? '');
+    if (d.version) parts.push(`第 ${d.version} 版`);
+    return parts.filter(Boolean).join('．');
+  } catch { return ''; }
+};
 ---
 <AdminLayout title="操作紀錄">
+  <p>時間為台北時間，列出最近 300 筆。</p>
   <table class="admin-table">
-    <thead><tr><th>時間</th><th>操作者</th><th>動作</th><th>對象</th><th>內容</th></tr></thead>
-    <tbody>{results.map((r) => <tr><td>{r.created_at.slice(0, 19).replace('T', ' ')}</td><td>{r.display_name ?? '系統'}</td><td>{r.action}</td><td><code>{r.target}</code></td><td>{r.detail}</td></tr>)}</tbody>
+    <thead><tr><th>時間</th><th>操作者</th><th>動作</th><th>對象</th><th>補充</th></tr></thead>
+    <tbody>{results.map((r) => (
+      <tr>
+        <td>{fmtDateTime(r.created_at)}</td>
+        <td>{r.actor ?? '系統'}</td>
+        <td>{ACTION_LABEL[r.action] ?? r.action}</td>
+        <td>{r.target_name ?? (r.target && /^WK-/.test(r.target) ? r.target : '')}</td>
+        <td>{detailText(r.detail)}</td>
+      </tr>
+    ))}</tbody>
   </table>
 </AdminLayout>

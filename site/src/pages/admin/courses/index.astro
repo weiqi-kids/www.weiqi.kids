@@ -4,6 +4,7 @@ import { requireAdmin } from '../../../server/guard';
 import { db } from '../../../server/db';
 import { runtimeCourses } from '../../../server/courses';
 import { addInstructor } from '../../../server/admin';
+import { accountSummaries, loginLabel, COURSE_STATUS, label } from '../../../server/admin-view';
 import { str } from '../../../server/http';
 export const prerender = false;
 const stop = requireAdmin(Astro); if (stop) return stop;
@@ -16,24 +17,41 @@ if (Astro.request.method === 'POST') {
   if (r.ok) message = '已加入講師。'; else error = r.error;
 }
 const courses = await runtimeCourses();
-const { results: staff } = await db().prepare('SELECT s.course_slug, a.display_name, a.id FROM course_staff s JOIN accounts a ON a.id = s.account_id').all<{ course_slug: string; display_name: string; id: string }>();
+const { results: staff } = await db().prepare('SELECT course_slug, account_id FROM course_staff').all<{ course_slug: string; account_id: string }>();
+const { results: approved } = await db().prepare("SELECT DISTINCT account_id FROM instructor_applications WHERE status = 'approved'").all<{ account_id: string }>();
+const approvedIds = new Set(approved.map((a) => a.account_id));
+const people = [...(await accountSummaries()).values()];
+const ordered = [...people.filter((p) => approvedIds.has(p.id)), ...people.filter((p) => !approvedIds.has(p.id))];
+const byId = new Map(people.map((p) => [p.id, p]));
 ---
 <AdminLayout title="課程講師">
   {message && <p class="notice">{message}</p>}
   {error && <p class="notice notice-error">{error}</p>}
-  <p>課程內容（日期、場次、說明）由講師與協會填寫開課表單後，寫入 <code>site/src/content/courses/</code> 並部署。這裡指定每門課的講師帳號，講師即為該課論壇的版主。</p>
+  <p>課程內容（日期、場次、說明）寫在 <code>site/src/content/courses/</code>，部署後出現在這裡。講師即為該課論壇的版主。講師申請核准後，也可以在「講師申請」頁直接指定課程。</p>
   {courses.length === 0 && <p>目前沒有課程。</p>}
-  {courses.map((c) => (
-    <section>
-      <h2>{c.data.title}（{c.data.status}）</h2>
-      <p><a href={`/admin/courses/${c.data.slug}/evidence.csv`}>下載 TTQS 佐證索引（CSV）</a></p>
-      <p>講師帳號：{staff.filter((s) => s.course_slug === c.data.slug).map((s) => s.display_name).join('、') || '尚未指定'}</p>
-      <form method="post">
-        <input type="hidden" name="course" value={c.data.slug} />
-        <div class="form-field"><label>帳號 ID（從「會員」頁複製）</label><input name="account" required /></div>
-        <div class="form-field"><label>例外理由（沒有已核准講師申請時必填，例如第一門課試點講師）</label><input name="override" /></div>
-        <button class="btn btn-ghost" type="submit">加入講師</button>
-      </form>
-    </section>
-  ))}
+  {courses.map((c) => {
+    const current = staff.filter((s) => s.course_slug === c.data.slug).map((s) => byId.get(s.account_id));
+    return (
+      <section class="card course">
+        <h2>{c.data.title}</h2>
+        <p class="muted">{label(COURSE_STATUS, c.data.status)}</p>
+        <p>講師：{current.length ? current.map((p) => p ? `${p.name}（${loginLabel(p)}）` : '').join('、') : '尚未指定'}</p>
+        <p><a href={`/admin/courses/${c.data.slug}/evidence.csv`}>下載 TTQS 佐證索引（CSV）</a></p>
+        <form method="post">
+          <input type="hidden" name="course" value={c.data.slug} />
+          <div class="form-field">
+            <label>加入講師</label>
+            <select name="account" required>
+              {ordered.map((p) => <option value={p.id}>{approvedIds.has(p.id) ? '【已核准講師】' : ''}{p.name}（{loginLabel(p)}）</option>)}
+            </select>
+          </div>
+          <div class="form-field"><label>例外理由（選的人沒有已核准的講師申請時必填，例如第一門課試點講師）</label><input name="override" /></div>
+          <button class="btn btn-ghost" type="submit">加入講師</button>
+        </form>
+      </section>
+    );
+  })}
 </AdminLayout>
+<style>
+  .course { margin-bottom: var(--space-6); }
+</style>

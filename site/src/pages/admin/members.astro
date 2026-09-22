@@ -4,6 +4,8 @@ import { requireAdmin } from '../../server/guard';
 import { db } from '../../server/db';
 import { extendMembership } from '../../server/admin';
 import { str } from '../../server/http';
+import { runtimeCourses } from '../../server/courses';
+import { fmtDate } from '../../lib/courses';
 export const prerender = false;
 const stop = requireAdmin(Astro); if (stop) return stop;
 const me = Astro.locals.account!;
@@ -19,6 +21,7 @@ const { results } = await db().prepare(
    FROM accounts a LEFT JOIN memberships m ON m.account_id = a.id ORDER BY a.created_at DESC LIMIT 500`,
 ).all<{ id: string; display_name: string; is_admin: number; started_at: string | null; expires_at: string | null; logins: string | null; courses: string | null }>();
 const now = new Date().toISOString();
+const titles = new Map((await runtimeCourses()).map((c) => [c.data.slug, c.data.title]));
 ---
 <AdminLayout title="會員與帳號">
   {message && <p class="notice">{message}</p>}
@@ -28,10 +31,10 @@ const now = new Date().toISOString();
     <tbody>
       {results.map((a) => (
         <tr>
-          <td>{a.display_name}{a.is_admin === 1 && '（管理員）'}<br /><code>{a.id}</code></td>
-          <td>{a.logins}</td>
-          <td>{a.expires_at ? `${a.started_at!.slice(0, 10)}～${a.expires_at.slice(0, 10)}${a.expires_at < now ? '（已到期）' : ''}` : '非會員'}</td>
-          <td>{a.courses}</td>
+          <td>{a.display_name}{a.is_admin === 1 && '（管理員）'}</td>
+          <td>{(a.logins ?? '').split(', ').map((l) => l.startsWith('line:') ? 'LINE' : l.replace(/^email:/, '')).join('／')}</td>
+          <td>{a.expires_at ? `${fmtDate(new Date(a.started_at!))}～${fmtDate(new Date(a.expires_at))}${a.expires_at < now ? '（已到期）' : ''}` : '非會員'}</td>
+          <td>{(a.courses ?? '').split(', ').filter(Boolean).map((slug) => titles.get(slug) ?? slug).join('、')}</td>
           <td>{a.expires_at && <form method="post"><input type="hidden" name="action" value="renew" /><input type="hidden" name="account" value={a.id} /><button class="link-button" type="submit">續會一年</button></form>}</td>
         </tr>
       ))}

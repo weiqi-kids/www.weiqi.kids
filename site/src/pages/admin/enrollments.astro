@@ -4,6 +4,9 @@ import { requireAdmin } from '../../server/guard';
 import { db } from '../../server/db';
 import { confirmEnrollment, cancelEnrollment, type EnrollmentRow } from '../../server/admin';
 import { str } from '../../server/http';
+import { runtimeCourses } from '../../server/courses';
+import { fmtDateTime } from '../../server/admin-view';
+import { ENROLLMENT_STATUS, label } from '../../lib/labels';
 export const prerender = false;
 const stop = requireAdmin(Astro); if (stop) return stop;
 const me = Astro.locals.account!;
@@ -24,7 +27,7 @@ if (Astro.request.method === 'POST') {
 const filter = Astro.url.searchParams.get('status') ?? 'submitted';
 const { results } = await db().prepare(`SELECT * FROM enrollments ${filter === 'all' ? '' : 'WHERE status = ?'} ORDER BY created_at DESC LIMIT 200`)
   .bind(...(filter === 'all' ? [] : [filter])).all<EnrollmentRow>();
-const LABEL: Record<string, string> = { submitted: '待核款', activated: '已開通', cancelled: '已取消', paid: '已核款' };
+const titles = new Map((await runtimeCourses()).map((c) => [c.data.slug, c.data.title]));
 ---
 <AdminLayout title="報名與核款">
   {message && <p class="notice">{message}</p>}
@@ -35,12 +38,12 @@ const LABEL: Record<string, string> = { submitted: '待核款', activated: '已�
     <tbody>
       {results.map((e) => (
         <tr>
-          <td><code>{e.code}</code><br />{e.created_at.slice(0, 16).replace('T', ' ')}</td>
-          <td>{e.course_slug}</td>
+          <td><code>{e.code}</code><br />{fmtDateTime(e.created_at)}</td>
+          <td>{titles.get(e.course_slug) ?? e.course_slug}</td>
           <td>{e.name}<br />{e.email}{e.line_name && <><br />LINE：{e.line_name}</>}</td>
           <td>{e.membership === 'new' ? '首次（含入會）' : '既有會員'}</td>
           <td>{e.note}{e.review_note && <><br />處理說明：{e.review_note}</>}</td>
-          <td>{LABEL[e.status] ?? e.status}</td>
+          <td>{label(ENROLLMENT_STATUS, e.status)}</td>
           <td>
             {e.status === 'submitted' && (
               <>
