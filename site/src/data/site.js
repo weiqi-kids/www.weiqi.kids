@@ -6,8 +6,11 @@ export const site = {
   url: 'https://www.weiqi.kids',
   email: 'lightman.chang@gmail.com',
   logo: { url: 'https://www.weiqi.kids/img/social-card.png', width: 1200, height: 630 },
-  // 協會 LINE@ 加入連結。尚未提供時頁面改為顯示 Email 聯絡方式。
-  lineOfficialUrl: null,
+  // 協會 LINE@（好棋寶寶，@685hqmrm）：提交匯款紀錄與私密資料。
+  lineOfficialUrl: 'https://line.me/R/ti/p/@685hqmrm',
+  lineOfficialId: '@685hqmrm',
+  // 好棋寶寶 LINE 社群：棋聚消息與交流。
+  lineCommunityUrl: 'https://line.me/ti/g2/ZXE1nUXuSbWKFfv0ZduAVvjPQvdpurLE2LjjTg',
 };
 
 export const courseRules = {

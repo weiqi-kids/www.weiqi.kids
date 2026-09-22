@@ -3,5 +3,5 @@
 import { site } from '../data/site.js';
 ---
 {site.lineOfficialUrl
-  ? <a href={site.lineOfficialUrl} rel="noopener">協會 LINE@</a>
+  ? <a href={site.lineOfficialUrl} rel="noopener">協會 LINE@（{site.lineOfficialId}）</a>
   : <span>協會 LINE@（加入連結將在開放報名時公布；在此之前請來信 <a href={`mailto:${site.email}`}>{site.email}</a>）</span>}
