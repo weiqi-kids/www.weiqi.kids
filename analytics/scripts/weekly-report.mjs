@@ -170,8 +170,27 @@ out.push('');
 
 out.push('## 三、YouTube');
 out.push('');
+const ytAnalyticsAll = loadJSON(currentPath('youtube-analytics'));
+// 每日快照要從開始收集後才有；YouTube Analytics 有逐日回溯資料，本週落在範圍內就先用它
+const ytWeekDays = (ytAnalyticsAll?.daily ?? []).filter((d) => inWeek(d.day));
+if (ytWeekDays.length) {
+  const sum = (key) => ytWeekDays.reduce((n, d) => n + (d[key] ?? 0), 0);
+  out.push(`**頻道**：${cfg.youtube?.handle ?? ''}（本週數據來自 YouTube Analytics）`);
+  out.push('');
+  out.push(
+    table(
+      ['指標', '本週'],
+      [
+        ['觀看', num(sum('views'))],
+        ['觀看分鐘', num(sum('estimatedMinutesWatched'))],
+        ['新增訂閱', signed(sum('subscribersGained') - sum('subscribersLost'))],
+      ],
+    ),
+  );
+  out.push('');
+}
 if (!yt.connected || !yt.daily.length) {
-  out.push(notConnected(yt, 'YouTube OAuth 權杖尚未設定，或本週尚無資料。'));
+  if (!ytWeekDays.length) out.push(notConnected(yt, 'YouTube OAuth 權杖尚未設定，或本週尚無資料。'));
 } else {
   const first = yt.daily[0];
   const last = yt.daily.at(-1);

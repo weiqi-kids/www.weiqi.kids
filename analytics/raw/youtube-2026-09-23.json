@@ -1,5 +1,5 @@
 {
-  "collectedAt": "2026-09-23T01:09:09.924Z",
+  "collectedAt": "2026-09-23T05:40:17.936Z",
   "date": "2026-09-23",
   "channel": {
     "id": "UC08sZ6NqKq2njHuORDDM6IA",
@@ -98,7 +98,7 @@
       "title": "臺中市清水區 113 年區長盃全國圍棋公開賽 活動紀錄",
       "publishedAt": "2026-09-23T00:43:52Z",
       "duration": "PT2M10S",
-      "views": 0,
+      "views": 4,
       "likes": 0,
       "comments": 0
     },
@@ -152,7 +152,7 @@
       "title": "113 年臺北市體育總會全國圍棋公開賽 空拍花絮",
       "publishedAt": "2026-09-23T00:43:25Z",
       "duration": "PT7S",
-      "views": 0,
+      "views": 1,
       "likes": 0,
       "comments": 0
     },
@@ -1664,7 +1664,7 @@
       "title": "Raccoon and Fox Eating Sausages 🌭🦝🦊 | Cute & Funny Short",
       "publishedAt": "2025-09-25T07:00:53Z",
       "duration": "PT6S",
-      "views": 134,
+      "views": 137,
       "likes": 3,
       "comments": 0
     },
@@ -1880,7 +1880,7 @@
       "title": "Battle of Flags｜旗の戦い｜깃발 전쟁",
       "publishedAt": "2025-09-07T21:00:55Z",
       "duration": "PT7S",
-      "views": 1860,
+      "views": 1862,
       "likes": 20,
       "comments": 0
     },
@@ -2633,7 +2633,249 @@
     }
   ],
   "analytics": {
-    "available": false,
-    "note": "未設定 YouTube Analytics 權杖（~/.config/weiqi-kids/youtube-analytics-token.json），本次略過每日觀看時間與流量來源。需要 https://www.googleapis.com/auth/yt-analytics.readonly scope。"
+    "available": true,
+    "range": {
+      "start": "2026-08-27",
+      "end": "2026-09-23"
+    },
+    "daily": [
+      {
+        "day": "2026-08-27",
+        "views": 29,
+        "estimatedMinutesWatched": 1,
+        "averageViewDuration": 9,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-08-28",
+        "views": 10,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 0,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-08-29",
+        "views": 9,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 4,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-08-30",
+        "views": 16,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 6,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-08-31",
+        "views": 3,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 8,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-01",
+        "views": 9,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 7,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-02",
+        "views": 4,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 4,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-03",
+        "views": 1,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 0,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-04",
+        "views": 6,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 22,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-05",
+        "views": 4,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 5,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-06",
+        "views": 7,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 6,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-07",
+        "views": 4,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 6,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-08",
+        "views": 5,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 7,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-09",
+        "views": 3,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 7,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-10",
+        "views": 4,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 6,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-11",
+        "views": 6,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 11,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-12",
+        "views": 6,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 12,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-13",
+        "views": 7,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 6,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-14",
+        "views": 4,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 33,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-15",
+        "views": 11,
+        "estimatedMinutesWatched": 5,
+        "averageViewDuration": 65,
+        "subscribersGained": 1,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-16",
+        "views": 2,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 0,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-17",
+        "views": 4,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 8,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-18",
+        "views": 0,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 0,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-19",
+        "views": 1,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 2,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      },
+      {
+        "day": "2026-09-20",
+        "views": 1,
+        "estimatedMinutesWatched": 0,
+        "averageViewDuration": 2,
+        "subscribersGained": 0,
+        "subscribersLost": 0
+      }
+    ],
+    "trafficSources": [
+      {
+        "insightTrafficSourceType": "YT_SEARCH",
+        "views": 147,
+        "estimatedMinutesWatched": 6
+      },
+      {
+        "insightTrafficSourceType": "SHORTS",
+        "views": 3,
+        "estimatedMinutesWatched": 0
+      },
+      {
+        "insightTrafficSourceType": "SUBSCRIBER",
+        "views": 2,
+        "estimatedMinutesWatched": 4
+      },
+      {
+        "insightTrafficSourceType": "NO_LINK_OTHER",
+        "views": 1,
+        "estimatedMinutesWatched": 0
+      },
+      {
+        "insightTrafficSourceType": "YT_CHANNEL",
+        "views": 1,
+        "estimatedMinutesWatched": 0
+      },
+      {
+        "insightTrafficSourceType": "RELATED_VIDEO",
+        "views": 1,
+        "estimatedMinutesWatched": 0
+      },
+      {
+        "insightTrafficSourceType": "EXT_URL",
+        "views": 1,
+        "estimatedMinutesWatched": 0
+      }
+    ]
   }
 }
