@@ -19,6 +19,7 @@ const mins = duration ? `${Math.floor(duration / 60)}:${String(duration % 60).pa
       iframe.title = btn.dataset.title ?? '';
       iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
       iframe.allowFullscreen = true;
+      (window as any).wkTrack?.('video_play', { video_id: btn.dataset.id, link_content: btn.dataset.title });
       btn.replaceWith(iframe);
     }, { once: true });
   });

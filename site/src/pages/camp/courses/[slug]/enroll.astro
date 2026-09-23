@@ -71,6 +71,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
         const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
         const data = (await res.json()) as { code?: string; email?: string; error?: string };
         if (!res.ok) throw new Error(data.error || '送出失敗，請稍後再試。');
+        (window as any).wkTrack?.('enroll_submit', { link_content: form.dataset.course });
         form.hidden = true;
         result.innerHTML = '';
         const h = document.createElement('p');

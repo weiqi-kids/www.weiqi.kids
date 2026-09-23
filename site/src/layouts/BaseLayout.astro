@@ -1,7 +1,7 @@
 ---
 import '../styles/variables.css';
 import '../styles/global.css';
-import { site, nav } from '../data/site.js';
+import { site, nav, ga4Id } from '../data/site.js';
 
 export interface Crumb { name: string; href: string }
 interface Props {
@@ -20,6 +20,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const fullTitle = title === site.name ? title : `${title}｜${site.name}`;
 const ogImage = new URL(image || '/img/social-card.png', Astro.site).href;
 const current = Astro.url.pathname;
+// staging 與預覽網域一律 noindex，只有正式網域才允許索引
+const isProduction = (globalThis.process?.env?.SITE_ENV ?? import.meta.env.SITE_ENV) === 'production';
 
 const org = {
   '@context': 'https://schema.org',
@@ -52,7 +54,7 @@ const allSchema = [org, ...(crumbSchema ? [crumbSchema] : []), ...schema];
     <title>{fullTitle}</title>
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {(noindex || !isProduction) && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" href="/favicon.ico" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta property="og:site_name" content={site.name} />
@@ -66,6 +68,21 @@ const allSchema = [org, ...(crumbSchema ? [crumbSchema] : []), ...schema];
     {modified && <meta property="article:modified_time" content={modified.toISOString()} />}
     <meta name="twitter:card" content="summary_large_image" />
     {allSchema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+    {!noindex && (
+      <script is:inline define:vars={{ ga4Id }}>
+        // 只有正式網域才送 GA4，staging（workers.dev）不污染正式資料
+        if (location.hostname === 'www.weiqi.kids') {
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = function () { window.dataLayer.push(arguments); };
+          window.gtag('js', new Date());
+          window.gtag('config', ga4Id, { anonymize_ip: true });
+          const s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ga4Id;
+          document.head.appendChild(s);
+        }
+      </script>
+    )}
   </head>
   <body>
     <a class="visually-hidden skip" href="#main">跳到主要內容</a>

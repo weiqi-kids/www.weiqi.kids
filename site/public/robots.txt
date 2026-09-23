@@ -1,8 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /account/
-Disallow: /admin/
-Disallow: /auth/
-Disallow: /api/
-
-Sitemap: https://www.weiqi.kids/sitemap-index.xml

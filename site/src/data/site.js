@@ -1,4 +1,7 @@
 // 全站共用的組織資訊與導覽。
+// GA4 沿用舊站的評量 ID，歷史資料才接得起來。
+export const ga4Id = 'G-16V1KSEH6W';
+
 export const site = {
   name: '台灣好棋寶寶協會',
   legalName: '社團法人台灣好棋寶寶協會',

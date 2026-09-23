@@ -14,7 +14,8 @@
     "check:design": "node scripts/check-design.mjs",
     "check:content": "node scripts/check-content.mjs",
     "check:content:all": "node scripts/check-content.mjs --all",
-    "test": "vitest run"
+    "test": "vitest run",
+    "build:production": "SITE_ENV=production pnpm build"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.3.2",

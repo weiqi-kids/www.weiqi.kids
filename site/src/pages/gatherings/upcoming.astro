@@ -10,7 +10,7 @@ const upcoming = (await getCollection('gatherings')).filter((g) => g.data.startD
   <div class="prose">
     <h1>即將舉辦的棋聚</h1>
     {upcoming.length === 0 ? (
-      <p>目前沒有公告的場次。想收到下一場通知，可以加入<a href={site.lineCommunityUrl} rel="noopener">好棋寶寶 LINE 社群</a>，或來信 <a href={`mailto:${site.email}?subject=${encodeURIComponent('【棋聚通知】')}`}>{site.email}</a>。</p>
+      <p>目前沒有公告的場次。想收到下一場通知，可以加入<a href={site.lineCommunityUrl} rel="noopener" data-track="line_community_click" data-track-label="即將舉辦">好棋寶寶 LINE 社群</a>，或來信 <a href={`mailto:${site.email}?subject=${encodeURIComponent('【棋聚通知】')}`}>{site.email}</a>。</p>
     ) : (
       <ul class="card-grid">
         {upcoming.map((g) => (

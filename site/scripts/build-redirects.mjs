@@ -24,4 +24,11 @@ for (const l of LOCALES) {
   lines.push(`/${l}/* /:splat 301`);
 }
 writeFileSync('public/_redirects', `${lines.join('\n')}\n`);
+
+// robots.txt：正式站開放索引，staging 一律擋掉
+const production = process.env.SITE_ENV === 'production';
+writeFileSync('public/robots.txt', production
+  ? `User-agent: *\nAllow: /\nDisallow: /account/\nDisallow: /admin/\nDisallow: /auth/\nDisallow: /api/\n\nSitemap: https://www.weiqi.kids/sitemap-index.xml\n`
+  : `# staging：不開放索引\nUser-agent: *\nDisallow: /\n`);
+console.log(production ? 'robots.txt：正式站版本' : 'robots.txt：staging 版本（Disallow: /）');
 console.log(`轉址規則 ${lines.length - 1} 條已寫入 public/_redirects。`);
