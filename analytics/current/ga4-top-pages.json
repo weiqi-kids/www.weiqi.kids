@@ -1,0 +1,129 @@
+{
+  "date": "2026-09-22",
+  "range": {
+    "startDate": "2026-09-16",
+    "endDate": "2026-09-22"
+  },
+  "pages": [
+    {
+      "path": "/",
+      "title": "首頁 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 62,
+      "users": 40
+    },
+    {
+      "path": "/en/",
+      "title": "Home | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 37,
+      "users": 37
+    },
+    {
+      "path": "/zh-cn/",
+      "title": "首页 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 23,
+      "users": 22
+    },
+    {
+      "path": "/research/",
+      "title": "學術研究 — 好棋寶寶協會 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 21,
+      "users": 3
+    },
+    {
+      "path": "/intel/",
+      "title": "產業供應鏈情報 — 好棋寶寶協會 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 19,
+      "users": 9
+    },
+    {
+      "path": "/apps/",
+      "title": "AI 應用工具 — 好棋寶寶協會 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 16,
+      "users": 5
+    },
+    {
+      "path": "/faq/",
+      "title": "找不到頁面 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 13,
+      "users": 13
+    },
+    {
+      "path": "/en/docs/alphago/puct-formula/",
+      "title": "PUCT Formula: AlphaGo's MCTS Selection Rule Explained | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 12,
+      "users": 11
+    },
+    {
+      "path": "/en/docs/tech/industry/applications/",
+      "title": "實際應用案例 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 10,
+      "users": 10
+    },
+    {
+      "path": "/zh-cn/intel/",
+      "title": "產業供應鏈情報 — 好棋寶寶協會 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 10,
+      "users": 10
+    },
+    {
+      "path": "/en/docs/tech/overview/landscape/",
+      "title": "生態全景圖 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 9,
+      "users": 9
+    },
+    {
+      "path": "/en/docs/tech/deep-dive/neural-network/",
+      "title": "Neural Network Architecture | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 8,
+      "users": 8
+    },
+    {
+      "path": "/en/docs/tech/hands-on/",
+      "title": "30 分鐘跑起第一個圍棋 AI | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 8,
+      "users": 8
+    },
+    {
+      "path": "/zh-cn/docs/tech/",
+      "title": "技術文件 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 8,
+      "users": 7
+    },
+    {
+      "path": "/docs/about/members/founding/",
+      "title": "創始會員 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 7,
+      "users": 2
+    },
+    {
+      "path": "/docs/learn/introduction/",
+      "title": "入門篇 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 7,
+      "users": 7
+    },
+    {
+      "path": "/docs/learn/introduction/etiquette/",
+      "title": "對弈禮儀 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 7,
+      "users": 7
+    },
+    {
+      "path": "/docs/learn/introduction/first-10-moves/",
+      "title": "開局概念 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 7,
+      "users": 7
+    },
+    {
+      "path": "/en/docs/alphago/input-features/",
+      "title": "Input Feature Design | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 7,
+      "users": 7
+    },
+    {
+      "path": "/en/docs/alphago/policy-network/",
+      "title": "Policy Network Deep Dive | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 7,
+      "users": 7
+    }
+  ]
+}

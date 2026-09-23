@@ -28,6 +28,8 @@ export function findCredentials() {
     process.env.GOOGLE_APPLICATION_CREDENTIALS,
     join(credDir, 'google-sa.json'),
     join(scriptsDir, '.google-sa-key.json'),
+    // 沿用既有的分析用服務帳號（已有 weiqi.kids 的 GA4 與 Search Console 權限）
+    join(homedir(), '.config', 'ga4-insights', 'sa-key.json'),
   ].filter(Boolean);
   for (const p of paths) {
     if (existsSync(p)) return { raw: readFileSync(p, 'utf8'), from: p };

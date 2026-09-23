@@ -3,6 +3,13 @@
 協會的流量數據分散在五個地方：網站、Google 搜尋、GitHub repo、YouTube 頻道、LINE 官方帳號。
 這個目錄把它們每天各自抓回來、累積成歷史，再每週彙整成一份中文週報。
 
+## 憑證現況（2026-09-23 更新）
+
+GA4 與 Search Console **不需要另外建立服務帳號**：主機上既有的 `~/.config/ga4-insights/sa-key.json` 已經具備
+GA4 資源 `weiqi-kids`（G-16V1KSEH6W）與 `sc-domain:weiqi.kids` 的權限，收集器會自動找到它。
+若日後要把好棋寶寶的數據與其他站台的服務帳號分開，再另建一把金鑰放到 `~/.config/weiqi-kids/google-sa.json`，
+收集器會優先使用該路徑。
+
 ## 目錄結構
 
 ```
