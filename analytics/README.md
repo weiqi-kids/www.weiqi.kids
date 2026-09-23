@@ -3,6 +3,16 @@
 協會的流量數據分散在五個地方：網站、Google 搜尋、GitHub repo、YouTube 頻道、LINE 官方帳號。
 這個目錄把它們每天各自抓回來、累積成歷史，再每週彙整成一份中文週報。
 
+## 排程（2026-09-23 更新）
+
+每日收集與週報掛在**本機 cron**（`/etc/cron.d/seo-ops-www-weiqi-kids`），憑證直接讀主機上的檔案，
+不需要 GitHub Secrets，也沒有 GitHub Actions workflow：
+
+- 台北 09:00：`analytics/scripts/collect-all.sh`（YouTube / LINE@ / GA4 / GSC）
+- 週一台北 09:30：`analytics/scripts/weekly-report.mjs`
+
+log 在 `analytics/logs/`（不進 git）。GitHub Actions 只保留既有的 GitHub Traffic 收集。
+
 ## 憑證現況（2026-09-23 更新）
 
 GA4 與 Search Console **不需要另外建立服務帳號**：主機上既有的 `~/.config/ga4-insights/sa-key.json` 已經具備

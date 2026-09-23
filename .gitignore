@@ -54,3 +54,4 @@ analytics/scripts/.google-sa-key.json
 **/youtube-token.json
 **/youtube-client.json
 **/youtube-analytics-token.json
+analytics/logs/
