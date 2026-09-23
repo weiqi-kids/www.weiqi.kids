@@ -1,5 +1,9 @@
 // 網站使用的影片與照片。影片放在協會 YouTube 頻道；照片從 ref/ 挑選壓縮後放在 public/media/。
 export const channelUrl = 'https://www.youtube.com/@GoodMoveAssociation';
+export const playlists = {
+  shorts: 'https://www.youtube.com/playlist?list=PLbKQBrLVxaa0',
+  events: 'https://www.youtube.com/playlist?list=PLbGzLgVHMgp0',
+};
 
 // id：YouTube 影片 ID；duration：秒
 export const videos = {
@@ -34,6 +38,26 @@ export const videos = {
     { id: 'mBwJ36xpeBI', title: '如何下圍棋？基礎教學', duration: 432 },
     { id: 'dmDS8adouGA', title: '消除餘味：把棋提起來', duration: 58 },
     { id: 'CRhS0PT7_oc', title: '圍棋的起源：堯帝創棋的傳說', duration: 169 },
+  ],
+  // 12 部圍棋教育短影音（2026-09 上傳至協會頻道）
+  shorts: [
+    { id: 'kuEB9oI4P3U', title: '01. 圍棋教我的事', duration: 27 },
+    { id: 'KJHQNzb22nE', title: '02. 定不下來的孩子', duration: 43 },
+    { id: 'kgndp6tdVdM', title: '03. 坐姿不良 輸家無常', duration: 36 },
+    { id: 'YWcYEPCc7Lw', title: '04. 誰說圍棋很輕鬆', duration: 49 },
+    { id: 'bWrvhoJDm5o', title: '05. 棋如人生，人生如棋', duration: 31 },
+    { id: 'tFQ4z0q_Hd4', title: '06. 圍棋升段必備品', duration: 47 },
+    { id: 'P6DLIKxhyH0', title: '07. 帶小孩比賽如何不緊張', duration: 36 },
+    { id: 'eJEejkCM1Ac', title: '08. 用眼過度的圍棋大師', duration: 24 },
+    { id: 'gkLRlIjiZ2Q', title: '09. 你就是你所下的棋', duration: 28 },
+    { id: '0VrxfFPlK2I', title: '10. 各段位的圍棋視角', duration: 25 },
+    { id: 'B9rgP9z5bHw', title: '11. 靠天份是沒用的', duration: 51 },
+    { id: 'gVi6RAWhezQ', title: '12. 努力比天賦重要', duration: 44 },
+  ],
+  events: [
+    { id: '4FEjcSLSpPo', title: '113 年臺北市體育總會全國圍棋公開賽 活動紀錄', duration: 133 },
+    { id: 'lxyjoCw8_dY', title: '113 年臺北市體育總會全國圍棋公開賽 空拍花絮', duration: 7 },
+    { id: 'M9QYZxudugk', title: '臺中市清水區 113 年區長盃全國圍棋公開賽 活動紀錄', duration: 129 },
   ],
   funClub: [
     { id: 'KD9XpGnkkDM', title: '台中場 2023/11/11 前導影片' },
@@ -77,6 +101,6 @@ export const galleries = {
 
 // 內容頁（依網址）要附加的照片集與影片
 export const mediaByPath = {
-  '/gatherings/archive/': { galleries: ['carnival', 'taipei', 'qingshui', 'brand2020', 'central04'], videos: ['carnival'] },
+  '/gatherings/archive/': { galleries: ['carnival', 'taipei', 'qingshui', 'brand2020', 'central04'], videos: ['carnival'], videoList: 'events' },
   '/gatherings/archive/fun-club/': { galleries: ['funclub1217'], videoList: 'funClub' },
 };
