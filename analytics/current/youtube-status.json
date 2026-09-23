@@ -1,0 +1,7 @@
+{
+  "source": "youtube",
+  "connected": true,
+  "checkedAt": "2026-09-23T01:09:09.925Z",
+  "analyticsAvailable": false,
+  "analyticsNote": "未設定 YouTube Analytics 權杖（~/.config/weiqi-kids/youtube-analytics-token.json），本次略過每日觀看時間與流量來源。需要 https://www.googleapis.com/auth/yt-analytics.readonly scope。"
+}

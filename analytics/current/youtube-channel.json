@@ -1,0 +1,14 @@
+{
+  "date": "2026-09-23",
+  "channelId": "UC08sZ6NqKq2njHuORDDM6IA",
+  "title": "台灣好棋寶寶協會 Good Move Association",
+  "handle": "@goodmoveassociation",
+  "subscribers": 233,
+  "videoCount": 256,
+  "totalViews": 98159,
+  "subscribersDelta": null,
+  "totalViewsDelta": null,
+  "videoCountDelta": null,
+  "analyticsAvailable": false,
+  "analyticsNote": "未設定 YouTube Analytics 權杖（~/.config/weiqi-kids/youtube-analytics-token.json），本次略過每日觀看時間與流量來源。需要 https://www.googleapis.com/auth/yt-analytics.readonly scope。"
+}

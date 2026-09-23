@@ -2,9 +2,10 @@
 // 零外部依賴：Node 內建 crypto + 全域 fetch。
 //
 // 憑證（私鑰，務必勿進 repo）讀取優先序：
-//   1. 環境變數 GOOGLE_SA_KEY        — 服務帳號 JSON 金鑰之「字串內容」
+//   1. 環境變數 GOOGLE_SA_KEY / GOOGLE_SA_JSON — 服務帳號 JSON 金鑰之「字串內容」
 //   2. 環境變數 GOOGLE_APPLICATION_CREDENTIALS — JSON 金鑰之「檔案路徑」
-//   3. scripts/.google-sa-key.json   — 本機金鑰檔（已 gitignore）
+//   3. ~/.config/weiqi-kids/google-sa.json      — 本機金鑰檔（憑證目錄，不在 repo 內）
+//   4. scripts/.google-sa-key.json              — 舊版本機金鑰檔（已 gitignore）
 //
 // 設定（非機密）讀取優先序：env GA4_PROPERTY_ID / GSC_SITE_URL，
 //   否則 scripts/.google-config.json（已 gitignore），GSC 預設 sc-domain:folk.tw。
@@ -13,26 +14,38 @@ import { readFileSync, existsSync } from 'node:fs';
 import { createSign } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { homedir } from 'node:os';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const scriptsDir = join(here, '..');
+const credDir = process.env.WEIQI_CRED_DIR || join(homedir(), '.config', 'weiqi-kids');
+
+/** 依優先序找服務帳號金鑰；找不到回 null（不丟例外），給收集器判斷「尚未授權」。 */
+export function findCredentials() {
+  const inline = process.env.GOOGLE_SA_KEY || process.env.GOOGLE_SA_JSON;
+  if (inline) return { raw: inline, from: '環境變數 GOOGLE_SA_KEY / GOOGLE_SA_JSON' };
+  const paths = [
+    process.env.GOOGLE_APPLICATION_CREDENTIALS,
+    join(credDir, 'google-sa.json'),
+    join(scriptsDir, '.google-sa-key.json'),
+  ].filter(Boolean);
+  for (const p of paths) {
+    if (existsSync(p)) return { raw: readFileSync(p, 'utf8'), from: p };
+  }
+  return null;
+}
 
 const b64url = (buf) =>
   Buffer.from(buf).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
 export function loadCredentials() {
-  let raw;
-  if (process.env.GOOGLE_SA_KEY) raw = process.env.GOOGLE_SA_KEY;
-  else {
-    const path = process.env.GOOGLE_APPLICATION_CREDENTIALS || join(scriptsDir, '.google-sa-key.json');
-    if (!existsSync(path)) {
-      throw new Error(
-        `找不到服務帳號金鑰。請設 GOOGLE_SA_KEY 環境變數，或把 JSON 金鑰存到 ${path}（已 gitignore）。`,
-      );
-    }
-    raw = readFileSync(path, 'utf8');
+  const found = findCredentials();
+  if (!found) {
+    throw new Error(
+      `找不到服務帳號金鑰。請設 GOOGLE_SA_KEY 環境變數，或把 JSON 金鑰存到 ${join(credDir, 'google-sa.json')}（憑證目錄，不在 repo 內）。`,
+    );
   }
-  const key = JSON.parse(raw);
+  const key = JSON.parse(found.raw);
   if (!key.client_email || !key.private_key) throw new Error('金鑰缺 client_email / private_key。');
   return key;
 }

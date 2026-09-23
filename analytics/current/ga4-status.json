@@ -1,0 +1,7 @@
+{
+  "source": "ga4",
+  "connected": false,
+  "reason": "尚未授權，缺服務帳號金鑰（~/.config/weiqi-kids/google-sa.json 或環境變數 GOOGLE_SA_JSON）。請參照 analytics/README.md「GA4 授權步驟」。",
+  "hint": "Google Cloud Console 建立服務帳號 → 下載 JSON 金鑰 → 到 GA4 管理 → 資源存取管理，把服務帳號 email 加為「檢視者」。",
+  "checkedAt": "2026-09-23T01:09:14.113Z"
+}

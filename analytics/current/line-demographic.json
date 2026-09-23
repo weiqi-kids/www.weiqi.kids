@@ -1,0 +1,214 @@
+{
+  "date": "2026-09-22",
+  "available": true,
+  "genders": [
+    {
+      "gender": "male",
+      "percentage": 70.8
+    },
+    {
+      "gender": "unknown",
+      "percentage": 29.2
+    },
+    {
+      "gender": "female",
+      "percentage": 0
+    }
+  ],
+  "ages": [
+    {
+      "age": "unknown",
+      "percentage": 100
+    },
+    {
+      "age": "from0to14",
+      "percentage": 0
+    },
+    {
+      "age": "from15to19",
+      "percentage": 0
+    },
+    {
+      "age": "from20to24",
+      "percentage": 0
+    },
+    {
+      "age": "from25to29",
+      "percentage": 0
+    },
+    {
+      "age": "from30to34",
+      "percentage": 0
+    },
+    {
+      "age": "from35to39",
+      "percentage": 0
+    },
+    {
+      "age": "from40to44",
+      "percentage": 0
+    },
+    {
+      "age": "from45to49",
+      "percentage": 0
+    },
+    {
+      "age": "from50to54",
+      "percentage": 0
+    },
+    {
+      "age": "from55to59",
+      "percentage": 0
+    },
+    {
+      "age": "from60to64",
+      "percentage": 0
+    },
+    {
+      "age": "from65to69",
+      "percentage": 0
+    },
+    {
+      "age": "from70",
+      "percentage": 0
+    },
+    {
+      "age": "from50",
+      "percentage": 0
+    }
+  ],
+  "areas": [
+    {
+      "area": "台中市",
+      "percentage": 58.3
+    },
+    {
+      "area": "unknown",
+      "percentage": 41.7
+    },
+    {
+      "area": "台北市",
+      "percentage": 0
+    },
+    {
+      "area": "新北市",
+      "percentage": 0
+    },
+    {
+      "area": "桃園市",
+      "percentage": 0
+    },
+    {
+      "area": "台南市",
+      "percentage": 0
+    },
+    {
+      "area": "高雄市",
+      "percentage": 0
+    },
+    {
+      "area": "基隆市",
+      "percentage": 0
+    },
+    {
+      "area": "新竹市",
+      "percentage": 0
+    },
+    {
+      "area": "嘉義市",
+      "percentage": 0
+    },
+    {
+      "area": "新竹縣",
+      "percentage": 0
+    },
+    {
+      "area": "苗栗縣",
+      "percentage": 0
+    },
+    {
+      "area": "彰化縣",
+      "percentage": 0
+    },
+    {
+      "area": "南投縣",
+      "percentage": 0
+    },
+    {
+      "area": "雲林縣",
+      "percentage": 0
+    },
+    {
+      "area": "嘉義縣",
+      "percentage": 0
+    },
+    {
+      "area": "屏東縣",
+      "percentage": 0
+    },
+    {
+      "area": "宜蘭縣",
+      "percentage": 0
+    },
+    {
+      "area": "花蓮縣",
+      "percentage": 0
+    },
+    {
+      "area": "台東縣",
+      "percentage": 0
+    },
+    {
+      "area": "澎湖縣",
+      "percentage": 0
+    },
+    {
+      "area": "金門縣",
+      "percentage": 0
+    },
+    {
+      "area": "連江縣",
+      "percentage": 0
+    }
+  ],
+  "appTypes": [
+    {
+      "appType": "ios",
+      "percentage": 79.2
+    },
+    {
+      "appType": "others",
+      "percentage": 20.8
+    },
+    {
+      "appType": "android",
+      "percentage": 0
+    }
+  ],
+  "subscriptionPeriods": [
+    {
+      "subscriptionPeriod": "over365days",
+      "percentage": 100
+    },
+    {
+      "subscriptionPeriod": "within7days",
+      "percentage": 0
+    },
+    {
+      "subscriptionPeriod": "within30days",
+      "percentage": 0
+    },
+    {
+      "subscriptionPeriod": "within90days",
+      "percentage": 0
+    },
+    {
+      "subscriptionPeriod": "within180days",
+      "percentage": 0
+    },
+    {
+      "subscriptionPeriod": "within365days",
+      "percentage": 0
+    }
+  ]
+}

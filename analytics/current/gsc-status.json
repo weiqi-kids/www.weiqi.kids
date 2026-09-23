@@ -1,0 +1,7 @@
+{
+  "source": "gsc",
+  "connected": false,
+  "reason": "尚未授權，缺服務帳號金鑰（~/.config/weiqi-kids/google-sa.json 或環境變數 GOOGLE_SA_JSON）。請參照 analytics/README.md「Search Console 授權步驟」。",
+  "hint": "Google Cloud Console 建立服務帳號 → 下載 JSON 金鑰 → 到 Search Console 設定 → 使用者和權限，把服務帳號 email 加為使用者。",
+  "checkedAt": "2026-09-23T01:09:14.173Z"
+}

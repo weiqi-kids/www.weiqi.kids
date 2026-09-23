@@ -1,0 +1,84 @@
+# GitHub Actions Workflow: 多管道流量收集與週報
+#
+# 每日收集 GA4／Search Console／YouTube／LINE@ 的數據，每週一額外產出一份繁體中文週報。
+# 憑證一律走 GitHub Secrets，絕不寫進本檔：
+#   GOOGLE_SA_JSON                 服務帳號金鑰 JSON 全文（GA4 + Search Console 共用）
+#   YOUTUBE_CLIENT_JSON            YouTube OAuth 用戶端 JSON 全文
+#   YOUTUBE_TOKEN_JSON             YouTube OAuth 權杖 JSON 全文（含 refresh_token）
+#   YOUTUBE_ANALYTICS_TOKEN_JSON   （選配）帶 yt-analytics.readonly scope 的權杖 JSON 全文
+#   LINE_CHANNEL_ACCESS_TOKEN      LINE Messaging API 長效存取權杖
+#
+# 任何一個 secret 沒設，對應的收集器會印出中文說明並以 exit 0 結束，不會讓整條排程失敗。
+
+name: Collect Channel Analytics
+
+on:
+  schedule:
+    - cron: '30 0 * * *'  # 每日 UTC 00:30（台北 08:30），排在 collect-traffic 之後
+  workflow_dispatch:
+    inputs:
+      report:
+        description: '同時產生週報'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect-channels
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Collect GA4
+        env:
+          GOOGLE_SA_JSON: ${{ secrets.GOOGLE_SA_JSON }}
+        run: node analytics/scripts/collect-ga4.mjs
+
+      - name: Collect Search Console
+        env:
+          GOOGLE_SA_JSON: ${{ secrets.GOOGLE_SA_JSON }}
+        run: node analytics/scripts/collect-gsc.mjs
+
+      - name: Collect YouTube
+        env:
+          YOUTUBE_CLIENT_JSON: ${{ secrets.YOUTUBE_CLIENT_JSON }}
+          YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
+          YOUTUBE_ANALYTICS_TOKEN_JSON: ${{ secrets.YOUTUBE_ANALYTICS_TOKEN_JSON }}
+        run: node analytics/scripts/collect-youtube.mjs
+
+      - name: Collect LINE Official Account
+        env:
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+        run: node analytics/scripts/collect-line.mjs
+
+      # 週一（或手動勾選）才產週報，涵蓋上一個完整週。
+      - name: Generate Weekly Report
+        run: |
+          if [ "${{ github.event.inputs.report }}" = "true" ] || [ "$(date -u +%u)" = "1" ]; then
+            node analytics/scripts/weekly-report.mjs
+          else
+            echo "非週一且未勾選，本次略過週報"
+          fi
+
+      - name: Commit Data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add analytics/raw analytics/history analytics/current analytics/reports
+          if git diff --staged --quiet; then
+            echo "沒有新數據，略過 commit"
+          else
+            git commit -m "chore(analytics): 多管道數據 $(date +%Y-%m-%d) [skip ci]"
+            git push
+          fi

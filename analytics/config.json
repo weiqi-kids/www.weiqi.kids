@@ -1,0 +1,27 @@
+{
+  "$comment": "多管道流量收集的非機密設定。憑證一律不放這裡，見 analytics/README.md。",
+  "site": {
+    "production": "https://www.weiqi.kids/",
+    "staging": "https://weiqi-kids-staging.weiqi-kids-site.workers.dev/",
+    "ga4MeasurementId": "G-16V1KSEH6W"
+  },
+  "ga4": {
+    "propertyId": "458470883",
+    "outboundEventNames": ["click", "outbound_click", "line_click", "youtube_click", "cta_click"]
+  },
+  "gsc": {
+    "siteUrl": "sc-domain:weiqi.kids",
+    "lagDays": 3
+  },
+  "youtube": {
+    "handle": "@goodmoveassociation",
+    "channelId": "UC08sZ6NqKq2njHuORDDM6IA"
+  },
+  "line": {
+    "basicId": "@685hqmrm",
+    "displayName": "好棋寶寶"
+  },
+  "retention": {
+    "rawDays": 30
+  }
+}

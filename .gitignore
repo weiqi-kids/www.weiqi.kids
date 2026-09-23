@@ -46,3 +46,11 @@ ref/
 # Claude Code 本地狀態
 /.claude/
 .claude/
+
+# 🔒 流量收集憑證：正式位置在 ~/.config/weiqi-kids/，這裡只是防手滑的保險
+analytics/scripts/.google-sa-key.json
+**/google-sa.json
+**/line-token.txt
+**/youtube-token.json
+**/youtube-client.json
+**/youtube-analytics-token.json
