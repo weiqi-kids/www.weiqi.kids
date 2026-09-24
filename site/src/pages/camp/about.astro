@@ -5,6 +5,7 @@ import { courseRules } from '../../data/site.js';
 <BaseLayout title="共學營介紹" description="AI 共學營由台灣好棋寶寶協會主辦。每門課包含 1 堂主題教學、全部技能單張與 3 堂實作，結營後課程論壇保留，學員可以持續交流。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '共學營介紹', href: '/camp/about/' }]}>
   <article class="prose">
     <h1>共學營介紹</h1>
+    <img class="page-hero" src="/media/illustrations/camp-about.webp" alt="狸貓吉祥物在講台上講解，狐狸吉祥物在台下的筆記型電腦前實作" width="1600" height="900" loading="lazy" />
     <div class="key-answer" data-question="AI 共學營由誰主辦、適合誰？">
       <p>AI 共學營由台灣好棋寶寶協會主辦。協會會員來自醫療、法律、保險、設計、行銷、製造、教育等行業，共學營讓大家交流各自怎麼用 AI 做事，並在一個月內做出自己的作品。</p>
     </div>
@@ -33,3 +34,6 @@ import { courseRules } from '../../data/site.js';
     <p>棋聚是以圍棋交流為主的活動，不需要會員資格，也不使用共學營的課程論壇；參加棋聚不會取得共學營課程資格。詳見<a href="/gatherings/">好棋寶寶棋聚</a>。</p>
   </article>
 </BaseLayout>
+<style>
+  .page-hero { width: 100%; height: auto; border-radius: var(--radius); margin-bottom: var(--space-6); }
+</style>

@@ -18,6 +18,10 @@ const items = [
 <BaseLayout title="AI 共學營常見問題" description="AI 共學營的費用、會員資格、課程內容、匯款方式、實作營、作品公開與結營後交流等常見問題。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '常見問題', href: '/camp/faq/' }]}>
   <div class="prose">
     <h1>AI 共學營常見問題</h1>
+    <img class="page-hero" src="/media/illustrations/camp-faq.webp" alt="狐狸與狸貓吉祥物頭上浮著問號與燈泡，周圍飄著幾張問答卡片" width="1600" height="900" loading="lazy" />
     <FAQ items={items} title="問與答" />
   </div>
 </BaseLayout>
+<style>
+  .page-hero { width: 100%; height: auto; border-radius: var(--radius); margin-bottom: var(--space-6); }
+</style>

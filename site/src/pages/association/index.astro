@@ -5,6 +5,7 @@ import { site } from '../../data/site.js';
 <BaseLayout title="協會" description="社團法人台灣好棋寶寶協會：因圍棋結緣的跨產業會員團體，主辦好棋寶寶棋聚與 AI 共學營。" breadcrumbs={[{ name: '協會', href: '/association/' }]}>
   <div class="prose">
     <h1>{site.legalName}</h1>
+    <img class="page-hero" src="/media/illustrations/association-index.webp" alt="狐狸與狸貓吉祥物站在協會門口的木質招牌旁，張開手臂歡迎訪客" width="1600" height="900" loading="lazy" />
     <div class="key-answer" data-question="台灣好棋寶寶協會是什麼組織？">
       <p>台灣好棋寶寶協會是一群因圍棋認識彼此的各行各業人士組成的社團法人。協會主辦兩種活動：以圍棋交流為主的好棋寶寶棋聚，以及會員一起實作 AI 應用的 AI 共學營。</p>
     </div>
@@ -18,3 +19,6 @@ import { site } from '../../data/site.js';
     <li><a class="card" href="/association/history/"><h2>協會歷史</h2><p>從圍棋活動到 AI 共學營的發展紀錄。</p></a></li>
   </ul>
 </BaseLayout>
+<style>
+  .page-hero { width: 100%; height: auto; border-radius: var(--radius); margin-bottom: var(--space-6); }
+</style>

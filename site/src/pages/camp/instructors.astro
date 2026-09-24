@@ -6,6 +6,7 @@ const names = [...new Set((await publicCourses()).flatMap((c) => c.data.instruct
 <BaseLayout title="AI 共學營講師" description="AI 共學營的講師介紹，以及成為講師的條件：至少上過一門 6,000 元標準課程，並經協會管理員審核。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '講師', href: '/camp/instructors/' }]}>
   <div class="prose">
     <h1>講師</h1>
+    <img class="page-hero" src="/media/illustrations/camp-instructors.webp" alt="狸貓吉祥物站在白板前準備教材，狐狸吉祥物在旁整理講義" width="1600" height="900" loading="lazy" />
     {names.length === 0
       ? <p>第一位講師的資料會在第一門課公布時一併刊出。</p>
       : <ul>{names.map((n) => <li>{n}</li>)}</ul>}
@@ -16,3 +17,6 @@ const names = [...new Set((await publicCourses()).flatMap((c) => c.data.instruct
     <p><a href="/camp/instructor-application/">看講師申請方式</a></p>
   </div>
 </BaseLayout>
+<style>
+  .page-hero { width: 100%; height: auto; border-radius: var(--radius); margin-bottom: var(--space-6); }
+</style>

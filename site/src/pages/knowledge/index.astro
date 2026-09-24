@@ -15,6 +15,7 @@ const sections = [
 <BaseLayout title="公開知識" description={`台灣好棋寶寶協會整理的 ${count} 篇圍棋與 AI 公開文章：圍棋入門、圍棋歷史、AlphaGo 完整解析、KataGo 技術與 AI 產業應用。`} breadcrumbs={[{ name: '公開知識', href: '/knowledge/' }]}>
   <div class="prose">
     <h1>公開知識</h1>
+    <img class="page-hero" src="/media/illustrations/knowledge-index.webp" alt="狐狸與狸貓吉祥物在書架前一起翻閱一本大書，架上有書本、圍棋盤、筆記型電腦與神經網路示意圖" width="1600" height="900" loading="lazy" />
     <div class="key-answer" data-question="公開知識有哪些內容？">
       <p>這裡有 {count} 篇圍棋與 AI 的文章，任何人都可以閱讀。AI 共學營的講師可以引用這些文章，但它們不是課程教材；完整的技能單張只提供給該課參與者。</p>
     </div>
@@ -23,3 +24,6 @@ const sections = [
     {sections.map((s) => <li><a class="card" href={s.href}><h2>{s.title}</h2><p>{s.desc}</p></a></li>)}
   </ul>
 </BaseLayout>
+<style>
+  .page-hero { width: 100%; height: auto; border-radius: var(--radius); margin-bottom: var(--space-6); }
+</style>
