@@ -2,7 +2,6 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { site, association } from '../../data/site.js';
 const benefits = [
-  { title: '好棋同樂會主題講座', desc: '在每月棋聚用 5 分鐘介紹專業，再進行 1 小時互動交流，面對的是實際到場的棋友與家長。' },
   { title: '比賽贊助曝光', desc: '贊助協會主辦或協辦的圍棋比賽，包含贊助商背板、贈品合照、得獎心得置入與家長社群分享。' },
   { title: '形象影片露出', desc: '在協會製作的推廣影片與活動紀錄中露出。' },
   { title: '商業媒合', desc: '與協會跨行業會員的引薦與媒合。' },
@@ -20,8 +19,9 @@ const benefits = [
       {benefits.map((b) => <li><strong>{b.title}</strong>：{b.desc}</li>)}
     </ul>
 
-    <h2>協會辦的活動規模</h2>
-    <p>協會每月在台中舉辦好棋同樂會，並主辦與協辦圍棋比賽。2024 年的第一屆好棋寶寶盃親子圍棋嘉年華在和平高中舉行，全場超過 400 人參加；同年也協辦 113 年臺北市體育總會全國圍棋公開賽。活動紀錄見<a href="/gatherings/archive/">歷史棋聚</a>與<a href="/association/activities/videos/">推廣影片</a>。</p>
+    <h2>協會辦過的活動</h2>
+    <p>2023 到 2024 年，協會每月在台中舉辦好棋同樂會，並主辦與協辦圍棋比賽：第一屆好棋寶寶盃親子圍棋嘉年華（2024 年 6 月，和平高中）、113 年臺北市體育總會全國圍棋公開賽（協辦）、城市網路對抗賽。活動紀錄見<a href="/gatherings/archive/">歷史棋聚</a>與<a href="/association/activities/videos/">推廣影片</a>。</p>
+    <p>協會現階段的活動以 <a href="/camp/">AI 共學營</a>為主，企業會員的曝光形式依當期活動與協會討論後安排。</p>
 
     <h2>和個人會員的差別</h2>
     <dl class="facts">
