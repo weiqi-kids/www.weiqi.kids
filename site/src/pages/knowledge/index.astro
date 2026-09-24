@@ -25,14 +25,94 @@ const sections = [
       <p>這裡有 {count} 篇圍棋與 AI 的文章，任何人都可以閱讀。AI 共學營的講師可以引用這些文章，但它們不是課程教材；完整的技能單張只提供給該課參與者。</p>
     </div>
   </div>
-  <ul class="card-grid">
+  <search class="prose site-search">
+    <label for="q">搜尋這 {count} 篇文章</label>
+    <input id="q" type="search" autocomplete="off" placeholder="例如：提子、星位、蒙地卡羅、勝率" />
+    <p id="q-status" class="muted" role="status" aria-live="polite"></p>
+    <ol id="q-results" hidden></ol>
+  </search>
+
+  <ul class="card-grid" id="sections">
     {sections.map((s) => <li><a class="card" href={s.href}><h2>{s.title}</h2><p>{s.desc}</p></a></li>)}
   </ul>
 </BaseLayout>
+<script>
+  const input = document.getElementById('q') as HTMLInputElement | null;
+  const results = document.getElementById('q-results');
+  const status = document.getElementById('q-status');
+  const sections = document.getElementById('sections');
+  if (input && results && status && sections) {
+    type Item = { t: string; u: string; d: string; k: string; b: string };
+    let index: Item[] | null = null;
+    let loading: Promise<void> | null = null;
+
+    const load = () => (loading ??= fetch('/knowledge/search-index.json')
+      .then((r) => r.json())
+      .then((data: Item[]) => { index = data; })
+      .catch(() => { status.textContent = '搜尋索引載入失敗，請重新整理頁面。'; }));
+
+    const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c] as string));
+
+    const snippet = (item: Item, q: string) => {
+      const hay = item.b;
+      const i = hay.toLowerCase().indexOf(q);
+      if (i < 0) return esc(item.d.slice(0, 90));
+      const from = Math.max(0, i - 30);
+      const text = (from > 0 ? '…' : '') + hay.slice(from, from + 110) + '…';
+      return esc(text).replace(new RegExp(esc(q).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'ig'), (m) => `<mark>${m}</mark>`);
+    };
+
+    const render = () => {
+      const q = input.value.trim().toLowerCase();
+      if (!q) {
+        results.hidden = true;
+        results.innerHTML = '';
+        status.textContent = '';
+        sections.hidden = false;
+        return;
+      }
+      if (!index) { status.textContent = '載入中…'; return; }
+      const hits = index
+        .map((it) => {
+          const inTitle = it.t.toLowerCase().includes(q);
+          const inKey = it.k.toLowerCase().includes(q);
+          const inDesc = it.d.toLowerCase().includes(q);
+          const inBody = it.b.toLowerCase().includes(q);
+          if (!inTitle && !inKey && !inDesc && !inBody) return null;
+          return { it, score: (inTitle ? 8 : 0) + (inKey ? 4 : 0) + (inDesc ? 2 : 0) + (inBody ? 1 : 0) };
+        })
+        .filter((x): x is { it: Item; score: number } => x !== null)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 20);
+
+      sections.hidden = true;
+      status.textContent = hits.length ? `找到 ${hits.length} 篇` : '沒有找到相符的文章，換個關鍵字試試。';
+      results.innerHTML = hits
+        .map(({ it }) => `<li><a href="${it.u}">${esc(it.t)}</a><p>${snippet(it, q)}</p></li>`)
+        .join('');
+      results.hidden = hits.length === 0;
+    };
+
+    input.addEventListener('focus', load, { once: true });
+    input.addEventListener('input', () => { void load().then(render); });
+  }
+</script>
 <style>
   .page-head { display: grid; gap: var(--space-4) var(--space-6); align-items: center; margin-bottom: var(--space-6); }
   @media (min-width: 640px) { .page-head { grid-template-columns: minmax(0, 1fr) 20rem; } }
   .page-head h1 { margin: 0; }
+  .site-search { margin-bottom: var(--space-8); }
+  .site-search label { display: block; font-weight: 700; margin-bottom: var(--space-2); }
+  .site-search input {
+    font: inherit; font-size: var(--text-base); width: 100%; padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-line); border-radius: var(--radius); background: var(--color-surface); color: var(--color-text);
+  }
+  .site-search p { font-size: var(--text-xs); margin: var(--space-2) 0 0; }
+  .site-search ol { list-style: none; margin: var(--space-4) 0 0; padding: 0; display: grid; gap: var(--space-4); }
+  .site-search li { border-left: 3px solid var(--color-brand); padding-left: var(--space-4); }
+  .site-search li a { font-weight: 700; }
+  .site-search li p { font-size: var(--text-sm); color: var(--color-ink-soft); margin-top: var(--space-1); }
+  .site-search mark { background: var(--color-bg-soft); color: inherit; font-weight: 700; }
   .page-head figure { margin: 0; }
   .page-head figcaption { margin-top: var(--space-2); font-size: var(--text-xs); line-height: 1.6; color: var(--color-ink-muted); }
   .page-hero { width: 100%; max-width: 20rem; height: auto; border-radius: var(--radius); }

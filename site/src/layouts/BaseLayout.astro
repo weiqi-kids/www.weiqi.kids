@@ -121,12 +121,37 @@ const allSchema = [org, ...(crumbSchema ? [crumbSchema] : []), ...schema];
           <p class="footer-name">{site.legalName}</p>
           <p>聯絡：<a href={`mailto:${site.email}`}>{site.email}</a></p>
         </div>
-        <ul>
-          <li><a href="/association/about/">關於協會</a></li>
-          <li><a href="/camp/how-it-works/">共學營怎麼參加</a></li>
-          <li><a href="/camp/faq/">共學營常見問題</a></li>
-          <li><a href="/gatherings/">棋聚</a></li>
-        </ul>
+        <nav aria-label="頁尾導覽">
+          <p class="footer-head">認識協會</p>
+          <ul>
+            <li><a href="/association/about/">協會介紹</a></li>
+            <li><a href="/association/members/">協會成員</a></li>
+            <li><a href="/news/">最新消息</a></li>
+            <li><a href="/join/">加入協會</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="頁尾導覽：參加活動">
+          <p class="footer-head">參加活動</p>
+          <ul>
+            <li><a href="/camp/how-it-works/">共學營怎麼參加</a></li>
+            <li><a href="/camp/faq/">共學營常見問題</a></li>
+            <li><a href="/gatherings/">好棋寶寶棋聚</a></li>
+            <li><a href="/knowledge/">公開知識</a></li>
+          </ul>
+        </nav>
+        <div>
+          <p class="footer-head">追蹤協會</p>
+          <ul class="footer-social">
+            <li><a href={site.lineCommunityUrl} rel="noopener">LINE 社群</a><span class="muted">棋聚消息與交流</span></li>
+            <li><a href={site.lineOfficialUrl} rel="noopener">LINE 官方帳號</a><span class="muted">報名匯款回報</span></li>
+            <li><a href={site.youtube} rel="noopener">YouTube 頻道</a><span class="muted">推廣影片與活動紀錄</span></li>
+          </ul>
+        </div>
+        <div class="footer-legal">
+          <p>會址：{association.address}</p>
+          <p><a href="/contact/">聯絡協會</a></p>
+          <p><a href="/privacy/">隱私權政策</a></p>
+        </div>
       </div>
     </footer>
     <script>
@@ -159,8 +184,16 @@ const allSchema = [org, ...(crumbSchema ? [crumbSchema] : []), ...schema];
   .breadcrumbs li + li::before { content: '›'; margin-right: var(--space-2); }
   main { padding-block: var(--space-8) var(--space-16); }
   .site-footer { background: var(--color-bg-soft); border-top: 1px solid var(--color-line); font-size: var(--text-sm); }
-  .footer-inner { display: grid; gap: var(--space-6); padding-block: var(--space-8); }
-  @media (min-width: 768px) { .footer-inner { grid-template-columns: 2fr 1fr; } }
+  .footer-inner { display: grid; gap: var(--space-8) var(--space-6); padding-block: var(--space-8); }
+  @media (min-width: 640px) { .footer-inner { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .footer-inner { grid-template-columns: 1.4fr 1fr 1fr 1.2fr; } }
+  .footer-head { font-weight: 700; margin-bottom: var(--space-2); }
+  .site-footer li { margin-bottom: var(--space-1); }
+  .footer-social a { display: block; }
+  .footer-social span { display: block; font-size: var(--text-xs); }
+  .footer-social li { margin-bottom: var(--space-3); }
+  .footer-legal { grid-column: 1 / -1; border-top: 1px solid var(--color-line); padding-top: var(--space-4); font-size: var(--text-xs); display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); }
+  .footer-legal p { margin: 0; }
   .footer-brand img { display: block; width: 9rem; height: auto; margin-bottom: var(--space-4); }
   .footer-name { font-weight: 700; }
   .site-footer ul { list-style: none; margin: 0; padding: 0; }

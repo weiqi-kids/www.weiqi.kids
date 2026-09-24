@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { site } from '../../data/site.js';
+
+const items = (await getCollection('news')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const fmt = (d: Date) => `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`;
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+---
+<BaseLayout
+  title="最新消息"
+  description="台灣好棋寶寶協會的公告與紀事，包含成立、立案、辦過的比賽與活動，以及現階段的活動方向。"
+  breadcrumbs={[{ name: '最新消息', href: '/news/' }]}
+>
+  <div class="prose">
+    <h1>最新消息</h1>
+    <div class="key-answer" data-question="台灣好棋寶寶協會最近在做什麼？">
+      <p>協會現階段的活動以 AI 共學營為主，好棋寶寶棋聚暫時沒有排定場次。以下是協會的公告與紀事，每一則都附上可以查證的頁面。</p>
+    </div>
+  </div>
+
+  <ol class="news-list">
+    {items.map((n) => (
+      <li>
+        <article>
+          <time datetime={iso(n.data.date)}>{fmt(n.data.date)}</time>
+          <h2><a href={`/news/${n.id}/`}>{n.data.title}</a></h2>
+          <p>{n.data.summary}</p>
+        </article>
+      </li>
+    ))}
+  </ol>
+
+  <p class="prose more">更完整的發展紀錄見<a href="/association/history/">協會歷史</a>，活動照片與影片見<a href="/association/activities/">協會活動</a>。想收到消息，可以加入<a href={site.lineCommunityUrl} rel="noopener">好棋寶寶 LINE 社群</a>。</p>
+</BaseLayout>
+<style>
+  .news-list { list-style: none; margin: 0 0 var(--space-8); padding: 0; display: grid; gap: var(--space-6); }
+  .news-list article { border-left: 3px solid var(--color-brand); padding-left: var(--space-6); }
+  .news-list time { font-size: var(--text-xs); color: var(--color-ink-muted); }
+  .news-list h2 { margin: var(--space-1) 0 var(--space-2); font-size: var(--text-lg); }
+  .news-list h2 a { text-decoration: none; }
+  .news-list h2 a:hover { text-decoration: underline; }
+  .news-list p { margin: 0; max-width: var(--measure); }
+  .more { margin-top: var(--space-8); }
+</style>

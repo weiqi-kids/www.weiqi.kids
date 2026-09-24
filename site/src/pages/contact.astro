@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site, association } from '../data/site.js';
+
+const roc = (iso: string) => {
+  const [y, m, d] = iso.split('-').map(Number);
+  return `${y} 年 ${m} 月 ${d} 日`;
+};
+
+const schema = [{
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${site.url}/#organization`,
+  name: site.legalName,
+  alternateName: site.alternateName,
+  url: `${site.url}/`,
+  email: site.email,
+  address: { '@type': 'PostalAddress', streetAddress: association.address, addressCountry: 'TW' },
+  sameAs: [site.youtube, site.lineOfficialUrl],
+}];
+---
+<BaseLayout
+  title="聯絡協會"
+  description="社團法人台灣好棋寶寶協會的聯絡信箱、會址、LINE 官方帳號與 LINE 社群，以及各類問題該找哪個管道。"
+  breadcrumbs={[{ name: '聯絡協會', href: '/contact/' }]}
+  schema={schema}
+>
+  <article class="prose">
+    <h1>聯絡協會</h1>
+
+    <div class="key-answer" data-question="要怎麼聯絡台灣好棋寶寶協會？">
+      <p>寫信到 <a href={`mailto:${site.email}`}>{site.email}</a> 是最通用的方式。報名匯款與需要附上個人資料的事情，請走協會 LINE 官方帳號；想收到棋聚消息，加入 LINE 社群。</p>
+    </div>
+
+    <h2>各類問題找哪個管道</h2>
+    <table>
+      <thead><tr><th>你要做的事</th><th>用哪個管道</th></tr></thead>
+      <tbody>
+        <tr><td>報名 AI 共學營、回報匯款</td><td>先在<a href="/camp/courses/">課程頁</a>報名取得編號，再用協會 LINE 官方帳號附編號回報</td></tr>
+        <tr><td>詢問課程內容、上課方式</td><td>先看<a href="/camp/faq/">常見問題</a>，仍有疑問再來信</td></tr>
+        <tr><td>想擔任講師</td><td>看<a href="/camp/instructor-application/">講師申請方式</a></td></tr>
+        <tr><td>企業合作、贊助曝光</td><td>看<a href="/association/corporate-membership/">企業會員</a>，或直接來信</td></tr>
+        <tr><td>棋聚場次通知</td><td>加入 LINE 社群</td></tr>
+        <tr><td>個人資料查詢或刪除</td><td>來信，並參考<a href="/privacy/">隱私權政策</a></td></tr>
+      </tbody>
+    </table>
+
+    <h2>聯絡方式</h2>
+    <dl class="facts">
+      <dt>電子郵件</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
+      <dt>LINE 官方帳號</dt><dd><a href={site.lineOfficialUrl} rel="noopener">好棋寶寶（{site.lineOfficialId}）</a>，用於報名匯款與需要保密的資料</dd>
+      <dt>LINE 社群</dt><dd><a href={site.lineCommunityUrl} rel="noopener">好棋寶寶 LINE 社群</a>，用於棋聚消息與棋友交流</dd>
+      <dt>YouTube</dt><dd><a href={site.youtube} rel="noopener">好棋寶寶協會頻道</a></dd>
+      <dt>會址</dt><dd>{association.address}</dd>
+    </dl>
+
+    <h2>關於會址</h2>
+    <p>會址是協會的法人登記地址，不是固定的辦公或接待地點。臨櫃拜訪請先來信或透過 LINE 官方帳號約定時間。</p>
+
+    <h2>立案資料</h2>
+    <dl class="facts">
+      <dt>團體名稱</dt><dd>{site.legalName}</dd>
+      <dt>立案</dt><dd>內政部 {roc(association.registeredDate)} 核准，{association.registrationNo}</dd>
+      <dt>法人登記</dt><dd>{association.courtCaseNo}</dd>
+    </dl>
+    <p>更多組織資料見<a href="/association/about/">協會介紹</a>。</p>
+  </article>
+</BaseLayout>

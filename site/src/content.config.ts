@@ -71,4 +71,17 @@ const gatherings = defineCollection({
   }),
 });
 
-export const collections = { pages, topics, courses, gatherings };
+// 最新消息：協會公告與紀事，日期新的排前面。
+const news = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/news' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    summary: z.string(),
+    // 這則消息的依據頁面或外部連結，讓讀者可以查證
+    source: z.string().optional(),
+    sourceLabel: z.string().optional(),
+  }),
+});
+
+export const collections = { pages, topics, courses, gatherings, news };

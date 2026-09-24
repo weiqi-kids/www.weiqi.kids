@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site, association } from '../data/site.js';
+
+const updated = '2026-09-24';
+---
+<BaseLayout
+  title="隱私權政策"
+  description="台灣好棋寶寶協會網站收集哪些個人資料、用在什麼地方、保存多久，以及當事人可以行使哪些權利。"
+  breadcrumbs={[{ name: '隱私權政策', href: '/privacy/' }]}
+>
+  <article class="prose">
+    <h1>隱私權政策</h1>
+    <p class="meta muted">最後更新：<time datetime={updated}>{updated}</time></p>
+
+    <div class="key-answer" data-question="這個網站會收集我的哪些個人資料？">
+      <p>只有在你主動報名課程、建立帳號或在課程論壇發言時，{site.legalName}才會收集你的個人資料。單純瀏覽網站不需要提供任何資料。所有資料只用於處理報名、維持帳號與課程運作，不會販售或提供給協會與下列受託廠商以外的第三方。</p>
+    </div>
+
+    <h2>收集哪些資料</h2>
+
+    <h3>報名 AI 共學營課程時</h3>
+    <dl class="facts">
+      <dt>你填寫的</dt><dd>姓名、電子郵件、LINE 顯示名稱（非必填）、是否已是會員、備註（非必填）</dd>
+      <dt>系統產生的</dt><dd>報名編號、報名狀態、報名時間</dd>
+      <dt>來源位址</dt><dd>只保存你的 IP 位址經雜湊運算後的值，用來防止灌水報名。協會無法從這個值還原你的 IP 位址</dd>
+    </dl>
+
+    <h3>建立帳號與登入時</h3>
+    <dl class="facts">
+      <dt>帳號資料</dt><dd>顯示名稱，以及你選用的登入方式：電子郵件，或 LINE 提供的使用者識別碼</dd>
+      <dt>登入連結</dt><dd>以電子郵件登入時，系統寄出一次性連結。資料庫只保存該連結的雜湊值，有效期 15 分鐘，使用一次後失效</dd>
+      <dt>登入狀態</dt><dd>名為 <code>wk_session</code> 的 cookie，只存一組隨機值，設有 HttpOnly 與 SameSite 保護，效期 30 天。資料庫存的是它的雜湊值，協會可隨時撤銷</dd>
+      <dt>會籍</dt><dd>會員資格的起始日與到期日</dd>
+    </dl>
+
+    <h3>在課程論壇發言時</h3>
+    <dl class="facts">
+      <dt>發言內容</dt><dd>你發表的標題與內文，以及每次修改的版本紀錄</dd>
+      <dt>上傳檔案</dt><dd>你上傳的圖片存放於 Cloudflare R2。網址無法猜測，每次下載都會檢查權限，只有同一門課的成員與協會管理員看得到</dd>
+    </dl>
+
+    <h3>瀏覽網站時</h3>
+    <p>網站使用 Google Analytics 4 統計流量，並已開啟 IP 位址匿名化（<code>anonymize_ip</code>）。協會用它了解哪些頁面被閱讀，不會用來辨識個別訪客。</p>
+
+    <h2>資料用在哪裡</h2>
+    <ul>
+      <li>處理課程報名、確認匯款、開通課程資格與寄送開通通知。</li>
+      <li>維持帳號登入、課程資格判斷與課程論壇運作。</li>
+      <li>統計網站流量，決定要補充哪些內容。</li>
+    </ul>
+    <p>協會不會把你的資料用於上述以外的用途，也不會販售或交換給第三方。</p>
+
+    <h2>誰會接觸到這些資料</h2>
+    <dl class="facts">
+      <dt>協會管理員</dt><dd>處理報名、核對匯款與管理論壇時會看到報名與帳號資料</dd>
+      <dt>同課程成員</dt><dd>只看得到你在該門課論壇的顯示名稱、發言與附件</dd>
+      <dt>Cloudflare</dt><dd>提供網站主機、資料庫（D1）與檔案儲存（R2）</dd>
+      <dt>Google</dt><dd>提供 Google Analytics 4 流量統計</dd>
+      <dt>LINE</dt><dd>你選擇以 LINE 登入時，由 LINE 提供使用者識別碼</dd>
+    </dl>
+
+    <h2>保存多久</h2>
+    <ul>
+      <li>一次性登入連結：15 分鐘後失效。</li>
+      <li>登入狀態：30 天，或你主動登出時結束。</li>
+      <li>報名紀錄、帳號、會籍與論壇發言：在你要求刪除、或帳號停用前持續保存，因為課程資格與論壇脈絡需要它們。</li>
+    </ul>
+
+    <h2>你可以行使的權利</h2>
+    <p>依《個人資料保護法》第 3 條，你可以向協會要求查詢、閱覽、補充或更正你的個人資料，也可以要求停止蒐集、處理、利用或刪除。</p>
+    <p>要行使這些權利，或對本政策有疑問，請來信 <a href={`mailto:${site.email}`}>{site.email}</a>，或透過<a href="/contact/">聯絡協會</a>頁面的其他方式與協會聯繫。</p>
+
+    <h2>政策變更</h2>
+    <p>本政策如有修改，會更新本頁上方的日期。涉及資料用途的重大變更，協會會另行以電子郵件通知已建立帳號的會員。</p>
+
+    <h2>管理單位</h2>
+    <dl class="facts">
+      <dt>名稱</dt><dd>{site.legalName}</dd>
+      <dt>會址</dt><dd>{association.address}</dd>
+      <dt>聯絡信箱</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
+    </dl>
+  </article>
+</BaseLayout>
+<style>
+  .meta { font-size: var(--text-xs); }
+</style>

@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { site } from '../../data/site.js';
+
+export async function getStaticPaths() {
+  const items = await getCollection('news');
+  return items.map((item) => ({ params: { slug: item.id }, props: { item } }));
+}
+
+const { item } = Astro.props as { item: CollectionEntry<'news'> };
+const { Content } = await render(item);
+const d = item.data;
+const iso = d.date.toISOString().slice(0, 10);
+const fmt = `${d.date.getFullYear()} 年 ${d.date.getMonth() + 1} 月 ${d.date.getDate()} 日`;
+
+const schema = [{
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  headline: d.title,
+  description: d.summary,
+  datePublished: iso,
+  inLanguage: 'zh-Hant-TW',
+  author: { '@id': `${site.url}/#organization` },
+  publisher: { '@id': `${site.url}/#organization` },
+  mainEntityOfPage: new URL(`/news/${item.id}/`, Astro.site).href,
+}];
+---
+<BaseLayout
+  title={d.title}
+  description={d.summary}
+  breadcrumbs={[{ name: '最新消息', href: '/news/' }, { name: d.title, href: `/news/${item.id}/` }]}
+  schema={schema}
+  ogType="article"
+  published={d.date}
+>
+  <article class="prose">
+    <p class="meta muted"><time datetime={iso}>{fmt}</time></p>
+    <h1>{d.title}</h1>
+    <div class="key-answer"><p>{d.summary}</p></div>
+    <Content />
+    {d.source && (
+      <p class="source">依據：<a href={d.source}>{d.sourceLabel ?? d.source}</a></p>
+    )}
+    <p><a href="/news/">← 回最新消息</a></p>
+  </article>
+</BaseLayout>
+<style>
+  .meta { font-size: var(--text-xs); margin-bottom: var(--space-2); }
+  .source { border-top: 1px solid var(--color-line); padding-top: var(--space-4); font-size: var(--text-sm); }
+</style>
