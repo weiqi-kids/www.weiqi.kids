@@ -7,6 +7,8 @@ datePublished: "2025-06-11"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/history/ai-history/index.md"
 sourceVerbatim: true
+hero: "ai-go-history"
+heroAlt: "狸貓吉祥物翻開大相簿，跨頁插圖有老電腦、棋盤與獎盃，狐狸趴著一起看"
 ---
 
 長期以來，圍棋被認為是人工智慧最難攻克的遊戲。棋盤上 19×19 = 361 個交叉點，每一點都可能落子，變化數目超過宇宙中的原子總數（約 10^170 種可能的棋局）。傳統的窮舉搜索方法在圍棋面前完全失效。

@@ -8,6 +8,8 @@ datePublished: "2026-02-22"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/neural-network.md"
 sourceVerbatim: true
+hero: "tech-neural-network"
+heroAlt: "狐狸吉祥物站在圓點連線構成的網路牆前，左側輸入棋盤右側分出三條輸出線"
 ---
 
 本文深入解析 KataGo 神經網路的完整架構，從輸入特徵編碼到多頭輸出設計。

@@ -8,6 +8,8 @@ datePublished: "2026-02-22"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/distributed-training.md"
 sourceVerbatim: true
+hero: "tech-distributed-training"
+heroAlt: "六台小電腦圍繞中央伺服器，狐狸吉祥物站在中間調度，連線發著光"
 ---
 
 本文介紹 KataGo 的分散式訓練系統架構，說明如何透過全球社群的算力持續改進模型。

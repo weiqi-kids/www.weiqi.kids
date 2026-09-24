@@ -8,6 +8,8 @@ datePublished: "2026-02-22"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/quantization-deploy.md"
 sourceVerbatim: true
+hero: "tech-quantization-deploy"
+heroAlt: "狸貓吉祥物把大型發光立方體壓成小方塊，再放進手機裡讓螢幕亮起"
 ---
 
 本文介紹如何將 KataGo 模型量化以減少資源需求，以及在各種平台上的部署方案。

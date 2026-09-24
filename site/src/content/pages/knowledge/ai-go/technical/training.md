@@ -8,6 +8,8 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/training.md"
 sourceVerbatim: true
+hero: "tech-training"
+heroAlt: "狸貓吉祥物守著機器，左端投入棋譜卷軸右端產出發光小球，循環箭頭環繞"
 ---
 
 本文深入解析 KataGo 的訓練機制，幫助你理解自我對弈訓練的運作原理。

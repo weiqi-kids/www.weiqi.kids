@@ -8,6 +8,8 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/industry/taiwan.md"
 sourceVerbatim: true
+hero: "ai-taiwan"
+heroAlt: "狐狸與狸貓吉祥物站在台灣島形狀的立體地圖上，島上三個標記各有小棋盤"
 ---
 
 台灣雖然市場規模較小，但在圍棋 AI 應用上有獨特的發展。

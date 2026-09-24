@@ -8,6 +8,8 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/hands-on/integration.md"
 sourceVerbatim: true
+hero: "katago-integration"
+heroAlt: "狐狸與狸貓吉祥物合力拼起兩塊拼圖，一塊畫著棋盤一塊畫著程式視窗"
 ---
 
 本文介紹如何將 KataGo 整合到你的應用程式中。

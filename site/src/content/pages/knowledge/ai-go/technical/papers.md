@@ -8,6 +8,8 @@ datePublished: "2026-02-22"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/papers.md"
 sourceVerbatim: true
+hero: "tech-papers"
+heroAlt: "狐狸吉祥物坐在高高的論文堆上拿螢光筆畫重點，狸貓踮腳遞上更多紙張"
 ---
 
 本文整理圍棋 AI 發展史上最重要的論文，提供快速理解的摘要與技術要點。

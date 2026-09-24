@@ -8,6 +8,8 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/industry/index.md"
 sourceVerbatim: true
+hero: "ai-industry"
+heroAlt: "狸貓吉祥物走過三個分別擺著棋盤、筆電與螢幕的小攤位，狐狸在攤後招手"
 ---
 
 2016 年 AlphaGo 擊敗李世乭後，圍棋 AI 已經深刻改變了整個圍棋生態。

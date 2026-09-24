@@ -8,6 +8,8 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/how-it-works/index.md"
 sourceVerbatim: true
+hero: "ai-go-how-it-works"
+heroAlt: "狸貓吉祥物在白板前用箭頭串起棋盤、大腦與落子三個方塊，狐狸在旁聆聽"
 ---
 
 讀完這篇文章，你將能夠：

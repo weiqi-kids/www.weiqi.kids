@@ -7,6 +7,8 @@ datePublished: "2025-06-11"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/history/index.md"
 sourceVerbatim: true
+hero: "ai-go-evolution"
+heroAlt: "三級台階由矮到高各放一台不同年代的機器，狐狸與狸貓沿著階梯往上走"
 ---
 
 ## 為什麼 AI 改變了圍棋？

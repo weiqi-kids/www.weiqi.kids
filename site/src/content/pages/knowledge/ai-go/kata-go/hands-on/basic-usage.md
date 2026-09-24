@@ -8,6 +8,8 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/hands-on/basic-usage.md"
 sourceVerbatim: true
+hero: "katago-basic-usage"
+heroAlt: "狸貓吉祥物戴耳機坐在電腦前操作指令視窗，螢幕上只有抽象線條與方塊"
 ---
 
 KataGo 提供兩種操作模式：GTP 模式（適合對弈）和 Analysis Engine（適合程式整合）。

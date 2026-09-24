@@ -8,6 +8,8 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/overview/index.md"
 sourceVerbatim: true
+hero: "ai-go-overview"
+heroAlt: "狐狸吉祥物捧著平板顯示棋盤與黑白勝率長條，狸貓吉祥物驚訝地指著畫面"
 ---
 
 在深入技術細節之前，先來看看現代圍棋 AI 能做到什麼。這些功能將幫助你理解為什麼圍棋 AI 如此重要，以及它在實際應用中的價值。

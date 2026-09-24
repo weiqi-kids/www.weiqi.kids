@@ -8,6 +8,8 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/industry/ai-transformation.md"
 sourceVerbatim: true
+hero: "ai-transformation-lesson"
+heroAlt: "狸貓吉祥物把棋子投進機器，另一端噴出齒輪、燈泡與試管等各行業圖示"
 ---
 
 圍棋界經歷了完整的 AI 轉型歷程，其經驗對其他行業極具參考價值。

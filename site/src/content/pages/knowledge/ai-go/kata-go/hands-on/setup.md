@@ -8,6 +8,8 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/hands-on/setup.md"
 sourceVerbatim: true
+hero: "katago-setup"
+heroAlt: "狐狸吉祥物在長清單上逐項打勾，旁邊筆電顯示進度條，地上堆著包裹箱"
 ---
 
 本文詳細介紹在各平台上安裝 KataGo 的完整步驟。

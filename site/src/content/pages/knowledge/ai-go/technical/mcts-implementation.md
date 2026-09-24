@@ -8,6 +8,8 @@ datePublished: "2026-02-22"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/mcts-implementation.md"
 sourceVerbatim: true
+hero: "tech-mcts-implementation"
+heroAlt: "狸貓吉祥物攀在由小棋盤節點組成的樹狀結構上，其中幾條分支發著光"
 ---
 
 本文深入解析 KataGo 中蒙地卡羅樹搜索（MCTS）的實作細節，包括資料結構、選擇策略與並行化技術。

@@ -8,6 +8,8 @@ datePublished: "2026-02-22"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/custom-rules.md"
 sourceVerbatim: true
+hero: "tech-custom-rules"
+heroAlt: "狸貓吉祥物面前擺著三塊大小不同的棋盤，手上挑選可替換的規則卡片"
 ---
 
 本文介紹 KataGo 支援的各種圍棋規則、棋盤大小變體，以及如何自訂規則設定。

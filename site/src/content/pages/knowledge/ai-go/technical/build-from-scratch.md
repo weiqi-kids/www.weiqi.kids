@@ -8,6 +8,8 @@ datePublished: "2026-02-22"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/build-from-scratch.md"
 sourceVerbatim: true
+hero: "tech-build-from-scratch"
+heroAlt: "狐狸與狸貓吉祥物在工作台用零件組裝小機器人，機器人手捧一顆黑棋子"
 ---
 
 本文帶你一步步實作一個簡化版的 AlphaGo Zero 風格圍棋 AI，涵蓋遊戲邏輯、神經網路、MCTS 與訓練流程。

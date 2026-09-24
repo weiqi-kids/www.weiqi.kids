@@ -8,6 +8,8 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/contributing.md"
 sourceVerbatim: true
+hero: "tech-contributing"
+heroAlt: "狐狸狸貓與一群小動物圍成圈，各捧一塊發光方塊放進中央的大木箱"
 ---
 
 KataGo 是一個活躍的開源專案，有多種方式可以參與貢獻。

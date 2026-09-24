@@ -7,6 +7,8 @@ datePublished: "2025-06-11"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/history/human-history/ancient.md"
 sourceVerbatim: true
+hero: "go-ancient"
+heroAlt: "狸貓吉祥物在古亭中捧著竹簡棋譜，石桌上擺著古樸木棋盤，背景是遠山"
 ---
 
 圍棋的歷史可以追溯到數千年前的中國，是人類最古老的棋類遊戲之一。它不僅是一種智力遊戲，更承載著深厚的文化內涵，反映了東方哲學中陰陽、平衡與戰略思維的精髓。

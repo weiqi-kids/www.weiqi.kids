@@ -7,6 +7,8 @@ datePublished: "2025-06-11"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/introduction/index.md"
 sourceVerbatim: true
+hero: "go-introduction"
+heroAlt: "狐狸吉祥物在小型九路棋盤前比劃講解入門，腳邊放著裝滿黑白棋子的木碗"
 ---
 
 歡迎踏入圍棋的世界！這個區塊將帶你從零開始，建立扎實的圍棋基礎。

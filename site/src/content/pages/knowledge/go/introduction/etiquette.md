@@ -7,6 +7,8 @@ datePublished: "2026-02-17"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/introduction/etiquette.md"
 sourceVerbatim: true
+hero: "go-etiquette"
+heroAlt: "狐狸與狸貓吉祥物隔著空棋盤跪坐互相鞠躬行禮，示範對弈前的禮儀"
 ---
 
 圍棋不只是一場勝負的較量，更是一種文化與修養的展現。良好的對弈禮儀，是每位棋友應該具備的基本素養。

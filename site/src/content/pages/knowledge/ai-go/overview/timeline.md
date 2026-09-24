@@ -8,6 +8,8 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/overview/timeline.md"
 sourceVerbatim: true
+hero: "ai-go-timeline"
+heroAlt: "狐狸與狸貓吉祥物沿著掛滿圓形節點的長布條前行，象徵圍棋 AI 的發展歷程"
 ---
 
 圍棋曾被視為人工智慧最困難的挑戰之一，因其巨大的搜索空間（約 10^170 種可能局面）。這個時間軸記錄了圍棋 AI 從「不可能」到「超越人類」的歷程。

@@ -7,6 +7,8 @@ datePublished: "2025-06-11"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/introduction/first-10-moves.md"
 sourceVerbatim: true
+hero: "go-first-10-moves"
+heroAlt: "棋盤四角各有一顆開局棋子，狐狸吉祥物正放下新的一手，狸貓在旁托腮思考"
 ---
 
 開局（又稱佈局）是圍棋對局的第一階段。這個階段決定了整盤棋的走向。本文將介紹開局的基本觀念，幫助你建立正確的大局觀。

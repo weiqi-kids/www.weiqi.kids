@@ -8,6 +8,8 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/industry/applications.md"
 sourceVerbatim: true
+hero: "ai-applications"
+heroAlt: "狐狸吉祥物在教室對一群小動物學生上課，牆上大螢幕顯示棋盤與分析圖形"
 ---
 
 本文介紹圍棋 AI 在教學平台和職業訓練中的實際應用。
