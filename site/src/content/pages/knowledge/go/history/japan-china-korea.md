@@ -7,8 +7,6 @@ datePublished: "2025-06-11"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/history/human-history/japan-china-korea.md"
 sourceVerbatim: true
-hero: "go-japan-china-korea"
-heroAlt: "狐狸與狸貓吉祥物站在三面素色布簾前，中間是正式比賽棋桌與計時鐘"
 ---
 
 從 17 世紀日本四大棋家的建立，到 21 世紀中韓爭霸，近現代圍棋經歷了職業化、國際化的重要轉變。這段歷史見證了圍棋從東方傳統藝術發展成為全球性競技運動的過程。

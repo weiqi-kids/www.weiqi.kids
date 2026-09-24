@@ -8,8 +8,6 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/overview/landscape.md"
 sourceVerbatim: true
-hero: "ai-go-landscape"
-heroAlt: "狐狸與狸貓吉祥物站在攤開的大地圖上，地圖散落棋盤、電腦與伺服器等圖示"
 ---
 
 圍棋 AI 不只是單一的程式，而是一個完整的生態系統。這篇文章將幫助你了解各種選擇，找到最適合你的工具。

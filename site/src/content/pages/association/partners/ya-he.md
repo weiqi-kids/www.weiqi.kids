@@ -7,8 +7,6 @@ datePublished: "2026-03-07"
 dateModified: "2026-03-07"
 legacySource: "docs/about/activities/partners/ya-he.md"
 sourceVerbatim: true
-hero: "partner-ya-he"
-heroAlt: "狐狸吉祥物在白板上畫網站架構圖，狸貓在筆電前對照，白板上有方塊與箭頭"
 ---
 
 **網站開發公司**

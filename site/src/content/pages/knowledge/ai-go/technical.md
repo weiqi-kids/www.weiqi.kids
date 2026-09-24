@@ -8,8 +8,6 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/index.md"
 sourceVerbatim: true
-hero: "ai-go-technical"
-heroAlt: "狸貓吉祥物戴眼鏡拿著放大鏡，攀上由書本與伺服器堆成的小山往上張望"
 ---
 
 這個章節適合想要深入研究圍棋 AI 的工程師，涵蓋技術實作、理論基礎與實務應用。

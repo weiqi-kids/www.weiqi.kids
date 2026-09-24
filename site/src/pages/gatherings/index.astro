@@ -8,7 +8,6 @@ const upcoming = (await getCollection('gatherings')).filter((g) => g.data.startD
 <BaseLayout title="好棋寶寶棋聚" description="台灣好棋寶寶協會的圍棋交流活動：實體聚會、主題講座、友誼對局與新手交流。不需要共學營會員資格。" breadcrumbs={[{ name: '好棋寶寶棋聚', href: '/gatherings/' }]}>
   <div class="prose">
     <h1>好棋寶寶棋聚</h1>
-    <img class="page-hero" src="/media/illustrations/gatherings-index.webp" alt="狐狸與狸貓吉祥物圍著矮桌下圍棋聊天，桌上有棋盤、棋罐與熱茶" width="1600" height="900" loading="lazy" />
     <div class="key-answer" data-question="好棋寶寶棋聚是什麼？">
       <p>好棋寶寶棋聚是協會辦的圍棋交流活動，內容包含實體聚會、主題講座、友誼對局與新手交流。2023 到 2024 年在台中固定舉辦，目前沒有排定新的場次；協會現階段的聚會以 <a href="/camp/">AI 共學營</a>為主。</p>
     </div>
@@ -26,5 +25,4 @@ const upcoming = (await getCollection('gatherings')).filter((g) => g.data.startD
   )}
 </BaseLayout>
 <style>
-  .page-hero { width: 100%; height: auto; border-radius: var(--radius); margin-bottom: var(--space-6); }
 </style>

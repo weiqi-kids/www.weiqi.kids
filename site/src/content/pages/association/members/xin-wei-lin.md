@@ -8,8 +8,6 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/xin-wei-lin.md"
 sourceVerbatim: true
-hero: "member-xin-wei-lin"
-heroAlt: "狸貓吉祥物在正式對局桌前落下白子，桌旁有計時棋鐘，後方擺著金色獎盃"
 ---
 
 > **「圍棋專業召集人」**

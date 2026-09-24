@@ -7,8 +7,6 @@ datePublished: "2025-06-11"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/history/ai-history/katago-era.md"
 sourceVerbatim: true
-hero: "ai-go-katago-era"
-heroAlt: "夜裡狐狸吉祥物用小筆電執行圍棋 AI，狸貓端著熱茶走來，窗外一片夜色"
 ---
 
 AlphaGo 在 2017 年退役後，圍棋 AI 的發展並未停止。相反地，開源社群接過了火炬，讓頂級圍棋 AI 不再是科技巨頭的專利，而是每個人都能使用的工具。這場「AI 民主化」運動徹底改變了圍棋的學習和訓練方式。

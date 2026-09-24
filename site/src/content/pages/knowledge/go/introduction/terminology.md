@@ -7,8 +7,6 @@ datePublished: "2026-02-17"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/introduction/terminology.md"
 sourceVerbatim: true
-hero: "go-terminology"
-heroAlt: "狐狸吉祥物在木掛板前示範角、邊與眼位三種棋形，狸貓在下方做筆記"
 ---
 
 學習圍棋術語，能幫助你看懂棋譜、理解解說，並與其他棋友交流。

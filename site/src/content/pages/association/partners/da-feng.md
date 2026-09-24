@@ -7,8 +7,6 @@ datePublished: "2026-03-07"
 dateModified: "2026-03-07"
 legacySource: "docs/about/activities/partners/da-feng.md"
 sourceVerbatim: true
-hero: "partner-da-feng"
-heroAlt: "狸貓吉祥物設計手機闖關任務介面，螢幕上有任務清單與勳章，空中飄著對話泡泡"
 ---
 
 **LINE@ 開發工程師**

@@ -12,7 +12,6 @@ const events = [
 <BaseLayout title="協會歷史" description="台灣好棋寶寶協會的發展紀錄：好棋同樂會、城市網路對抗賽、親子圍棋嘉年華、推廣影片，到 AI 共學營。" breadcrumbs={[{ name: '協會', href: '/association/' }, { name: '協會歷史', href: '/association/history/' }]}>
   <article class="prose">
     <h1>協會歷史</h1>
-    <img class="page-hero" src="/media/illustrations/association-history.webp" alt="狐狸與狸貓吉祥物沿著一條時間軸步道前行，途中有獎盃、棋盤、書本等里程碑圖示" width="1600" height="900" loading="lazy" />
     <ol class="timeline">
       {events.map((e) => <li><strong>{e.when}</strong><p>{e.what} <a href={e.href}>看紀錄</a></p></li>)}
     </ol>
@@ -20,7 +19,6 @@ const events = [
   </article>
 </BaseLayout>
 <style>
-  .page-hero { width: 100%; height: auto; border-radius: var(--radius); margin-bottom: var(--space-6); }
   .timeline { list-style: none; padding: 0; border-left: 3px solid var(--color-brand); }
   .timeline li { padding-left: var(--space-6); margin-bottom: var(--space-6); }
   .timeline p { margin: 0; }

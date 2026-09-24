@@ -8,8 +8,6 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/how-it-works/katago-innovations.md"
 sourceVerbatim: true
-hero: "katago-innovations"
-heroAlt: "狐狸吉祥物捧著小巧發光的齒輪，旁邊是體積龐大的舊機器，對比效率差異"
 ---
 
 KataGo 是 David Wu 於 2019 年發表的開源圍棋 AI，以更少的資源達到更強的棋力。本文將深入解析其技術創新。

@@ -8,8 +8,6 @@ datePublished: "2026-05-28"
 dateModified: "2026-09-04"
 legacySource: "docs/about/members/founding/ai-lin-hsiao.md"
 sourceVerbatim: true
-hero: "member-ai-lin-hsiao"
-heroAlt: "狐狸吉祥物在木製棋盤前落子，身旁放著棋鐘與攤開的棋譜，狸貓在一旁觀戰"
 ---
 
 > **「圍棋專業召集人」**

@@ -7,8 +7,6 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/ya-he.md"
 sourceVerbatim: true
-hero: "member-ya-he"
-heroAlt: "狐狸與狸貓吉祥物在白板前討論網站線框圖，白板上貼著版面卡片與箭頭連線"
 ---
 
 **網站開發**

@@ -8,8 +8,6 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/source-code.md"
 sourceVerbatim: true
-hero: "tech-source-code"
-heroAlt: "狐狸吉祥物提著燈籠走進由資料夾方塊堆成的迷宮，狸貓在入口指路"
 ---
 
 本文帶你了解 KataGo 的程式碼結構，適合想深入研究或貢獻程式碼的工程師。

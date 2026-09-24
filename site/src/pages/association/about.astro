@@ -8,8 +8,6 @@ import { videos, channelUrl } from '../../data/media.js';
 <BaseLayout title="協會介紹" description="台灣好棋寶寶協會的會員組成、主辦的好棋寶寶棋聚與 AI 共學營、會員制度與聯絡方式。" breadcrumbs={[{ name: '協會', href: '/association/' }, { name: '協會介紹', href: '/association/about/' }]}>
   <article class="prose">
     <h1>協會介紹</h1>
-    <img class="page-hero" src="/media/illustrations/association-about.webp" alt="狐狸與狸貓吉祥物坐在會議桌前討論，背後牆上掛著組織架構示意圖" width="1600" height="900" loading="lazy" />
-    <img class="logo" src="/media/brand/logo-stacked.webp" alt="台灣好棋寶寶協會 Good Move Association 標誌" width="704" height="590" />
     <div class="key-answer" data-question="台灣好棋寶寶協會在做什麼？">
       <p>{site.legalName}（{site.alternateName}）於 2024 年 1 月 5 日成立，由一群因圍棋結緣的各行各業人士組成，目前有 {founders.length} 位成員。協會以「{association.purpose}」為宗旨，主辦好棋寶寶棋聚與 AI 共學營，並整理圍棋與 AI 的公開知識。</p>
     </div>
@@ -62,8 +60,6 @@ import { videos, channelUrl } from '../../data/media.js';
   </article>
 </BaseLayout>
 <style>
-  .page-hero { width: 100%; height: auto; border-radius: var(--radius); margin-bottom: var(--space-6); }
-  .logo { width: 12rem; height: auto; display: block; margin-bottom: var(--space-6); }
   .mascots { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); align-items: end; margin-bottom: var(--space-6); }
   .mascots img { width: 100%; height: auto; }
 </style>

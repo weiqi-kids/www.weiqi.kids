@@ -8,8 +8,6 @@ datePublished: "2026-02-22"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/gpu-optimization.md"
 sourceVerbatim: true
-hero: "tech-gpu-optimization"
-heroAlt: "狸貓吉祥物拿扳手調整大型顯示卡旋鈕，狐狸吉祥物在旁拿著碼錶計時"
 ---
 
 本文介紹 KataGo 支援的各種 GPU 後端、效能差異，以及如何調校以獲得最佳效能。

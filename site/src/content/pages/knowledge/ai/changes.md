@@ -7,8 +7,6 @@ datePublished: "2026-02-17"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/ai-era/changes.md"
 sourceVerbatim: true
-hero: "ai-changes"
-heroAlt: "左邊狐狸吃力抱著大疊紙本資料，右邊同一隻狐狸輕鬆拿著平板，中間有箭頭"
 ---
 
 AlphaGo 的出現不僅戰勝了人類頂尖棋手，更重要的是改變了我們對圍棋的理解。許多過去被認為是「常識」的觀念，在 AI 的分析下需要重新審視。

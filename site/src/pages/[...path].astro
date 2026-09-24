@@ -31,14 +31,11 @@ const singleVideos = (media?.videos ?? []).map((k) => (videoData as any)[k]);
 const videoList = media?.videoList ? (videoData as any)[media.videoList] : [];
 
 const heroes: Record<string, { src: string; alt: string }> = {
-  '/knowledge/go/': { src: '/media/illustrations/knowledge-go.webp', alt: '狸貓吉祥物在矮桌前教狐狸吉祥物下圍棋，木製棋盤的星位上放著幾顆黑白棋子' },
-  '/knowledge/go/history/': { src: '/media/illustrations/knowledge-go-history.webp', alt: '狐狸與狸貓吉祥物站在線裝古書與棋譜卷軸之間，背景是一條標著節點的時間軸' },
-  '/knowledge/ai-go/alphago/': { src: '/media/illustrations/knowledge-alphago.webp', alt: '狐狸與狸貓吉祥物在旁觀看人類棋手與電腦對弈，右側是神經網路的層狀示意圖' },
-  '/knowledge/ai-go/': { src: '/media/illustrations/knowledge-ai-go.webp', alt: '狐狸與狸貓吉祥物操作電腦執行圍棋 AI，螢幕上有棋盤與一條黑白勝率長條' },
   '/knowledge/ai/': { src: '/media/illustrations/knowledge-ai.webp', alt: '狐狸與狸貓吉祥物站在醫療、製造、教育三個 AI 應用圖示中間' },
-  '/knowledge/interactive/animations/': { src: '/media/illustrations/knowledge-interactive.webp', alt: '狐狸吉祥物在大型互動觸控螢幕前點選圓形按鈕，螢幕上播放著動畫元素' },
 };
-const hero = heroes[d.path];
+const hero = d.hero
+  ? { src: `/media/illustrations/${d.hero}.webp`, alt: d.heroAlt ?? '' }
+  : heroes[d.path];
 
 const slug = d.path.split('/').filter(Boolean).at(-1);
 const member = d.kind === 'member' || d.kind === 'partner' ? founders.find((f) => f.slug === slug) : null;
@@ -84,9 +81,12 @@ if (d.kind === 'knowledge') {
   modified={d.dateModified ?? d.datePublished}
 >
   <article class="prose">
-    <h1>{d.title}</h1>
-    {d.hero && <img class="page-hero" src={`/media/illustrations/${d.hero}.webp`} alt={d.heroAlt ?? ''} width="1600" height="900" loading="lazy" />}
-    {!d.hero && hero && <img class="page-hero" src={hero.src} alt={hero.alt} width="1600" height="900" loading="lazy" />}
+    {hero ? (
+      <div class="page-head">
+        <h1>{d.title}</h1>
+        <img class="page-hero" src={hero.src} alt={hero.alt} width="1600" height="900" loading="eager" fetchpriority="high" />
+      </div>
+    ) : <h1>{d.title}</h1>}
     {d.kind === 'knowledge' && d.dateModified && (
       <p class="meta muted">最後更新：<time datetime={d.dateModified.toISOString().slice(0, 10)}>{d.dateModified.toISOString().slice(0, 10)}</time>．{site.name}整理</p>
     )}
@@ -119,7 +119,10 @@ if (d.kind === 'knowledge') {
   )}
 </BaseLayout>
 <style>
-  .page-hero { width: 100%; height: auto; border-radius: var(--radius); margin-bottom: var(--space-6); }
+  .page-head { display: grid; gap: var(--space-4) var(--space-6); align-items: center; margin-bottom: var(--space-6); }
+  @media (min-width: 640px) { .page-head { grid-template-columns: minmax(0, 1fr) 20rem; } }
+  .page-head h1 { margin: 0; }
+  .page-hero { width: 100%; max-width: 20rem; height: auto; border-radius: var(--radius); }
   .meta { font-size: var(--text-xs); }
   .children { margin-top: var(--space-12); }
   .media-section { margin-top: var(--space-8); }

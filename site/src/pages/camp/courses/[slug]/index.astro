@@ -35,7 +35,6 @@ const schema = {
   <article class="prose">
     <p class="muted">{STATUS_LABEL[c.status]}{topic && <>．主題：<a href={`/camp/topics/${topic.data.slug}/`}>{topic.data.title}</a></>}</p>
     <h1>{c.title}</h1>
-    <img class="page-hero" src="/media/illustrations/camp-course-detail.webp" alt="狐狸與狸貓吉祥物在教室裡，黑板上畫著四堂課的格子" width="1600" height="900" loading="lazy" />
     <div class="key-answer" data-question={`${c.title}的時間與費用？`}>
       <p>{fmtDate(c.startDate)}～{fmtDate(c.endDate)}，地點：{c.location}。費用 {c.fee.toLocaleString('zh-TW')} 元；第一次報名繳的常年會費已含這門課。</p>
     </div>
@@ -50,5 +49,4 @@ const schema = {
   </article>
 </BaseLayout>
 <style>
-  .page-hero { width: 100%; height: auto; border-radius: var(--radius); margin-bottom: var(--space-6); }
 </style>

@@ -7,8 +7,6 @@ datePublished: "2025-06-11"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/history/ai-history/alphago-era.md"
 sourceVerbatim: true
-hero: "ai-go-alphago-era"
-heroAlt: "舞台上人類座位與大螢幕隔桌對弈，狐狸與狸貓在觀眾席前排仰頭觀看"
 ---
 
 2015 年至 2017 年，Google DeepMind 的 AlphaGo 系列程式創造了人工智慧歷史上最具標誌性的突破之一。在短短兩年內，圍棋從「人工智慧無法征服的遊戲」變成了「AI 完全超越人類的領域」。

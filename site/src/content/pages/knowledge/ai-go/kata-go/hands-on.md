@@ -8,8 +8,6 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/hands-on/index.md"
 sourceVerbatim: true
-hero: "katago-hands-on"
-heroAlt: "狐狸吉祥物在筆電前成功跑出棋盤畫面，桌上放著沙漏，狸貓豎起大拇指"
 ---
 
 這份教學將帶你快速安裝並運行 KataGo。完成後你將能夠：

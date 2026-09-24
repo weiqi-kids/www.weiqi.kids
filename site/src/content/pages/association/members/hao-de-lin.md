@@ -8,8 +8,6 @@ datePublished: "2026-05-28"
 dateModified: "2026-09-05"
 legacySource: "docs/about/members/founding/hao-de-lin.md"
 sourceVerbatim: true
-hero: "member-hao-de-lin"
-heroAlt: "狸貓吉祥物提著小燈籠走在棋盤格紋石階上，狐狸在前方回頭招手"
 ---
 
 （資料補充中）

@@ -13,8 +13,10 @@ const list = {
 ---
 <BaseLayout title="協會成員" description={`台灣好棋寶寶協會 ${founders.length} 位成員，來自醫療、法律、保險、設計、行銷、教育與圍棋等領域。`} breadcrumbs={[{ name: '協會', href: '/association/' }, { name: '成員', href: '/association/members/' }]} schema={[list]}>
   <div class="prose">
-    <h1>協會成員</h1>
-    <img class="page-hero" src="/media/illustrations/association-members.webp" alt="聽診器、算盤、畫板、麥克風等各行各業的道具環繞著狐狸與狸貓吉祥物" width="1600" height="900" loading="lazy" />
+    <div class="page-head">
+      <h1>協會成員</h1>
+      <img class="page-hero" src="/media/illustrations/association-members.webp" alt="聽診器、算盤、畫板、麥克風等各行各業的道具環繞著狐狸與狸貓吉祥物" width="1600" height="900" loading="eager" fetchpriority="high" />
+    </div>
     <div class="key-answer" data-question="台灣好棋寶寶協會有哪些成員？">
       <p>協會目前有 {founders.length} 位成員，來自醫療、法律、保險、設計、行銷、教育與圍棋等領域。以下資料經成員授權公開。</p>
     </div>
@@ -34,7 +36,10 @@ const list = {
   </ul>
 </BaseLayout>
 <style>
-  .page-hero { width: 100%; height: auto; border-radius: var(--radius); margin-bottom: var(--space-6); }
+  .page-head { display: grid; gap: var(--space-4) var(--space-6); align-items: center; margin-bottom: var(--space-6); }
+  @media (min-width: 640px) { .page-head { grid-template-columns: minmax(0, 1fr) 20rem; } }
+  .page-head h1 { margin: 0; }
+  .page-hero { width: 100%; max-width: 20rem; height: auto; border-radius: var(--radius); }
   .slogan { color: var(--color-primary); font-weight: 700; margin-bottom: var(--space-1); }
   h2 { font-size: var(--text-lg); }
 </style>
