@@ -8,6 +8,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/fang-chuan-wu.md"
 sourceVerbatim: true
+hero: "member-fang-chuan-wu"
+heroAlt: "狸貓吉祥物在桌前攤開資產規劃文件，桌上有金幣、小房子模型與象徵傳承的小樹"
 ---
 
 > **「高資產傳承」**

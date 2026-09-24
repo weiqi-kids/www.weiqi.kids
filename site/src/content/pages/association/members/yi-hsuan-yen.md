@@ -8,6 +8,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-09-08"
 legacySource: "docs/about/members/founding/yi-hsuan-yen.md"
 sourceVerbatim: true
+hero: "member-yi-hsuan-yen"
+heroAlt: "狐狸吉祥物提著茶壺斟茶，桌上放著打開的精緻茶禮盒與茶葉罐"
 ---
 
 > **「茶禮藏不住」**

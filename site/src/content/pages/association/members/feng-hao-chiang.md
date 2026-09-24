@@ -8,6 +8,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-09-07"
 legacySource: "docs/about/members/founding/feng-hao-chiang.md"
 sourceVerbatim: true
+hero: "member-feng-hao-chiang"
+heroAlt: "狐狸吉祥物穿白袍掛聽診器站在診間桌旁，桌上有蔬果籃與跑鞋"
 ---
 
 > **「運動通健康」**

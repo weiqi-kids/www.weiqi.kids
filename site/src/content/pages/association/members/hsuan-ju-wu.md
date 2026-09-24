@@ -8,6 +8,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/hsuan-ju-wu.md"
 sourceVerbatim: true
+hero: "member-hsuan-ju-wu"
+heroAlt: "狸貓吉祥物扛著攝影機取景，旁邊立著三腳架與播放短影音的直式手機"
 ---
 
 > **「影像恫凍動」**

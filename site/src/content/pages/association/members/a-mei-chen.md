@@ -8,6 +8,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/a-mei-chen.md"
 sourceVerbatim: true
+hero: "member-a-mei-chen"
+heroAlt: "狸貓吉祥物在桌前翻閱保單文件，桌上有小豬撲滿與保護傘，背景有心形護盾圖示"
 ---
 
 > **「保單幸福美」**

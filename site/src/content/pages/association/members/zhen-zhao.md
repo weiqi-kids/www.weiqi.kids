@@ -7,6 +7,8 @@ datePublished: "2026-05-07"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/zhen-zhao.md"
 sourceVerbatim: true
+hero: "member-zhen-zhao"
+heroAlt: "狸貓吉祥物在中藥櫃前抓藥，桌上有脈診小枕、藥秤與草藥包"
 ---
 
 **深圳五味中醫館 中醫科 主治醫師**

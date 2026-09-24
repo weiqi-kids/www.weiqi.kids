@@ -7,6 +7,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/jing-da.md"
 sourceVerbatim: true
+hero: "member-jing-da"
+heroAlt: "狐狸吉祥物在筆電前建置網站，螢幕上是色塊組成的網頁版面區塊"
 ---
 
 **WordPress 開發**

@@ -8,6 +8,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/yi-fang-wu.md"
 sourceVerbatim: true
+hero: "member-yi-fang-wu"
+heroAlt: "狸貓吉祥物拿著報關單站在碼頭邊，身後堆著貨櫃，遠處有貨輪與飛機"
 ---
 
 > **「海上的納美」**

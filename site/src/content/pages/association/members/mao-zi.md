@@ -7,6 +7,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/mao-zi.md"
 sourceVerbatim: true
+hero: "member-mao-zi"
+heroAlt: "狸貓吉祥物用觸控筆在數位繪圖板上畫星空中的黑白棋子星球，旁邊有畫筆罐"
 ---
 
 **插畫**

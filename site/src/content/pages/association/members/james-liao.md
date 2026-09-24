@@ -8,6 +8,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/james-liao.md"
 sourceVerbatim: true
+hero: "member-james-liao"
+heroAlt: "狸貓吉祥物在桌前核對帳本，桌上有計算機、報表與紅色印章"
 ---
 
 > **「財會宜開封」**

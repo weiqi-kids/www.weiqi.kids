@@ -7,6 +7,8 @@ datePublished: "2026-03-07"
 dateModified: "2026-03-07"
 legacySource: "docs/about/activities/partners/mao-zi.md"
 sourceVerbatim: true
+hero: "partner-mao-zi"
+heroAlt: "狸貓吉祥物用觸控筆在繪圖板上創作，畫面是黑白棋子化成的星球漂浮在星空中"
 ---
 
 **插畫家**

@@ -7,6 +7,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/bo-jen-tsai.md"
 sourceVerbatim: true
+hero: "member-bo-jen-tsai"
+heroAlt: "狐狸與狸貓吉祥物站在木製棋盤旁招手歡迎，桌上放著黑白棋罐"
 ---
 
 （資料補充中）

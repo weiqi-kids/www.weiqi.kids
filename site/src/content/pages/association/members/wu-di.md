@@ -7,6 +7,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/wu-di.md"
 sourceVerbatim: true
+hero: "member-wu-di"
+heroAlt: "狐狸吉祥物站在畫架旁，畫布上是動物角色設計稿，狸貓拿著調色盤與畫筆"
 ---
 
 **插畫**

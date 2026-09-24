@@ -7,6 +7,8 @@ datePublished: "2026-03-07"
 dateModified: "2026-03-07"
 legacySource: "docs/about/activities/partners/wu-di.md"
 sourceVerbatim: true
+hero: "partner-wu-di"
+heroAlt: "狐狸與狸貓吉祥物站在畫架兩側，畫布上是動物吉祥物角色設計線稿"
 ---
 
 **插畫家**

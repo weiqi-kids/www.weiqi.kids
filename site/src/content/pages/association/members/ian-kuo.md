@@ -8,6 +8,8 @@ datePublished: "2026-03-07"
 dateModified: "2026-09-04"
 legacySource: "docs/about/members/founding/ian-kuo.md"
 sourceVerbatim: true
+hero: "member-ian-kuo"
+heroAlt: "狐狸吉祥物抱著古典吉他彈奏，身旁立著樂譜架，空中飄著音符"
 ---
 
 > **「命運的吉他」**

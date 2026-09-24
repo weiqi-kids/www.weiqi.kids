@@ -7,6 +7,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/yi-chun-hsieh.md"
 sourceVerbatim: true
+hero: "member-yi-chun-hsieh"
+heroAlt: "狐狸吉祥物戴耳機對著錄音室麥克風配音，背景是隔音牆與音波線條"
 ---
 
 **配音**

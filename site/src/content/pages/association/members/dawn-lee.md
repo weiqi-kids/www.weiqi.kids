@@ -8,6 +8,8 @@ datePublished: "2026-03-07"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/dawn-lee.md"
 sourceVerbatim: true
+hero: "member-dawn-lee"
+heroAlt: "狐狸吉祥物拿著檢核清單站在資料夾與認證印章前，桌上有放大鏡與證書"
 ---
 
 > **「企業好家教」**

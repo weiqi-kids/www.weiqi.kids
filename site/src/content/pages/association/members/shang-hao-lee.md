@@ -8,6 +8,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/shang-hao-lee.md"
 sourceVerbatim: true
+hero: "member-shang-hao-lee"
+heroAlt: "狐狸吉祥物在餐廳吧台後端著沙拉碗，吧台上排著手作果醬與蔬果"
 ---
 
 > **「隨時喝庄咖」**

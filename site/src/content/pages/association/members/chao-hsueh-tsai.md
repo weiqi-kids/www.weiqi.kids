@@ -7,6 +7,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/chao-hsueh-tsai.md"
 sourceVerbatim: true
+hero: "member-chao-hsueh-tsai"
+heroAlt: "狐狸吉祥物捧著小盆栽站在長桌旁，桌上有圍棋與茶壺，狸貓在旁翻書"
 ---
 
 （資料補充中）

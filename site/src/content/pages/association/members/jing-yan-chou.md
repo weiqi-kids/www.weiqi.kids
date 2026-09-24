@@ -8,6 +8,8 @@ datePublished: "2026-03-07"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/jing-yan-chou.md"
 sourceVerbatim: true
+hero: "member-jing-yan-chou"
+heroAlt: "狸貓吉祥物拿放大鏡看電腦螢幕上的上升折線圖，旁邊漂浮著標籤卡片"
 ---
 
 > **「全天銷售員」**

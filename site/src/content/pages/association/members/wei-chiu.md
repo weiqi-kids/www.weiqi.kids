@@ -7,6 +7,8 @@ datePublished: "2026-03-07"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/wei-chiu.md"
 sourceVerbatim: true
+hero: "member-wei-chiu"
+heroAlt: "狸貓吉祥物拿著活動流程表站在掛著布條與汽球的舞台前，旁有攝影機"
 ---
 
 ![邱尚偉](/img/members/wei-chiu.jpg)

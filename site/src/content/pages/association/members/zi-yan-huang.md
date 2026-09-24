@@ -8,6 +8,8 @@ datePublished: "2026-05-07"
 dateModified: "2026-09-19"
 legacySource: "docs/about/members/founding/zi-yan-huang.md"
 sourceVerbatim: true
+hero: "member-zi-yan-huang"
+heroAlt: "狐狸吉祥物燉煮藥膳湯，桌上攤開線裝中醫古籍，旁邊擺著乾燥草本藥材"
 ---
 
 > **「漢方保健品」**

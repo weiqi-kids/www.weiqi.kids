@@ -8,6 +8,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/yi-wan-chan.md"
 sourceVerbatim: true
+hero: "member-yi-wan-chan"
+heroAlt: "狸貓吉祥物拿工具在配線箱前接線，牆上有監視攝影機，桌上有電話總機"
 ---
 
 > **「萬是弱電通」**

@@ -8,6 +8,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/yi-chao-hsieh.md"
 sourceVerbatim: true
+hero: "member-yi-chao-hsieh"
+heroAlt: "狐狸吉祥物推著購物車站在電商螢幕前，腳邊堆著包裹紙箱"
 ---
 
 > **「網店一把罩」**

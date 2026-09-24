@@ -8,6 +8,8 @@ datePublished: "2026-03-07"
 dateModified: "2026-09-20"
 legacySource: "docs/about/members/founding/tien-chien-pan.md"
 sourceVerbatim: true
+hero: "member-tien-chien-pan"
+heroAlt: "狐狸吉祥物穿白袍手持試管觀察，身旁漂浮著細胞與分子結構圖示"
 ---
 
 > **「三高變高三」**

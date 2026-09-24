@@ -8,6 +8,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/da-feng-hsia.md"
 sourceVerbatim: true
+hero: "member-da-feng-hsia"
+heroAlt: "狸貓吉祥物操作大型手機螢幕上的聊天介面選單，空中飄著綠色對話泡泡"
 ---
 
 > **「Line@ 許願池」**

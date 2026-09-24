@@ -7,6 +7,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/ying-ping-huang.md"
 sourceVerbatim: true
+hero: "member-ying-ping-huang"
+heroAlt: "狐狸與狸貓吉祥物一起整理擺著圍棋、書本與茶具的長桌"
 ---
 
 （資料補充中）

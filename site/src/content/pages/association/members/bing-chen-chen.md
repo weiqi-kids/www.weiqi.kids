@@ -8,6 +8,8 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/bing-chen-chen.md"
 sourceVerbatim: true
+hero: "member-bing-chen-chen"
+heroAlt: "狸貓吉祥物在設計桌前拿著產品草圖，桌上有立體產品模型、尺規與紅色小獎座"
 ---
 
 > **「紅點設計師」**

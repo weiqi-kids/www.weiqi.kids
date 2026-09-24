@@ -8,6 +8,8 @@ datePublished: "2026-03-07"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/bo-yang-cheng.md"
 sourceVerbatim: true
+hero: "member-bo-yang-cheng"
+heroAlt: "狸貓吉祥物在整復床旁做伸展示範，旁有啞鈴與瑜珈墊，牆上掛著脊椎示意圖"
 ---
 
 > **「猛男整脊師」**
