@@ -7,6 +7,7 @@ const open = (await getCollection('courses')).filter((c) => c.data.status === 'o
 <BaseLayout title="AI 共學營" description="台灣好棋寶寶協會主辦的 AI 共學營：會員依每月主題，一起學習並實作各行各業的 AI 應用。每門課 1 堂主題教學、3 堂實作、為期一個月。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }]}>
   <div class="prose">
     <h1>AI 共學營</h1>
+    <img class="page-hero" src="/media/illustrations/camp-intro.webp" alt="狐狸與狸貓吉祥物在長桌前討論，桌上放著圍棋盤與筆記型電腦，身後牆面投影著流程圖" width="1600" height="900" loading="lazy" />
     <div class="key-answer" data-question="AI 共學營是什麼？">
       <p>AI 共學營是台灣好棋寶寶協會為會員辦的共學活動。每個月一個 AI 應用主題，例如「用 AI 建立產業情報流程」。每門課 1 堂主題教學、3 堂實作，為期{courseRules.duration}，費用 {courseRules.fee.toLocaleString('zh-TW')} 元。</p>
     </div>
@@ -28,3 +29,6 @@ const open = (await getCollection('courses')).filter((c) => c.data.status === 'o
     <li><a class="card" href="/camp/faq/"><h2>常見問題</h2><p>費用、會員、教材、實作營與作品公開。</p></a></li>
   </ul>
 </BaseLayout>
+<style>
+  .page-hero { width: 100%; height: auto; border-radius: var(--radius); margin-bottom: var(--space-6); }
+</style>

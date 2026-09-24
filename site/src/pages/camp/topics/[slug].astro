@@ -23,10 +23,20 @@ const cases: Case[] =
   : t.caseSet === 'research' ? researchPapers.map((a: any) => ({ title: a.titleDefault, desc: a.descDefault, href: a.href }))
   : [];
 const path = `/camp/topics/${t.slug}/`;
+
+const heroes: Record<string, { src: string; alt: string }> = {
+  'intelligence-gathering': { src: '/media/illustrations/topic-intelligence-gathering.webp', alt: '狐狸與狸貓吉祥物從成堆的報紙與漂浮的網頁卡片中，整理出一張乾淨的摘要卡' },
+  'supply-chain-intelligence': { src: '/media/illustrations/topic-supply-chain.webp', alt: '狐狸與狸貓吉祥物在白板前畫出產業上中下游的節點連線圖' },
+  'ai-applications': { src: '/media/illustrations/topic-ai-applications.webp', alt: '狐狸與狸貓吉祥物把一個帶問號的方塊，變成右側可操作的工具介面視窗' },
+  'theorem-derivation': { src: '/media/illustrations/topic-theorem-derivation.webp', alt: '狐狸與狸貓吉祥物在黑板前推導算式，黑板上還標著一個打叉的反例' },
+  'research-publication': { src: '/media/illustrations/topic-research-publication.webp', alt: '狐狸與狸貓吉祥物把研究成果做成瀏覽器裡的互動網頁，畫面上有折線圖與長條圖' },
+};
+const hero = heroes[t.slug];
 ---
 <BaseLayout title={t.title} description={`${t.summary} AI 共學營課程主題；每門課 1 堂主題教學＋3 堂實作，為期一個月，${courseRules.fee.toLocaleString('zh-TW')} 元。`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '課程主題', href: '/camp/topics/' }, { name: t.title, href: path }]}>
   <article class="prose">
     <h1>{t.title}</h1>
+    {hero && <img class="page-hero" src={hero.src} alt={hero.alt} width="1600" height="900" loading="lazy" />}
     <div class="key-answer" data-question={`${t.title}學什麼？`}>
       <p>{t.summary}</p>
     </div>
@@ -59,5 +69,6 @@ const path = `/camp/topics/${t.slug}/`;
   )}
 </BaseLayout>
 <style>
+  .page-hero { width: 100%; height: auto; border-radius: var(--radius); margin-bottom: var(--space-6); }
   .cases { margin-top: var(--space-12); }
 </style>

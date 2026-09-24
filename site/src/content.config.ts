@@ -16,6 +16,9 @@ const pages = defineCollection({
     legacySource: z.string().optional(),
     sourceVerbatim: z.boolean().optional(),
     image: z.string().optional(),
+    // 頁面首圖（吉祥物插畫，放在 public/media/illustrations/）
+    hero: z.string().optional(),
+    heroAlt: z.string().optional(),
   }),
 });
 
