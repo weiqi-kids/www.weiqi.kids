@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/feng-hao-chiang.md"
 sourceVerbatim: true
 hero: "member-feng-hao-chiang"
 heroAlt: "狐狸吉祥物穿白袍掛聽診器站在診間桌旁，桌上有蔬果籃與跑鞋"
+heroCaption: "把運動與營養放進家庭醫學門診，是這位醫師主打的方向"
 ---
 
 > **「運動通健康」**

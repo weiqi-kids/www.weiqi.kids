@@ -10,6 +10,7 @@ legacySource: "docs/tech/deep-dive/quantization-deploy.md"
 sourceVerbatim: true
 hero: "tech-quantization-deploy"
 heroAlt: "狸貓吉祥物把大型發光立方體壓成小方塊，再放進手機裡讓螢幕亮起"
+heroCaption: "量化把龐大的模型壓縮成小尺寸，才塞得進手機執行（示意）"
 ---
 
 本文介紹如何將 KataGo 模型量化以減少資源需求，以及在各種平台上的部署方案。

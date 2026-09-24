@@ -9,6 +9,7 @@ legacySource: "docs/about/activities/partners/mao-zi.md"
 sourceVerbatim: true
 hero: "partner-mao-zi"
 heroAlt: "狸貓吉祥物用觸控筆在繪圖板上創作，畫面是黑白棋子化成的星球漂浮在星空中"
+heroCaption: "黑白棋子化身為漂浮宇宙的星球，成為圍棋主題的手機桌布"
 ---
 
 **插畫家**

@@ -9,6 +9,7 @@ legacySource: "docs/learn/introduction/rules.md"
 sourceVerbatim: true
 hero: "go-rules"
 heroAlt: "狸貓吉祥物指著棋盤上被四顆黑棋團團圍住的白子，示範圍棋提子規則"
+heroCaption: "白子周圍四口氣全被黑子堵住，這顆棋就要從棋盤上拿走"
 ---
 
 圍棋的規則非常簡單，但由此產生的變化卻無窮無盡。這正是圍棋迷人的地方。

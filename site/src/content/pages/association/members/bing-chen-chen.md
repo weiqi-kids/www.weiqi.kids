@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/bing-chen-chen.md"
 sourceVerbatim: true
 hero: "member-bing-chen-chen"
 heroAlt: "狸貓吉祥物在設計桌前拿著產品草圖，桌上有立體產品模型、尺規與紅色小獎座"
+heroCaption: "從草圖到成品模型，對應的是產品設計企劃這個專業領域"
 ---
 
 > **「紅點設計師」**

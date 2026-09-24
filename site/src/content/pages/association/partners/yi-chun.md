@@ -9,6 +9,7 @@ legacySource: "docs/about/activities/partners/yi-chun.md"
 sourceVerbatim: true
 hero: "partner-yi-chun"
 heroAlt: "狐狸吉祥物戴耳機在錄音室麥克風前配音，旁邊立著攤開的旁白稿架"
+heroCaption: "宣傳影片的旁白在錄音室對稿錄製，用聲音傳達圍棋文化"
 ---
 
 **專業配音員**

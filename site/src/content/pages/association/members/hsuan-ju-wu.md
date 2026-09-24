@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/hsuan-ju-wu.md"
 sourceVerbatim: true
 hero: "member-hsuan-ju-wu"
 heroAlt: "狸貓吉祥物扛著攝影機取景，旁邊立著三腳架與播放短影音的直式手機"
+heroCaption: "短影音製作要備齊攝影機、三腳架與播放用的直式手機"
 ---
 
 > **「影像恫凍動」**

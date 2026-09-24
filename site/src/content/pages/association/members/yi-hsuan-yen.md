@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/yi-hsuan-yen.md"
 sourceVerbatim: true
 hero: "member-yi-hsuan-yen"
 heroAlt: "狐狸吉祥物提著茶壺斟茶，桌上放著打開的精緻茶禮盒與茶葉罐"
+heroCaption: "打開的茶禮盒與茶葉罐，是 B2B 客製化茶禮的樣子"
 ---
 
 > **「茶禮藏不住」**

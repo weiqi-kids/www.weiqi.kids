@@ -10,6 +10,7 @@ legacySource: "docs/tech/deep-dive/evaluation.md"
 sourceVerbatim: true
 hero: "tech-evaluation"
 heroAlt: "狐狸吉祥物拿碼錶站在兩台對弈電腦中間，刻度柱上的指針停在高處"
+heroCaption: "靠大量對局累積的勝負算出 Elo，再用計時衡量搜索速度"
 ---
 
 本文介紹如何評估圍棋 AI 的棋力與效能，包括 Elo 評分系統、對局測試方法與標準基準測試。

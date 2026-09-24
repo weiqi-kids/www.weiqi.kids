@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/yu-ling-chen.md"
 sourceVerbatim: true
 hero: "member-yu-ling-chen"
 heroAlt: "狐狸吉祥物站在高大的立體動物造型公仔道具旁，手裡拿著刷子，地上有顏料桶"
+heroCaption: "立體布景的大公仔從零件到上色完成，成為可以拍照的景點"
 ---
 
 > **「大公仔景點」**

@@ -9,6 +9,7 @@ legacySource: "docs/about/members/founding/zhen-zhao.md"
 sourceVerbatim: true
 hero: "member-zhen-zhao"
 heroAlt: "狸貓吉祥物在中藥櫃前抓藥，桌上有脈診小枕、藥秤與草藥包"
+heroCaption: "在中藥櫃前抓取藥材、秤重配伍，是針藥結合治療的用藥這一端"
 ---
 
 **深圳五味中醫館 中醫科 主治醫師**

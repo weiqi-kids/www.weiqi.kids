@@ -10,6 +10,7 @@ legacySource: "docs/tech/industry/taiwan.md"
 sourceVerbatim: true
 hero: "ai-taiwan"
 heroAlt: "狐狸與狸貓吉祥物站在台灣島形狀的立體地圖上，島上三個標記各有小棋盤"
+heroCaption: "台灣雖然市場規模小，仍有幾個在地的圍棋 AI 應用案例（示意）"
 ---
 
 台灣雖然市場規模較小，但在圍棋 AI 應用上有獨特的發展。

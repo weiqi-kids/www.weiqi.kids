@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/yi-fang-wu.md"
 sourceVerbatim: true
 hero: "member-yi-fang-wu"
 heroAlt: "狸貓吉祥物拿著報關單站在碼頭邊，身後堆著貨櫃，遠處有貨輪與飛機"
+heroCaption: "碼頭的貨櫃、貨輪與飛機，對應海空物流與理貨報關的環節"
 ---
 
 > **「海上的納美」**

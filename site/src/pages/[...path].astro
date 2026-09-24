@@ -30,11 +30,15 @@ const media = (mediaByPath as Record<string, { galleries?: string[]; videos?: st
 const singleVideos = (media?.videos ?? []).map((k) => (videoData as any)[k]);
 const videoList = media?.videoList ? (videoData as any)[media.videoList] : [];
 
-const heroes: Record<string, { src: string; alt: string }> = {
-  '/knowledge/ai/': { src: '/media/illustrations/knowledge-ai.webp', alt: '狐狸與狸貓吉祥物站在醫療、製造、教育三個 AI 應用圖示中間' },
+const heroes: Record<string, { src: string; alt: string; caption?: string }> = {
+  '/knowledge/ai/': {
+    src: '/media/illustrations/knowledge-ai.webp',
+    alt: '狐狸與狸貓吉祥物站在醫療、製造、教育三個 AI 應用圖示中間',
+    caption: '圍棋 AI 的做法可以延伸到醫療、製造與教育等產業（示意）',
+  },
 };
 const hero = d.hero
-  ? { src: `/media/illustrations/${d.hero}.webp`, alt: d.heroAlt ?? '' }
+  ? { src: `/media/illustrations/${d.hero}.webp`, alt: d.heroAlt ?? '', caption: d.heroCaption }
   : heroes[d.path];
 
 const slug = d.path.split('/').filter(Boolean).at(-1);
@@ -84,7 +88,10 @@ if (d.kind === 'knowledge') {
     {hero ? (
       <div class="page-head">
         <h1>{d.title}</h1>
-        <img class="page-hero" src={hero.src} alt={hero.alt} width="1600" height="900" loading="eager" fetchpriority="high" />
+        <figure>
+          <img class="page-hero" src={hero.src} alt={hero.alt} width="1600" height="900" loading="eager" fetchpriority="high" />
+          {hero.caption && <figcaption>{hero.caption}</figcaption>}
+        </figure>
       </div>
     ) : <h1>{d.title}</h1>}
     {d.kind === 'knowledge' && d.dateModified && (
@@ -122,6 +129,8 @@ if (d.kind === 'knowledge') {
   .page-head { display: grid; gap: var(--space-4) var(--space-6); align-items: center; margin-bottom: var(--space-6); }
   @media (min-width: 640px) { .page-head { grid-template-columns: minmax(0, 1fr) 20rem; } }
   .page-head h1 { margin: 0; }
+  .page-head figure { margin: 0; }
+  .page-head figcaption { margin-top: var(--space-2); font-size: var(--text-xs); line-height: 1.6; color: var(--color-ink-muted); }
   .page-hero { width: 100%; max-width: 20rem; height: auto; border-radius: var(--radius); }
   .meta { font-size: var(--text-xs); }
   .children { margin-top: var(--space-12); }

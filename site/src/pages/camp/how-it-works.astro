@@ -23,7 +23,10 @@ const howto = {
   <article class="prose">
     <div class="page-head">
       <h1>參加流程</h1>
-      <img class="page-hero" src="/media/illustrations/camp-how.webp" alt="四格示意圖：狐狸與狸貓吉祥物依序完成填報名表、手機匯款、進教室上課、在筆電前實作四個步驟" width="1600" height="900" loading="eager" fetchpriority="high" />
+      <figure>
+        <img class="page-hero" src="/media/illustrations/camp-how.webp" alt="四格示意圖：狐狸與狸貓吉祥物依序完成填報名表、手機匯款、進教室上課、在筆電前實作四個步驟" width="1600" height="900" loading="eager" fetchpriority="high" />
+        <figcaption>從填報名表、匯款、上主題教學到動手做出作品的四個步驟</figcaption>
+      </figure>
     </div>
     <div class="key-answer" data-question="參加 AI 共學營要做哪些事？">
       <p>報名取得編號，透過協會 LINE@ 附編號匯款，等協會核款開通，就可以上第 1 堂主題教學並自選加入實作營。整門課為期{courseRules.duration}。第一次繳的 {courseRules.fee.toLocaleString('zh-TW')} 元是協會常年會費，已包含第一門課。</p>
@@ -49,6 +52,8 @@ const howto = {
   .page-head { display: grid; gap: var(--space-4) var(--space-6); align-items: center; margin-bottom: var(--space-6); }
   @media (min-width: 640px) { .page-head { grid-template-columns: minmax(0, 1fr) 20rem; } }
   .page-head h1 { margin: 0; }
+  .page-head figure { margin: 0; }
+  .page-head figcaption { margin-top: var(--space-2); font-size: var(--text-xs); line-height: 1.6; color: var(--color-ink-muted); }
   .page-hero { width: 100%; max-width: 20rem; height: auto; border-radius: var(--radius); }
   .steps li { margin-bottom: var(--space-4); }
   .steps p { margin: 0; }

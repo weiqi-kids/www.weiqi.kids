@@ -19,6 +19,8 @@ const pages = defineCollection({
     // 頁面首圖（吉祥物插畫，放在 public/media/illustrations/）
     hero: z.string().optional(),
     heroAlt: z.string().optional(),
+    // 圖說：這張圖在說明的那件事（alt 負責描述畫面，兩者不重複）
+    heroCaption: z.string().optional(),
   }),
 });
 

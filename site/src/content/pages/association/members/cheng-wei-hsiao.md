@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/cheng-wei-hsiao.md"
 sourceVerbatim: true
 hero: "member-cheng-wei-hsiao"
 heroAlt: "狐狸吉祥物手持平板站在中央，四周以線條連向藥局、聽診器與醫療十字圖示"
+heroCaption: "串起藥局通路與醫事人員的整合媒合平台，是這位成員的專業領域（示意）"
 ---
 
 > **「醫友萬事通」**

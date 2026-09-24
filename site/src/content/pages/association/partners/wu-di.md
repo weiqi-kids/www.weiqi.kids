@@ -9,6 +9,7 @@ legacySource: "docs/about/activities/partners/wu-di.md"
 sourceVerbatim: true
 hero: "partner-wu-di"
 heroAlt: "狐狸與狸貓吉祥物站在畫架兩側，畫布上是動物吉祥物角色設計線稿"
+heroCaption: "協會吉祥物的狐狸與狸貓角色，都是從畫架上的設計線稿開始"
 ---
 
 **插畫家**

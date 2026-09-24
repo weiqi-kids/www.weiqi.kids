@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/ian-kuo.md"
 sourceVerbatim: true
 hero: "member-ian-kuo"
 heroAlt: "狐狸吉祥物抱著古典吉他彈奏，身旁立著樂譜架，空中飄著音符"
+heroCaption: "古典吉他演奏，是加一吉他團長累積 29 年的專業領域"
 ---
 
 > **「命運的吉他」**

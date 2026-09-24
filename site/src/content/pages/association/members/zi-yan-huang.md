@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/zi-yan-huang.md"
 sourceVerbatim: true
 hero: "member-zi-yan-huang"
 heroAlt: "狐狸吉祥物燉煮藥膳湯，桌上攤開線裝中醫古籍，旁邊擺著乾燥草本藥材"
+heroCaption: "依中醫經典配方燉煮的草本藥膳，把食療觀念放進日常飲食"
 ---
 
 > **「漢方保健品」**

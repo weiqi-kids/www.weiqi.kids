@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/yi-chao-hsieh.md"
 sourceVerbatim: true
 hero: "member-yi-chao-hsieh"
 heroAlt: "狐狸吉祥物推著購物車站在電商螢幕前，腳邊堆著包裹紙箱"
+heroCaption: "商品上架、下單到出貨包裹，是品牌數位行銷要顧的網店流程"
 ---
 
 > **「網店一把罩」**

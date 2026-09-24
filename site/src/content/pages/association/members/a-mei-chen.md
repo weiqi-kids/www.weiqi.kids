@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/a-mei-chen.md"
 sourceVerbatim: true
 hero: "member-a-mei-chen"
 heroAlt: "狸貓吉祥物在桌前翻閱保單文件，桌上有小豬撲滿與保護傘，背景有心形護盾圖示"
+heroCaption: "保單健檢、儲蓄與保障規劃，是這位成員的專業領域（示意）"
 ---
 
 > **「保單幸福美」**

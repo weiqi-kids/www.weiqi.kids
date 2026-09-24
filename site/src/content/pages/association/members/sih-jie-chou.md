@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/sih-jie-chou.md"
 sourceVerbatim: true
 hero: "member-sih-jie-chou"
 heroAlt: "狸貓吉祥物抱著卷宗站在天平旁，身後桌上疊著厚重的法典書籍"
+heroCaption: "天秤與法典之間，是契約審查與法律風險控管的工作現場"
 ---
 
 > **「法律不糾結」**

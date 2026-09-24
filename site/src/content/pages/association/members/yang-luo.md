@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/yang-luo.md"
 sourceVerbatim: true
 hero: "member-yang-luo"
 heroAlt: "狸貓吉祥物手拿金黃色魚油膠囊罐，桌上有魚的圖示卡與膠囊"
+heroCaption: "高濃度魚油這類保健食品，正是要把觀念講清楚的對象"
 ---
 
 > **「高濃度魚油」**

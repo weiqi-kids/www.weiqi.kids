@@ -10,6 +10,7 @@ legacySource: "docs/tech/how-it-works/index.md"
 sourceVerbatim: true
 hero: "ai-go-how-it-works"
 heroAlt: "狸貓吉祥物在白板前用箭頭串起棋盤、大腦與落子三個方塊，狐狸在旁聆聽"
+heroCaption: "棋盤局面送進神經網路，再輸出這一手該下在哪裡"
 ---
 
 讀完這篇文章，你將能夠：

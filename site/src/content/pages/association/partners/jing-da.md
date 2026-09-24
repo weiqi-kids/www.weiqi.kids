@@ -9,6 +9,7 @@ legacySource: "docs/about/activities/partners/jing-da.md"
 sourceVerbatim: true
 hero: "partner-jing-da"
 heroAlt: "狐狸吉祥物站在大型網站版面示意圖前指著區塊，旁邊桌上放著筆電與版型草稿"
+heroCaption: "官網開發從版面規劃開始，先把首頁的各個區塊模組排定"
 ---
 
 **WordPress 開發者**

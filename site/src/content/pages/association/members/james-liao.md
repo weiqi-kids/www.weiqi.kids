@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/james-liao.md"
 sourceVerbatim: true
 hero: "member-james-liao"
 heroAlt: "狸貓吉祥物在桌前核對帳本，桌上有計算機、報表與紅色印章"
+heroCaption: "記帳、財稅簽證與工商登記，都在帳簿、計算機與印章之間完成"
 ---
 
 > **「財會宜開封」**

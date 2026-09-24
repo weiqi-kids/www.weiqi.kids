@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/dawn-lee.md"
 sourceVerbatim: true
 hero: "member-dawn-lee"
 heroAlt: "狐狸吉祥物拿著檢核清單站在資料夾與認證印章前，桌上有放大鏡與證書"
+heroCaption: "逐項查核、留下紀錄再取得認證，就是 ISO 系統輔導的工作"
 ---
 
 > **「企業好家教」**

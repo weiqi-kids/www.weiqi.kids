@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/fang-chuan-wu.md"
 sourceVerbatim: true
 hero: "member-fang-chuan-wu"
 heroAlt: "狸貓吉祥物在桌前攤開資產規劃文件，桌上有金幣、小房子模型與象徵傳承的小樹"
+heroCaption: "把現金、不動產與後續傳承一起盤算，就是財稅資產規劃的內容（示意）"
 ---
 
 > **「高資產傳承」**

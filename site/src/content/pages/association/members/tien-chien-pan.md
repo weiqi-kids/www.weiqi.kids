@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/tien-chien-pan.md"
 sourceVerbatim: true
 hero: "member-tien-chien-pan"
 heroAlt: "狐狸吉祥物穿白袍手持試管觀察，身旁漂浮著細胞與分子結構圖示"
+heroCaption: "試管與細胞分子圖，對應中西醫整合醫療與細胞分子矯正學會的職務（示意）"
 ---
 
 > **「三高變高三」**

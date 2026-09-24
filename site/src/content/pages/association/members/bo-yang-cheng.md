@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/bo-yang-cheng.md"
 sourceVerbatim: true
 hero: "member-bo-yang-cheng"
 heroAlt: "狸貓吉祥物在整復床旁做伸展示範，旁有啞鈴與瑜珈墊，牆上掛著脊椎示意圖"
+heroCaption: "整脊調理與一對一健身課程結合的體態調整，是這裡提供的服務"
 ---
 
 > **「猛男整脊師」**

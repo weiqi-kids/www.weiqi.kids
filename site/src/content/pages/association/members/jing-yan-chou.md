@@ -10,6 +10,7 @@ legacySource: "docs/about/members/founding/jing-yan-chou.md"
 sourceVerbatim: true
 hero: "member-jing-yan-chou"
 heroAlt: "狸貓吉祥物拿放大鏡看電腦螢幕上的上升折線圖，旁邊漂浮著標籤卡片"
+heroCaption: "螢幕上向上的折線，對應行銷規劃要交出的業績成長"
 ---
 
 > **「全天銷售員」**

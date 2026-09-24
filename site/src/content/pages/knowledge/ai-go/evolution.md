@@ -9,6 +9,7 @@ legacySource: "docs/learn/history/index.md"
 sourceVerbatim: true
 hero: "ai-go-evolution"
 heroAlt: "三級台階由矮到高各放一台不同年代的機器，狐狸與狸貓沿著階梯往上走"
+heroCaption: "運算能力一階一階往上墊高，圍棋 AI 才走到今天的樣子（示意）"
 ---
 
 ## 為什麼 AI 改變了圍棋？

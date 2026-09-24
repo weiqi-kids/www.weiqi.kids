@@ -9,6 +9,7 @@ legacySource: "docs/about/members/founding/wu-di.md"
 sourceVerbatim: true
 hero: "member-wu-di"
 heroAlt: "狐狸吉祥物站在畫架旁，畫布上是動物角色設計稿，狸貓拿著調色盤與畫筆"
+heroCaption: "畫架上的動物角色草稿，對應這位成員的插畫專長"
 ---
 
 **插畫**

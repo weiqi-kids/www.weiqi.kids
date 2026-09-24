@@ -9,6 +9,7 @@ legacySource: "docs/learn/ai-era/learning-with-ai.md"
 sourceVerbatim: true
 hero: "ai-learning-with-ai"
 heroAlt: "狐狸吉祥物拿平板覆盤棋局，畫面浮出箭頭指向某一手，狸貓在旁伸手解說"
+heroCaption: "棋譜載入 AI 分析介面後，畫面會直接標出建議的下一手"
 ---
 
 AI 是這個時代業餘棋友最強大的學習工具。善用 AI，可以大幅加速你的進步；但如果使用不當，反而可能阻礙學習。本文將介紹如何正確地使用 AI 輔助學習。

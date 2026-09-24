@@ -16,7 +16,10 @@ const sections = [
   <div class="prose">
     <div class="page-head">
       <h1>公開知識</h1>
-      <img class="page-hero" src="/media/illustrations/knowledge-index.webp" alt="狐狸與狸貓吉祥物在書架前一起翻閱一本大書，架上有書本、圍棋盤、筆記型電腦與神經網路示意圖" width="1600" height="900" loading="eager" fetchpriority="high" />
+      <figure>
+        <img class="page-hero" src="/media/illustrations/knowledge-index.webp" alt="狐狸與狸貓吉祥物在書架前一起翻閱一本大書，架上有書本、圍棋盤、筆記型電腦與神經網路示意圖" width="1600" height="900" loading="eager" fetchpriority="high" />
+        <figcaption>這裡的文章從圍棋入門一路延伸到神經網路與 AI 應用</figcaption>
+      </figure>
     </div>
     <div class="key-answer" data-question="公開知識有哪些內容？">
       <p>這裡有 {count} 篇圍棋與 AI 的文章，任何人都可以閱讀。AI 共學營的講師可以引用這些文章，但它們不是課程教材；完整的技能單張只提供給該課參與者。</p>
@@ -30,5 +33,7 @@ const sections = [
   .page-head { display: grid; gap: var(--space-4) var(--space-6); align-items: center; margin-bottom: var(--space-6); }
   @media (min-width: 640px) { .page-head { grid-template-columns: minmax(0, 1fr) 20rem; } }
   .page-head h1 { margin: 0; }
+  .page-head figure { margin: 0; }
+  .page-head figcaption { margin-top: var(--space-2); font-size: var(--text-xs); line-height: 1.6; color: var(--color-ink-muted); }
   .page-hero { width: 100%; max-width: 20rem; height: auto; border-radius: var(--radius); }
 </style>
