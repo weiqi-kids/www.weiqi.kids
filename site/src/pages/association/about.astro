@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { site, courseRules } from '../../data/site.js';
+import { site, courseRules, association } from '../../data/site.js';
 import { founders } from '../../data/legacy/members.js';
 import YouTube from '../../components/YouTube.astro';
 import { videos, channelUrl } from '../../data/media.js';
@@ -10,8 +10,23 @@ import { videos, channelUrl } from '../../data/media.js';
     <h1>協會介紹</h1>
     <img class="logo" src="/media/brand/logo-stacked.webp" alt="台灣好棋寶寶協會 Good Move Association 標誌" width="704" height="590" />
     <div class="key-answer" data-question="台灣好棋寶寶協會在做什麼？">
-      <p>{site.legalName}（{site.alternateName}）由一群因圍棋結緣的各行各業人士組成，目前有 {founders.length} 位成員。協會主辦好棋寶寶棋聚與 AI 共學營，並整理圍棋與 AI 的公開知識。</p>
+      <p>{site.legalName}（{site.alternateName}）於 2024 年 1 月 5 日成立，由一群因圍棋結緣的各行各業人士組成，目前有 {founders.length} 位成員。協會以「{association.purpose}」為宗旨，主辦好棋寶寶棋聚與 AI 共學營，並整理圍棋與 AI 的公開知識。</p>
     </div>
+
+    <h2>立案資料</h2>
+    <dl class="facts">
+      <dt>團體名稱</dt><dd>{site.legalName}</dd>
+      <dt>成立日期</dt><dd>2024 年 1 月 5 日（民國 113 年 1 月 5 日）</dd>
+      <dt>立案</dt><dd>內政部 2024 年 2 月 20 日核准，{association.registrationNo}</dd>
+      <dt>法人登記</dt><dd>2024 年 2 月 29 日，{association.courtCaseNo}</dd>
+      <dt>會址</dt><dd>{association.address}</dd>
+      <dt>理事長</dt><dd><a href={`/association/members/${association.chairman.slug}/`}>{association.chairman.name}</a>（第 1 屆，任期 {association.chairman.term}）</dd>
+      <dt>組織</dt><dd>理事 {association.board.directors} 人、監事 {association.board.supervisors} 人，任期 {association.board.term} 年</dd>
+    </dl>
+
+    <h2>協會任務</h2>
+    <p>依章程，協會的任務有四項：</p>
+    <ol>{association.missions.map((m) => <li>{m}</li>)}</ol>
 
     <h2>協會主辦的兩種活動</h2>
     <div class="key-answer" data-question="好棋寶寶棋聚和 AI 共學營有什麼不同？">
@@ -24,7 +39,7 @@ import { videos, channelUrl } from '../../data/media.js';
 
     <h2>會員制度</h2>
     <div class="key-answer" data-question="怎麼成為協會會員？">
-      <p>第一次報名 AI 共學營課程，協會核款開通時同時成為會員。每門課 {courseRules.fee.toLocaleString('zh-TW')} 元，第一次的費用已包含入會；會員效期一年，一年一續會。</p>
+      <p>依章程，個人會員入會費 0 元、常年會費 {courseRules.fee.toLocaleString('zh-TW')} 元，這筆常年會費已包含一門 AI 共學營課程；之後每上一門新課再付 {courseRules.fee.toLocaleString('zh-TW')} 元。企業會員入會費 0 元、常年會費 60,000 元。</p>
     </div>
 
     <h2>公開知識</h2>
@@ -40,9 +55,6 @@ import { videos, channelUrl } from '../../data/media.js';
     <h2>推廣影片</h2>
     <YouTube {...videos.promo} />
     <p>更多影片在協會 <a href={channelUrl} rel="noopener">YouTube 頻道</a>，也可以看<a href="/association/activities/videos/">影片整理</a>。</p>
-
-    <h2>組織</h2>
-    <p>理事長：<a href="/association/members/lightman-chang/">張饒輝</a>。</p>
 
     <h2>聯絡協會</h2>
     <p>Email：<a href={`mailto:${site.email}`}>{site.email}</a></p>

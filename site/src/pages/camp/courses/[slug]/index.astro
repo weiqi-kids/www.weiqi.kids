@@ -36,12 +36,12 @@ const schema = {
     <p class="muted">{STATUS_LABEL[c.status]}{topic && <>．主題：<a href={`/camp/topics/${topic.data.slug}/`}>{topic.data.title}</a></>}</p>
     <h1>{c.title}</h1>
     <div class="key-answer" data-question={`${c.title}的時間與費用？`}>
-      <p>{fmtDate(c.startDate)}～{fmtDate(c.endDate)}，地點：{c.location}。費用 {c.fee.toLocaleString('zh-TW')} 元；第一次報名同時成為協會會員。</p>
+      <p>{fmtDate(c.startDate)}～{fmtDate(c.endDate)}，地點：{c.location}。費用 {c.fee.toLocaleString('zh-TW')} 元；第一次報名繳的常年會費已含這門課。</p>
     </div>
     <dl class="facts">
       <dt>講師</dt><dd>{c.instructors.join('、')}</dd>
       {c.sessions.map((s) => <><dt>{s.label}</dt><dd>{fmtDate(s.date)}（{s.kind === 'teaching' ? '主題教學' : '實作'}）</dd></>)}
-      <dt>資格</dt><dd>協會會員；第一次報名含入會</dd>
+      <dt>資格</dt><dd>協會個人會員；第一次繳的常年會費已含第一門課</dd>
     </dl>
     {(c.status === 'open' || c.status === 'draft') && <p><a class="btn" href={`${path}enroll/`}>報名這門課</a></p>}
     <p class="muted">已開通的學員：<a href={`${path}materials/`}>技能單張</a>．<a href={`${path}forum/`}>課程論壇</a></p>

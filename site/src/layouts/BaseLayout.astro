@@ -1,7 +1,7 @@
 ---
 import '../styles/variables.css';
 import '../styles/global.css';
-import { site, nav, ga4Id } from '../data/site.js';
+import { site, nav, ga4Id, association } from '../data/site.js';
 
 export interface Crumb { name: string; href: string }
 interface Props {
@@ -32,6 +32,9 @@ const org = {
   url: `${site.url}/`,
   logo: { '@type': 'ImageObject', url: site.logo.url, width: site.logo.width, height: site.logo.height },
   email: site.email,
+  foundingDate: association.foundedDate,
+  address: { '@type': 'PostalAddress', addressCountry: 'TW', addressLocality: '臺中市', streetAddress: association.address },
+  nonprofitStatus: 'NonprofitANBI',
   sameAs: [site.youtube],
   contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', email: site.email, availableLanguage: 'zh-Hant-TW' },
 };

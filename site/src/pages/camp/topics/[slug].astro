@@ -33,7 +33,7 @@ const path = `/camp/topics/${t.slug}/`;
     <dl class="facts">
       <dt>適合誰</dt><dd>{t.audience}</dd>
       <dt>課程結構</dt><dd>1 堂主題教學＋3 堂實作，為期{courseRules.duration}</dd>
-      <dt>費用</dt><dd>每門課 {courseRules.fee.toLocaleString('zh-TW')} 元（需協會會員資格；第一次報名含入會）</dd>
+      <dt>費用</dt><dd>每門課 {courseRules.fee.toLocaleString('zh-TW')} 元（需協會個人會員資格；第一次繳的常年會費已含第一門課）</dd>
       <dt>開課狀態</dt><dd>{courses.length ? <a href="#courses">{courses.length} 門正式課程</a> : '尚未排定正式課程'}</dd>
     </dl>
     <Content />
