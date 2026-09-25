@@ -4,13 +4,16 @@ project: weiqi.kids
 phase: 4-strategy
 author: Writer
 date: 2026-05-20
-status: draft
+status: superseded
+superseded_by: revamp/4-strategy/2026-09-19-refactor-specification.md
 based_on:
   - revamp/0-positioning/positioning.md (v2)
   - revamp/1-discovery/discovery.md (2026-05-14)
   - revamp/2-competitive/competitive.md (2026-05-20)
   - revamp/3-analysis/analysis.md (2026-05-20)
 ---
+
+> **歷史文件**：本策略描述先前的「商界夥伴／開源研究」方向，已由 `2026-09-19-refactor-specification.md` 取代。保留本檔案作為歷史記錄，不作為本次執行規格。
 
 # 改版策略計劃書
 

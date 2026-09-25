@@ -4,7 +4,8 @@ project: weiqi.kids
 phase: 5-content-spec
 author: Writer
 date: 2026-05-20
-status: draft
+status: superseded
+superseded_by: revamp/5-content-spec/2026-09-19-legacy-content-migration-spec.md
 based_on:
   - revamp/4-strategy/strategy.md (v1.1, 2026-05-20)
   - revamp/0-positioning/positioning.md (v2)
@@ -12,6 +13,8 @@ based_on:
 applies_branch: 「無棋會分支」（club-status memory 2026-05-20）
 member_data_pending: 廖宜鋒 James 創始會員資料待用戶上傳；其餘 11 位（含理事長張饒輝）資料完整
 ---
+
+> **歷史文件**：本內容規格描述先前的「商界夥伴／開源研究」方向，已由舊站資料轉移規格與後續逐頁 inventory 取代。保留本檔案作為歷史記錄，不作為本次執行規格。
 
 # 內容規格書
 

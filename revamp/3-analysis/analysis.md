@@ -4,12 +4,15 @@ project: weiqi.kids
 phase: 3-analysis
 author: Writer
 date: 2026-05-20
-status: draft
+status: superseded
+superseded_by: revamp/3-analysis/2026-09-15-learning-camp-audience.md
 based_on:
   - revamp/0-positioning/positioning.md (v2)
   - revamp/1-discovery/discovery.md (2026-05-14)
   - revamp/2-competitive/competitive.md (2026-05-20)
 ---
+
+> **歷史文件**：本分析建立在舊版品牌定位上；本次以 `2026-09-15-learning-camp-audience.md` 為共學營受眾基準。
 
 # 受眾與內容差距分析報告
 

@@ -4,11 +4,14 @@ project: weiqi.kids
 phase: 2-competitive
 author: Writer
 date: 2026-05-20
-status: draft
+status: superseded
+superseded_by: revamp/4-strategy/2026-09-19-refactor-specification.md
 based_on:
   - revamp/0-positioning/positioning.md (v2)
   - revamp/1-discovery/discovery.md (2026-05-14)
 ---
+
+> **歷史文件**：本競品分析服務先前的品牌定位，尚未針對共學營產品重新核准；保留作為參考，不作為本次執行規格。
 
 # 競品分析報告
 

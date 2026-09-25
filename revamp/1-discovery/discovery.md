@@ -4,9 +4,12 @@ project: weiqi.kids
 phase: 1-discovery
 author: Writer
 date: 2026-05-14
-status: draft
+status: superseded
+superseded_by: revamp/1-discovery/2026-09-15-refactor-baseline.md
 based_on: revamp/0-positioning/positioning.md (v2)
 ---
+
+> **歷史文件**：本盤點是舊版改版流程的結果；本次以 `2026-09-15-refactor-baseline.md` 為現況基準。
 
 # 網站現況盤點報告
 

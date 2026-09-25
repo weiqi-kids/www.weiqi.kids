@@ -4,10 +4,13 @@ project: weiqi.kids
 revamp_path: B（三層並存）
 author: Writer
 date: 2026-05-14
-status: ready_for_discovery
+status: superseded
+superseded_by: /CONTEXT.md and revamp/4-strategy/2026-09-19-refactor-specification.md
 review: review/review.md
 revision: v2 (2026-05-14, 採納 Reviewer 全部 1 blocker + 5 suggestions)
 ---
+
+> **歷史文件**：本定位描述先前的「商界夥伴／開源研究」方向，已由目前的共學營規格取代。保留本檔案作為歷史記錄，不作為本次執行依據。
 
 # 品牌定位文件
 
