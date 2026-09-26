@@ -49,7 +49,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
         <input id="website" name="website" tabindex="-1" autocomplete="off" />
       </div>
       <div class="form-field">
-        <label><input type="checkbox" name="consent" value="yes" required /> 我同意協會使用以上資料處理本次報名與開通通知。</label>
+        <label><input type="checkbox" name="consent" value="yes" required /> 我同意協會使用以上資料處理本次報名與開通通知，並已閱讀<a href="/privacy/">隱私權政策</a>。</label>
       </div>
       {turnstileSiteKey && <div class="cf-turnstile" data-sitekey={turnstileSiteKey}></div>}
       <button class="btn" type="submit">送出報名</button>
