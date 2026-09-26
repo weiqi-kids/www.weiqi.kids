@@ -44,6 +44,11 @@ heroCaption: "白子周圍四口氣全被黑子堵住，這顆棋就要從棋盤
 | 邊上 | 3 氣 |
 | 角上 | 2 氣 |
 
+<figure class="board-figure">
+  <img src="/media/diagrams/go-liberties.svg" alt="9 路棋盤正中央一顆黑子，四個相鄰的交叉點各標一個叉，代表它的四口氣" width="720" height="720" loading="lazy" />
+  <figcaption>棋盤正中央的一顆黑子有四口氣，就是它上下左右四個相鄰的交叉點。四口氣全被對方填滿，這顆子就被提掉。</figcaption>
+</figure>
+
 ### 連接的棋子
 
 當同色棋子相鄰（上下左右連接）時，它們成為一個整體，共享所有的氣。
@@ -98,6 +103,11 @@ heroCaption: "白子周圍四口氣全被黑子堵住，這顆棋就要從棋盤
 ### 什麼是劫
 
 當雙方可以互相提一子，而且提完後對方也能立刻提回來，就形成了劫。
+
+<figure class="board-figure">
+  <img src="/media/diagrams/go-ko.svg" alt="9 路棋盤上的劫形：黑子在左上下三面，白子在右側，中間空點以紅框標出" width="720" height="720" loading="lazy" />
+  <figcaption>紅框處就是劫點。黑下在這裡可以提掉右邊那顆只剩一口氣的白子；白提回來之後，形狀會變回原樣。為了避免無限循環，被提的一方不能立刻提回。</figcaption>
+</figure>
 
 ### 劫的規則
 

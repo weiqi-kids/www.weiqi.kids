@@ -36,6 +36,47 @@ const diagrams = {
     marks: [{ pt: 'E5', type: 'square' }],
   }),
 
+  // 圍棋規則：一顆棋子的四口氣
+  'go-liberties': renderBoard({
+    size: 9,
+    stones: [{ pt: 'E5', color: 'black' }],
+    marks: [
+      { pt: 'E6', type: 'cross' },
+      { pt: 'E4', type: 'cross' },
+      { pt: 'D5', type: 'cross' },
+      { pt: 'F5', type: 'cross' },
+    ],
+  }),
+
+  // 圍棋規則：四顆黑子圍住中間的一眼
+  'go-eye': renderBoard({
+    size: 9,
+    stones: [
+      { pt: 'D5', color: 'black' },
+      { pt: 'E6', color: 'black' },
+      { pt: 'F5', color: 'black' },
+      { pt: 'E4', color: 'black' },
+    ],
+    marks: [{ pt: 'E5', type: 'circle' }],
+  }),
+
+  // 打劫：黑下 E5 可提掉白 F5，白隨即又能提回 E5，雙方互提形成劫
+  'go-ko': renderBoard({
+    size: 9,
+    stones: [
+      // 黑從左、上、下圍住 E5；白 F5 只剩 E5 一口氣
+      { pt: 'D5', color: 'black' },
+      { pt: 'E6', color: 'black' },
+      { pt: 'E4', color: 'black' },
+      { pt: 'F5', color: 'white' },
+      { pt: 'F6', color: 'white' },
+      { pt: 'G5', color: 'white' },
+      { pt: 'F4', color: 'white' },
+    ],
+    // 文字交給頁面的圖說，圖上只留標記，避免壓到旁邊的棋子
+    marks: [{ pt: 'E5', type: 'square' }],
+  }),
+
   // 開局十手：先佔四個角
   'go-opening-corners': renderBoard({
     size: 19,
