@@ -43,7 +43,7 @@
 | C5 | 圖說人工核對 | 完成 | 人物 29 則修 6 處；非人物逐張開圖看 23 則，修 3 處（圖上沒畫的敘述） |
 | C6 | 棋盤圖產生器 | 完成 | `scripts/go-diagram.mjs`＋`build-diagrams.mjs`＋`check-diagrams.mjs`，6 張 SVG 全部通過交叉點驗證 |
 | C7 | 棋盤圖上線 | 完成 | 術語頁（天元／星位／小目／三三）、規則頁（氣、劫） |
-| C8 | 22 張插畫重畫 | 進行中 | 27 張判 C，扣掉 4 張無內容的成員頁、1 張已由程式棋盤圖取代，剩 22 張。需求單 `revamp/2026-09-24-illustration-redraw-spec.md` |
+| C8 | 22 張插畫重畫 | 進行中 1／22 | 用 Codex 讀吉祥物官方圖重畫成 SVG。第 1 張 `camp-course-detail` 完成並上線。需求單 `revamp/2026-09-24-illustration-redraw-spec.md` |
 
 ## D. 內容與素材
 

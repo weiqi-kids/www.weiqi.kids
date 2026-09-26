@@ -34,7 +34,13 @@ const schema = {
 <BaseLayout title={c.title} description={`${c.summary} ${fmtDate(c.startDate)}開始，1 堂主題教學＋3 堂實作，${c.fee.toLocaleString('zh-TW')} 元。`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '正式課程', href: '/camp/courses/' }, { name: c.title, href: path }]} schema={[schema]}>
   <article class="prose">
     <p class="muted">{STATUS_LABEL[c.status]}{topic && <>．主題：<a href={`/camp/topics/${topic.data.slug}/`}>{topic.data.title}</a></>}</p>
-    <h1>{c.title}</h1>
+    <div class="page-head">
+      <h1>{c.title}</h1>
+      <figure>
+        <img class="page-hero" src="/media/illustrations-v2/camp-course-detail.svg" alt="黑板上橫排四格：主題教學、實作一、實作二、實作三，下方寫著為期一個月，兩隻吉祥物站在黑板兩側" width="1600" height="900" loading="eager" fetchpriority="high" />
+        <figcaption>每門課的結構都一樣：1 堂主題教學加 3 堂實作，為期一個月。</figcaption>
+      </figure>
+    </div>
     <div class="key-answer" data-question={`${c.title}的時間與費用？`}>
       <p>{fmtDate(c.startDate)}～{fmtDate(c.endDate)}，地點：{c.location}。費用 {c.fee.toLocaleString('zh-TW')} 元；第一次報名繳的常年會費已含這門課。</p>
     </div>
@@ -49,4 +55,10 @@ const schema = {
   </article>
 </BaseLayout>
 <style>
+  .page-head { display: grid; gap: var(--space-4) var(--space-6); align-items: center; margin-bottom: var(--space-6); }
+  @media (min-width: 640px) { .page-head { grid-template-columns: minmax(0, 1fr) 20rem; } }
+  .page-head h1 { margin: 0; }
+  .page-head figure { margin: 0; }
+  .page-head figcaption { margin-top: var(--space-2); font-size: var(--text-xs); line-height: 1.6; color: var(--color-ink-muted); }
+  .page-hero { width: 100%; max-width: 20rem; height: auto; border-radius: var(--radius); }
 </style>
