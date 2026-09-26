@@ -26,6 +26,11 @@ sourceVerbatim: true
 | **目外** | 角落較高的位置 | (3,5) 或 (5,3) 的位置 |
 | **高目** | 角落的高位 | (4,5) 或 (5,4) 的位置 |
 
+<figure class="board-figure">
+  <img src="/media/diagrams/go-terminology.svg" alt="19 路棋盤上標出四個位置：正中央的天元、右上四線交叉的星位、左上的小目、左下的三三" width="720" height="720" loading="lazy" />
+  <figcaption>天元在正中央；星位是距兩邊各四線的交叉點；小目是三線與四線的交叉；三三是兩邊各三線的交叉。圖為程式產生，棋子都落在線的交叉點上。</figcaption>
+</figure>
+
 ### 棋盤的區域
 
 | 術語 | 說明 |

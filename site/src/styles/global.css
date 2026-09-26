@@ -41,6 +41,10 @@ img, video, svg { max-width: 100%; height: auto; }
 .prose pre { overflow-x: auto; padding: var(--space-4); border-radius: var(--radius); font-size: var(--text-xs); line-height: 1.6; }
 .prose pre code { background: none; padding: 0; font-size: inherit; }
 .prose img { border-radius: var(--radius-sm); }
+/* 程式產生的棋盤示意圖 */
+.board-figure { margin: 1.5em 0; max-width: 34rem; }
+.board-figure img { display: block; width: 100%; height: auto; border-radius: var(--radius-sm); border: 1px solid var(--color-line); }
+.board-figure figcaption { font-size: var(--text-xs); line-height: 1.6; color: var(--color-ink-muted); margin-top: var(--space-2); }
 .prose .katex-display { overflow-x: auto; overflow-y: hidden; }
 
 /* 提示框（由 remark 外掛從 :::note 等轉出） */
