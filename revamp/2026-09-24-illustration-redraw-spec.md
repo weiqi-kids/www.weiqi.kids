@@ -9,6 +9,23 @@
 
 重畫完成後把檔案放回原路徑、原檔名，再把頁面的 `hero` 欄位加回去即可，版型與圖說機制都已經在了。
 
+## 怎麼產圖
+
+用 Codex 的生圖能力，不要用 SVG。指令形式：
+
+```bash
+codex exec -s workspace-write -C <site 目錄> \
+  -i public/media/brand/mascot-fox.webp \
+  -i public/media/brand/mascot-raccoon.webp \
+  - < 提示檔.md
+```
+
+提示檔要寫明：要生成**圖片檔**（不是 SVG 也不是程式碼）、附的兩張是官方吉祥物造型參考、
+畫面內容、畫風（扁平向量、粗黑描邊、圓潤造型、暖橘背景、留白充足）、16:9。
+產出後裁成 16:9 縮為 1600×900 存成 webp，放到 `public/media/illustrations/`，與站上其他插畫一致。
+
+注意：`codex exec` 的 prompt 要走 stdin（結尾那個 `-`），不然它會卡在等輸入。
+
 ## 圍棋畫面的共通規格（每一張都適用）
 
 這批圖最常見的錯誤只有一種：**棋子畫在格子中央**。圍棋的子下在線與線的交叉點上，不是格子裡。
