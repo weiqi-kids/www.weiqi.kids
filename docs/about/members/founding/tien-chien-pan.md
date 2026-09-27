@@ -1,7 +1,7 @@
 ---
 sidebar_position: 31
 title: 潘天健
-description: 三高變高三
+description: 潘天健現任沁安整合醫學診所院長、台灣細胞分子矯正學會理事長，具中國醫藥大學中醫學系中西雙主修學歷與碩士學位，同時持有中醫師與西醫內科專科醫師雙證照，是台灣好棋寶寶協會創始會員。
 industry_tags: [整合醫學, 中西醫, 抗衰老]
 ai_tools: []
 contributing_role: 未來合作意向
