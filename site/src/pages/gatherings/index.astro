@@ -7,7 +7,13 @@ const upcoming = (await getCollection('gatherings')).filter((g) => g.data.startD
 ---
 <BaseLayout title="好棋寶寶棋聚" description="台灣好棋寶寶協會的圍棋交流活動：實體聚會、主題講座、友誼對局與新手交流。不需要共學營會員資格。" breadcrumbs={[{ name: '好棋寶寶棋聚', href: '/gatherings/' }]}>
   <div class="prose">
-    <h1>好棋寶寶棋聚</h1>
+    <div class="page-head">
+      <h1>好棋寶寶棋聚</h1>
+      <figure>
+        <img class="page-hero" src="/media/illustrations/gatherings-index.webp" alt="立牌寫著目前沒有排定場次，牆上月曆空白，桌上棋子已收進棋罐，旁邊放 LINE 通知牌" width="1600" height="900" loading="eager" fetchpriority="high" />
+        <figcaption>棋聚目前沒有排定場次，恢復舉辦會先在 LINE 社群公布</figcaption>
+      </figure>
+    </div>
     <div class="key-answer" data-question="好棋寶寶棋聚是什麼？">
       <p>好棋寶寶棋聚是協會辦的圍棋交流活動，內容包含實體聚會、主題講座、友誼對局與新手交流。2023 到 2024 年在台中固定舉辦，目前沒有排定新的場次；協會現階段的聚會以 <a href="/camp/">AI 共學營</a>為主。</p>
     </div>
@@ -25,4 +31,11 @@ const upcoming = (await getCollection('gatherings')).filter((g) => g.data.startD
   )}
 </BaseLayout>
 <style>
+  .page-head { display: grid; gap: var(--space-4) var(--space-6); align-items: center; margin-bottom: var(--space-6); }
+  @media (min-width: 640px) { .page-head { grid-template-columns: minmax(0, 1fr) 20rem; } }
+  .page-head h1 { margin: 0; }
+  .page-head figure { margin: 0; }
+  .page-head figcaption { margin-top: var(--space-2); font-size: var(--text-xs); line-height: 1.6; color: var(--color-ink-muted); }
+  .page-hero { width: 100%; max-width: 20rem; height: auto; border-radius: var(--radius); }
+
 </style>

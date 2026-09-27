@@ -8,6 +8,9 @@ datePublished: "2026-02-25"
 dateModified: "2026-08-30"
 legacySource: "docs/alphago/index.md"
 sourceVerbatim: true
+hero: "knowledge-alphago"
+heroAlt: "對局桌一邊是棋手座位、一邊立著螢幕，中間記分牌寫 4:1，棋盤畫足九個星位"
+heroCaption: "2016 年 AlphaGo 以 4 比 1 擊敗李世乭"
 ---
 
 2016 年 3 月，AlphaGo 以 4:1 擊敗世界冠軍李世乭，震撼全球。這不只是一場圍棋比賽的勝利，更標誌著人工智慧的重大突破。

@@ -8,6 +8,9 @@ datePublished: "2025-06-11"
 dateModified: "2026-08-11"
 legacySource: "docs/learn/index.md"
 sourceVerbatim: true
+hero: "knowledge-go"
+heroAlt: "19 路棋盤四角各放一子，下方四張卡片寫規則、術語、禮儀、開局十手"
+heroCaption: "從規則、術語、禮儀到開局十手，入門要學的四件事"
 ---
 
 歡迎來到圍棋棋友專區！無論你是剛接觸圍棋的新手，還是想要精進棋藝的愛好者，這裡都有適合你的學習資源。

@@ -4,7 +4,13 @@ import { site } from '../../data/site.js';
 ---
 <BaseLayout title="棋聚介紹" description="好棋寶寶棋聚的形式：主題講座、友誼對局、新手入門與交流。說明適合誰、怎麼得知場次與怎麼報名。" breadcrumbs={[{ name: '好棋寶寶棋聚', href: '/gatherings/' }, { name: '棋聚介紹', href: '/gatherings/about/' }]}>
   <article class="prose">
-    <h1>棋聚介紹</h1>
+    <div class="page-head">
+      <h1>棋聚介紹</h1>
+      <figure>
+        <img class="page-hero" src="/media/illustrations/gatherings-about.webp" alt="同一場地四區並置，吊牌分別寫主題講座、友誼對局、新手教學、茶席交流" width="1600" height="900" loading="eager" fetchpriority="high" />
+        <figcaption>一場棋聚包含講座、對局、新手教學與交流四件事</figcaption>
+      </figure>
+    </div>
     <h2>棋聚有哪些內容</h2>
     <div class="key-answer" data-question="好棋寶寶棋聚有哪些內容？">
       <p>每場棋聚依主辦安排，可能包含一段主題講座、棋友之間的友誼對局、給新手的入門教學，以及交流時間。講者來自不同行業，也會邀請職業棋士分享。</p>
@@ -21,4 +27,11 @@ import { site } from '../../data/site.js';
   </article>
 </BaseLayout>
 <style>
+  .page-head { display: grid; gap: var(--space-4) var(--space-6); align-items: center; margin-bottom: var(--space-6); }
+  @media (min-width: 640px) { .page-head { grid-template-columns: minmax(0, 1fr) 20rem; } }
+  .page-head h1 { margin: 0; }
+  .page-head figure { margin: 0; }
+  .page-head figcaption { margin-top: var(--space-2); font-size: var(--text-xs); line-height: 1.6; color: var(--color-ink-muted); }
+  .page-hero { width: 100%; max-width: 20rem; height: auto; border-radius: var(--radius); }
+
 </style>

@@ -8,6 +8,9 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/industry/index.md"
 sourceVerbatim: true
+hero: "ai-industry"
+heroAlt: "四格時間軸：2016 震驚、2018 抗拒、2019 接受、2020 融合，人與 AI 螢幕逐格靠近"
+heroCaption: "棋界對 AI 的態度四年間從震驚轉為融合"
 ---
 
 2016 年 AlphaGo 擊敗李世乭後，圍棋 AI 已經深刻改變了整個圍棋生態。

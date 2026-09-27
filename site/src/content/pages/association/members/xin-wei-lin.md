@@ -8,6 +8,9 @@ datePublished: "2026-05-28"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/xin-wei-lin.md"
 sourceVerbatim: true
+hero: "member-xin-wei-lin"
+heroAlt: "吉祥物在比賽場的對局桌前落子，後方獎盃底座寫著第 13 屆中環碁聖賽亞軍"
+heroCaption: "第 13 屆中環碁聖賽亞軍的比賽場景"
 ---
 
 > **「圍棋專業召集人」**

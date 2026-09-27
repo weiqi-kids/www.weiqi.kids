@@ -1,6 +1,6 @@
 # 改版進度總表
 
-最後更新：2026-09-26（第 2 版）　·　staging：https://weiqi-kids-staging.weiqi-kids-site.workers.dev　·　正式站：尚未切換，仍由舊站 GitHub Pages 服務
+最後更新：2026-09-27（第 3 版）　·　staging：https://weiqi-kids-staging.weiqi-kids-site.workers.dev　·　正式站：尚未切換，仍由舊站 GitHub Pages 服務
 
 這份是唯一的進度來源。每完成一項就更新這裡，不要只在對話裡回報。
 
@@ -43,7 +43,7 @@
 | C5 | 圖說人工核對 | 完成 | 人物 29 則修 6 處；非人物逐張開圖看 23 則，修 3 處（圖上沒畫的敘述） |
 | C6 | 棋盤圖產生器 | 完成 | `scripts/go-diagram.mjs`＋`build-diagrams.mjs`＋`check-diagrams.mjs`，6 張 SVG 全部通過交叉點驗證 |
 | C7 | 棋盤圖上線 | 完成 | 術語頁（天元／星位／小目／三三）、規則頁（氣、劫） |
-| C8 | 22 張插畫重畫 | 進行中 1／22 | 用 Codex 生圖（附吉祥物官方圖為造型參考），產出 PNG 後轉 1600×900 webp。第 1 張 `camp-course-detail` 完成並上線。需求單 `revamp/2026-09-24-illustration-redraw-spec.md` |
+| C8 | 22 張插畫重畫 | 完成 | 全部用 Codex 生圖並上線。過程中四張退回重做：ag-move-37（棋子畫在格子裡）、member-ai-lin-hsiao 與 member-xin-wei-lin（畫了擬真真人，放在真實會員頁會被當成本人肖像）、camp-intro（白板寫了不存在的課程主題）|
 
 ## D. 內容與素材
 
@@ -75,7 +75,7 @@
 |---|---|
 | 網站總頁數 | 151 |
 | 公開知識文章 | 66 篇 |
-| 有首圖的頁面 | 56（全部都有圖說） |
+| 有首圖的頁面 | 82（全部都有圖說） |
 | 程式產生的棋盤圖 | 6 張 |
 | 活動照片 | 39 張（嘉年華 23、公開賽 16） |
 | 成員頁 | 36 頁，其中 10 頁待補 |

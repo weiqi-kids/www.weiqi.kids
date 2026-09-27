@@ -7,6 +7,9 @@ datePublished: "2025-06-11"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/history/human-history/index.md"
 sourceVerbatim: true
+hero: "knowledge-go-history"
+heroAlt: "橫向時間軸四個節點：古代中國約 2500 年前、江戶日本 1603 到 1868、現代中韓 20 世紀、AI 時代 2016 至今"
+heroCaption: "圍棋從古代中國一路走到 AI 時代"
 ---
 
 圍棋是人類歷史上最古老、最深奧的棋類遊戲之一。從中國古代的傳說起源，歷經數千年的發展，圍棋不僅是一種遊戲，更成為了東亞文化的重要組成部分，承載著哲學、藝術與競技的多重意涵。

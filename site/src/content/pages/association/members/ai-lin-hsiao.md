@@ -8,6 +8,9 @@ datePublished: "2026-05-28"
 dateModified: "2026-09-04"
 legacySource: "docs/about/members/founding/ai-lin-hsiao.md"
 sourceVerbatim: true
+hero: "member-ai-lin-hsiao"
+heroAlt: "吉祥物在正式對局桌前落子，桌上有棋鐘與黑白棋罐，桌卡寫著職業二段"
+heroCaption: "職業二段的對局現場：棋鐘、棋罐與正式規格的棋盤"
 ---
 
 > **「圍棋專業召集人」**

@@ -6,7 +6,13 @@ const open = (await getCollection('courses')).filter((c) => c.data.status === 'o
 ---
 <BaseLayout title="AI 共學營" description="台灣好棋寶寶協會主辦的 AI 共學營：會員依每月主題，一起學習並實作各行各業的 AI 應用。每門課 1 堂主題教學、3 堂實作、為期一個月。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }]}>
   <div class="prose">
-    <h1>AI 共學營</h1>
+    <div class="page-head">
+      <h1>AI 共學營</h1>
+      <figure>
+        <img class="page-hero" src="/media/illustrations/camp-intro.webp" alt="共學教室白板寫著每月一個 AI 主題、1 堂主題教學加 3 堂實作，三位不同行業的學員各自開筆電" width="1600" height="900" loading="eager" fetchpriority="high" />
+        <figcaption>每月一個主題，一堂教學加三堂實作，各自做自己的案例</figcaption>
+      </figure>
+    </div>
     <div class="key-answer" data-question="AI 共學營是什麼？">
       <p>AI 共學營是台灣好棋寶寶協會為會員辦的共學活動。每個月一個 AI 應用主題，例如「用 AI 建立產業情報流程」。每門課 1 堂主題教學、3 堂實作，為期{courseRules.duration}，費用 {courseRules.fee.toLocaleString('zh-TW')} 元。</p>
     </div>
@@ -29,4 +35,11 @@ const open = (await getCollection('courses')).filter((c) => c.data.status === 'o
   </ul>
 </BaseLayout>
 <style>
+  .page-head { display: grid; gap: var(--space-4) var(--space-6); align-items: center; margin-bottom: var(--space-6); }
+  @media (min-width: 640px) { .page-head { grid-template-columns: minmax(0, 1fr) 20rem; } }
+  .page-head h1 { margin: 0; }
+  .page-head figure { margin: 0; }
+  .page-head figcaption { margin-top: var(--space-2); font-size: var(--text-xs); line-height: 1.6; color: var(--color-ink-muted); }
+  .page-hero { width: 100%; max-width: 20rem; height: auto; border-radius: var(--radius); }
+
 </style>

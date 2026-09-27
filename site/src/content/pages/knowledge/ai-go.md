@@ -8,6 +8,9 @@ datePublished: "2025-06-11"
 dateModified: "2026-08-30"
 legacySource: "docs/tech/index.md"
 sourceVerbatim: true
+hero: "knowledge-ai-go"
+heroAlt: "螢幕左半是 19 路棋盤、右半是程式碼視窗，箭頭連到桌上的實體棋盤，旁邊放著 AlphaGo 與 KataGo 的書"
+heroCaption: "從 AlphaGo 到 KataGo，看原理也動手跑一次"
 ---
 
 歡迎來到圍棋 AI 技術文件區！這裡為想要深入理解、部署或開發圍棋 AI 的工程師與開發者，提供完整的技術資源與指南。

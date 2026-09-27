@@ -7,6 +7,9 @@ datePublished: "2025-06-11"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/history/human-history/japan-china-korea.md"
 sourceVerbatim: true
+hero: "go-japan-china-korea"
+heroAlt: "日本、中國、韓國三面國旗並列，每面旗下一張對局桌，桌卡分別寫四大棋家、中國復興、韓國崛起"
+heroCaption: "從日本四大棋家，到中國復興與韓國崛起"
 ---
 
 從 17 世紀日本四大棋家的建立，到 21 世紀中韓爭霸，近現代圍棋經歷了職業化、國際化的重要轉變。這段歷史見證了圍棋從東方傳統藝術發展成為全球性競技運動的過程。

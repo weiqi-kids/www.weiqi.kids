@@ -7,6 +7,9 @@ datePublished: "2025-06-11"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/history/human-history/ancient.md"
 sourceVerbatim: true
+hero: "go-ancient"
+heroAlt: "石桌上一塊棋盤，棋子落在交叉點，旁邊攤開的竹簡寫著左傳二字"
+heroCaption: "圍棋最早的文字記載見於左傳"
 ---
 
 圍棋的歷史可以追溯到數千年前的中國，是人類最古老的棋類遊戲之一。它不僅是一種智力遊戲，更承載著深厚的文化內涵，反映了東方哲學中陰陽、平衡與戰略思維的精髓。

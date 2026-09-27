@@ -8,6 +8,9 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/overview/landscape.md"
 sourceVerbatim: true
+hero: "ai-go-landscape"
+heroAlt: "三欄看板：引擎欄寫 KataGo 與 Leela Zero，GUI 工具欄寫 KaTrain 與 Lizzie，學習平台欄寫線上對弈"
+heroCaption: "圍棋 AI 分成引擎、GUI 工具與學習平台三層"
 ---
 
 圍棋 AI 不只是單一的程式，而是一個完整的生態系統。這篇文章將幫助你了解各種選擇，找到最適合你的工具。
