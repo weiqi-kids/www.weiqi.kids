@@ -1,8 +1,13 @@
 # 改版進度總表
 
-最後更新：2026-09-27（第 3 版）　·　staging：https://weiqi-kids-staging.weiqi-kids-site.workers.dev　·　正式站：尚未切換，仍由舊站 GitHub Pages 服務
+最後更新：2026-09-28（第 4 版）　·　staging：https://weiqi-kids-staging.weiqi-kids-site.workers.dev　·　正式站：尚未切換，仍由舊站 GitHub Pages 服務
 
 這份是唯一的進度來源。每完成一項就更新這裡，不要只在對話裡回報。
+
+**正式站還沒切換。** 目前線上的 www.weiqi.kids 仍是舊站（GitHub Pages），
+新站只在 staging：https://weiqi-kids-staging.weiqi-kids-site.workers.dev
+`site/wrangler.jsonc` 沒有設 routes 或 custom domain，DNS 的 NS 仍在 Linode。
+在下面「一次切換」那節的條件全部滿足之前，不做任何對外變更。
 
 狀態標記：**完成** ／ **進行中** ／ **卡住**（等別人）／ **不做**（已決定）
 
@@ -81,12 +86,79 @@
 | 成員頁 | 36 頁，其中 10 頁待補 |
 | 正式課程／棋聚場次 | 0／0 |
 
-## 卡住的項目，各需要什麼
+## 切換原則
 
-1. **E1 正式課程** — 第一門課的講師、日期、地點
-2. **E2 棋聚場次** — 恢復舉辦的時間地點
-3. **協會聯絡信箱** — 目前是個人 Gmail，要不要換成 @weiqi.kids（一個決定）
+1. **測試版沒完成前不上線。** staging 可以一直改、一直部署，那不影響任何對外服務。
+2. **只切一次。** 不要零碎地先搬這個、先改那個。所有前置條件備齊後，一次做完。
+3. **不零碎地問。** 需要協會提供的東西集中在下面一節，一次給齊即可，中間不再逐項追問。
+
+---
+
+## 一次切換：前置條件
+
+切換動作本身包含 DNS 遷移、`www` 指向新站、信箱三件事，它們要在同一次完成。
+以下每一項都滿足之後才排切換日。
+
+### 我這邊（不需要你介入）
+
+| # | 前置條件 | 狀態 |
+|---|---|---|
+| P1 | 網站骨幹（隱私權、聯絡、加入、最新消息、搜尋、頁尾） | 完成 |
+| P2 | 法人資訊（章程、立案文件） | 完成 |
+| P3 | 插畫與圖說（82 頁有首圖，全部有圖說） | 完成 |
+| P4 | 活動相簿（39 張，全部無可辨識人物） | 完成 |
+| P5 | 正式站建置不含測試資料 | 完成（`SITE_ENV=production` 驗證過） |
+| P6 | Cloudflare zone 匯入與逐筆比對 | 等 P8 的 zone 匯出 |
+| P7 | 切換日的操作腳本與回退腳本 | 等前置條件確定後寫 |
+
+### 需要協會提供（請一次給齊，不急）
+
+| # | 要什麼 | 用途 |
+|---|---|---|
+| P8 | Linode 完整 zone 匯出（含 TTL） | 我只能從外部查到解析值，查不到 TTL，也查不到沒被列舉的 record |
+| P9 | `172.237.11.63` 上 8 個主機名要保留還是退役 | 今日實測整台 443／22 不通、8 個名稱全無回應 |
+| P10 | `admin.bless`、`bless` 的 TLS 失敗是暫時或已停 | 決定這兩筆怎麼搬 |
+| P11 | Brevo、Zoho 驗證 records 是否仍需保留 | 牽涉現有寄件設定 |
+| P12 | 第一門正式課程：講師、日期、地點 | 沒有課程，共學營整條線是空的 |
+| P13 | 棋聚是否恢復舉辦、時間地點 | 沒有場次，棋聚整條線是空的 |
+| P14 | 聯絡信箱要用哪個名字（例 `info@`、`hello@`） | DNS 進 Cloudflare 後才能開，免費 |
+
+P8 到 P11 是 DNS 的；P12、P13 是內容的；P14 是信箱的。彼此獨立，湊齊了再一起切。
+
+### 只有你能執行（切換當天）
+
+| # | 動作 |
+|---|---|
+| P15 | 在 registrar 把 nameserver 改成 Cloudflare 指定值 |
+| P16 | 驗證 Cloudflare Email Routing 的目的地信箱（會收到一封驗證信） |
+
+---
+
+## 切換當天的順序
+
+1. Cloudflare zone 已建好、49 筆 records 已逐筆比對通過（我事前完成）。
+2. 你在 registrar 改 nameserver。
+3. 等傳播，逐筆重測 `revamp/2026-09-27-dns-preflight.md` 第 1 節的所有 hostname。
+4. 舊站仍在，`www` 此時仍指 GitHub Pages。
+5. 全部驗證通過後，才把 `www` 指向新站。
+6. 開 Email Routing，建信箱轉寄。
+7. 網站上的聯絡信箱同步換掉。
+
+Linode zone 全程保留不刪，回退就是把 nameserver 改回去。
+
+## 切換後驗收
+
+`revamp/2026-09-27-dns-preflight.md` 第 4、5 節已寫明驗收與回退步驟，切換當天照那份走。
+
+---
 
 ## 2026-09-26 決定不公告
 
 B4 理監事名單、B5 年度工作報告與財務、D8 十位成員介紹。相關頁面維持現狀。
+
+## 相關文件
+
+- DNS 今日實測與 49 筆 record 清單：`revamp/2026-09-27-dns-preflight.md`
+- DNS 遷移計畫與回退：`revamp/4-strategy/2026-09-20-dns-migration-continuity.md`
+- 插畫重畫需求與產圖方法：`revamp/2026-09-24-illustration-redraw-spec.md`
+- `ref/` 素材盤點：`revamp/2026-09-25-ref-asset-inventory.md`
