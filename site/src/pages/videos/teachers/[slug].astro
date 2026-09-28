@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { render, type CollectionEntry } from 'astro:content';
+import { publicTeachers, fmtDuration, LEVELS } from '../../../lib/teachers';
+import { site } from '../../../data/site.js';
+
+export async function getStaticPaths() {
+  const teachers = await publicTeachers();
+  return teachers.map((t) => ({ params: { slug: t.data.slug }, props: { t } }));
+}
+
+const { t } = Astro.props as { t: CollectionEntry<'teachers'> };
+const { Content } = await render(t);
+const d = t.data;
+const path = `/videos/teachers/${d.slug}/`;
+
+// 影片依難度排序，入門在前，方便新手從頭看
+const order = new Map(LEVELS.map((l, i) => [l, i]));
+const videos = [...d.videos].sort((a, b) => (order.get(a.level) ?? 9) - (order.get(b.level) ?? 9));
+
+const schema = [{
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: d.name,
+  jobTitle: d.rank,
+  address: { '@type': 'PostalAddress', addressLocality: d.city, addressCountry: 'TW' },
+  sameAs: [d.channelUrl],
+  url: new URL(path, Astro.site).href,
+}];
+---
+<BaseLayout
+  title={`${d.name}｜圍棋教學影片`}
+  description={`${d.name}（${d.rank}，${d.city}）的圍棋教學影片與 YouTube 頻道。${d.summary}`}
+  breadcrumbs={[{ name: '圍棋教學影片', href: '/videos/' }, { name: d.name, href: path }]}
+  schema={schema}
+>
+  <article class="prose">
+    <h1>{d.name}</h1>
+    <p class="rank">{d.rank}．{d.city}{d.district && `．${d.district}`}</p>
+
+    <div class="key-answer" data-question={`${d.name}的圍棋教學影片在哪裡看？`}>
+      <p>{d.summary}</p>
+      <p class="channel">
+        <a class="btn" href={d.channelUrl} rel="noopener">前往 {d.channelName ?? `${d.name}的 YouTube 頻道`}</a>
+      </p>
+    </div>
+
+    {(d.recruiting || d.teaching.length > 0) && (
+      <section class="recruit">
+        <h2>授課資訊</h2>
+        <dl class="facts">
+          <dt>所在地</dt><dd>{d.city}{d.district && `　${d.district}`}</dd>
+          {d.teaching.length > 0 && <><dt>授課方式</dt><dd>{d.teaching.join('、')}</dd></>}
+          <dt>招生狀態</dt><dd>{d.recruiting ? '招生中' : '目前未標示招生'}</dd>
+          {d.contact && <><dt>洽詢</dt><dd>{d.contact}</dd></>}
+        </dl>
+      </section>
+    )}
+
+    <Content />
+
+    <h2>收錄的影片（{videos.length} 支）</h2>
+    {videos.length === 0 ? <p>尚未收錄影片。</p> : (
+      <ul class="vids">
+        {videos.map((v) => (
+          <li>
+            <a class="thumb" href={`https://www.youtube.com/watch?v=${v.id}`} rel="noopener">
+              <img src={`https://i.ytimg.com/vi/${v.id}/mqdefault.jpg`} alt="" width="320" height="180" loading="lazy" />
+              {v.duration && <span class="dur">{fmtDuration(v.duration)}</span>}
+            </a>
+            <div>
+              <p class="tags"><span class="lv">{v.level}</span>{v.topics.map((x) => <span class="tp">{x}</span>)}</p>
+              <p class="vtitle"><a href={`https://www.youtube.com/watch?v=${v.id}`} rel="noopener">{v.title}</a></p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    )}
+
+    <h2>關於這份收錄</h2>
+    <p>影片由協會整理分類，收錄前已取得{d.name}同意。影片放在老師自己的 YouTube 頻道，協會不轉載也不重新上傳，點擊會連回原頻道。</p>
+    <p>資料有誤或要撤下收錄，請來信 <a href={`mailto:${site.email}`}>{site.email}</a>。</p>
+    <p><a href="/videos/">← 回圍棋教學影片</a></p>
+  </article>
+</BaseLayout>
+
+<style>
+  .rank { font-size: var(--text-sm); color: var(--color-ink-muted); margin-top: calc(-1 * var(--space-2)); }
+  .channel { margin-bottom: 0; }
+  .recruit { margin-block: var(--space-8); }
+  .vids { list-style: none; padding: 0; margin: 0 0 var(--space-8); display: grid; gap: var(--space-4); }
+  @media (min-width: 640px) { .vids { grid-template-columns: repeat(2, 1fr); } }
+  .vids li { display: flex; flex-direction: column; gap: var(--space-2); }
+  .thumb { position: relative; display: block; border-radius: var(--radius-sm); overflow: hidden; }
+  .thumb img { display: block; width: 100%; height: auto; }
+  .dur {
+    position: absolute; right: var(--space-2); bottom: var(--space-2);
+    background: var(--color-overlay); color: var(--color-white);
+    font-size: var(--text-xs); padding: 0 var(--space-2); border-radius: var(--radius-sm);
+  }
+  .tags { margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-1); }
+  .lv, .tp { font-size: var(--text-xs); padding: 0 var(--space-2); border-radius: var(--radius-sm); }
+  .lv { background: var(--color-warn-bg); color: var(--color-warn-line); font-weight: 700; }
+  .tp { background: var(--color-bg-soft); color: var(--color-ink-soft); }
+  .vtitle { margin: 0; font-size: var(--text-sm); line-height: 1.5; }
+</style>

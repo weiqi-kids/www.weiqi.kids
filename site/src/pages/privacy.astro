@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site, association } from '../data/site.js';
 
-const updated = '2026-09-24';
+const updated = '2026-09-28';
 ---
 <BaseLayout
   title="隱私權政策"
@@ -42,6 +42,7 @@ const updated = '2026-09-24';
 
     <h3>瀏覽網站時</h3>
     <p>網站使用 Google Analytics 4 統計流量，並已開啟 IP 位址匿名化（<code>anonymize_ip</code>）。協會用它了解哪些頁面被閱讀，不會用來辨識個別訪客。</p>
+    <p>圍棋教學影片頁面會顯示 YouTube 的影片縮圖，縮圖由 Google 的伺服器（<code>i.ytimg.com</code>）直接送到你的瀏覽器，Google 因此會看到這次請求。協會沒有在這些頁面嵌入 YouTube 播放器，點擊影片才會離開本站前往 YouTube。</p>
 
     <h2>資料用在哪裡</h2>
     <ul>
@@ -56,7 +57,7 @@ const updated = '2026-09-24';
       <dt>協會管理員</dt><dd>處理報名、核對匯款與管理論壇時會看到報名與帳號資料</dd>
       <dt>同課程成員</dt><dd>只看得到你在該門課論壇的顯示名稱、發言與附件</dd>
       <dt>Cloudflare</dt><dd>提供網站主機、資料庫（D1）與檔案儲存（R2）</dd>
-      <dt>Google</dt><dd>提供 Google Analytics 4 流量統計</dd>
+      <dt>Google</dt><dd>提供 Google Analytics 4 流量統計，以及圍棋教學影片頁面的 YouTube 縮圖</dd>
       <dt>LINE</dt><dd>你選擇以 LINE 登入時，由 LINE 提供使用者識別碼</dd>
     </dl>
 

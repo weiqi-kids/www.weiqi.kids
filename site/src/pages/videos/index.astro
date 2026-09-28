@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { allVideos, publicTeachers, byCity, fmtDuration, LEVELS, TOPICS } from '../../lib/teachers';
+
+const videos = await allVideos();
+const teachers = await publicTeachers();
+const cities = byCity(teachers);
+const recruiting = teachers.filter((t) => t.data.recruiting);
+---
+<BaseLayout
+  title="圍棋教學影片"
+  description="依難度、主題與地區收錄圍棋老師的教學影片，可以直接連到老師的 YouTube 頻道。"
+  breadcrumbs={[{ name: '圍棋教學影片', href: '/videos/' }]}
+>
+  <div class="prose">
+    <h1>圍棋教學影片</h1>
+    <div class="key-answer" data-question="這裡收錄了哪些圍棋教學影片？">
+      <p>目前收錄 {teachers.length} 位老師、{videos.length} 支影片，依難度、主題與地區分類。影片都在原作者的 YouTube 頻道上，點下去會直接連過去。有招生的老師會標示授課方式與所在地。</p>
+    </div>
+  </div>
+
+  {videos.length === 0 ? (
+    <div class="prose"><p>還沒有收錄影片。</p></div>
+  ) : (
+    <>
+      <div class="filters">
+        <div class="filter-group">
+          <span class="filter-label">難度</span>
+          <button type="button" class="chip is-on" data-kind="level" data-value="">全部</button>
+          {LEVELS.map((l) => <button type="button" class="chip" data-kind="level" data-value={l}>{l}</button>)}
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">主題</span>
+          <button type="button" class="chip is-on" data-kind="topic" data-value="">全部</button>
+          {TOPICS.map((t) => <button type="button" class="chip" data-kind="topic" data-value={t}>{t}</button>)}
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">地區</span>
+          <button type="button" class="chip is-on" data-kind="city" data-value="">全部</button>
+          {cities.map(([c]) => <button type="button" class="chip" data-kind="city" data-value={c}>{c}</button>)}
+        </div>
+        <p class="count" role="status" aria-live="polite" id="count"></p>
+      </div>
+
+      <ul class="video-list" id="list">
+        {videos.map((v) => (
+          <li data-level={v.level} data-topics={v.topics.join('|')} data-city={v.city}>
+            <a class="thumb" href={`https://www.youtube.com/watch?v=${v.id}`} rel="noopener">
+              <img src={`https://i.ytimg.com/vi/${v.id}/mqdefault.jpg`} alt="" width="320" height="180" loading="lazy" />
+              {v.duration && <span class="dur">{fmtDuration(v.duration)}</span>}
+            </a>
+            <div class="meta">
+              <p class="tags"><span class="lv">{v.level}</span>{v.topics.map((t) => <span class="tp">{t}</span>)}</p>
+              <h2><a href={`https://www.youtube.com/watch?v=${v.id}`} rel="noopener">{v.title}</a></h2>
+              <p class="who"><a href={`/videos/teachers/${v.teacherSlug}/`}>{v.teacherName}</a>．{v.rank}．{v.city}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+
+  <section class="prose teachers-section">
+    <h2>依地區找老師</h2>
+    {recruiting.length > 0 && <p>標示招生中的老師共 {recruiting.length} 位。</p>}
+    {cities.map(([city, list]) => (
+      <>
+        <h3>{city}</h3>
+        <ul>
+          {list.map((t) => (
+            <li>
+              <a href={`/videos/teachers/${t.data.slug}/`}>{t.data.name}</a>．{t.data.rank}
+              {t.data.district && `．${t.data.district}`}
+              {t.data.recruiting && <span class="badge">招生中</span>}
+            </li>
+          ))}
+        </ul>
+      </>
+    ))}
+  </section>
+
+  <section class="prose">
+    <h2>收錄方式</h2>
+    <p>影片由協會整理，收錄前都會取得老師同意。影片本身放在老師自己的 YouTube 頻道，協會不轉載、不重新上傳，點擊會連回原頻道。</p>
+    <p>老師想加入收錄、修改資料或撤下，請來信協會，見<a href="/contact/">聯絡協會</a>。</p>
+  </section>
+</BaseLayout>
+
+<script>
+  const state: Record<string, string> = { level: '', topic: '', city: '' };
+  const list = document.getElementById('list');
+  const count = document.getElementById('count');
+
+  function apply() {
+    if (!list || !count) return;
+    let n = 0;
+    for (const li of Array.from(list.children) as HTMLElement[]) {
+      const topics = (li.dataset.topics ?? '').split('|');
+      const ok =
+        (!state.level || li.dataset.level === state.level) &&
+        (!state.topic || topics.includes(state.topic)) &&
+        (!state.city || li.dataset.city === state.city);
+      li.hidden = !ok;
+      if (ok) n++;
+    }
+    count.textContent = `${n} 支影片`;
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('.chip').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const kind = btn.dataset.kind!;
+      state[kind] = btn.dataset.value ?? '';
+      document.querySelectorAll<HTMLButtonElement>(`.chip[data-kind="${kind}"]`).forEach((b) => b.classList.toggle('is-on', b === btn));
+      apply();
+    });
+  });
+  apply();
+</script>
+
+<style>
+  .filters { display: grid; gap: var(--space-3); margin-bottom: var(--space-6); }
+  .filter-group { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: baseline; }
+  .filter-label { font-weight: 700; font-size: var(--text-sm); min-width: 3em; }
+  .chip {
+    font: inherit; font-size: var(--text-xs); padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-line); border-radius: 999px; background: var(--color-surface);
+    color: var(--color-ink-soft); cursor: pointer;
+  }
+  .chip:hover { border-color: var(--color-primary); color: var(--color-primary); }
+  .chip.is-on { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-white); }
+  .count { font-size: var(--text-xs); color: var(--color-ink-muted); margin: 0; }
+
+  .video-list { list-style: none; padding: 0; margin: 0 0 var(--space-12); display: grid; gap: var(--space-6); }
+  @media (min-width: 640px) { .video-list { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .video-list { grid-template-columns: repeat(3, 1fr); } }
+  .video-list li { display: flex; flex-direction: column; gap: var(--space-2); }
+  .thumb { position: relative; display: block; border-radius: var(--radius-sm); overflow: hidden; }
+  .thumb img { display: block; width: 100%; height: auto; }
+  .dur {
+    position: absolute; right: var(--space-2); bottom: var(--space-2);
+    background: var(--color-overlay); color: var(--color-white);
+    font-size: var(--text-xs); padding: 0 var(--space-2); border-radius: var(--radius-sm);
+  }
+  .meta h2 { font-size: var(--text-base); margin: 0; line-height: 1.5; }
+  .meta h2 a { text-decoration: none; }
+  .meta h2 a:hover { text-decoration: underline; }
+  .tags { margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-1); }
+  .lv, .tp { font-size: var(--text-xs); padding: 0 var(--space-2); border-radius: var(--radius-sm); }
+  .lv { background: var(--color-warn-bg); color: var(--color-warn-line); font-weight: 700; }
+  .tp { background: var(--color-bg-soft); color: var(--color-ink-soft); }
+  .who { margin: 0; font-size: var(--text-xs); color: var(--color-ink-muted); }
+
+  .teachers-section h3 { margin-bottom: var(--space-2); }
+  .badge { margin-left: var(--space-2); font-size: var(--text-xs); background: var(--color-tip-bg); color: var(--color-tip-line); padding: 0 var(--space-2); border-radius: var(--radius-sm); }
+</style>

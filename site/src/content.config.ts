@@ -84,4 +84,37 @@ const news = defineCollection({
   }),
 });
 
-export const collections = { pages, topics, courses, gatherings, news };
+
+// 圍棋教學影片索引：收錄其他老師的教學影片，導流到他們的頻道協助招生。
+// 一位老師一個檔案，影片放在 videos 陣列裡，不另開集合，維護才輕。
+const teachers = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/teachers' }),
+  schema: z.object({
+    name: z.string(),
+    slug: z.string(),
+    // 棋力：照老師自己公開的寫法，例如「職業五段」「業餘六段」
+    rank: z.string(),
+    // 所在地：招生用，縣市必填、行政區選填
+    city: z.string(),
+    district: z.string().optional(),
+    channelUrl: z.string().url(),
+    channelName: z.string().optional(),
+    summary: z.string(),
+    // 授課方式與是否招生中，決定老師頁要不要顯示招生區塊
+    teaching: z.array(z.enum(['實體', '線上'])).default([]),
+    recruiting: z.boolean().default(false),
+    contact: z.string().optional(),
+    // 收錄同意：沒有同意日期就不會顯示在正式站
+    consentDate: z.coerce.date().optional(),
+    status: z.enum(['draft', 'listed']).default('draft'),
+    videos: z.array(z.object({
+      id: z.string(),
+      title: z.string(),
+      level: z.enum(['入門', '級位', '段位']),
+      topics: z.array(z.enum(['規則入門', '佈局', '定石', '死活', '手筋', '收官', '實戰覆盤', '棋理'])).min(1),
+      duration: z.number().optional(),
+    })).default([]),
+  }),
+});
+
+export const collections = { pages, topics, courses, gatherings, news, teachers };
