@@ -36,7 +36,10 @@ export default function GlobalSchema() {
         },
         "description": "台灣的非營利組織，跨域夥伴因圍棋結緣，合作開發開源 AI 工具"
       },
-      // WebSite Schema with SearchAction
+      // WebSite Schema
+      // 🔴 2026-09-27 移除 potentialAction/SearchAction：sitelinks 搜尋框這個功能 Google
+      //    已於 2024-11 停止使用，標記留著沒有任何效果。站內搜尋本身不受影響，那是給人用的。
+      //    判準來源：seo-ops rules/jsonld-rules.json（structuredData.deprecated）。
       {
         "@type": "WebSite",
         "@id": `${siteUrl}#website`,
@@ -45,15 +48,7 @@ export default function GlobalSchema() {
         "publisher": {
           "@id": `${siteUrl}#organization`
         },
-        "inLanguage": ["zh-TW", "zh-CN", "zh-HK", "en", "ja", "ko", "es", "pt", "hi", "id", "ar"],
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": {
-            "@type": "EntryPoint",
-            "urlTemplate": `${siteUrl}/search?q={search_term_string}`
-          },
-          "query-input": "required name=search_term_string"
-        }
+        "inLanguage": ["zh-TW", "zh-CN", "zh-HK", "en", "ja", "ko", "es", "pt", "hi", "id", "ar"]
       }
     ]
   };
