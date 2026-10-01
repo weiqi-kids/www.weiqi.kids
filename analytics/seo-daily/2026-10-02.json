@@ -1,0 +1,803 @@
+{
+  "date": "2026-10-02",
+  "generatedAt": "2026-10-01T20:35:18.486Z",
+  "ga4": {
+    "range": "7daysAgo..yesterday",
+    "sessions": 617,
+    "users": 608,
+    "views": 781,
+    "avgDurationSec": 9,
+    "engagedSessions": 131,
+    "taiwanOrganicSessions": 7,
+    "channelsRange": "8daysAgo..2daysAgo",
+    "channels": [
+      {
+        "channel": "Direct",
+        "sessions": 571,
+        "engaged": 109
+      },
+      {
+        "channel": "Organic Search",
+        "sessions": 23,
+        "engaged": 11
+      },
+      {
+        "channel": "AI Assistant",
+        "sessions": 1,
+        "engaged": 1
+      },
+      {
+        "channel": "Unassigned",
+        "sessions": 1,
+        "engaged": 0
+      }
+    ],
+    "topPages": [
+      {
+        "path": "/zh-cn/",
+        "views": 34
+      },
+      {
+        "path": "/",
+        "views": 19
+      },
+      {
+        "path": "/zh-cn/research/",
+        "views": 16
+      },
+      {
+        "path": "/zh-cn/intel/",
+        "views": 15
+      },
+      {
+        "path": "/en/docs/tech/deep-dive/custom-rules/",
+        "views": 11
+      },
+      {
+        "path": "/docs/tech/deep-dive/gpu-optimization/",
+        "views": 9
+      },
+      {
+        "path": "/en/",
+        "views": 9
+      },
+      {
+        "path": "/en/docs/tech/hands-on/basic-usage/",
+        "views": 9
+      },
+      {
+        "path": "/docs/animations/",
+        "views": 8
+      },
+      {
+        "path": "/en/docs/tech/hands-on/setup/",
+        "views": 8
+      },
+      {
+        "path": "/en/docs/tech/overview/",
+        "views": 8
+      },
+      {
+        "path": "/en/docs/tech/overview/landscape/",
+        "views": 8
+      },
+      {
+        "path": "/en/research/",
+        "views": 8
+      },
+      {
+        "path": "/zh-cn/apps/",
+        "views": 8
+      },
+      {
+        "path": "/zh-cn/docs/alphago/why-go-is-hard/",
+        "views": 8
+      }
+    ],
+    "aiReferrals": {
+      "range": "28daysAgo..yesterday",
+      "total": 4,
+      "engaged": 3,
+      "sources": [
+        {
+          "source": "chatgpt.com",
+          "sessions": 4,
+          "engaged": 3
+        }
+      ]
+    },
+    "daily": [
+      {
+        "date": "2026-08-07",
+        "sessions": 62,
+        "avgDurationSec": 2,
+        "engaged": 7,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-08-08",
+        "sessions": 73,
+        "avgDurationSec": 2,
+        "engaged": 7,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-09",
+        "sessions": 77,
+        "avgDurationSec": 3,
+        "engaged": 10,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-10",
+        "sessions": 69,
+        "avgDurationSec": 21,
+        "engaged": 10,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-08-11",
+        "sessions": 61,
+        "avgDurationSec": 7,
+        "engaged": 5,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-08-12",
+        "sessions": 59,
+        "avgDurationSec": 40,
+        "engaged": 13,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-08-13",
+        "sessions": 64,
+        "avgDurationSec": 2,
+        "engaged": 9,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-14",
+        "sessions": 53,
+        "avgDurationSec": 5,
+        "engaged": 11,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-15",
+        "sessions": 60,
+        "avgDurationSec": 7,
+        "engaged": 6,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-16",
+        "sessions": 58,
+        "avgDurationSec": 4,
+        "engaged": 11,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-17",
+        "sessions": 72,
+        "avgDurationSec": 3,
+        "engaged": 12,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-18",
+        "sessions": 52,
+        "avgDurationSec": 3,
+        "engaged": 5,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-19",
+        "sessions": 73,
+        "avgDurationSec": 2,
+        "engaged": 12,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-20",
+        "sessions": 95,
+        "avgDurationSec": 4,
+        "engaged": 13,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-21",
+        "sessions": 86,
+        "avgDurationSec": 4,
+        "engaged": 14,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-08-22",
+        "sessions": 53,
+        "avgDurationSec": 2,
+        "engaged": 4,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-23",
+        "sessions": 57,
+        "avgDurationSec": 3,
+        "engaged": 11,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-24",
+        "sessions": 61,
+        "avgDurationSec": 9,
+        "engaged": 11,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-08-25",
+        "sessions": 62,
+        "avgDurationSec": 22,
+        "engaged": 10,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-08-26",
+        "sessions": 66,
+        "avgDurationSec": 6,
+        "engaged": 14,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-08-27",
+        "sessions": 84,
+        "avgDurationSec": 3,
+        "engaged": 7,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-08-28",
+        "sessions": 108,
+        "avgDurationSec": 7,
+        "engaged": 17,
+        "taiwanOrganic": 3
+      },
+      {
+        "date": "2026-08-29",
+        "sessions": 77,
+        "avgDurationSec": 4,
+        "engaged": 15,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-08-30",
+        "sessions": 78,
+        "avgDurationSec": 25,
+        "engaged": 13,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-08-31",
+        "sessions": 69,
+        "avgDurationSec": 4,
+        "engaged": 11,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-01",
+        "sessions": 74,
+        "avgDurationSec": 4,
+        "engaged": 8,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-02",
+        "sessions": 67,
+        "avgDurationSec": 2,
+        "engaged": 6,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-03",
+        "sessions": 56,
+        "avgDurationSec": 5,
+        "engaged": 7,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-04",
+        "sessions": 58,
+        "avgDurationSec": 3,
+        "engaged": 7,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-05",
+        "sessions": 69,
+        "avgDurationSec": 3,
+        "engaged": 10,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-06",
+        "sessions": 73,
+        "avgDurationSec": 3,
+        "engaged": 10,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-07",
+        "sessions": 59,
+        "avgDurationSec": 2,
+        "engaged": 4,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-08",
+        "sessions": 79,
+        "avgDurationSec": 21,
+        "engaged": 8,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-09",
+        "sessions": 63,
+        "avgDurationSec": 5,
+        "engaged": 7,
+        "taiwanOrganic": 3
+      },
+      {
+        "date": "2026-09-10",
+        "sessions": 60,
+        "avgDurationSec": 3,
+        "engaged": 8,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-11",
+        "sessions": 71,
+        "avgDurationSec": 11,
+        "engaged": 5,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-12",
+        "sessions": 85,
+        "avgDurationSec": 2,
+        "engaged": 6,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-13",
+        "sessions": 82,
+        "avgDurationSec": 3,
+        "engaged": 10,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-14",
+        "sessions": 56,
+        "avgDurationSec": 11,
+        "engaged": 12,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-15",
+        "sessions": 489,
+        "avgDurationSec": 3,
+        "engaged": 43,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-16",
+        "sessions": 470,
+        "avgDurationSec": 3,
+        "engaged": 63,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-17",
+        "sessions": 130,
+        "avgDurationSec": 3,
+        "engaged": 16,
+        "taiwanOrganic": 4
+      },
+      {
+        "date": "2026-09-18",
+        "sessions": 142,
+        "avgDurationSec": 14,
+        "engaged": 28,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-19",
+        "sessions": 132,
+        "avgDurationSec": 12,
+        "engaged": 19,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-09-20",
+        "sessions": 126,
+        "avgDurationSec": 56,
+        "engaged": 48,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-21",
+        "sessions": 79,
+        "avgDurationSec": 12,
+        "engaged": 10,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-09-22",
+        "sessions": 64,
+        "avgDurationSec": 8,
+        "engaged": 17,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-23",
+        "sessions": 78,
+        "avgDurationSec": 24,
+        "engaged": 13,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-09-24",
+        "sessions": 81,
+        "avgDurationSec": 5,
+        "engaged": 11,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-25",
+        "sessions": 83,
+        "avgDurationSec": 3,
+        "engaged": 24,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-09-26",
+        "sessions": 66,
+        "avgDurationSec": 8,
+        "engaged": 15,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-27",
+        "sessions": 76,
+        "avgDurationSec": 19,
+        "engaged": 18,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-28",
+        "sessions": 70,
+        "avgDurationSec": 6,
+        "engaged": 14,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-29",
+        "sessions": 109,
+        "avgDurationSec": 3,
+        "engaged": 23,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-09-30",
+        "sessions": 112,
+        "avgDurationSec": 12,
+        "engaged": 16,
+        "taiwanOrganic": 1,
+        "attributionPending": true
+      },
+      {
+        "date": "2026-10-01",
+        "sessions": 103,
+        "avgDurationSec": 11,
+        "engaged": 21,
+        "taiwanOrganic": 0
+      }
+    ]
+  },
+  "gsc": {
+    "error": "GSC API：Internal error encountered."
+  },
+  "index": {
+    "sitemaps": [
+      {
+        "path": "https://www.weiqi.kids/sitemap.xml",
+        "submitted": 146,
+        "errors": "0",
+        "warnings": "0",
+        "lastDownloaded": "2026-09-29T20:35:14.642Z"
+      },
+      {
+        "path": "https://www.weiqi.kids/sitemap-index.xml",
+        "submitted": 1606,
+        "errors": "0",
+        "warnings": "0",
+        "lastDownloaded": "2026-09-29T20:35:13.942Z"
+      }
+    ],
+    "coverage": [
+      {
+        "url": "https://www.weiqi.kids/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-30T03:20:36Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/learn/",
+        "coverageState": "Discovered - currently not indexed",
+        "lastCrawlTime": null
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/tech/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-07-27T20:26:09Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/alphago/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-08-14T20:02:56Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/about/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-05T02:57:56Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/en/",
+        "coverageState": "Duplicate, Google chose different canonical than user",
+        "lastCrawlTime": "2026-09-21T12:47:27Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/ja/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-09-24T17:10:49Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/zh-cn/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-08-30T10:13:06Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/zh-hk/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-09-23T13:18:12Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/ko/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-09-23T04:33:32Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/es/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-27T19:40:18Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/pt/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-09-27T20:05:02Z"
+      }
+    ]
+  },
+  "targetTrend": {
+    "range": "2026-09-22..2026-09-28",
+    "prevRange": "2026-09-15..2026-09-21",
+    "rows": [
+      {
+        "query": "weiqi kids",
+        "pinned": true,
+        "position": null,
+        "prevPosition": null,
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "puct",
+        "pinned": true,
+        "position": 4.357142857142858,
+        "prevPosition": 5.285714285714286,
+        "impressions": 14,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "puct formula",
+        "pinned": true,
+        "position": 1.375,
+        "prevPosition": 1.25,
+        "impressions": 8,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "alphago",
+        "pinned": true,
+        "position": null,
+        "prevPosition": null,
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "katago",
+        "pinned": true,
+        "position": null,
+        "prevPosition": null,
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "圍棋ai",
+        "pinned": true,
+        "position": null,
+        "prevPosition": null,
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "圍棋 ai 分析",
+        "pinned": true,
+        "position": null,
+        "prevPosition": null,
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "katago 安裝",
+        "pinned": false,
+        "position": 4.705882352941177,
+        "prevPosition": 3.9166666666666665,
+        "impressions": 17,
+        "clicks": 2,
+        "ctr": 0.11764705882352941
+      },
+      {
+        "query": "姜封豪",
+        "pinned": false,
+        "position": 7.214285714285714,
+        "prevPosition": 10.222222222222221,
+        "impressions": 14,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "顏怡璇",
+        "pinned": false,
+        "position": 8.75,
+        "prevPosition": 6.25,
+        "impressions": 8,
+        "clicks": 1,
+        "ctr": 0.125
+      },
+      {
+        "query": "蕭愛霖",
+        "pinned": false,
+        "position": 5.166666666666667,
+        "prevPosition": 6,
+        "impressions": 6,
+        "clicks": 1,
+        "ctr": 0.16666666666666666
+      },
+      {
+        "query": "黃子彥",
+        "pinned": false,
+        "position": 10.166666666666666,
+        "prevPosition": 10.375,
+        "impressions": 6,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "吳荻",
+        "pinned": false,
+        "position": 11.333333333333334,
+        "prevPosition": 11,
+        "impressions": 3,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "李郁萱",
+        "pinned": false,
+        "position": 2.5,
+        "prevPosition": 2,
+        "impressions": 2,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "林昊德",
+        "pinned": false,
+        "position": 9.5,
+        "prevPosition": 8.5,
+        "impressions": 2,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "圍棋老師",
+        "pinned": false,
+        "position": 1,
+        "prevPosition": null,
+        "impressions": 1,
+        "clicks": 1,
+        "ctr": 1
+      },
+      {
+        "query": "圍棋開局",
+        "pinned": false,
+        "position": 8,
+        "prevPosition": null,
+        "impressions": 1,
+        "clicks": 0,
+        "ctr": 0
+      }
+    ]
+  },
+  "geo": {
+    "site": "weiqi.kids",
+    "sampleUrl": "https://www.weiqi.kids/zh-cn/docs/learn/introduction/",
+    "checks": {
+      "ai": {
+        "s": "✅"
+      },
+      "sitemap": {
+        "s": "✅"
+      },
+      "llms": {
+        "s": "✅"
+      },
+      "llmsFull": {
+        "s": "✅"
+      },
+      "org": {
+        "s": "✅"
+      },
+      "sameAs": {
+        "s": "✅"
+      },
+      "content": {
+        "s": "✅"
+      },
+      "faq": {
+        "s": "✅"
+      },
+      "cite": {
+        "s": "—"
+      },
+      "expect": {
+        "s": "—"
+      },
+      "targetQ": {
+        "s": "—"
+      }
+    },
+    "gaps": [],
+    "warns": [],
+    "ok": true
+  },
+  "rankingUpdate": {
+    "ongoing": [
+      {
+        "name": "September 2026 spam update",
+        "begin": "2026-09-24T16:15:00+00:00",
+        "end": null,
+        "products": [
+          "Ranking"
+        ]
+      }
+    ],
+    "recent": [],
+    "checkedAt": "2026-10-01T20:35:18.486Z"
+  }
+}
