@@ -5,9 +5,8 @@ path: "/association/members/da-feng-hsia/"
 kind: "member"
 order: 5
 datePublished: "2026-05-28"
-dateModified: "2026-05-28"
+dateModified: "2026-10-01"
 legacySource: "docs/about/members/founding/da-feng-hsia.md"
-sourceVerbatim: true
 ---
 
 > **「Line@ 許願池」**
@@ -19,6 +18,21 @@ sourceVerbatim: true
 ## 專業領域
 
 - Line@ 專業設計流程，自主管理與客戶有效溝通的 Line@ 設計
+
+## 月奈創角：品牌專屬 AI 角色
+
+替品牌建立一位固定造型的 AI 角色，用來持續產出商品介紹與活動宣傳的短影音。角色的長相、服裝與風格固定下來之後，不必每次安排模特兒與場地，也能維持一致的品牌形象。
+
+### 商家輕量方案
+
+| 項目 | 費用 |
+|---|---|
+| 專屬 AI 品牌角色建置 | NT$29,800（一次性） |
+| 角色商業授權 | NT$9,800／月 |
+
+- 每月包含 2 支標準短影音，每支 15 秒到 2 分鐘。
+- 最低合作期間 3 個月。
+- 影片以既有角色、場景與標準製作流程為主；特殊需求另行報價。
 
 ## 需要的合作夥伴
 
