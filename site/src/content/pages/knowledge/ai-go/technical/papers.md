@@ -8,6 +8,9 @@ datePublished: "2026-02-22"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/papers.md"
 sourceVerbatim: true
+hero: "tech-papers"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「2006 MCTS」、「2016 AlphaGo」、「2017 AlphaGo Zero」、「2017 AlphaZero」、「2019 KataGo」"
+heroCaption: "從 2006 MCTS 到 2019 KataGo 的里程碑論文"
 ---
 
 本文整理圍棋 AI 發展史上最重要的論文，提供快速理解的摘要與技術要點。

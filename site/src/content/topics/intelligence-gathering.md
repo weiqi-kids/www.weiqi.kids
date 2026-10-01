@@ -6,6 +6,9 @@ order: 1
 ttqsName: 情報搜集與 AI 輔助分析實作
 audience: 需要追蹤產業、政策、競品、健康或市場變化的人。
 caseSet: monitoring
+hero: "topic-intelligence-gathering"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「來源」、「擷取」、「摘要」、「標籤」、「通知」、「情報報告」"
+heroCaption: "做出一條可以持續更新的情報流程"
 ---
 
 ## 這個主題教什麼

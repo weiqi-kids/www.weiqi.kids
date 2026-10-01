@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { courseRules } from '../../data/site.js';
+import PageHead from '../../components/PageHead.astro';
 ---
 <BaseLayout title="共學營介紹" description="AI 共學營由台灣好棋寶寶協會主辦。每門課包含 1 堂主題教學、全部技能單張與 3 堂實作，結營後課程論壇保留，學員可以持續交流。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '共學營介紹', href: '/camp/about/' }]}>
   <article class="prose">
-    <h1>共學營介紹</h1>
+    <PageHead title="共學營介紹" hero="camp-about" alt="狐狸與狸貓吉祥物站在兩旁，畫面中列出「一門課 = 1 堂主題教學 + 3 堂實作」、「為期 1 個月」、「6,000 元」" caption="一門課 1 堂教學加 3 堂實作，1 個月 6,000 元" />
     <div class="key-answer" data-question="AI 共學營由誰主辦、適合誰？">
       <p>AI 共學營由台灣好棋寶寶協會主辦。協會會員來自醫療、法律、保險、設計、行銷、製造、教育等行業，共學營讓大家交流各自怎麼用 AI 做事，並在一個月內做出自己的作品。</p>
     </div>

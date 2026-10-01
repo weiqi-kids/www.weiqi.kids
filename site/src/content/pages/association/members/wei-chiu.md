@@ -7,6 +7,9 @@ datePublished: "2026-03-07"
 dateModified: "2026-05-28"
 legacySource: "docs/about/members/founding/wei-chiu.md"
 sourceVerbatim: true
+hero: "member-wei-chiu"
+heroAlt: "狐狸與狸貓吉祥物拿著活動流程表站在賽事舞台後方，背景布條寫著不老棒球聯盟"
+heroCaption: "9 年活動企劃經驗，全台第一位火舞街頭藝人"
 ---
 
 ![邱尚偉](/img/members/wei-chiu.jpg)

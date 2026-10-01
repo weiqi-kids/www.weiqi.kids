@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FAQ from '../../components/mdx/FAQ.astro';
+import PageHead from '../../components/PageHead.astro';
 const items = [
   { question: 'AI 共學營一門課多少錢？', answer: '每門課 6,000 元。第一次報名繳的是協會個人會員常年會費 6,000 元，已經包含第一門課；之後每上一門新課再付 6,000 元。企業會員常年會費為 60,000 元。' },
   { question: '一定要是協會會員嗎？', answer: '是。參加課程需要有效的協會會員資格。第一次報名繳常年會費後，協會核款開通時同時成為會員；會費以年計算。' },
@@ -17,7 +18,7 @@ const items = [
 ---
 <BaseLayout title="AI 共學營常見問題" description="AI 共學營的費用、會員資格、課程內容、匯款方式、實作營、作品公開與結營後交流等常見問題。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '常見問題', href: '/camp/faq/' }]}>
   <div class="prose">
-    <h1>AI 共學營常見問題</h1>
+    <PageHead title="AI 共學營常見問題" hero="camp-faq" alt="狐狸與狸貓吉祥物站在兩旁，畫面中列出「每門課 6,000 元」、「1 堂主題教學＋3 堂實作」、「需協會會員資格」" caption="每門課 6,000 元，含 1 堂教學加 3 堂實作" />
     <FAQ items={items} title="問與答" />
   </div>
 </BaseLayout>

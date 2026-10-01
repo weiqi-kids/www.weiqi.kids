@@ -1,0 +1,35 @@
+---
+interface Props {
+  title: string;
+  hero?: string;
+  alt?: string;
+  caption?: string;
+}
+const { title, hero, alt = '', caption } = Astro.props;
+---
+{hero ? (
+  <div class="page-head">
+    <h1>{title}</h1>
+    <figure>
+      <img
+        class="page-hero"
+        src={`/media/illustrations/${hero}.webp`}
+        alt={alt}
+        width="1600"
+        height="900"
+        loading="eager"
+        fetchpriority="high"
+      />
+      {caption && <figcaption>{caption}</figcaption>}
+    </figure>
+  </div>
+) : <h1>{title}</h1>}
+
+<style>
+  .page-head { display: grid; gap: var(--space-4) var(--space-6); align-items: center; margin-bottom: var(--space-6); }
+  @media (min-width: 640px) { .page-head { grid-template-columns: minmax(0, 1fr) 20rem; } }
+  .page-head h1 { margin: 0; }
+  .page-head figure { margin: 0; }
+  .page-head figcaption { margin-top: var(--space-2); font-size: var(--text-xs); line-height: 1.6; color: var(--color-ink-muted); }
+  .page-hero { width: 100%; max-width: 20rem; height: auto; border-radius: var(--radius); }
+</style>

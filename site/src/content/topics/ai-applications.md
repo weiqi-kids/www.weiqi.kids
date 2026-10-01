@@ -6,6 +6,9 @@ order: 3
 ttqsName: 從工作問題到 AI 應用工具實作
 audience: 想把專業知識、服務流程或內容工作做成工具的人。
 caseSet: apps
+hero: "topic-ai-applications"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「輸入」、「分析」、「輸出」、「人工覆核」"
+heroCaption: "把工作問題做成能給人試用的 AI 工具"
 ---
 
 ## 這個主題教什麼

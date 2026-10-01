@@ -8,6 +8,9 @@ datePublished: "2026-02-22"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/gpu-optimization.md"
 sourceVerbatim: true
+hero: "tech-gpu-optimization"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「CUDA」、「OpenCL」、「Metal」、「Eigen」、「GPU 約 1000-3000 playouts/秒」、「CPU 約 10-30 playouts/秒」"
+heroCaption: "四種後端中 NVIDIA 用 CUDA 效能最佳"
 ---
 
 本文介紹 KataGo 支援的各種 GPU 後端、效能差異，以及如何調校以獲得最佳效能。

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHead from '../../../components/PageHead.astro';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { courseRules } from '../../../data/site.js';
 import { appLinks } from '../../../data/legacy/apps.js';
@@ -27,7 +28,7 @@ const path = `/camp/topics/${t.slug}/`;
 ---
 <BaseLayout title={t.title} description={`${t.summary} AI 共學營課程主題；每門課 1 堂主題教學＋3 堂實作，為期一個月，${courseRules.fee.toLocaleString('zh-TW')} 元。`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '課程主題', href: '/camp/topics/' }, { name: t.title, href: path }]}>
   <article class="prose">
-    <h1>{t.title}</h1>
+    <PageHead title={t.title} hero={t.hero} alt={t.heroAlt} caption={t.heroCaption} />
     <div class="key-answer" data-question={`${t.title}學什麼？`}>
       <p>{t.summary}</p>
     </div>

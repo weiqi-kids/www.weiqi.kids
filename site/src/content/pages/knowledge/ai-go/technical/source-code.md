@@ -8,6 +8,9 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/source-code.md"
 sourceVerbatim: true
+hero: "tech-source-code"
+heroAlt: "狐狸與狸貓吉祥物站在資料夾結構圖兩側，圖中是 KataGo 原始碼的目錄分層"
+heroCaption: "KataGo 分 cpp 引擎與 python 訓練兩部分"
 ---
 
 本文帶你了解 KataGo 的程式碼結構，適合想深入研究或貢獻程式碼的工程師。

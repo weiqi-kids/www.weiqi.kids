@@ -8,6 +8,9 @@ datePublished: "2026-02-22"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/build-from-scratch.md"
 sourceVerbatim: true
+hero: "tech-build-from-scratch"
+heroAlt: "狐狸與狸貓吉祥物在一張循環流程圖四周，圖上依序是 9 路棋盤規則、神經網路、自我對弈與 MCTS 搜索"
+heroCaption: "在 9×9 棋盤實作簡化版 AlphaGo Zero"
 ---
 
 本文帶你一步步實作一個簡化版的 AlphaGo Zero 風格圍棋 AI，涵蓋遊戲邏輯、神經網路、MCTS 與訓練流程。

@@ -7,6 +7,9 @@ datePublished: "2025-06-11"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/introduction/index.md"
 sourceVerbatim: true
+hero: "go-introduction"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「1 規則」、「2 術語」、「3 禮儀」、「4 開局」"
+heroCaption: "入門依序學規則、術語、禮儀、開局"
 ---
 
 歡迎踏入圍棋的世界！這個區塊將帶你從零開始，建立扎實的圍棋基礎。

@@ -8,6 +8,9 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/index.md"
 sourceVerbatim: true
+hero: "ai-go-technical"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「核心技術」、「效能優化」、「進階主題」、「開源與實作」"
+heroCaption: "分四大主題導覽 12 篇進階文章"
 ---
 
 這個章節適合想要深入研究圍棋 AI 的工程師，涵蓋技術實作、理論基礎與實務應用。

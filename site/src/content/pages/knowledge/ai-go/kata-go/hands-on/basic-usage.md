@@ -8,6 +8,9 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/hands-on/basic-usage.md"
 sourceVerbatim: true
+hero: "katago-basic-usage"
+heroAlt: '狐狸與狸貓吉祥物站在兩旁，畫面中列出「GTP 模式」、「genmove black」、「= Q4」、「Analysis Engine」、「"winrate": 0.5678」'
+heroCaption: "GTP 模式對弈，Analysis Engine 供程式整合"
 ---
 
 KataGo 提供兩種操作模式：GTP 模式（適合對弈）和 Analysis Engine（適合程式整合）。

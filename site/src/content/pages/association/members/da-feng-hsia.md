@@ -7,6 +7,9 @@ order: 5
 datePublished: "2026-05-28"
 dateModified: "2026-10-01"
 legacySource: "docs/about/members/founding/da-feng-hsia.md"
+hero: "member-da-feng-hsia"
+heroAlt: "狸貓吉祥物指著一支顯示 LINE 官方帳號的手機，右邊三張直式影片卡片是品牌 AI 角色的短影音"
+heroCaption: "Line@ 設計與月奈創角品牌 AI 角色影片"
 ---
 
 > **「Line@ 許願池」**

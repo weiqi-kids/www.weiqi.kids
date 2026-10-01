@@ -8,6 +8,9 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/hands-on/index.md"
 sourceVerbatim: true
+hero: "katago-hands-on"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「move D16」、「visits 234」、「winrate 0.5432」、「30 分鐘」"
+heroCaption: "四步驟約 30 分鐘跑起 KataGo 看勝率"
 ---
 
 這份教學將帶你快速安裝並運行 KataGo。完成後你將能夠：

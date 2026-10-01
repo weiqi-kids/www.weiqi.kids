@@ -6,6 +6,9 @@ order: 4
 ttqsName: AI 輔助定理推導與研究驗證實作
 audience: 研究者、工程師、有數學或理論背景的學員，以及想學嚴謹驗證流程的人。
 caseSet: research
+hero: "topic-theorem-derivation"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「定義」、「假設」、「命題」、「AI 候選推導」、「反例」"
+heroCaption: "AI 提候選推導，研究者找反例驗證"
 ---
 
 ## 這個主題教什麼

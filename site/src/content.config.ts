@@ -35,6 +35,9 @@ const topics = defineCollection({
     ttqsName: z.string(),
     audience: z.string(),
     caseSet: z.enum(['apps', 'monitoring', 'intel', 'research', 'none']).default('none'),
+    hero: z.string().optional(),
+    heroAlt: z.string().optional(),
+    heroCaption: z.string().optional(),
   }),
 });
 

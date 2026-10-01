@@ -8,6 +8,9 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/deep-dive/contributing.md"
 sourceVerbatim: true
+hero: "tech-contributing"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「貢獻算力」、「回報問題」、「改進文件」、「貢獻程式碼」"
+heroCaption: "四種參與方式，門檻最低是貢獻 GPU 算力"
 ---
 
 KataGo 是一個活躍的開源專案，有多種方式可以參與貢獻。

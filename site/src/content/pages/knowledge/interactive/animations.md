@@ -8,6 +8,9 @@ datePublished: "2026-02-25"
 dateModified: "2026-02-25"
 legacySource: "docs/animations/index.md"
 sourceVerbatim: true
+hero: "knowledge-interactive"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「109 個動畫．12 個系列」、「神經網路 18」、「AlphaGo 架構 13」、「資料結構與表示 11」、「搜尋與樹結構 11」、「蒙地卡羅方法 10」、「強化學習 9」"
+heroCaption: "109 個圍棋 AI 概念動畫分 12 個系列"
 ---
 
 **一個動畫，兩個領域，一個本質。**

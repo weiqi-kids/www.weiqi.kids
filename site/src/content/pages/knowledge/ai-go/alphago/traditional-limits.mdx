@@ -9,6 +9,9 @@ dateModified: "2024-02-22"
 keywords: ["Minimax", "Alpha-Beta剪枝", "MCTS", "蒙地卡羅樹搜索", "電腦圍棋歷史", "UCT演算法", "博弈樹"]
 legacySource: "docs/alphago/05-traditional-limits.mdx"
 sourceVerbatim: true
+hero: "ag-traditional-limits"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「深度 2」、「0.06 秒」、「深度 6」、「7.7 年」"
+heroCaption: "Minimax 看 6 步棋要算 7.7 年"
 ---
 
 import MCTSTree from '~/components/charts/MCTSTree.jsx';
@@ -133,10 +136,10 @@ def minimax(state, depth, is_max_turn):
 |------|--------|--------------------------|
 | 2 | 62,500 | 0.06 秒 |
 | 4 | 39 億 | 65 分鐘 |
-| 6 | 2.4×10^14 | 7,600 年 |
-| 8 | 1.5×10^19 | 4.8 億年 |
+| 6 | 2.4×10^14 | 7.7 年 |
+| 8 | 1.5×10^19 | 48 萬年 |
 
-看 6 步都需要 7,600 年，更不用說看完整局棋了。
+看 6 步都需要 7.7 年，更不用說看完整局棋了。
 
 #### 2. 評估函數的困難
 
@@ -759,7 +762,7 @@ AlphaGo 用深度學習解決了這兩個問題：
 
 <KeyTakeaway>
 本文重點：
-- Minimax 演算法在圍棋上失敗，因為分支因子 250 導致看 6 步就需要 7,600 年計算時間
+- Minimax 演算法在圍棋上失敗，因為分支因子 250 導致看 6 步就需要 7.7 年計算時間
 - MCTS（2006 年）是重大突破，讓電腦圍棋達到業餘高段，但仍無法擊敗職業棋手
 - 傳統方法的核心瓶頸是「評估問題」——手工設計的特徵無法準確評估複雜局面，這正是深度學習要解決的問題
 </KeyTakeaway>

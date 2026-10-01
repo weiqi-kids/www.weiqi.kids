@@ -7,6 +7,9 @@ datePublished: "2025-06-11"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/history/ai-history/alphago-era.md"
 sourceVerbatim: true
+hero: "ai-go-alphago-era"
+heroAlt: "狐狸與狸貓吉祥物對坐在棋盤兩側，背後螢幕寫著比分，棋盤上一顆黑子被紅圈標出並註明是第 37 手"
+heroCaption: "2016 年 AlphaGo 以 4:1 擊敗李世乭"
 ---
 
 2015 年至 2017 年，Google DeepMind 的 AlphaGo 系列程式創造了人工智慧歷史上最具標誌性的突破之一。在短短兩年內，圍棋從「人工智慧無法征服的遊戲」變成了「AI 完全超越人類的領域」。

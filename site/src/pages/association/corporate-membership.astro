@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { site, association } from '../../data/site.js';
+import PageHead from '../../components/PageHead.astro';
 const benefits = [
   { title: '比賽贊助曝光', desc: '贊助協會主辦或協辦的圍棋比賽，包含贊助商背板、贈品合照、得獎心得置入與家長社群分享。' },
   { title: '形象影片露出', desc: '在協會製作的推廣影片與活動紀錄中露出。' },
@@ -9,7 +10,7 @@ const benefits = [
 ---
 <BaseLayout title="企業會員" description="台灣好棋寶寶協會企業會員：常年會費 60,000 元，可用於好棋同樂會主題講座、比賽贊助曝光、形象影片露出與商業媒合。" breadcrumbs={[{ name: '協會', href: '/association/' }, { name: '企業會員', href: '/association/corporate-membership/' }]}>
   <article class="prose">
-    <h1>企業會員</h1>
+    <PageHead title="企業會員" hero="association-corporate" alt="狐狸與狸貓吉祥物站在賽事贊助背板前，旁邊的牌子寫著企業會員年費" caption="企業會員常年會費 60,000 元、入會費 0 元" />
     <div class="key-answer" data-question="企業會員要多少錢、可以得到什麼？">
       <p>依<a href="/association/charter/">協會章程</a>第七條，企業會員入會費 0 元、常年會費 60,000 元，由企業推派 1 人為代表行使會員權利。會費用於協會的圍棋推廣活動，企業則在這些活動中獲得曝光與交流機會。</p>
     </div>

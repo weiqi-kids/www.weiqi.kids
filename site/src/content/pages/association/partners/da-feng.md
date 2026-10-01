@@ -7,6 +7,9 @@ datePublished: "2026-03-07"
 dateModified: "2026-03-07"
 legacySource: "docs/about/activities/partners/da-feng.md"
 sourceVerbatim: true
+hero: "partner-da-feng"
+heroAlt: "狐狸與狸貓吉祥物站在一支手機兩側，手機畫面是 LINE 官方帳號的四個功能選單"
+heroCaption: "他為協會做了 LINE@ 闖關任務功能"
 ---
 
 **LINE@ 開發工程師**

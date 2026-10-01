@@ -8,6 +8,9 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/overview/timeline.md"
 sourceVerbatim: true
+hero: "ai-go-timeline"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「1968 第一個圍棋程式」、「2006 Crazy Stone」、「2012 Zen 業餘六段」、「2016 AlphaGo 4:1 勝李世乭」、「2019 KataGo」"
+heroCaption: "圍棋 AI 從業餘初段到 2016 年超越人類"
 ---
 
 圍棋曾被視為人工智慧最困難的挑戰之一，因其巨大的搜索空間（約 10^170 種可能局面）。這個時間軸記錄了圍棋 AI 從「不可能」到「超越人類」的歷程。

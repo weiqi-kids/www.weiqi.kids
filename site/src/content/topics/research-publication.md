@@ -6,6 +6,9 @@ order: 5
 ttqsName: AI 輔助互動研究與開源發表實作
 audience: 研究者、教育工作者、內容創作者、資料視覺化與開源專案參與者。
 caseSet: research
+hero: "topic-research-publication"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「文章」、「圖表」、「互動元件」、「程式碼」、「GitHub」"
+heroCaption: "研究拆成文章、圖表、互動元件與程式碼開源"
 ---
 
 ## 這個主題教什麼

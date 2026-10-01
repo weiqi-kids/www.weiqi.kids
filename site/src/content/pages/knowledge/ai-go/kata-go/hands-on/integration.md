@@ -8,6 +8,9 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/hands-on/integration.md"
 sourceVerbatim: true
+hero: "katago-integration"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「moves: B Q16」、「KataGo Analysis Engine」、「勝率」、「領先目數」"
+heroCaption: "用子程序啟動 KataGo，以 JSON 傳棋局分析"
 ---
 
 本文介紹如何將 KataGo 整合到你的應用程式中。

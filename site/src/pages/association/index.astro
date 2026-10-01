@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { site } from '../../data/site.js';
+import PageHead from '../../components/PageHead.astro';
 ---
 <BaseLayout title="協會" description="社團法人台灣好棋寶寶協會：因圍棋結緣的跨產業會員團體，主辦好棋寶寶棋聚與 AI 共學營。" breadcrumbs={[{ name: '協會', href: '/association/' }]}>
   <div class="prose">
-    <h1>{site.legalName}</h1>
+    <PageHead title={site.legalName} hero="association-index" alt="狐狸與狸貓吉祥物站在兩旁，畫面中列出「好棋寶寶棋聚」、「AI 共學營」" caption="協會主辦棋聚與 AI 共學營兩種活動" />
     <div class="key-answer" data-question="台灣好棋寶寶協會是什麼組織？">
       <p>台灣好棋寶寶協會是一群因圍棋認識彼此的各行各業人士組成的社團法人。協會主辦兩種活動：以圍棋交流為主的好棋寶寶棋聚，以及會員一起實作 AI 應用的 AI 共學營。</p>
     </div>

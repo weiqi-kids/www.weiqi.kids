@@ -2,12 +2,13 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { allPages, sortPages } from '../../../lib/pages';
 import { site } from '../../../data/site.js';
+import PageHead from '../../../components/PageHead.astro';
 const partners = sortPages((await allPages()).filter((p) => p.data.kind === 'partner'));
 const roles: Record<string, string> = { 'wu-di': '插畫：角色設計', 'mao-zi': '插畫：圍棋主題桌布', 'da-feng': 'LINE@ 介面與功能開發', 'jing-da': 'WordPress 網站開發', 'ya-he': '網站改版提案', 'yi-chun': '宣傳配音' };
 ---
 <BaseLayout title="合作夥伴" description="與台灣好棋寶寶協會合作過的插畫、LINE@ 開發、網站與配音夥伴，以及與協會合作的方式。" breadcrumbs={[{ name: '協會', href: '/association/' }, { name: '合作夥伴', href: '/association/partners/' }]}>
   <div class="prose">
-    <h1>合作夥伴</h1>
+    <PageHead title="合作夥伴" hero="association-partners" alt="狐狸與狸貓吉祥物站在兩旁，畫面中列出「插畫：角色設計」、「LINE@ 介面與功能開發」、「WordPress 網站開發」、「宣傳配音」" caption="夥伴分插畫、LINE@、網站與配音四類" />
     <p>以下是和協會合作過的個人與團隊。</p>
   </div>
   <ul class="card-grid cols-3">

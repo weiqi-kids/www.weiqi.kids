@@ -8,6 +8,9 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/hands-on/setup.md"
 sourceVerbatim: true
+hero: "katago-setup"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「你有 NVIDIA GPU？」、「CUDA」、「OpenCL」、「Eigen（純 CPU）」"
+heroCaption: "依顯卡選 CUDA、OpenCL 或 Eigen 後端"
 ---
 
 本文詳細介紹在各平台上安裝 KataGo 的完整步驟。

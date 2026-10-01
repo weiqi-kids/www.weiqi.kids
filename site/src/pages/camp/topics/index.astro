@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import PageHead from '../../../components/PageHead.astro';
 const topics = (await getCollection('topics')).sort((a, b) => a.data.order - b.data.order);
 const list = {
   '@context': 'https://schema.org',
@@ -11,7 +12,7 @@ const list = {
 ---
 <BaseLayout title="AI 共學營課程主題" description="AI 共學營目前規劃五個課程主題：情報搜集、產業供應鏈情報網、AI 應用工具、定理推導、互動研究發表。主題不是已開課的課程。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '課程主題', href: '/camp/topics/' }]} schema={[list]}>
   <div class="prose">
-    <h1>課程主題</h1>
+    <PageHead title="課程主題" hero="camp-topics" alt="狐狸與狸貓吉祥物站在兩旁，畫面中列出「情報搜集與 AI 輔助分析實作」、「產業供應鏈情報網與 AI 分析實作」、「從工作問題到 AI 應用工具實作」、「AI 輔助定理推導與研究驗證實作」、「AI 輔助互動研究與開源發表實作」、「正式課程」" caption="五個課程主題，核准後才成為正式課程" />
     <div class="key-answer" data-question="課程主題和正式課程有什麼不同？">
       <p>課程主題說明一種可以開課的 AI 應用能力與示範案例。講師選定主題、填寫開課表單並經協會核准後，才會成為有日期、講師與報名的<a href="/camp/courses/">正式課程</a>。</p>
     </div>

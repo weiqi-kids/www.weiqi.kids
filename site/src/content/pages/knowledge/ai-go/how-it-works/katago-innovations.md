@@ -8,6 +8,9 @@ datePublished: "2026-02-21"
 dateModified: "2026-06-21"
 legacySource: "docs/tech/how-it-works/katago-innovations.md"
 sourceVerbatim: true
+hero: "katago-innovations"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「30 GPU × 19 天」、「效率 50 倍」、「Policy 下一步」、「Value 勝率」、「Score 目數」、「Ownership 領地」"
+heroCaption: "KataGo 以 30 GPU 19 天換得 50 倍效率"
 ---
 
 KataGo 是 David Wu 於 2019 年發表的開源圍棋 AI，以更少的資源達到更強的棋力。本文將深入解析其技術創新。

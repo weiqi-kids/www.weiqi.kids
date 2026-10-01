@@ -7,6 +7,9 @@ datePublished: "2026-02-17"
 dateModified: "2026-06-21"
 legacySource: "docs/learn/ai-era/changes.md"
 sourceVerbatim: true
+hero: "ai-changes"
+heroAlt: "狐狸與狸貓吉祥物站在兩旁，畫面中列出「點三三」、「過去：虧損」、「AI：可行」"
+heroCaption: "AI 讓點三三從虧損變成常見開局手法"
 ---
 
 AlphaGo 的出現不僅戰勝了人類頂尖棋手，更重要的是改變了我們對圍棋的理解。許多過去被認為是「常識」的觀念，在 AI 的分析下需要重新審視。
