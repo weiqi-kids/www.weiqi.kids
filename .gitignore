@@ -55,3 +55,6 @@ analytics/scripts/.google-sa-key.json
 **/youtube-client.json
 **/youtube-analytics-token.json
 analytics/logs/
+
+# 插畫產圖的中介 PNG，轉成 webp 後即丟棄，不進版控
+site/public/media/illustrations-v2/
