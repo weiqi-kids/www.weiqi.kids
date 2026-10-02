@@ -130,7 +130,7 @@ $c_{\text{puct}}$ mengontrol keseimbangan eksplorasi dan eksploitasi:
 | Sedang (mis. 1-2) | Seimbang eksplorasi dan eksploitasi |
 | Lebih besar (mis. 5) | Lebih condong eksplorasi, mencoba lebih banyak kemungkinan |
 
-Nilai yang digunakan AlphaGo: $c_{\text{puct}} = 1.5$ (berdasarkan paper).
+Paper AlphaGo Zero (Nature 2017) hanya mendefinisikan $c_{\text{puct}}$ sebagai "konstanta yang menentukan tingkat eksplorasi" dan tidak mempublikasikan nilainya; angka di bawah adalah nilai umum dari proyek open-source dan contoh di halaman ini.
 
 ---
 
@@ -369,8 +369,7 @@ $c_{\text{puct}}$ adalah hyperparameter paling penting. Pedoman praktis:
 
 | Proyek | $c_{\text{puct}}$ |
 |------|-------------------|
-| AlphaGo | 1.5 |
-| AlphaGo Zero | 1.0 - 2.0 |
+| AlphaGo / AlphaGo Zero | Tidak dipublikasikan di paper |
 | AlphaZero | 1.25 |
 | KataGo | 0.5 - 1.0 (penyesuaian dinamis) |
 | Leela Zero | 1.5 - 2.0 |

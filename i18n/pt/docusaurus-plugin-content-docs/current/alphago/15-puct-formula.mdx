@@ -131,7 +131,7 @@ $c_{\text{puct}}$ controla o equilíbrio entre exploração e aproveitamento:
 | Moderado (como 1-2) | Equilibra exploração e aproveitamento |
 | Maior (como 5) | Mais inclinado à exploração, tenta mais possibilidades |
 
-O valor usado pelo AlphaGo: $c_{\text{puct}} = 1.5$ (segundo o paper).
+O paper do AlphaGo Zero (Nature 2017) define $c_{\text{puct}}$ apenas como "uma constante que determina o nível de exploração" e não publica o valor; os números abaixo são valores comuns de projetos de código aberto e dos exemplos desta página.
 
 ---
 
@@ -370,8 +370,7 @@ $c_{\text{puct}}$ é o hiperparâmetro mais importante. Diretrizes práticas:
 
 | Projeto | $c_{\text{puct}}$ |
 |---------|-------------------|
-| AlphaGo | 1.5 |
-| AlphaGo Zero | 1.0 - 2.0 |
+| AlphaGo / AlphaGo Zero | Não publicado nos papers |
 | AlphaZero | 1.25 |
 | KataGo | 0.5 - 1.0 (ajuste dinâmico) |
 | Leela Zero | 1.5 - 2.0 |
