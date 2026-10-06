@@ -31,7 +31,7 @@ const schema = {
   },
 };
 ---
-<BaseLayout title={c.title} description={`${c.summary} ${fmtDate(c.startDate)}開始，1 堂主題教學＋3 堂實作，${c.fee.toLocaleString('zh-TW')} 元。`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '正式課程', href: '/camp/courses/' }, { name: c.title, href: path }]} schema={[schema]}>
+<BaseLayout title={c.title} description={`${c.summary} ${fmtDate(c.startDate)}開始，1 堂主題教學＋3 堂實作，${c.fee.toLocaleString('zh-TW')} 元。`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '已開的團', href: '/camp/courses/' }, { name: c.title, href: path }]} schema={[schema]}>
   <article class="prose">
     <p class="muted">{STATUS_LABEL[c.status]}{topic && <>．主題：<a href={`/camp/topics/${topic.data.slug}/`}>{topic.data.title}</a></>}</p>
     <div class="page-head">

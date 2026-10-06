@@ -8,7 +8,7 @@ import remarkDirective from 'remark-directive';
 import rehypeKatex from 'rehype-katex';
 import remarkCallouts from './src/lib/remark-callouts.mjs';
 
-const PRIVATE = /\/(account|auth|admin)\/|\/forum\/|\/enroll\/|\/materials\//;
+const PRIVATE = /\/(account|auth|admin)\/|\/forum\/|\/enroll\/|\/materials\/|\/want\//;
 
 export default defineConfig({
   site: 'https://www.weiqi.kids',

@@ -4,15 +4,15 @@ import { publicCourses, STATUS_LABEL, fmtDate } from '../../../lib/courses';
 import PageHead from '../../../components/PageHead.astro';
 const courses = await publicCourses();
 ---
-<BaseLayout title="AI 共學營正式課程" description="AI 共學營已排定日期與講師的正式課程。每門課 1 堂主題教學＋3 堂實作，為期一個月，6,000 元。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '正式課程', href: '/camp/courses/' }]}>
+<BaseLayout title="AI 共學營已開的團" description="AI 共學營登記想學滿人數後開的團，已排定日期與講師。每門課 1 堂主題教學＋3 堂實作，為期一個月，6,000 元。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '已開的團', href: '/camp/courses/' }]}>
   <div class="prose">
-    <PageHead title="正式課程" hero="camp-courses" alt="狐狸與狸貓吉祥物站在兩旁，畫面中列出「第 1 堂 主題教學」、「第 2 堂 實作」、「第 3 堂 實作」、「第 4 堂 實作」、「為期一個月」、「6,000 元」" caption="1 堂教學加 3 堂實作，一個月 6,000 元" />
+    <PageHead title="已開的團" hero="camp-courses" alt="狐狸與狸貓吉祥物站在兩旁，畫面中列出「第 1 堂 主題教學」、「第 2 堂 實作」、「第 3 堂 實作」、「第 4 堂 實作」、「為期一個月」、「6,000 元」" caption="1 堂教學加 3 堂實作，一個月 6,000 元" />
     {courses.length === 0 ? (
       <div class="key-answer" data-question="目前有開放報名的課程嗎？">
-        <p>目前還沒有開放報名的課程。第一門課由第一位講師以正式開課流程建立，確定日期後會公布在這裡。可以先看<a href="/camp/topics/">課程主題</a>，了解可能開設的內容。</p>
+        <p>目前還沒有成團。先看<a href="/camp/topics/">講師成果</a>，自己做不來就登記想學；登記滿講師訂的人數開團後，日期與報名會公布在這裡。</p>
       </div>
     ) : (
-      <p>以下是已排定的課程。報名後會拿到報名編號，再透過協會 LINE@ 附編號匯款。</p>
+      <p>以下是已成團、排定日期的課程。報名後會拿到報名編號，再透過協會 LINE@ 附編號匯款。</p>
     )}
   </div>
   {courses.length > 0 && (

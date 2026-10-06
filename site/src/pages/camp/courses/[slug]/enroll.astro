@@ -12,7 +12,7 @@ const c = course.data;
 const path = `/camp/courses/${c.slug}/`;
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
-<BaseLayout title={`報名：${c.title}`} description={`報名 AI 共學營課程「${c.title}」。`} noindex breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '正式課程', href: '/camp/courses/' }, { name: c.title, href: path }, { name: '報名', href: `${path}enroll/` }]}>
+<BaseLayout title={`報名：${c.title}`} description={`報名 AI 共學營課程「${c.title}」。`} noindex breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '已開的團', href: '/camp/courses/' }, { name: c.title, href: path }, { name: '報名', href: `${path}enroll/` }]}>
   <div class="prose">
     <h1>報名：{c.title}</h1>
     <p>{fmtDate(c.startDate)}開始．{c.fee.toLocaleString('zh-TW')} 元。送出後會顯示報名編號，請附編號透過 <LineContact /> 提交匯款紀錄。</p>

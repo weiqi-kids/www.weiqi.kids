@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import PageHead from '../../../../components/PageHead.astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { courseRules } from '../../../../data/site.js';
+import { appLinks } from '../../../../data/legacy/apps.js';
+import { intelLinks } from '../../../../data/legacy/intel.js';
+import { researchPapers } from '../../../../data/legacy/research.js';
+
+export async function getStaticPaths() {
+  const topics = await getCollection('topics');
+  return topics.map((topic) => ({ params: { slug: topic.data.slug }, props: { topic } }));
+}
+const { topic } = Astro.props as { topic: CollectionEntry<'topics'> };
+const { Content } = await render(topic);
+const t = topic.data;
+const courses = (await getCollection('courses')).filter((c) => c.data.topic === t.slug && c.data.status !== 'draft');
+
+type Case = { title: string; desc: string; href: string };
+const cases: Case[] =
+  t.caseSet === 'monitoring' ? appLinks.filter((a: any) => a.category === 'monitoring').map((a: any) => ({ title: a.titleDefault, desc: a.descDefault, href: a.href }))
+  : t.caseSet === 'apps' ? appLinks.map((a: any) => ({ title: a.titleDefault, desc: a.descDefault, href: a.href }))
+  : t.caseSet === 'intel' ? intelLinks.map((a: any) => ({ title: a.titleDefault, desc: a.descDefault, href: a.href }))
+  : t.caseSet === 'research' ? researchPapers.map((a: any) => ({ title: a.titleDefault, desc: a.descDefault, href: a.href }))
+  : [];
+const path = `/camp/topics/${t.slug}/`;
+const openNow = courses.some((c) => c.data.status === 'open');
+
+---
+<BaseLayout title={t.title} description={`${t.summary} 講師已做出成果；做不來的人登記想學，滿 ${t.groupSize} 人開團。每團 1 堂主題教學＋3 堂實作，一個月 ${courseRules.fee.toLocaleString('zh-TW')} 元。`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '講師成果', href: '/camp/topics/' }, { name: t.title, href: path }]}>
+  <article class="prose">
+    <PageHead title={t.title} hero={t.hero} alt={t.heroAlt} caption={t.heroCaption} />
+    <div class="key-answer" data-question={`${t.title}是什麼？`}>
+      <p>{t.summary}講師已經做出下面的成果。你可以先自己照著做；做不來，就登記想學，登記滿 {t.groupSize} 人開團。</p>
+    </div>
+  </article>
+
+  {cases.length > 0 && (
+    <section class="cases">
+      <h2>講師做出來的成果（{cases.length} 個）</h2>
+      <ul class="card-grid cols-3">
+        {cases.map((c) => (
+          <li><a class="card" href={c.href} rel="noopener"><h3>{c.title}</h3><p class="muted">{c.desc}</p></a></li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <article class="prose">
+    <section class="want" id="want">
+      <h2>自己做不來？登記想學</h2>
+      <dl class="facts">
+        <dt>講師</dt><dd>{t.instructors.join('、')}</dd>
+        <dt>開團條件</dt><dd>登記想學滿 {t.groupSize} 人</dd>
+        <dt>登記</dt><dd>登入後登記，不用付費，可以隨時取消</dd>
+        <dt>開團後</dt><dd>1 堂主題教學＋3 堂實作，為期{courseRules.duration}，{courseRules.fee.toLocaleString('zh-TW')} 元（需協會個人會員資格；第一次繳的常年會費已含第一團）</dd>
+        <dt>目前狀態</dt><dd>{openNow ? <a href="#courses">已開團，可以報名</a> : '登記中，還沒開團'}</dd>
+      </dl>
+      <p><a class="btn" href={`${path}want/`}>登記想學</a></p>
+    </section>
+
+    {courses.length > 0 && (
+      <section id="courses">
+        <h2>這個成果開過的團</h2>
+        <ul>{courses.map((c) => <li><a href={`/camp/courses/${c.data.slug}/`}>{c.data.title}</a></li>)}</ul>
+      </section>
+    )}
+
+    <Content />
+  </article>
+</BaseLayout>
+<style>
+  .cases { margin-block: var(--space-8); }
+  .want { margin-bottom: var(--space-8); }
+</style>

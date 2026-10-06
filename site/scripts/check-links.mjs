@@ -4,7 +4,7 @@ import { join } from 'node:path';
 
 const ROOT = 'dist/client';
 const redirects = new Set(readFileSync(join(ROOT, '_redirects'), 'utf8').split('\n').filter((l) => l && !l.startsWith('#')).map((l) => l.split(' ')[0]));
-const dynamic = [/^\/api\//, /^\/auth\//, /^\/account\//, /^\/admin\//, /^\/camp\/courses\/[^/]+\/(forum|materials)\//];
+const dynamic = [/^\/api\//, /^\/auth\//, /^\/account\//, /^\/admin\//, /^\/camp\/courses\/[^/]+\/(forum|materials)\//, /^\/camp\/topics\/[^/]+\/want\//];
 const broken = [];
 function walk(dir) {
   for (const n of readdirSync(dir)) {

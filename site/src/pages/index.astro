@@ -47,13 +47,13 @@ const website = {
   <section>
     <h2>AI 共學營怎麼進行</h2>
     <div class="key-answer" data-question="AI 共學營怎麼參加？">
-      <p>每門課 {courseRules.fee.toLocaleString('zh-TW')} 元，第一次報名同時成為協會會員（會員效期一年）。課程包含 1 堂主題教學、全部技能單張與 3 堂實作，為期一個月；結營後原課程的成員仍可以在課程論壇繼續交流。</p>
+      <p>講師先用 AI 做出成果，你自己做不來就登記想學，登記滿講師訂的人數開團。每門課 {courseRules.fee.toLocaleString('zh-TW')} 元，第一次報名同時成為協會會員（會員效期一年）。課程包含 1 堂主題教學、全部技能單張與 3 堂實作，為期一個月；結營後原課程的成員仍可以在課程論壇繼續交流。</p>
     </div>
-    <p><a class="btn" href="/camp/how-it-works/">看完整流程</a> <a class="btn btn-ghost" href="/camp/topics/">看課程主題</a></p>
+    <p><a class="btn" href="/camp/how-it-works/">看完整流程</a> <a class="btn btn-ghost" href="/camp/topics/">看講師成果</a></p>
   </section>
 
   <section>
-    <h2>課程主題</h2>
+    <h2>講師成果</h2>
     <ul class="card-grid">
       {topics.map((t) => (
         <li><a class="card" href={`/camp/topics/${t.data.slug}/`}><h3>{t.data.title}</h3><p>{t.data.summary}</p></a></li>

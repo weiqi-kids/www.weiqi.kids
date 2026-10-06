@@ -4,15 +4,15 @@ import { publicCourses } from '../../lib/courses';
 import PageHead from '../../components/PageHead.astro';
 const names = [...new Set((await publicCourses()).flatMap((c) => c.data.instructors))];
 ---
-<BaseLayout title="AI 共學營講師" description="AI 共學營的講師介紹，以及成為講師的條件：至少上過一門 6,000 元標準課程，並經協會管理員審核。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '講師', href: '/camp/instructors/' }]}>
+<BaseLayout title="AI 共學營講師" description="AI 共學營的講師介紹，以及成為講師的條件：先有自己用 AI 做出來的成果，附上成果與開團構想申請，經協會管理員審核。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '講師', href: '/camp/instructors/' }]}>
   <div class="prose">
-    <PageHead title="講師" hero="camp-instructors" alt="狐狸與狸貓吉祥物站在兩旁，畫面中列出「上過 6,000 元課程」、「提出申請附課程構想」、「管理員審核」" caption="先上過一門 6,000 元課程才能申請當講師" />
+    <PageHead title="講師" />
     {names.length === 0
       ? <p>第一位講師的資料會在第一門課公布時一併刊出。</p>
       : <ul>{names.map((n) => <li>{n}</li>)}</ul>}
     <h2>想成為講師</h2>
     <div class="key-answer" data-question="怎麼成為 AI 共學營講師？">
-      <p>先上過至少一門 6,000 元的標準課程，再提出講師申請。申請要附上專業資料、相關經驗與課程構想，由協會管理員審核；核准後才能建立正式課程。</p>
+      <p>先有自己用 AI 做出來的成果，再提出講師申請。申請要附上成果、專業資料、相關經驗與開團構想，由協會管理員審核。核准後成果會放上講師成果頁，學員登記想學滿你訂的人數就開團。</p>
     </div>
     <p><a href="/camp/instructor-application/">看講師申請方式</a></p>
   </div>

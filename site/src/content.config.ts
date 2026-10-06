@@ -24,7 +24,7 @@ const pages = defineCollection({
   }),
 });
 
-// AI 共學營課程主題（不是正式課程）。
+// AI 共學營講師成果（不是正式課程）：講師先做出成果，學員登記想學，滿 groupSize 人開團。
 const topics = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/topics' }),
   schema: z.object({
@@ -35,6 +35,8 @@ const topics = defineCollection({
     ttqsName: z.string(),
     audience: z.string(),
     caseSet: z.enum(['apps', 'monitoring', 'intel', 'research', 'none']).default('none'),
+    instructors: z.array(z.string()).min(1),
+    groupSize: z.number().int().positive(),
     hero: z.string().optional(),
     heroAlt: z.string().optional(),
     heroCaption: z.string().optional(),

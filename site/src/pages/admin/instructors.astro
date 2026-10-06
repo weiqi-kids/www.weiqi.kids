@@ -27,7 +27,7 @@ if (Astro.request.method === 'POST') {
 }
 const { results } = await db().prepare(
   `SELECT * FROM instructor_applications ORDER BY CASE status WHEN 'submitted' THEN 0 WHEN 'changes_requested' THEN 1 ELSE 2 END, updated_at DESC`,
-).all<{ id: string; account_id: string; profile: string; experience: string; topic: string; audience: string; proposal: string; status: string; review_note: string | null; created_at: string; updated_at: string }>();
+).all<{ id: string; account_id: string; results: string | null; profile: string; experience: string; topic: string; audience: string; proposal: string; status: string; review_note: string | null; created_at: string; updated_at: string }>();
 const people = await accountSummaries(results.map((r) => r.account_id));
 const courses = await runtimeCourses();
 const { results: staff } = await db().prepare('SELECT course_slug, account_id FROM course_staff').all<{ course_slug: string; account_id: string }>();
@@ -46,7 +46,8 @@ const d = (iso: string) => fmtDate(new Date(iso));
         <h2>{p?.name ?? '（帳號已不存在）'}：{r.topic}</h2>
         <dl class="facts">
           <dt>登入方式</dt><dd>{p ? loginLabel(p) : ''}</dd>
-          <dt>上過的課程</dt><dd>{p?.courses.length ? p.courses.join('、') : '沒有（不符申請資格）'}</dd>
+          <dt>成果</dt><dd class="pre">{r.results ?? '（舊申請，未附成果）'}</dd>
+          <dt>上過的課程</dt><dd>{p?.courses.length ? p.courses.join('、') : '沒有'}</dd>
           <dt>專業背景</dt><dd class="pre">{r.profile}</dd>
           <dt>資格或經驗</dt><dd class="pre">{r.experience}</dd>
           <dt>對象與問題</dt><dd class="pre">{r.audience}</dd>

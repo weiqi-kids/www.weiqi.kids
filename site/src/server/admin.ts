@@ -76,7 +76,7 @@ export async function reviewApplication(id: string, adminId: string, status: 'ap
 }
 
 // 講師須有已核准的講師申請，才能加入課程講師。
-// 例外：第一門課開課前沒有任何人上過課，管理員可填寫理由直接指定講師，理由寫入稽核紀錄。
+// 例外：協會自己的成果（例如試點講師）可由管理員填寫理由直接指定講師，理由寫入稽核紀錄。
 export async function addInstructor(slug: string, accountId: string, adminId: string, overrideReason: string | null) {
   const approved = await db().prepare("SELECT 1 FROM instructor_applications WHERE account_id = ? AND status = 'approved'").bind(accountId).first();
   if (!approved && !overrideReason) return { ok: false as const, error: '這個帳號沒有已核准的講師申請；若為試點講師，請填寫例外理由。' };

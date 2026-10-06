@@ -1,0 +1,42 @@
+---
+import AppLayout from '../../../../layouts/AppLayout.astro';
+import { findShowcase, interestCount, hasInterest, addInterest, removeInterest, openGroups } from '../../../../server/interests';
+import { str } from '../../../../server/http';
+export const prerender = false;
+
+const slug = Astro.params.slug!;
+const showcase = await findShowcase(slug);
+if (!showcase) return new Response('Not found', { status: 404 });
+const me = Astro.locals.account;
+const path = `/camp/topics/${slug}/want/`;
+if (!me) return Astro.redirect(`/auth/login/?next=${encodeURIComponent(path)}`);
+const t = showcase.data;
+
+let message: string | null = null;
+if (Astro.request.method === 'POST') {
+  const action = str(await Astro.request.formData(), 'action', 20);
+  if (action === 'add') { await addInterest(showcase, me.id); message = '已登記想學。開團時會通知你報名。'; }
+  else if (action === 'remove') { await removeInterest(slug, me.id); message = '已取消登記。'; }
+}
+const [count, mine, groups] = await Promise.all([interestCount(slug), hasInterest(slug, me.id), openGroups(slug)]);
+---
+<AppLayout title={`登記想學：${t.title}`} breadcrumbs={[{ name: '講師成果', href: '/camp/topics/' }, { name: t.title, href: `/camp/topics/${slug}/` }, { name: '登記想學', href: path }]}>
+  <div class="prose">
+    <h1>登記想學：{t.title}</h1>
+    {message && <p class="notice">{message}</p>}
+    <dl class="facts">
+      <dt>講師</dt><dd>{t.instructors.join('、')}</dd>
+      <dt>已登記</dt><dd>{count} 人／滿 {t.groupSize} 人開團</dd>
+      <dt>目前狀態</dt><dd>{groups.length ? '已開團，可以報名' : count >= t.groupSize ? '人數已滿，協會正在安排開團' : '登記中，還沒開團'}</dd>
+    </dl>
+    {groups.length > 0 && (
+      <ul>{groups.map((c) => <li><a href={`/camp/courses/${c.data.slug}/`}>{c.data.title}</a>：前往報名</li>)}</ul>
+    )}
+    <form method="post">
+      <input type="hidden" name="action" value={mine ? 'remove' : 'add'} />
+      {mine
+        ? <><p>你已經登記想學。</p><button class="btn btn-ghost" type="submit">取消登記</button></>
+        : <><p>登記不用付費。開團後協會通知你，報名並付款才算參加。</p><button class="btn" type="submit">登記想學</button></>}
+    </form>
+  </div>
+</AppLayout>

@@ -12,7 +12,7 @@
     "binding": "ASSETS",
     "not_found_handling": "404-page",
     "html_handling": "force-trailing-slash",
-    "run_worker_first": ["/api/*", "/auth/*", "/account/*", "/admin/*", "/camp/courses/*/forum/*", "/camp/courses/*/materials/*"]
+    "run_worker_first": ["/api/*", "/auth/*", "/account/*", "/admin/*", "/camp/courses/*/forum/*", "/camp/courses/*/materials/*", "/camp/topics/*/want/*"]
   },
   "observability": { "enabled": true },
   "workers_dev": true,

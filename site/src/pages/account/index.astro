@@ -5,6 +5,8 @@ import { identitiesOf, membershipOf, isMembershipActive, unlinkIdentity } from '
 import { requestMagicLink } from '../../server/magic-link';
 import { lineEnabled } from '../../server/line';
 import { runtimeCourses } from '../../server/courses';
+import { myInterests, interestTotals } from '../../server/interests';
+import { getCollection } from 'astro:content';
 import { clientIpHash, str } from '../../server/http';
 import { fmtDate } from '../../lib/courses';
 import { ENROLLMENT_STATUS, APPLICATION_STATUS, label } from '../../lib/labels';
@@ -60,6 +62,14 @@ const { results: enrollments } = await db().prepare(
 ).bind(me.id, emailIdentity?.subject ?? '').all<{ code: string; course_slug: string; status: string; created_at: string }>();
 const { results: notes } = await db().prepare('SELECT message, link, created_at, read_at FROM notifications WHERE account_id = ? ORDER BY created_at DESC LIMIT 20').bind(me.id).all<{ message: string; link: string | null; created_at: string; read_at: string | null }>();
 const application = await db().prepare('SELECT status, review_note, updated_at FROM instructor_applications WHERE account_id = ? ORDER BY created_at DESC LIMIT 1').bind(me.id).first<{ status: string; review_note: string | null; updated_at: string }>();
+const showcases = await getCollection('topics');
+const [interests, totals] = await Promise.all([myInterests(me.id), interestTotals()]);
+const wants = interests.map((i) => {
+  const t = showcases.find((x) => x.data.slug === i.topic_slug)?.data;
+  const groups = courses.filter((c) => c.data.topic === i.topic_slug && c.data.status !== 'running' && c.data.status !== 'closed');
+  const n = totals.get(i.topic_slug) ?? 0;
+  return { slug: i.topic_slug, title: t?.title ?? i.topic_slug, groups, state: groups.length ? '已開團' : t && n >= t.groupSize ? `已滿 ${n} 人，協會正在安排開團` : `登記中（${n}／${t?.groupSize ?? '?'} 人）` };
+});
 const ENROLLMENT_STATUS_USER = { ...ENROLLMENT_STATUS, submitted: '已送出，等待協會核款' };
 const d = (iso: string) => fmtDate(new Date(iso));
 ---
@@ -84,11 +94,16 @@ const d = (iso: string) => fmtDate(new Date(iso));
       : <p>尚未成為會員。第一次報名課程並經協會核款後，會同時成為會員。</p>}
 
     <h2>我的課程</h2>
-    {access.length === 0 && teaching.length === 0 ? <p>還沒有開通的課程。<a href="/camp/courses/">看正式課程</a></p> : (
+    {access.length === 0 && teaching.length === 0 ? <p>還沒有開通的課程。<a href="/camp/courses/">看已開的團</a></p> : (
       <ul>
         {teaching.map((t) => <li>講師：<a href={`/camp/courses/${t.course_slug}/forum/`}>{courseTitle(t.course_slug)}</a></li>)}
         {access.map((a) => <li><a href={`/camp/courses/${a.course_slug}/forum/`}>{courseTitle(a.course_slug)}</a>（{d(a.opened_at)} 開通）．<a href={`/camp/courses/${a.course_slug}/materials/`}>技能單張</a></li>)}
       </ul>
+    )}
+
+    <h2>登記想學</h2>
+    {wants.length === 0 ? <p>還沒有登記。<a href="/camp/topics/">看講師成果</a></p> : (
+      <ul>{wants.map((w) => <li><a href={`/camp/topics/${w.slug}/want/`}>{w.title}</a>：{w.state}{w.groups.map((c) => <>．<a href={`/camp/courses/${c.data.slug}/`}>報名 {c.data.title}</a></>)}</li>)}</ul>
     )}
 
     <h2>報名紀錄</h2>
@@ -100,7 +115,7 @@ const d = (iso: string) => fmtDate(new Date(iso));
     <h2>講師申請</h2>
     {application
       ? <p>狀態：{label(APPLICATION_STATUS, application.status)}{application.review_note && `．協會意見：${application.review_note}`}．<a href="/account/teaching/">查看或修改</a></p>
-      : <p><a href="/account/teaching/">申請成為講師</a>（需先上過一門課程）</p>}
+      : <p><a href="/account/teaching/">申請成為講師</a>（需先有自己做出來的成果）</p>}
 
     <h2>登入方式</h2>
     <ul>
