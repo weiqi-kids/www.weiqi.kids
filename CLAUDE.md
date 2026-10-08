@@ -125,7 +125,7 @@ cat analytics/history/daily-views.json | jq '.views[-7:]'
 - 結構化資料依頁面類型：協會頁 `Organization`，成員／講師 `Person`，棋聚 `Event`，課程 `Course`，知識文章 `Article`，每頁 `BreadcrumbList`。不把棋聚標成 `Course`。
 - 有常見問題的頁面加 `FAQPage`；有步驟教學加 `HowTo`。
 - 重要事實必須是頁面上的可讀文字，不能只放在 JSON-LD 或圖片。
-- 課程頁寫出費用、資格、1 堂教學＋3 堂實作、期間；棋聚頁寫出日期、地點、形式、報名方式。
+- 課程頁寫出團費、資格、投入方式（堂數）、期間；棋聚頁寫出日期、地點、形式、報名方式。
 - 登入後頁面、論壇、管理區 `noindex`，不進 sitemap。
 
 ### 3. 內容
