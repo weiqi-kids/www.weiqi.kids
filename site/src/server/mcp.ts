@@ -21,6 +21,14 @@ import { COHORT_STATE, ENROLLMENT_STATUS, FORMAT_LABEL, SCHEDULE_LABEL, RULE_LAB
 import { site, campRules } from '../data/site.js';
 import type { Account } from './types';
 
+// 管理員審核時自動整理的事實：執行前告訴學員會連到哪些網站、有哪些定時更新。
+const reviewFacts = (raw: string | null) => {
+  if (!raw) return {};
+  try {
+    const r = JSON.parse(raw) as { hosts?: string[]; schedules?: { file: string; crons: string[] }[] };
+    return { connects_to: r.hosts ?? [], scheduled_updates: r.schedules ?? [] };
+  } catch { return {}; }
+};
 const ok = (data: unknown) => ({ content: [{ type: 'text' as const, text: typeof data === 'string' ? data : JSON.stringify(data, null, 2) }] });
 const fail = (message: string) => ({ content: [{ type: 'text' as const, text: message }], isError: true });
 
@@ -37,7 +45,7 @@ export function createServer(me: Account, origin: string) {
       slug: s.slug, title: s.title, instructor: s.instructor_name, summary: s.summary,
       before_after: s.before_after, learner_outcome: s.learner_outcome, audience: s.audience, prerequisites: s.prerequisites,
       setup_requirements: s.setup_requirements, page: abs(`/camp/r/${s.slug}/`),
-      approved_version: v ? { repo: v.repo_url, commit: v.commit_sha } : null,
+      approved_version: v ? { repo: v.repo_url, commit: v.commit_sha, ...reviewFacts(v.review_summary) } : null,
       license: s.license, students_may_publish_modified_version: s.allow_derivative === 1,
       price: s.price, teaching: FORMAT_LABEL[s.teaching_format],
       registration: views.map((c) => ({ state: label(COHORT_STATE, c.state), slot: c.slotLabel, registered: c.interests, opens_at: s.min_size, cohort_page: c.state === 'gathering' ? null : abs(`/camp/g/${c.id}/`) })),
