@@ -1,0 +1,6 @@
+{
+  "name": "haoqi-teacher",
+  "description": "好棋寶寶講師 skill 與好棋寶寶 MCP：把自己的成果整理成 repo 上架、送審版本、看學員進度、擬回覆。",
+  "version": "1.0.0",
+  "author": { "name": "台灣好棋寶寶協會", "url": "https://www.weiqi.kids" }
+}

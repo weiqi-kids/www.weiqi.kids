@@ -1,0 +1,20 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { requireAdmin } from '../../../server/guard';
+import { db } from '../../../server/db';
+import { fmtDateTime } from '../../../lib/time';
+export const prerender = false;
+const stop = requireAdmin(Astro); if (stop) return stop;
+const { results } = await db().prepare(
+  `SELECT v.id, v.commit_sha, v.status, v.created_at, v.note, s.title, s.instructor_name FROM skill_versions v JOIN showcases s ON s.id = v.showcase_id
+   WHERE v.status != 'draft' ORDER BY CASE v.status WHEN 'submitted' THEN 0 ELSE 1 END, v.created_at DESC LIMIT 200`,
+).all<{ id: string; commit_sha: string; status: string; created_at: string; note: string | null; title: string; instructor_name: string }>();
+const S: Record<string, string> = { submitted: '待審核', approved: '審核通過', rejected: '沒有通過' };
+---
+<AdminLayout title="版本審核">
+  <p>講師 GitHub 上的每個新版本都要審過，學員的 AI 才會讀到。</p>
+  <table class="admin-table">
+    <thead><tr><th>成果</th><th>講師</th><th>版本</th><th>狀態</th><th>登記</th></tr></thead>
+    <tbody>{results.map((v) => <tr><td><a href={`/admin/versions/${v.id}/`}>{v.title}</a></td><td>{v.instructor_name}</td><td><code>{v.commit_sha.slice(0, 7)}</code>{v.note && `．${v.note}`}</td><td>{S[v.status]}</td><td>{fmtDateTime(v.created_at)}</td></tr>)}</tbody>
+  </table>
+</AdminLayout>

@@ -1,0 +1,53 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { requireAdmin } from '../../../server/guard';
+import { getVersion, reviewVersion, type ReviewSummary } from '../../../server/camp/versions';
+import { getShowcase } from '../../../server/camp/showcases';
+import { str } from '../../../server/http';
+import { fmtDateTime } from '../../../lib/time';
+export const prerender = false;
+const stop = requireAdmin(Astro); if (stop) return stop;
+const me = Astro.locals.account!;
+let v = await getVersion(Astro.params.id!);
+const s = v ? await getShowcase(v.showcase_id) : null;
+if (!v || !s) return new Response('Not found', { status: 404 });
+let message: string | null = null;
+if (Astro.request.method === 'POST') {
+  const f = await Astro.request.formData();
+  const d = str(f, 'decision', 10);
+  if (d === 'approve' || d === 'reject') message = (await reviewVersion(v, s, me.id, d === 'approve', str(f, 'note', 1000) || null)) ? (d === 'approve' ? '已通過，學員現在讀到這一版。' : '已退回並通知講師。') : '這個版本已經審過。';
+  v = (await getVersion(v.id))!;
+}
+const sum: ReviewSummary | null = v.review_summary ? JSON.parse(v.review_summary) : null;
+const commitUrl = `${v.repo_url}/tree/${v.commit_sha}`;
+const diffUrl = sum?.compared_to ? `${v.repo_url}/compare/${sum.compared_to}...${v.commit_sha}` : null;
+---
+<AdminLayout title={`版本審核：${s.title}`}>
+  {message && <p class="notice">{message}</p>}
+  <div class="prose">
+    <p>講師：{s.instructor_name}．<a href={commitUrl} rel="noopener" target="_blank">在 GitHub 看這個版本 <code>{v.commit_sha.slice(0, 7)}</code></a>{diffUrl && <>．<a href={diffUrl} rel="noopener" target="_blank">看跟上一版的差異</a></>}．{fmtDateTime(v.created_at)} 登記{v.note && `．講師說明：${v.note}`}</p>
+    {!sum ? <p class="muted">講師還沒送審。</p> : (
+      <>
+        {sum.error && <p class="notice notice-error">{sum.error}</p>}
+        {sum.secret_warnings.length > 0 && <div class="notice notice-error"><p><strong>疑似有機密（API 金鑰、token、私鑰）</strong>，請先退回：</p><ul>{sum.secret_warnings.map((f) => <li><code>{f}</code></li>)}</ul></div>}
+        <h2>程式會連到的網站（{sum.hosts.length}）</h2>
+        {sum.hosts.length ? <p>{sum.hosts.join('、')}</p> : <p class="muted">沒有找到。</p>}
+        <h2>定時更新</h2>
+        {sum.schedules.length ? <ul>{sum.schedules.map((x) => <li><code>{x.file}</code>：{x.crons.length ? x.crons.join('、') : '沒有排程，手動或事件觸發'}</li>)}</ul> : <p class="muted">這一版沒有改到定時更新設定。</p>}
+        <h2>{sum.compared_to ? '跟上一個審過的版本相比，改了這些檔案' : '第一個版本，全部檔案'}（{sum.changed_files.length}）</h2>
+        <ul class="files">{sum.changed_files.slice(0, 200).map((f) => <li><code>{f.path}</code>{f.status !== 'added' && f.status !== 'modified' ? `（${f.status === 'removed' ? '刪除' : '更名'}）` : f.status === 'added' && sum.compared_to ? '（新增）' : ''}</li>)}</ul>
+      </>
+    )}
+    {v.status === 'submitted' && (
+      <form method="post">
+        <div class="form-field"><label for="note">給講師的意見</label><textarea id="note" name="note" rows="3"></textarea></div>
+        <button class="btn" name="decision" value="approve" type="submit">通過，學員讀這一版</button>
+        <button class="btn btn-ghost" name="decision" value="reject" type="submit">退回</button>
+      </form>
+    )}
+    {v.status !== 'submitted' && <p class="muted">狀態：{v.status === 'approved' ? '審核通過' : v.status === 'rejected' ? '沒有通過' : '講師還沒送審'}{v.review_note && `．意見：${v.review_note}`}</p>}
+  </div>
+</AdminLayout>
+<style>
+  .files { columns: 2; font-size: var(--text-xs); }
+</style>

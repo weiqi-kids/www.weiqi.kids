@@ -27,7 +27,7 @@ const list = await materialsOf(s.id);
 <AppLayout title={`技能單張：${s.title}`} breadcrumbs={[{ name: '講師後台', href: '/account/teach/' }, { name: s.title || '成果', href: `/account/teach/showcases/${id}/` }, { name: '技能單張', href: here }]}>
   <div class="prose">
     <h1>技能單張：{s.title}</h1>
-    <p>每張圍繞一個問題寫：問題、發生的原因、解決方法有哪些、我建議的流程。學員核款後在上課區看得到全部單張，每一團沿用。</p>
+    <p>每張圍繞一個問題寫：問題、發生的原因、解決方法有哪些、我建議的流程。全部公開在成果頁，每一團沿用。</p>
     {message && <p class="notice">{message}</p>}
     {error && <p class="notice notice-error">{error}</p>}
     {list.map((m) => (

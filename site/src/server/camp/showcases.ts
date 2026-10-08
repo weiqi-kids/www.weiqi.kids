@@ -51,6 +51,9 @@ export function missingItems(s: Showcase, slots: Slot[]) {
   need(!!s.instructor_bio.trim(), '5. 講師本業與為什麼做這個');
   need(!!s.method.trim(), '6. 做法說明');
   need(!!(s.sample_problem.trim() && s.sample_cause.trim() && s.sample_solutions.trim() && s.sample_flow.trim()), '7. 試閱技能單張（四個部分都要填）');
+  need(!!s.setup_requirements.trim(), '8. 自己跑起來要準備什麼');
+  need(!!s.repo_url.trim(), 'GitHub repo 網址');
+  need(!!s.license.trim(), '授權');
   need(s.price >= campRules.minFee, `團費（最低 ${campRules.minFee.toLocaleString('zh-TW')} 元）`);
   need(s.teaching_format === 'online' || !!s.location.trim(), '實體上課地點');
   need(s.schedule_mode !== 'slots' || slots.length > 0, '每週時段（至少一個）');

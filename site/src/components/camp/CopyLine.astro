@@ -1,0 +1,22 @@
+---
+// 一句可以直接複製、貼進 AI 的話。
+interface Props { text: string; label?: string }
+const { text, label = '複製' } = Astro.props;
+---
+<div class="copy-line">
+  <code>{text}</code>
+  <button class="btn btn-ghost" type="button" data-copy={text}>{label}</button>
+</div>
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.copy-line [data-copy]').forEach((b) => {
+    b.addEventListener('click', async () => {
+      const text = b.dataset.copy ?? '';
+      try { await navigator.clipboard.writeText(text); b.textContent = '已複製'; }
+      catch { const r = document.createRange(); r.selectNodeContents(b.previousElementSibling!); getSelection()?.removeAllRanges(); getSelection()?.addRange(r); b.textContent = '已選取，請按複製'; }
+    });
+  });
+</script>
+<style>
+  .copy-line { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; background: var(--color-bg-soft); border-radius: var(--radius); padding: var(--space-3) var(--space-4); }
+  .copy-line code { flex: 1 1 16rem; white-space: normal; background: none; font-size: var(--text-sm); }
+</style>

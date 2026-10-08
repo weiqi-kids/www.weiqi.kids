@@ -1,0 +1,66 @@
+---
+// 好棋寶寶 MCP 授權頁：使用者用網站帳號登入後，同意讓自己的 AI 工具使用好棋寶寶。
+import AppLayout from '../../layouts/AppLayout.astro';
+import { env } from 'cloudflare:workers';
+import { getOAuthApi, AuthorizationError, CimdFetchError } from '@cloudflare/workers-oauth-provider';
+import { oauthOptions } from '../../server/oauth';
+export const prerender = false;
+
+const me = Astro.locals.account;
+const here = `${Astro.url.pathname}${Astro.url.search}`;
+if (!me) return Astro.redirect(`/auth/login/?next=${encodeURIComponent(here)}`);
+const oauth = getOAuthApi(oauthOptions(env.SITE_ORIGIN), env);
+let errorText: string | null = null;
+let details: Awaited<ReturnType<typeof oauth.describeConsent>> | null = null;
+let handle = '';
+let headers: Headers | null = null;
+try {
+  if (Astro.request.method === 'POST') {
+    const form = await Astro.request.formData();
+    const h = String(form.get('handle') ?? '');
+    if (form.get('decision') !== 'approve') {
+      const denied = await oauth.denyConsent(Astro.request, h);
+      return new Response(null, { status: 302, headers: denied.headers });
+    }
+    const approved = await oauth.approveConsent(Astro.request, h, { scope: ['haoqi'] });
+    const { redirectTo } = await oauth.completeAuthorization({ request: approved.request, userId: me.id, metadata: { name: me.display_name }, scope: approved.request.scope, props: { userId: me.id } });
+    approved.headers.set('Location', redirectTo);
+    return new Response(null, { status: 302, headers: approved.headers });
+  }
+  const request = await oauth.parseAuthRequest(Astro.request);
+  details = await oauth.describeConsent(request);
+  const consent = await oauth.beginConsent(request);
+  handle = consent.handle;
+  headers = consent.headers;
+} catch (error) {
+  if (error instanceof AuthorizationError && error.redirectTo) return Response.redirect(error.redirectTo, 302);
+  if (error instanceof AuthorizationError) errorText = error.description ?? '授權請求無效，請回到 AI 工具重新連線。';
+  else if (error instanceof CimdFetchError) errorText = '無法確認這個 AI 工具的身分，請稍後再試。';
+  else throw error;
+}
+if (headers) {
+  headers.forEach((v, k) => { if (!['content-type', 'set-cookie'].includes(k.toLowerCase())) Astro.response.headers.set(k, v); });
+  for (const c of headers.getSetCookie()) Astro.response.headers.append('set-cookie', c);
+}
+---
+<AppLayout title="連接好棋寶寶">
+  <div class="prose">
+    <h1>連接好棋寶寶</h1>
+    {errorText ? <p class="notice notice-error">{errorText}</p> : details && (
+      <>
+        <p><strong>{details.clientName}</strong> 想用你的好棋寶寶帳號（{me.display_name}）。</p>
+        <p class="muted">{details.clientDomain ? `這個工具來自 ${details.clientDomain}。` : '這個工具是自行登記的，名稱沒有經過驗證。'}授權後會回到 {details.redirectHost}。</p>
+        {details.redirectIsLoopback && <p class="notice">授權會交給你電腦上的程式。只有在你剛剛自己從 AI 工具按下連線時才繼續。</p>}
+        <p>同意後，你的 AI 可以：找講師成果、讀講師的做法、幫你登記想學，以及把提問、每週進度、作品分享、回覆存成草稿。草稿要你在網站上按「確定送出」才會發出；報名、匯款、送審都不會經過 AI。</p>
+        <form method="post" class="actions">
+          <input type="hidden" name="handle" value={handle} />
+          <button class="btn" name="decision" value="approve" type="submit">同意</button>
+          <button class="btn btn-ghost" name="decision" value="deny" type="submit">不同意</button>
+        </form>
+      </>
+    )}
+  </div>
+</AppLayout>
+<style>
+  .actions { display: flex; gap: var(--space-4); }
+</style>

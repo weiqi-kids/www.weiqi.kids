@@ -18,7 +18,15 @@ declare namespace Cloudflare {
     LINE_CHANNEL_SECRET?: string;
     VAPID_PUBLIC_KEY?: string;
     BANK_ACCOUNT_INFO?: string;
+    GITHUB_TOKEN?: string;
+    SITE_ORIGIN: string;
+    OAUTH_KV: KVNamespace;
     VAPID_PRIVATE_JWK?: string;
     VAPID_SUBJECT?: string;
   }
+}
+
+declare module '*.md?raw' {
+  const content: string;
+  export default content;
 }

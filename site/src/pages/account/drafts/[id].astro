@@ -1,0 +1,52 @@
+---
+// AI 存的草稿：本人看過、按「確定送出」才發出（ADR 0015）。
+import AppLayout from '../../../layouts/AppLayout.astro';
+import { getDraft, sendDraft, discardDraft, spaceInfo } from '../../../server/camp/drafts';
+import { getPost } from '../../../server/forum';
+import { renderUserMarkdown } from '../../../server/markdown';
+import { str } from '../../../server/http';
+import { PRACTICE_WEEKS } from '../../../lib/labels';
+export const prerender = false;
+
+const me = Astro.locals.account;
+const here = Astro.url.pathname;
+if (!me) return Astro.redirect(`/auth/login/?next=${encodeURIComponent(here)}`);
+const d = await getDraft(Astro.params.id!);
+if (!d || d.account_id !== me.id) return new Response('Not found', { status: 404 });
+const info = await spaceInfo(d.space, me);
+let error: string | null = null;
+if (Astro.request.method === 'POST' && d.status === 'pending') {
+  const f = await Astro.request.formData();
+  if (str(f, 'action', 20) === 'discard') { await discardDraft(d, me); return Astro.redirect('/account/', 303); }
+  const r = await sendDraft(d, me, { title: str(f, 'title', 200) || null, body: str(f, 'body', 20_000), consentPublic: f.get('consent') === '1' });
+  if (r.ok) return Astro.redirect(r.link, 303);
+  error = r.error;
+}
+const parent = d.kind === 'reply' && d.parent_id ? await getPost(d.space, d.parent_id) : null;
+const KIND: Record<string, string> = { question: '提問', practice: '實作繳交', work: '作品分享', reply: '回覆' };
+---
+<AppLayout title={`草稿：${KIND[d.kind]}`} breadcrumbs={[{ name: '帳號', href: '/account/' }, { name: '草稿', href: here }]}>
+  <div class="prose">
+    <h1>{KIND[d.kind]}草稿</h1>
+    {error && <p class="notice notice-error">{error}</p>}
+    {d.status !== 'pending' ? <p class="notice">這份草稿{d.status === 'sent' ? '已經送出' : '已經捨棄'}。</p> : (
+      <>
+        <p>發到：<strong>{info?.title ?? '論壇'}</strong>{d.week && `．${PRACTICE_WEEKS[d.week]}`}</p>
+        {parent && <div class="parent"><p class="muted">回覆「{parent.title}」（{parent.author_name}）</p><div set:html={renderUserMarkdown(parent.body.slice(0, 1500))} /></div>}
+        <form method="post">
+          {d.kind !== 'reply' && <div class="form-field"><label for="title">標題</label><input id="title" name="title" value={d.title ?? ''} required /></div>}
+          <div class="form-field"><label for="body">內容（可以直接修改）</label><textarea id="body" name="body" rows="14" required>{d.body}</textarea></div>
+          {d.kind === 'work' && <div class="form-field"><label><input type="checkbox" name="consent" value="1" /> 講師認可後，同意把這份作品公開到成果頁（之後可以撤回）</label></div>}
+          <p class="actions">
+            <button class="btn" name="action" value="send" type="submit">確定送出</button>
+            <button class="btn btn-ghost" name="action" value="discard" type="submit" formnovalidate>不要了</button>
+          </p>
+        </form>
+      </>
+    )}
+  </div>
+</AppLayout>
+<style>
+  .parent { border-left: 4px solid var(--color-line); padding-left: var(--space-4); margin-bottom: var(--space-6); }
+  .actions { display: flex; gap: var(--space-4); }
+</style>

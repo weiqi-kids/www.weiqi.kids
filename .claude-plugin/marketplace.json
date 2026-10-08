@@ -1,0 +1,9 @@
+{
+  "name": "haoqi",
+  "owner": { "name": "台灣好棋寶寶協會", "url": "https://www.weiqi.kids" },
+  "metadata": { "description": "台灣好棋寶寶協會 AI 共學營：好棋寶寶學員 skill、好棋寶寶講師 skill，各自附好棋寶寶 MCP。" },
+  "plugins": [
+    { "name": "haoqi-learner", "source": "./site/plugins/haoqi-learner", "description": "好棋寶寶學員 skill（附好棋寶寶 MCP）" },
+    { "name": "haoqi-teacher", "source": "./site/plugins/haoqi-teacher", "description": "好棋寶寶講師 skill（附好棋寶寶 MCP）" }
+  ]
+}

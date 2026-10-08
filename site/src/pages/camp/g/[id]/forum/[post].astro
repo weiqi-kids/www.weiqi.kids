@@ -8,6 +8,11 @@ import { getPost, visibleTo } from '../../../../../server/forum';
 import { handleThreadAction, loadThread } from '../../../../../server/forum-actions';
 import { workState, approveWork, consentWork } from '../../../../../server/camp/works';
 import { str } from '../../../../../server/http';
+import { createPost } from '../../../../../server/forum';
+import { notify } from '../../../../../server/notify';
+import { db } from '../../../../../server/db';
+
+const QUICK_REPLIES = ['收到，做得很好！', '收到，我這兩天仔細看再回你。', '方向對了，繼續往下做。'];
 export const prerender = false;
 
 const c = await getCohort(Astro.params.id!);
@@ -27,6 +32,11 @@ let message: string | null = null;
 if (Astro.request.method === 'POST') {
   const form = await Astro.request.formData();
   const action = str(form, 'action', 20);
+  if (action === 'quick-reply' && isOwner(s, me) && QUICK_REPLIES.includes(str(form, 'text', 100))) {
+    await createPost(space, me, { parentId: topic.id, title: null, body: str(form, 'text', 100), files: [] });
+    if (topic.author_id !== me.id) await notify(topic.author_id, 'forum.reply', `講師回覆了「${topic.title}」。`, here);
+    return Astro.redirect(here, 303);
+  }
   if (action === 'approve-work' && isOwner(s, me) && topic.author_id !== me.id) { await approveWork(s.id, topic.id, topic.author_id, me.id, here); message = '已認可這份作品。作者同意後會公開在成果頁。'; }
   else if ((action === 'consent' || action === 'unconsent') && topic.author_id === me.id) { await consentWork(s.id, topic.id, me.id, action === 'consent'); message = action === 'consent' ? '已同意公開。講師認可後會出現在成果頁。' : '已撤回公開。'; }
   else {
@@ -37,12 +47,21 @@ if (Astro.request.method === 'POST') {
 }
 const { all, files, extra } = await loadThread(space, (await getPost(space, topic.id))!, me, role);
 const work = await workState(topic.id);
+const myDraft = await db().prepare("SELECT id FROM drafts WHERE account_id = ? AND parent_id = ? AND status = 'pending' ORDER BY created_at DESC LIMIT 1").bind(me.id, topic.id).first<{ id: string }>();
 ---
 <AppLayout title={topic.title ?? '課程論壇'} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: `${s.title}．第 ${c.seq} 團`, href: `/camp/g/${c.id}/` }, { name: '課程論壇', href: base }, { name: topic.title ?? '文章', href: here }]}>
   <div class="prose">
     <p><a href={base}>← 回課程論壇</a></p>
     {error && <p class="notice notice-error">{error}</p>}
     {message && <p class="notice">{message}</p>}
+    {myDraft && <p class="notice">你的 AI 已經擬好這一則的回覆草稿：<a href={`/account/drafts/${myDraft.id}/`}>看過按確定送出</a></p>}
+    {isOwner(s, me) && topic.author_id !== me.id && topic.status === 'published' && (
+      <form method="post" class="quick">
+        <input type="hidden" name="action" value="quick-reply" />
+        <span class="muted">快速回覆：</span>
+        {QUICK_REPLIES.map((q) => <button class="btn btn-ghost" name="text" value={q} type="submit">{q}</button>)}
+      </form>
+    )}
     <Thread all={all} files={files} extra={extra} me={me} role={role} fileBase="/api/files/" />
     {topic.status === 'published' && (isOwner(s, me) || topic.author_id === me.id) && (
       <section class="work">
@@ -55,5 +74,6 @@ const work = await workState(topic.id);
   </div>
 </AppLayout>
 <style>
+  .quick { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-block: var(--space-4); }
   .work { background: var(--color-bg-soft); border-radius: var(--radius); padding: var(--space-4) var(--space-6); margin-top: var(--space-6); }
 </style>

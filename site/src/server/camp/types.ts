@@ -3,6 +3,7 @@ export interface Showcase {
   title: string; summary: string; demo_links: string; before_after: string; learner_outcome: string;
   audience: string; prerequisites: string; instructor_bio: string; method: string;
   sample_problem: string; sample_cause: string; sample_solutions: string; sample_flow: string;
+  setup_requirements: string; repo_url: string; license: string; allow_derivative: number;
   price: number; teaching_format: 'online' | 'onsite'; location: string; schedule_mode: 'slots' | 'vote' | 'fixed';
   fixed_start: string | null; teaching_minutes: number; group_rule: 'paid' | 'signup';
   min_size: number; max_size: number | null; pay_days: number; vote_days: number; forum_open: number;

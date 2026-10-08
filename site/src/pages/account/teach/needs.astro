@@ -1,0 +1,22 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro';
+import { recentNeeds } from '../../../server/camp/needs';
+import { canCreateShowcase } from '../../../server/camp/showcases';
+import { fmtDate } from '../../../lib/time';
+export const prerender = false;
+const me = Astro.locals.account;
+if (!me) return Astro.redirect('/auth/login/?next=/account/teach/needs/');
+const allowed = me.is_admin === 1 || (await canCreateShowcase(me.id));
+const needs = allowed ? await recentNeeds(200) : [];
+---
+<AppLayout title="學員想解決的問題" breadcrumbs={[{ name: '講師後台', href: '/account/teach/' }, { name: '學員想解決的問題', href: '/account/teach/needs/' }]}>
+  <div class="prose">
+    <h1>學員想解決的問題</h1>
+    {!allowed ? <p>協會會員才看得到。</p> : (
+      <>
+        <p>學員用 AI 找成果、找不到對應的時候，經本人同意記下來的問題。不顯示是誰問的。你做得出來的話，可以上架成果。</p>
+        {needs.length === 0 ? <p class="muted">目前沒有。</p> : <ul>{needs.map((n) => <li>{n.problem}<span class="muted">（{fmtDate(n.created_at)}）</span></li>)}</ul>}
+      </>
+    )}
+  </div>
+</AppLayout>

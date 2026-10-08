@@ -7,6 +7,7 @@ const stop = requireAdmin(Astro); if (stop) return stop;
 const n = async (sql: string) => (await db().prepare(sql).first<{ n: number }>())?.n ?? 0;
 const todo = [
   { n: await n("SELECT COUNT(*) AS n FROM showcases WHERE status = 'submitted'"), title: '成果待審核', text: '講師送審的成果與開課表單。', href: '/admin/showcases/' },
+  { n: await n("SELECT COUNT(*) AS n FROM skill_versions WHERE status = 'submitted'"), title: '版本待審核', text: '講師 GitHub 上的新版本，審過學員的 AI 才會讀到。', href: '/admin/versions/' },
   { n: await n("SELECT COUNT(*) AS n FROM enrollments WHERE status = 'submitted'"), title: '待核款', text: '學員填了匯款資料，等你對照銀行入帳。', href: '/admin/payments/' },
   { n: await n("SELECT COUNT(*) AS n FROM enrollments WHERE status = 'refund_pending'"), title: '待退款', text: '沒成團、講師取消或開課前申請退款。', href: '/admin/payments/#refunds' },
   { n: await n("SELECT COUNT(*) AS n FROM membership_dues WHERE status = 'submitted'"), title: '會費待核', text: '入會與續會的匯款。', href: '/admin/payments/#dues' },

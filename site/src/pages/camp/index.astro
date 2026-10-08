@@ -6,6 +6,7 @@ import { cohortViews, headline } from '../../server/camp/view';
 import { demoLinks } from '../../server/camp/types';
 import { FORMAT_LABEL } from '../../lib/labels';
 import { campRules, site } from '../../data/site.js';
+import CopyLine from '../../components/camp/CopyLine.astro';
 export const prerender = false;
 
 const showcases = await listPublished();
@@ -30,6 +31,12 @@ const list = {
     <li><strong>卡住了</strong>到成果的討論區問</li>
     <li><strong>做不來</strong>登記想學，滿人數自動開團</li>
   </ol>
+
+  <section class="ai prose">
+    <h2>讓 AI 幫你找</h2>
+    <p>把好棋寶寶裝進你的 AI（<a href="/camp/ai/">安裝說明</a>），改掉括號裡的字，貼進去：</p>
+    <CopyLine text="用好棋寶寶學員 skill，列出跟「我想用 AI 解決的工作問題」有關的成果讓我選。" />
+  </section>
 
   <h2>講師做出來的成果</h2>
   {cards.length === 0 && <p>第一批成果正在審核，公開後會出現在這裡。</p>}
@@ -69,4 +76,5 @@ const list = {
   .status { font-size: var(--text-xs); font-weight: 700; }
   .status.hot { color: var(--color-primary); }
   .more { margin-top: var(--space-12); }
+  .ai { margin-bottom: var(--space-8); }
 </style>

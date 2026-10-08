@@ -1,0 +1,5 @@
+{
+  "mcpServers": {
+    "haoqi": { "type": "http", "url": "https://weiqi-kids-staging.weiqi-kids-site.workers.dev/mcp" }
+  }
+}

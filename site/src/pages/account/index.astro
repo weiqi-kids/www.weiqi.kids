@@ -5,6 +5,7 @@ import { identitiesOf, membershipOf, isMembershipActive, unlinkIdentity } from '
 import { requestMagicLink } from '../../server/magic-link';
 import { lineEnabled } from '../../server/line';
 import PushSettings from '../../components/PushSettings.astro';
+import { pendingDrafts } from '../../server/camp/drafts';
 import { clientIpHash, str } from '../../server/http';
 import { fmtDate } from '../../lib/time';
 import { ENROLLMENT_STATUS, COHORT_STATE, label } from '../../lib/labels';
@@ -64,6 +65,8 @@ const { results: mine } = await db().prepare(
 const { results: notes } = await db().prepare('SELECT message, link, created_at, read_at FROM notifications WHERE account_id = ? ORDER BY created_at DESC LIMIT 30').bind(me.id).all<{ message: string; link: string | null; created_at: string; read_at: string | null }>();
 const teaching = (await db().prepare('SELECT COUNT(*) AS n FROM showcases WHERE owner_id = ?').bind(me.id).first<{ n: number }>())?.n ?? 0;
 const d = (iso: string) => fmtDate(iso);
+const drafts = await pendingDrafts(me.id);
+const DRAFT_KIND: Record<string, string> = { question: '提問', practice: '實作繳交', work: '作品分享', reply: '回覆' };
 
 ---
 <AppLayout title="帳號">
@@ -72,6 +75,13 @@ const d = (iso: string) => fmtDate(iso);
     {message && <p class="notice">{message}</p>}
     {debugLink && <p class="notice">測試環境：寄信服務尚未啟用，請直接使用這個連結：<a href={debugLink}>{debugLink}</a></p>}
     {error && <p class="notice notice-error">{error}</p>}
+
+    {drafts.length > 0 && (
+      <section class="notice">
+        <h2>AI 幫你準備好的草稿（{drafts.length}）</h2>
+        <ul>{drafts.map((x) => <li><a href={`/account/drafts/${x.id}/`}>{DRAFT_KIND[x.kind]}：{x.title ?? x.body.slice(0, 30)}</a>．看過按確定就送出</li>)}</ul>
+      </section>
+    )}
 
     <section>
       <h2>通知</h2>

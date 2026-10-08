@@ -1,0 +1,56 @@
+---
+// 把好棋寶寶裝進你的 AI（ADR 0015）。網址依目前網域顯示。
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CopyLine from '../../components/camp/CopyLine.astro';
+const mcp = 'https://weiqi-kids-staging.weiqi-kids-site.workers.dev/mcp';
+const steps = [
+  { name: 'Claude（網頁版、桌面版）', items: [
+    '設定 → 連接器 → 新增自訂連接器。名稱填「好棋寶寶」，網址貼上方的好棋寶寶 MCP 網址，按新增，再按連線。',
+    '跳出好棋寶寶網站時，用 Email 或 LINE 登入，按「同意」。',
+    '下載 skill：學員下載「好棋寶寶學員 skill」，講師下載「好棋寶寶講師 skill」。',
+    '設定 → 功能 → Skills → 上傳剛下載的 zip 檔。',
+  ] },
+  { name: 'Claude Code', items: [
+    '在 Claude Code 輸入下面兩行（學員裝 haoqi-learner，講師裝 haoqi-teacher；skill 和好棋寶寶 MCP 一起裝好）。',
+    '第一次用到好棋寶寶時，會開瀏覽器請你登入網站、按「同意」。',
+  ] },
+  { name: 'ChatGPT 和其他 AI 工具', items: [
+    '在工具的連接器（或 MCP）設定裡新增，網址貼上方的好棋寶寶 MCP 網址，登入網站、按「同意」。ChatGPT 要先在設定的「應用程式與連接器」開啟開發者模式。',
+    '這些工具不能裝 skill。第一次使用時，先對 AI 說：「請先用好棋寶寶的 get_guide 讀學員引導（講師請讀講師引導），照著陪我做。」',
+  ] },
+];
+---
+<BaseLayout title="把好棋寶寶裝進你的 AI" description="在 Claude、Claude Code 或 ChatGPT 裝好好棋寶寶 MCP 與 skill，就能照講師的做法做一份自己的版本，卡住時發問、做出來時分享。講師也用同一套上架成果。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '把好棋寶寶裝進你的 AI', href: '/camp/ai/' }]}>
+  <article class="prose">
+    <h1>把好棋寶寶裝進你的 AI</h1>
+    <div class="key-answer" data-question="好棋寶寶怎麼裝進 AI？">
+      <p>裝一次就好：好棋寶寶 MCP 讓你的 AI 讀得到講師的成果和做法，skill 告訴 AI 怎麼一步一步陪你做。學員裝好棋寶寶學員 skill，講師裝好棋寶寶講師 skill。AI 幫你寫的提問、進度和分享都只是草稿，要你在網站上按確定才會送出。</p>
+    </div>
+    <h2>好棋寶寶 MCP 網址</h2>
+    <CopyLine text={mcp} />
+    <h2>下載 skill</h2>
+    <p><a class="btn" href="/skills/haoqi-learner.zip">好棋寶寶學員 skill</a> <a class="btn btn-ghost" href="/skills/haoqi-teacher.zip">好棋寶寶講師 skill</a></p>
+    {steps.map((s) => (
+      <section>
+        <h2>{s.name}</h2>
+        <ol>{s.items.map((i) => <li>{i}</li>)}</ol>
+        {s.name === 'Claude Code' && (
+          <>
+            <CopyLine text="/plugin marketplace add weiqi-kids/www.weiqi.kids" />
+            <CopyLine text="/plugin install haoqi-learner@haoqi" />
+          </>
+        )}
+      </section>
+    ))}
+    <h2>裝好以後</h2>
+    <ul>
+      <li>學員：到想學的成果頁，複製那一句話貼進 AI，就開始照講師的做法做。也可以直接跟 AI 說你工作上想解決的問題。</li>
+      <li>講師：在你的專案裡對 AI 說「把這個放上好棋寶寶」。</li>
+      <li>費用：照著做時要用你自己的 GitHub 和 AI API 金鑰，費用自付；每項成果頁都寫了大概要準備什麼。</li>
+    </ul>
+  </article>
+</BaseLayout>
+<style>
+  section { margin-bottom: var(--space-6); }
+  section :global(.copy-line) { margin-bottom: var(--space-2); }
+</style>

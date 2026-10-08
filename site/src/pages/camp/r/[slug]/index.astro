@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Meter from '../../../../components/camp/Meter.astro';
+import CopyLine from '../../../../components/camp/CopyLine.astro';
+import { approvedVersion } from '../../../../server/camp/versions';
 import { getShowcaseBySlug, slotsOf } from '../../../../server/camp/showcases';
 import { cohortViews, openViews } from '../../../../server/camp/view';
 import { addInterest, removeInterest } from '../../../../server/camp/cohorts';
@@ -8,6 +10,7 @@ import { publicWorks } from '../../../../server/camp/works';
 import { isAdmin, isOwner } from '../../../../server/camp/access';
 import { demoLinks } from '../../../../server/camp/types';
 import { db } from '../../../../server/db';
+import { materialsOf } from '../../../../server/camp/materials';
 import { renderUserMarkdown } from '../../../../server/markdown';
 import { str } from '../../../../server/http';
 import { fmtDateTime, daysLeft, weekdayLabel } from '../../../../lib/time';
@@ -44,6 +47,9 @@ const demos = demoLinks(s);
 const works = await publicWorks(s.id);
 const topics = (await db().prepare("SELECT COUNT(*) AS n FROM posts WHERE space = ? AND parent_id IS NULL AND status = 'published'").bind(`showcase:${s.id}`).first<{ n: number }>())?.n ?? 0;
 const pastCohorts = views.filter((c) => c.state === 'ended').length;
+const version = await approvedVersion(s.id);
+const sheets = await materialsOf(s.id);
+const aiLine = `用好棋寶寶學員 skill，陪我照${s.instructor_name}的「${s.title}」（好棋寶寶成果代碼 ${s.slug}）做一份我自己的版本。`;
 const fee = s.price.toLocaleString('zh-TW');
 const md = (t: string) => renderUserMarkdown(t);
 
@@ -79,6 +85,16 @@ const course = {
           {demos.map((d) => <li><a href={d.url} rel="noopener" target="_blank">{d.title}</a>{d.note && <span class="muted">：{d.note}</span>}</li>)}
         </ul>
       </section>
+      <section class="ai">
+        <h2>讓 AI 陪你照著做</h2>
+        <p>把好棋寶寶裝進你的 AI 之後，複製這句話貼進去，AI 就會照講師審過的做法，帶你在自己的帳號做一份。<a href="/camp/ai/">還沒裝？看安裝說明</a></p>
+        <CopyLine text={aiLine} />
+        <dl class="facts small">
+          <dt>要準備什麼</dt><dd>{s.setup_requirements || '講師還沒填'}</dd>
+          <dt>講師的做法</dt><dd>{version ? <a href={`${version.repo_url}/tree/${version.commit_sha}`} rel="noopener" target="_blank">{version.repo_url.replace('https://github.com/', '')}（審過的版本 {version.commit_sha.slice(0, 7)}）</a> : '審核中'}</dd>
+          <dt>授權</dt><dd>{s.license || '講師還沒填'}{s.allow_derivative === 1 ? '．可以把改好的版本公開放在自己的 GitHub' : '．改好的版本不能公開，分享時用文章'}</dd>
+        </dl>
+      </section>
       <dl class="facts">
         <dt>用 AI 前後</dt><dd>{s.before_after}</dd>
         <dt>學完你能做出</dt><dd>{s.learner_outcome}</dd>
@@ -97,7 +113,7 @@ const course = {
       </section>
       <section>
         <h2>試閱技能單張：{s.sample_problem.split('\n')[0]}</h2>
-        <p class="muted">開團後，學員會拿到這個成果的全部技能單張。</p>
+        <p class="muted">技能單張全部公開，這是其中一張。</p>
         <dl class="sheet">
           <dt>問題</dt><dd set:html={md(s.sample_problem)} />
           <dt>發生的原因</dt><dd set:html={md(s.sample_cause)} />
@@ -105,6 +121,22 @@ const course = {
           <dt>我建議的流程</dt><dd set:html={md(s.sample_flow)} />
         </dl>
       </section>
+      {sheets.length > 0 && (
+        <section>
+          <h2>全部技能單張（{sheets.length} 張）</h2>
+          {sheets.map((m) => (
+            <details class="sheet-more">
+              <summary>{m.title}</summary>
+              <dl class="sheet">
+                <dt>問題</dt><dd set:html={md(m.problem)} />
+                <dt>發生的原因</dt><dd set:html={md(m.cause)} />
+                <dt>解決方法有哪些</dt><dd set:html={md(m.solutions)} />
+                <dt>我建議的流程</dt><dd set:html={md(m.flow)} />
+              </dl>
+            </details>
+          ))}
+        </section>
+      )}
       {works.length > 0 && (
         <section>
           <h2>上過的學員做出來的</h2>
@@ -152,10 +184,14 @@ const course = {
   @media (min-width: 1024px) { .layout { grid-template-columns: minmax(0, 1fr) 22rem; } .box { position: sticky; top: var(--space-4); } }
   .main section { margin-bottom: var(--space-8); }
   .demo-list { display: grid; gap: var(--space-2); }
+  .ai { border: 2px solid var(--color-accent); border-radius: var(--radius); padding: var(--space-4) var(--space-6); }
+  .ai .facts { margin: var(--space-4) 0 0; }
   .try { background: var(--color-tip-bg); border-left: 4px solid var(--color-tip-line); border-radius: var(--radius); padding: var(--space-4) var(--space-6); }
   .sheet { display: grid; gap: var(--space-2); }
   .sheet dt { font-weight: 700; }
   .sheet dd { margin: 0 0 var(--space-2); }
+  .sheet-more { border: 1px solid var(--color-line); border-radius: var(--radius); padding: var(--space-3) var(--space-4); margin-bottom: var(--space-3); }
+  .sheet-more summary { font-weight: 700; cursor: pointer; }
   .box { background: var(--color-surface); border: 2px solid var(--color-brand); border-radius: var(--radius); padding: var(--space-6); display: grid; gap: var(--space-4); }
   .box h2 { margin: 0; font-size: var(--text-lg); }
   .slot { display: grid; gap: var(--space-2); }

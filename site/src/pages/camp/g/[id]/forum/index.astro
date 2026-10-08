@@ -8,6 +8,7 @@ import { recordSubmission, weekDeadline } from '../../../../../server/camp/pract
 import { listTopics } from '../../../../../server/forum';
 import { handleNewTopic } from '../../../../../server/forum-actions';
 import { str } from '../../../../../server/http';
+import { notify } from '../../../../../server/notify';
 import { fmtDateTime } from '../../../../../lib/time';
 import { PRACTICE_WEEKS } from '../../../../../lib/labels';
 export const prerender = false;
@@ -30,6 +31,7 @@ if (Astro.request.method === 'POST') {
     if (r.postId) {
       const week = Number(str(form, 'week', 1));
       if (student && week >= 1 && week <= 3) await recordSubmission(c.id, me.id, week, r.postId);
+      if (student) await notify(s.owner_id, 'forum.post', `${me.display_name} 在「${s.title}」課程論壇發文${week >= 1 && week <= 3 ? `（第 ${week} 週繳交）` : ''}。`, `${base}${r.postId}/`);
       return Astro.redirect(`${base}${r.postId}/`, 303);
     }
     error = r.error ?? null;

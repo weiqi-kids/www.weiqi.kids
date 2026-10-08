@@ -7,6 +7,8 @@ import { demoLinks } from '../../../../../server/camp/types';
 import { str } from '../../../../../server/http';
 import { parseTaipeiLocal, toTaipeiLocal, weekdayLabel } from '../../../../../lib/time';
 import { SHOWCASE_STATUS, label } from '../../../../../lib/labels';
+import { versionsOf, registerVersion, submitVersion, getVersion } from '../../../../../server/camp/versions';
+import { fmtDateTime } from '../../../../../lib/time';
 import { EXAMPLES } from '../../../../../lib/showcase-examples';
 import { campRules } from '../../../../../data/site.js';
 export const prerender = false;
@@ -17,7 +19,7 @@ const base = `/account/teach/showcases/${id}/`;
 if (!me) return Astro.redirect(`/auth/login/?next=${encodeURIComponent(base)}`);
 let s = await getShowcase(id);
 if (!s || (s.owner_id !== me.id && !isAdmin(me))) return new Response('Not found', { status: 404 });
-const step = ['1', '2', '3', '4'].includes(Astro.url.searchParams.get('step') ?? '') ? Number(Astro.url.searchParams.get('step')) : 1;
+const step = ['1', '2', '3', '4', '5'].includes(Astro.url.searchParams.get('step') ?? '') ? Number(Astro.url.searchParams.get('step')) : 1;
 let error: string | null = null;
 let message: string | null = null;
 let missing: string[] = [];
@@ -36,6 +38,7 @@ if (Astro.request.method === 'POST' && editable(s)) {
       before_after: t('before_after'), learner_outcome: t('learner_outcome'), audience: t('audience', 1000), prerequisites: t('prerequisites', 1000),
       instructor_bio: t('instructor_bio'), method: t('method', 20_000),
       sample_problem: t('sample_problem'), sample_cause: t('sample_cause'), sample_solutions: t('sample_solutions'), sample_flow: t('sample_flow'),
+      setup_requirements: t('setup_requirements', 3000), repo_url: t('repo_url', 300), license: t('license', 500), allow_derivative: f.get('allow_derivative') === '1' ? 1 : 0,
     });
   } else if (action === 'step2') {
     const price = Number(t('price', 7));
@@ -61,6 +64,13 @@ if (Astro.request.method === 'POST' && editable(s)) {
     }
   } else if (action === 'step3') {
     await saveFields(s, me.id, Object.fromEntries(['ttqs_needs', 'ttqs_goals', 'ttqs_outline', 'ttqs_hours', 'ttqs_methods', 'ttqs_evaluation', 'ttqs_expected'].map((k) => [k, t(k)])));
+  } else if (action === 'register-version') {
+    const r = await registerVersion(s, me.id, t('repo_url', 300) || s.repo_url, t('ref', 100), t('note', 500) || null);
+    if (r.ok) message = `已登記版本 ${r.sha.slice(0, 7)}，確認後按「送審這個版本」。`; else error = r.error;
+  } else if (action === 'submit-version') {
+    const v = await getVersion(t('version', 60));
+    error = v && v.showcase_id === s.id ? await submitVersion(v, s, me.id) : '找不到這個版本。';
+    if (!error) message = '已送審，管理員審過後學員才會拿到這一版。';
   } else if (action === 'submit') {
     const r = await submitForReview(s, me.id);
     if (r.ok) message = '已送審，管理員審核後會通知你。'; else missing = r.missing;
@@ -76,7 +86,9 @@ const slots = await slotsOf(s.id);
 const canEdit = editable(s);
 if (step === 4 && !missing.length) missing = missingItems(s, slots);
 const linksText = demoLinks(s).map((l) => [l.title, l.url, l.note].filter(Boolean).join(' | ')).join('\n');
-const STEPS = ['成果與 7 項資料', '開團設定', 'TTQS 開課表單', '送審'];
+const STEPS = ['成果與 8 項資料', '開團設定', 'TTQS 開課表單', '送審', 'GitHub 版本'];
+const versions = await versionsOf(s.id);
+const V_STATUS: Record<string, string> = { draft: '已登記，還沒送審', submitted: '審核中', approved: '審核通過', rejected: '沒有通過' };
 const ex = EXAMPLES;
 ---
 <AppLayout title={`成果：${s.title || '新成果'}`} breadcrumbs={[{ name: '講師後台', href: '/account/teach/' }, { name: s.title || '新成果', href: base }]}>
@@ -91,7 +103,7 @@ const ex = EXAMPLES;
     {step === 1 && (
       <form method="post">
         <input type="hidden" name="action" value="step1" />
-        <p>這一頁的資料是學員決定要不要來學的依據，7 項都必填。灰字是協會成果的範例。</p>
+        <p>這一頁的資料是學員決定要不要來學的依據，8 項都必填。灰字是協會成果的範例。</p>
         <div class="form-field"><label for="title">成果名稱</label><input id="title" name="title" value={s.title} placeholder={ex.title} required /></div>
         <div class="form-field"><label for="summary">一句話介紹</label><input id="summary" name="summary" value={s.summary} placeholder={ex.summary} required /></div>
         <div class="form-field"><label for="instructor_name">講師名稱（顯示在成果頁）</label><input id="instructor_name" name="instructor_name" value={s.instructor_name} required /></div>
@@ -109,6 +121,10 @@ const ex = EXAMPLES;
           <div class="form-field"><label for="sample_solutions">解決方法有哪些</label><textarea id="sample_solutions" name="sample_solutions" rows="2" placeholder={ex.sample_solutions}>{s.sample_solutions}</textarea></div>
           <div class="form-field"><label for="sample_flow">我建議的流程</label><textarea id="sample_flow" name="sample_flow" rows="2" placeholder={ex.sample_flow}>{s.sample_flow}</textarea></div>
         </fieldset>
+        <div class="form-field"><label for="setup_requirements">8. 自己跑起來要準備什麼（要哪些帳號、大概每月花多少錢、要不要信用卡）</label><textarea id="setup_requirements" name="setup_requirements" rows="3" placeholder={ex.setup_requirements}>{s.setup_requirements}</textarea></div>
+        <div class="form-field"><label for="repo_url">你的做法所在的 GitHub repo（公開）</label><input id="repo_url" name="repo_url" value={s.repo_url} placeholder={ex.repo_url} /></div>
+        <div class="form-field"><label for="license">授權</label><input id="license" name="license" value={s.license} placeholder={ex.license} /></div>
+        <div class="form-field"><label><input type="checkbox" name="allow_derivative" value="1" checked={s.allow_derivative === 1} /> 允許學員把改好的版本公開放在自己的 GitHub</label></div>
         <p class="form-hint">上過的學員作品不用填：學員作品經你認可、作者同意公開後，會自動出現在成果頁。</p>
         {canEdit && <button class="btn" type="submit">儲存，下一步</button>}
       </form>
@@ -168,6 +184,26 @@ const ex = EXAMPLES;
       </form>
     )}
 
+    {step === 5 && (
+      <section>
+        <p>學員的 AI 只會讀管理員審過的版本。你改了 repo 之後，登記新版本並送審；也可以請好棋寶寶講師 skill 幫你做。</p>
+        {versions.length === 0 ? <p class="muted">還沒有登記任何版本。</p> : (
+          <ul class="versions">{versions.map((v) => (
+            <li><code>{v.commit_sha.slice(0, 7)}</code>．{V_STATUS[v.status]}．{fmtDateTime(v.created_at)}{v.note && `．${v.note}`}{v.review_note && `．協會意見：${v.review_note}`}
+              {(v.status === 'draft' || v.status === 'rejected') && <form method="post" class="inline"><input type="hidden" name="action" value="submit-version" /><input type="hidden" name="version" value={v.id} /><button class="btn btn-ghost" type="submit">送審這個版本</button></form>}
+            </li>
+          ))}</ul>
+        )}
+        <form method="post">
+          <input type="hidden" name="action" value="register-version" />
+          <div class="form-field"><label for="vrepo">GitHub repo</label><input id="vrepo" name="repo_url" value={s.repo_url} required /></div>
+          <div class="form-field"><label for="ref">版本（commit 或分支名，留空就用預設分支的最新版）</label><input id="ref" name="ref" /></div>
+          <div class="form-field"><label for="vnote">這一版改了什麼（選填）</label><input id="vnote" name="note" maxlength="500" /></div>
+          <button class="btn" type="submit">登記這個版本</button>
+        </form>
+      </section>
+    )}
+
     {step === 4 && (
       <section>
         {missing.length > 0 ? (
@@ -193,4 +229,6 @@ const ex = EXAMPLES;
   .row { display: grid; gap: var(--space-4); }
   @media (min-width: 640px) { .row { grid-template-columns: 1fr 1fr; } }
   .archive { margin-top: var(--space-8); display: grid; gap: var(--space-1); }
+  .versions { display: grid; gap: var(--space-2); }
+  .inline { display: inline; margin-left: var(--space-2); }
 </style>

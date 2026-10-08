@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "node scripts/check-design.mjs && node scripts/check-content.mjs && node scripts/build-redirects.mjs && astro build && node scripts/check-links.mjs",
+    "build": "node scripts/check-design.mjs && node scripts/check-content.mjs && node scripts/build-redirects.mjs && node scripts/build-skill-zips.mjs && astro build && node scripts/check-links.mjs",
     "preview": "astro preview",
     "deploy": "SHOW_DRAFT_COURSES=1 pnpm build && wrangler deploy",
     "check:design": "node scripts/check-design.mjs",
@@ -23,6 +23,8 @@
     "@astrojs/mdx": "^8.0.1",
     "@astrojs/react": "^6.0.6",
     "@astrojs/sitemap": "^3.7.4",
+    "@cloudflare/workers-oauth-provider": "^1.2.3",
+    "@modelcontextprotocol/sdk": "^1.32.1",
     "astro": "^7.3.3",
     "d3": "^7.9.0",
     "katex": "^0.18.7",
@@ -34,7 +36,8 @@
     "rehype-katex": "^7.0.1",
     "remark-directive": "^4.0.0",
     "remark-math": "^6.0.0",
-    "unist-util-visit": "^5.1.0"
+    "unist-util-visit": "^5.1.0",
+    "zod": "^4.6.5"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

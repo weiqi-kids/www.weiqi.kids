@@ -5,3 +5,4 @@ dist/
 .dev.vars
 public/_redirects
 public/robots.txt
+public/skills/
