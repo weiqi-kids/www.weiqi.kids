@@ -102,7 +102,7 @@ const d = (iso: string) => fmtDate(iso);
     <section>
       <h2>會員與講師</h2>
       {membership && isMembershipActive(membership)
-        ? <p>協會會員，{membership.lifetime === 1 ? '不會到期' : `有效到 ${d(membership.expires_at)}`}。<a href="/account/teach/">講師後台</a>（{teaching} 項成果）{membership.lifetime !== 1 && <>．<a href="/account/membership/">續會</a></>}</p>
+        ? <p>協會會員，有效到 {d(membership.expires_at)}。<a href="/account/teach/">講師後台</a>（{teaching} 項成果）．<a href="/account/membership/">續會</a></p>
         : <p>{membership ? `會員已在 ${d(membership.expires_at)} 到期。` : '還不是協會會員。'}上課不需要入會；想把自己的成果放上來當講師，要先<a href="/account/membership/">繳常年會費</a>。</p>}
     </section>
     <h2>登入方式</h2>

@@ -13,7 +13,6 @@ export async function duesOf(accountId: string) {
 export async function submitDues(accountId: string, paidOn: string, last5: string) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(paidOn)) return '請填匯款日期。';
   if (!/^\d{5}$/.test(last5)) return '帳號末五碼要是 5 個數字。';
-  if ((await membershipOf(accountId))?.lifetime === 1) return '你是不會到期的會員，不需要繳常年會費。';
   const pending = await db().prepare("SELECT 1 FROM membership_dues WHERE account_id = ? AND status = 'submitted'").bind(accountId).first();
   if (pending) return '你已經填過一筆，正在等管理員核對。';
   const id = newId();
@@ -28,7 +27,6 @@ export async function confirmDues(id: string, adminId: string) {
   const d = await db().prepare("SELECT account_id FROM membership_dues WHERE id = ? AND status = 'submitted'").bind(id).first<{ account_id: string }>();
   if (!d) return false;
   const m = await membershipOf(d.account_id);
-  if (m?.lifetime === 1) return false;
   const from = m && isMembershipActive(m) ? Date.parse(m.expires_at) : Date.now();
   const expires = addDays(365, from);
   await db().batch([

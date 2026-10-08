@@ -31,13 +31,13 @@ const bank = env.BANK_ACCOUNT_INFO;
     <h1>協會會員</h1>
     {message && <p class="notice">{message}</p>}
     {error && <p class="notice notice-error">{error}</p>}
-    <p>{m?.lifetime === 1 ? '你是協會會員，會員資格不會到期。' : active ? `你是協會會員，有效到 ${fmtDate(m!.expires_at)}。` : m ? `你的會員在 ${fmtDate(m.expires_at)} 到期。` : '你還不是協會會員。'}</p>
+    <p>{active ? `你是協會會員，有效到 ${fmtDate(m!.expires_at)}。` : m ? `你的會員在 ${fmtDate(m.expires_at)} 到期。` : '你還不是協會會員。'}</p>
     <dl class="facts">
       <dt>常年會費</dt><dd>{fee} 元，一年一繳，全歸協會，不含任何課程</dd>
       <dt>會員可以</dt><dd>把自己用 AI 做出來的成果放上共學營當講師</dd>
       <dt>不必入會</dt><dd>登記想學、報名上課都不需要會員資格</dd>
     </dl>
-    {m?.lifetime === 1 ? null : pending ? <p class="notice">你填的會費匯款正在等管理員核對。</p> : (
+    {pending ? <p class="notice">你填的會費匯款正在等管理員核對。</p> : (
       <section>
         <h2>{active ? '續會' : '入會'}</h2>
         <ol class="actionable-steps">
