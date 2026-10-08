@@ -43,7 +43,8 @@ export async function unlinkIdentity(accountId: string, provider: 'email' | 'lin
 }
 
 export async function membershipOf(accountId: string) {
-  return db().prepare('SELECT started_at, expires_at FROM memberships WHERE account_id = ?').bind(accountId).first<{ started_at: string; expires_at: string }>();
+  return db().prepare('SELECT started_at, expires_at, lifetime FROM memberships WHERE account_id = ?').bind(accountId).first<{ started_at: string; expires_at: string; lifetime: number }>();
 }
 
-export const isMembershipActive = (m: { expires_at: string } | null) => !!m && m.expires_at > new Date().toISOString();
+// 不會到期的會員（lifetime = 1）一直有效。
+export const isMembershipActive = (m: { expires_at: string; lifetime?: number } | null) => !!m && (m.lifetime === 1 || m.expires_at > new Date().toISOString());
