@@ -21,7 +21,7 @@
   "triggers": { "crons": ["0 * * * *"] },
   "r2_buckets": [{ "binding": "UPLOADS", "bucket_name": "weiqi-kids-staging-uploads" }],
   "d1_databases": [
-    // 共學營重建（ADR 0014）後的新資料庫；舊的 weiqi-kids-staging 保留未刪。
+    // 共學營重建（ADR 0014）後的資料庫。
     { "binding": "DB", "database_name": "weiqi-kids-staging-camp", "database_id": "f15b1679-dc91-4a43-8cab-a17b0dec75e0", "migrations_dir": "migrations" }
   ]
 }
