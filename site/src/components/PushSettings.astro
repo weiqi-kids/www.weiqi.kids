@@ -1,0 +1,86 @@
+---
+// 網頁推播開關。限制要寫在這裡（ADR 0014）：iPhone 要加到主畫面、權限被拒就收不到、換裝置要重開。
+import { vapidPublicKey, pushEnabled } from '../server/push';
+const key = vapidPublicKey();
+---
+<section class="push" data-key={key}>
+  <h2>手機或電腦通知</h2>
+  {!pushEnabled() ? <p class="muted">推播通知尚未開放，通知會顯示在這一頁的「通知」。</p> : (
+    <>
+      <p>開團、匯款期限、實作提醒等通知，除了顯示在這一頁，也可以直接推播到這台裝置。</p>
+      <p class="state" data-state>檢查這台裝置的狀態中…</p>
+      <p><button class="btn" type="button" data-on hidden>在這台裝置開啟通知</button> <button class="btn btn-ghost" type="button" data-off hidden>關閉這台裝置的通知</button></p>
+      <div class="ios notice" data-ios hidden>
+        <p><strong>iPhone／iPad 要先把網站加到主畫面才收得到通知：</strong></p>
+        <ol>
+          <li>用 Safari 開這個網站，點下方的「分享」按鈕。</li>
+          <li>選「加入主畫面」，再按「加入」。</li>
+          <li>從主畫面的「好棋寶寶」圖示開啟網站，登入後回到這一頁開啟通知。</li>
+        </ol>
+        <p>需要 iOS 16.4 以上。</p>
+      </div>
+      <ul class="limits form-hint">
+        <li>拒絕或關掉瀏覽器的通知權限，就收不到推播；要到瀏覽器或手機設定重新允許。</li>
+        <li>通知是跟著裝置與瀏覽器開的。換手機、換瀏覽器或清除網站資料後，要在新的地方重新開啟。</li>
+        <li>沒開推播也不會漏掉：所有通知都會留在這一頁。</li>
+      </ul>
+    </>
+  )}
+</section>
+<script>
+  const root = document.querySelector<HTMLElement>('.push');
+  const key = root?.dataset.key;
+  const state = root?.querySelector<HTMLElement>('[data-state]');
+  const on = root?.querySelector<HTMLButtonElement>('[data-on]');
+  const off = root?.querySelector<HTMLButtonElement>('[data-off]');
+  const ios = root?.querySelector<HTMLElement>('[data-ios]');
+  const say = (t: string) => { if (state) state.textContent = t; };
+  const toKey = (b64: string) => { const s = atob(b64.replace(/-/g, '+').replace(/_/g, '/') + '==='.slice((b64.length + 3) % 4)); return Uint8Array.from(s, (c) => c.charCodeAt(0)); };
+  const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const standalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as { standalone?: boolean }).standalone === true;
+
+  async function refresh() {
+    if (!key || !state) return;
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      if (isIOS && !standalone) { say('這台 iPhone／iPad 還沒把網站加到主畫面，所以不能開通知。'); if (ios) ios.hidden = false; }
+      else say('這個瀏覽器不支援推播通知。通知會留在這一頁。');
+      return;
+    }
+    if (Notification.permission === 'denied') { say('你封鎖了這個網站的通知。要收推播，請到瀏覽器或手機設定允許「好棋寶寶」的通知。'); return; }
+    const reg = await navigator.serviceWorker.register('/sw.js');
+    const sub = await reg.pushManager.getSubscription();
+    say(sub ? '這台裝置已開啟通知。' : '這台裝置還沒開啟通知。');
+    if (on) on.hidden = !!sub;
+    if (off) off.hidden = !sub;
+  }
+
+  on?.addEventListener('click', async () => {
+    try {
+      const perm = await Notification.requestPermission();
+      if (perm !== 'granted') { await refresh(); return; }
+      const reg = await navigator.serviceWorker.ready;
+      const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: toKey(key!) });
+      const res = await fetch('/api/push/subscribe', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(sub) });
+      if (!res.ok) throw new Error(String(res.status));
+    } catch { say('開啟失敗，請重新整理後再試一次。'); return; }
+    await refresh();
+  });
+
+  off?.addEventListener('click', async () => {
+    const reg = await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.getSubscription();
+    if (sub) {
+      await fetch('/api/push/subscribe', { method: 'DELETE', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ endpoint: sub.endpoint }) });
+      await sub.unsubscribe();
+    }
+    await refresh();
+  });
+
+  refresh();
+</script>
+<style>
+  .push { margin-bottom: var(--space-8); }
+  .push [hidden] { display: none; }
+  .state { font-weight: 700; }
+  .limits { padding-left: 1.2em; }
+</style>

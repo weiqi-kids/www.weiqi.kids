@@ -1,0 +1,40 @@
+---
+import AppLayout from '../../../../../layouts/AppLayout.astro';
+import TopicList from '../../../../../components/forum/TopicList.astro';
+import { getShowcaseBySlug } from '../../../../../server/camp/showcases';
+import { showcaseSpaceRole } from '../../../../../server/camp/access';
+import { listTopics } from '../../../../../server/forum';
+import { handleNewTopic } from '../../../../../server/forum-actions';
+import { notify } from '../../../../../server/notify';
+import { str } from '../../../../../server/http';
+export const prerender = false;
+
+const s = await getShowcaseBySlug(Astro.params.slug!);
+const me = Astro.locals.account;
+if (!s) return new Response('Not found', { status: 404 });
+const role = showcaseSpaceRole(s, me);
+if (!role.view) return new Response('Not found', { status: 404 });
+const space = `showcase:${s.id}`;
+const base = `/camp/r/${s.slug}/forum/`;
+let error: string | null = null;
+if (Astro.request.method === 'POST' && me) {
+  const form = await Astro.request.formData();
+  if (str(form, 'action', 20) === 'topic') {
+    const r = await handleNewTopic(form, space, me, role);
+    if (r.postId) {
+      if (me.id !== s.owner_id) await notify(s.owner_id, 'forum.question', `「${s.title}」討論區有新提問。`, `${base}${r.postId}/`);
+      return Astro.redirect(`${base}${r.postId}/`, 303);
+    }
+    error = r.error ?? null;
+  }
+}
+const topics = (await listTopics(space)).filter((t) => t.status === 'published' || role.moderate || t.author_id === me?.id);
+---
+<AppLayout title={`討論區：${s.title}`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: s.title, href: `/camp/r/${s.slug}/` }, { name: '討論區', href: base }]}>
+  <div class="prose">
+    <h1>討論區：{s.title}</h1>
+    <p>照做法說明自己試，卡住了在這裡問。講師有空會回，其他人也可以回。</p>
+    {error && <p class="notice notice-error">{error}</p>}
+    <TopicList topics={topics} base={base} role={role} loginHref={`/auth/login/?next=${encodeURIComponent(base)}`} />
+  </div>
+</AppLayout>

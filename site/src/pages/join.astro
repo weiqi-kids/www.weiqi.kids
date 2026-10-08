@@ -1,19 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { site, courseRules } from '../data/site.js';
+import { campRules } from '../data/site.js';
 
-const fee = courseRules.fee.toLocaleString('zh-TW');
+const fee = campRules.membershipFee.toLocaleString('zh-TW');
 ---
 <BaseLayout
   title="加入協會"
-  description="個人會員入會費 0 元、常年會費 6,000 元並含一門 AI 共學營課程；企業會員常年會費 60,000 元。說明兩種會員的費用、權利與加入方式。"
+  description="個人會員入會費 0 元、常年會費 6,000 元，會員可以把自己的 AI 成果放上共學營當講師；企業會員常年會費 60,000 元。上 AI 共學營不必入會。"
   breadcrumbs={[{ name: '加入協會', href: '/join/' }]}
 >
   <article class="prose">
     <h1>加入協會</h1>
 
     <div class="key-answer" data-question="怎麼成為台灣好棋寶寶協會的會員？">
-      <p>依<a href="/association/charter/">章程</a>第七條，會員分三類。個人會員的入會方式就是報名一門 AI 共學營課程：入會費 0 元、常年會費 {fee} 元，這筆常年會費已包含第一門課，會員效期 {courseRules.membershipTerm}。企業會員入會費 0 元、常年會費 60,000 元。贊助會員是贊助協會經費或資源的個人與團體。</p>
+      <p>依<a href="/association/charter/">章程</a>第七條，會員分三類。個人會員入會費 0 元、常年會費 {fee} 元，一年一繳；會員可以把自己用 AI 做出來的成果放上 AI 共學營當講師。上 AI 共學營不必入會。企業會員入會費 0 元、常年會費 60,000 元。贊助會員是贊助協會經費或資源的個人與團體。</p>
     </div>
 
     <h2>三種會員</h2>
@@ -23,30 +23,28 @@ const fee = courseRules.fee.toLocaleString('zh-TW');
         <tr><td>誰可以加入</td><td>贊同本會宗旨、對圍棋具有熱忱者</td><td>贊同本會宗旨之機構或團體</td><td>贊同本會宗旨且贊助本會經費、資源之個人或團體</td></tr>
         <tr><td>入會費</td><td>0 元</td><td>0 元</td><td>章程未定額</td></tr>
         <tr><td>常年會費</td><td>{fee} 元</td><td>60,000 元</td><td>章程未定額</td></tr>
-        <tr><td>會費包含</td><td>一門 AI 共學營課程</td><td>圍棋推廣活動的曝光與交流機會</td><td>無</td></tr>
+        <tr><td>會員可以</td><td>把自己的 AI 成果放上共學營當講師</td><td>圍棋推廣活動的曝光與交流機會</td><td>無</td></tr>
         <tr><td>表決與選舉權</td><td>有</td><td>有，由推派的 1 位代表行使</td><td>無</td></tr>
-        <tr><td>怎麼加入</td><td>報名一門課程</td><td>來信洽談，經理事會審查</td><td>來信洽談，經理事會審查</td></tr>
+        <tr><td>怎麼加入</td><td>登入網站後繳常年會費</td><td>來信洽談，經理事會審查</td><td>來信洽談，經理事會審查</td></tr>
       </tbody>
     </table>
     <p class="muted">會費金額依章程第七條；會員權利依第八條，贊助會員無表決權、選舉權、被選舉權與罷免權。</p>
 
-    <h2>個人會員：報名課程就完成入會</h2>
+    <h2>個人會員：登入後繳常年會費</h2>
     <ol>
-      <li>看<a href="/camp/topics/">講師成果</a>，做不來就登記想學；開團後到<a href="/camp/courses/">已開的團</a>報名。</li>
-      <li>填報名表，送出後會拿到報名編號。</li>
-      <li>透過協會 <a href={site.lineOfficialUrl} rel="noopener">LINE 官方帳號（{site.lineOfficialId}）</a>附上報名編號回報匯款。</li>
-      <li>協會核對後開通課程資格，會員效期同時起算。</li>
+      <li><a href="/auth/login/?next=/account/membership/">登入網站</a>（Email 或 LINE）。</li>
+      <li>匯款常年會費 {fee} 元到協會帳戶，在<a href="/account/membership/">會員頁</a>填匯款日期和帳號末五碼。</li>
+      <li>協會管理員核對後，會員資格生效一年。</li>
     </ol>
-    <p>之後每上一門新課再付 {fee} 元。完整流程見<a href="/camp/how-it-works/">共學營怎麼參加</a>，費用與資格的細節見<a href="/camp/faq/">常見問題</a>。</p>
+    <p>只想上 AI 共學營不必入會：看<a href="/camp/">講師成果</a>，做不來就登記想學，開團後報名。流程見<a href="/camp/how-it-works/">參加流程</a>。</p>
 
     <h2>企業會員</h2>
     <p>常年會費 60,000 元，由企業推派 1 人為代表行使會員權利，會費用於協會的圍棋推廣活動，企業在這些活動中獲得曝光與交流機會。詳細說明與加入方式見<a href="/association/corporate-membership/">企業會員</a>。</p>
 
     <h2>成為會員之後</h2>
     <ul>
-      <li>上課期間與結營後，都可以在該門課的論壇繼續交流。</li>
+      <li>把自己用 AI 做出來的成果放上共學營，學員登記滿人數就自動開團，團費由協會與你各分一半。見<a href="/camp/teach/">成為講師</a>。</li>
       <li>會員來自醫療、法律、設計、行銷、圍棋等不同領域，見<a href="/association/members/">協會成員</a>。</li>
-      <li>自己用 AI 做出成果，可以提出<a href="/camp/instructor-application/">講師申請</a>，讓別人登記跟你學。</li>
     </ul>
 
     <h2>還在考慮</h2>

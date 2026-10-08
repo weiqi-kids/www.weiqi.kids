@@ -1,0 +1,63 @@
+---
+import AppLayout from '../../../../../layouts/AppLayout.astro';
+import { getShowcase } from '../../../../../server/camp/showcases';
+import { isAdmin } from '../../../../../server/camp/access';
+import { materialsOf, saveMaterial, archiveMaterial } from '../../../../../server/camp/materials';
+import { str } from '../../../../../server/http';
+export const prerender = false;
+
+const me = Astro.locals.account;
+const id = Astro.params.id!;
+const here = `/account/teach/showcases/${id}/materials/`;
+if (!me) return Astro.redirect(`/auth/login/?next=${encodeURIComponent(here)}`);
+const s = await getShowcase(id);
+if (!s || (s.owner_id !== me.id && !isAdmin(me))) return new Response('Not found', { status: 404 });
+let error: string | null = null;
+let message: string | null = null;
+if (Astro.request.method === 'POST') {
+  const f = await Astro.request.formData();
+  const action = str(f, 'action', 20);
+  if (action === 'save') {
+    error = await saveMaterial(s.id, me.id, str(f, 'id', 60) || null, { title: str(f, 'title', 200), problem: str(f, 'problem'), cause: str(f, 'cause'), solutions: str(f, 'solutions'), flow: str(f, 'flow') });
+    if (!error) message = '已儲存。';
+  } else if (action === 'archive') { await archiveMaterial(s.id, me.id, str(f, 'id', 60)); message = '已移除。'; }
+}
+const list = await materialsOf(s.id);
+---
+<AppLayout title={`技能單張：${s.title}`} breadcrumbs={[{ name: '講師後台', href: '/account/teach/' }, { name: s.title || '成果', href: `/account/teach/showcases/${id}/` }, { name: '技能單張', href: here }]}>
+  <div class="prose">
+    <h1>技能單張：{s.title}</h1>
+    <p>每張圍繞一個問題寫：問題、發生的原因、解決方法有哪些、我建議的流程。學員核款後在上課區看得到全部單張，每一團沿用。</p>
+    {message && <p class="notice">{message}</p>}
+    {error && <p class="notice notice-error">{error}</p>}
+    {list.map((m) => (
+      <details class="sheet">
+        <summary>{m.title}（第 {m.version} 版）</summary>
+        <form method="post">
+          <input type="hidden" name="action" value="save" /><input type="hidden" name="id" value={m.id} />
+          <div class="form-field"><label>標題</label><input name="title" value={m.title} required /></div>
+          <div class="form-field"><label>問題</label><textarea name="problem" rows="3" required>{m.problem}</textarea></div>
+          <div class="form-field"><label>發生的原因</label><textarea name="cause" rows="3" required>{m.cause}</textarea></div>
+          <div class="form-field"><label>解決方法有哪些</label><textarea name="solutions" rows="3" required>{m.solutions}</textarea></div>
+          <div class="form-field"><label>我建議的流程</label><textarea name="flow" rows="3" required>{m.flow}</textarea></div>
+          <button class="btn btn-ghost" type="submit">儲存</button>
+        </form>
+        <form method="post"><input type="hidden" name="action" value="archive" /><input type="hidden" name="id" value={m.id} /><button class="link-button" type="submit">移除這張</button></form>
+      </details>
+    ))}
+    <h2>新增一張</h2>
+    <form method="post">
+      <input type="hidden" name="action" value="save" />
+      <div class="form-field"><label for="t">標題</label><input id="t" name="title" required /></div>
+      <div class="form-field"><label for="p">問題</label><textarea id="p" name="problem" rows="3" required></textarea></div>
+      <div class="form-field"><label for="c">發生的原因</label><textarea id="c" name="cause" rows="3" required></textarea></div>
+      <div class="form-field"><label for="so">解決方法有哪些</label><textarea id="so" name="solutions" rows="3" required></textarea></div>
+      <div class="form-field"><label for="fl">我建議的流程</label><textarea id="fl" name="flow" rows="3" required></textarea></div>
+      <button class="btn" type="submit">新增</button>
+    </form>
+  </div>
+</AppLayout>
+<style>
+  .sheet { border: 1px solid var(--color-line); border-radius: var(--radius); padding: var(--space-3) var(--space-4); margin-bottom: var(--space-3); }
+  .sheet summary { font-weight: 700; cursor: pointer; }
+</style>

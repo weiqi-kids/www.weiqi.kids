@@ -1,0 +1,64 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { requireAdmin } from '../../../server/guard';
+import { getShowcase, slotsOf, missingItems, reviewShowcase, saveFields } from '../../../server/camp/showcases';
+import { db } from '../../../server/db';
+import { str } from '../../../server/http';
+import { SHOWCASE_STATUS, FORMAT_LABEL, SCHEDULE_LABEL, RULE_LABEL, label } from '../../../lib/labels';
+import { weekdayLabel, fmtDateTime } from '../../../lib/time';
+export const prerender = false;
+const stop = requireAdmin(Astro); if (stop) return stop;
+const me = Astro.locals.account!;
+let s = await getShowcase(Astro.params.id!);
+if (!s) return new Response('Not found', { status: 404 });
+let message: string | null = null;
+let error: string | null = null;
+if (Astro.request.method === 'POST') {
+  const f = await Astro.request.formData();
+  const decision = str(f, 'decision', 20);
+  const slug = str(f, 'slug', 60).toLowerCase();
+  if (slug && slug !== s.slug) {
+    if (!/^[a-z0-9][a-z0-9-]{1,58}$/.test(slug)) error = '網址只能用小寫英文、數字和連字號。';
+    else if (await db().prepare('SELECT 1 FROM showcases WHERE slug = ? AND id != ?').bind(slug, s.id).first()) error = '這個網址已經有人用了。';
+    else await saveFields(s, me.id, { slug });
+  }
+  if (!error && (decision === 'publish' || decision === 'changes')) {
+    if (decision === 'publish' && missingItems(s, await slotsOf(s.id)).length) error = '資料還不齊，不能公開。';
+    else { await reviewShowcase((await getShowcase(s.id))!, me.id, decision, str(f, 'note', 2000) || null); message = decision === 'publish' ? '已公開，並開始接受登記想學。' : '已退回補件並通知講師。'; }
+  }
+  s = (await getShowcase(s.id))!;
+}
+const slots = await slotsOf(s.id);
+const missing = missingItems(s, slots);
+const ttqs = [['ttqs_needs', '需求'], ['ttqs_goals', '目標'], ['ttqs_outline', '大綱'], ['ttqs_hours', '時數'], ['ttqs_methods', '方法'], ['ttqs_evaluation', '評量'], ['ttqs_expected', '預期成果']] as const;
+---
+<AdminLayout title={`審核：${s.title || '未命名成果'}`}>
+  {message && <p class="notice">{message}</p>}
+  {error && <p class="notice notice-error">{error}</p>}
+  <div class="prose">
+    <p>狀態：<strong>{label(SHOWCASE_STATUS, s.status)}</strong>．講師：{s.instructor_name}．<a href={`/camp/r/${s.slug}/`}>預覽成果頁</a>（7 項資料都在上面）．<a href={`/account/teach/showcases/${s.id}/`}>講師編輯頁</a></p>
+    {missing.length > 0 && <div class="notice notice-error"><p>還缺：</p><ul>{missing.map((m) => <li>{m}</li>)}</ul></div>}
+    <h2>開團設定</h2>
+    <dl class="facts">
+      <dt>主題教學</dt><dd>{FORMAT_LABEL[s.teaching_format]}{s.teaching_format === 'onsite' && `．${s.location}`}．{s.teaching_minutes} 分鐘</dd>
+      <dt>團費</dt><dd>{s.price.toLocaleString('zh-TW')} 元</dd>
+      <dt>排時間</dt><dd>{SCHEDULE_LABEL[s.schedule_mode]}{s.schedule_mode === 'slots' && `：${slots.map((x) => `${weekdayLabel(x.weekday)} ${x.start_time}`).join('、')}`}{s.schedule_mode === 'fixed' && s.fixed_start && `：${fmtDateTime(s.fixed_start)}`}</dd>
+      <dt>成團</dt><dd>{RULE_LABEL[s.group_rule]}．{s.min_size} 人開團{s.max_size && `，上限 ${s.max_size} 人`}</dd>
+      <dt>天數</dt><dd>匯款 {s.pay_days} 天．投票 {s.vote_days} 天</dd>
+      <dt>公開討論區</dt><dd>{s.forum_open ? '開放' : '關閉'}</dd>
+    </dl>
+    <h2>TTQS 開課表單</h2>
+    <dl class="facts">{ttqs.map(([k, n]) => <><dt>{n}</dt><dd class="pre">{s![k] || '（未填）'}</dd></>)}</dl>
+    <h2>審核</h2>
+    <form method="post">
+      <div class="form-field"><label for="slug">成果頁網址 /camp/r/…/（小寫英文）</label><input id="slug" name="slug" value={s.slug} /></div>
+      <div class="form-field"><label for="note">給講師的意見</label><textarea id="note" name="note" rows="3"></textarea></div>
+      {s.status !== 'published' && <button class="btn" name="decision" value="publish" type="submit" disabled={missing.length > 0}>審核通過，公開</button>}
+      {s.status === 'submitted' && <button class="btn btn-ghost" name="decision" value="changes" type="submit">退回補件</button>}
+      {s.status === 'published' && <button class="btn btn-ghost" type="submit">只更新網址</button>}
+    </form>
+  </div>
+</AdminLayout>
+<style>
+  .pre { white-space: pre-wrap; }
+</style>

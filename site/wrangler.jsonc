@@ -3,7 +3,7 @@
   // 預設部署為 staging（ADR 0007）。正式網域切換前不設定 routes／custom domain。
   "name": "weiqi-kids-staging",
   "account_id": "9d17db3ab1021898e4873621c147d0ad",
-  "main": "@astrojs/cloudflare/entrypoints/server",
+  "main": "./src/worker.ts",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
   // 動態路由必須先進 Worker：瀏覽器導覽請求（Sec-Fetch-Mode: navigate）否則會被靜態資產層直接回 404。
@@ -12,13 +12,16 @@
     "binding": "ASSETS",
     "not_found_handling": "404-page",
     "html_handling": "force-trailing-slash",
-    "run_worker_first": ["/api/*", "/auth/*", "/account/*", "/admin/*", "/camp/courses/*/forum/*", "/camp/courses/*/materials/*", "/camp/topics/*/want/*"]
+    "run_worker_first": ["/api/*", "/auth/*", "/account/*", "/admin/*", "/camp/", "/camp/r/*", "/camp/g/*", "/sitemap-camp.xml"]
   },
   "observability": { "enabled": true },
   "workers_dev": true,
-  "vars": { "SHOW_DRAFT_COURSES": "1", "MAGIC_LINK_DEBUG": "1" },
+  "vars": { "MAGIC_LINK_DEBUG": "1", "VAPID_PUBLIC_KEY": "BGzYglaa896jxd-06h4m6Zhjny2kCZxWcbZQEsWgd8nhQN6YrGR-E9U1DEnFirx-gZo_Xv3s---rVWu9F9lQBQU" },
+  // 每小時推進共學營每一團的狀態
+  "triggers": { "crons": ["0 * * * *"] },
   "r2_buckets": [{ "binding": "UPLOADS", "bucket_name": "weiqi-kids-staging-uploads" }],
   "d1_databases": [
-    { "binding": "DB", "database_name": "weiqi-kids-staging", "database_id": "c1345075-b309-4d2b-90ac-775ae6f6c0f3", "migrations_dir": "migrations" }
+    // 共學營重建（ADR 0014）後的新資料庫；舊的 weiqi-kids-staging 保留未刪。
+    { "binding": "DB", "database_name": "weiqi-kids-staging-camp", "database_id": "f15b1679-dc91-4a43-8cab-a17b0dec75e0", "migrations_dir": "migrations" }
   ]
 }

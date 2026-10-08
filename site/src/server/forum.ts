@@ -1,11 +1,16 @@
 import { env } from 'cloudflare:workers';
-import { db, audit, notify } from './db';
+import { db, audit } from './db';
+import { notify } from './notify';
 import { newId, nowIso, sha256hex } from './crypto';
 import type { Account } from './types';
-import type { CourseRole } from './permissions';
+
+// 論壇角色：space 是 'showcase:{id}'（成果的公開討論區）或 'cohort:{id}'（一團的課程論壇）。
+export interface SpaceRole { view: boolean; post: boolean; moderate: boolean; admin: boolean }
+
+export const HIDE_REASONS = ['垃圾內容', '個資', '侵權', '錯誤資訊', '違反課程規則', '作者要求', '其他管理原因'] as const;
 
 export interface Post {
-  id: string; course_slug: string; author_id: string; author_name: string; parent_id: string | null;
+  id: string; space: string; author_id: string; author_name: string; parent_id: string | null;
   title: string | null; body: string; status: 'published' | 'withdrawn' | 'hidden'; created_at: string; updated_at: string;
 }
 export interface Attachment { id: string; post_id: string; mime_type: string; size: number }
@@ -18,28 +23,28 @@ export const MAX_FILES = 4;
 export const uploadsEnabled = () => !!(env as { UPLOADS?: R2Bucket }).UPLOADS;
 
 // 可見性：一般成員只看得到已發布內容；作者看得到自己被隱藏或撤回的內容；版主與管理員看得到隱藏內容。
-export function visibleTo(post: Post, me: Account, role: CourseRole) {
+export function visibleTo(post: Post, me: Account | null, role: SpaceRole) {
   if (post.status === 'published') return true;
-  if (post.author_id === me.id) return true;
-  return post.status === 'hidden' && (role.admin || role.instructor);
+  if (me && post.author_id === me.id) return true;
+  return post.status === 'hidden' && role.moderate;
 }
 
-const POST_COLS = 'p.id, p.course_slug, p.author_id, a.display_name AS author_name, p.parent_id, p.title, p.body, p.status, p.created_at, p.updated_at';
+const POST_COLS = 'p.id, p.space, p.author_id, a.display_name AS author_name, p.parent_id, p.title, p.body, p.status, p.created_at, p.updated_at';
 
-export async function listTopics(slug: string) {
+export async function listTopics(space: string) {
   const { results } = await db().prepare(
     `SELECT ${POST_COLS}, (SELECT COUNT(*) FROM posts r WHERE r.parent_id = p.id AND r.status = 'published') AS replies
-     FROM posts p JOIN accounts a ON a.id = p.author_id WHERE p.course_slug = ? AND p.parent_id IS NULL ORDER BY p.created_at DESC`,
-  ).bind(slug).all<Post & { replies: number }>();
+     FROM posts p JOIN accounts a ON a.id = p.author_id WHERE p.space = ? AND p.parent_id IS NULL ORDER BY p.created_at DESC`,
+  ).bind(space).all<Post & { replies: number }>();
   return results;
 }
 
-export async function getPost(slug: string, id: string) {
-  return db().prepare(`SELECT ${POST_COLS} FROM posts p JOIN accounts a ON a.id = p.author_id WHERE p.course_slug = ? AND p.id = ?`).bind(slug, id).first<Post>();
+export async function getPost(space: string, id: string) {
+  return db().prepare(`SELECT ${POST_COLS} FROM posts p JOIN accounts a ON a.id = p.author_id WHERE p.space = ? AND p.id = ?`).bind(space, id).first<Post>();
 }
 
-export async function listReplies(slug: string, parentId: string) {
-  const { results } = await db().prepare(`SELECT ${POST_COLS} FROM posts p JOIN accounts a ON a.id = p.author_id WHERE p.course_slug = ? AND p.parent_id = ? ORDER BY p.created_at`).bind(slug, parentId).all<Post>();
+export async function listReplies(space: string, parentId: string) {
+  const { results } = await db().prepare(`SELECT ${POST_COLS} FROM posts p JOIN accounts a ON a.id = p.author_id WHERE p.space = ? AND p.parent_id = ? ORDER BY p.created_at`).bind(space, parentId).all<Post>();
   return results;
 }
 
@@ -62,23 +67,23 @@ export async function validateFiles(files: File[]): Promise<string | null> {
   return null;
 }
 
-async function storeFiles(slug: string, postId: string, ownerId: string, files: File[]) {
+async function storeFiles(space: string, postId: string, ownerId: string, files: File[]) {
   for (const f of files.filter((x) => x.size > 0)) {
     const id = newId();
     const buf = await f.arrayBuffer();
-    const key = `courses/${slug}/${postId}/${id}`;
+    const key = `${space.replace(':', '/')}/${postId}/${id}`;
     await env.UPLOADS!.put(key, buf, { httpMetadata: { contentType: f.type } });
-    await db().prepare('INSERT INTO attachments (id, post_id, course_slug, owner_id, r2_key, mime_type, size, sha256) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
-      .bind(id, postId, slug, ownerId, key, f.type, f.size, await sha256hex(buf)).run();
+    await db().prepare('INSERT INTO attachments (id, post_id, space, owner_id, r2_key, mime_type, size, sha256) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+      .bind(id, postId, space, ownerId, key, f.type, f.size, await sha256hex(buf)).run();
   }
 }
 
-export async function createPost(slug: string, me: Account, input: { parentId: string | null; title: string | null; body: string; files: File[] }) {
+export async function createPost(space: string, me: Account, input: { parentId: string | null; title: string | null; body: string; files: File[] }) {
   const id = newId();
-  await db().prepare('INSERT INTO posts (id, course_slug, author_id, parent_id, title, body) VALUES (?, ?, ?, ?, ?, ?)')
-    .bind(id, slug, me.id, input.parentId, input.title, input.body).run();
-  await storeFiles(slug, id, me.id, input.files);
-  await audit(me.id, 'post.create', id, { course: slug });
+  await db().prepare('INSERT INTO posts (id, space, author_id, parent_id, title, body) VALUES (?, ?, ?, ?, ?, ?)')
+    .bind(id, space, me.id, input.parentId, input.title, input.body).run();
+  await storeFiles(space, id, me.id, input.files);
+  await audit(me.id, 'post.create', id, { space });
   return id;
 }
 
@@ -100,8 +105,8 @@ export async function withdrawPost(post: Post, me: Account) {
   return true;
 }
 
-export async function moderate(post: Post, me: Account, role: CourseRole, action: 'hide' | 'restore', reason: string, note: string | null, link: string) {
-  if (!(role.admin || role.instructor)) return false;
+export async function moderate(post: Post, me: Account, role: SpaceRole, action: 'hide' | 'restore', reason: string, note: string | null, link: string) {
+  if (!role.moderate) return false;
   // 講師隱藏的是其他學員的內容；自己的內容用撤回
   if (post.author_id === me.id) return false;
   if (action === 'hide' && post.status !== 'published') return false;

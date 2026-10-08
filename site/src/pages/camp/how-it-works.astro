@@ -1,51 +1,43 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import LineContact from '../../components/LineContact.astro';
-import { courseRules } from '../../data/site.js';
+import { campRules } from '../../data/site.js';
+const fee = campRules.minFee.toLocaleString('zh-TW');
 const steps = [
-  { name: '看講師成果，先自己試', text: '講師成果頁列出講師用 AI 做出來的東西。先照著自己做，做得出來就不用報名。' },
-  { name: '做不來，登記想學', text: '登入後在成果頁按「登記想學」，不用付費，可以隨時取消。' },
-  { name: '滿人數開團', text: '登記滿講師訂的人數，協會和講師排定日期開團，並在帳號頁通知你報名。' },
-  { name: '報名開好的團', text: '填寫報名表，送出後會拿到一組報名編號。' },
-  { name: '透過協會 LINE@ 附報名編號匯款', text: `第一次報名繳 ${courseRules.fee.toLocaleString('zh-TW')} 元常年會費（含這一門課），之後每門課同樣 ${courseRules.fee.toLocaleString('zh-TW')} 元。匯款紀錄與其他私密資料只透過協會 LINE@ 提交，不在網站上傳。` },
-  { name: '協會核款並開通課程', text: '協會人工核對款項後開通該課教材。第一次報名的人，在這一步同時成為協會會員。' },
-  { name: '參加第 1 堂主題教學', text: '講師講授主題，並交付全部技能單張。' },
-  { name: '自行選擇加入實作營', text: '取得課程資格後，可以自己加入該課實作營，參加第 2～4 堂實作，在課程論壇分享作品。' },
-  { name: '結營後持續交流', text: '一個月後結營，課程論壇保留，原課程成員可以繼續發文與互動。' },
+  { name: '看講師成果，先自己試', text: '每項成果都有講師的做法說明和一張試閱技能單張。照著做，做得出來就不用報名。' },
+  { name: '卡住了，到討論區問', text: '每項成果有自己的公開討論區，登入就能發問。講師有空會回，其他人也能回。' },
+  { name: '做不來，登記想學', text: '登入後在成果頁按「登記想學」。不用付費、不必入會，隨時可以取消。講師填了每週時段的話，選你方便的時段。' },
+  { name: '滿人數，自動開團', text: '登記滿講師訂的人數就開團。主題教學的日期依講師的設定排定：直接排進你選的時段、由講師提出候選日期讓大家投票參考，或照講師預訂的日期。' },
+  { name: '報名並匯款', text: `開團後你會收到通知。到團頁報名，匯款到協會帳戶，再填匯款日期和帳號末五碼，由協會管理員核對。團費由講師訂，最低 ${fee} 元。` },
+  { name: '上主題教學', text: '線上直播或實體上課，由講師決定。上課時在上課區簽到，技能單張也在上課區。' },
+  { name: '3 週實作，做出你的成果', text: '你自己找題目，每週在課程論壇交一次：第 1 週題目、第 2 週第一版、第 3 週成果。系統會在截止前提醒。' },
+  { name: '結營，論壇保留', text: '主題教學後滿 1 個月結營，請填問卷。課程論壇會保留，可以繼續交流。' },
 ];
 const howto = {
-  '@context': 'https://schema.org',
-  '@type': 'HowTo',
-  name: '如何參加 AI 共學營',
-  totalTime: 'P1M',
-  estimatedCost: { '@type': 'MonetaryAmount', currency: 'TWD', value: courseRules.fee },
+  '@context': 'https://schema.org', '@type': 'HowTo', name: '如何參加 AI 共學營', totalTime: 'P1M',
+  estimatedCost: { '@type': 'MonetaryAmount', currency: 'TWD', minValue: campRules.minFee },
   step: steps.map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.name, text: s.text })),
 };
 ---
-<BaseLayout title="AI 共學營參加流程" description={`AI 共學營流程：看講師成果、做不來就登記想學、滿人數開團、報名並 LINE@ 附編號匯款 ${courseRules.fee.toLocaleString('zh-TW')} 元、核款開通、主題教學與實作、結營後持續交流。`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '參加流程', href: '/camp/how-it-works/' }]} schema={[howto]}>
+<BaseLayout title="AI 共學營參加流程" description={`先看講師成果自己試，做不來就登記想學，滿人數自動開團。報名匯款、主題教學、3 週實作做出成果，1 個月，團費最低 ${fee} 元。`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '參加流程', href: '/camp/how-it-works/' }]} schema={[howto]}>
   <article class="prose">
     <h1>參加流程</h1>
     <div class="key-answer" data-question="參加 AI 共學營要做哪些事？">
-      <p>先看講師做出來的成果，自己做不來就登記想學。登記滿講師訂的人數開團，你報名取得編號，透過協會 LINE@ 附編號匯款，協會核款開通後就可以上第 1 堂主題教學並自選加入實作營。整門課為期{courseRules.duration}。第一次繳的 {courseRules.fee.toLocaleString('zh-TW')} 元是協會常年會費，已包含第一門課。</p>
+      <p>先看講師的成果自己試；做不來就登記想學，滿人數自動開團。開團後報名匯款，上 1 堂主題教學，再用 3 週做出你自己的成果。整團{campRules.duration}，團費由講師訂，最低 {fee} 元，不必入會。</p>
     </div>
-    <ol class="steps actionable-steps">
-      {steps.map((s) => <li><strong>{s.name}</strong><p>{s.text}</p></li>)}
-    </ol>
-
-    <h2>費用與會員</h2>
-    <dl class="facts">
-      <dt>第一次報名</dt><dd>繳常年會費 {courseRules.fee.toLocaleString('zh-TW')} 元，含第一門課</dd>
-      <dt>之後每門新課</dt><dd>{courseRules.fee.toLocaleString('zh-TW')} 元</dd>
-      <dt>會員效期</dt><dd>常年會費以年計算，{courseRules.membershipTerm}一續</dd>
-      <dt>企業會員</dt><dd>常年會費 60,000 元</dd>
-      <dt>會員到期後</dt><dd>已上過的課程、作品與討論紀錄都保留；報名新課需要有效會員資格</dd>
-    </dl>
-
-    <h2>提交匯款紀錄</h2>
-    <p>匯款紀錄請傳到 <LineContact />，並附上報名編號。傳出匯款紀錄不代表已經開通，請等協會核款後的通知。</p>
+    <ol class="actionable-steps">{steps.map((s) => <li><strong>{s.name}</strong><p>{s.text}</p></li>)}</ol>
+    <h2>退款</h2>
+    <ul>
+      <li>主題教學開始前，可以在團頁申請全額退款；開始後不退。</li>
+      <li>匯款期限內付款人數不夠、沒有成團，已匯款的人全額退款。</li>
+      <li>講師取消，已匯款的人全額退款。</li>
+      <li>退款由協會管理員匯回你的帳戶。</li>
+    </ul>
+    <h2>通知</h2>
+    <p>開團、匯款期限、實作提醒等通知會顯示在帳號頁，也可以在帳號頁開啟手機或電腦的推播通知。iPhone 要先把網站加到主畫面才收得到推播。</p>
+    <p><a class="btn" href="/camp/">看講師成果</a></p>
   </article>
 </BaseLayout>
 <style>
-  .steps li { margin-bottom: var(--space-4); }
-  .steps p { margin: 0; }
+  .actionable-steps li { margin-bottom: var(--space-4); }
+  .actionable-steps p { margin: 0; }
 </style>

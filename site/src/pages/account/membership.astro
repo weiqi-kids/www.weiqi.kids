@@ -1,0 +1,64 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import LineContact from '../../components/LineContact.astro';
+import { env } from 'cloudflare:workers';
+import { membershipOf, isMembershipActive } from '../../server/accounts';
+import { duesOf, submitDues } from '../../server/camp/membership';
+import { str } from '../../server/http';
+import { fmtDate } from '../../lib/time';
+import { DUES_STATUS, label } from '../../lib/labels';
+import { campRules } from '../../data/site.js';
+export const prerender = false;
+
+const me = Astro.locals.account;
+if (!me) return Astro.redirect('/auth/login/?next=/account/membership/');
+let error: string | null = null;
+let message: string | null = null;
+if (Astro.request.method === 'POST') {
+  const f = await Astro.request.formData();
+  error = await submitDues(me.id, str(f, 'paid_on', 10), str(f, 'last5', 5));
+  if (!error) message = '已收到，管理員核對後會通知你。';
+}
+const m = await membershipOf(me.id);
+const active = isMembershipActive(m);
+const dues = await duesOf(me.id);
+const pending = dues.some((d) => d.status === 'submitted');
+const fee = campRules.membershipFee.toLocaleString('zh-TW');
+const bank = env.BANK_ACCOUNT_INFO;
+---
+<AppLayout title="協會會員" breadcrumbs={[{ name: '帳號', href: '/account/' }, { name: '協會會員', href: '/account/membership/' }]}>
+  <div class="prose">
+    <h1>協會會員</h1>
+    {message && <p class="notice">{message}</p>}
+    {error && <p class="notice notice-error">{error}</p>}
+    <p>{active ? `你是協會會員，有效到 ${fmtDate(m!.expires_at)}。` : m ? `你的會員在 ${fmtDate(m.expires_at)} 到期。` : '你還不是協會會員。'}</p>
+    <dl class="facts">
+      <dt>常年會費</dt><dd>{fee} 元，一年一繳，全歸協會，不含任何課程</dd>
+      <dt>會員可以</dt><dd>把自己用 AI 做出來的成果放上共學營當講師</dd>
+      <dt>不必入會</dt><dd>登記想學、報名上課都不需要會員資格</dd>
+    </dl>
+    {pending ? <p class="notice">你填的會費匯款正在等管理員核對。</p> : (
+      <section>
+        <h2>{active ? '續會' : '入會'}</h2>
+        <ol class="actionable-steps">
+          <li>匯款 {fee} 元到協會帳戶{bank ? `：${bank}` : ''}。{!bank && <>匯款帳號請向 <LineContact /> 索取。</>}</li>
+          <li>匯完填下面的資料，管理員對照銀行入帳後開通（有效期從今天或原到期日起算一年）。</li>
+        </ol>
+        <form method="post" class="narrow">
+          <div class="form-field"><label for="paid_on">匯款日期</label><input id="paid_on" name="paid_on" type="date" required /></div>
+          <div class="form-field"><label for="last5">你的帳號末五碼</label><input id="last5" name="last5" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" required /></div>
+          <button class="btn" type="submit">送出</button>
+        </form>
+      </section>
+    )}
+    {dues.length > 0 && (
+      <section>
+        <h2>會費紀錄</h2>
+        <ul>{dues.map((d) => <li>{d.paid_on} 匯款 {d.amount.toLocaleString('zh-TW')} 元：{label(DUES_STATUS, d.status)}{d.review_note && `（${d.review_note}）`}</li>)}</ul>
+      </section>
+    )}
+  </div>
+</AppLayout>
+<style>
+  .narrow { max-width: 24rem; }
+</style>

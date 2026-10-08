@@ -1,0 +1,40 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { requireAdmin } from '../../server/guard';
+import { db, audit } from '../../server/db';
+import { notify } from '../../server/notify';
+import { nowIso } from '../../server/crypto';
+import { str } from '../../server/http';
+import { fmtDate } from '../../lib/time';
+export const prerender = false;
+const stop = requireAdmin(Astro); if (stop) return stop;
+const me = Astro.locals.account!;
+let message: string | null = null;
+if (Astro.request.method === 'POST') {
+  const f = await Astro.request.formData();
+  const id = str(f, 'cohort', 60);
+  const p = await db().prepare("SELECT instructor_id, amount FROM payouts WHERE cohort_id = ? AND status = 'due'").bind(id).first<{ instructor_id: string; amount: number }>();
+  if (p) {
+    await db().prepare("UPDATE payouts SET status = 'paid', paid_by = ?, paid_at = ? WHERE cohort_id = ?").bind(me.id, nowIso(), id).run();
+    await audit(me.id, 'payout.paid', id, { amount: p.amount });
+    await notify(p.instructor_id, 'payout.paid', `協會已匯出分潤 ${p.amount.toLocaleString('zh-TW')} 元。`, '/account/teach/');
+    message = '已標記匯出並通知講師。';
+  }
+}
+const { results } = await db().prepare(
+  `SELECT p.cohort_id, p.gross, p.amount, p.status, p.paid_at, p.created_at, a.display_name AS name, s.title, c.seq FROM payouts p
+   JOIN accounts a ON a.id = p.instructor_id JOIN cohorts c ON c.id = p.cohort_id JOIN showcases s ON s.id = c.showcase_id
+   ORDER BY CASE p.status WHEN 'due' THEN 0 ELSE 1 END, p.created_at DESC`,
+).all<{ cohort_id: string; gross: number; amount: number; status: string; paid_at: string | null; created_at: string; name: string; title: string; seq: number }>();
+---
+<AdminLayout title="講師分潤">
+  {message && <p class="notice">{message}</p>}
+  <p>每團結營時，系統以已核款的團費算出講師的一半。匯給講師後按「已匯出」。講師的收款帳號請另外向講師索取。</p>
+  <table class="admin-table">
+    <thead><tr><th>結營</th><th>講師</th><th>團</th><th>團費合計</th><th>講師分潤</th><th>狀態</th></tr></thead>
+    <tbody>{results.map((r) => (
+      <tr><td>{fmtDate(r.created_at)}</td><td>{r.name}</td><td>{r.title}．第 {r.seq} 團</td><td>{r.gross.toLocaleString('zh-TW')}</td><td>{r.amount.toLocaleString('zh-TW')}</td>
+        <td>{r.status === 'paid' ? `${fmtDate(r.paid_at!)} 已匯出` : <form method="post"><input type="hidden" name="cohort" value={r.cohort_id} /><button class="btn btn-ghost" type="submit">已匯出</button></form>}</td></tr>
+    ))}</tbody>
+  </table>
+</AdminLayout>

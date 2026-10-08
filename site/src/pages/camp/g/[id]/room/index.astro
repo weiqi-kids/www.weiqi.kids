@@ -1,0 +1,103 @@
+---
+import AppLayout from '../../../../../layouts/AppLayout.astro';
+import { getCohort } from '../../../../../server/camp/cohorts';
+import { getShowcase } from '../../../../../server/camp/showcases';
+import { canEnterRoom, isCohortMember } from '../../../../../server/camp/access';
+import { materialsOf } from '../../../../../server/camp/materials';
+import { submissions, weekDeadline, WEEK_ASK } from '../../../../../server/camp/practice';
+import { surveyOf } from '../../../../../server/camp/survey';
+import { renderUserMarkdown } from '../../../../../server/markdown';
+import { db, audit } from '../../../../../server/db';
+import { str } from '../../../../../server/http';
+import { fmtDateTime } from '../../../../../lib/time';
+import { COHORT_STATE, FORMAT_LABEL, PRACTICE_WEEKS, label } from '../../../../../lib/labels';
+export const prerender = false;
+
+const c = await getCohort(Astro.params.id!);
+const s = c ? await getShowcase(c.showcase_id) : null;
+if (!c || !s) return new Response('Not found', { status: 404 });
+const me = Astro.locals.account;
+const here = `/camp/g/${c.id}/room/`;
+if (!me) return Astro.redirect(`/auth/login/?next=${encodeURIComponent(here)}`);
+if (!(await canEnterRoom(c, s, me))) return Astro.redirect(`/camp/g/${c.id}/`);
+const member = await isCohortMember(c, me);
+
+// 簽到：主題教學開始前 30 分鐘到結束後 30 分鐘。
+const start = c.teaching_start ? Date.parse(c.teaching_start) : 0;
+const end = c.teaching_end ? Date.parse(c.teaching_end) : 0;
+const checkinOpen = member && !!start && Date.now() >= start - 30 * 60_000 && Date.now() <= end + 30 * 60_000;
+let message: string | null = null;
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  if (str(form, 'action', 20) === 'checkin' && checkinOpen) {
+    await db().prepare('INSERT OR IGNORE INTO attendance (cohort_id, account_id) VALUES (?, ?)').bind(c.id, me.id).run();
+    await audit(me.id, 'attendance.checkin', c.id);
+    message = '已簽到。';
+  }
+}
+const checked = !!(await db().prepare('SELECT 1 FROM attendance WHERE cohort_id = ? AND account_id = ?').bind(c.id, me.id).first());
+const materials = await materialsOf(s.id);
+const mine = (await submissions(c.id)).filter((x) => x.account_id === me.id);
+const survey = member && c.state === 'ended' ? await surveyOf(c.id, me.id) : null;
+const md = (t: string) => renderUserMarkdown(t);
+---
+<AppLayout title={`上課區：${s.title}`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: `${s.title}．第 ${c.seq} 團`, href: `/camp/g/${c.id}/` }, { name: '上課區', href: here }]}>
+  <div class="prose">
+    <h1>上課區：{s.title}．第 {c.seq} 團</h1>
+    {message && <p class="notice">{message}</p>}
+    <p class="muted">{label(COHORT_STATE, c.state)}</p>
+
+    <section>
+      <h2>主題教學</h2>
+      <dl class="facts">
+        <dt>時間</dt><dd>{c.teaching_start ? fmtDateTime(c.teaching_start) : '排定中'}</dd>
+        <dt>方式</dt><dd>{FORMAT_LABEL[c.teaching_format ?? s.teaching_format]}</dd>
+        {(c.teaching_format ?? s.teaching_format) === 'onsite'
+          ? <><dt>地點</dt><dd>{c.location ?? s.location}</dd></>
+          : <><dt>直播連結</dt><dd>{c.meeting_url ? <a href={c.meeting_url} rel="noopener" target="_blank">{c.meeting_url}</a> : '講師上課前會貼在這裡'}</dd></>}
+      </dl>
+      {member && (checked ? <p class="ok">你已簽到。</p> : checkinOpen
+        ? <form method="post"><input type="hidden" name="action" value="checkin" /><button class="btn" type="submit">簽到</button></form>
+        : <p class="muted">上課前 30 分鐘開放簽到。</p>)}
+    </section>
+
+    {member && c.teaching_start && (
+      <section>
+        <h2>3 週實作</h2>
+        <p>你自己找題目，每週在<a href={`/camp/g/${c.id}/forum/`}>課程論壇</a>發一篇，選它是第幾週的繳交。</p>
+        <ul class="weeks">
+          {[1, 2, 3].map((w) => {
+            const done = mine.find((x) => x.week === w);
+            return <li><strong>{PRACTICE_WEEKS[w]}</strong>：{WEEK_ASK[w]}．{fmtDateTime(weekDeadline(c, w))} 截止．{done ? <a href={`/camp/g/${c.id}/forum/${done.post_id}/`}>已交</a> : <span class="muted">還沒交</span>}</li>;
+          })}
+        </ul>
+      </section>
+    )}
+
+    <p><a class="btn btn-ghost" href={`/camp/g/${c.id}/forum/`}>課程論壇</a></p>
+
+    {member && c.state === 'ended' && (survey ? <p class="ok">你已填過結營問卷，謝謝。</p> : <p class="notice">結營了，請花 2 分鐘<a href={`${here}survey/`}>填問卷</a>。</p>)}
+
+    <section>
+      <h2>技能單張（{materials.length} 張）</h2>
+      {materials.length === 0 && <p class="muted">講師還沒放技能單張。</p>}
+      {materials.map((m) => (
+        <details class="sheet">
+          <summary>{m.title}</summary>
+          <h3>問題</h3><div set:html={md(m.problem)} />
+          <h3>發生的原因</h3><div set:html={md(m.cause)} />
+          <h3>解決方法有哪些</h3><div set:html={md(m.solutions)} />
+          <h3>我建議的流程</h3><div set:html={md(m.flow)} />
+        </details>
+      ))}
+    </section>
+  </div>
+</AppLayout>
+<style>
+  section { margin-bottom: var(--space-8); }
+  .ok { color: var(--color-tip-line); font-weight: 700; }
+  .weeks { display: grid; gap: var(--space-2); }
+  .sheet { border: 1px solid var(--color-line); border-radius: var(--radius); padding: var(--space-3) var(--space-4); margin-bottom: var(--space-3); }
+  .sheet summary { font-weight: 700; cursor: pointer; }
+  .sheet h3 { font-size: var(--text-base); margin-bottom: 0; }
+</style>

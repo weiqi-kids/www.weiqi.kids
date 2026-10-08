@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { site, courseRules, association } from '../../data/site.js';
+import { site, campRules, association } from '../../data/site.js';
 import { founders } from '../../data/legacy/members.js';
 import YouTube from '../../components/YouTube.astro';
 import { videos, channelUrl } from '../../data/media.js';
@@ -32,7 +32,7 @@ import PageHead from '../../components/PageHead.astro';
 
     <h2>協會主辦的兩種活動</h2>
     <div class="key-answer" data-question="好棋寶寶棋聚和 AI 共學營有什麼不同？">
-      <p>好棋寶寶棋聚是以圍棋交流為主的聚會，包含主題講座、友誼對局與新手交流。AI 共學營是會員的付費課程，每門課 1 堂主題教學加 3 堂實作，為期{courseRules.duration}。</p>
+      <p>好棋寶寶棋聚是以圍棋交流為主的聚會，包含主題講座、友誼對局與新手交流。AI 共學營是會員講師把自己用 AI 做出來的成果放上來，學員做不來就登記想學，滿人數開團；每團 1 堂主題教學加 3 週實作，為期 {campRules.duration}。</p>
     </div>
     <ul>
       <li><a href="/gatherings/">好棋寶寶棋聚</a></li>
@@ -41,7 +41,7 @@ import PageHead from '../../components/PageHead.astro';
 
     <h2>會員制度</h2>
     <div class="key-answer" data-question="怎麼成為協會會員？">
-      <p>依<a href="/association/charter/">章程</a>第七條，個人會員入會費 0 元、常年會費 {courseRules.fee.toLocaleString('zh-TW')} 元，這筆常年會費已包含一門 AI 共學營課程；之後每上一門新課再付 {courseRules.fee.toLocaleString('zh-TW')} 元。企業會員入會費 0 元、常年會費 60,000 元（見<a href="/association/corporate-membership/">企業會員</a>）。</p>
+      <p>依<a href="/association/charter/">章程</a>第七條，個人會員入會費 0 元、常年會費 {campRules.membershipFee.toLocaleString('zh-TW')} 元，會員可以把自己的成果放上 AI 共學營當講師；上共學營不必入會，團費由講師訂。企業會員入會費 0 元、常年會費 60,000 元（見<a href="/association/corporate-membership/">企業會員</a>）。</p>
     </div>
 
     <h2>公開知識</h2>

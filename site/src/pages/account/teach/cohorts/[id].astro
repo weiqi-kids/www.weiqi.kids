@@ -1,0 +1,130 @@
+---
+import AppLayout from '../../../../layouts/AppLayout.astro';
+import { getCohort, proposeOptions, setTeachingDate, setMeetingUrl, cancelCohort, voteResults, interestCount } from '../../../../server/camp/cohorts';
+import { getShowcase } from '../../../../server/camp/showcases';
+import { isAdmin } from '../../../../server/camp/access';
+import { submissions, weekDeadline } from '../../../../server/camp/practice';
+import { db } from '../../../../server/db';
+import { str } from '../../../../server/http';
+import { fmtDateTime, parseTaipeiLocal, daysLeft } from '../../../../lib/time';
+import { COHORT_STATE, ENROLLMENT_STATUS, FORMAT_LABEL, PRACTICE_WEEKS, label } from '../../../../lib/labels';
+export const prerender = false;
+
+const me = Astro.locals.account;
+const here = `/account/teach/cohorts/${Astro.params.id}/`;
+if (!me) return Astro.redirect(`/auth/login/?next=${encodeURIComponent(here)}`);
+let c = await getCohort(Astro.params.id!);
+const s = c ? await getShowcase(c.showcase_id) : null;
+if (!c || !s || (s.owner_id !== me.id && !isAdmin(me))) return new Response('Not found', { status: 404 });
+let error: string | null = null;
+let message: string | null = null;
+if (Astro.request.method === 'POST') {
+  const f = await Astro.request.formData();
+  const action = str(f, 'action', 20);
+  if (action === 'propose') {
+    const times = [0, 1, 2, 3, 4].map((i) => parseTaipeiLocal(str(f, `opt_${i}`, 20))).filter((x): x is string => !!x);
+    error = await proposeOptions(c, s, me.id, times);
+    if (!error) message = '已提出候選日期，登記的人會收到投票通知。';
+  } else if (action === 'set-date') {
+    const t = parseTaipeiLocal(str(f, 'start', 20));
+    error = t ? await setTeachingDate(c, s, me.id, t) : '請選日期和時間。';
+    if (!error) message = '已決定日期，登記的人會收到報名匯款的通知。';
+  } else if (action === 'meeting') {
+    error = await setMeetingUrl(c, me.id, str(f, 'url', 500));
+    if (!error) message = '已更新直播連結。';
+  } else if (action === 'cancel') {
+    if (str(f, 'confirm', 3) !== 'yes') error = '請勾選確認。';
+    else { error = await cancelCohort(c, s, me.id, str(f, 'reason', 500)); if (!error) message = '已取消這一團，已匯款的學員會全額退款。'; }
+  }
+  c = (await getCohort(c.id))!;
+}
+const { results: roster } = await db().prepare(
+  `SELECT e.account_id, e.status, a.display_name, (SELECT 1 FROM attendance t WHERE t.cohort_id = e.cohort_id AND t.account_id = e.account_id) AS present
+   FROM enrollments e JOIN accounts a ON a.id = e.account_id WHERE e.cohort_id = ? AND e.status != 'cancelled' ORDER BY e.created_at`,
+).bind(c.id).all<{ account_id: string; status: string; display_name: string; present: number | null }>();
+const subs = await submissions(c.id);
+const options = c.state === 'scheduling' ? await voteResults(c.id) : [];
+const registered = await interestCount(c.id);
+const cancellable = ['scheduling', 'payment', 'confirmed', 'running'].includes(c.state);
+---
+<AppLayout title={`${s.title}．第 ${c.seq} 團`} breadcrumbs={[{ name: '講師後台', href: '/account/teach/' }, { name: `${s.title}．第 ${c.seq} 團`, href: here }]}>
+  <div class="prose">
+    <h1>{s.title}．第 {c.seq} 團</h1>
+    {message && <p class="notice">{message}</p>}
+    {error && <p class="notice notice-error">{error}</p>}
+    <dl class="facts">
+      <dt>狀態</dt><dd>{label(COHORT_STATE, c.state)}{c.close_reason && c.state !== 'ended' && `：${c.close_reason}`}</dd>
+      <dt>登記想學</dt><dd>{registered} 人</dd>
+      <dt>主題教學</dt><dd>{c.teaching_start ? fmtDateTime(c.teaching_start) : '還沒排'}．{FORMAT_LABEL[c.teaching_format ?? s.teaching_format]}</dd>
+      {c.state === 'payment' && <><dt>匯款期限</dt><dd>{fmtDateTime(c.pay_deadline!)}（剩 {daysLeft(c.pay_deadline!)} 天）</dd></>}
+    </dl>
+    <p><a href={`/camp/g/${c.id}/`}>團頁</a>{['confirmed', 'running', 'ended'].includes(c.state) && <>．<a href={`/camp/g/${c.id}/room/`}>上課區</a>．<a href={`/camp/g/${c.id}/forum/`}>課程論壇</a></>}</p>
+
+    {c.state === 'scheduling' && (
+      <section>
+        <h2>排主題教學的日期</h2>
+        {s.schedule_mode === 'vote' && (
+          <form method="post">
+            <input type="hidden" name="action" value="propose" />
+            <p>提出幾個候選日期，登記的人投票開放 {c.vote_days ?? s.vote_days} 天。投票只供你參考。{c.propose_by && `請在 ${fmtDateTime(c.propose_by)} 前提出，否則這團不開。`}</p>
+            {[0, 1, 2, 3, 4].map((i) => <div class="form-field"><label for={`opt_${i}`}>候選 {i + 1}</label><input id={`opt_${i}`} name={`opt_${i}`} type="datetime-local" /></div>)}
+            <button class="btn btn-ghost" type="submit">{options.length ? '重新提出（投票會清空）' : '提出候選日期'}</button>
+          </form>
+        )}
+        {options.length > 0 && <><h3>投票結果{c.vote_closes_at && `（${Date.now() < Date.parse(c.vote_closes_at) ? `${fmtDateTime(c.vote_closes_at)} 截止` : '已截止'}）`}</h3><ul>{options.map((o) => <li>{fmtDateTime(o.starts_at)}：{o.votes} 票</li>)}</ul></>}
+        <form method="post">
+          <input type="hidden" name="action" value="set-date" />
+          <div class="form-field"><label for="start">決定主題教學日期（台北時間）</label><input id="start" name="start" type="datetime-local" required /></div>
+          <button class="btn" type="submit">決定日期，通知學員匯款</button>
+        </form>
+      </section>
+    )}
+
+    {(c.teaching_format ?? s.teaching_format) === 'online' && ['payment', 'confirmed', 'running'].includes(c.state) && (
+      <section>
+        <h2>直播連結</h2>
+        <form method="post">
+          <input type="hidden" name="action" value="meeting" />
+          <div class="form-field"><label for="url">Google Meet、Zoom 等連結（只有核款的學員看得到）</label><input id="url" name="url" type="url" value={c.meeting_url ?? ''} placeholder="https://" /></div>
+          <button class="btn btn-ghost" type="submit">儲存</button>
+        </form>
+      </section>
+    )}
+
+    <section>
+      <h2>學員</h2>
+      <p class="muted">核款由協會管理員處理，這裡只顯示狀態。</p>
+      {roster.length === 0 ? <p class="muted">還沒有人報名。</p> : (
+        <div class="table-wrap"><table>
+          <thead><tr><th>學員</th><th>核款</th><th>簽到</th>{[1, 2, 3].map((w) => <th>{PRACTICE_WEEKS[w]}</th>)}</tr></thead>
+          <tbody>{roster.map((r) => (
+            <tr><td>{r.display_name}</td><td>{label(ENROLLMENT_STATUS, r.status)}</td><td>{r.present ? '已簽到' : '—'}</td>
+              {[1, 2, 3].map((w) => { const x = subs.find((y) => y.account_id === r.account_id && y.week === w); return <td>{x ? <a href={`/camp/g/${c!.id}/forum/${x.post_id}/`}>已交</a> : c!.teaching_start && Date.now() > Date.parse(weekDeadline(c!, w)) ? '沒交' : '—'}</td>; })}
+            </tr>
+          ))}</tbody>
+        </table></div>
+      )}
+    </section>
+
+    {cancellable && (
+      <details class="danger">
+        <summary>取消這一團</summary>
+        <form method="post">
+          <input type="hidden" name="action" value="cancel" />
+          <p>取消後，已匯款的學員全額退款，這一團不會有分潤。</p>
+          <div class="form-field"><label for="reason">原因（會通知學員）</label><input id="reason" name="reason" maxlength="500" /></div>
+          <div class="form-field"><label><input type="checkbox" name="confirm" value="yes" /> 我確定要取消</label></div>
+          <button class="btn btn-ghost" type="submit">取消這一團</button>
+        </form>
+      </details>
+    )}
+  </div>
+</AppLayout>
+<style>
+  section { margin-bottom: var(--space-8); }
+  .table-wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: var(--text-sm); }
+  th, td { text-align: left; padding: var(--space-2); border-bottom: 1px solid var(--color-line); white-space: nowrap; }
+  .danger { border: 1px solid var(--color-danger-line); border-radius: var(--radius); padding: var(--space-3) var(--space-4); }
+  .danger summary { cursor: pointer; color: var(--color-danger-line); font-weight: 700; }
+</style>

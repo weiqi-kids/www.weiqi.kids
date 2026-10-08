@@ -1,39 +1,59 @@
 ---
 import AdminLayout from '../../layouts/AdminLayout.astro';
 import { requireAdmin } from '../../server/guard';
-import { db } from '../../server/db';
-import { resolveAppeal } from '../../server/admin';
+import { db, audit } from '../../server/db';
+import { notify } from '../../server/notify';
+import { newId, nowIso } from '../../server/crypto';
 import { str } from '../../server/http';
-import { runtimeCourses } from '../../server/courses';
-import { fmtDateTime } from '../../server/admin-view';
+import { fmtDateTime } from '../../lib/time';
 export const prerender = false;
 const stop = requireAdmin(Astro); if (stop) return stop;
 const me = Astro.locals.account!;
+
+// 文章在哪個論壇：成果的公開討論區或某一團的課程論壇。
+async function postLink(space: string, parent: string | null, id: string) {
+  const [kind, sid] = space.split(':');
+  const topic = parent ?? id;
+  if (kind === 'showcase') { const s = await db().prepare('SELECT slug, title FROM showcases WHERE id = ?').bind(sid).first<{ slug: string; title: string }>(); return { href: `/camp/r/${s?.slug}/forum/${topic}/#p-${id}`, name: `${s?.title ?? ''} 討論區` }; }
+  const c = await db().prepare('SELECT c.seq, s.title FROM cohorts c JOIN showcases s ON s.id = c.showcase_id WHERE c.id = ?').bind(sid).first<{ seq: number; title: string }>();
+  return { href: `/camp/g/${sid}/forum/${topic}/#p-${id}`, name: `${c?.title ?? ''} 第 ${c?.seq ?? ''} 團論壇` };
+}
+
 let message: string | null = null;
 if (Astro.request.method === 'POST') {
-  const form = await Astro.request.formData();
-  const decision = str(form, 'decision', 20);
-  if (decision === 'upheld' || decision === 'restored') {
-    message = (await resolveAppeal(str(form, 'appeal', 60), me.id, decision, str(form, 'note', 1000) || null)) ? '已處理申訴並通知作者。' : '這件申訴已處理過。';
-  }
+  const f = await Astro.request.formData();
+  const decision = str(f, 'decision', 20);
+  const a = await db().prepare("SELECT id, post_id, author_id FROM appeals WHERE id = ? AND status = 'open'").bind(str(f, 'appeal', 60)).first<{ id: string; post_id: string; author_id: string }>();
+  if (a && (decision === 'upheld' || decision === 'restored')) {
+    const note = str(f, 'note', 1000) || null;
+    const stmts = [db().prepare('UPDATE appeals SET status = ?, resolved_by = ?, resolved_at = ?, resolution_note = ? WHERE id = ?').bind(decision, me.id, nowIso(), note, a.id)];
+    if (decision === 'restored') {
+      stmts.push(db().prepare("UPDATE posts SET status = 'published', updated_at = ? WHERE id = ? AND status = 'hidden'").bind(nowIso(), a.post_id));
+      stmts.push(db().prepare("INSERT INTO moderation_actions (id, post_id, actor_id, actor_role, action, reason, note) VALUES (?, ?, ?, 'admin', 'restore', '申訴成立', ?)").bind(newId(), a.post_id, me.id, note));
+    }
+    await db().batch(stmts);
+    const p = await db().prepare('SELECT space, parent_id FROM posts WHERE id = ?').bind(a.post_id).first<{ space: string; parent_id: string | null }>();
+    const l = p ? await postLink(p.space, p.parent_id, a.post_id) : null;
+    await notify(a.author_id, 'appeal.resolved', decision === 'restored' ? '你的申訴成立，內容已恢復顯示。' : `你的申訴經協會審查後維持隱藏。${note ? `說明：${note}` : ''}`, l?.href);
+    await audit(me.id, `appeal.${decision}`, a.id, { note });
+    message = '已處理申訴並通知作者。';
+  } else message = '這件申訴已處理過。';
 }
 const { results: appeals } = await db().prepare(
-  `SELECT ap.id, ap.reason, ap.created_at, p.id AS post_id, p.parent_id, p.course_slug, p.body, a.display_name
-   FROM appeals ap JOIN posts p ON p.id = ap.post_id JOIN accounts a ON a.id = ap.author_id WHERE ap.status = 'open' ORDER BY ap.created_at`,
-).all<{ id: string; reason: string; created_at: string; post_id: string; parent_id: string | null; course_slug: string; body: string; display_name: string }>();
+  `SELECT ap.id, ap.reason, ap.created_at, p.id AS post_id, p.parent_id, p.space, a.display_name FROM appeals ap JOIN posts p ON p.id = ap.post_id JOIN accounts a ON a.id = ap.author_id WHERE ap.status = 'open' ORDER BY ap.created_at`,
+).all<{ id: string; reason: string; created_at: string; post_id: string; parent_id: string | null; space: string; display_name: string }>();
 const { results: actions } = await db().prepare(
-  `SELECT m.action, m.reason, m.actor_role, m.created_at, m.post_id, p.course_slug, p.parent_id, a.display_name AS actor
-   FROM moderation_actions m JOIN posts p ON p.id = m.post_id JOIN accounts a ON a.id = m.actor_id ORDER BY m.created_at DESC LIMIT 100`,
-).all<{ action: string; reason: string; actor_role: string; created_at: string; post_id: string; course_slug: string; parent_id: string | null; actor: string }>();
-const titles = new Map((await runtimeCourses()).map((c) => [c.data.slug, c.data.title]));
-const link = (slug: string, parent: string | null, id: string) => `/camp/courses/${slug}/forum/${parent ?? id}/#p-${id}`;
+  `SELECT m.action, m.reason, m.actor_role, m.created_at, m.post_id, p.space, p.parent_id, a.display_name AS actor FROM moderation_actions m JOIN posts p ON p.id = m.post_id JOIN accounts a ON a.id = m.actor_id ORDER BY m.created_at DESC LIMIT 100`,
+).all<{ action: string; reason: string; actor_role: string; created_at: string; post_id: string; space: string; parent_id: string | null; actor: string }>();
+const appealLinks = await Promise.all(appeals.map((a) => postLink(a.space, a.parent_id, a.post_id)));
+const actionLinks = await Promise.all(actions.map((m) => postLink(m.space, m.parent_id, m.post_id)));
 ---
 <AdminLayout title="隱藏與申訴">
   {message && <p class="notice">{message}</p>}
   <h2>待處理申訴</h2>
-  {appeals.length === 0 ? <p>沒有待處理的申訴。</p> : appeals.map((a) => (
+  {appeals.length === 0 ? <p>沒有待處理的申訴。</p> : appeals.map((a, i) => (
     <article class="card">
-      <p><strong>{a.display_name}</strong>．{fmtDateTime(a.created_at)}．{titles.get(a.course_slug) ?? a.course_slug}．<a href={link(a.course_slug, a.parent_id, a.post_id)}>查看內容</a></p>
+      <p><strong>{a.display_name}</strong>．{fmtDateTime(a.created_at)}．<a href={appealLinks[i].href}>{appealLinks[i].name}</a></p>
       <p>申訴理由：{a.reason}</p>
       <form method="post">
         <input type="hidden" name="appeal" value={a.id} />
@@ -46,6 +66,6 @@ const link = (slug: string, parent: string | null, id: string) => `/camp/courses
   <h2>最近的隱藏／恢復紀錄</h2>
   <table class="admin-table">
     <thead><tr><th>時間</th><th>操作者</th><th>動作</th><th>原因</th><th>內容</th></tr></thead>
-    <tbody>{actions.map((m) => <tr><td>{fmtDateTime(m.created_at)}</td><td>{m.actor}（{m.actor_role === 'admin' ? '管理員' : '講師'}）</td><td>{m.action === 'hide' ? '隱藏' : '恢復'}</td><td>{m.reason}</td><td><a href={link(m.course_slug, m.parent_id, m.post_id)}>{titles.get(m.course_slug) ?? m.course_slug}</a></td></tr>)}</tbody>
+    <tbody>{actions.map((m, i) => <tr><td>{fmtDateTime(m.created_at)}</td><td>{m.actor}（{m.actor_role === 'admin' ? '管理員' : '講師'}）</td><td>{m.action === 'hide' ? '隱藏' : '恢復'}</td><td>{m.reason}</td><td><a href={actionLinks[i].href}>{actionLinks[i].name}</a></td></tr>)}</tbody>
   </table>
 </AdminLayout>

@@ -12,10 +12,13 @@ declare namespace Cloudflare {
     UPLOADS?: R2Bucket;
     TURNSTILE_SECRET_KEY?: string;
     IP_HASH_SALT?: string;
-    SHOW_DRAFT_COURSES?: string;
     MAGIC_LINK_DEBUG?: string;
     MAIL_FROM?: string;
     LINE_CHANNEL_ID?: string;
     LINE_CHANNEL_SECRET?: string;
+    VAPID_PUBLIC_KEY?: string;
+    BANK_ACCOUNT_INFO?: string;
+    VAPID_PRIVATE_JWK?: string;
+    VAPID_SUBJECT?: string;
   }
 }

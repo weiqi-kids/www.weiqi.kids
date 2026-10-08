@@ -36,12 +36,16 @@ export const association = {
   chairman: { name: '張饒輝', term: '2024-01-05～2028-01-04', slug: 'lightman-chang' },
 };
 
-export const courseRules = {
-  fee: 6000,
-  teaching: 1,
-  practice: 3,
+// AI 共學營固定規則（ADR 0014）。講師可調的值在每項成果的開團設定。
+export const campRules = {
+  minFee: 6000,          // 團費下限
+  instructorShare: 0.5,  // 講師分潤比例
+  membershipFee: 6000,   // 常年會費
+  teaching: 1,           // 主題教學堂數
+  practice: 3,           // 實作週數
   duration: '1 個月',
-  membershipTerm: '1 年',
+  defaultPayDays: 7,
+  defaultVoteDays: 3,
 };
 
 export const nav = [

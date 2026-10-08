@@ -1,0 +1,59 @@
+---
+import AppLayout from '../../../../../layouts/AppLayout.astro';
+import Thread from '../../../../../components/forum/Thread.astro';
+import { getCohort } from '../../../../../server/camp/cohorts';
+import { getShowcase } from '../../../../../server/camp/showcases';
+import { cohortSpaceRole, isOwner } from '../../../../../server/camp/access';
+import { getPost, visibleTo } from '../../../../../server/forum';
+import { handleThreadAction, loadThread } from '../../../../../server/forum-actions';
+import { workState, approveWork, consentWork } from '../../../../../server/camp/works';
+import { str } from '../../../../../server/http';
+export const prerender = false;
+
+const c = await getCohort(Astro.params.id!);
+const s = c ? await getShowcase(c.showcase_id) : null;
+if (!c || !s) return new Response('Not found', { status: 404 });
+const me = Astro.locals.account;
+const base = `/camp/g/${c.id}/forum/`;
+if (!me) return Astro.redirect(`/auth/login/?next=${encodeURIComponent(Astro.url.pathname)}`);
+const role = await cohortSpaceRole(c, s, me);
+if (!role.view) return Astro.redirect(`/camp/g/${c.id}/`);
+const space = `cohort:${c.id}`;
+const topic = await getPost(space, Astro.params.post!);
+if (!topic || topic.parent_id || !visibleTo(topic, me, role)) return new Response('Not found', { status: 404 });
+const here = `${base}${topic.id}/`;
+let error: string | null = null;
+let message: string | null = null;
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const action = str(form, 'action', 20);
+  if (action === 'approve-work' && isOwner(s, me) && topic.author_id !== me.id) { await approveWork(s.id, topic.id, topic.author_id, me.id, here); message = '已認可這份作品。作者同意後會公開在成果頁。'; }
+  else if ((action === 'consent' || action === 'unconsent') && topic.author_id === me.id) { await consentWork(s.id, topic.id, me.id, action === 'consent'); message = action === 'consent' ? '已同意公開。講師認可後會出現在成果頁。' : '已撤回公開。'; }
+  else {
+    const r = await handleThreadAction(form, space, topic, me, role, here);
+    if (r.redirect) return Astro.redirect(r.redirect, 303);
+    error = r.error ?? null; message = r.message ?? null;
+  }
+}
+const { all, files, extra } = await loadThread(space, (await getPost(space, topic.id))!, me, role);
+const work = await workState(topic.id);
+---
+<AppLayout title={topic.title ?? '課程論壇'} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: `${s.title}．第 ${c.seq} 團`, href: `/camp/g/${c.id}/` }, { name: '課程論壇', href: base }, { name: topic.title ?? '文章', href: here }]}>
+  <div class="prose">
+    <p><a href={base}>← 回課程論壇</a></p>
+    {error && <p class="notice notice-error">{error}</p>}
+    {message && <p class="notice">{message}</p>}
+    <Thread all={all} files={files} extra={extra} me={me} role={role} fileBase="/api/files/" />
+    {topic.status === 'published' && (isOwner(s, me) || topic.author_id === me.id) && (
+      <section class="work">
+        <h2>公開到成果頁</h2>
+        <p>講師認可：{work?.approved_at ? '已認可' : '還沒'}．作者同意公開：{work?.author_consent_at ? '已同意' : '還沒'}。兩個都有，作品才會出現在成果頁。</p>
+        {isOwner(s, me) && topic.author_id !== me.id && !work?.approved_at && <form method="post"><input type="hidden" name="action" value="approve-work" /><button class="btn btn-ghost" type="submit">認可這份作品</button></form>}
+        {topic.author_id === me.id && <form method="post"><input type="hidden" name="action" value={work?.author_consent_at ? 'unconsent' : 'consent'} /><button class="btn btn-ghost" type="submit">{work?.author_consent_at ? '撤回公開' : '同意公開這份作品'}</button></form>}
+      </section>
+    )}
+  </div>
+</AppLayout>
+<style>
+  .work { background: var(--color-bg-soft); border-radius: var(--radius); padding: var(--space-4) var(--space-6); margin-top: var(--space-6); }
+</style>

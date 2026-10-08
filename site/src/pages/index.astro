@@ -1,10 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { site, courseRules } from '../data/site.js';
-import { getCollection } from 'astro:content';
+import { site, campRules } from '../data/site.js';
 import YouTube from '../components/YouTube.astro';
 import { videos } from '../data/media.js';
-const topics = (await getCollection('topics')).sort((a, b) => a.data.order - b.data.order);
 const website = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -39,7 +37,7 @@ const website = {
     <li>
       <a class="card" href="/camp/">
         <h2>AI 共學營</h2>
-        <p>每門課 {courseRules.teaching} 堂主題教學加 {courseRules.practice} 堂實作，為期{courseRules.duration}。</p>
+        <p>會員講師用 AI 做出來的成果；做不來就登記想學，滿人數開團。</p>
       </a>
     </li>
   </ul>
@@ -47,18 +45,9 @@ const website = {
   <section>
     <h2>AI 共學營怎麼進行</h2>
     <div class="key-answer" data-question="AI 共學營怎麼參加？">
-      <p>講師先用 AI 做出成果，你自己做不來就登記想學，登記滿講師訂的人數開團。每門課 {courseRules.fee.toLocaleString('zh-TW')} 元，第一次報名同時成為協會會員（會員效期一年）。課程包含 1 堂主題教學、全部技能單張與 3 堂實作，為期一個月；結營後原課程的成員仍可以在課程論壇繼續交流。</p>
+      <p>會員講師先用 AI 做出成果，你照著做法說明自己試；做不來就登記想學，登記滿講師訂的人數自動開團。每團 1 堂主題教學加 3 週實作，為期 {campRules.duration}，團費由講師訂，最低 {campRules.minFee.toLocaleString('zh-TW')} 元，不必入會；結營後課程論壇保留，可以繼續交流。</p>
     </div>
-    <p><a class="btn" href="/camp/how-it-works/">看完整流程</a> <a class="btn btn-ghost" href="/camp/topics/">看講師成果</a></p>
-  </section>
-
-  <section>
-    <h2>講師成果</h2>
-    <ul class="card-grid">
-      {topics.map((t) => (
-        <li><a class="card" href={`/camp/topics/${t.data.slug}/`}><h3>{t.data.title}</h3><p>{t.data.summary}</p></a></li>
-      ))}
-    </ul>
+    <p><a class="btn" href="/camp/how-it-works/">看完整流程</a> <a class="btn btn-ghost" href="/camp/">看講師成果</a></p>
   </section>
 
   <section class="promo">

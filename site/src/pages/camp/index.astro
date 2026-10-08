@@ -1,40 +1,72 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { courseRules } from '../../data/site.js';
-import { getCollection } from 'astro:content';
-const open = (await getCollection('courses')).filter((c) => c.data.status === 'open');
+import Meter from '../../components/camp/Meter.astro';
+import { listPublished } from '../../server/camp/showcases';
+import { cohortViews, headline } from '../../server/camp/view';
+import { demoLinks } from '../../server/camp/types';
+import { FORMAT_LABEL } from '../../lib/labels';
+import { campRules, site } from '../../data/site.js';
+export const prerender = false;
+
+const showcases = await listPublished();
+const cards = await Promise.all(showcases.map(async (s) => ({ s, h: headline(s, await cohortViews(s)), demos: demoLinks(s) })));
+const fee = campRules.minFee.toLocaleString('zh-TW');
+const list = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'AI 共學營講師成果',
+  itemListElement: showcases.map((s, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site.url}/camp/r/${s.slug}/`, name: s.title })),
+};
 ---
-<BaseLayout title="AI 共學營" description="台灣好棋寶寶協會主辦的 AI 共學營：講師先做出 AI 應用成果，學員自己做不來就登記想學，滿講師訂的人數開團。每團 1 堂主題教學、3 堂實作、一個月。" breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }]}>
+<BaseLayout title="AI 共學營" description={`協會會員講師用 AI 做出來的成果。照做法說明自己試；做不來就登記想學，滿人數自動開團。每團 1 堂主題教學加 3 週實作，1 個月，團費最低 ${fee} 元。`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }]} schema={[list]}>
   <div class="prose">
     <h1>AI 共學營</h1>
-    <div class="key-answer" data-question="AI 共學營是什麼？">
-      <p>AI 共學營是台灣好棋寶寶協會為會員辦的共學活動。講師先用 AI 做出成果，例如一條會自動更新的產業情報流程。你可以照著自己做；做不來，就登記想學，登記滿講師訂的人數就開團。每團 1 堂主題教學、3 堂實作，為期{courseRules.duration}，費用 {courseRules.fee.toLocaleString('zh-TW')} 元。</p>
+    <div class="key-answer" data-question="AI 共學營怎麼運作？">
+      <p>協會的會員講師把自己用 AI 做出來的東西放在這裡。你可以照著做法說明自己試；做不來，就登記想學，登記滿講師訂的人數就自動開團。每團 1 堂主題教學加 3 週實作，為期 {campRules.duration}，團費由講師訂，最低 {fee} 元，不必入會。</p>
     </div>
-    <dl class="facts">
-      <dt>主辦</dt><dd>台灣好棋寶寶協會</dd>
-      <dt>適合誰</dt><dd>想把 AI 用在自己工作上的各行各業人士</dd>
-      <dt>怎麼開團</dt><dd>講師先有成果；學員登記想學，滿講師訂的人數開團</dd>
-      <dt>每團內容</dt><dd>1 堂主題教學＋3 堂實作，合計{courseRules.duration}</dd>
-      <dt>費用</dt><dd>每門課 {courseRules.fee.toLocaleString('zh-TW')} 元；第一次繳的常年會費 {courseRules.fee.toLocaleString('zh-TW')} 元已含第一門課</dd>
-      <dt>資格</dt><dd>協會個人會員（常年會費以年計算）</dd>
-      <dt>目前開放報名</dt><dd>{open.length ? `${open.length} 團` : '還沒有成團，先看講師成果登記想學'}</dd>
-    </dl>
   </div>
+  <ol class="steps">
+    <li><strong>看成果</strong>照講師的做法說明自己試</li>
+    <li><strong>卡住了</strong>到成果的討論區問</li>
+    <li><strong>做不來</strong>登記想學，滿人數自動開團</li>
+  </ol>
+
+  <h2>講師做出來的成果</h2>
+  {cards.length === 0 && <p>第一批成果正在審核，公開後會出現在這裡。</p>}
   <ul class="card-grid cols-3">
-    <li><a class="card" href="/camp/topics/"><h2>講師成果</h2><p>講師做出來的東西；做不來就登記想學。</p></a></li>
-    <li><a class="card" href="/camp/about/"><h2>共學營介紹</h2><p>誰主辦、課程裡有什麼、學員能得到什麼。</p></a></li>
-    <li><a class="card" href="/camp/how-it-works/"><h2>參加流程</h2><p>從看成果、登記想學、開團報名到結營。</p></a></li>
-    <li><a class="card" href="/camp/courses/"><h2>已開的團</h2><p>成團後排定日期的課程與報名。</p></a></li>
-    <li><a class="card" href="/camp/instructors/"><h2>講師</h2><p>講師介紹與成為講師的方式。</p></a></li>
-    <li><a class="card" href="/camp/faq/"><h2>常見問題</h2><p>費用、會員、教材、實作營與作品公開。</p></a></li>
+    {cards.map(({ s, h, demos }) => (
+      <li>
+        <a class="card showcase" href={`/camp/r/${s.slug}/`}>
+          <h3>{s.title}</h3>
+          <p>{s.summary}</p>
+          {demos.length > 0 && <p class="muted demos">{demos.slice(0, 3).map((d) => d.title).join('、')}{demos.length > 3 && ` 等 ${demos.length} 個`}</p>}
+          <p class="muted meta">{s.instructor_name}．{FORMAT_LABEL[s.teaching_format]}．{s.price.toLocaleString('zh-TW')} 元</p>
+          {'ratio' in h && h.ratio !== undefined ? <Meter ratio={h.ratio} label={h.text} /> : <p class={`status ${h.tone}`}>{h.text}</p>}
+        </a>
+      </li>
+    ))}
   </ul>
+
+  <section class="prose more">
+    <h2>開團之後</h2>
+    <dl class="facts">
+      <dt>內容</dt><dd>1 堂主題教學（線上直播或實體，講師決定）＋3 週實作，為期 {campRules.duration}</dd>
+      <dt>實作</dt><dd>你自己找題目，每週在課程論壇交進度：題目、第一版、成果</dd>
+      <dt>團費</dt><dd>講師訂，最低 {fee} 元；開課前可全額退款</dd>
+      <dt>資格</dt><dd>不必是協會會員，登入就能登記與報名</dd>
+    </dl>
+    <p><a href="/camp/how-it-works/">參加流程</a>．<a href="/camp/faq/">常見問題</a>．<a href="/camp/teach/">我也有成果，想當講師</a></p>
+  </section>
 </BaseLayout>
 <style>
-  .page-head { display: grid; gap: var(--space-4) var(--space-6); align-items: center; margin-bottom: var(--space-6); }
-  @media (min-width: 640px) { .page-head { grid-template-columns: minmax(0, 1fr) 20rem; } }
-  .page-head h1 { margin: 0; }
-  .page-head figure { margin: 0; }
-  .page-head figcaption { margin-top: var(--space-2); font-size: var(--text-xs); line-height: 1.6; color: var(--color-ink-muted); }
-  .page-hero { width: 100%; max-width: 20rem; height: auto; border-radius: var(--radius); }
-
+  .steps { display: grid; gap: var(--space-3); list-style: none; padding: 0; margin: 0 0 var(--space-8); counter-reset: s; }
+  @media (min-width: 768px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+  .steps li { counter-increment: s; background: var(--color-bg-soft); border-radius: var(--radius); padding: var(--space-3) var(--space-4); display: grid; gap: var(--space-1); }
+  .steps li::before { content: counter(s); font-weight: 800; color: var(--color-primary); }
+  .showcase { display: grid; gap: var(--space-2); align-content: start; height: 100%; }
+  .showcase p { margin: 0; }
+  .demos, .meta { font-size: var(--text-xs); }
+  .status { font-size: var(--text-xs); font-weight: 700; }
+  .status.hot { color: var(--color-primary); }
+  .more { margin-top: var(--space-12); }
 </style>

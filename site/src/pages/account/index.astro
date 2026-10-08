@@ -4,12 +4,10 @@ import { db, audit } from '../../server/db';
 import { identitiesOf, membershipOf, isMembershipActive, unlinkIdentity } from '../../server/accounts';
 import { requestMagicLink } from '../../server/magic-link';
 import { lineEnabled } from '../../server/line';
-import { runtimeCourses } from '../../server/courses';
-import { myInterests, interestTotals } from '../../server/interests';
-import { getCollection } from 'astro:content';
+import PushSettings from '../../components/PushSettings.astro';
 import { clientIpHash, str } from '../../server/http';
-import { fmtDate } from '../../lib/courses';
-import { ENROLLMENT_STATUS, APPLICATION_STATUS, label } from '../../lib/labels';
+import { fmtDate } from '../../lib/time';
+import { ENROLLMENT_STATUS, COHORT_STATE, label } from '../../lib/labels';
 export const prerender = false;
 
 const me = Astro.locals.account;
@@ -53,25 +51,20 @@ const identities = await identitiesOf(me.id);
 const emailIdentity = identities.find((i) => i.provider === 'email');
 const lineIdentity = identities.find((i) => i.provider === 'line');
 const membership = await membershipOf(me.id);
-const courses = await runtimeCourses();
-const courseTitle = (slug: string) => courses.find((c) => c.data.slug === slug)?.data.title ?? slug;
-const { results: access } = await db().prepare('SELECT course_slug, opened_at FROM course_access WHERE account_id = ? ORDER BY opened_at DESC').bind(me.id).all<{ course_slug: string; opened_at: string }>();
-const { results: teaching } = await db().prepare('SELECT course_slug FROM course_staff WHERE account_id = ?').bind(me.id).all<{ course_slug: string }>();
-const { results: enrollments } = await db().prepare(
-  'SELECT code, course_slug, status, created_at FROM enrollments WHERE account_id = ? OR (account_id IS NULL AND email = ?) ORDER BY created_at DESC',
-).bind(me.id, emailIdentity?.subject ?? '').all<{ code: string; course_slug: string; status: string; created_at: string }>();
-const { results: notes } = await db().prepare('SELECT message, link, created_at, read_at FROM notifications WHERE account_id = ? ORDER BY created_at DESC LIMIT 20').bind(me.id).all<{ message: string; link: string | null; created_at: string; read_at: string | null }>();
-const application = await db().prepare('SELECT status, review_note, updated_at FROM instructor_applications WHERE account_id = ? ORDER BY created_at DESC LIMIT 1').bind(me.id).first<{ status: string; review_note: string | null; updated_at: string }>();
-const showcases = await getCollection('topics');
-const [interests, totals] = await Promise.all([myInterests(me.id), interestTotals()]);
-const wants = interests.map((i) => {
-  const t = showcases.find((x) => x.data.slug === i.topic_slug)?.data;
-  const groups = courses.filter((c) => c.data.topic === i.topic_slug && c.data.status !== 'running' && c.data.status !== 'closed');
-  const n = totals.get(i.topic_slug) ?? 0;
-  return { slug: i.topic_slug, title: t?.title ?? i.topic_slug, groups, state: groups.length ? '已開團' : t && n >= t.groupSize ? `已滿 ${n} 人，協會正在安排開團` : `登記中（${n}／${t?.groupSize ?? '?'} 人）` };
-});
-const ENROLLMENT_STATUS_USER = { ...ENROLLMENT_STATUS, submitted: '已送出，等待協會核款' };
-const d = (iso: string) => fmtDate(new Date(iso));
+const { results: wants } = await db().prepare(
+  `SELECT s.title, s.slug, s.min_size, c.id AS cohort_id, c.state, (SELECT COUNT(*) FROM interests x WHERE x.cohort_id = c.id) AS n
+   FROM interests i JOIN cohorts c ON c.id = i.cohort_id JOIN showcases s ON s.id = c.showcase_id
+   WHERE i.account_id = ? AND c.state IN ('gathering', 'scheduling', 'payment') ORDER BY i.created_at DESC`,
+).bind(me.id).all<{ title: string; slug: string; min_size: number; cohort_id: string; state: string; n: number }>();
+const { results: mine } = await db().prepare(
+  `SELECT e.code, e.status, e.amount, s.title, c.id AS cohort_id, c.seq, c.state, c.teaching_start
+   FROM enrollments e JOIN cohorts c ON c.id = e.cohort_id JOIN showcases s ON s.id = c.showcase_id
+   WHERE e.account_id = ? AND e.status != 'cancelled' ORDER BY e.created_at DESC`,
+).bind(me.id).all<{ code: string; status: string; amount: number; title: string; cohort_id: string; seq: number; state: string; teaching_start: string | null }>();
+const { results: notes } = await db().prepare('SELECT message, link, created_at, read_at FROM notifications WHERE account_id = ? ORDER BY created_at DESC LIMIT 30').bind(me.id).all<{ message: string; link: string | null; created_at: string; read_at: string | null }>();
+const teaching = (await db().prepare('SELECT COUNT(*) AS n FROM showcases WHERE owner_id = ?').bind(me.id).first<{ n: number }>())?.n ?? 0;
+const d = (iso: string) => fmtDate(iso);
+
 ---
 <AppLayout title="帳號">
   <div class="prose">
@@ -80,43 +73,38 @@ const d = (iso: string) => fmtDate(new Date(iso));
     {debugLink && <p class="notice">測試環境：寄信服務尚未啟用，請直接使用這個連結：<a href={debugLink}>{debugLink}</a></p>}
     {error && <p class="notice notice-error">{error}</p>}
 
-    {notes.length > 0 && (
-      <section>
-        <h2>通知</h2>
-        <ul>{notes.map((n) => <li class={n.read_at ? 'muted' : ''}>{d(n.created_at)}：{n.link ? <a href={n.link}>{n.message}</a> : n.message}</li>)}</ul>
-        <form method="post"><input type="hidden" name="action" value="read-notifications" /><button class="link-button" type="submit">全部標為已讀</button></form>
-      </section>
-    )}
+    <section>
+      <h2>通知</h2>
+      {notes.length === 0 ? <p class="muted">沒有通知。</p> : (
+        <>
+          <ul>{notes.map((n) => <li class={n.read_at ? 'muted' : ''}>{d(n.created_at)}：{n.link ? <a href={n.link}>{n.message}</a> : n.message}</li>)}</ul>
+          <form method="post"><input type="hidden" name="action" value="read-notifications" /><button class="link-button" type="submit">全部標為已讀</button></form>
+        </>
+      )}
+    </section>
 
-    <h2>會員</h2>
-    {membership
-      ? <p>會員效期：{d(membership.started_at)}～{d(membership.expires_at)}（{isMembershipActive(membership) ? '有效' : '已到期；既有課程與紀錄仍保留，報名新課前需續會'}）</p>
-      : <p>尚未成為會員。第一次報名課程並經協會核款後，會同時成為會員。</p>}
+    <PushSettings />
 
-    <h2>我的課程</h2>
-    {access.length === 0 && teaching.length === 0 ? <p>還沒有開通的課程。<a href="/camp/courses/">看已開的團</a></p> : (
-      <ul>
-        {teaching.map((t) => <li>講師：<a href={`/camp/courses/${t.course_slug}/forum/`}>{courseTitle(t.course_slug)}</a></li>)}
-        {access.map((a) => <li><a href={`/camp/courses/${a.course_slug}/forum/`}>{courseTitle(a.course_slug)}</a>（{d(a.opened_at)} 開通）．<a href={`/camp/courses/${a.course_slug}/materials/`}>技能單張</a></li>)}
-      </ul>
-    )}
+    <section>
+      <h2>我登記想學的</h2>
+      {wants.length === 0 ? <p>還沒有登記。<a href="/camp/">看講師成果</a></p> : (
+        <ul>{wants.map((w) => <li><a href={w.state === 'gathering' ? `/camp/r/${w.slug}/` : `/camp/g/${w.cohort_id}/`}>{w.title}</a>：{w.state === 'gathering' ? `已登記 ${w.n}／${w.min_size} 人` : `${label(COHORT_STATE, w.state)}，請到團頁${w.state === 'payment' ? '報名匯款' : '看進度'}`}</li>)}</ul>
+      )}
+    </section>
 
-    <h2>登記想學</h2>
-    {wants.length === 0 ? <p>還沒有登記。<a href="/camp/topics/">看講師成果</a></p> : (
-      <ul>{wants.map((w) => <li><a href={`/camp/topics/${w.slug}/want/`}>{w.title}</a>：{w.state}{w.groups.map((c) => <>．<a href={`/camp/courses/${c.data.slug}/`}>報名 {c.data.title}</a></>)}</li>)}</ul>
-    )}
+    <section>
+      <h2>我的團</h2>
+      {mine.length === 0 ? <p class="muted">還沒有報名。</p> : (
+        <ul>{mine.map((e) => <li><a href={e.status === 'confirmed' ? `/camp/g/${e.cohort_id}/room/` : `/camp/g/${e.cohort_id}/`}>{e.title}．第 {e.seq} 團</a>：{label(COHORT_STATE, e.state)}．{label(ENROLLMENT_STATUS, e.status)}（報名編號 <code>{e.code}</code>）</li>)}</ul>
+      )}
+    </section>
 
-    <h2>報名紀錄</h2>
-    {enrollments.length === 0 ? <p>沒有報名紀錄。</p> : (
-      <ul>{enrollments.map((e) => <li><code>{e.code}</code>．{courseTitle(e.course_slug)}．{label(ENROLLMENT_STATUS_USER, e.status)}（{d(e.created_at)}）</li>)}</ul>
-    )}
-    {!emailIdentity && <p class="form-hint">報名時填的 Email 綁定到這個帳號後，報名紀錄才會顯示在這裡。</p>}
-
-    <h2>講師申請</h2>
-    {application
-      ? <p>狀態：{label(APPLICATION_STATUS, application.status)}{application.review_note && `．協會意見：${application.review_note}`}．<a href="/account/teaching/">查看或修改</a></p>
-      : <p><a href="/account/teaching/">申請成為講師</a>（需先有自己做出來的成果）</p>}
-
+    <section>
+      <h2>會員與講師</h2>
+      {membership && isMembershipActive(membership)
+        ? <p>協會會員，有效到 {d(membership.expires_at)}。<a href="/account/teach/">講師後台</a>（{teaching} 項成果）．<a href="/account/membership/">續會</a></p>
+        : <p>{membership ? `會員已在 ${d(membership.expires_at)} 到期。` : '還不是協會會員。'}上課不需要入會；想把自己的成果放上來當講師，要先<a href="/account/membership/">繳常年會費</a>。</p>}
+    </section>
     <h2>登入方式</h2>
     <ul>
       <li>Email：{emailIdentity ? <>{emailIdentity.subject} {lineIdentity && <form class="inline" method="post"><input type="hidden" name="action" value="unlink" /><input type="hidden" name="provider" value="email" /><button class="link-button" type="submit">解除綁定</button></form>}</> : '尚未綁定'}</li>

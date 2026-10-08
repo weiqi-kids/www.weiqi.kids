@@ -59,6 +59,9 @@ const allSchema = [org, ...(crumbSchema ? [crumbSchema] : []), ...schema];
     <link rel="canonical" href={canonical} />
     {(noindex || !isProduction) && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" href="/favicon.ico" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icons/icon-180.png" />
+    <meta name="apple-mobile-web-app-title" content="好棋寶寶" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:locale" content="zh_TW" />
@@ -143,7 +146,7 @@ const allSchema = [org, ...(crumbSchema ? [crumbSchema] : []), ...schema];
           <p class="footer-head">追蹤協會</p>
           <ul class="footer-social">
             <li><a href={site.lineCommunityUrl} rel="noopener">LINE 社群</a><span class="muted">棋聚消息與交流</span></li>
-            <li><a href={site.lineOfficialUrl} rel="noopener">LINE 官方帳號</a><span class="muted">報名匯款回報</span></li>
+            <li><a href={site.lineOfficialUrl} rel="noopener">LINE 官方帳號</a><span class="muted">匯款帳號與私密資料</span></li>
             <li><a href={site.youtube} rel="noopener">YouTube 頻道</a><span class="muted">推廣影片與活動紀錄</span></li>
           </ul>
         </div>

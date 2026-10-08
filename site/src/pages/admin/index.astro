@@ -4,19 +4,23 @@ import { requireAdmin } from '../../server/guard';
 import { db } from '../../server/db';
 export const prerender = false;
 const stop = requireAdmin(Astro); if (stop) return stop;
-const q = (sql: string) => db().prepare(sql).first<{ n: number }>().then((r) => r?.n ?? 0);
-const [pending, apps, appeals, members] = await Promise.all([
-  q("SELECT COUNT(*) AS n FROM enrollments WHERE status = 'submitted'"),
-  q("SELECT COUNT(*) AS n FROM instructor_applications WHERE status = 'submitted'"),
-  q("SELECT COUNT(*) AS n FROM appeals WHERE status = 'open'"),
-  q(`SELECT COUNT(*) AS n FROM memberships WHERE expires_at > strftime('%Y-%m-%dT%H:%M:%fZ', 'now')`),
-]);
+const n = async (sql: string) => (await db().prepare(sql).first<{ n: number }>())?.n ?? 0;
+const todo = [
+  { n: await n("SELECT COUNT(*) AS n FROM showcases WHERE status = 'submitted'"), title: '成果待審核', text: '講師送審的成果與開課表單。', href: '/admin/showcases/' },
+  { n: await n("SELECT COUNT(*) AS n FROM enrollments WHERE status = 'submitted'"), title: '待核款', text: '學員填了匯款資料，等你對照銀行入帳。', href: '/admin/payments/' },
+  { n: await n("SELECT COUNT(*) AS n FROM enrollments WHERE status = 'refund_pending'"), title: '待退款', text: '沒成團、講師取消或開課前申請退款。', href: '/admin/payments/#refunds' },
+  { n: await n("SELECT COUNT(*) AS n FROM membership_dues WHERE status = 'submitted'"), title: '會費待核', text: '入會與續會的匯款。', href: '/admin/payments/#dues' },
+  { n: await n("SELECT COUNT(*) AS n FROM payouts WHERE status = 'due'"), title: '分潤待匯', text: '已結營的團，講師應得一半團費。', href: '/admin/payouts/' },
+  { n: await n("SELECT COUNT(*) AS n FROM appeals WHERE status = 'open'"), title: '申訴', text: '內容被隱藏的作者申訴。', href: '/admin/moderation/' },
+];
 ---
-<AdminLayout title="總覽">
+<AdminLayout title="待辦">
+  <p>開團、排時間、成團、結營都由系統自動處理。只有下面這幾種事需要你。</p>
   <ul class="card-grid cols-3">
-    <li><a class="card" href="/admin/enrollments/"><h2>{pending}</h2><p>筆報名等待核款</p></a></li>
-    <li><a class="card" href="/admin/instructors/"><h2>{apps}</h2><p>件講師申請待審</p></a></li>
-    <li><a class="card" href="/admin/moderation/"><h2>{appeals}</h2><p>件申訴待處理</p></a></li>
-    <li><a class="card" href="/admin/members/"><h2>{members}</h2><p>位有效會員</p></a></li>
+    {todo.map((t) => <li><a class="card todo" href={t.href}><span class="big">{t.n}</span><h2>{t.title}</h2><p>{t.text}</p></a></li>)}
   </ul>
 </AdminLayout>
+<style>
+  .todo { display: grid; gap: var(--space-1); }
+  .big { font-size: var(--text-2xl); font-weight: 800; color: var(--color-accent); line-height: 1; }
+</style>

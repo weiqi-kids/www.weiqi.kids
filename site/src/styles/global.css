@@ -377,4 +377,4 @@ a.card:hover { box-shadow: var(--shadow-card-hover); color: inherit; }
     align-items: center;
   }
 }
-
+.link-button { background: none; border: 0; padding: 0; color: var(--color-primary); text-decoration: underline; cursor: pointer; font: inherit; }

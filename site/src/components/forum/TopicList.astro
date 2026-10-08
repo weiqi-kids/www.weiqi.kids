@@ -1,0 +1,34 @@
+---
+import { uploadsEnabled, type Post, type SpaceRole } from '../../server/forum';
+import { fmtDateTime } from '../../lib/time';
+interface Props { topics: (Post & { replies: number })[]; base: string; role: SpaceRole; loginHref?: string; extraFields?: boolean }
+const { topics, base, role, loginHref } = Astro.props;
+---
+{topics.length === 0 ? <p class="muted">還沒有文章。</p> : (
+  <ul class="topics">
+    {topics.map((t) => (
+      <li>
+        <a href={`${base}${t.id}/`}>{t.title}</a>
+        <span class="muted meta">{t.author_name}．{fmtDateTime(t.created_at)}．{t.replies} 則回覆{t.status !== 'published' && '．（只有你或版主看得到）'}</span>
+      </li>
+    ))}
+  </ul>
+)}
+{role.post ? (
+  <section>
+    <h2>發新文章</h2>
+    <form method="post" enctype="multipart/form-data">
+      <input type="hidden" name="action" value="topic" />
+      <slot name="fields" />
+      <div class="form-field"><label for="title">標題</label><input id="title" name="title" maxlength="200" required /></div>
+      <div class="form-field"><label for="body">內容</label><textarea id="body" name="body" rows="6" required></textarea><span class="form-hint">可以用 Markdown。</span></div>
+      {uploadsEnabled() && (<div class="form-field"><label for="images">圖片（選填）</label><input id="images" name="images" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple /></div>)}
+      <button class="btn" type="submit">發表</button>
+    </form>
+  </section>
+) : loginHref && <p><a class="btn" href={loginHref}>登入後發問</a></p>}
+<style>
+  .topics { display: grid; gap: var(--space-3); padding-left: 1.2em; }
+  .topics li { display: grid; }
+  .meta { font-size: var(--text-xs); }
+</style>

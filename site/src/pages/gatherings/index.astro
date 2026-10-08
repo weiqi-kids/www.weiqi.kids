@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { fmtDate } from '../../lib/courses';
+import { fmtLongDate as fmtDate } from '../../lib/time';
 const now = new Date();
 const upcoming = (await getCollection('gatherings')).filter((g) => g.data.startDate >= now).sort((a, b) => a.data.startDate.getTime() - b.data.startDate.getTime());
 ---

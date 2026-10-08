@@ -1,0 +1,37 @@
+---
+import AppLayout from '../../../../../layouts/AppLayout.astro';
+import Thread from '../../../../../components/forum/Thread.astro';
+import { getShowcaseBySlug } from '../../../../../server/camp/showcases';
+import { showcaseSpaceRole } from '../../../../../server/camp/access';
+import { getPost, visibleTo } from '../../../../../server/forum';
+import { handleThreadAction, loadThread } from '../../../../../server/forum-actions';
+export const prerender = false;
+
+const s = await getShowcaseBySlug(Astro.params.slug!);
+const me = Astro.locals.account;
+if (!s) return new Response('Not found', { status: 404 });
+const role = showcaseSpaceRole(s, me);
+const space = `showcase:${s.id}`;
+const base = `/camp/r/${s.slug}/forum/`;
+const topic = role.view ? await getPost(space, Astro.params.post!) : null;
+if (!topic || topic.parent_id || !visibleTo(topic, me, role)) return new Response('Not found', { status: 404 });
+const here = `${base}${topic.id}/`;
+let error: string | null = null;
+let message: string | null = null;
+if (Astro.request.method === 'POST') {
+  if (!me) return Astro.redirect(`/auth/login/?next=${encodeURIComponent(here)}`);
+  const r = await handleThreadAction(await Astro.request.formData(), space, topic, me, role, here);
+  if (r.redirect) return Astro.redirect(r.redirect, 303);
+  error = r.error ?? null; message = r.message ?? null;
+}
+const { all, files, extra } = await loadThread(space, (await getPost(space, topic.id))!, me, role);
+---
+<AppLayout title={topic.title ?? '討論'} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: s.title, href: `/camp/r/${s.slug}/` }, { name: '討論區', href: base }, { name: topic.title ?? '文章', href: here }]}>
+  <div class="prose">
+    <p><a href={base}>← 回討論區</a></p>
+    {error && <p class="notice notice-error">{error}</p>}
+    {message && <p class="notice">{message}</p>}
+    <Thread all={all} files={files} extra={extra} me={me} role={role} fileBase="/api/files/" />
+    {!me && <p><a class="btn" href={`/auth/login/?next=${encodeURIComponent(here)}`}>登入後回覆</a></p>}
+  </div>
+</AppLayout>

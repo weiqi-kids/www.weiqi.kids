@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
-import { fmtDate } from '../../lib/courses';
+import { fmtLongDate as fmtDate } from '../../lib/time';
 import { site } from '../../data/site.js';
 export async function getStaticPaths() {
   return (await getCollection('gatherings')).map((g) => ({ params: { slug: g.data.slug }, props: { g } }));

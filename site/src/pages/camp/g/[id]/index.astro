@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import LineContact from '../../../../components/LineContact.astro';
+import { env } from 'cloudflare:workers';
+import { getCohort, vote, voteResults, paidCount, interestCount } from '../../../../server/camp/cohorts';
+import { getShowcase } from '../../../../server/camp/showcases';
+import { enroll, enrollmentOf, submitPayment, requestRefund } from '../../../../server/camp/enrollments';
+import { canEnterRoom } from '../../../../server/camp/access';
+import { db } from '../../../../server/db';
+import { str } from '../../../../server/http';
+import { fmtDateTime, fmtDate, daysLeft } from '../../../../lib/time';
+import { COHORT_STATE, ENROLLMENT_STATUS, FORMAT_LABEL, RULE_LABEL, label } from '../../../../lib/labels';
+import { site } from '../../../../data/site.js';
+export const prerender = false;
+
+const c = await getCohort(Astro.params.id!);
+const s = c ? await getShowcase(c.showcase_id) : null;
+if (!c || !s || c.state === 'gathering') return new Response('Not found', { status: 404 });
+const me = Astro.locals.account;
+const path = `/camp/g/${c.id}/`;
+let message: string | null = null;
+let error: string | null = null;
+
+if (Astro.request.method === 'POST') {
+  if (!me) return Astro.redirect(`/auth/login/?next=${encodeURIComponent(path)}`);
+  const form = await Astro.request.formData();
+  const action = str(form, 'action', 20);
+  if (action === 'vote') {
+    const ok = await vote(c, me.id, form.getAll('option').map(String));
+    if (ok) message = '已記下你的投票。講師會參考投票結果決定日期。'; else error = '投票已經結束。';
+  } else if (action === 'enroll') {
+    const r = await enroll(c, s, me.id);
+    if (r.ok) message = '已報名。請匯款後在下面填匯款資料。'; else error = r.error;
+  } else if (action === 'pay') {
+    const e = await enrollmentOf(c.id, me.id);
+    error = e ? await submitPayment(e, c, str(form, 'paid_on', 10), str(form, 'last5', 5)) : '請先報名。';
+    if (!error) message = '已收到匯款資料，管理員核對後會通知你。';
+  } else if (action === 'refund') {
+    const e = await enrollmentOf(c.id, me.id);
+    error = e ? await requestRefund(e, c) : '找不到你的報名。';
+    if (!error) message = '已申請退款。若已匯款，協會會把款項退回給你。';
+  }
+}
+
+const cur = (await getCohort(c.id))!;
+const enrollment = me ? await enrollmentOf(cur.id, me.id) : null;
+const options = cur.state === 'scheduling' ? await voteResults(cur.id) : [];
+const myVotes = me && options.length ? new Set((await db().prepare('SELECT option_id FROM votes WHERE account_id = ? AND option_id IN (SELECT id FROM vote_options WHERE cohort_id = ?)').bind(me.id, cur.id).all<{ option_id: string }>()).results.map((r) => r.option_id)) : new Set<string>();
+const registered = me ? !!(await db().prepare('SELECT 1 FROM interests WHERE cohort_id = ? AND account_id = ?').bind(cur.id, me.id).first()) : false;
+const paid = await paidCount(cur.id, true);
+const interested = await interestCount(cur.id);
+const voteOpen = !!cur.vote_closes_at && Date.now() < Date.parse(cur.vote_closes_at);
+const room = await canEnterRoom(cur, s, me);
+const bank = env.BANK_ACCOUNT_INFO;
+const price = (cur.price ?? s.price).toLocaleString('zh-TW');
+const refundable = !!cur.teaching_start && Date.now() < Date.parse(cur.teaching_start) && enrollment && ['awaiting_payment', 'submitted', 'confirmed'].includes(enrollment.status);
+const title = `${s.title}．第 ${cur.seq} 團`;
+const instance = cur.teaching_start ? [{
+  '@context': 'https://schema.org', '@type': 'CourseInstance', name: title, courseMode: cur.teaching_format === 'onsite' ? 'Onsite' : 'Online',
+  startDate: cur.teaching_start, endDate: cur.ends_at, instructor: { '@type': 'Person', name: s.instructor_name },
+  offers: { '@type': 'Offer', price: cur.price ?? s.price, priceCurrency: 'TWD' },
+  ...(cur.teaching_format === 'onsite' ? { location: { '@type': 'Place', name: cur.location, address: cur.location } } : {}),
+  isPartOf: { '@type': 'Course', name: s.title, url: `${site.url}/camp/r/${s.slug}/` },
+}] : [];
+---
+<BaseLayout title={title} description={`${s.title}第 ${cur.seq} 團：${label(COHORT_STATE, cur.state)}。${cur.teaching_start ? `主題教學 ${fmtDateTime(cur.teaching_start)}，` : ''}${FORMAT_LABEL[cur.teaching_format ?? s.teaching_format]}，團費 ${price} 元。`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: s.title, href: `/camp/r/${s.slug}/` }, { name: `第 ${cur.seq} 團`, href: path }]} schema={instance}>
+  <div class="prose">
+    {message && <p class="notice">{message}</p>}
+    {error && <p class="notice notice-error">{error}</p>}
+    <h1>{title}</h1>
+    <p class="state">{label(COHORT_STATE, cur.state)}{cur.close_reason && cur.state !== 'ended' && `：${cur.close_reason}`}</p>
+    <dl class="facts">
+      <dt>講師</dt><dd>{s.instructor_name}</dd>
+      <dt>主題教學</dt><dd>{cur.teaching_start ? fmtDateTime(cur.teaching_start) : '日期排定中'}．{FORMAT_LABEL[cur.teaching_format ?? s.teaching_format]}{(cur.teaching_format ?? s.teaching_format) === 'onsite' && `．${cur.location ?? s.location}`}</dd>
+      <dt>3 週實作</dt><dd>主題教學後每週在課程論壇交：題目、第一版、成果{cur.ends_at && `．${fmtDate(cur.ends_at)} 結營`}</dd>
+      <dt>團費</dt><dd>{price} 元．主題教學開始前可全額退款</dd>
+      <dt>成團</dt><dd>{RULE_LABEL[cur.group_rule ?? s.group_rule]}．開團人數 {cur.min_size ?? s.min_size} 人{cur.max_size && `，上限 ${cur.max_size} 人`}</dd>
+      {cur.state === 'payment' && <><dt>匯款期限</dt><dd>{fmtDateTime(cur.pay_deadline!)}（剩 {daysLeft(cur.pay_deadline!)} 天）．已匯款 {paid} 人</dd></>}
+      {cur.state === 'scheduling' && <><dt>登記</dt><dd>{interested} 人</dd></>}
+    </dl>
+
+    {cur.state === 'scheduling' && (
+      <section>
+        <h2>排主題教學的日期</h2>
+        {options.length === 0 && <p>講師正在排日期。</p>}
+        {options.length > 0 && (
+          registered && voteOpen ? (
+            <form method="post">
+              <input type="hidden" name="action" value="vote" />
+              <p>勾選你可以的日期（可複選），{fmtDateTime(cur.vote_closes_at!)} 截止。投票結果供講師參考，日期由講師決定。</p>
+              {options.map((o) => <div class="form-field"><label><input type="checkbox" name="option" value={o.id} checked={myVotes.has(o.id)} /> {fmtDateTime(o.starts_at)}（{o.votes} 票）</label></div>)}
+              <button class="btn" type="submit">送出投票</button>
+            </form>
+          ) : <ul>{options.map((o) => <li>{fmtDateTime(o.starts_at)}：{o.votes} 票</li>)}</ul>
+        )}
+      </section>
+    )}
+
+    {cur.state === 'payment' && (
+      <section class="pay">
+        <h2>報名與匯款</h2>
+        {!me && <p><a class="btn" href={`/auth/login/?next=${encodeURIComponent(path)}`}>登入後報名</a></p>}
+        {me && me.id === s.owner_id && <p>你是這一團的講師，學員的核款狀態在<a href={`/account/teach/cohorts/${cur.id}/`}>講師後台</a>。</p>}
+        {me && me.id !== s.owner_id && (!enrollment || enrollment.status === 'cancelled') && (
+          <form method="post"><input type="hidden" name="action" value="enroll" /><button class="btn" type="submit">報名這一團（{price} 元）</button></form>
+        )}
+        {enrollment && enrollment.status !== 'cancelled' && (
+          <>
+            <p>報名編號 <code>{enrollment.code}</code>．狀態：<strong>{label(ENROLLMENT_STATUS, enrollment.status)}</strong></p>
+            {(enrollment.status === 'awaiting_payment' || enrollment.status === 'submitted') && (
+              <>
+                <ol class="actionable-steps">
+                  <li>匯款 {enrollment.amount.toLocaleString('zh-TW')} 元到協會帳戶{bank ? `：${bank}` : ''}。{!bank && <>匯款帳號請向 <LineContact /> 索取。</>}附言寫報名編號 {enrollment.code}。</li>
+                  <li>匯完在下面填匯款日期和你的帳號末五碼，管理員會對照銀行入帳。</li>
+                </ol>
+                <form method="post" class="pay-form">
+                  <input type="hidden" name="action" value="pay" />
+                  <div class="form-field"><label for="paid_on">匯款日期</label><input id="paid_on" name="paid_on" type="date" required value={enrollment.paid_on ?? ''} /></div>
+                  <div class="form-field"><label for="last5">你的帳號末五碼</label><input id="last5" name="last5" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" required value={enrollment.account_last5 ?? ''} /></div>
+                  <button class="btn" type="submit">{enrollment.status === 'submitted' ? '更新匯款資料' : '送出匯款資料'}</button>
+                </form>
+                <p class="form-hint">網站只存匯款日期和末五碼，只有協會管理員看得到。不要上傳匯款截圖。</p>
+              </>
+            )}
+          </>
+        )}
+      </section>
+    )}
+
+    {enrollment && ['submitted', 'confirmed'].includes(enrollment.status) && cur.state !== 'payment' && (
+      <p>你的報名：<strong>{label(ENROLLMENT_STATUS, enrollment.status)}</strong>（報名編號 <code>{enrollment.code}</code>）</p>
+    )}
+    {enrollment && ['refund_pending', 'refunded'].includes(enrollment.status) && <p>你的報名：<strong>{label(ENROLLMENT_STATUS, enrollment.status)}</strong></p>}
+    {room && <p><a class="btn" href={`${path}room/`}>進上課區</a></p>}
+    {refundable && (
+      <form method="post" class="refund"><input type="hidden" name="action" value="refund" /><button class="link-button" type="submit">主題教學開始前申請退款</button></form>
+    )}
+    <p><a href={`/camp/r/${s.slug}/`}>← 回到成果：{s.title}</a></p>
+  </div>
+</BaseLayout>
+<style>
+  .state { font-size: var(--text-lg); font-weight: 700; color: var(--color-primary); }
+  .pay { background: var(--color-bg-soft); border-radius: var(--radius); padding: var(--space-4) var(--space-6); margin-bottom: var(--space-6); }
+  .pay-form { max-width: 24rem; }
+  .refund { margin-bottom: var(--space-6); }
+</style>

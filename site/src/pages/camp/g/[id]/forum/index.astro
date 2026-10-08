@@ -1,0 +1,58 @@
+---
+import AppLayout from '../../../../../layouts/AppLayout.astro';
+import TopicList from '../../../../../components/forum/TopicList.astro';
+import { getCohort } from '../../../../../server/camp/cohorts';
+import { getShowcase } from '../../../../../server/camp/showcases';
+import { cohortSpaceRole, isOwner } from '../../../../../server/camp/access';
+import { recordSubmission, weekDeadline } from '../../../../../server/camp/practice';
+import { listTopics } from '../../../../../server/forum';
+import { handleNewTopic } from '../../../../../server/forum-actions';
+import { str } from '../../../../../server/http';
+import { fmtDateTime } from '../../../../../lib/time';
+import { PRACTICE_WEEKS } from '../../../../../lib/labels';
+export const prerender = false;
+
+const c = await getCohort(Astro.params.id!);
+const s = c ? await getShowcase(c.showcase_id) : null;
+if (!c || !s) return new Response('Not found', { status: 404 });
+const me = Astro.locals.account;
+const base = `/camp/g/${c.id}/forum/`;
+if (!me) return Astro.redirect(`/auth/login/?next=${encodeURIComponent(base)}`);
+const role = await cohortSpaceRole(c, s, me);
+if (!role.view) return Astro.redirect(`/camp/g/${c.id}/`);
+const space = `cohort:${c.id}`;
+const student = !isOwner(s, me) && me.is_admin !== 1;
+let error: string | null = null;
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  if (str(form, 'action', 20) === 'topic') {
+    const r = await handleNewTopic(form, space, me, role);
+    if (r.postId) {
+      const week = Number(str(form, 'week', 1));
+      if (student && week >= 1 && week <= 3) await recordSubmission(c.id, me.id, week, r.postId);
+      return Astro.redirect(`${base}${r.postId}/`, 303);
+    }
+    error = r.error ?? null;
+  }
+}
+const topics = (await listTopics(space)).filter((t) => t.status === 'published' || role.moderate || t.author_id === me.id);
+---
+<AppLayout title={`課程論壇：${s.title}`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: `${s.title}．第 ${c.seq} 團`, href: `/camp/g/${c.id}/` }, { name: '課程論壇', href: base }]}>
+  <div class="prose">
+    <p><a href={`/camp/g/${c.id}/room/`}>← 回上課區</a></p>
+    <h1>課程論壇</h1>
+    <p>3 週實作在這裡交：每週發一篇，選它是第幾週的繳交。同學之間也可以互相回覆。</p>
+    {error && <p class="notice notice-error">{error}</p>}
+    <TopicList topics={topics} base={base} role={role}>
+      {student && c.teaching_start && (
+        <div class="form-field" slot="fields">
+          <label for="week">這篇是</label>
+          <select id="week" name="week">
+            <option value="0">一般討論</option>
+            {[1, 2, 3].map((w) => <option value={w}>{PRACTICE_WEEKS[w]}（{fmtDateTime(weekDeadline(c, w))} 截止）</option>)}
+          </select>
+        </div>
+      )}
+    </TopicList>
+  </div>
+</AppLayout>

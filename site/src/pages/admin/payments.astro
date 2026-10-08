@@ -1,0 +1,89 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { requireAdmin } from '../../server/guard';
+import { db } from '../../server/db';
+import { getEnrollment, confirmPayment, rejectPayment, markRefunded } from '../../server/camp/enrollments';
+import { confirmDues, rejectDues } from '../../server/camp/membership';
+import { str } from '../../server/http';
+import { fmtDateTime } from '../../lib/time';
+export const prerender = false;
+const stop = requireAdmin(Astro); if (stop) return stop;
+const me = Astro.locals.account!;
+let message: string | null = null;
+if (Astro.request.method === 'POST') {
+  const f = await Astro.request.formData();
+  const action = str(f, 'action', 20);
+  const id = str(f, 'id', 60);
+  const note = str(f, 'note', 500);
+  if (action === 'dues-confirm') message = (await confirmDues(id, me.id)) ? '已確認會費。' : '這筆已處理過。';
+  else if (action === 'dues-reject') message = (await rejectDues(id, me.id, note)) ? '已通知會員重新填寫。' : '這筆已處理過。';
+  else {
+    const e = await getEnrollment(id);
+    if (!e) message = '找不到這筆報名。';
+    else if (action === 'confirm') message = (await confirmPayment(e, me.id)) ? `已核款 ${e.code}。` : '這筆已處理過。';
+    else if (action === 'reject') message = (await rejectPayment(e, me.id, note)) ? `已通知學員重新填寫 ${e.code}。` : '這筆已處理過。';
+    else if (action === 'refunded') message = (await markRefunded(e, me.id)) ? `已標記退款 ${e.code}。` : '這筆已處理過。';
+  }
+}
+type Row = { id: string; code: string; amount: number; paid_on: string | null; account_last5: string | null; submitted_at: string | null; refund_reason: string | null; name: string; title: string; seq: number; pay_deadline: string | null };
+const q = (status: string) => db().prepare(
+  `SELECT e.id, e.code, e.amount, e.paid_on, e.account_last5, e.submitted_at, e.refund_reason, a.display_name AS name, s.title, c.seq, c.pay_deadline
+   FROM enrollments e JOIN accounts a ON a.id = e.account_id JOIN cohorts c ON c.id = e.cohort_id JOIN showcases s ON s.id = c.showcase_id
+   WHERE e.status = ? ORDER BY c.pay_deadline, e.submitted_at`,
+).bind(status).all<Row>();
+const pending = (await q('submitted')).results;
+const refunds = (await q('refund_pending')).results;
+const { results: dues } = await db().prepare(
+  `SELECT d.id, d.amount, d.paid_on, d.account_last5, d.created_at, a.display_name AS name FROM membership_dues d JOIN accounts a ON a.id = d.account_id WHERE d.status = 'submitted' ORDER BY d.created_at`,
+).all<{ id: string; amount: number; paid_on: string; account_last5: string; created_at: string; name: string }>();
+const { results: recent } = await db().prepare(
+  `SELECT e.code, e.amount, e.paid_on, e.account_last5, e.confirmed_at, a.display_name AS name, s.title, c.seq FROM enrollments e
+   JOIN accounts a ON a.id = e.account_id JOIN cohorts c ON c.id = e.cohort_id JOIN showcases s ON s.id = c.showcase_id
+   WHERE e.status = 'confirmed' ORDER BY e.confirmed_at DESC LIMIT 100`,
+).all<{ code: string; amount: number; paid_on: string; account_last5: string; confirmed_at: string; name: string; title: string; seq: number }>();
+---
+<AdminLayout title="核款與退款">
+  {message && <p class="notice">{message}</p>}
+  <h2>待核款（{pending.length}）</h2>
+  <p>對照協會帳戶入帳：日期、金額、末五碼、附言的報名編號。對得上就核款，對不上就退回讓學員重填。</p>
+  {pending.length === 0 ? <p class="muted">沒有待核款。</p> : (
+    <table class="admin-table">
+      <thead><tr><th>報名編號</th><th>學員</th><th>團</th><th>金額</th><th>匯款日期</th><th>末五碼</th><th>匯款截止</th><th>操作</th></tr></thead>
+      <tbody>{pending.map((r) => (
+        <tr><td>{r.code}</td><td>{r.name}</td><td>{r.title}．第 {r.seq} 團</td><td>{r.amount.toLocaleString('zh-TW')}</td><td>{r.paid_on}</td><td>{r.account_last5}</td><td>{r.pay_deadline && fmtDateTime(r.pay_deadline)}</td>
+          <td><form method="post"><input type="hidden" name="id" value={r.id} /><button class="btn" name="action" value="confirm" type="submit">核款</button></form>
+            <form method="post"><input type="hidden" name="id" value={r.id} /><input name="note" placeholder="對不上的原因" aria-label="對不上的原因" /><button class="link-button" name="action" value="reject" type="submit">對不上</button></form></td></tr>
+      ))}</tbody>
+    </table>
+  )}
+
+  <h2 id="refunds">待退款（{refunds.length}）</h2>
+  {refunds.length === 0 ? <p class="muted">沒有待退款。</p> : (
+    <table class="admin-table">
+      <thead><tr><th>報名編號</th><th>學員</th><th>團</th><th>金額</th><th>原匯款</th><th>原因</th><th>操作</th></tr></thead>
+      <tbody>{refunds.map((r) => (
+        <tr><td>{r.code}</td><td>{r.name}</td><td>{r.title}．第 {r.seq} 團</td><td>{r.amount.toLocaleString('zh-TW')}</td><td>{r.paid_on}．末五碼 {r.account_last5}</td><td>{r.refund_reason}</td>
+          <td><form method="post"><input type="hidden" name="id" value={r.id} /><button class="btn btn-ghost" name="action" value="refunded" type="submit">已匯回</button></form></td></tr>
+      ))}</tbody>
+    </table>
+  )}
+  <p class="form-hint">退款要你手動匯回學員帳戶。需要學員的收款帳號時，請透過協會 LINE@ 聯絡。</p>
+
+  <h2 id="dues">常年會費待核（{dues.length}）</h2>
+  {dues.length === 0 ? <p class="muted">沒有待核的會費。</p> : (
+    <table class="admin-table">
+      <thead><tr><th>會員</th><th>金額</th><th>匯款日期</th><th>末五碼</th><th>操作</th></tr></thead>
+      <tbody>{dues.map((d) => (
+        <tr><td>{d.name}</td><td>{d.amount.toLocaleString('zh-TW')}</td><td>{d.paid_on}</td><td>{d.account_last5}</td>
+          <td><form method="post"><input type="hidden" name="id" value={d.id} /><button class="btn" name="action" value="dues-confirm" type="submit">核款</button></form>
+            <form method="post"><input type="hidden" name="id" value={d.id} /><input name="note" placeholder="對不上的原因" aria-label="對不上的原因" /><button class="link-button" name="action" value="dues-reject" type="submit">對不上</button></form></td></tr>
+      ))}</tbody>
+    </table>
+  )}
+
+  <h2>最近核款（總對帳用）</h2>
+  <table class="admin-table">
+    <thead><tr><th>核款時間</th><th>報名編號</th><th>學員</th><th>團</th><th>金額</th><th>匯款日期</th><th>末五碼</th></tr></thead>
+    <tbody>{recent.map((r) => <tr><td>{fmtDateTime(r.confirmed_at)}</td><td>{r.code}</td><td>{r.name}</td><td>{r.title}．第 {r.seq} 團</td><td>{r.amount.toLocaleString('zh-TW')}</td><td>{r.paid_on}</td><td>{r.account_last5}</td></tr>)}</tbody>
+  </table>
+</AdminLayout>

@@ -1,0 +1,166 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Meter from '../../../../components/camp/Meter.astro';
+import { getShowcaseBySlug, slotsOf } from '../../../../server/camp/showcases';
+import { cohortViews, openViews } from '../../../../server/camp/view';
+import { addInterest, removeInterest } from '../../../../server/camp/cohorts';
+import { publicWorks } from '../../../../server/camp/works';
+import { isAdmin, isOwner } from '../../../../server/camp/access';
+import { demoLinks } from '../../../../server/camp/types';
+import { db } from '../../../../server/db';
+import { renderUserMarkdown } from '../../../../server/markdown';
+import { str } from '../../../../server/http';
+import { fmtDateTime, daysLeft, weekdayLabel } from '../../../../lib/time';
+import { FORMAT_LABEL, SCHEDULE_LABEL, RULE_LABEL, COHORT_STATE, SHOWCASE_STATUS, label } from '../../../../lib/labels';
+import { campRules, site } from '../../../../data/site.js';
+export const prerender = false;
+
+const s = await getShowcaseBySlug(Astro.params.slug!);
+const me = Astro.locals.account;
+if (!s || (s.status !== 'published' && !isOwner(s, me) && !isAdmin(me))) return new Response('Not found', { status: 404 });
+const path = `/camp/r/${s.slug}/`;
+let message: string | null = null;
+let error: string | null = null;
+
+if (Astro.request.method === 'POST') {
+  if (!me) return Astro.redirect(`/auth/login/?next=${encodeURIComponent(path)}`);
+  const form = await Astro.request.formData();
+  const action = str(form, 'action', 20);
+  const cohortId = str(form, 'cohort', 60);
+  const owns = await db().prepare("SELECT 1 FROM cohorts WHERE id = ? AND showcase_id = ? AND state = 'gathering'").bind(cohortId, s.id).first();
+  if (!owns) error = '這個時段現在不開放登記。';
+  else if (isOwner(s, me)) error = '講師不需要登記自己的成果。';
+  else if (action === 'interest') { await addInterest(cohortId, me.id); message = '已登記想學。滿人數開團時會通知你。'; }
+  else if (action === 'uninterest') { await removeInterest(cohortId, me.id); message = '已取消登記。'; }
+}
+
+const views = await cohortViews(s);
+const open = openViews(views);
+const gathering = open.filter((c) => c.state === 'gathering');
+const active = open.filter((c) => c.state !== 'gathering');
+const mine = me ? new Set((await db().prepare('SELECT cohort_id FROM interests WHERE account_id = ?').bind(me.id).all<{ cohort_id: string }>()).results.map((r) => r.cohort_id)) : new Set<string>();
+const slots = await slotsOf(s.id);
+const demos = demoLinks(s);
+const works = await publicWorks(s.id);
+const topics = (await db().prepare("SELECT COUNT(*) AS n FROM posts WHERE space = ? AND parent_id IS NULL AND status = 'published'").bind(`showcase:${s.id}`).first<{ n: number }>())?.n ?? 0;
+const pastCohorts = views.filter((c) => c.state === 'ended').length;
+const fee = s.price.toLocaleString('zh-TW');
+const md = (t: string) => renderUserMarkdown(t);
+
+const course = {
+  '@context': 'https://schema.org',
+  '@type': 'Course',
+  name: s.title,
+  description: s.summary,
+  url: `${site.url}${path}`,
+  provider: { '@type': 'Organization', name: site.legalName, url: site.url },
+  instructor: { '@type': 'Person', name: s.instructor_name },
+  offers: { '@type': 'Offer', price: s.price, priceCurrency: 'TWD', category: 'Paid' },
+  hasCourseInstance: views.filter((c) => c.teaching_start && ['payment', 'confirmed', 'running'].includes(c.state)).map((c) => ({
+    '@type': 'CourseInstance', courseMode: c.teaching_format === 'onsite' ? 'Onsite' : 'Online', startDate: c.teaching_start, endDate: c.ends_at,
+    ...(c.teaching_format === 'onsite' ? { location: { '@type': 'Place', name: c.location, address: c.location } } : {}),
+  })),
+};
+---
+<BaseLayout title={s.title} description={`${s.summary} 講師：${s.instructor_name}。做不來就登記想學，滿 ${s.min_size} 人開團，1 堂主題教學＋3 週實作，${fee} 元。`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: s.title, href: path }]} schema={s.status === 'published' ? [course] : []} noindex={s.status !== 'published'}>
+  {s.status !== 'published' && <p class="notice">預覽：這項成果目前是「{label(SHOWCASE_STATUS, s.status)}」，只有講師和管理員看得到。</p>}
+  {message && <p class="notice">{message}</p>}
+  {error && <p class="notice notice-error">{error}</p>}
+  <div class="prose head">
+    <h1>{s.title}</h1>
+    <p class="lead">講師：{s.instructor_name}。{s.summary}</p>
+  </div>
+
+  <div class="layout">
+    <div class="main prose">
+      <section>
+        <h2>成果展示</h2>
+        <ul class="demo-list">
+          {demos.map((d) => <li><a href={d.url} rel="noopener" target="_blank">{d.title}</a>{d.note && <span class="muted">：{d.note}</span>}</li>)}
+        </ul>
+      </section>
+      <dl class="facts">
+        <dt>用 AI 前後</dt><dd>{s.before_after}</dd>
+        <dt>學完你能做出</dt><dd>{s.learner_outcome}</dd>
+        <dt>適合誰</dt><dd>{s.audience}</dd>
+        <dt>需要的基礎</dt><dd>{s.prerequisites}</dd>
+      </dl>
+      <section>
+        <h2>講師</h2>
+        <p><strong>{s.instructor_name}</strong></p>
+        <div set:html={md(s.instructor_bio)} />
+      </section>
+      <section class="try">
+        <h2>做法說明：先自己試</h2>
+        <div set:html={md(s.method)} />
+        {s.forum_open === 1 && <p>卡住了？到<a href={`${path}forum/`}>討論區</a>問（{topics} 則）。講師有空會回，其他人也能回。</p>}
+      </section>
+      <section>
+        <h2>試閱技能單張：{s.sample_problem.split('\n')[0]}</h2>
+        <p class="muted">開團後，學員會拿到這個成果的全部技能單張。</p>
+        <dl class="sheet">
+          <dt>問題</dt><dd set:html={md(s.sample_problem)} />
+          <dt>發生的原因</dt><dd set:html={md(s.sample_cause)} />
+          <dt>解決方法有哪些</dt><dd set:html={md(s.sample_solutions)} />
+          <dt>我建議的流程</dt><dd set:html={md(s.sample_flow)} />
+        </dl>
+      </section>
+      {works.length > 0 && (
+        <section>
+          <h2>上過的學員做出來的</h2>
+          <ul>{works.map((w) => <li><strong>{w.title ?? '作品'}</strong>（{w.author_name}）<div set:html={md(w.body.slice(0, 600))} /></li>)}</ul>
+        </section>
+      )}
+    </div>
+
+    <aside class="box" id="want">
+      <h2>做不來？登記想學</h2>
+      {active.map((c) => (
+        <div class="notice">
+          <strong>{label(COHORT_STATE, c.state)}</strong>{c.slotLabel && `．${c.slotLabel}`}
+          {c.state === 'payment' && <><br />匯款剩 {daysLeft(c.pay_deadline!)} 天．主題教學 {fmtDateTime(c.teaching_start!)}</>}
+          {(c.state === 'confirmed' || c.state === 'running') && <><br />主題教學 {fmtDateTime(c.teaching_start!)}</>}
+          <br /><a href={`/camp/g/${c.id}/`}>看這一團</a>
+        </div>
+      ))}
+      {gathering.length === 0 && active.length > 0 && <p class="muted">這一團進行中，結營後重新開放登記。</p>}
+      {gathering.map((c) => (
+        <form method="post" class="slot">
+          <input type="hidden" name="cohort" value={c.id} />
+          <Meter ratio={c.interests / s.min_size} label={`${c.slotLabel ? `${c.slotLabel}．` : ''}已登記 ${c.interests}／${s.min_size} 人`} />
+          {mine.has(c.id)
+            ? <><input type="hidden" name="action" value="uninterest" /><p class="ok">你已登記{c.slotLabel ? '這個時段' : ''}。</p><button class="btn btn-ghost" type="submit">取消登記</button></>
+            : <><input type="hidden" name="action" value="interest" /><button class="btn" type="submit">{me ? '登記想學（免費）' : '登入後登記想學'}</button></>}
+        </form>
+      ))}
+      <dl class="facts small">
+        <dt>內容</dt><dd>1 堂主題教學（{FORMAT_LABEL[s.teaching_format]}{s.teaching_format === 'onsite' && `，${s.location}`}）＋3 週實作，{campRules.duration}</dd>
+        <dt>時間</dt><dd>{SCHEDULE_LABEL[s.schedule_mode]}{s.schedule_mode === 'slots' && slots.length > 0 && `：${slots.map((x) => `${weekdayLabel(x.weekday)} ${x.start_time}`).join('、')}`}{s.schedule_mode === 'fixed' && s.fixed_start && `：${fmtDateTime(s.fixed_start)}`}</dd>
+        <dt>團費</dt><dd>{fee} 元，開課前可全額退款</dd>
+        <dt>成團</dt><dd>滿 {s.min_size} 人；{RULE_LABEL[s.group_rule]}</dd>
+        {s.max_size && <><dt>上限</dt><dd>{s.max_size} 人，額滿的人自動排下一團</dd></>}
+        {pastCohorts > 0 && <><dt>開過</dt><dd>{pastCohorts} 團</dd></>}
+      </dl>
+      <p class="muted small">登記不用付費、不必入會。開團時通知你報名匯款。</p>
+    </aside>
+  </div>
+</BaseLayout>
+<style>
+  .head { margin-bottom: var(--space-6); }
+  .lead { font-size: var(--text-lg); color: var(--color-ink-soft); }
+  .layout { display: grid; gap: var(--space-8); align-items: start; }
+  @media (min-width: 1024px) { .layout { grid-template-columns: minmax(0, 1fr) 22rem; } .box { position: sticky; top: var(--space-4); } }
+  .main section { margin-bottom: var(--space-8); }
+  .demo-list { display: grid; gap: var(--space-2); }
+  .try { background: var(--color-tip-bg); border-left: 4px solid var(--color-tip-line); border-radius: var(--radius); padding: var(--space-4) var(--space-6); }
+  .sheet { display: grid; gap: var(--space-2); }
+  .sheet dt { font-weight: 700; }
+  .sheet dd { margin: 0 0 var(--space-2); }
+  .box { background: var(--color-surface); border: 2px solid var(--color-brand); border-radius: var(--radius); padding: var(--space-6); display: grid; gap: var(--space-4); }
+  .box h2 { margin: 0; font-size: var(--text-lg); }
+  .slot { display: grid; gap: var(--space-2); }
+  .slot p { margin: 0; }
+  .ok { color: var(--color-tip-line); font-weight: 700; }
+  .small { font-size: var(--text-xs); }
+  .facts.small { margin: 0; }
+</style>

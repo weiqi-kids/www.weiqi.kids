@@ -1,0 +1,50 @@
+---
+import AppLayout from '../../../../../layouts/AppLayout.astro';
+import { getCohort } from '../../../../../server/camp/cohorts';
+import { getShowcase } from '../../../../../server/camp/showcases';
+import { isCohortMember } from '../../../../../server/camp/access';
+import { surveyOf, submitSurvey, SURVEY_ITEMS } from '../../../../../server/camp/survey';
+import { str } from '../../../../../server/http';
+export const prerender = false;
+
+const c = await getCohort(Astro.params.id!);
+const s = c ? await getShowcase(c.showcase_id) : null;
+if (!c || !s) return new Response('Not found', { status: 404 });
+const me = Astro.locals.account;
+const here = `/camp/g/${c.id}/room/survey/`;
+if (!me) return Astro.redirect(`/auth/login/?next=${encodeURIComponent(here)}`);
+if (!(await isCohortMember(c, me)) || c.state !== 'ended') return Astro.redirect(`/camp/g/${c.id}/room/`);
+let error: string | null = null;
+let done = !!(await surveyOf(c.id, me.id));
+if (Astro.request.method === 'POST' && !done) {
+  const f = await Astro.request.formData();
+  const n = (k: string) => Number(str(f, k, 1));
+  error = await submitSurvey(c.id, me.id, { overall: n('overall'), instructor: n('instructor'), materials: n('materials'), practice: n('practice'), learned: str(f, 'learned', 3000), suggestion: str(f, 'suggestion', 3000) });
+  done = !error;
+}
+---
+<AppLayout title="結營問卷" breadcrumbs={[{ name: '上課區', href: `/camp/g/${c.id}/room/` }, { name: '結營問卷', href: here }]}>
+  <div class="prose">
+    <h1>結營問卷：{s.title}</h1>
+    {done ? <p class="notice">謝謝你填問卷。<a href={`/camp/g/${c.id}/room/`}>回上課區</a></p> : (
+      <form method="post">
+        {error && <p class="notice notice-error">{error}</p>}
+        <p>1 分是很不滿意，5 分是很滿意。</p>
+        {SURVEY_ITEMS.map(([k, q]) => (
+          <fieldset class="form-field">
+            <legend>{q}</legend>
+            <div class="scale">{[1, 2, 3, 4, 5].map((v) => <label><input type="radio" name={k} value={v} required /> {v}</label>)}</div>
+          </fieldset>
+        ))}
+        <div class="form-field"><label for="learned">這一團你學到或做出了什麼？</label><textarea id="learned" name="learned" rows="4" required></textarea></div>
+        <div class="form-field"><label for="suggestion">給講師或協會的建議（選填）</label><textarea id="suggestion" name="suggestion" rows="3"></textarea></div>
+        <button class="btn" type="submit">送出問卷</button>
+      </form>
+    )}
+  </div>
+</AppLayout>
+<style>
+  fieldset { border: 0; padding: 0; }
+  legend { font-weight: 700; }
+  .scale { display: flex; gap: var(--space-4); flex-wrap: wrap; }
+</style>

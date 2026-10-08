@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { campRules } from '../../data/site.js';
+const fee = campRules.membershipFee.toLocaleString('zh-TW');
+const min = campRules.minFee.toLocaleString('zh-TW');
+const steps = [
+  { name: '成為協會會員', text: `常年會費 ${fee} 元，一年一繳。匯款後在帳號頁填資料，由管理員核對。` },
+  { name: '建立成果', text: '在講師後台填 7 項資料：成果展示、用 AI 前後差在哪裡、學完能做出什麼、適合誰與需要的基礎、你的本業與為什麼做這個、做法說明、一張試閱技能單張。每項都有協會成果的範例。' },
+  { name: '訂開團設定', text: `主題教學線上直播或實體、團費（最低 ${min} 元）、時間怎麼排、成團條件、開團人數與上限。` },
+  { name: '填開課表單並送審', text: '每團都要符合 TTQS，送審前要填完開課表單。管理員審核通過，成果就會公開。' },
+  { name: '其餘交給系統', text: '登記滿人數自動開團、通知學員匯款、判定成團、提醒學員交實作、結營寄問卷。你負責上主題教學、在論壇回覆學員。' },
+];
+---
+<BaseLayout title="成為 AI 共學營講師" description={`先成為協會會員，把你用 AI 做出來的成果放上來。學員做不來就登記想學，滿人數自動開團；團費最低 ${min} 元，協會與講師各分一半。`} breadcrumbs={[{ name: 'AI 共學營', href: '/camp/' }, { name: '成為講師', href: '/camp/teach/' }]}>
+  <article class="prose">
+    <h1>成為講師</h1>
+    <div class="key-answer" data-question="怎麼成為 AI 共學營講師？">
+      <p>講師要先有自己用 AI 做出來的成果，並且是協會會員。把成果放上來，學員看了做不來就登記想學，滿你訂的人數自動開團。不需要上過共學營。團費由你訂，最低 {min} 元，協會與你各分一半，結營後匯給你。</p>
+    </div>
+    <ol class="actionable-steps">{steps.map((s) => <li><strong>{s.name}</strong><p>{s.text}</p></li>)}</ol>
+    <h2>你要投入的時間</h2>
+    <ul>
+      <li>每團 1 堂主題教學，線上直播或實體都可以。</li>
+      <li>3 週實作期間，有空時到課程論壇回覆學員的進度；學員之間也會互相回覆。</li>
+      <li>可以選「滿人數後提出候選日期」，配合你自己的時間。</li>
+    </ul>
+    <p><a class="btn" href="/account/teach/">到講師後台</a></p>
+  </article>
+</BaseLayout>
+<style>
+  .actionable-steps li { margin-bottom: var(--space-4); }
+  .actionable-steps p { margin: 0; }
+</style>

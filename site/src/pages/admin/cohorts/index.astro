@@ -1,0 +1,36 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { requireAdmin } from '../../../server/guard';
+import { db } from '../../../server/db';
+import { fmtDateTime } from '../../../lib/time';
+import { COHORT_STATE, label } from '../../../lib/labels';
+import { runScheduled } from '../../../server/camp/cohorts';
+import { audit } from '../../../server/db';
+export const prerender = false;
+const stop = requireAdmin(Astro); if (stop) return stop;
+let message: string | null = null;
+// 系統每小時自動推進；需要立刻反映（例如剛核完款、到了截止時間）時可以手動跑一次。
+if (Astro.request.method === 'POST') {
+  await runScheduled();
+  await audit(Astro.locals.account!.id, 'cohort.run_now', null);
+  message = '已推進所有進行中的團。';
+}
+const { results } = await db().prepare(
+  `SELECT c.id, c.seq, c.state, c.teaching_start, c.close_reason, s.title, s.instructor_name,
+     (SELECT COUNT(*) FROM interests i WHERE i.cohort_id = c.id) AS interested,
+     (SELECT COUNT(*) FROM enrollments e WHERE e.cohort_id = c.id AND e.status = 'confirmed') AS paid
+   FROM cohorts c JOIN showcases s ON s.id = c.showcase_id ORDER BY c.created_at DESC LIMIT 300`,
+).all<{ id: string; seq: number; state: string; teaching_start: string | null; close_reason: string | null; title: string; instructor_name: string; interested: number; paid: number }>();
+---
+<AdminLayout title="各團與 TTQS">
+  {message && <p class="notice">{message}</p>}
+  <form method="post"><button class="btn btn-ghost" type="submit">現在推進所有進行中的團</button></form>
+  <p>每一團的 TTQS 佐證（開課表單、學員名單、簽到、3 週實作繳交、結營問卷）可以下載成 CSV。</p>
+  <table class="admin-table">
+    <thead><tr><th>成果</th><th>團</th><th>狀態</th><th>登記</th><th>已核款</th><th>主題教學</th><th>TTQS</th></tr></thead>
+    <tbody>{results.map((c) => (
+      <tr><td>{c.title}（{c.instructor_name}）</td><td>{c.state === 'gathering' ? `第 ${c.seq} 團` : <a href={`/camp/g/${c.id}/`}>第 {c.seq} 團</a>}</td><td>{label(COHORT_STATE, c.state)}{c.close_reason && c.state !== 'ended' && `：${c.close_reason}`}</td><td>{c.interested}</td><td>{c.paid}</td><td>{c.teaching_start ? fmtDateTime(c.teaching_start) : '—'}</td>
+        <td>{['running', 'ended'].includes(c.state) && <a href={`/admin/cohorts/${c.id}/ttqs.csv`}>下載</a>}</td></tr>
+    ))}</tbody>
+  </table>
+</AdminLayout>

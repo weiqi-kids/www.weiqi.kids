@@ -1095,21 +1095,21 @@
   "old": "/apps/",
   "title": null,
   "create": false,
-  "redirect": "/camp/topics/ai-applications/"
+  "redirect": "/camp/r/ai-tools/"
  },
  {
   "src": null,
   "old": "/intel/",
   "title": null,
   "create": false,
-  "redirect": "/camp/topics/supply-chain-intelligence/"
+  "redirect": "/camp/r/supply-chain/"
  },
  {
   "src": null,
   "old": "/research/",
   "title": null,
   "create": false,
-  "redirect": "/camp/topics/research-publication/"
+  "redirect": "/camp/r/research/"
  },
  {
   "src": null,

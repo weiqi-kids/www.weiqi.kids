@@ -1,0 +1,58 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro';
+import { listByOwner, canCreateShowcase, createDraft } from '../../../server/camp/showcases';
+import { db } from '../../../server/db';
+import { str } from '../../../server/http';
+import { fmtDate, fmtDateTime } from '../../../lib/time';
+import { SHOWCASE_STATUS, COHORT_STATE, label } from '../../../lib/labels';
+export const prerender = false;
+
+const me = Astro.locals.account;
+if (!me) return Astro.redirect('/auth/login/?next=/account/teach/');
+const member = await canCreateShowcase(me.id);
+if (Astro.request.method === 'POST' && member) {
+  const f = await Astro.request.formData();
+  if (str(f, 'action', 20) === 'new') return Astro.redirect(`/account/teach/showcases/${await createDraft(me.id, me.display_name)}/`, 303);
+}
+const showcases = await listByOwner(me.id);
+const { results: cohorts } = await db().prepare(
+  `SELECT c.id, c.seq, c.state, c.teaching_start, c.pay_deadline, s.title FROM cohorts c JOIN showcases s ON s.id = c.showcase_id
+   WHERE s.owner_id = ? AND c.state != 'gathering' ORDER BY c.created_at DESC LIMIT 50`,
+).bind(me.id).all<{ id: string; seq: number; state: string; teaching_start: string | null; pay_deadline: string | null; title: string }>();
+const { results: payouts } = await db().prepare(
+  'SELECT p.amount, p.status, p.paid_at, p.created_at, s.title, c.seq FROM payouts p JOIN cohorts c ON c.id = p.cohort_id JOIN showcases s ON s.id = c.showcase_id WHERE p.instructor_id = ? ORDER BY p.created_at DESC',
+).bind(me.id).all<{ amount: number; status: string; paid_at: string | null; created_at: string; title: string; seq: number }>();
+---
+<AppLayout title="講師後台" breadcrumbs={[{ name: '帳號', href: '/account/' }, { name: '講師後台', href: '/account/teach/' }]}>
+  <div class="prose">
+    <h1>講師後台</h1>
+    {!member && <p class="notice">放上成果要先是協會會員。<a href="/account/membership/">繳常年會費</a></p>}
+
+    <section>
+      <h2>我的成果</h2>
+      {showcases.length === 0 && <p class="muted">還沒有成果。</p>}
+      <ul>
+        {showcases.map((s) => <li><a href={`/account/teach/showcases/${s.id}/`}>{s.title || '（未命名）'}</a>：{label(SHOWCASE_STATUS, s.status)}{s.status === 'published' && <>．<a href={`/camp/r/${s.slug}/`}>看公開頁</a></>}{s.review_note && s.status === 'changes_requested' && `．協會意見：${s.review_note}`}</li>)}
+      </ul>
+      {member && <form method="post"><input type="hidden" name="action" value="new" /><button class="btn" type="submit">建立新成果</button></form>}
+    </section>
+
+    <section>
+      <h2>我的團</h2>
+      {cohorts.length === 0 ? <p class="muted">還沒有滿人數開團的團。</p> : (
+        <ul>{cohorts.map((c) => <li><a href={`/account/teach/cohorts/${c.id}/`}>{c.title}．第 {c.seq} 團</a>：{label(COHORT_STATE, c.state)}{c.teaching_start && `．主題教學 ${fmtDateTime(c.teaching_start)}`}</li>)}</ul>
+      )}
+    </section>
+
+    <section>
+      <h2>分潤</h2>
+      <p class="muted">每團結營後，協會把團費的一半匯給你。</p>
+      {payouts.length === 0 ? <p class="muted">還沒有分潤紀錄。</p> : (
+        <ul>{payouts.map((p) => <li>{p.title}．第 {p.seq} 團：{p.amount.toLocaleString('zh-TW')} 元．{p.status === 'paid' ? `${fmtDate(p.paid_at!)} 已匯出` : '待匯出'}</li>)}</ul>
+      )}
+    </section>
+  </div>
+</AppLayout>
+<style>
+  section { margin-bottom: var(--space-8); }
+</style>

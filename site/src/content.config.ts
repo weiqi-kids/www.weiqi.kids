@@ -24,43 +24,6 @@ const pages = defineCollection({
   }),
 });
 
-// AI 共學營講師成果（不是正式課程）：講師先做出成果，學員登記想學，滿 groupSize 人開團。
-const topics = defineCollection({
-  loader: glob({ pattern: '*.md', base: './src/content/topics' }),
-  schema: z.object({
-    title: z.string(),
-    slug: z.string(),
-    summary: z.string(),
-    order: z.number(),
-    ttqsName: z.string(),
-    audience: z.string(),
-    caseSet: z.enum(['apps', 'monitoring', 'intel', 'research', 'none']).default('none'),
-    instructors: z.array(z.string()).min(1),
-    groupSize: z.number().int().positive(),
-    hero: z.string().optional(),
-    heroAlt: z.string().optional(),
-    heroCaption: z.string().optional(),
-  }),
-});
-
-// 正式課程：講師申請、管理員審核並填寫 TTQS 表單後才建立。
-const courses = defineCollection({
-  loader: glob({ pattern: '*.md', base: './src/content/courses' }),
-  schema: z.object({
-    title: z.string(),
-    slug: z.string(),
-    topic: z.string(),
-    status: z.enum(['draft', 'open', 'running', 'closed']),
-    instructors: z.array(z.string()),
-    startDate: z.coerce.date(),
-    endDate: z.coerce.date(),
-    fee: z.number().default(6000),
-    location: z.string(),
-    sessions: z.array(z.object({ label: z.string(), date: z.coerce.date(), kind: z.enum(['teaching', 'practice']) })).length(4),
-    summary: z.string(),
-  }),
-});
-
 // 好棋寶寶棋聚單場活動。
 const gatherings = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/gatherings' }),
@@ -122,4 +85,4 @@ const teachers = defineCollection({
   }),
 });
 
-export const collections = { pages, topics, courses, gatherings, news, teachers };
+export const collections = { pages, gatherings, news, teachers };
