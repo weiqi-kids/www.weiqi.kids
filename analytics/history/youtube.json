@@ -12,7 +12,79 @@
       "subscribersDelta": null,
       "totalViewsDelta": null,
       "videoCountDelta": null
+    },
+    {
+      "date": "2026-09-24",
+      "channelId": "UC08sZ6NqKq2njHuORDDM6IA",
+      "title": "台灣好棋寶寶協會 Good Move Association",
+      "handle": "@goodmoveassociation",
+      "subscribers": 233,
+      "videoCount": 256,
+      "totalViews": 98171,
+      "subscribersDelta": 0,
+      "totalViewsDelta": 12,
+      "videoCountDelta": 0
+    },
+    {
+      "date": "2026-09-25",
+      "channelId": "UC08sZ6NqKq2njHuORDDM6IA",
+      "title": "台灣好棋寶寶協會 Good Move Association",
+      "handle": "@goodmoveassociation",
+      "subscribers": 233,
+      "videoCount": 256,
+      "totalViews": 98193,
+      "subscribersDelta": 0,
+      "totalViewsDelta": 22,
+      "videoCountDelta": 0
+    },
+    {
+      "date": "2026-09-26",
+      "channelId": "UC08sZ6NqKq2njHuORDDM6IA",
+      "title": "台灣好棋寶寶協會 Good Move Association",
+      "handle": "@goodmoveassociation",
+      "subscribers": 233,
+      "videoCount": 256,
+      "totalViews": 98206,
+      "subscribersDelta": 0,
+      "totalViewsDelta": 13,
+      "videoCountDelta": 0
+    },
+    {
+      "date": "2026-09-27",
+      "channelId": "UC08sZ6NqKq2njHuORDDM6IA",
+      "title": "台灣好棋寶寶協會 Good Move Association",
+      "handle": "@goodmoveassociation",
+      "subscribers": 233,
+      "videoCount": 256,
+      "totalViews": 98220,
+      "subscribersDelta": 0,
+      "totalViewsDelta": 14,
+      "videoCountDelta": 0
+    },
+    {
+      "date": "2026-09-28",
+      "channelId": "UC08sZ6NqKq2njHuORDDM6IA",
+      "title": "台灣好棋寶寶協會 Good Move Association",
+      "handle": "@goodmoveassociation",
+      "subscribers": 233,
+      "videoCount": 256,
+      "totalViews": 98230,
+      "subscribersDelta": 0,
+      "totalViewsDelta": 10,
+      "videoCountDelta": 0
+    },
+    {
+      "date": "2026-09-29",
+      "channelId": "UC08sZ6NqKq2njHuORDDM6IA",
+      "title": "台灣好棋寶寶協會 Good Move Association",
+      "handle": "@goodmoveassociation",
+      "subscribers": 233,
+      "videoCount": 256,
+      "totalViews": 98230,
+      "subscribersDelta": 0,
+      "totalViewsDelta": 0,
+      "videoCountDelta": 0
     }
   ],
-  "lastUpdated": "2026-09-23T06:09:12.043Z"
+  "lastUpdated": "2026-09-29T01:00:07.208Z"
 }

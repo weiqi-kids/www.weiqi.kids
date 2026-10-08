@@ -1,0 +1,406 @@
+{
+  "collectedAt": "2026-10-03T01:00:05.216Z",
+  "siteUrl": "sc-domain:weiqi.kids",
+  "range": {
+    "startDate": "2026-09-24",
+    "endDate": "2026-09-30"
+  },
+  "daily": [
+    {
+      "date": "2026-09-24",
+      "clicks": 3,
+      "impressions": 831,
+      "ctr": 0.36,
+      "position": 7.1
+    },
+    {
+      "date": "2026-09-25",
+      "clicks": 3,
+      "impressions": 748,
+      "ctr": 0.4,
+      "position": 6.7
+    },
+    {
+      "date": "2026-09-26",
+      "clicks": 5,
+      "impressions": 496,
+      "ctr": 1.01,
+      "position": 6.5
+    },
+    {
+      "date": "2026-09-27",
+      "clicks": 2,
+      "impressions": 335,
+      "ctr": 0.6,
+      "position": 8.1
+    },
+    {
+      "date": "2026-09-28",
+      "clicks": 7,
+      "impressions": 443,
+      "ctr": 1.58,
+      "position": 7.8
+    },
+    {
+      "date": "2026-09-29",
+      "clicks": 3,
+      "impressions": 387,
+      "ctr": 0.78,
+      "position": 9
+    }
+  ],
+  "topQueries": [
+    {
+      "query": "katago 安裝",
+      "clicks": 2,
+      "impressions": 15,
+      "ctr": 13.33,
+      "position": 4.9
+    },
+    {
+      "query": "amc aime",
+      "clicks": 1,
+      "impressions": 4,
+      "ctr": 25,
+      "position": 5.3
+    },
+    {
+      "query": "b2 400mg",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr": 100,
+      "position": 30
+    },
+    {
+      "query": "lnhpd",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr": 100,
+      "position": 47
+    },
+    {
+      "query": "圍棋老師",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr": 100,
+      "position": 1
+    },
+    {
+      "query": "蕭愛霖",
+      "clicks": 1,
+      "impressions": 5,
+      "ctr": 20,
+      "position": 5
+    },
+    {
+      "query": "顏怡璇",
+      "clicks": 1,
+      "impressions": 6,
+      "ctr": 16.67,
+      "position": 8.7
+    },
+    {
+      "query": "\"2025-26 aime thresholds\" \"amc 10a\"",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 7
+    },
+    {
+      "query": "\"genus 5\" \"perfect cuboid\" faltings",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 4
+    },
+    {
+      "query": "\"higher dimensional perfect cuboid\"",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 10
+    },
+    {
+      "query": "\"mordell-weil ranks of families of elliptic curves associated to pythagorean triples\"",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 6.5
+    },
+    {
+      "query": "\"school students — youth risk behavior survey, united states, 2023.\" or \"frequent social media use and experiences with bullying victimization, persistent\" or \"feelings of sadness or hopelessness, and suicide risk among high\"",
+      "clicks": 0,
+      "impressions": 515,
+      "ctr": 0,
+      "position": 8.3
+    },
+    {
+      "query": "%\"2025-26 aime thresholds\" \"amc 10a\"",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 7
+    },
+    {
+      "query": "%\"2025-26 aime thresholds\" \"amc 12a\"",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 6
+    },
+    {
+      "query": "%\"n-dimensional perfect cuboid\"",
+      "clicks": 0,
+      "impressions": 4,
+      "ctr": 0,
+      "position": 8.5
+    },
+    {
+      "query": "+\"2025-26 aime thresholds\" \"amc 12a\"",
+      "clicks": 0,
+      "impressions": 3,
+      "ctr": 0,
+      "position": 6
+    },
+    {
+      "query": "+\"genus 5\" \"perfect cuboid\"",
+      "clicks": 0,
+      "impressions": 11,
+      "ctr": 0,
+      "position": 4.8
+    },
+    {
+      "query": "+\"n-dimensional\" \"perfect cuboid\"",
+      "clicks": 0,
+      "impressions": 18,
+      "ctr": 0,
+      "position": 9.9
+    },
+    {
+      "query": "+\"n=1000\" \"perfect cuboid\"",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 11
+    },
+    {
+      "query": "+site.moe.gov.cn 义务教育 数学 课程标准 2022 pdf",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 4
+    },
+    {
+      "query": "1",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 3
+    },
+    {
+      "query": "3n+1問題",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 12
+    },
+    {
+      "query": "a level考試時間",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 11
+    },
+    {
+      "query": "aime 數學",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 6.5
+    },
+    {
+      "query": "aime 競賽",
+      "clicks": 0,
+      "impressions": 8,
+      "ctr": 0,
+      "position": 7.4
+    }
+  ],
+  "topPages": [
+    {
+      "page": "https://www.weiqi.kids/en/docs/tech/hands-on/setup/",
+      "clicks": 4,
+      "impressions": 32,
+      "ctr": 12.5,
+      "position": 5.4
+    },
+    {
+      "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/competition/amc-aime.html",
+      "clicks": 3,
+      "impressions": 199,
+      "ctr": 1.51,
+      "position": 6.3
+    },
+    {
+      "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+      "clicks": 2,
+      "impressions": 176,
+      "ctr": 1.14,
+      "position": 4.1
+    },
+    {
+      "page": "https://www.weiqi.kids/ja/docs/tech/deep-dive/source-code/",
+      "clicks": 2,
+      "impressions": 2,
+      "ctr": 100,
+      "position": 9.5
+    },
+    {
+      "page": "https://epialert.weiqi.kids/Extractor/us_cdc_mmwr/outbreak_report/2026/2026-02-05-outbreak-of-human-trichinellosis-arizona-minnesota.html",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr": 100,
+      "position": 6
+    },
+    {
+      "page": "https://four-color-structural-proof.proof.weiqi.kids/",
+      "clicks": 1,
+      "impressions": 9,
+      "ctr": 11.11,
+      "position": 15.4
+    },
+    {
+      "page": "https://learn.weiqi.kids/for-researchers/pisa-data.html",
+      "clicks": 1,
+      "impressions": 4,
+      "ctr": 25,
+      "position": 4.3
+    },
+    {
+      "page": "https://supplement.weiqi.kids/data-sources/ca-lnhpd.html",
+      "clicks": 1,
+      "impressions": 2,
+      "ctr": 50,
+      "position": 30.5
+    },
+    {
+      "page": "https://supplement.weiqi.kids/reports/vitamin-b2/guide.html",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr": 100,
+      "position": 30
+    },
+    {
+      "page": "https://www.weiqi.kids/docs/about/members/founding/lightman-chang/",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr": 100,
+      "position": 3
+    },
+    {
+      "page": "https://www.weiqi.kids/docs/learn/history/human-history/ancient/",
+      "clicks": 1,
+      "impressions": 4,
+      "ctr": 25,
+      "position": 8
+    },
+    {
+      "page": "https://www.weiqi.kids/en/docs/about/members/founding/ai-lin-hsiao/",
+      "clicks": 1,
+      "impressions": 8,
+      "ctr": 12.5,
+      "position": 5.5
+    },
+    {
+      "page": "https://www.weiqi.kids/en/docs/learn/introduction/terminology/",
+      "clicks": 1,
+      "impressions": 10,
+      "ctr": 10,
+      "position": 6.1
+    },
+    {
+      "page": "https://www.weiqi.kids/en/docs/tech/overview/landscape/",
+      "clicks": 1,
+      "impressions": 5,
+      "ctr": 20,
+      "position": 12.6
+    },
+    {
+      "page": "https://www.weiqi.kids/id/docs/about/members/founding/bo-jen-tsai/",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr": 100,
+      "position": 1
+    },
+    {
+      "page": "https://www.weiqi.kids/pt/docs/about/members/founding/yi-hsuan-yen/",
+      "clicks": 1,
+      "impressions": 2,
+      "ctr": 50,
+      "position": 9
+    },
+    {
+      "page": "https://ai-alignment-guarantees.proof.weiqi.kids/",
+      "clicks": 0,
+      "impressions": 7,
+      "ctr": 0,
+      "position": 5.7
+    },
+    {
+      "page": "https://auto.intel.weiqi.kids/",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 1
+    },
+    {
+      "page": "https://brighterarc.weiqi.kids/",
+      "clicks": 0,
+      "impressions": 3,
+      "ctr": 0,
+      "position": 3.7
+    },
+    {
+      "page": "https://collatz-research-report.proof.weiqi.kids/",
+      "clicks": 0,
+      "impressions": 32,
+      "ctr": 0,
+      "position": 13
+    },
+    {
+      "page": "https://epialert.weiqi.kids/",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 1
+    },
+    {
+      "page": "https://epialert.weiqi.kids/Extractor/",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 2
+    },
+    {
+      "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/guidance/2026-02-04-malta-simex-vector-borne-disease.html",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 26
+    },
+    {
+      "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/risk_assessment/2026-02-19-lower-risk-exposure-cereulide-infant-formula.html",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 12
+    },
+    {
+      "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/situational_update/2025-11-26-joint-mpox-surveillance-bulletin.html",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 10
+    }
+  ]
+}

@@ -1,0 +1,406 @@
+{
+  "collectedAt": "2026-10-08T01:00:04.689Z",
+  "siteUrl": "sc-domain:weiqi.kids",
+  "range": {
+    "startDate": "2026-09-29",
+    "endDate": "2026-10-05"
+  },
+  "daily": [
+    {
+      "date": "2026-09-29",
+      "clicks": 3,
+      "impressions": 387,
+      "ctr": 0.78,
+      "position": 9
+    },
+    {
+      "date": "2026-09-30",
+      "clicks": 2,
+      "impressions": 342,
+      "ctr": 0.58,
+      "position": 8.6
+    },
+    {
+      "date": "2026-10-01",
+      "clicks": 3,
+      "impressions": 218,
+      "ctr": 1.38,
+      "position": 12.7
+    },
+    {
+      "date": "2026-10-02",
+      "clicks": 4,
+      "impressions": 251,
+      "ctr": 1.59,
+      "position": 11.3
+    },
+    {
+      "date": "2026-10-03",
+      "clicks": 3,
+      "impressions": 208,
+      "ctr": 1.44,
+      "position": 11.4
+    },
+    {
+      "date": "2026-10-04",
+      "clicks": 0,
+      "impressions": 200,
+      "ctr": 0,
+      "position": 10.7
+    }
+  ],
+  "topQueries": [
+    {
+      "query": "b2 400mg",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr": 100,
+      "position": 30
+    },
+    {
+      "query": "姜封豪醫師學歷",
+      "clicks": 1,
+      "impressions": 6,
+      "ctr": 16.67,
+      "position": 1.3
+    },
+    {
+      "query": "\"mordell-weil ranks of families of elliptic curves associated to pythagorean triples\"",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 7
+    },
+    {
+      "query": "\"school students — youth risk behavior survey, united states, 2023.\" or \"frequent social media use and experiences with bullying victimization, persistent\" or \"feelings of sadness or hopelessness, and suicide risk among high\"",
+      "clicks": 0,
+      "impressions": 130,
+      "ctr": 0,
+      "position": 8.4
+    },
+    {
+      "query": "a level",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 67
+    },
+    {
+      "query": "aime 12",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 9
+    },
+    {
+      "query": "aime 數學",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 10
+    },
+    {
+      "query": "aime 競賽",
+      "clicks": 0,
+      "impressions": 8,
+      "ctr": 0,
+      "position": 7.6
+    },
+    {
+      "query": "amc",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 35
+    },
+    {
+      "query": "amc aime",
+      "clicks": 0,
+      "impressions": 3,
+      "ctr": 0,
+      "position": 6.7
+    },
+    {
+      "query": "ap calculus",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 9.5
+    },
+    {
+      "query": "ap 微積分",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 69
+    },
+    {
+      "query": "a呢",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 4
+    },
+    {
+      "query": "biovantek",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 31
+    },
+    {
+      "query": "cdc program evaluation framework 2024",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 46
+    },
+    {
+      "query": "cholera 中文",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 68.5
+    },
+    {
+      "query": "cholera中文",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 70
+    },
+    {
+      "query": "deaths by month",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 32
+    },
+    {
+      "query": "evaluate the dietary supplements & wellness nutrition company brands on 薑黃",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 8.5
+    },
+    {
+      "query": "fnfc",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 5
+    },
+    {
+      "query": "folate folic acid",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 83
+    },
+    {
+      "query": "frequent social media use and experiences with bullying victimization, persistent feelings of sadness or hopelessness, and suicide risk among high school students — youth risk behavior survey, united states, 2023",
+      "clicks": 0,
+      "impressions": 8,
+      "ctr": 0,
+      "position": 9.1
+    },
+    {
+      "query": "health and economic benefits of routine childhood immunizations in the era of the vaccines for children program — united states, 1994–2023",
+      "clicks": 0,
+      "impressions": 3,
+      "ctr": 0,
+      "position": 8.7
+    },
+    {
+      "query": "hiv病毒",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 76
+    },
+    {
+      "query": "imo",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 5
+    }
+  ],
+  "topPages": [
+    {
+      "page": "https://collatz-research-report.proof.weiqi.kids/",
+      "clicks": 3,
+      "impressions": 23,
+      "ctr": 13.04,
+      "position": 11.4
+    },
+    {
+      "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/competition/amc-aime.html",
+      "clicks": 2,
+      "impressions": 118,
+      "ctr": 1.69,
+      "position": 6.5
+    },
+    {
+      "page": "https://learn.weiqi.kids/Narrator/exam_threshold_map/entrance/japan-common-test.html",
+      "clicks": 1,
+      "impressions": 46,
+      "ctr": 2.17,
+      "position": 6.5
+    },
+    {
+      "page": "https://supplement.weiqi.kids/reports/nattokinase/literature/2026-06.html",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr": 100,
+      "position": 11
+    },
+    {
+      "page": "https://supplement.weiqi.kids/reports/vitamin-b2/guide.html",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr": 100,
+      "position": 30
+    },
+    {
+      "page": "https://www.weiqi.kids/",
+      "clicks": 1,
+      "impressions": 5,
+      "ctr": 20,
+      "position": 2.2
+    },
+    {
+      "page": "https://www.weiqi.kids/ar/docs/about/activities/partners/yi-chun/",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr": 100,
+      "position": 2
+    },
+    {
+      "page": "https://www.weiqi.kids/docs/about/members/founding/lightman-chang/",
+      "clicks": 1,
+      "impressions": 3,
+      "ctr": 33.33,
+      "position": 42.3
+    },
+    {
+      "page": "https://www.weiqi.kids/en/docs/about/members/founding/feng-hao-chiang/",
+      "clicks": 1,
+      "impressions": 18,
+      "ctr": 5.56,
+      "position": 6.6
+    },
+    {
+      "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+      "clicks": 1,
+      "impressions": 98,
+      "ctr": 1.02,
+      "position": 4.1
+    },
+    {
+      "page": "https://www.weiqi.kids/en/docs/tech/hands-on/basic-usage/",
+      "clicks": 1,
+      "impressions": 2,
+      "ctr": 50,
+      "position": 3
+    },
+    {
+      "page": "https://www.weiqi.kids/en/docs/tech/hands-on/setup/",
+      "clicks": 1,
+      "impressions": 24,
+      "ctr": 4.17,
+      "position": 5.1
+    },
+    {
+      "page": "https://ai-alignment-guarantees.proof.weiqi.kids/",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 5.5
+    },
+    {
+      "page": "https://brighterarc.weiqi.kids/",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 17
+    },
+    {
+      "page": "https://epialert.weiqi.kids/",
+      "clicks": 0,
+      "impressions": 5,
+      "ctr": 0,
+      "position": 1
+    },
+    {
+      "page": "https://epialert.weiqi.kids/Extractor/",
+      "clicks": 0,
+      "impressions": 5,
+      "ctr": 0,
+      "position": 2
+    },
+    {
+      "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/guidance/2026-01-27-cervical-cancer-awareness.html",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 7
+    },
+    {
+      "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/guidance/2026-02-04-malta-simex-vector-borne-disease.html",
+      "clicks": 0,
+      "impressions": 6,
+      "ctr": 0,
+      "position": 23.7
+    },
+    {
+      "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/risk_assessment/2026-02-19-lower-risk-exposure-cereulide-infant-formula.html",
+      "clicks": 0,
+      "impressions": 5,
+      "ctr": 0,
+      "position": 12.8
+    },
+    {
+      "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/situational_update/2026-02-09-community-spread-drives-ongoing-measles-tran.html",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 13
+    },
+    {
+      "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/surveillance/",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 4.5
+    },
+    {
+      "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/surveillance/2025-11-14-cdtr-week-46.html",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 5
+    },
+    {
+      "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/surveillance/2025-11-21-cdtr-week-47.html",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 8
+    },
+    {
+      "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/surveillance/2025-11-28-cdtr-week-48.html",
+      "clicks": 0,
+      "impressions": 5,
+      "ctr": 0,
+      "position": 24.8
+    },
+    {
+      "page": "https://epialert.weiqi.kids/Extractor/ecdc_cdtr/surveillance/2025-12-05-cdtr-week-49.html",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 6.5
+    }
+  ]
+}

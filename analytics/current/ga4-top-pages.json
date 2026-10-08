@@ -1,129 +1,129 @@
 {
-  "date": "2026-09-22",
+  "date": "2026-10-07",
   "range": {
-    "startDate": "2026-09-16",
-    "endDate": "2026-09-22"
+    "startDate": "2026-10-01",
+    "endDate": "2026-10-07"
   },
   "pages": [
     {
-      "path": "/",
-      "title": "首頁 | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 62,
-      "users": 40
-    },
-    {
-      "path": "/en/",
-      "title": "Home | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 37,
-      "users": 37
-    },
-    {
       "path": "/zh-cn/",
       "title": "首页 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 32,
+      "users": 29
+    },
+    {
+      "path": "/",
+      "title": "首頁 | 好棋寶寶協會 | Weiqi.Kids",
       "views": 23,
-      "users": 22
+      "users": 16
     },
     {
-      "path": "/research/",
-      "title": "學術研究 — 好棋寶寶協會 | 好棋寶寶協會 | Weiqi.Kids",
+      "path": "/en/docs/tech/hands-on/setup/",
+      "title": "完整安裝指南 | 好棋寶寶協會 | Weiqi.Kids",
       "views": 21,
-      "users": 3
+      "users": 21
     },
     {
-      "path": "/intel/",
-      "title": "產業供應鏈情報 — 好棋寶寶協會 | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 19,
-      "users": 9
-    },
-    {
-      "path": "/apps/",
-      "title": "AI 應用工具 — 好棋寶寶協會 | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 16,
-      "users": 5
-    },
-    {
-      "path": "/faq/",
-      "title": "找不到頁面 | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 13,
-      "users": 13
-    },
-    {
-      "path": "/en/docs/alphago/puct-formula/",
-      "title": "PUCT Formula: AlphaGo's MCTS Selection Rule Explained | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 12,
+      "path": "/en/docs/tech/deep-dive/training/",
+      "title": "KataGo Training Mechanism | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 18,
       "users": 11
     },
     {
       "path": "/en/docs/tech/industry/applications/",
       "title": "實際應用案例 | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 10,
+      "views": 14,
+      "users": 13
+    },
+    {
+      "path": "/zh-cn/research/",
+      "title": "學術研究 — 好棋寶寶協會 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 14,
+      "users": 13
+    },
+    {
+      "path": "/en/docs/alphago/puct-formula/",
+      "title": "PUCT Formula: AlphaGo's MCTS Selection Rule Explained | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 13,
+      "users": 11
+    },
+    {
+      "path": "/en/docs/tech/deep-dive/custom-rules/",
+      "title": "Custom Rules & Variants | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 13,
+      "users": 11
+    },
+    {
+      "path": "/en/docs/tech/how-it-works/katago-innovations/",
+      "title": "KataGo 的關鍵創新 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 13,
       "users": 10
     },
     {
-      "path": "/zh-cn/intel/",
-      "title": "產業供應鏈情報 — 好棋寶寶協會 | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 10,
-      "users": 10
+      "path": "/en/",
+      "title": "Home | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 12,
+      "users": 12
+    },
+    {
+      "path": "/en/docs/tech/how-it-works/",
+      "title": "一篇文章搞懂圍棋 AI | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 12,
+      "users": 12
+    },
+    {
+      "path": "/en/docs/tech/deep-dive/distributed-training/",
+      "title": "Distributed Training Architecture | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 11,
+      "users": 8
     },
     {
       "path": "/en/docs/tech/overview/landscape/",
       "title": "生態全景圖 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 11,
+      "users": 11
+    },
+    {
+      "path": "/en/docs/tech/deep-dive/gpu-optimization/",
+      "title": "GPU Backend & Optimization | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 10,
+      "users": 8
+    },
+    {
+      "path": "/zh-cn/docs/alphago/",
+      "title": "AlphaGo | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 10,
+      "users": 8
+    },
+    {
+      "path": "/en/docs/tech/deep-dive/mcts-implementation/",
+      "title": "MCTS Implementation Details | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 9,
+      "users": 4
+    },
+    {
+      "path": "/en/docs/tech/deep-dive/papers/",
+      "title": "Key Papers Guide | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 9,
+      "users": 8
+    },
+    {
+      "path": "/en/docs/tech/deep-dive/quantization-deploy/",
+      "title": "Model Quantization & Deployment | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 9,
+      "users": 7
+    },
+    {
+      "path": "/en/docs/tech/deep-dive/source-code/",
+      "title": "KataGo Source Code Guide | 好棋寶寶協會 | Weiqi.Kids",
       "views": 9,
       "users": 9
     },
     {
-      "path": "/en/docs/tech/deep-dive/neural-network/",
-      "title": "Neural Network Architecture | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 8,
+      "path": "/zh-cn/apps/",
+      "title": "AI 應用工具 — 好棋寶寶協會 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 9,
       "users": 8
-    },
-    {
-      "path": "/en/docs/tech/hands-on/",
-      "title": "30 分鐘跑起第一個圍棋 AI | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 8,
-      "users": 8
-    },
-    {
-      "path": "/zh-cn/docs/tech/",
-      "title": "技術文件 | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 8,
-      "users": 7
-    },
-    {
-      "path": "/docs/about/members/founding/",
-      "title": "創始會員 | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 7,
-      "users": 2
-    },
-    {
-      "path": "/docs/learn/introduction/",
-      "title": "入門篇 | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 7,
-      "users": 7
-    },
-    {
-      "path": "/docs/learn/introduction/etiquette/",
-      "title": "對弈禮儀 | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 7,
-      "users": 7
-    },
-    {
-      "path": "/docs/learn/introduction/first-10-moves/",
-      "title": "開局概念 | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 7,
-      "users": 7
-    },
-    {
-      "path": "/en/docs/alphago/input-features/",
-      "title": "Input Feature Design | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 7,
-      "users": 7
-    },
-    {
-      "path": "/en/docs/alphago/policy-network/",
-      "title": "Policy Network Deep Dive | 好棋寶寶協會 | Weiqi.Kids",
-      "views": 7,
-      "users": 7
     }
   ]
 }

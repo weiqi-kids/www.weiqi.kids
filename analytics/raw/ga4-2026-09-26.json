@@ -1,0 +1,189 @@
+{
+  "collectedAt": "2026-09-27T01:00:09.153Z",
+  "date": "2026-09-26",
+  "propertyId": "458470883",
+  "range": {
+    "startDate": "2026-09-20",
+    "endDate": "2026-09-26"
+  },
+  "daily": [
+    {
+      "date": "2026-09-20",
+      "sessions": 126,
+      "activeUsers": 123,
+      "pageViews": 276,
+      "engagementSeconds": 2308
+    },
+    {
+      "date": "2026-09-21",
+      "sessions": 79,
+      "activeUsers": 78,
+      "pageViews": 92,
+      "engagementSeconds": 180
+    },
+    {
+      "date": "2026-09-22",
+      "sessions": 64,
+      "activeUsers": 64,
+      "pageViews": 79,
+      "engagementSeconds": 92
+    },
+    {
+      "date": "2026-09-23",
+      "sessions": 78,
+      "activeUsers": 78,
+      "pageViews": 90,
+      "engagementSeconds": 331
+    },
+    {
+      "date": "2026-09-24",
+      "sessions": 81,
+      "activeUsers": 80,
+      "pageViews": 106,
+      "engagementSeconds": 86
+    },
+    {
+      "date": "2026-09-25",
+      "sessions": 83,
+      "activeUsers": 83,
+      "pageViews": 106,
+      "engagementSeconds": 117
+    },
+    {
+      "date": "2026-09-26",
+      "sessions": 66,
+      "activeUsers": 66,
+      "pageViews": 80,
+      "engagementSeconds": 177
+    }
+  ],
+  "topPages": [
+    {
+      "path": "/",
+      "title": "首頁 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 58,
+      "users": 35
+    },
+    {
+      "path": "/en/",
+      "title": "Home | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 33,
+      "users": 33
+    },
+    {
+      "path": "/zh-cn/",
+      "title": "首页 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 26,
+      "users": 25
+    },
+    {
+      "path": "/research/",
+      "title": "學術研究 — 好棋寶寶協會 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 22,
+      "users": 4
+    },
+    {
+      "path": "/intel/",
+      "title": "產業供應鏈情報 — 好棋寶寶協會 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 15,
+      "users": 5
+    },
+    {
+      "path": "/zh-cn/intel/",
+      "title": "產業供應鏈情報 — 好棋寶寶協會 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 15,
+      "users": 15
+    },
+    {
+      "path": "/apps/",
+      "title": "AI 應用工具 — 好棋寶寶協會 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 14,
+      "users": 3
+    },
+    {
+      "path": "/en/docs/alphago/puct-formula/",
+      "title": "PUCT Formula: AlphaGo's MCTS Selection Rule Explained | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 10,
+      "users": 10
+    },
+    {
+      "path": "/zh-cn/research/",
+      "title": "學術研究 — 好棋寶寶協會 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 10,
+      "users": 10
+    },
+    {
+      "path": "/docs/about/members/founding/",
+      "title": "創始會員 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 9,
+      "users": 2
+    },
+    {
+      "path": "/en/docs/alphago/alphago-zero/",
+      "title": "AlphaGo Zero Overview | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 9,
+      "users": 8
+    },
+    {
+      "path": "/zh-cn/apps/",
+      "title": "AI 應用工具 — 好棋寶寶協會 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 9,
+      "users": 9
+    },
+    {
+      "path": "/docs/tech/deep-dive/neural-network/",
+      "title": "神經網路架構詳解 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 8,
+      "users": 8
+    },
+    {
+      "path": "/en/docs/tech/deep-dive/neural-network/",
+      "title": "Neural Network Architecture | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 8,
+      "users": 8
+    },
+    {
+      "path": "/en/docs/tech/hands-on/",
+      "title": "30 分鐘跑起第一個圍棋 AI | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 8,
+      "users": 8
+    },
+    {
+      "path": "/en/docs/tech/industry/",
+      "title": "圍棋 AI 產業現況 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 8,
+      "users": 8
+    },
+    {
+      "path": "/en/docs/tech/overview/landscape/",
+      "title": "生態全景圖 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 7,
+      "users": 7
+    },
+    {
+      "path": "/ar/docs/tech/industry/",
+      "title": "圍棋 AI 產業現況 | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 6,
+      "users": 6
+    },
+    {
+      "path": "/en/docs/alphago/input-features/",
+      "title": "Input Feature Design | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 6,
+      "users": 6
+    },
+    {
+      "path": "/en/docs/alphago/key-matches/",
+      "title": "Key Matches Review | 好棋寶寶協會 | Weiqi.Kids",
+      "views": 6,
+      "users": 6
+    }
+  ],
+  "outboundClicks": [
+    {
+      "eventName": "click",
+      "linkUrl": "https://github.com/lightvector/KataGo/releases",
+      "count": 3
+    }
+  ]
+}
