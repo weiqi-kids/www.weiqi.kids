@@ -71,4 +71,4 @@
 
 本入口本身不授權刪除舊資料、公開人物資料或建立 Cloudflare 資源。
 
-目前進度見 [`2026-09-20-progress-status.md`](2026-09-20-progress-status.md)。
+目前進度見 [`STATUS.md`](STATUS.md)。
