@@ -105,7 +105,7 @@ cat analytics/history/daily-views.json | jq '.views[-7:]'
 
 ## 改版規格
 
-- 入口：`revamp/README.md`；進度：`revamp/STATUS.md`。
+- 入口：`revamp/README.md`；進度：`revamp/STATUS.md`；AI 共學營接手開發：`revamp/2026-10-11-camp-dev-plan.md`。
 - `revamp/0-positioning` 到 `5-content-spec` 的無日期檔案是舊方向，已封存，不作為規格來源。
 
 ---
