@@ -141,3 +141,5 @@
 | 日期 | 任務 | 結果或卡點 |
 |---|---|---|
 | 2026-10-11 | 計畫建立 | 還沒開始第 0 階段 |
+| 2026-10-11 | 0.2 | ✅ wrangler 查到 `showcases` 4 筆 draft（supply-chain、monitoring、ai-tools、research），另有 2 筆 archived 的 e2e 測試資料。第一次查遇到 7403（OAuth token 過期自動刷新），重跑即過 |
+| 2026-10-11 | 0.1 | ⛔ 已用 CLI 加入 marketplace `haoqi` 並以 user scope 安裝 `haoqi-teacher`，`claude mcp list` 看到 `plugin:haoqi-teacher:haoqi` 等待驗證。OAuth 登入要站主在新 session 跑 `/mcp` 用瀏覽器登入，登入後再呼叫 `whoami` 驗收。`intel-template` 已 clone 到 `/mnt/www-weiqi-kids/intel-template` |
