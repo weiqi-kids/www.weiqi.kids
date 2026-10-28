@@ -1,0 +1,5087 @@
+{
+  "date": "2026-10-29",
+  "generatedAt": "2026-10-28T20:35:13.671Z",
+  "ga4": {
+    "range": "7daysAgo..yesterday",
+    "sessions": 948,
+    "users": 942,
+    "views": 1062,
+    "avgDurationSec": 5,
+    "engagedSessions": 149,
+    "taiwanOrganicSessions": 8,
+    "channelsRange": "8daysAgo..2daysAgo",
+    "channels": [
+      {
+        "channel": "Direct",
+        "sessions": 914,
+        "engaged": 123
+      },
+      {
+        "channel": "Organic Search",
+        "sessions": 23,
+        "engaged": 12
+      },
+      {
+        "channel": "Unassigned",
+        "sessions": 3,
+        "engaged": 0
+      }
+    ],
+    "topPages": [
+      {
+        "path": "/en/docs/alphago/puct-formula/",
+        "views": 28
+      },
+      {
+        "path": "/zh-cn/",
+        "views": 20
+      },
+      {
+        "path": "/docs/about/members/founding/tien-chien-pan/",
+        "views": 16
+      },
+      {
+        "path": "/",
+        "views": 14
+      },
+      {
+        "path": "/zh-cn/research/",
+        "views": 14
+      },
+      {
+        "path": "/ar/docs/tech/deep-dive/gpu-optimization/",
+        "views": 13
+      },
+      {
+        "path": "/en/docs/tech/deep-dive/custom-rules/",
+        "views": 13
+      },
+      {
+        "path": "/zh-cn/intel/",
+        "views": 13
+      },
+      {
+        "path": "/en/docs/tech/hands-on/setup/",
+        "views": 11
+      },
+      {
+        "path": "/en/research/",
+        "views": 11
+      },
+      {
+        "path": "/ar/docs/tech/deep-dive/evaluation/",
+        "views": 10
+      },
+      {
+        "path": "/en/docs/tech/deep-dive/mcts-implementation/",
+        "views": 10
+      },
+      {
+        "path": "/ar/docs/tech/deep-dive/papers/",
+        "views": 9
+      },
+      {
+        "path": "/en/",
+        "views": 9
+      },
+      {
+        "path": "/en/docs/about/activities/market/",
+        "views": 9
+      }
+    ],
+    "aiReferrals": {
+      "range": "28daysAgo..yesterday",
+      "total": 3,
+      "engaged": 2,
+      "sources": [
+        {
+          "source": "chatgpt.com",
+          "sessions": 3,
+          "engaged": 2
+        }
+      ]
+    },
+    "daily": [
+      {
+        "date": "2026-09-03",
+        "sessions": 56,
+        "avgDurationSec": 5,
+        "engaged": 7,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-04",
+        "sessions": 58,
+        "avgDurationSec": 3,
+        "engaged": 7,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-05",
+        "sessions": 69,
+        "avgDurationSec": 3,
+        "engaged": 10,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-06",
+        "sessions": 73,
+        "avgDurationSec": 3,
+        "engaged": 10,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-07",
+        "sessions": 59,
+        "avgDurationSec": 2,
+        "engaged": 4,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-08",
+        "sessions": 79,
+        "avgDurationSec": 21,
+        "engaged": 8,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-09",
+        "sessions": 63,
+        "avgDurationSec": 5,
+        "engaged": 7,
+        "taiwanOrganic": 3
+      },
+      {
+        "date": "2026-09-10",
+        "sessions": 60,
+        "avgDurationSec": 3,
+        "engaged": 8,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-11",
+        "sessions": 71,
+        "avgDurationSec": 11,
+        "engaged": 5,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-12",
+        "sessions": 85,
+        "avgDurationSec": 2,
+        "engaged": 6,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-13",
+        "sessions": 82,
+        "avgDurationSec": 3,
+        "engaged": 10,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-14",
+        "sessions": 56,
+        "avgDurationSec": 11,
+        "engaged": 12,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-15",
+        "sessions": 489,
+        "avgDurationSec": 3,
+        "engaged": 43,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-16",
+        "sessions": 470,
+        "avgDurationSec": 3,
+        "engaged": 63,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-17",
+        "sessions": 130,
+        "avgDurationSec": 3,
+        "engaged": 16,
+        "taiwanOrganic": 4
+      },
+      {
+        "date": "2026-09-18",
+        "sessions": 142,
+        "avgDurationSec": 14,
+        "engaged": 28,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-19",
+        "sessions": 132,
+        "avgDurationSec": 12,
+        "engaged": 19,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-09-20",
+        "sessions": 126,
+        "avgDurationSec": 56,
+        "engaged": 48,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-21",
+        "sessions": 79,
+        "avgDurationSec": 12,
+        "engaged": 10,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-09-22",
+        "sessions": 64,
+        "avgDurationSec": 8,
+        "engaged": 17,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-23",
+        "sessions": 78,
+        "avgDurationSec": 24,
+        "engaged": 13,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-09-24",
+        "sessions": 81,
+        "avgDurationSec": 5,
+        "engaged": 11,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-25",
+        "sessions": 83,
+        "avgDurationSec": 3,
+        "engaged": 24,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-09-26",
+        "sessions": 66,
+        "avgDurationSec": 8,
+        "engaged": 15,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-27",
+        "sessions": 76,
+        "avgDurationSec": 19,
+        "engaged": 18,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-09-28",
+        "sessions": 70,
+        "avgDurationSec": 6,
+        "engaged": 14,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-09-29",
+        "sessions": 109,
+        "avgDurationSec": 3,
+        "engaged": 23,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-09-30",
+        "sessions": 112,
+        "avgDurationSec": 12,
+        "engaged": 16,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-10-01",
+        "sessions": 116,
+        "avgDurationSec": 10,
+        "engaged": 24,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-10-02",
+        "sessions": 175,
+        "avgDurationSec": 10,
+        "engaged": 34,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-10-03",
+        "sessions": 125,
+        "avgDurationSec": 51,
+        "engaged": 26,
+        "taiwanOrganic": 8
+      },
+      {
+        "date": "2026-10-04",
+        "sessions": 111,
+        "avgDurationSec": 5,
+        "engaged": 20,
+        "taiwanOrganic": 3
+      },
+      {
+        "date": "2026-10-05",
+        "sessions": 77,
+        "avgDurationSec": 2,
+        "engaged": 12,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-10-06",
+        "sessions": 93,
+        "avgDurationSec": 4,
+        "engaged": 19,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-10-07",
+        "sessions": 100,
+        "avgDurationSec": 5,
+        "engaged": 18,
+        "taiwanOrganic": 3
+      },
+      {
+        "date": "2026-10-08",
+        "sessions": 100,
+        "avgDurationSec": 6,
+        "engaged": 23,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-10-09",
+        "sessions": 152,
+        "avgDurationSec": 4,
+        "engaged": 22,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-10-10",
+        "sessions": 81,
+        "avgDurationSec": 3,
+        "engaged": 15,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-10-11",
+        "sessions": 100,
+        "avgDurationSec": 4,
+        "engaged": 26,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-10-12",
+        "sessions": 105,
+        "avgDurationSec": 20,
+        "engaged": 21,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-10-13",
+        "sessions": 99,
+        "avgDurationSec": 3,
+        "engaged": 17,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-10-14",
+        "sessions": 88,
+        "avgDurationSec": 22,
+        "engaged": 29,
+        "taiwanOrganic": 4
+      },
+      {
+        "date": "2026-10-15",
+        "sessions": 120,
+        "avgDurationSec": 4,
+        "engaged": 19,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-10-16",
+        "sessions": 118,
+        "avgDurationSec": 4,
+        "engaged": 18,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-10-17",
+        "sessions": 92,
+        "avgDurationSec": 3,
+        "engaged": 21,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-10-18",
+        "sessions": 120,
+        "avgDurationSec": 4,
+        "engaged": 45,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-10-19",
+        "sessions": 110,
+        "avgDurationSec": 13,
+        "engaged": 20,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-10-20",
+        "sessions": 120,
+        "avgDurationSec": 2,
+        "engaged": 13,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-10-21",
+        "sessions": 125,
+        "avgDurationSec": 2,
+        "engaged": 11,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-10-22",
+        "sessions": 150,
+        "avgDurationSec": 3,
+        "engaged": 27,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-10-23",
+        "sessions": 135,
+        "avgDurationSec": 2,
+        "engaged": 17,
+        "taiwanOrganic": 0
+      },
+      {
+        "date": "2026-10-24",
+        "sessions": 130,
+        "avgDurationSec": 3,
+        "engaged": 20,
+        "taiwanOrganic": 1
+      },
+      {
+        "date": "2026-10-25",
+        "sessions": 139,
+        "avgDurationSec": 9,
+        "engaged": 24,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-10-26",
+        "sessions": 121,
+        "avgDurationSec": 5,
+        "engaged": 16,
+        "taiwanOrganic": 2
+      },
+      {
+        "date": "2026-10-27",
+        "sessions": 139,
+        "avgDurationSec": 5,
+        "engaged": 20,
+        "taiwanOrganic": 2,
+        "attributionPending": true
+      },
+      {
+        "date": "2026-10-28",
+        "sessions": 133,
+        "avgDurationSec": 3,
+        "engaged": 25,
+        "taiwanOrganic": 1
+      }
+    ]
+  },
+  "gsc": {
+    "range": "2026-10-18..2026-10-25",
+    "totals": {
+      "clicks": 9,
+      "impressions": 499,
+      "ctr": 0.018036072144288578,
+      "position": 6.865731462925852
+    },
+    "daily": {
+      "range": "2026-09-27..2026-10-25",
+      "days": [
+        {
+          "date": "2026-09-27",
+          "impressions": 57,
+          "clicks": 1
+        },
+        {
+          "date": "2026-09-28",
+          "impressions": 73,
+          "clicks": 4
+        },
+        {
+          "date": "2026-09-29",
+          "impressions": 73,
+          "clicks": 2
+        },
+        {
+          "date": "2026-09-30",
+          "impressions": 77,
+          "clicks": 0
+        },
+        {
+          "date": "2026-10-01",
+          "impressions": 55,
+          "clicks": 1
+        },
+        {
+          "date": "2026-10-02",
+          "impressions": 75,
+          "clicks": 3
+        },
+        {
+          "date": "2026-10-03",
+          "impressions": 59,
+          "clicks": 1
+        },
+        {
+          "date": "2026-10-04",
+          "impressions": 49,
+          "clicks": 0
+        },
+        {
+          "date": "2026-10-05",
+          "impressions": 89,
+          "clicks": 0
+        },
+        {
+          "date": "2026-10-06",
+          "impressions": 66,
+          "clicks": 1
+        },
+        {
+          "date": "2026-10-07",
+          "impressions": 67,
+          "clicks": 1
+        },
+        {
+          "date": "2026-10-08",
+          "impressions": 59,
+          "clicks": 2
+        },
+        {
+          "date": "2026-10-09",
+          "impressions": 65,
+          "clicks": 2
+        },
+        {
+          "date": "2026-10-10",
+          "impressions": 46,
+          "clicks": 2
+        },
+        {
+          "date": "2026-10-11",
+          "impressions": 46,
+          "clicks": 0
+        },
+        {
+          "date": "2026-10-12",
+          "impressions": 67,
+          "clicks": 0
+        },
+        {
+          "date": "2026-10-13",
+          "impressions": 56,
+          "clicks": 5
+        },
+        {
+          "date": "2026-10-14",
+          "impressions": 62,
+          "clicks": 2
+        },
+        {
+          "date": "2026-10-15",
+          "impressions": 52,
+          "clicks": 0
+        },
+        {
+          "date": "2026-10-16",
+          "impressions": 88,
+          "clicks": 2
+        },
+        {
+          "date": "2026-10-17",
+          "impressions": 47,
+          "clicks": 1
+        },
+        {
+          "date": "2026-10-18",
+          "impressions": 58,
+          "clicks": 1
+        },
+        {
+          "date": "2026-10-19",
+          "impressions": 60,
+          "clicks": 1
+        },
+        {
+          "date": "2026-10-20",
+          "impressions": 50,
+          "clicks": 1
+        },
+        {
+          "date": "2026-10-21",
+          "impressions": 79,
+          "clicks": 0
+        },
+        {
+          "date": "2026-10-22",
+          "impressions": 49,
+          "clicks": 0
+        },
+        {
+          "date": "2026-10-23",
+          "impressions": 49,
+          "clicks": 0
+        },
+        {
+          "date": "2026-10-24",
+          "impressions": 57,
+          "clicks": 5
+        },
+        {
+          "date": "2026-10-25",
+          "impressions": 97,
+          "clicks": 1
+        }
+      ]
+    },
+    "scope": "https://www.weiqi.kids/",
+    "domainWide": {
+      "clicks": 20,
+      "impressions": 2864,
+      "note": "整個網域資源（含所有子網域）的量；本站以外的部分不屬於這個站的成績"
+    },
+    "topQueries": [
+      {
+        "query": "katago 安裝",
+        "clicks": 2,
+        "impressions": 12,
+        "ctr": 0.16666666666666666,
+        "position": 5.25
+      },
+      {
+        "query": "puct formula",
+        "clicks": 1,
+        "impressions": 12,
+        "ctr": 0.08333333333333333,
+        "position": 1.5
+      },
+      {
+        "query": "puct rl",
+        "clicks": 1,
+        "impressions": 2,
+        "ctr": 0.5,
+        "position": 1
+      },
+      {
+        "query": "潘天健",
+        "clicks": 1,
+        "impressions": 4,
+        "ctr": 0.25,
+        "position": 11.5
+      },
+      {
+        "query": "ian kuo",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 5.833333333333333
+      },
+      {
+        "query": "katago 網頁 版",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 44
+      },
+      {
+        "query": "maxvisits.com",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 87
+      },
+      {
+        "query": "mcts puct",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 8.333333333333332
+      },
+      {
+        "query": "ok",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 2
+      },
+      {
+        "query": "puct",
+        "clicks": 0,
+        "impressions": 14,
+        "ctr": 0,
+        "position": 5
+      },
+      {
+        "query": "puct algorithm",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "query": "puct mcts",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 3.6666666666666665
+      },
+      {
+        "query": "puct meaning",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "query": "puct search",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "query": "weqi",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 11
+      },
+      {
+        "query": "why is go so hard",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "query": "姜封豪",
+        "clicks": 0,
+        "impressions": 19,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "query": "姜封豪診所",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 14
+      },
+      {
+        "query": "姜封豪醫師學歷",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 1.5
+      },
+      {
+        "query": "姜豐豪",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 12
+      },
+      {
+        "query": "林昊德",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 13
+      },
+      {
+        "query": "蕭愛霖",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 5
+      },
+      {
+        "query": "謝依純",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 30
+      },
+      {
+        "query": "陳秉辰",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "query": "顏怡璇",
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0,
+        "position": 6
+      }
+    ],
+    "topPages": [
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "clicks": 4,
+        "impressions": 155,
+        "ctr": 0.025806451612903226,
+        "position": 3.967741935483871
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/tech/hands-on/setup/",
+        "clicks": 2,
+        "impressions": 41,
+        "ctr": 0.04878048780487805,
+        "position": 5.317073170731708
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/tien-chien-pan/",
+        "clicks": 1,
+        "impressions": 8,
+        "ctr": 0.125,
+        "position": 9.25
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/tech/hands-on/",
+        "clicks": 1,
+        "impressions": 1,
+        "ctr": 1,
+        "position": 3
+      },
+      {
+        "page": "https://www.weiqi.kids/hi/docs/about/activities/partners/yi-chun/",
+        "clicks": 1,
+        "impressions": 2,
+        "ctr": 0.5,
+        "position": 3.5
+      },
+      {
+        "page": "https://www.weiqi.kids/",
+        "clicks": 0,
+        "impressions": 10,
+        "ctr": 0,
+        "position": 22
+      },
+      {
+        "page": "https://www.weiqi.kids/ar/docs/about/activities/partners/yi-chun/",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 47
+      },
+      {
+        "page": "https://www.weiqi.kids/ar/docs/about/members/chairman/",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 8
+      },
+      {
+        "page": "https://www.weiqi.kids/ar/docs/about/members/founding/sih-jie-chou/",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 3.5
+      },
+      {
+        "page": "https://www.weiqi.kids/ar/docs/alphago/move-37/",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 8
+      },
+      {
+        "page": "https://www.weiqi.kids/ar/research/",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 6
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/activities/fun-club/",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 2
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/cheng-wei-hsiao/",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 4
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/da-feng-hsia/",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 5.5
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/dawn-lee/",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 2.5
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/feng-hao-chiang/",
+        "clicks": 0,
+        "impressions": 31,
+        "ctr": 0,
+        "position": 10.096774193548388
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/lightman-chang/",
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 2
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/zhen-zhao/",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/zi-yan-huang/",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 7.857142857142857
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/alphago/puct-formula/",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 1.8333333333333335
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/alphago/value-network/",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 9.5
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/alphago/why-go-is-hard/",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 9.666666666666666
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/animations/",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/learn/ai-era/learning-with-ai/",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 8
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/learn/history/human-history/ancient/",
+        "clicks": 0,
+        "impressions": 14,
+        "ctr": 0,
+        "position": 10.071428571428571
+      }
+    ],
+    "appearance": {
+      "rows": [],
+      "scope": "domain-wide",
+      "note": "searchAppearance 不支援 page filter，此為整顆 GSC 資源的量，非本站"
+    },
+    "groupTotals": {
+      "產業情報": {
+        "imp": 0,
+        "clk": 0,
+        "n": 0
+      },
+      "論文研究": {
+        "imp": 0,
+        "clk": 0,
+        "n": 0
+      },
+      "技術文件": {
+        "imp": 15,
+        "clk": 1,
+        "n": 8
+      },
+      "AlphaGo 解析": {
+        "imp": 11,
+        "clk": 0,
+        "n": 3
+      },
+      "學圍棋": {
+        "imp": 15,
+        "clk": 0,
+        "n": 2
+      },
+      "關於協會": {
+        "imp": 61,
+        "clk": 1,
+        "n": 9
+      },
+      "英文": {
+        "imp": 313,
+        "clk": 6,
+        "n": 36
+      }
+    },
+    "channelHealth": {
+      "產業情報": {
+        "imp": 0,
+        "clk": 0,
+        "ctr": 0,
+        "position": null,
+        "pagesWithImpressions": 0,
+        "bands": {
+          "前3": 0,
+          "4-5": 0,
+          "6-8": 0,
+          "9-15": 0,
+          "16+": 0
+        },
+        "cliff": []
+      },
+      "論文研究": {
+        "imp": 0,
+        "clk": 0,
+        "ctr": 0,
+        "position": null,
+        "pagesWithImpressions": 0,
+        "bands": {
+          "前3": 0,
+          "4-5": 0,
+          "6-8": 0,
+          "9-15": 0,
+          "16+": 0
+        },
+        "cliff": []
+      },
+      "技術文件": {
+        "imp": 15,
+        "clk": 1,
+        "ctr": 0.06666666666666667,
+        "position": 5.8,
+        "pagesWithImpressions": 8,
+        "bands": {
+          "前3": 3,
+          "4-5": 2,
+          "6-8": 8,
+          "9-15": 2,
+          "16+": 0
+        },
+        "cliff": []
+      },
+      "AlphaGo 解析": {
+        "imp": 11,
+        "clk": 0,
+        "ctr": 0,
+        "position": 5.363636363636363,
+        "pagesWithImpressions": 3,
+        "bands": {
+          "前3": 6,
+          "4-5": 0,
+          "6-8": 0,
+          "9-15": 5,
+          "16+": 0
+        },
+        "cliff": []
+      },
+      "學圍棋": {
+        "imp": 15,
+        "clk": 0,
+        "ctr": 0,
+        "position": 9.933333333333334,
+        "pagesWithImpressions": 2,
+        "bands": {
+          "前3": 0,
+          "4-5": 0,
+          "6-8": 1,
+          "9-15": 14,
+          "16+": 0
+        },
+        "cliff": []
+      },
+      "關於協會": {
+        "imp": 61,
+        "clk": 1,
+        "ctr": 0.01639344262295082,
+        "position": 8.180327868852459,
+        "pagesWithImpressions": 9,
+        "bands": {
+          "前3": 8,
+          "4-5": 2,
+          "6-8": 11,
+          "9-15": 40,
+          "16+": 0
+        },
+        "cliff": []
+      },
+      "英文": {
+        "imp": 313,
+        "clk": 6,
+        "ctr": 0.019169329073482427,
+        "position": 5.888178913738019,
+        "pagesWithImpressions": 36,
+        "bands": {
+          "前3": 3,
+          "4-5": 216,
+          "6-8": 51,
+          "9-15": 35,
+          "16+": 8
+        },
+        "cliff": []
+      }
+    },
+    "positionBands": [
+      {
+        "band": "前3",
+        "pages": 18,
+        "imp": 30,
+        "clicks": 1,
+        "ctr": 0.03333333333333333
+      },
+      {
+        "band": "4-5",
+        "pages": 13,
+        "imp": 228,
+        "clicks": 7,
+        "ctr": 0.03070175438596491
+      },
+      {
+        "band": "6-8",
+        "pages": 35,
+        "imp": 103,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "band": "9-15",
+        "pages": 31,
+        "imp": 117,
+        "clicks": 1,
+        "ctr": 0.008547008547008548
+      },
+      {
+        "band": "16+",
+        "pages": 6,
+        "imp": 21,
+        "clicks": 0,
+        "ctr": 0
+      }
+    ],
+    "pageQueryCross": [
+      {
+        "page": "https://www.weiqi.kids/en/docs/tech/hands-on/setup/",
+        "query": "katago 安裝",
+        "clicks": 2,
+        "impressions": 12,
+        "ctr": 0.16666666666666666,
+        "position": 5.25
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/tien-chien-pan/",
+        "query": "潘天健",
+        "clicks": 1,
+        "impressions": 4,
+        "ctr": 0.25,
+        "position": 11.5
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct formula",
+        "clicks": 1,
+        "impressions": 12,
+        "ctr": 0.08333333333333333,
+        "position": 1.5
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct rl",
+        "clicks": 1,
+        "impressions": 2,
+        "ctr": 0.5,
+        "position": 1
+      },
+      {
+        "page": "https://www.weiqi.kids/",
+        "query": "weqi",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 11
+      },
+      {
+        "page": "https://www.weiqi.kids/ar/docs/about/activities/partners/yi-chun/",
+        "query": "謝依純",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 47
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/feng-hao-chiang/",
+        "query": "姜封豪",
+        "clicks": 0,
+        "impressions": 19,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/feng-hao-chiang/",
+        "query": "姜封豪診所",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 14
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/feng-hao-chiang/",
+        "query": "姜封豪醫師學歷",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 1.5
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/feng-hao-chiang/",
+        "query": "姜豐豪",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 12
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/zi-yan-huang/",
+        "query": "黃子彥",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 13
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/alphago/puct-formula/",
+        "query": "puct",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 2.333333333333333
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/alphago/why-go-is-hard/",
+        "query": "why is go so hard",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/ai-lin-hsiao/",
+        "query": "蕭愛霖",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 5
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/ian-kuo/",
+        "query": "ian kuo",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 5.833333333333333
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/yi-chun-hsieh/",
+        "query": "謝依純",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 13
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "mcts puct",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 8.333333333333332
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "ok",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 2
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct",
+        "clicks": 0,
+        "impressions": 11,
+        "ctr": 0,
+        "position": 5.7272727272727275
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct algorithm",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct mcts",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 3.6666666666666665
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct meaning",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct search",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/tech/hands-on/",
+        "query": "katago 網頁 版",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 44
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/tech/hands-on/basic-usage/",
+        "query": "maxvisits.com",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 87
+      },
+      {
+        "page": "https://www.weiqi.kids/id/docs/about/members/founding/hao-de-lin/",
+        "query": "林昊德",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 13
+      },
+      {
+        "page": "https://www.weiqi.kids/id/docs/about/members/founding/yi-hsuan-yen/",
+        "query": "顏怡璇",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 6
+      },
+      {
+        "page": "https://www.weiqi.kids/ja/docs/about/members/founding/bing-chen-chen/",
+        "query": "陳秉辰",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/ja/docs/about/members/founding/yi-hsuan-yen/",
+        "query": "顏怡璇",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 6
+      }
+    ],
+    "strikingDistance": [
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/feng-hao-chiang/",
+        "query": "姜封豪",
+        "clicks": 0,
+        "impressions": 19,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/tech/hands-on/setup/",
+        "query": "katago 安裝",
+        "clicks": 2,
+        "impressions": 12,
+        "ctr": 0.16666666666666666,
+        "position": 5.25
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct",
+        "clicks": 0,
+        "impressions": 11,
+        "ctr": 0,
+        "position": 5.7272727272727275
+      },
+      {
+        "page": "https://www.weiqi.kids/id/docs/about/members/founding/yi-hsuan-yen/",
+        "query": "顏怡璇",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 6
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/ian-kuo/",
+        "query": "ian kuo",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 5.833333333333333
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/tien-chien-pan/",
+        "query": "潘天健",
+        "clicks": 1,
+        "impressions": 4,
+        "ctr": 0.25,
+        "position": 11.5
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/feng-hao-chiang/",
+        "query": "姜封豪診所",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 14
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/ai-lin-hsiao/",
+        "query": "蕭愛霖",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 5
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "mcts puct",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 8.333333333333332
+      },
+      {
+        "page": "https://www.weiqi.kids/id/docs/about/members/founding/hao-de-lin/",
+        "query": "林昊德",
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 13
+      },
+      {
+        "page": "https://www.weiqi.kids/",
+        "query": "weqi",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 11
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/feng-hao-chiang/",
+        "query": "姜豐豪",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 12
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/zi-yan-huang/",
+        "query": "黃子彥",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 13
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/alphago/why-go-is-hard/",
+        "query": "why is go so hard",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/yi-chun-hsieh/",
+        "query": "謝依純",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 13
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct algorithm",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct meaning",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct search",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      {
+        "page": "https://www.weiqi.kids/ja/docs/about/members/founding/bing-chen-chen/",
+        "query": "陳秉辰",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/ja/docs/about/members/founding/yi-hsuan-yen/",
+        "query": "顏怡璇",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 6
+      }
+    ],
+    "highImpZeroClick": [
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/feng-hao-chiang/",
+        "query": "姜封豪",
+        "clicks": 0,
+        "impressions": 19,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct",
+        "clicks": 0,
+        "impressions": 11,
+        "ctr": 0,
+        "position": 5.7272727272727275
+      },
+      {
+        "page": "https://www.weiqi.kids/id/docs/about/members/founding/yi-hsuan-yen/",
+        "query": "顏怡璇",
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 6
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/ian-kuo/",
+        "query": "ian kuo",
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 5.833333333333333
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/about/members/founding/feng-hao-chiang/",
+        "query": "姜封豪診所",
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 14
+      },
+      {
+        "page": "https://www.weiqi.kids/docs/alphago/puct-formula/",
+        "query": "puct",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 2.333333333333333
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "puct mcts",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 3.6666666666666665
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/about/members/founding/ai-lin-hsiao/",
+        "query": "蕭愛霖",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 5
+      },
+      {
+        "page": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "query": "mcts puct",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 8.333333333333332
+      }
+    ]
+  },
+  "index": {
+    "sitemaps": [
+      {
+        "path": "https://www.weiqi.kids/sitemap-index.xml",
+        "submitted": 1606,
+        "errors": "0",
+        "warnings": "0",
+        "lastDownloaded": "2026-10-22T23:06:17.974Z"
+      },
+      {
+        "path": "https://www.weiqi.kids/sitemap.xml",
+        "submitted": 146,
+        "errors": "0",
+        "warnings": "0",
+        "lastDownloaded": "2026-10-24T17:39:39.375Z"
+      }
+    ],
+    "coverage": [
+      {
+        "url": "https://www.weiqi.kids/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-10-28T11:17:02Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/learn/",
+        "coverageState": "Discovered - currently not indexed",
+        "lastCrawlTime": null
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/tech/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-07-27T20:26:09Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/alphago/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-10-22T09:44:47Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/about/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-05T02:57:56Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/en/",
+        "coverageState": "Duplicate, Google chose different canonical than user",
+        "lastCrawlTime": "2026-10-28T06:52:09Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/ja/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-10-17T07:29:40Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/zh-cn/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-10-02T18:58:21Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/zh-hk/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-10-22T22:22:48Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/ko/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-10-08T02:19:49Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/es/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-27T19:40:18Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/pt/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-10-28T08:38:24Z"
+      },
+      {
+        "url": "https://www.weiqi.kids/en/docs/alphago/puct-formula/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-10-22T06:18:26Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/en/docs/tech/hands-on/setup/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-09T17:42:44Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/about/members/founding/tien-chien-pan/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-10-06T07:38:21Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/tech/hands-on/",
+        "coverageState": "Page with redirect",
+        "lastCrawlTime": "2026-08-19T13:09:11Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/hi/docs/about/activities/partners/yi-chun/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-10-04T03:22:56Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/ar/docs/about/activities/partners/yi-chun/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-10-05T00:41:33Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/ar/docs/about/members/chairman/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-08-24T10:19:40Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/ar/docs/about/members/founding/sih-jie-chou/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-08-26T16:40:05Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/ar/docs/alphago/move-37/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-08-12T13:50:55Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/ar/research/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-25T06:27:31Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/about/activities/fun-club/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-09-23T19:11:36Z",
+        "auto": true
+      },
+      {
+        "url": "https://www.weiqi.kids/docs/about/members/founding/cheng-wei-hsiao/",
+        "coverageState": "Submitted and indexed",
+        "lastCrawlTime": "2026-10-18T19:40:02Z",
+        "auto": true
+      }
+    ]
+  },
+  "targetTrend": {
+    "range": "2026-10-19..2026-10-25",
+    "prevRange": "2026-10-12..2026-10-18",
+    "rows": [
+      {
+        "query": "weiqi kids",
+        "pinned": true,
+        "position": null,
+        "prevPosition": null,
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "puct",
+        "pinned": true,
+        "position": 5,
+        "prevPosition": 8.3,
+        "impressions": 14,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "puct formula",
+        "pinned": true,
+        "position": 1.5,
+        "prevPosition": 1.25,
+        "impressions": 10,
+        "clicks": 1,
+        "ctr": 0.1
+      },
+      {
+        "query": "alphago",
+        "pinned": true,
+        "position": null,
+        "prevPosition": null,
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "katago",
+        "pinned": true,
+        "position": null,
+        "prevPosition": null,
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "圍棋ai",
+        "pinned": true,
+        "position": null,
+        "prevPosition": null,
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "圍棋 ai 分析",
+        "pinned": true,
+        "position": null,
+        "prevPosition": null,
+        "impressions": 0,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "姜封豪",
+        "pinned": false,
+        "position": 10.0625,
+        "prevPosition": 9.487179487179487,
+        "impressions": 16,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "katago 安裝",
+        "pinned": false,
+        "position": 5.125,
+        "prevPosition": 5.052631578947368,
+        "impressions": 8,
+        "clicks": 2,
+        "ctr": 0.25
+      },
+      {
+        "query": "顏怡璇",
+        "pinned": false,
+        "position": 6,
+        "prevPosition": 5.8,
+        "impressions": 8,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "姜封豪診所",
+        "pinned": false,
+        "position": 14,
+        "prevPosition": 15.666666666666666,
+        "impressions": 4,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "潘天健",
+        "pinned": false,
+        "position": 12,
+        "prevPosition": 8.90909090909091,
+        "impressions": 3,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "蕭愛霖",
+        "pinned": false,
+        "position": 5,
+        "prevPosition": 4,
+        "impressions": 3,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "姜封豪醫師學歷",
+        "pinned": false,
+        "position": 1.5,
+        "prevPosition": 1.375,
+        "impressions": 2,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "林昊德",
+        "pinned": false,
+        "position": 13,
+        "prevPosition": null,
+        "impressions": 2,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "謝依純",
+        "pinned": false,
+        "position": 30,
+        "prevPosition": 21,
+        "impressions": 2,
+        "clicks": 0,
+        "ctr": 0
+      },
+      {
+        "query": "katago 網頁 版",
+        "pinned": false,
+        "position": 44,
+        "prevPosition": null,
+        "impressions": 1,
+        "clicks": 0,
+        "ctr": 0
+      }
+    ]
+  },
+  "trends": {
+    "schemaVersion": 1,
+    "enabled": true,
+    "date": "2026-10-29",
+    "generatedAt": "2026-10-28T20:35:13.621Z",
+    "methodology": {
+      "external": "Google Trends Trending Now RSS（熱門）＋ Bing Webmaster GetQueryStats（本站 Bing 查詢）",
+      "siteEvidence": "Google Search Console targetTrend（本站查詢的上升／新出現訊號）",
+      "threshold": 55,
+      "note": "分數是內容審核排序，不是搜尋量預測；自動佇列只收 autoEligible；法規事實與個人健康判斷永遠需要人工查證。"
+    },
+    "sources": [
+      {
+        "id": "google-trends",
+        "engine": "google",
+        "kind": "hot",
+        "status": "ok",
+        "url": "https://trends.google.com/trending/rss?geo=TW",
+        "geo": "TW",
+        "items": [
+          {
+            "id": "google-trends:twitch:0",
+            "query": "twitch",
+            "approxTraffic": "200+",
+            "approxTrafficNumber": 200,
+            "publishedAt": "2026-10-28T20:00:00.000Z",
+            "link": "https://trends.google.com/trending/rss?geo=TW",
+            "news": [
+              {
+                "title": "Twitch Lets Partners Promote ‘Stream Recap’ Clips on Instagram, YouTube Through New Program",
+                "source": "Net Influencer",
+                "url": "https://www.netinfluencer.com/twitch-lets-partners-promote-stream-recap-clips-on-instagram-youtube-through-new-program/"
+              },
+              {
+                "title": "Missed a Twitch Stream? This New Feature Brings the Best Moments Together",
+                "source": "Analytics Insight",
+                "url": "https://www.analyticsinsight.net/news/missed-a-twitch-stream-this-new-feature-brings-the-best-moments-together"
+              },
+              {
+                "title": "CNN tries to pretend its MAGA scandal 'never happened': report",
+                "source": "AlterNet",
+                "url": "https://www.alternet.org/scott-jennings-hasan-piker-defemation/"
+              }
+            ]
+          },
+          {
+            "id": "google-trends:英聯盃:1",
+            "query": "英聯盃",
+            "approxTraffic": "500+",
+            "approxTrafficNumber": 500,
+            "publishedAt": "2026-10-28T19:10:00.000Z",
+            "link": "https://trends.google.com/trending/rss?geo=TW",
+            "news": []
+          },
+          {
+            "id": "google-trends:曼城 對 布萊頓:2",
+            "query": "曼城 對 布萊頓",
+            "approxTraffic": "500+",
+            "approxTrafficNumber": 500,
+            "publishedAt": "2026-10-28T19:00:00.000Z",
+            "link": "https://trends.google.com/trending/rss?geo=TW",
+            "news": [
+              {
+                "title": "EFL Cup: Man City host Brighton and Bournemouth lead, before Liverpool v Chelsea",
+                "source": "BBC",
+                "url": "https://www.bbc.com/sport/football/live/crz98pe8v2gqt"
+              },
+              {
+                "title": "City make nine changes for Brighton Carabao Cup clash",
+                "source": "Manchester City FC",
+                "url": "https://www.mancity.com/news/mens/city-v-brighton-carabao-cup-team-news-63928805"
+              },
+              {
+                "title": "Man City vs Brighton LIVE! Carabao Cup updates, news, prediction, line-ups and how to watch or stream",
+                "source": "Sky Sports",
+                "url": "https://www.skysports.com/football/live-blog/13604062/man-city-vs-brighton-live-carabao-cup-updates-news-prediction-line-ups-and-how-to-watch-or-stream"
+              }
+            ]
+          },
+          {
+            "id": "google-trends:義甲:3",
+            "query": "義甲",
+            "approxTraffic": "200+",
+            "approxTrafficNumber": 200,
+            "publishedAt": "2026-10-28T18:10:00.000Z",
+            "link": "https://trends.google.com/trending/rss?geo=TW",
+            "news": []
+          },
+          {
+            "id": "google-trends:意甲:4",
+            "query": "意甲",
+            "approxTraffic": "100+",
+            "approxTrafficNumber": 100,
+            "publishedAt": "2026-10-28T18:10:00.000Z",
+            "link": "https://trends.google.com/trending/rss?geo=TW",
+            "news": [
+              {
+                "title": "剑南春战报：威尼斯0-2国米，威尼斯连入两乌龙",
+                "source": "虎扑体育",
+                "url": "https://bbs.hupu.com/643405044.html"
+              },
+              {
+                "title": "普罗维德尔谈国米胜威尼斯：状态未达最佳，米兰德比在即！",
+                "source": "搜狐网",
+                "url": "https://m.sohu.com/a/1094122897_121894857?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334"
+              },
+              {
+                "title": "热那亚vs尤文裁判分析：热那亚在12码点上更有信心",
+                "source": "直播吧",
+                "url": "https://news.zhibo8.com/zuqiu/2026-10-28/6ae1c817f16eanative.htm"
+              }
+            ]
+          },
+          {
+            "id": "google-trends:利率:5",
+            "query": "利率",
+            "approxTraffic": "100+",
+            "approxTrafficNumber": 100,
+            "publishedAt": "2026-10-28T18:00:00.000Z",
+            "link": "https://trends.google.com/trending/rss?geo=TW",
+            "news": [
+              {
+                "title": "美联储料按兵不动，沃什或释放鹰派信号：美债多头恐遭反杀！-市场参考",
+                "source": "金十数据",
+                "url": "https://xnews.jin10.com/details/233605"
+              },
+              {
+                "title": "今夜美联储决议：通胀越烧越热，加息却按下暂停键？沃什迎来公信力大考",
+                "source": "华尔街见闻",
+                "url": "https://wallstreetcn.com/articles/3784651"
+              },
+              {
+                "title": "10月FOMC前瞻：预期之外的交易线索在哪里？",
+                "source": "英为财情 Investing.com",
+                "url": "https://cn.investing.com/analysis/article-200502238"
+              }
+            ]
+          },
+          {
+            "id": "google-trends:德國盃:6",
+            "query": "德國盃",
+            "approxTraffic": "100+",
+            "approxTrafficNumber": 100,
+            "publishedAt": "2026-10-28T17:40:00.000Z",
+            "link": "https://trends.google.com/trending/rss?geo=TW",
+            "news": [
+              {
+                "title": "德累斯顿迪纳摩将沙尔克04淘汰出德国杯——《明镜》 周刊",
+                "source": "UA.NEWS",
+                "url": "https://ua.news/cn/sport/dinamo-drezden-vibilo-shalke-04-z-kubka-nimechchini-der-spiegel"
+              },
+              {
+                "title": "【德国杯第二圈】德累斯顿vs沙尔克04比赛结果：德累斯顿(2-0)沙尔克04比分战报(2026年10月29日)",
+                "source": "球迷屋",
+                "url": "https://www.qiumiwu.com/news/2031033157909"
+              },
+              {
+                "title": "【德国杯第二圈】德累斯顿vs沙尔克04伤病名单最新(2026年10月29日)",
+                "source": "球迷屋",
+                "url": "https://www.qiumiwu.com/news/2030526310933"
+              }
+            ]
+          },
+          {
+            "id": "google-trends:macbook:7",
+            "query": "macbook",
+            "approxTraffic": "1000+",
+            "approxTrafficNumber": 1000,
+            "publishedAt": "2026-10-28T17:20:00.000Z",
+            "link": "https://trends.google.com/trending/rss?geo=TW",
+            "news": [
+              {
+                "title": "Apple Unveils Its First Touch-Screen MacBook Pro",
+                "source": "The New York Times",
+                "url": "https://www.nytimes.com/2026/10/28/technology/apple-touch-screen-macbook-pro.html"
+              },
+              {
+                "title": "Apple charges $14,549 for a fully specced touchscreen MacBook Pro",
+                "source": "The Verge",
+                "url": "https://www.theverge.com/tech/1021308/apple-touchscreen-macbook-pro-proled-xdr-fully-specced"
+              },
+              {
+                "title": "Apple introduces the new 14-inch MacBook Pro with M6",
+                "source": "Apple",
+                "url": "https://www.apple.com/newsroom/2026/10/apple-introduces-the-new-14-inch-macbook-pro-with-m6/"
+              }
+            ]
+          },
+          {
+            "id": "google-trends:阮慕骅:8",
+            "query": "阮慕骅",
+            "approxTraffic": "200+",
+            "approxTrafficNumber": 200,
+            "publishedAt": "2026-10-28T17:00:00.000Z",
+            "link": "https://trends.google.com/trending/rss?geo=TW",
+            "news": []
+          },
+          {
+            "id": "google-trends:快閃記憶體:9",
+            "query": "快閃記憶體",
+            "approxTraffic": "1000+",
+            "approxTrafficNumber": 1000,
+            "publishedAt": "2026-10-28T16:50:00.000Z",
+            "link": "https://trends.google.com/trending/rss?geo=TW",
+            "news": [
+              {
+                "title": "記憶體產能緊俏點火！華邦電漲破5%奪量價雙增王 力積電與電子五哥「這兩檔」一同入榜",
+                "source": "Yahoo股市",
+                "url": "https://tw.stock.yahoo.com/news/%E8%A8%98%E6%86%B6%E9%AB%94%E7%94%A2%E8%83%BD%E7%B7%8A%E4%BF%8F%E9%BB%9E%E7%81%AB-%E8%8F%AF%E9%82%A6%E9%9B%BB%E6%BC%B2%E7%A0%B45-%E5%A5%AA%E9%87%8F%E5%83%B9%E9%9B%99%E5%A2%9E%E7%8E%8B-%E5%8A%9B%E7%A9%8D%E9%9B%BB%E8%88%87%E9%9B%BB%E5%AD%90%E4%BA%94%E5%93%A5-%E9%80%99%E5%85%A9%E6%AA%94-000000240.html"
+              },
+              {
+                "title": "記憶體加溫旺宏、華邦電喊衝- 日報",
+                "source": "工商時報",
+                "url": "https://www.ctee.com.tw/news/20261029700284-439901"
+              },
+              {
+                "title": "目標價喊300元！「記憶體廠」EPS預估大賺61元 NOR Flash漲價110%＋市占破3成獲利大增",
+                "source": "FTNN 新聞網",
+                "url": "https://www.ftnn.com.tw/news/590978"
+              }
+            ]
+          }
+        ],
+        "itemCount": 10
+      },
+      {
+        "id": "bing-webmaster",
+        "engine": "bing",
+        "kind": "site-rising",
+        "status": "ok",
+        "siteUrl": "https://www.weiqi.kids/",
+        "freshness": "Bing Webmaster API 官方說明標示資料約每週更新",
+        "items": [
+          {
+            "id": "bing-webmaster:\"cve-2026-21508\":0",
+            "query": "\"cve-2026-21508\"",
+            "date": "2026-02-27T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 44,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:cve-2026-26003:1",
+            "query": "cve-2026-26003",
+            "date": "2026-03-06T00:00:00.000Z",
+            "impressions": 2,
+            "clicks": 1,
+            "position": 5,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:cve-2025-36522:2",
+            "query": "cve-2025-36522",
+            "date": "2026-03-06T00:00:00.000Z",
+            "impressions": 2,
+            "clicks": 0,
+            "position": 2,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:b0fln3bq75:3",
+            "query": "b0fln3bq75",
+            "date": "2026-03-06T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 7,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:cve-2025-27708:4",
+            "query": "cve-2025-27708",
+            "date": "2026-03-06T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 4,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:sve-2026-23906:5",
+            "query": "sve-2026-23906",
+            "date": "2026-03-06T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 4,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:qoca aim ai medical cloud platform 存在代码问题漏洞,该漏 洞源于没有限制文件上传的类型,攻击者利用该漏洞可以上传并执行 webshell 后门,从而在服务器上执行任意代码。:6",
+            "query": "qoca aim ai medical cloud platform 存在代码问题漏洞，该漏 洞源于没有限制文件上传的类型，攻击者利用该漏洞可以上传并执行 webshell 后门，从而在服务器上执行任意代码。",
+            "date": "2026-03-06T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 7,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:zoll epcr ios cve:7",
+            "query": "zoll epcr ios cve",
+            "date": "2026-03-06T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 9,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:cve-2026-25541:8",
+            "query": "cve-2026-25541",
+            "date": "2026-03-06T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:cve-2025-32467:9",
+            "query": "cve-2025-32467",
+            "date": "2026-03-06T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 8,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:cve-2021-45010 poc github:10",
+            "query": "cve-2021-45010 poc github",
+            "date": "2026-03-06T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 7,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:b0g48gsxx1:11",
+            "query": "b0g48gsxx1",
+            "date": "2026-03-13T00:00:00.000Z",
+            "impressions": 4,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:產品比較報告:12",
+            "query": "產品比較報告",
+            "date": "2026-03-13T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 4,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:rotavirus 新聞 2026:13",
+            "query": "rotavirus 新聞 2026",
+            "date": "2026-03-13T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 8,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:全球疫情統計:14",
+            "query": "全球疫情統計",
+            "date": "2026-03-13T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 1,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:security alert (a26-02-03) - multiple vulnerabilities in openssl:15",
+            "query": "security alert (a26-02-03) - multiple vulnerabilities in openssl",
+            "date": "2026-03-13T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 2,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:quickstats: age-adjusted lung cancer death* rates,† by state — national vital statistics system, united states, 2018:16",
+            "query": "quickstats: age-adjusted lung cancer death* rates,† by state — national vital statistics system, united states, 2018",
+            "date": "2026-03-13T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 8,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:資安情報中心:17",
+            "query": "資安情報中心",
+            "date": "2026-03-13T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 3,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:puct公式:18",
+            "query": "puct公式",
+            "date": "2026-03-20T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 1,
+            "position": 1,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:兒童木質廚房踏腳櫈:19",
+            "query": "兒童木質廚房踏腳櫈",
+            "date": "2026-03-20T00:00:00.000Z",
+            "impressions": 2,
+            "clicks": 0,
+            "position": 5,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:tvn 資安:20",
+            "query": "tvn 資安",
+            "date": "2026-03-20T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:全球疫情統計:21",
+            "query": "全球疫情統計",
+            "date": "2026-03-20T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:全球即時疫情地圖:22",
+            "query": "全球即時疫情地圖",
+            "date": "2026-03-20T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 4,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:mongdb4.4版本存在cve-2026-25611漏洞吗:23",
+            "query": "mongdb4.4版本存在cve-2026-25611漏洞吗",
+            "date": "2026-03-20T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 8,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:cve-2026-25539 漏洞复现:24",
+            "query": "cve-2026-25539 漏洞复现",
+            "date": "2026-03-20T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 10,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:全球疫情地圖:25",
+            "query": "全球疫情地圖",
+            "date": "2026-03-20T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 5,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:katago棋譜分析報告生成程式:26",
+            "query": "katago棋譜分析報告生成程式",
+            "date": "2026-03-20T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 9,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:全球疫情統計 (site:mbx.ilikeedit.com):27",
+            "query": "全球疫情統計 (site:mbx.ilikeedit.com)",
+            "date": "2026-03-20T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:aion2 資安漏洞 2026:28",
+            "query": "aion2 資安漏洞 2026",
+            "date": "2026-03-20T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 4,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:copy the linklink copied!executive summary:29",
+            "query": "copy the linklink copied!executive summary",
+            "date": "2026-03-20T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 8,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:puct公式中w设置为多少:30",
+            "query": "puct公式中w设置为多少",
+            "date": "2026-03-27T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 1,
+            "position": 3,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:指揮中心快訊:31",
+            "query": "指揮中心快訊",
+            "date": "2026-03-27T00:00:00.000Z",
+            "impressions": 3,
+            "clicks": 0,
+            "position": 7,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:aime數學競賽:32",
+            "query": "aime數學競賽",
+            "date": "2026-03-27T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:疫情地圖:33",
+            "query": "疫情地圖",
+            "date": "2026-03-27T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 2,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:新冠肺炎全球疫情統計排名 (site:twbsball.dils.tku.edu.tw):34",
+            "query": "新冠肺炎全球疫情統計排名 (site:twbsball.dils.tku.edu.tw)",
+            "date": "2026-03-27T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:puct算法中的常数c:35",
+            "query": "puct算法中的常数c",
+            "date": "2026-03-27T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:護肝保健食品 國家認證:36",
+            "query": "護肝保健食品 國家認證",
+            "date": "2026-03-27T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 2,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:新冠肺炎全球疫情:37",
+            "query": "新冠肺炎全球疫情",
+            "date": "2026-03-27T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 5,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:b0gdxn21x8:38",
+            "query": "b0gdxn21x8",
+            "date": "2026-03-27T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 3,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:cve-2026-25729:39",
+            "query": "cve-2026-25729",
+            "date": "2026-03-27T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 4,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:α-puct:40",
+            "query": "α-puct",
+            "date": "2026-03-27T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 10,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:cve 2026 23744 poc:41",
+            "query": "cve 2026 23744 poc",
+            "date": "2026-03-27T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 9,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:新冠肺炎全球疫情統計排名 (site:zh.wikipedia.org):42",
+            "query": "新冠肺炎全球疫情統計排名 (site:zh.wikipedia.org)",
+            "date": "2026-03-27T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:小學 g1-g4:43",
+            "query": "小學 g1-g4",
+            "date": "2026-03-27T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 8,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:成熟度與合規問卷:44",
+            "query": "成熟度與合規問卷",
+            "date": "2026-03-27T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:security alert (a26-02-03): multiple vulnerabilities in openssl:45",
+            "query": "security alert (a26-02-03): multiple vulnerabilities in openssl",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 1,
+            "position": 2,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:katago安裝教學:46",
+            "query": "katago安裝教學",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 2,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:cve-2026-30508:47",
+            "query": "cve-2026-30508",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 2,
+            "clicks": 0,
+            "position": 5,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:mercer p75薪資標桿:48",
+            "query": "mercer p75薪資標桿",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 2,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:保健食品資料庫:49",
+            "query": "保健食品資料庫",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 2,
+            "clicks": 0,
+            "position": 2,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:圍棋術語:50",
+            "query": "圍棋術語",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 8,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:puct公式:51",
+            "query": "puct公式",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 3,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:ecdc cdtr:52",
+            "query": "ecdc cdtr",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 2,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:同產業p75的薪資水準:53",
+            "query": "同產業p75的薪資水準",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 7,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:cve-2017-18640 漏洞分析:54",
+            "query": "cve-2017-18640 漏洞分析",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 9,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:薪資p50:55",
+            "query": "薪資p50",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:串流播放器推介:56",
+            "query": "串流播放器推介",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 10,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:puct数值:57",
+            "query": "puct数值",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 2,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:市場薪資p75:58",
+            "query": "市場薪資p75",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 5,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:uct_score = q + c_puct * p * sqrt(n)/ (1+n):59",
+            "query": "uct_score = q + c_puct * p * sqrt(n)/ (1+n)",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 4,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:skill level observatory:60",
+            "query": "skill level observatory",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 5,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:third party package updates for february 2026 (svd-2026-0210):61",
+            "query": "third party package updates for february 2026 (svd-2026-0210)",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 3,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:jss台灣動態週報:62",
+            "query": "jss台灣動態週報",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:薪資p75是什麼意思:63",
+            "query": "薪資p75是什麼意思",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 10,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:cve-2026-21508:64",
+            "query": "cve-2026-21508",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 10,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:adminer 4.6.2 - 5.4.1 unauthenticated persistent dos:65",
+            "query": "adminer 4.6.2 - 5.4.1 unauthenticated persistent dos",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 8,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:cve-2018-12023 poc:66",
+            "query": "cve-2018-12023 poc",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 5,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:cve-2020-9546 poc:67",
+            "query": "cve-2020-9546 poc",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:保健食品:68",
+            "query": "保健食品",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 8,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:ukmt 數學 imc 金牌:69",
+            "query": "ukmt 數學 imc 金牌",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 7,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:p75薪資水準:70",
+            "query": "p75薪資水準",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:入門門檻:71",
+            "query": "入門門檻",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 2,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:貿易合規政策 文件參考:72",
+            "query": "貿易合規政策 文件參考",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 4,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:ecdc_cdtr:73",
+            "query": "ecdc_cdtr",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 2,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:如何培養圍棋:74",
+            "query": "如何培養圍棋",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 4,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:教育部學習地圖:75",
+            "query": "教育部學習地圖",
+            "date": "2026-04-03T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 5,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:115公費流感藥 時間:76",
+            "query": "115公費流感藥 時間",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 1,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:clipbucket 5.5.0:77",
+            "query": "clipbucket 5.5.0",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 3,
+            "clicks": 0,
+            "position": 3,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:puct公式:78",
+            "query": "puct公式",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 3,
+            "clicks": 0,
+            "position": 3,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:圍棋術語:79",
+            "query": "圍棋術語",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 2,
+            "clicks": 0,
+            "position": 8,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:針對降噪耳機引致交通意外 skoda 研發 duobell 單車鈴保途人安全:80",
+            "query": "針對降噪耳機引致交通意外 skoda 研發 duobell 單車鈴保途人安全",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 2,
+            "clicks": 0,
+            "position": 4,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:傷口和繃帶:81",
+            "query": "傷口和繃帶",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 2,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:小童十大武器:82",
+            "query": "小童十大武器",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 2,
+            "clicks": 0,
+            "position": 8,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:儀錶板 景氣溫度計:83",
+            "query": "儀錶板 景氣溫度計",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 2,
+            "clicks": 0,
+            "position": 5,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:national flu and covid-19 surveillance reports: 2025 to 2026 season - gov.uk:84",
+            "query": "national flu and covid-19 surveillance reports: 2025 to 2026 season - gov.uk",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 2,
+            "clicks": 0,
+            "position": 2,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:b079lnl81l:85",
+            "query": "b079lnl81l",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 2,
+            "clicks": 0,
+            "position": 9,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:puct:86",
+            "query": "puct",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 3,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:clipbucket 5.5.0 - arbitrary file upload:87",
+            "query": "clipbucket 5.5.0 - arbitrary file upload",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 5,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:foshu日本:88",
+            "query": "foshu日本",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 9,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:k3小孩記住圍棋29步,難不難:89",
+            "query": "k3小孩記住圍棋29步,難不難",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 2,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:數學amc12a 並受邀參與複賽aime:90",
+            "query": "數學amc12a 並受邀參與複賽aime",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:保健食品資訊來源:91",
+            "query": "保健食品資訊來源",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 6,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:日本foshu临床证据:92",
+            "query": "日本foshu临床证据",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 2,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:威脅情報系統:93",
+            "query": "威脅情報系統",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 2,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:katago-v1.15.3-opencl-windows-x64.zip:94",
+            "query": "katago-v1.15.3-opencl-windows-x64.zip",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 7,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:please fill in \\\\10.16.149.13\\gesdpublic\\security issue\\security alert (a26-04-06) multiple vulnerabilities in openssl.xlsx:95",
+            "query": "please fill in \\\\10.16.149.13\\gesdpublic\\security issue\\security alert (a26-04-06) multiple vulnerabilities in openssl.xlsx",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 9,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:如何學圍棋:96",
+            "query": "如何學圍棋",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 7,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:新冠肺炎全球疫情統計圖表:97",
+            "query": "新冠肺炎全球疫情統計圖表",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 8,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:puct是干嘛的:98",
+            "query": "puct是干嘛的",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 4,
+            "clickPosition": -1
+          },
+          {
+            "id": "bing-webmaster:luxe changing foundation:99",
+            "query": "luxe changing foundation",
+            "date": "2026-04-10T00:00:00.000Z",
+            "impressions": 1,
+            "clicks": 0,
+            "position": 10,
+            "clickPosition": -1
+          }
+        ],
+        "itemCount": 100
+      }
+    ],
+    "gsc": {
+      "status": "ok",
+      "range": "2026-10-19..2026-10-25",
+      "rowCount": 17
+    },
+    "summary": {
+      "rawExternalItems": 110,
+      "uniqueQueries": 117,
+      "eligible": 2,
+      "reviewOnly": 0,
+      "manualReview": 0,
+      "watch": 6,
+      "filtered": 101
+    },
+    "automation": {
+      "autoApplySafeCopy": true,
+      "maxAutoRefreshesPerDay": 2,
+      "allowNewPages": true,
+      "requireHumanApproval": false,
+      "requireExternalSignal": false
+    },
+    "candidates": [
+      {
+        "id": "trend-圍棋術語",
+        "query": "圍棋術語",
+        "normalizedQuery": "圍棋術語",
+        "score": 61,
+        "status": "eligible",
+        "autoEligible": true,
+        "action": "refresh-existing-page",
+        "hot": false,
+        "rising": true,
+        "riskFlags": [],
+        "matchedTopics": [
+          {
+            "id": "terminology",
+            "label": "圍棋術語",
+            "url": "https://www.weiqi.kids/docs/learn/introduction/terminology/",
+            "terms": [
+              "圍棋術語"
+            ]
+          },
+          {
+            "id": "new-article",
+            "label": "新圍棋主題文章",
+            "url": null,
+            "terms": [
+              "圍棋"
+            ]
+          }
+        ],
+        "matchedTerms": [
+          "圍棋術語",
+          "圍棋"
+        ],
+        "targetUrl": "https://www.weiqi.kids/docs/learn/introduction/terminology/",
+        "signals": {
+          "sources": [
+            "bing-webmaster"
+          ],
+          "external": [
+            {
+              "source": "bing-webmaster",
+              "engine": "bing",
+              "kind": "site-rising",
+              "newInSource": false,
+              "impressions": 1,
+              "previousImpressions": 1,
+              "impressionDelta": 0,
+              "impressionGrowth": 0,
+              "traffic": null,
+              "publishedAt": "2026-04-03T00:00:00.000Z",
+              "url": "https://www.weiqi.kids/"
+            },
+            {
+              "source": "bing-webmaster",
+              "engine": "bing",
+              "kind": "site-rising",
+              "newInSource": false,
+              "impressions": 2,
+              "previousImpressions": 1,
+              "impressionDelta": 1,
+              "impressionGrowth": 1,
+              "traffic": null,
+              "publishedAt": "2026-04-10T00:00:00.000Z",
+              "url": "https://www.weiqi.kids/"
+            }
+          ],
+          "gsc": null
+        },
+        "why": [
+          "Bing Webmaster 查詢表現上升或首次出現",
+          "對應既有頁面「圍棋術語」"
+        ],
+        "previousExternalCount": 2,
+        "patch": {
+          "mode": "safe-copy-plus-fact-review",
+          "safeFiles": [
+            "docs/learn/introduction/terminology.md"
+          ],
+          "protectedFiles": [
+            "i18n/**",
+            "docs/about/**",
+            "docusaurus.config.js",
+            "sidebars.js",
+            "src/**",
+            "static/**"
+          ],
+          "instructions": "可以自動優化安全的閱讀動線與入口文字；來源查證失敗就不寫。"
+        }
+      },
+      {
+        "id": "trend-katago-v1-15-3-opencl-windows-x64-zip",
+        "query": "katago-v1.15.3-opencl-windows-x64.zip",
+        "normalizedQuery": "katago-v1.15.3-opencl-windows-x64.zip",
+        "score": 57,
+        "status": "eligible",
+        "autoEligible": true,
+        "action": "refresh-existing-page",
+        "hot": false,
+        "rising": true,
+        "riskFlags": [],
+        "matchedTopics": [
+          {
+            "id": "katago",
+            "label": "KataGo 圍棋 AI",
+            "url": "https://www.weiqi.kids/docs/tech/",
+            "terms": [
+              "katago"
+            ]
+          }
+        ],
+        "matchedTerms": [
+          "katago"
+        ],
+        "targetUrl": "https://www.weiqi.kids/docs/tech/",
+        "signals": {
+          "sources": [
+            "bing-webmaster"
+          ],
+          "external": [
+            {
+              "source": "bing-webmaster",
+              "engine": "bing",
+              "kind": "site-rising",
+              "newInSource": true,
+              "impressions": 1,
+              "previousImpressions": null,
+              "impressionDelta": null,
+              "impressionGrowth": null,
+              "traffic": null,
+              "publishedAt": "2026-04-10T00:00:00.000Z",
+              "url": "https://www.weiqi.kids/"
+            }
+          ],
+          "gsc": null
+        },
+        "why": [
+          "Bing Webmaster 查詢表現上升或首次出現",
+          "對應既有頁面「KataGo 圍棋 AI」"
+        ],
+        "previousExternalCount": 0,
+        "patch": {
+          "mode": "safe-copy-plus-fact-review",
+          "safeFiles": [
+            "docs/tech/index.md"
+          ],
+          "protectedFiles": [
+            "i18n/**",
+            "docs/about/**",
+            "docusaurus.config.js",
+            "sidebars.js",
+            "src/**",
+            "static/**"
+          ],
+          "instructions": "可以自動優化安全的閱讀動線與入口文字；來源查證失敗就不寫。"
+        }
+      }
+    ],
+    "rejected": [
+      {
+        "id": "trend-katago-網頁-版",
+        "query": "katago 網頁 版",
+        "normalizedQuery": "katago 網頁 版",
+        "score": 56,
+        "status": "eligible",
+        "autoEligible": true,
+        "action": "refresh-existing-page",
+        "hot": false,
+        "rising": true,
+        "riskFlags": [],
+        "matchedTopics": [
+          {
+            "id": "katago",
+            "label": "KataGo 圍棋 AI",
+            "url": "https://www.weiqi.kids/docs/tech/",
+            "terms": [
+              "katago"
+            ]
+          }
+        ],
+        "matchedTerms": [
+          "katago"
+        ],
+        "targetUrl": "https://www.weiqi.kids/docs/tech/",
+        "signals": {
+          "sources": [],
+          "external": [],
+          "gsc": {
+            "position": 44,
+            "previousPosition": null,
+            "impressions": 1,
+            "clicks": 0,
+            "ctr": 0
+          }
+        },
+        "why": [
+          "本站 Google 搜尋位置正在上升或剛出現",
+          "對應既有頁面「KataGo 圍棋 AI」"
+        ],
+        "previousExternalCount": 0,
+        "patch": {
+          "mode": "safe-copy-plus-fact-review",
+          "safeFiles": [
+            "docs/tech/index.md"
+          ],
+          "protectedFiles": [
+            "i18n/**",
+            "docs/about/**",
+            "docusaurus.config.js",
+            "sidebars.js",
+            "src/**",
+            "static/**"
+          ],
+          "instructions": "可以自動優化安全的閱讀動線與入口文字；來源查證失敗就不寫。"
+        }
+      },
+      {
+        "id": "trend-katago-安裝",
+        "query": "katago 安裝",
+        "normalizedQuery": "katago 安裝",
+        "score": 47,
+        "status": "watch",
+        "autoEligible": false,
+        "action": "refresh-existing-page",
+        "hot": false,
+        "rising": false,
+        "riskFlags": [],
+        "matchedTopics": [
+          {
+            "id": "katago",
+            "label": "KataGo 圍棋 AI",
+            "url": "https://www.weiqi.kids/docs/tech/",
+            "terms": [
+              "katago"
+            ]
+          }
+        ],
+        "matchedTerms": [
+          "katago"
+        ],
+        "targetUrl": "https://www.weiqi.kids/docs/tech/",
+        "signals": {
+          "sources": [],
+          "external": [],
+          "gsc": {
+            "position": 5.125,
+            "previousPosition": 5.052631578947368,
+            "impressions": 8,
+            "clicks": 2,
+            "ctr": 0.25
+          }
+        },
+        "why": [
+          "對應既有頁面「KataGo 圍棋 AI」"
+        ],
+        "previousExternalCount": 0,
+        "patch": {
+          "mode": "human-review-only",
+          "safeFiles": [
+            "docs/tech/index.md"
+          ],
+          "protectedFiles": [
+            "i18n/**",
+            "docs/about/**",
+            "docusaurus.config.js",
+            "sidebars.js",
+            "src/**",
+            "static/**"
+          ],
+          "instructions": "只產生審核 brief，不自動修改站台正文。"
+        }
+      },
+      {
+        "id": "trend-k3小孩記住圍棋29步-難不難",
+        "query": "k3小孩記住圍棋29步,難不難",
+        "normalizedQuery": "k3小孩記住圍棋29步,難不難",
+        "score": 42,
+        "status": "watch",
+        "autoEligible": false,
+        "action": "new-page-review",
+        "hot": false,
+        "rising": true,
+        "riskFlags": [],
+        "matchedTopics": [
+          {
+            "id": "new-article",
+            "label": "新圍棋主題文章",
+            "url": null,
+            "terms": [
+              "圍棋"
+            ]
+          }
+        ],
+        "matchedTerms": [
+          "圍棋"
+        ],
+        "targetUrl": null,
+        "signals": {
+          "sources": [
+            "bing-webmaster"
+          ],
+          "external": [
+            {
+              "source": "bing-webmaster",
+              "engine": "bing",
+              "kind": "site-rising",
+              "newInSource": true,
+              "impressions": 1,
+              "previousImpressions": null,
+              "impressionDelta": null,
+              "impressionGrowth": null,
+              "traffic": null,
+              "publishedAt": "2026-04-10T00:00:00.000Z",
+              "url": "https://www.weiqi.kids/"
+            }
+          ],
+          "gsc": null
+        },
+        "why": [
+          "Bing Webmaster 查詢表現上升或首次出現",
+          "對應既有頁面「新圍棋主題文章」"
+        ],
+        "previousExternalCount": 0,
+        "patch": {
+          "mode": "human-review-only",
+          "safeFiles": [
+            "docs/learn/**"
+          ],
+          "protectedFiles": [
+            "i18n/**",
+            "docs/about/**",
+            "docusaurus.config.js",
+            "sidebars.js",
+            "src/**",
+            "static/**"
+          ],
+          "instructions": "只產生審核 brief，不自動修改站台正文。"
+        }
+      },
+      {
+        "id": "trend-如何學圍棋",
+        "query": "如何學圍棋",
+        "normalizedQuery": "如何學圍棋",
+        "score": 41,
+        "status": "watch",
+        "autoEligible": false,
+        "action": "refresh-existing-page",
+        "hot": false,
+        "rising": false,
+        "riskFlags": [],
+        "matchedTopics": [
+          {
+            "id": "learn",
+            "label": "學圍棋",
+            "url": "https://www.weiqi.kids/docs/learn/",
+            "terms": [
+              "學圍棋"
+            ]
+          },
+          {
+            "id": "new-article",
+            "label": "新圍棋主題文章",
+            "url": null,
+            "terms": [
+              "圍棋"
+            ]
+          }
+        ],
+        "matchedTerms": [
+          "學圍棋",
+          "圍棋"
+        ],
+        "targetUrl": "https://www.weiqi.kids/docs/learn/",
+        "signals": {
+          "sources": [
+            "bing-webmaster"
+          ],
+          "external": [
+            {
+              "source": "bing-webmaster",
+              "engine": "bing",
+              "kind": "site-rising",
+              "newInSource": false,
+              "impressions": 1,
+              "previousImpressions": 1,
+              "impressionDelta": 0,
+              "impressionGrowth": 0,
+              "traffic": null,
+              "publishedAt": "2026-04-10T00:00:00.000Z",
+              "url": "https://www.weiqi.kids/"
+            }
+          ],
+          "gsc": null
+        },
+        "why": [
+          "對應既有頁面「學圍棋」"
+        ],
+        "previousExternalCount": 1,
+        "patch": {
+          "mode": "human-review-only",
+          "safeFiles": [
+            "docs/learn/index.md"
+          ],
+          "protectedFiles": [
+            "i18n/**",
+            "docs/about/**",
+            "docusaurus.config.js",
+            "sidebars.js",
+            "src/**",
+            "static/**"
+          ],
+          "instructions": "只產生審核 brief，不自動修改站台正文。"
+        }
+      },
+      {
+        "id": "trend-katago安裝教學",
+        "query": "katago安裝教學",
+        "normalizedQuery": "katago安裝教學",
+        "score": 37,
+        "status": "watch",
+        "autoEligible": false,
+        "action": "refresh-existing-page",
+        "hot": false,
+        "rising": false,
+        "riskFlags": [],
+        "matchedTopics": [
+          {
+            "id": "katago",
+            "label": "KataGo 圍棋 AI",
+            "url": "https://www.weiqi.kids/docs/tech/",
+            "terms": [
+              "katago"
+            ]
+          }
+        ],
+        "matchedTerms": [
+          "katago"
+        ],
+        "targetUrl": "https://www.weiqi.kids/docs/tech/",
+        "signals": {
+          "sources": [
+            "bing-webmaster"
+          ],
+          "external": [
+            {
+              "source": "bing-webmaster",
+              "engine": "bing",
+              "kind": "site-rising",
+              "newInSource": false,
+              "impressions": 2,
+              "previousImpressions": 2,
+              "impressionDelta": 0,
+              "impressionGrowth": 0,
+              "traffic": null,
+              "publishedAt": "2026-04-03T00:00:00.000Z",
+              "url": "https://www.weiqi.kids/"
+            }
+          ],
+          "gsc": null
+        },
+        "why": [
+          "對應既有頁面「KataGo 圍棋 AI」"
+        ],
+        "previousExternalCount": 1,
+        "patch": {
+          "mode": "human-review-only",
+          "safeFiles": [
+            "docs/tech/index.md"
+          ],
+          "protectedFiles": [
+            "i18n/**",
+            "docs/about/**",
+            "docusaurus.config.js",
+            "sidebars.js",
+            "src/**",
+            "static/**"
+          ],
+          "instructions": "只產生審核 brief，不自動修改站台正文。"
+        }
+      },
+      {
+        "id": "trend-katago棋譜分析報告生成程式",
+        "query": "katago棋譜分析報告生成程式",
+        "normalizedQuery": "katago棋譜分析報告生成程式",
+        "score": 37,
+        "status": "watch",
+        "autoEligible": false,
+        "action": "refresh-existing-page",
+        "hot": false,
+        "rising": false,
+        "riskFlags": [],
+        "matchedTopics": [
+          {
+            "id": "katago",
+            "label": "KataGo 圍棋 AI",
+            "url": "https://www.weiqi.kids/docs/tech/",
+            "terms": [
+              "katago"
+            ]
+          }
+        ],
+        "matchedTerms": [
+          "katago"
+        ],
+        "targetUrl": "https://www.weiqi.kids/docs/tech/",
+        "signals": {
+          "sources": [
+            "bing-webmaster"
+          ],
+          "external": [
+            {
+              "source": "bing-webmaster",
+              "engine": "bing",
+              "kind": "site-rising",
+              "newInSource": false,
+              "impressions": 1,
+              "previousImpressions": 1,
+              "impressionDelta": 0,
+              "impressionGrowth": 0,
+              "traffic": null,
+              "publishedAt": "2026-03-20T00:00:00.000Z",
+              "url": "https://www.weiqi.kids/"
+            }
+          ],
+          "gsc": null
+        },
+        "why": [
+          "對應既有頁面「KataGo 圍棋 AI」"
+        ],
+        "previousExternalCount": 1,
+        "patch": {
+          "mode": "human-review-only",
+          "safeFiles": [
+            "docs/tech/index.md"
+          ],
+          "protectedFiles": [
+            "i18n/**",
+            "docs/about/**",
+            "docusaurus.config.js",
+            "sidebars.js",
+            "src/**",
+            "static/**"
+          ],
+          "instructions": "只產生審核 brief，不自動修改站台正文。"
+        }
+      },
+      {
+        "id": "trend-如何培養圍棋",
+        "query": "如何培養圍棋",
+        "normalizedQuery": "如何培養圍棋",
+        "score": 22,
+        "status": "watch",
+        "autoEligible": false,
+        "action": "new-page-review",
+        "hot": false,
+        "rising": false,
+        "riskFlags": [],
+        "matchedTopics": [
+          {
+            "id": "new-article",
+            "label": "新圍棋主題文章",
+            "url": null,
+            "terms": [
+              "圍棋"
+            ]
+          }
+        ],
+        "matchedTerms": [
+          "圍棋"
+        ],
+        "targetUrl": null,
+        "signals": {
+          "sources": [
+            "bing-webmaster"
+          ],
+          "external": [
+            {
+              "source": "bing-webmaster",
+              "engine": "bing",
+              "kind": "site-rising",
+              "newInSource": false,
+              "impressions": 1,
+              "previousImpressions": 1,
+              "impressionDelta": 0,
+              "impressionGrowth": 0,
+              "traffic": null,
+              "publishedAt": "2026-04-03T00:00:00.000Z",
+              "url": "https://www.weiqi.kids/"
+            }
+          ],
+          "gsc": null
+        },
+        "why": [
+          "對應既有頁面「新圍棋主題文章」"
+        ],
+        "previousExternalCount": 1,
+        "patch": {
+          "mode": "human-review-only",
+          "safeFiles": [
+            "docs/learn/**"
+          ],
+          "protectedFiles": [
+            "i18n/**",
+            "docs/about/**",
+            "docusaurus.config.js",
+            "sidebars.js",
+            "src/**",
+            "static/**"
+          ],
+          "instructions": "只產生審核 brief，不自動修改站台正文。"
+        }
+      }
+    ]
+  },
+  "geo": {
+    "site": "weiqi.kids",
+    "sampleUrl": "https://www.weiqi.kids/zh-cn/docs/learn/introduction/",
+    "checks": {
+      "ai": {
+        "s": "✅"
+      },
+      "sitemap": {
+        "s": "✅"
+      },
+      "llms": {
+        "s": "✅"
+      },
+      "llmsFull": {
+        "s": "✅"
+      },
+      "org": {
+        "s": "✅"
+      },
+      "sameAs": {
+        "s": "✅"
+      },
+      "content": {
+        "s": "✅"
+      },
+      "faq": {
+        "s": "✅"
+      },
+      "cite": {
+        "s": "—"
+      },
+      "expect": {
+        "s": "—"
+      },
+      "targetQ": {
+        "s": "✅"
+      }
+    },
+    "gaps": [],
+    "warns": [],
+    "ok": true
+  },
+  "bingIndex": {
+    "siteUrl": "https://www.weiqi.kids/",
+    "backlinkPages": 0,
+    "latest": {
+      "date": "2026-10-25",
+      "inIndex": 4698,
+      "crawled2xx": 5243,
+      "impressions": 14,
+      "clicks": 1
+    },
+    "verdict": {
+      "ok": true,
+      "reasons": [],
+      "deltaPct": -1.07,
+      "fullRangePct": 80.41,
+      "imprSum": 383,
+      "days": 14,
+      "totalDays": 180
+    },
+    "series": [
+      {
+        "date": "2026-04-28",
+        "inIndex": 2604,
+        "crawled2xx": 3075,
+        "impressions": 8,
+        "clicks": 0
+      },
+      {
+        "date": "2026-04-29",
+        "inIndex": 2609,
+        "crawled2xx": 3074,
+        "impressions": 4,
+        "clicks": 1
+      },
+      {
+        "date": "2026-04-30",
+        "inIndex": 2593,
+        "crawled2xx": 3063,
+        "impressions": 3,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-01",
+        "inIndex": 2594,
+        "crawled2xx": 3075,
+        "impressions": 4,
+        "clicks": 1
+      },
+      {
+        "date": "2026-05-02",
+        "inIndex": 2594,
+        "crawled2xx": 3075,
+        "impressions": 5,
+        "clicks": 1
+      },
+      {
+        "date": "2026-05-03",
+        "inIndex": 2624,
+        "crawled2xx": 3099,
+        "impressions": 8,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-04",
+        "inIndex": 2624,
+        "crawled2xx": 3100,
+        "impressions": 12,
+        "clicks": 14
+      },
+      {
+        "date": "2026-05-05",
+        "inIndex": 2656,
+        "crawled2xx": 3135,
+        "impressions": 5,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-06",
+        "inIndex": 2667,
+        "crawled2xx": 3075,
+        "impressions": 13,
+        "clicks": 1
+      },
+      {
+        "date": "2026-05-07",
+        "inIndex": 2667,
+        "crawled2xx": 3075,
+        "impressions": 12,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-08",
+        "inIndex": 2695,
+        "crawled2xx": 3109,
+        "impressions": 4,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-09",
+        "inIndex": 2695,
+        "crawled2xx": 3109,
+        "impressions": 3,
+        "clicks": 1
+      },
+      {
+        "date": "2026-05-10",
+        "inIndex": 2695,
+        "crawled2xx": 3108,
+        "impressions": 9,
+        "clicks": 1
+      },
+      {
+        "date": "2026-05-11",
+        "inIndex": 2695,
+        "crawled2xx": 3108,
+        "impressions": 5,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-12",
+        "inIndex": 2780,
+        "crawled2xx": 3283,
+        "impressions": 7,
+        "clicks": 1
+      },
+      {
+        "date": "2026-05-13",
+        "inIndex": 3124,
+        "crawled2xx": 3612,
+        "impressions": 10,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-14",
+        "inIndex": 3177,
+        "crawled2xx": 3648,
+        "impressions": 13,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-15",
+        "inIndex": 3177,
+        "crawled2xx": 3648,
+        "impressions": 7,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-16",
+        "inIndex": 3193,
+        "crawled2xx": 3672,
+        "impressions": 4,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-17",
+        "inIndex": 3194,
+        "crawled2xx": 3672,
+        "impressions": 10,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-18",
+        "inIndex": 3212,
+        "crawled2xx": 3690,
+        "impressions": 13,
+        "clicks": 2
+      },
+      {
+        "date": "2026-05-19",
+        "inIndex": 3224,
+        "crawled2xx": 3704,
+        "impressions": 26,
+        "clicks": 1
+      },
+      {
+        "date": "2026-05-20",
+        "inIndex": 3229,
+        "crawled2xx": 3703,
+        "impressions": 20,
+        "clicks": 1
+      },
+      {
+        "date": "2026-05-21",
+        "inIndex": 3236,
+        "crawled2xx": 3707,
+        "impressions": 22,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-22",
+        "inIndex": 3244,
+        "crawled2xx": 3728,
+        "impressions": 30,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-23",
+        "inIndex": 3263,
+        "crawled2xx": 3743,
+        "impressions": 9,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-24",
+        "inIndex": 3274,
+        "crawled2xx": 3750,
+        "impressions": 15,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-25",
+        "inIndex": 3291,
+        "crawled2xx": 3757,
+        "impressions": 19,
+        "clicks": 1
+      },
+      {
+        "date": "2026-05-26",
+        "inIndex": 3301,
+        "crawled2xx": 3762,
+        "impressions": 11,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-27",
+        "inIndex": 3310,
+        "crawled2xx": 3768,
+        "impressions": 23,
+        "clicks": 2
+      },
+      {
+        "date": "2026-05-28",
+        "inIndex": 3315,
+        "crawled2xx": 3770,
+        "impressions": 21,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-29",
+        "inIndex": 3376,
+        "crawled2xx": 3845,
+        "impressions": 19,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-30",
+        "inIndex": 3507,
+        "crawled2xx": 4020,
+        "impressions": 12,
+        "clicks": 0
+      },
+      {
+        "date": "2026-05-31",
+        "inIndex": 3578,
+        "crawled2xx": 4077,
+        "impressions": 15,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-01",
+        "inIndex": 3613,
+        "crawled2xx": 4094,
+        "impressions": 16,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-02",
+        "inIndex": 3625,
+        "crawled2xx": 4104,
+        "impressions": 14,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-03",
+        "inIndex": 3630,
+        "crawled2xx": 4118,
+        "impressions": 20,
+        "clicks": 1
+      },
+      {
+        "date": "2026-06-04",
+        "inIndex": 3637,
+        "crawled2xx": 4133,
+        "impressions": 20,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-05",
+        "inIndex": 3637,
+        "crawled2xx": 4133,
+        "impressions": 14,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-06",
+        "inIndex": 3671,
+        "crawled2xx": 4161,
+        "impressions": 8,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-07",
+        "inIndex": 3685,
+        "crawled2xx": 4172,
+        "impressions": 22,
+        "clicks": 2
+      },
+      {
+        "date": "2026-06-08",
+        "inIndex": 3705,
+        "crawled2xx": 4195,
+        "impressions": 30,
+        "clicks": 1
+      },
+      {
+        "date": "2026-06-09",
+        "inIndex": 3727,
+        "crawled2xx": 4219,
+        "impressions": 29,
+        "clicks": 4
+      },
+      {
+        "date": "2026-06-10",
+        "inIndex": 3727,
+        "crawled2xx": 4219,
+        "impressions": 16,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-11",
+        "inIndex": 3736,
+        "crawled2xx": 4229,
+        "impressions": 27,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-12",
+        "inIndex": 3758,
+        "crawled2xx": 4243,
+        "impressions": 22,
+        "clicks": 2
+      },
+      {
+        "date": "2026-06-13",
+        "inIndex": 3781,
+        "crawled2xx": 4250,
+        "impressions": 8,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-14",
+        "inIndex": 3785,
+        "crawled2xx": 4244,
+        "impressions": 26,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-15",
+        "inIndex": 3799,
+        "crawled2xx": 4260,
+        "impressions": 31,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-16",
+        "inIndex": 3799,
+        "crawled2xx": 4260,
+        "impressions": 21,
+        "clicks": 1
+      },
+      {
+        "date": "2026-06-17",
+        "inIndex": 3814,
+        "crawled2xx": 4268,
+        "impressions": 15,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-18",
+        "inIndex": 3823,
+        "crawled2xx": 4269,
+        "impressions": 30,
+        "clicks": 2
+      },
+      {
+        "date": "2026-06-19",
+        "inIndex": 3833,
+        "crawled2xx": 4281,
+        "impressions": 8,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-20",
+        "inIndex": 3841,
+        "crawled2xx": 4283,
+        "impressions": 15,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-21",
+        "inIndex": 3854,
+        "crawled2xx": 4282,
+        "impressions": 10,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-22",
+        "inIndex": 3869,
+        "crawled2xx": 4299,
+        "impressions": 34,
+        "clicks": 6
+      },
+      {
+        "date": "2026-06-23",
+        "inIndex": 3889,
+        "crawled2xx": 4314,
+        "impressions": 20,
+        "clicks": 1
+      },
+      {
+        "date": "2026-06-24",
+        "inIndex": 3898,
+        "crawled2xx": 4329,
+        "impressions": 18,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-25",
+        "inIndex": 3911,
+        "crawled2xx": 4336,
+        "impressions": 29,
+        "clicks": 3
+      },
+      {
+        "date": "2026-06-26",
+        "inIndex": 3929,
+        "crawled2xx": 4342,
+        "impressions": 12,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-27",
+        "inIndex": 3939,
+        "crawled2xx": 4351,
+        "impressions": 5,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-28",
+        "inIndex": 3939,
+        "crawled2xx": 4351,
+        "impressions": 10,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-29",
+        "inIndex": 3948,
+        "crawled2xx": 4355,
+        "impressions": 11,
+        "clicks": 0
+      },
+      {
+        "date": "2026-06-30",
+        "inIndex": 3958,
+        "crawled2xx": 4361,
+        "impressions": 26,
+        "clicks": 0
+      },
+      {
+        "date": "2026-07-01",
+        "inIndex": 3966,
+        "crawled2xx": 4369,
+        "impressions": 21,
+        "clicks": 1
+      },
+      {
+        "date": "2026-07-02",
+        "inIndex": 3977,
+        "crawled2xx": 4379,
+        "impressions": 9,
+        "clicks": 0
+      },
+      {
+        "date": "2026-07-03",
+        "inIndex": 3987,
+        "crawled2xx": 4380,
+        "impressions": 9,
+        "clicks": 0
+      },
+      {
+        "date": "2026-07-04",
+        "inIndex": 4002,
+        "crawled2xx": 4375,
+        "impressions": 5,
+        "clicks": 0
+      },
+      {
+        "date": "2026-07-05",
+        "inIndex": 4010,
+        "crawled2xx": 4374,
+        "impressions": 14,
+        "clicks": 4
+      },
+      {
+        "date": "2026-07-06",
+        "inIndex": 4015,
+        "crawled2xx": 4375,
+        "impressions": 26,
+        "clicks": 1
+      },
+      {
+        "date": "2026-07-07",
+        "inIndex": 4024,
+        "crawled2xx": 4367,
+        "impressions": 26,
+        "clicks": 1
+      },
+      {
+        "date": "2026-07-08",
+        "inIndex": 4041,
+        "crawled2xx": 4379,
+        "impressions": 23,
+        "clicks": 0
+      },
+      {
+        "date": "2026-07-09",
+        "inIndex": 4043,
+        "crawled2xx": 4370,
+        "impressions": 15,
+        "clicks": 1
+      },
+      {
+        "date": "2026-07-10",
+        "inIndex": 4043,
+        "crawled2xx": 4370,
+        "impressions": 19,
+        "clicks": 0
+      },
+      {
+        "date": "2026-07-11",
+        "inIndex": 4047,
+        "crawled2xx": 4371,
+        "impressions": 8,
+        "clicks": 0
+      },
+      {
+        "date": "2026-07-12",
+        "inIndex": 4050,
+        "crawled2xx": 4370,
+        "impressions": 28,
+        "clicks": 0
+      },
+      {
+        "date": "2026-07-13",
+        "inIndex": 4051,
+        "crawled2xx": 4366,
+        "impressions": 30,
+        "clicks": 0
+      },
+      {
+        "date": "2026-07-14",
+        "inIndex": 4053,
+        "crawled2xx": 4370,
+        "impressions": 24,
+        "clicks": 1
+      },
+      {
+        "date": "2026-07-15",
+        "inIndex": 4053,
+        "crawled2xx": 4367,
+        "impressions": 20,
+        "clicks": 0
+      },
+      {
+        "date": "2026-07-16",
+        "inIndex": 4052,
+        "crawled2xx": 4371,
+        "impressions": 22,
+        "clicks": 2
+      },
+      {
+        "date": "2026-07-17",
+        "inIndex": 4051,
+        "crawled2xx": 4378,
+        "impressions": 21,
+        "clicks": 1
+      },
+      {
+        "date": "2026-07-18",
+        "inIndex": 4055,
+        "crawled2xx": 4386,
+        "impressions": 16,
+        "clicks": 0
+      },
+      {
+        "date": "2026-07-19",
+        "inIndex": 4063,
+        "crawled2xx": 4403,
+        "impressions": 24,
+        "clicks": 2
+      },
+      {
+        "date": "2026-07-20",
+        "inIndex": 4069,
+        "crawled2xx": 4410,
+        "impressions": 26,
+        "clicks": 0
+      },
+      {
+        "date": "2026-07-21",
+        "inIndex": 4071,
+        "crawled2xx": 4419,
+        "impressions": 27,
+        "clicks": 1
+      },
+      {
+        "date": "2026-07-22",
+        "inIndex": 4075,
+        "crawled2xx": 4423,
+        "impressions": 34,
+        "clicks": 1
+      },
+      {
+        "date": "2026-07-23",
+        "inIndex": 4075,
+        "crawled2xx": 4427,
+        "impressions": 22,
+        "clicks": 1
+      },
+      {
+        "date": "2026-07-24",
+        "inIndex": 4076,
+        "crawled2xx": 4440,
+        "impressions": 17,
+        "clicks": 0
+      },
+      {
+        "date": "2026-07-25",
+        "inIndex": 4080,
+        "crawled2xx": 4457,
+        "impressions": 5,
+        "clicks": 0
+      },
+      {
+        "date": "2026-07-26",
+        "inIndex": 4080,
+        "crawled2xx": 4472,
+        "impressions": 14,
+        "clicks": 0
+      },
+      {
+        "date": "2026-07-27",
+        "inIndex": 4085,
+        "crawled2xx": 4499,
+        "impressions": 34,
+        "clicks": 3
+      },
+      {
+        "date": "2026-07-28",
+        "inIndex": 4091,
+        "crawled2xx": 4523,
+        "impressions": 54,
+        "clicks": 2
+      },
+      {
+        "date": "2026-07-29",
+        "inIndex": 4097,
+        "crawled2xx": 4538,
+        "impressions": 30,
+        "clicks": 2
+      },
+      {
+        "date": "2026-07-30",
+        "inIndex": 4104,
+        "crawled2xx": 4570,
+        "impressions": 30,
+        "clicks": 3
+      },
+      {
+        "date": "2026-07-31",
+        "inIndex": 4114,
+        "crawled2xx": 4599,
+        "impressions": 34,
+        "clicks": 2
+      },
+      {
+        "date": "2026-08-01",
+        "inIndex": 4119,
+        "crawled2xx": 4615,
+        "impressions": 14,
+        "clicks": 0
+      },
+      {
+        "date": "2026-08-02",
+        "inIndex": 4133,
+        "crawled2xx": 4653,
+        "impressions": 23,
+        "clicks": 0
+      },
+      {
+        "date": "2026-08-03",
+        "inIndex": 4145,
+        "crawled2xx": 4694,
+        "impressions": 33,
+        "clicks": 2
+      },
+      {
+        "date": "2026-08-04",
+        "inIndex": 4151,
+        "crawled2xx": 4719,
+        "impressions": 50,
+        "clicks": 3
+      },
+      {
+        "date": "2026-08-05",
+        "inIndex": 4170,
+        "crawled2xx": 4757,
+        "impressions": 41,
+        "clicks": 2
+      },
+      {
+        "date": "2026-08-06",
+        "inIndex": 4173,
+        "crawled2xx": 4782,
+        "impressions": 35,
+        "clicks": 0
+      },
+      {
+        "date": "2026-08-07",
+        "inIndex": 4173,
+        "crawled2xx": 4782,
+        "impressions": 17,
+        "clicks": 0
+      },
+      {
+        "date": "2026-08-08",
+        "inIndex": 4179,
+        "crawled2xx": 4804,
+        "impressions": 11,
+        "clicks": 1
+      },
+      {
+        "date": "2026-08-09",
+        "inIndex": 4202,
+        "crawled2xx": 4837,
+        "impressions": 24,
+        "clicks": 1
+      },
+      {
+        "date": "2026-08-10",
+        "inIndex": 4220,
+        "crawled2xx": 4865,
+        "impressions": 23,
+        "clicks": 2
+      },
+      {
+        "date": "2026-08-11",
+        "inIndex": 4236,
+        "crawled2xx": 4895,
+        "impressions": 26,
+        "clicks": 1
+      },
+      {
+        "date": "2026-08-12",
+        "inIndex": 4249,
+        "crawled2xx": 4919,
+        "impressions": 41,
+        "clicks": 2
+      },
+      {
+        "date": "2026-08-13",
+        "inIndex": 4268,
+        "crawled2xx": 4948,
+        "impressions": 20,
+        "clicks": 1
+      },
+      {
+        "date": "2026-08-14",
+        "inIndex": 4283,
+        "crawled2xx": 4963,
+        "impressions": 21,
+        "clicks": 0
+      },
+      {
+        "date": "2026-08-15",
+        "inIndex": 4296,
+        "crawled2xx": 4973,
+        "impressions": 12,
+        "clicks": 1
+      },
+      {
+        "date": "2026-08-16",
+        "inIndex": 4317,
+        "crawled2xx": 4996,
+        "impressions": 20,
+        "clicks": 0
+      },
+      {
+        "date": "2026-08-17",
+        "inIndex": 4335,
+        "crawled2xx": 5017,
+        "impressions": 29,
+        "clicks": 0
+      },
+      {
+        "date": "2026-08-18",
+        "inIndex": 4345,
+        "crawled2xx": 5024,
+        "impressions": 23,
+        "clicks": 0
+      },
+      {
+        "date": "2026-08-19",
+        "inIndex": 4353,
+        "crawled2xx": 5034,
+        "impressions": 26,
+        "clicks": 1
+      },
+      {
+        "date": "2026-08-20",
+        "inIndex": 4374,
+        "crawled2xx": 5060,
+        "impressions": 38,
+        "clicks": 1
+      },
+      {
+        "date": "2026-08-22",
+        "inIndex": 4417,
+        "crawled2xx": 5100,
+        "impressions": 7,
+        "clicks": 2
+      },
+      {
+        "date": "2026-08-23",
+        "inIndex": 4444,
+        "crawled2xx": 5131,
+        "impressions": 15,
+        "clicks": 1
+      },
+      {
+        "date": "2026-08-24",
+        "inIndex": 4472,
+        "crawled2xx": 5145,
+        "impressions": 19,
+        "clicks": 1
+      },
+      {
+        "date": "2026-08-25",
+        "inIndex": 4494,
+        "crawled2xx": 5161,
+        "impressions": 33,
+        "clicks": 0
+      },
+      {
+        "date": "2026-08-26",
+        "inIndex": 4521,
+        "crawled2xx": 5191,
+        "impressions": 32,
+        "clicks": 1
+      },
+      {
+        "date": "2026-08-27",
+        "inIndex": 4545,
+        "crawled2xx": 5206,
+        "impressions": 21,
+        "clicks": 2
+      },
+      {
+        "date": "2026-08-28",
+        "inIndex": 4586,
+        "crawled2xx": 5230,
+        "impressions": 21,
+        "clicks": 0
+      },
+      {
+        "date": "2026-08-29",
+        "inIndex": 4586,
+        "crawled2xx": 5230,
+        "impressions": 13,
+        "clicks": 1
+      },
+      {
+        "date": "2026-08-30",
+        "inIndex": 4618,
+        "crawled2xx": 5232,
+        "impressions": 23,
+        "clicks": 0
+      },
+      {
+        "date": "2026-08-31",
+        "inIndex": 4653,
+        "crawled2xx": 5244,
+        "impressions": 30,
+        "clicks": 1
+      },
+      {
+        "date": "2026-09-01",
+        "inIndex": 4679,
+        "crawled2xx": 5252,
+        "impressions": 33,
+        "clicks": 0
+      },
+      {
+        "date": "2026-09-02",
+        "inIndex": 4703,
+        "crawled2xx": 5255,
+        "impressions": 27,
+        "clicks": 1
+      },
+      {
+        "date": "2026-09-03",
+        "inIndex": 4727,
+        "crawled2xx": 5259,
+        "impressions": 34,
+        "clicks": 2
+      },
+      {
+        "date": "2026-09-04",
+        "inIndex": 4752,
+        "crawled2xx": 5253,
+        "impressions": 23,
+        "clicks": 0
+      },
+      {
+        "date": "2026-09-05",
+        "inIndex": 4803,
+        "crawled2xx": 5255,
+        "impressions": 11,
+        "clicks": 1
+      },
+      {
+        "date": "2026-09-06",
+        "inIndex": 4803,
+        "crawled2xx": 5255,
+        "impressions": 37,
+        "clicks": 4
+      },
+      {
+        "date": "2026-09-07",
+        "inIndex": 4827,
+        "crawled2xx": 5248,
+        "impressions": 37,
+        "clicks": 1
+      },
+      {
+        "date": "2026-09-08",
+        "inIndex": 4841,
+        "crawled2xx": 5253,
+        "impressions": 33,
+        "clicks": 0
+      },
+      {
+        "date": "2026-09-09",
+        "inIndex": 4850,
+        "crawled2xx": 5254,
+        "impressions": 39,
+        "clicks": 1
+      },
+      {
+        "date": "2026-09-10",
+        "inIndex": 4864,
+        "crawled2xx": 5250,
+        "impressions": 50,
+        "clicks": 0
+      },
+      {
+        "date": "2026-09-11",
+        "inIndex": 4874,
+        "crawled2xx": 5254,
+        "impressions": 18,
+        "clicks": 3
+      },
+      {
+        "date": "2026-09-12",
+        "inIndex": 4884,
+        "crawled2xx": 5251,
+        "impressions": 17,
+        "clicks": 1
+      },
+      {
+        "date": "2026-09-13",
+        "inIndex": 4892,
+        "crawled2xx": 5248,
+        "impressions": 26,
+        "clicks": 1
+      },
+      {
+        "date": "2026-09-14",
+        "inIndex": 4944,
+        "crawled2xx": 5261,
+        "impressions": 41,
+        "clicks": 0
+      },
+      {
+        "date": "2026-09-15",
+        "inIndex": 4943,
+        "crawled2xx": 5264,
+        "impressions": 31,
+        "clicks": 0
+      },
+      {
+        "date": "2026-09-16",
+        "inIndex": 4943,
+        "crawled2xx": 5264,
+        "impressions": 42,
+        "clicks": 0
+      },
+      {
+        "date": "2026-09-17",
+        "inIndex": 4944,
+        "crawled2xx": 5261,
+        "impressions": 36,
+        "clicks": 0
+      },
+      {
+        "date": "2026-09-18",
+        "inIndex": 4943,
+        "crawled2xx": 5264,
+        "impressions": 29,
+        "clicks": 2
+      },
+      {
+        "date": "2026-09-19",
+        "inIndex": 4943,
+        "crawled2xx": 5263,
+        "impressions": 10,
+        "clicks": 0
+      },
+      {
+        "date": "2026-09-20",
+        "inIndex": 4942,
+        "crawled2xx": 5263,
+        "impressions": 18,
+        "clicks": 0
+      },
+      {
+        "date": "2026-09-21",
+        "inIndex": 4942,
+        "crawled2xx": 5263,
+        "impressions": 35,
+        "clicks": 0
+      },
+      {
+        "date": "2026-09-22",
+        "inIndex": 4925,
+        "crawled2xx": 5272,
+        "impressions": 24,
+        "clicks": 0
+      },
+      {
+        "date": "2026-09-23",
+        "inIndex": 4919,
+        "crawled2xx": 5275,
+        "impressions": 38,
+        "clicks": 2
+      },
+      {
+        "date": "2026-09-24",
+        "inIndex": 4913,
+        "crawled2xx": 5286,
+        "impressions": 34,
+        "clicks": 1
+      },
+      {
+        "date": "2026-09-25",
+        "inIndex": 4910,
+        "crawled2xx": 5292,
+        "impressions": 18,
+        "clicks": 2
+      },
+      {
+        "date": "2026-09-26",
+        "inIndex": 4910,
+        "crawled2xx": 5292,
+        "impressions": 10,
+        "clicks": 0
+      },
+      {
+        "date": "2026-09-27",
+        "inIndex": 4904,
+        "crawled2xx": 5293,
+        "impressions": 33,
+        "clicks": 2
+      },
+      {
+        "date": "2026-09-28",
+        "inIndex": 4907,
+        "crawled2xx": 5298,
+        "impressions": 39,
+        "clicks": 1
+      },
+      {
+        "date": "2026-09-29",
+        "inIndex": 4904,
+        "crawled2xx": 5304,
+        "impressions": 36,
+        "clicks": 2
+      },
+      {
+        "date": "2026-09-30",
+        "inIndex": 4898,
+        "crawled2xx": 5308,
+        "impressions": 36,
+        "clicks": 3
+      },
+      {
+        "date": "2026-10-01",
+        "inIndex": 4893,
+        "crawled2xx": 5307,
+        "impressions": 41,
+        "clicks": 0
+      },
+      {
+        "date": "2026-10-02",
+        "inIndex": 4869,
+        "crawled2xx": 5301,
+        "impressions": 17,
+        "clicks": 0
+      },
+      {
+        "date": "2026-10-03",
+        "inIndex": 4819,
+        "crawled2xx": 5274,
+        "impressions": 4,
+        "clicks": 1
+      },
+      {
+        "date": "2026-10-04",
+        "inIndex": 4795,
+        "crawled2xx": 5269,
+        "impressions": 19,
+        "clicks": 0
+      },
+      {
+        "date": "2026-10-05",
+        "inIndex": 4795,
+        "crawled2xx": 5269,
+        "impressions": 40,
+        "clicks": 3
+      },
+      {
+        "date": "2026-10-06",
+        "inIndex": 4780,
+        "crawled2xx": 5270,
+        "impressions": 34,
+        "clicks": 1
+      },
+      {
+        "date": "2026-10-07",
+        "inIndex": 4766,
+        "crawled2xx": 5266,
+        "impressions": 33,
+        "clicks": 0
+      },
+      {
+        "date": "2026-10-08",
+        "inIndex": 4757,
+        "crawled2xx": 5262,
+        "impressions": 45,
+        "clicks": 1
+      },
+      {
+        "date": "2026-10-09",
+        "inIndex": 4756,
+        "crawled2xx": 5264,
+        "impressions": 33,
+        "clicks": 0
+      },
+      {
+        "date": "2026-10-10",
+        "inIndex": 4749,
+        "crawled2xx": 5261,
+        "impressions": 18,
+        "clicks": 2
+      },
+      {
+        "date": "2026-10-11",
+        "inIndex": 4728,
+        "crawled2xx": 5249,
+        "impressions": 32,
+        "clicks": 4
+      },
+      {
+        "date": "2026-10-12",
+        "inIndex": 4749,
+        "crawled2xx": 5261,
+        "impressions": 39,
+        "clicks": 2
+      },
+      {
+        "date": "2026-10-13",
+        "inIndex": 4749,
+        "crawled2xx": 5261,
+        "impressions": 26,
+        "clicks": 1
+      },
+      {
+        "date": "2026-10-14",
+        "inIndex": 4728,
+        "crawled2xx": 5249,
+        "impressions": 35,
+        "clicks": 1
+      },
+      {
+        "date": "2026-10-15",
+        "inIndex": 4724,
+        "crawled2xx": 5246,
+        "impressions": 30,
+        "clicks": 2
+      },
+      {
+        "date": "2026-10-16",
+        "inIndex": 4724,
+        "crawled2xx": 5246,
+        "impressions": 24,
+        "clicks": 0
+      },
+      {
+        "date": "2026-10-17",
+        "inIndex": 4714,
+        "crawled2xx": 5233,
+        "impressions": 26,
+        "clicks": 1
+      },
+      {
+        "date": "2026-10-18",
+        "inIndex": 4714,
+        "crawled2xx": 5233,
+        "impressions": 21,
+        "clicks": 1
+      },
+      {
+        "date": "2026-10-19",
+        "inIndex": 4708,
+        "crawled2xx": 5227,
+        "impressions": 35,
+        "clicks": 1
+      },
+      {
+        "date": "2026-10-20",
+        "inIndex": 4699,
+        "crawled2xx": 5211,
+        "impressions": 23,
+        "clicks": 0
+      },
+      {
+        "date": "2026-10-21",
+        "inIndex": 4690,
+        "crawled2xx": 5205,
+        "impressions": 38,
+        "clicks": 4
+      },
+      {
+        "date": "2026-10-22",
+        "inIndex": 4690,
+        "crawled2xx": 5221,
+        "impressions": 29,
+        "clicks": 2
+      },
+      {
+        "date": "2026-10-23",
+        "inIndex": 4690,
+        "crawled2xx": 5221,
+        "impressions": 26,
+        "clicks": 0
+      },
+      {
+        "date": "2026-10-24",
+        "inIndex": 4697,
+        "crawled2xx": 5235,
+        "impressions": 17,
+        "clicks": 0
+      },
+      {
+        "date": "2026-10-25",
+        "inIndex": 4698,
+        "crawled2xx": 5243,
+        "impressions": 14,
+        "clicks": 1
+      }
+    ]
+  },
+  "rankingUpdate": {
+    "ongoing": [],
+    "recent": [],
+    "checkedAt": "2026-10-28T20:35:13.671Z"
+  }
+}
