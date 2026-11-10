@@ -8,7 +8,7 @@
 每日收集與週報掛在**本機 cron**（`/etc/cron.d/seo-ops-www-weiqi-kids`），憑證直接讀主機上的檔案，
 不需要 GitHub Secrets，也沒有 GitHub Actions workflow：
 
-- 台北 09:00：`analytics/scripts/collect-all.sh`（YouTube / LINE@ / GA4 / GSC）
+- 台北 09:00：`analytics/scripts/collect-all.sh`（LINE@ / GA4 / GSC）
 - 週一台北 09:30：`analytics/scripts/weekly-report.mjs`
 
 log 在 `analytics/logs/`（不進 git）。GitHub Actions 只保留既有的 GitHub Traffic 收集。
@@ -69,7 +69,7 @@ analytics/
 |------|--------|------|------|------|
 | **GA4**（`G-16V1KSEH6W`，新舊站共用） | `collect-ga4.mjs` | 工作階段、活躍使用者、瀏覽、熱門頁、站外點擊事件 | Google 服務帳號 | 待站主授權 |
 | **Search Console** | `collect-gsc.mjs` | 曝光、點擊、CTR、平均排名、熱門查詢／著陸頁 | Google 服務帳號（同一把） | 待站主授權 |
-| **YouTube**（`@goodmoveassociation`） | `collect-youtube.mjs` | 訂閱數、影片數、總觀看；每支影片的觀看／按讚／留言 | 既有 OAuth 權杖 | 已接上 |
+| **YouTube**（`@goodmoveassociation`） | `collect-youtube.mjs` | 訂閱數、影片數、總觀看；每支影片的觀看／按讚／留言 | 既有 OAuth 權杖（2026-09-30 起失效） | **2026-11-09 站主裁示停用** |
 | **YouTube Analytics**（選配） | 同上 | 每日觀看時間、流量來源 | 另一把帶 `yt-analytics.readonly` 的權杖 | 待站主授權 |
 | **LINE 官方帳號**（`@685hqmrm`） | `collect-line.mjs` | 好友數、有效觸及、封鎖數、訊息送達、受眾輪廓 | Messaging API 長效權杖 | 已接上 |
 | **GitHub Traffic** | `collect-traffic.yml` + `merge-traffic-data.js` | repo 瀏覽、clone、熱門路徑、referrer | `TRAFFIC_TOKEN` | 已接上 |
